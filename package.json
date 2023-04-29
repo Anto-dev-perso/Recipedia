@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.71.5",
+    "react-native-vision-camera": "^2.15.4",
     "tesseract.js": "^4.0.3"
   },
   "devDependencies": {
