@@ -7,8 +7,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Button, Image, Linking, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { Camera, CameraPermissionStatus, useCameraDevices } from 'react-native-vision-camera';
 
+// TODO : react-native-fs for saved image file or react Native Image Picker
 
-const YoutubeCamera = () => {
+type YoutubeCameraProps = {
+  onBackPress: () => void;
+}
+
+export default function YoutubeCamera ({onBackPress} : YoutubeCameraProps) {
   
   const camera = useRef<Camera>(null);
   const devices = useCameraDevices();
@@ -27,7 +32,6 @@ const YoutubeCamera = () => {
   }, []);
   
   const capturePhoto = async () => {
-    console.log('Going into capturePhoto');
     if (camera.current !== null){
         try{
           const photo = await camera.current.takeSnapshot();
@@ -51,13 +55,7 @@ const YoutubeCamera = () => {
     <View style={styles.container}>
           {showCamera ? (
             <>
-              <Camera
-              ref={camera}
-              style={StyleSheet.absoluteFill}
-              device={device}
-              isActive={showCamera}
-              photo={true}
-              />
+              <Camera ref={camera} style={StyleSheet.absoluteFill} device={device} isActive={showCamera} photo={true}/>
 
               <View style={styles.buttonContainer}>
                 <TouchableOpacity 
@@ -82,7 +80,7 @@ const YoutubeCamera = () => {
                     borderColor: '#fff',
                     width: 100,
                   }}
-                  onPress={() => setShowCamera(true)}>
+                  onPress={() => onBackPress()}>
                   <Text style={{color: 'white', fontWeight: '500'}}>Back</Text>
                 </TouchableOpacity>
               </View>
@@ -111,7 +109,7 @@ const YoutubeCamera = () => {
                       borderWidth: 2,
                       borderColor: 'white',
                     }}
-                    onPress={() => setShowCamera(true)}>
+                    onPress={() => onBackPress()}>
                       <Text style={{color: 'white', fontWeight: '500'}}>Use Photo</Text>
                   </TouchableOpacity>
                 </View>
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    top: 0,
+    bottom: 0,
     padding: 20,
   },
   buttons: {
@@ -159,9 +157,11 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     // color gray
     backgroundColor: '#B2BEB5',
-aligneSelf: 'center',
-borderWidth: 4,
-borderColor: 'white',
+    aligneSelf: 'center',
+
+    justifyContent: 'center',
+    borderWidth: 4,
+    borderColor: 'white',
   },
   image: {
     width: '100%',
@@ -169,5 +169,3 @@ borderColor: 'white',
     aspectRatio: 9 / 16,
   },
 });
-
-export default YoutubeCamera;

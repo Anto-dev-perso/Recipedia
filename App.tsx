@@ -5,29 +5,41 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Image, Linking, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import { Camera, CameraPermissionStatus, useCameraDevices } from 'react-native-vision-camera';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator} from '@react-navigation/native-stack';
+
 import YoutubeCamera from './src/components/YoutubeCamera';
 
-// const cameraPermission = await Camera.getCameraPermissionStatus()
-// const microphonePermission = await Camera.getMicrophonePermissionStatus()
 
-const App = () => {
+const Stack = createNativeStackNavigator();
+
+// TODO take care of warnings
+
+
+export default function App (){
+  const [showCamera, setShowCamera] = useState(false);
+
   return(
-      /* <StatusBar barStyle={"dark-content"}/>
-      <SafeAreaView>
-        <ScrollView>
-        </ScrollView> */
-        /* <TouchableOpacity onPress={() => youtubeCamera()}>
-          <Image
-            source={{
-              uri: 'https://reactnative.dev/docs/assets/p_cat2.png'
-            }}
-            style={{width: 200, height: 200}}
-          />
-        </TouchableOpacity> */
-        <YoutubeCamera/>
-      /* </SafeAreaView> */
+    // <>
+    // <StatusBar barStyle={"dark-content"}/>
+    //   <SafeAreaView>
+    //     <ScrollView>
+    //     {showCamera ? (
+    //       <YoutubeCamera onBackPress={() => setShowCamera(false)}/>) : (
+    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //         <Button title="Ouvrir la caméra" onPress={() => setShowCamera(true)} />
+    //         </View>
+    //       )}
+    //     </ScrollView>
+    //   </SafeAreaView>
+    // </>
+    <View style={{ flex: 1}}>
+    {showCamera ? (<YoutubeCamera onBackPress={() => setShowCamera(false)}/>) : (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Button title="Ouvrir la caméra" onPress={() => setShowCamera(true)} />
+        </View>
+      )}
+    </View>
+        
   )
-  }
-
-export default App;
+}
