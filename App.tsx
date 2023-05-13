@@ -23,6 +23,9 @@ export default function App (){
   const [showTextRecognition, setShowTextRecognition] = useState(false);
   const [showSQL, setShowSQL] = useState(false);
 
+  openTable();
+  createTable();
+
   return(
     // <>
     // <StatusBar barStyle={"dark-content"}/>
@@ -39,28 +42,33 @@ export default function App (){
     // </>
 
 
-    <ScrollView>
-    {showCamera ? (<YoutubeCamera onBackPress={() => setShowCamera(false)} />) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Button title="Open the camera" onPress={() => setShowCamera(true)} />
-        </View>
-      )}
-     {showTextRecognition ? (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <OCRComponent onBackPress={() => setShowTextRecognition(false)} />
-      </View>
-    ) : (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Button title="Recognize the text of a picture" onPress={() => setShowTextRecognition(true)} />
-    </View> )}
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Button title="Open the database" onPress={() => openTable()} />
-        <Button title="Create the database" onPress={() => createTable()} />
-        <Button title="Insert in the database" onPress={() => insertRecipe()} />
-        <Button title="Search in the database" onPress={() => selectRecipes()} />
-        <Button title="Delete the database" onPress={() => deleteTable()} />
-      </View>
-    <RecipeList/>
-    </ScrollView>  
+    // <ScrollView>
+    // {showCamera ? (<YoutubeCamera onBackPress={() => setShowCamera(false)} />) : (
+    //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //       <Button title="Open the camera" onPress={() => setShowCamera(true)} />
+    //     </View>
+    //   )}
+    //  {showTextRecognition ? (
+    //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //     <OCRComponent onBackPress={() => setShowTextRecognition(false)} />
+    //   </View>
+    // ) : (
+    //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //     <Button title="Recognize the text of a picture" onPress={() => setShowTextRecognition(true)} />
+    // </View> )}
+    //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //     <Button title="Open the database" onPress={() => openTable()} />
+    //     <Button title="Create the database" onPress={() => createTable()} />
+    //     <Button title="Insert in the database" onPress={() => insertRecipe()} />
+    //     <Button title="Search in the database" onPress={() => selectRecipes()} />
+    //     <Button title="Delete the database" onPress={() => deleteTable()} />
+    //   </View>
+    // </ScrollView>  
+    <View>
+      <Button title="Open the database" onPress={() => openTable()} />
+      <Button title="Create the database" onPress={() => createTable()} />
+      <Button title="Search in the database" onPress={() => selectRecipes()} />
+      <RecipeList/>
+    </View>
   )
 }

@@ -71,7 +71,7 @@ export const selectRecipes = async (): Promise<Recipe[]> => {
                         instructions: r.instructions
                     }));
                     resolve(recipes);
-                    // console.log("Dump the recipes retrieve from table : ", recipes);
+                    console.log("Dump the recipes retrieve from table : ", recipes);
                 },
                 (_, error) => reject(error));  
             })
