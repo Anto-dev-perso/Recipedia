@@ -19,6 +19,8 @@ export interface Recipe {
 export const createTable = async () => {
     const query = "CREATE TABLE IF NOT EXISTS recipes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT NOT NULL, ingredients TEXT NOT NULL, instructions TEXT NOT NULL);";
 
+    console.log("Create table if not exist");
+
     const db = await openTable();
     db.transaction(tx => {
         tx.executeSql(query);   
@@ -42,25 +44,38 @@ export const deleteRecipe = async (id: number) => {
     });
 };
 
-export const selectRecipes = async () => {
+export const selectRecipes = async (): Promise<Recipe[]> => {
     
     const db = await openTable();
-    
-    db.transaction((tx) => {
-        tx.executeSql("SELECT * FROM recipes", [], (tx, results) => {
-            const recipes: Recipe[] = [];
+    await createTable();
+    // db.transaction((tx) => {
+        // tx.executeSql("SELECT * FROM recipes", [], (tx, results) => {
+        //     const recipes: Recipe[] = [];
 
-            const len = results.rows.length;
-            for (let i = 0; i < len; i++) {
-                let row = results.rows.item(i);
-                console.log(`id: ${row.id}, title: ${row.title}, ingredients: ${row.ingredients},instructions: ${row.instructions}`);
+        //     const len = results.rows.length;
+        //     for (let i = 0; i < len; i++) {
+        //         let row = results.rows.item(i);
+        //         console.log(`id: ${row.id}, title: ${row.title}, ingredients: ${row.ingredients},instructions: ${row.instructions}`);
 
-                recipes.push({title: row.title, ingredients: row.ingredients, instructions: row.instructions});
-            }
-            console.log("Dump the recipes retrieve from table : ", recipes);
-        });  
-        
-    });
+        //         recipes.push({title: row.title, ingredients: row.ingredients, instructions: row.instructions});
+        //     }
+        //     console.log("Dump the recipes retrieve from table : ", recipes);
+        // }); 
+        // }   
+        return new Promise<Recipe[]>((resolve, reject) => {
+            db.transaction((tx) => {
+                tx.executeSql("SELECT * FROM recipes", [], (_, {rows}) => {
+                    const recipes: Recipe[] = rows.raw().map((r) => ({
+                        title: r.title,
+                        ingredients: r.ingredients,
+                        instructions: r.instructions
+                    }));
+                    resolve(recipes);
+                    // console.log("Dump the recipes retrieve from table : ", recipes);
+                },
+                (_, error) => reject(error));  
+            })
+        });
 };
 
 export const deleteTable = async () => {

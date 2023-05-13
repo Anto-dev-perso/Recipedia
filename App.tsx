@@ -8,7 +8,7 @@ import {Button, Image, Linking, SafeAreaView, ScrollView, StatusBar, StyleSheet,
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {YoutubeCamera, OCRComponent} from './index';
+import {YoutubeCamera, OCRComponent, RecipeList} from './index';
 import {openTable, createTable, insertRecipe, selectRecipes, deleteTable} from './src/components/SQLComponent';
 
 const Stack = createNativeStackNavigator();
@@ -37,7 +37,9 @@ export default function App (){
     //     </ScrollView>
     //   </SafeAreaView>
     // </>
-    <View style={{ flex: 1}}>
+
+
+    <ScrollView>
     {showCamera ? (<YoutubeCamera onBackPress={() => setShowCamera(false)} />) : (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Button title="Open the camera" onPress={() => setShowCamera(true)} />
@@ -58,7 +60,7 @@ export default function App (){
         <Button title="Search in the database" onPress={() => selectRecipes()} />
         <Button title="Delete the database" onPress={() => deleteTable()} />
       </View>
-    </View>
-        
+    <RecipeList/>
+    </ScrollView>  
   )
 }
