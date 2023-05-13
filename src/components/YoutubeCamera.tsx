@@ -38,13 +38,13 @@ export default function YoutubeCamera ({onBackPress} : YoutubeCameraProps) {
           setImageSource(photo.path);
           setShowCamera(false);
           console.log(photo.path);
-        } catch (e){
-          switch (e.code) {
+        } catch (error){
+          switch (error.code) {
             case "capture/file-io-error":
               console.error("Failed to write photo to disk!")
               break
             default:
-              console.error(e)
+              console.error(error)
               break
           }
         }
