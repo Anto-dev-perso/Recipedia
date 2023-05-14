@@ -61,7 +61,7 @@ export default function RecipeList () {
                 <Text>Creating RecipeDetails with {selectRecipe.title}, {selectRecipe.ingredients}, {selectRecipe.instructions}</Text>
                 {/* <RecipeDetails recipe={selectRecipe} onClose={() => setSelectRecipe(null)}/> */}
                 <RecipeDetails recipe={selectRecipe} onClose={() => setSelectRecipe(null)}/>
-                <Button title="Add to list" onPress={() => setSelectRecipe(null)}/>
+                <Button title="Add to list" onPress={() => addToCalendar()}/>
             </View>
         ):null} 
         </View>

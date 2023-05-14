@@ -10,6 +10,7 @@ import { createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {YoutubeCamera, OCRComponent, RecipeList} from './index';
 import {openTable, createTable, insertRecipe, selectRecipes, deleteTable} from './src/components/SQLComponent';
+import CalendarComponent from './src/components/CalendarComponent';
 
 const Stack = createNativeStackNavigator();
 
@@ -69,6 +70,7 @@ export default function App (){
       <Button title="Create the database" onPress={() => createTable()} />
       <Button title="Search in the database" onPress={() => selectRecipes()} />
       <RecipeList/>
+      <CalendarComponent/>
     </View>
   )
 }
