@@ -133,8 +133,8 @@ commands:
           command: echo "no" | avdmanager --verbose create avd --force --name "Pixel_XL_API_31" --package "system-images;android-31;google_apis;x86_64"
       
       - run:
-        name: wait for emulator
-        command: adb wait-for-device shell 'while [[ -z $(getprop dev.bootcomplete) ]]; do sleep 1; done;'
+          name: wait for emulator
+          command: adb wait-for-device shell 'while [[ -z $(getprop dev.bootcomplete) ]]; do sleep 1; done;'
 
   clear-detox-cache:
     description: "Clears detox framework cache"
