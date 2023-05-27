@@ -30,6 +30,13 @@ commands:
       - restore_cache:
           name: Restore npm cache
           key: v1-npm-{{ checksum "./package-lock.json" }}-{{ arch }}
+      - run:
+          working_directory: .
+          name: Installing Javascript dependencies
+          command: npm install
+      - save_cache:
+          name: Save npm cache
+          key: v1-npm-{{ checksum "./package-lock.json" }}-{{ arch }}
           paths:
             - ././node_modules
 
