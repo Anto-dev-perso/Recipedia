@@ -14,14 +14,13 @@ jobs:
     working_directory: ~/repo
     docker: 
       - image: cimg/node:18.10.0
-
     steps:
       - checkout
       - restore_cache:
-        key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
       - run: 
-        name: Install Dependencies
-        command: npm install
+          name: Install Dependencies
+          command: npm install
       - run:
-        name: Run tests
-        command: npm run test
+          name: Run tests
+          command: npm run test
