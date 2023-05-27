@@ -23,6 +23,8 @@ export default function App (){
   const [showCamera, setShowCamera] = useState(false);
   const [showTextRecognition, setShowTextRecognition] = useState(false);
   const [showSQL, setShowSQL] = useState(false);
+  
+  const [showTestText, setShowTestText] = useState(false);
 
   openTable();
   createTable();
@@ -65,12 +67,15 @@ export default function App (){
     //     <Button title="Delete the database" onPress={() => deleteTable()} />
     //   </View>
     // </ScrollView>  
+    
     <View>
       <Button title="Open the database" onPress={() => openTable()} />
       <Button title="Create the database" onPress={() => createTable()} />
       <Button title="Search in the database" onPress={() => selectRecipes()} />
       <RecipeList/>
       <CalendarComponent/>
+      <Button title="Button for E2E test" testID='test_id' onPress={() => setShowTestText(true)} />
+      {showTestText ?  <Text>The button has been pressed</Text> : null}
     </View>
   )
 }
