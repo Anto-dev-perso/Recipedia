@@ -173,13 +173,13 @@ jobs:
           name: Run android end-2-end test
           command: npx detox test -c android.emu.release --headless --record-logs all
 
-      - store-artifacts:
+      - store_artifacts:
           path: ././artifacts
-          destionation: ./jest-logs
+          destination: ./jest-logs
 
-      - store-artifacts:
+      - store_artifacts:
           path: ././reports
-          destionation: ./reports
+          destination: ./reports
 
   # ios-test:
   #   macos:
