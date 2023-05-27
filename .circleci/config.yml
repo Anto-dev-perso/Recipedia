@@ -26,7 +26,7 @@ commands:
     steps:
       - run:
           name: Executing node version check
-            command: node -v
+          command: node -v
       - restore_cache:
           name: Restore npm cache
           key: v1-npm-{{ checksum "./package-lock.json" }}-{{ arch }}
