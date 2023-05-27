@@ -39,7 +39,7 @@ commands:
       - restore-cache:
           name: Restore Fastlan cache
           key: v1-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
-      -run:
+      - run:
         working_directory: .
         name: Download Fastlane dependencies
         command: bundle install --path ./vendor/bundle
