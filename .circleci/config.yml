@@ -53,7 +53,7 @@ jobs:
       - android/create-avd:
           avd-name: Pixel_XL_API_31_Virtual_Device
           install: true
-      #     system-image: system-images;android-29;default;x86
+          system-image: system-images;android-29;default;x86
       # - android/start-emulator:
       #     no-window: false
       #     avd-name: Pixel_XL_API_31_Virtual_Device
