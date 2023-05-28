@@ -47,9 +47,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: Install KVM for AVD
-          command: apt install cpu-checker
       - android/create-avd:
           avd-name: Pixel_XL_API_31_Virtual_Device
           install: true
