@@ -21,7 +21,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - persist_to_workspace:
-          root: ~/project
+          root: .
           paths:
             - .
 
@@ -33,7 +33,7 @@ jobs:
           command: npm run build
           name: Build app
       - persist_to_workspace:
-          root: ~/project
+          root: .
           paths:
             - .
 
@@ -45,7 +45,7 @@ jobs:
           name: Run tests
           command: npm run test
       - persist_to_workspace:
-          root: ~/project
+          root: .
           paths:
             - .
 
@@ -59,7 +59,7 @@ jobs:
 
 
 workflows:
-  build_and_test:
+  build and test:
     jobs: 
       - prepare_env
       - build:
