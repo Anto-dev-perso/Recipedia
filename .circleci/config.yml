@@ -21,31 +21,33 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - persist_to_workspace:
-        root: ~/project
-        paths:
-          - .
+          root: ~/project
+          paths:
+            - .
 
   build:
     executor: node/default
     working_directory: ~/project
+    steps:
       - run:
           command: npm run build
           name: Build app
       - persist_to_workspace:
-        root: ~/project
-        paths:
-          - .
+          root: ~/project
+          paths:
+            - .
 
   unit_and_integration_tests:
     executor: node/default
     working_directory: ~/project
-    - run:
-        name: Run tests
-        command: npm run test
-    - persist_to_workspace:
-        root: ~/project
-        paths:
-          - .
+    steps:
+      - run:
+          name: Run tests
+          command: npm run test
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
 
   # deploy:
   #   executor: heroku/default
@@ -56,13 +58,15 @@ jobs:
   #         force: true    #   force push when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
 
 
-  workflows:
-    build_and_test:
-      jobs: 
-        - prepare_env
-        - build
-            requires:
-              - prepare_env
-        - unit_and_integration_tests
+workflows:
+  build_and_test:
+    jobs: 
+      - prepare_env
+      - build:
+          requires:
+            - prepare_env
+      - unit_and_integration_tests:
           requires: 
             - build
+
+
