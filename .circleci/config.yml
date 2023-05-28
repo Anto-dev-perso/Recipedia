@@ -20,24 +20,6 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-          
-      - run:
-          name:  Debug workspace
-          command: pwd && ls
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-  build:
-    executor: node/default
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          command: pwd && ls && npm run build
-          name: Build app
       - persist_to_workspace:
           root: .
           paths:
@@ -57,6 +39,20 @@ jobs:
           paths:
             - .
 
+  build:
+    executor: node/default
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          command: npm run build
+          name: Build app
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
   # deploy:
   #   executor: heroku/default
   #   steps:
@@ -70,11 +66,11 @@ workflows:
   build and test:
     jobs: 
       - prepare_env
-      - build:
+      - unit and integration tests:
           requires:
             - prepare_env
-      - unit and integration tests:
+      - build:
           requires: 
-            - build
+            - prepare_env
 
 
