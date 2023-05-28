@@ -20,7 +20,10 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-      - command: pwd && ls
+          
+      - run:
+          name:  Debug workspace
+          command: pwd && ls
       - persist_to_workspace:
           root: .
           paths:
