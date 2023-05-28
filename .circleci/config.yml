@@ -22,7 +22,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - persist_to_workspace:
-          root: .
+          root: ~/workspace
           paths:
             - .
 
@@ -31,7 +31,7 @@ jobs:
     working_directory: ~/workspace/repo
     steps:
       - attach_workspace:
-          at: .
+          at: ~/workspace
       - run:
           name: Run tests
           command: npm run test
@@ -43,7 +43,7 @@ jobs:
   build for E2E:
     docker:
       - image: cimg/android:2023.04.1-node
-    working_directory: ~/workspace/
+    working_directory: ~/workspace
     steps:
       - attach_workspace:
           at: .
@@ -56,10 +56,10 @@ jobs:
       #     avd-name: ci-avd
       - run:
           working_directory: ~/workspace/repo
-          command: cd repo && npx detox build --configuration android.emu.release
+          command: pwd && ls && npx detox build --configuration android.emu.release
           name: Build app
       - persist_to_workspace:
-          root: .
+          root: ~/workspace
           paths:
             - .
 
@@ -69,12 +69,12 @@ jobs:
     working_directory: ~/workspace/repo
     steps:
       - attach_workspace:
-          at: .
+          at: ~/workspace
       - run:
           name: Run E2E tests
           command: npx detox test --configuration android.emu.release
       - persist_to_workspace:
-          root: .
+          root: ~/workspace
           paths:
             - .
   # deploy:
