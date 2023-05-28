@@ -93,11 +93,11 @@ workflows:
       - unit and integration tests:
           requires:
             - prepare_env
-      - build:
+      - build for E2E:
           requires: 
             - prepare_env
       - E2E tests:
           requires:
-            - build
+            - build for E2E
 
 
