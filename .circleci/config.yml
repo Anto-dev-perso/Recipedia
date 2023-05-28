@@ -60,6 +60,9 @@ commands:
     description: "Get cocoapods dependencies"
     steps:
       - restore_cache:
+          name: Restore cocapods specs and pods
+          key: v1-cocapods-{{ checksum "./ios.Podfile.lock"}}-{{ arch }}
+      - run:
           name: Restore cocoapods dependencies
           working_directory: ./ios
           command: bundle exec pod install --deployment
@@ -114,6 +117,8 @@ commands:
 
       - save_cache:
           key: android=tools-v1-{{ checksum "scripts/install/android-tools.sh" }}-{{ arch }}
+          paths:
+            - /Useres/distiller/android-tools
 
   react-native-dependencies: 
     description: "Install RN dependencies"
