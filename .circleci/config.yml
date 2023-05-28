@@ -10,6 +10,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.1.0
+  android: circleci/android@2.3.0
   # heroku: circleci/heroku@1.2.6
 
 jobs: 
@@ -40,11 +41,18 @@ jobs:
             - .
 
   build:
-    executor: node/default
+    docker:
+      - image: cimg/android:2023.04.1-node
     working_directory: ~/project
     steps:
       - attach_workspace:
           at: .
+      - android/create-avd:
+          avd-name: ci-avd
+          install: true
+          system-image: system-images;android-31;default;x86
+      - android/start-emulator:
+          avd-name: ci-avd
       - run:
           command: npx detox build --configuration android.emu.release
           name: Build app
