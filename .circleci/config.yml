@@ -34,7 +34,7 @@ jobs:
     working_directory: ~/project
     steps:
       - run:
-          command: npm run build
+          command: pwd && ls && npm run build
           name: Build app
       - persist_to_workspace:
           root: .
