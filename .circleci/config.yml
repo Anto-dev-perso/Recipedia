@@ -46,7 +46,7 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          command: detox build --configuration android.emu.release
+          command: npx detox build --configuration android.emu.release
           name: Build app
       - persist_to_workspace:
           root: .
