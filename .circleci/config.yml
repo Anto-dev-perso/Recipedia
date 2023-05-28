@@ -161,8 +161,6 @@ commands:
 jobs: 
 
   android-test:
-    macos:
-      xcode: 11.3.1
     working_directory: ~/repo
     steps:
       - attach_workspace: 
