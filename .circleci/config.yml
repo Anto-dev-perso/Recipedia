@@ -17,13 +17,12 @@ jobs:
     executor: node/default
     working_directory: ~/project
     steps:
+      - attach_workspace:
+          at: .
       - checkout
       - node/install-packages:
           pkg-manager: npm
-          
-      - run:
-          name:  Debug workspace
-          command: pwd && ls
+      - command: pwd && ls
       - persist_to_workspace:
           root: .
           paths:
@@ -33,8 +32,10 @@ jobs:
     executor: node/default
     working_directory: ~/project
     steps:
+      - attach_workspace:
+          at: .
       - run:
-          command: pwd && ls && npm run build
+          command: npm run build
           name: Build app
       - persist_to_workspace:
           root: .
@@ -45,6 +46,8 @@ jobs:
     executor: node/default
     working_directory: ~/project
     steps:
+      - attach_workspace:
+        at: .
       - run:
           name: Run tests
           command: npm run test
