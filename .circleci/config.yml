@@ -33,6 +33,8 @@ jobs:
     executor: node/default
     working_directory: ~/project
     steps:
+      - attach_workspace:
+          at: .
       - run:
           command: pwd && ls && npm run build
           name: Build app
@@ -45,6 +47,8 @@ jobs:
     executor: node/default
     working_directory: ~/project
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: Run tests
           command: npm run test
