@@ -1,0 +1,103 @@
+version: 2.1
+
+# on:
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - main
+
+orbs:
+  node: circleci/node@5.1.0
+  android: circleci/android@2.3.0
+  # heroku: circleci/heroku@1.2.6
+
+jobs: 
+  prepare_env:
+    executor: node/default
+    working_directory: ~/workspace/repo
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - .
+
+  unit and integration tests:
+    executor: node/default
+    working_directory: ~/workspace/repo
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: Run tests
+          command: npm run test
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - .
+
+  build for E2E:
+    docker:
+      - image: cimg/android:2023.04.1-node
+    working_directory: ~/workspace
+    steps:
+      - attach_workspace:
+          at: .
+      - android/create-avd:
+          avd-name: Pixel_XL_API_31_Virtual_Device
+          install: true
+          system-image: system-images;android-29;default;x86
+      # - android/start-emulator:
+      #     no-window: false
+      #     avd-name: Pixel_XL_API_31_Virtual_Device
+      - run:
+          working_directory: ~/workspace/repo
+          command: pwd && ls && npx detox build --configuration android.emu.release
+          name: Build app
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - .
+
+  E2E tests:
+    docker:
+      - image: cimg/android:2023.04.1-node
+    working_directory: ~/workspace/repo
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: Run E2E tests
+          command: npx detox test --configuration android.emu.release
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - .
+  # deploy:
+  #   executor: heroku/default
+  #   steps:
+  #     - attach_workspace:
+  #       at: ~ /project
+  #     - heroku/deploy-via-git:
+  #         force: true    #   force push when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
+
+
+workflows:
+  build and test:
+    jobs: 
+      - prepare_env
+      - unit and integration tests:
+          requires:
+            - prepare_env
+      - build for E2E:
+          requires: 
+            - prepare_env
+      - E2E tests:
+          requires:
+            - build for E2E
+
+
