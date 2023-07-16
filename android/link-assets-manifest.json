@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf",
+      "sha1": "4ff6999c37999a50b22fc7418d4682d1a5552251"
+    },
+    {
+      "path": "src/assets/fonts/Lora/Lora-VariableFont_wght.ttf",
+      "sha1": "99892d245c2df12e4073a72caae6c064f2e9672a"
+    }
+  ]
+}

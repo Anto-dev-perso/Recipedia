@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "jsx": "react",
+      "esModuleInterop": true,
+      "baseUrl": "./src/",
+      "paths" : {
+        "@components/*": ["components/*"],
+        "@i18n/*": ["i18n/*"],
+        "@screens/*": ["screens/*"],
+        "@styles/*": ["styles/*"],
+        "@types/*": ["types/*"],
+        "@utils/*": ["utils/*"]
+      }
+    }
+  }
