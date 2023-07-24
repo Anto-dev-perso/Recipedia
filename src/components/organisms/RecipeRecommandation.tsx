@@ -7,12 +7,12 @@ import CarouselItem from "@components/molecules/CarouselItem";
 import { typoStyles } from "@styles/typography";
 import React from "react";
 import { Text, View } from "react-native";
-import { cardOfCarouselProps } from "@types/CarouselTypes";
+import { cardOfCarouselProps } from "customTypes/CarouselTypes";
 
 
 type RecipeRecommandationProps = {
     titleRecommandation: string,
-    carouselProps: cardOfCarouselProps[]
+    carouselProps: Array<cardOfCarouselProps>
 }
 
 export default function RecipeRecommandation (props: RecipeRecommandationProps) {

@@ -7,6 +7,7 @@ import React from "react"
 import { Image, ImageRequireSource, ImageSourcePropType, Pressable, View } from "react-native"
 import { squareButtonStyles, viewButtonStyles, opacitySquare } from "@styles/buttons"
 
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -14,8 +15,7 @@ type SquareButtonProps = {
     onPressFunction:() => void,
     side: number,
     text?: string,
-    // image?: ImageRequireSource,
-    image?: ImageSourcePropType,
+    image?: ImageRequireSource,
 }
 
 export default function SquareButton (props: SquareButtonProps) {
