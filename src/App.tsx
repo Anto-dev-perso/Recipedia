@@ -6,174 +6,182 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Image, Linking, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 
-import { typoStyles } from '@styles/typography';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { roundButtonStyles, squareButtonStyles, rectangleRoundedButtonStyles } from '@styles/buttons';
 import { NavigationContainer } from '@react-navigation/native';
 
-import RoundButton from '@components/RoundButton';
-import SquareButton from '@components/SquareButton';
-import RectangleRoundedButton from '@components/RectangleRoundedButton';
-
 import { useTranslation } from 'react-i18next';
 import i18n from '@i18n/i18n';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '@screens/Home';
 import Parameters from '@screens/Parameters';
 import Plannification from '@screens/Plannification';
-import Recipe from '@screens/Recipe';
-import Search from '@screens/Search';
 import Shopping from '@screens/Shopping';
-
-import { SQLiteDatabase } from 'react-native-sqlite-storage';
-import SQLite from 'react-native-sqlite-storage';
-
 
 // import {YoutubeCamera, OCRComponent, RecipeList} from '../index';
 
 
 import DatabaseManipulation from '@utils/DatabaseManipulation';
 import { databaseColumnType, debugRecipeColNames, encodedType, recipeTableElement, recipeTableName, recipedatabaseName } from '@customTypes/DatabaseElementTypes';
+import Recipe from '@screens/Recipe';
+import Search from '@screens/Search';
+import { StackScreenParamList, TabScreenParamList} from '@customTypes/ScreenTypes';
+
+
 // import CalendarComponent from './components/CalendarComponent';
 
 // TODO take care of warnings
 
 // TODO expo go to consider
 
+// TODO manage horizontal mode
+
 const initI18n = i18n; // instanciate the i18n instance
 
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator<TabScreenParamList>();
+const Stack = createNativeStackNavigator<StackScreenParamList>();
 
 
 let RecipeDatabase = new DatabaseManipulation(recipedatabaseName, recipeTableName, debugRecipeColNames);
 
 
-const dbTest: Array<recipeTableElement> = [
-  {
-    // id: 0,
-    image_Source: './assets/images/architecture.jpg',
-    title: "Architecture take from far away",
-    description: "This is an architecture",
-    ingredients: "A photograph",
-    preparation: "Go on a good spot and take the picture",
-  },
-  {
-    // id: 1,
-    image_Source: require('./assets/images/bike.jpg'),
-    title: "Bike on a beach",
-    description: `For all our 'bobo', here is your partner in crime : a bike. On a beach beacause why not`,
-    ingredients: "A beach, a bike",
-    preparation: "Go to the beach with your bike. Park it and that's it !",
-  },
-  {
-    // id: 2,
-    image_Source: require('./assets/images/cat.jpg'),
-    title: "Beatiful cat",
-    description: "It's a cat you know ...",
-    ingredients: "A cat ... obviously",
-    preparation: "Harm with patience and wait for him to look at you",
-  },
-  {
-    // id: 3,
-    image_Source: require('./assets/images/child.jpg'),
-    title: "Child wearing a purple coat",
-    description: "On a purple room, this child is centered with its own purple coat",
-    ingredients: "The room, the child, the coat",
-    preparation: "But the coat on the child, place him front to the camera",
-  },
-  {
-    // id: 4,
-    image_Source: require('./assets/images/church.jpg'),
-    title: "Inside the church",
-    description: "Coupole inside the church",
-    ingredients: "A church, you neck",
-    preparation: "Got to the chruch and look up",
-  },
-  {
-    // id: 5,
-    image_Source: require('./assets/images/coffee.jpg'),
-    title: "Wanna take a coffee break ?",
-    description: "Set of coffee with everything you can possibly need",
-    ingredients: "Cup of coffee",
-    preparation: "Nothing",
-  },
-  {
-    // id: 6,
-    image_Source: require('./assets/images/crimson.jpg'),
-    title: "Is this King Crimson ?",
-    description: "Little bird call Crimson on its branch",
-    ingredients: "A very good objective",
-    preparation: "Wait for it and good luck",
-  },
-  {
-    // id: 7,
-    image_Source: require('./assets/images/dog.jpg'),
-    title: "Cute dog",
-    description: "Look a him, he is sooooooo cute",
-    ingredients: "Dog",
-    preparation: "Put the dog inside a flower garden",
-  },
-  {
-    // id: 8,
-    image_Source: require('./assets/images/monastery.jpg'),
-    title: "Monastery",
-    description: "Picture of a monastery during a sunset",
-    ingredients: "Monastery, sunset",
-    preparation: "When time is ok, take this masterpiece",
-  },
-  {
-    // id: 9,
-    image_Source: require('./assets/images/motocross.jpg'),
-    title: "Biker during a drift",
-    description: "Fabulous drift",
-    ingredients: "A good biker",
-    preparation: "During a hard virage, take this while a drift in ongoing",
-  },
-  {
-    // id: 10,
-    image_Source: require('./assets/images/mushrooms.jpg'),
-    title: "Brown mushrooms",
-    description: "Mushrooms that's grows to much",
-    ingredients: "This kind of mushromms all packed togethers",
-    preparation: "If you find it while randonning, don't wait !",
-  },
-  {
-    // id: 11,
-    image_Source: require('./assets/images/scooter.jpg'),
-    title: "Parisians riding",
-    description: "Look a those parisians with theirs scooters. What is this seriously",
-    ingredients: "Parisians, Scooters",
-    preparation: "It should be easy to find them in Paris.\nBe prepared to be insulted",
-  },
-  {
-    // id: 12,
-    image_Source: require('./assets/images/strawberries.jpg'),
-    title: "Strawberries verrine",
-    description: "Beautiful and appetizing strawberries verrine",
-    ingredients: "Strawberries",
-    preparation: "Cook the verrrine",
-  },
-  {
-    // id: 13,
-    image_Source: require('./assets/images/tree.jpg'),
-    title: "Tree in the snow",
-    description: "In a snow valley, those trees are rising",
-    ingredients: "Trees, Snow",
-    preparation: "Find this valley, look hard for thos trees",
-  },
-  {
-    // id: 14,
-    image_Source: require('./assets/images/waves.jpg'),
-    title: "Waves on the rock",
-    description: "Riple waves arriving to the rocks",
-    ingredients: "Rocks, Waves",
-    preparation: "On a rainy day, go to these rocks",
-  },
+// const dbTest: Array<recipeTableElement> = [
+//   {
+//     // id: 0,
+//     image_Source: './assets/images/architecture.jpg',
+//     title: "Architecture take from far away",
+//     description: "This is an architecture",
+//     ingredients: "A photograph",
+//     preparation: "Go on a good spot and take the picture",
+//   },
+//   {
+//     // id: 1,
+//     image_Source: require('./assets/images/bike.jpg'),
+//     title: "Bike on a beach",
+//     description: `For all our 'bobo', here is your partner in crime : a bike. On a beach beacause why not`,
+//     ingredients: "A beach, a bike",
+//     preparation: "Go to the beach with your bike. Park it and that's it !",
+//   },
+//   {
+//     // id: 2,
+//     image_Source: require('./assets/images/cat.jpg'),
+//     title: "Beatiful cat",
+//     description: "It's a cat you know ...",
+//     ingredients: "A cat ... obviously",
+//     preparation: "Harm with patience and wait for him to look at you",
+//   },
+//   {
+//     // id: 3,
+//     image_Source: require('./assets/images/child.jpg'),
+//     title: "Child wearing a purple coat",
+//     description: "On a purple room, this child is centered with its own purple coat",
+//     ingredients: "The room, the child, the coat",
+//     preparation: "But the coat on the child, place him front to the camera",
+//   },
+//   {
+//     // id: 4,
+//     image_Source: require('./assets/images/church.jpg'),
+//     title: "Inside the church",
+//     description: "Coupole inside the church",
+//     ingredients: "A church, you neck",
+//     preparation: "Got to the chruch and look up",
+//   },
+//   {
+//     // id: 5,
+//     image_Source: require('./assets/images/coffee.jpg'),
+//     title: "Wanna take a coffee break ?",
+//     description: "Set of coffee with everything you can possibly need",
+//     ingredients: "Cup of coffee",
+//     preparation: "Nothing",
+//   },
+//   {
+//     // id: 6,
+//     image_Source: require('./assets/images/crimson.jpg'),
+//     title: "Is this King Crimson ?",
+//     description: "Little bird call Crimson on its branch",
+//     ingredients: "A very good objective",
+//     preparation: "Wait for it and good luck",
+//   },
+//   {
+//     // id: 7,
+//     image_Source: require('./assets/images/dog.jpg'),
+//     title: "Cute dog",
+//     description: "Look a him, he is sooooooo cute",
+//     ingredients: "Dog",
+//     preparation: "Put the dog inside a flower garden",
+//   },
+//   {
+//     // id: 8,
+//     image_Source: require('./assets/images/monastery.jpg'),
+//     title: "Monastery",
+//     description: "Picture of a monastery during a sunset",
+//     ingredients: "Monastery, sunset",
+//     preparation: "When time is ok, take this masterpiece",
+//   },
+//   {
+//     // id: 9,
+//     image_Source: require('./assets/images/motocross.jpg'),
+//     title: "Biker during a drift",
+//     description: "Fabulous drift",
+//     ingredients: "A good biker",
+//     preparation: "During a hard virage, take this while a drift in ongoing",
+//   },
+//   {
+//     // id: 10,
+//     image_Source: require('./assets/images/mushrooms.jpg'),
+//     title: "Brown mushrooms",
+//     description: "Mushrooms that's grows to much",
+//     ingredients: "This kind of mushromms all packed togethers",
+//     preparation: "If you find it while randonning, don't wait !",
+//   },
+//   {
+//     // id: 11,
+//     image_Source: require('./assets/images/scooter.jpg'),
+//     title: "Parisians riding",
+//     description: "Look a those parisians with theirs scooters. What is this seriously",
+//     ingredients: "Parisians, Scooters",
+//     preparation: "It should be easy to find them in Paris.\nBe prepared to be insulted",
+//   },
+//   {
+//     // id: 12,
+//     image_Source: require('./assets/images/strawberries.jpg'),
+//     title: "Strawberries verrine",
+//     description: "Beautiful and appetizing strawberries verrine",
+//     ingredients: "Strawberries",
+//     preparation: "Cook the verrrine",
+//   },
+//   {
+//     // id: 13,
+//     image_Source: require('./assets/images/tree.jpg'),
+//     title: "Tree in the snow",
+//     description: "In a snow valley, those trees are rising",
+//     ingredients: "Trees, Snow",
+//     preparation: "Find this valley, look hard for thos trees",
+//   },
+//   {
+//     // id: 14,
+//     image_Source: require('./assets/images/waves.jpg'),
+//     title: "Waves on the rock",
+//     description: "Riple waves arriving to the rocks",
+//     ingredients: "Rocks, Waves",
+//     preparation: "On a rainy day, go to these rocks",
+//   },
 
-]
+// ]
 
 export default function App (){
+
+
+const Root = () => {
+  return(
+    <Tab.Navigator initialRouteName='Home'>
+      <Tab.Screen name="Home" component={Home}/>
+      <Tab.Screen name="Shopping" component={Shopping}/>
+      <Tab.Screen name="Plannification" component={Plannification}/>
+      <Tab.Screen name="Parameters" component={Parameters}/>
+  </Tab.Navigator>
+  )}
   // const [showCamera, setShowCamera] = useState(false);
   // const [showTextRecognition, setShowTextRecognition] = useState(false);
   // const [showSQL, setShowSQL] = useState(false);
@@ -261,17 +269,12 @@ export default function App (){
 
     // </View>
 
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName='Home'>
-        <Tab.Screen name="Home" component={Home}/>
-        <Tab.Screen name="Shopping" component={Shopping}/>
-        <Tab.Screen name="Plannification" component={Plannification}/>
-        <Tab.Screen name="Parameters" component={Parameters}/>
-      </Tab.Navigator>
-        {/* <Stack.Navigator>
-          <Stack.Screen name="Recipe" component={Recipe}/>
-          <Stack.Screen name="Search" component={Search}/>
-        </Stack.Navigator> */}
+    <NavigationContainer>      
+      <Stack.Navigator initialRouteName='Root' screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Root" component={Root}/>
+        <Stack.Screen name="Recipe" component={Recipe}/>
+        <Stack.Screen name="Search" component={Search}/>
+      </Stack.Navigator>
     </NavigationContainer>
   )
 }
@@ -288,6 +291,6 @@ const styles = (circleDiameter: number) => StyleSheet.create({
 })
   const styles3 = (length: number) => StyleSheet.create({
   rectButton: {
-    ...rectangleRoundedButtonStyles(length).rectangleRoundedButton,
+    ...rectangleRoundedButtonStyles.rectangleRoundedButton,
   }
 })

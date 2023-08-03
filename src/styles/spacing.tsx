@@ -3,17 +3,35 @@
  * @format
  */
 
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import EStyleSheet from "react-native-extended-stylesheet";
 
-const dimensions = {
-    windowHeight: Dimensions.get('window').height,
-    windowWidth: Dimensions.get('window').width ,
-}
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
+
+EStyleSheet.build({$rem: screenWidth / 390});
 
 const padding = {
-    small: 10,
-    medium: 20,
-    large: 30,
+    small: "7rem",
+    medium: "12rem",
+    large: "15rem",
 }
 
-export { dimensions, padding }
+const screenViews = EStyleSheet.create({
+    screenView: {
+        flexGrow: 1,
+    },
+    scrollView: {
+        marginBottom: "75rem",
+    },
+    sectionView: {
+        marginVertical: padding.large,
+    },
+    tabView: {
+        flexDirection: 'row',
+        padding: padding.small,
+    }
+})
+
+export { padding, screenViews }

@@ -3,27 +3,44 @@
  * @format
  */
 
-import { StyleSheet } from 'react-native'
 import { palette } from './colors'
+import EStyleSheet from 'react-native-extended-stylesheet'
+import { padding } from './spacing'
+
+
+
+const separator = "__";
 
 const typoFamily={
     normal: 'Lora-VariableFont_wght',
     italic: 'Lora-Italic-VariableFont_wght',
 } 
 
-const typoSize= {
-    paragraphSize: 14,
-    headerSize: 16,
-    titleSize: 18,
+const typoSize = {
+    element: "10rem",
+    paragraphSize: "14rem",
+    headerSize: "18rem",
+    titleSize: "22rem",
 }
 
-const typoStyles = StyleSheet.create({
+const typoStyles = EStyleSheet.create({
+    element: {
+        color: palette.textPrimary,
+        fontFamily: typoFamily.normal,
+        fontSize: typoSize.element,
+        fontWeight: 'normal',
+        textAlign: 'left',
+        marginHorizontal: padding.large,
+        marginVertical: padding.small,
+    },
     paragraph: {
         color: palette.textPrimary,
         fontFamily: typoFamily.normal,
         fontSize: typoSize.paragraphSize,
         fontWeight: 'normal',
         textAlign: 'left',
+        marginHorizontal: padding.large, 
+        paddingBottom: padding.small,
     },
     header: {
         color: palette.textPrimary,
@@ -31,7 +48,7 @@ const typoStyles = StyleSheet.create({
         fontSize: typoSize.headerSize,
         fontWeight: 'bold',
         textAlign: 'left',
-        
+        padding: padding.medium,
     },
     title: {
         color: palette.textPrimary,
@@ -40,19 +57,25 @@ const typoStyles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'left',
         textTransform: 'uppercase',
-
+        padding: padding.medium,
     },
 })
 
-const carouselStyle = (length: number) => StyleSheet.create({
+const carouselStyle = (length: number) => EStyleSheet.create({
     carouselTitle: {
         color: palette.textPrimary,
         fontFamily: typoFamily.normal,
-        fontSize: typoSize.headerSize,
+        fontSize: typoSize.paragraphSize,
         fontWeight: 'bold',
         textAlign: 'left',
-        marginLeft: (length/2),
+        marginHorizontal: (length/2),
     }   
 })
 
-export {typoStyles, carouselStyle};
+
+enum typoRender {
+    ARRAY = "ARRAY",
+    SECTION = "SECTION",
+}
+
+export { separator, typoSize, typoStyles, typoRender, carouselStyle};

@@ -4,7 +4,7 @@
  */
 
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
-import { databaseColumnType, ITableElement, recipeTableElement } from '@customTypes/DatabaseElementTypes'
+import { databaseColumnType } from '@customTypes/DatabaseElementTypes'
 
 
 // TODO to deactivate for release

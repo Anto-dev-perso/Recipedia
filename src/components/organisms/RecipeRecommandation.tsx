@@ -7,17 +7,18 @@ import CarouselItem from "@components/molecules/CarouselItem";
 import { typoStyles } from "@styles/typography";
 import React from "react";
 import { Text, View } from "react-native";
-import { cardOfCarouselProps } from "customTypes/CarouselTypes";
+import { recipeTableElement } from "customTypes/CarouselTypes";
+import { screenViews } from "@styles/spacing";
 
 
 type RecipeRecommandationProps = {
     titleRecommandation: string,
-    carouselProps: Array<cardOfCarouselProps>
+    carouselProps: Array<recipeTableElement>
 }
 
 export default function RecipeRecommandation (props: RecipeRecommandationProps) {
     return (
-        <View>
+        <View style={screenViews.sectionView}>
             <Text style={typoStyles.title}>{props.titleRecommandation}</Text>
             <CarouselItem items={props.carouselProps}/>
         </View>

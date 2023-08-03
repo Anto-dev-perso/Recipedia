@@ -6,18 +6,18 @@
 import React from "react"
 import { Pressable, Text, View } from "react-native"
 import { rectangleRoundedButtonStyles, viewButtonStyles, opacityRectangleRounded } from "@styles/buttons"
+import { typoStyles } from "@styles/typography"
 
 
 type RectangleRoundedButtonProps = {
-    length: number,
-    text?: string,
+    text: string,
 }
 
 export default function RectangleRoundedButton (props: RectangleRoundedButtonProps) {
     return(
-        <Pressable style={rectangleRoundedButtonStyles(props.length).rectangleRoundedButton}>
+        <Pressable style={rectangleRoundedButtonStyles.rectangleRoundedButton}>
             <View style={viewButtonStyles.viewInsideButtons}>
-              {props.text ? <Text>Icon text</Text> : null}
+              <Text style={typoStyles.element}>{props.text}</Text>
             </View>
         </Pressable>
     )
