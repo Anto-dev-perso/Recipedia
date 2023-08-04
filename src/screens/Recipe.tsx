@@ -5,7 +5,8 @@
 
 import { screenViews } from "@styles/spacing";
 import React from "react";
-import { Image, SafeAreaView, Text, View, ScrollView, Button } from 'react-native';
+import { Image } from "expo-image";
+import { SafeAreaView, Text, View, ScrollView, Button } from 'react-native';
 import { imageStyle } from '@styles/images'
 import { typoRender, typoStyles } from "@styles/typography";
 import TagsList from "@components/molecules/TagsList";
@@ -18,7 +19,7 @@ import { RecipeScreenProp } from '@customTypes/ScreenTypes';
 import { recipeTableElement } from "@customTypes/DatabaseElementTypes";
 
 
-export default function Recipe ({ route, navigation}: RecipeScreenProp) {
+export default function Recipe ({ route, navigation }: RecipeScreenProp) {
     // Use a local for params props
     const props: recipeTableElement = route.params;
 

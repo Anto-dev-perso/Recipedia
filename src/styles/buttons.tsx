@@ -5,7 +5,6 @@
 
 import { palette } from './colors'
 import { padding } from './spacing'
-import { imageStyle } from './images'
 import EStyleSheet from "react-native-extended-stylesheet";
 
 let shapeWidth: number = 1;
@@ -60,7 +59,7 @@ const viewButtonStyles = EStyleSheet.create({
     imageInsideButton: {
         width: '100%',
         height: '100%',
-        resizeMode: 'cover'
+        contentFit: 'cover'
     },
     wrappingListOfButton: {
         flex: 1, 

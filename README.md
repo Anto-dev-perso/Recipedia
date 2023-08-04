@@ -108,6 +108,21 @@ On Android Studio :
 - Click on _Create Device_
 - Configure the device you want 
 
+
+### Expo
+
+- npx expo + Commands (run npx expo --help) : 
+  - start
+  - export
+  - export:web
+  - run:ios
+  - run:android:
+  - prebuild
+  - install
+  - customize
+  - confir
+
+
 # Notes
 
 - Developer mode permet de faire du debug ou d'afficher les perfs de l'appli

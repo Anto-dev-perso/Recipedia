@@ -1,4 +1,32 @@
 {
-  "name": "RecipesManager",
-  "displayName": "RecipesManager"
+  "expo": {
+    "name": "RecipesManager",
+    "slug": "RecipesManager",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/app/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./src/assets/app/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.RecipesManager"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/app/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.RecipesManager"
+    },
+    "web": {
+      "favicon": "./src/assets/app/favicon.png"
+    }
+  }
 }

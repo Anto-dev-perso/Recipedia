@@ -4,14 +4,15 @@
  */
 
 import React from "react"
-import { Image, ImageRequireSource, ImageSourcePropType, Pressable, View } from "react-native"
+import { Image } from "expo-image";
+import { ImageRequireSource, ImageSourcePropType, Pressable, View } from "react-native"
 import { squareButtonStyles, viewButtonStyles, opacitySquare } from "@styles/buttons"
 
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { ScreensParamList } from "@customTypes/ScreenTypes";
+import { RecipeScreenProp, } from "@customTypes/ScreenTypes";
 import { recipeTableElement } from "@customTypes/DatabaseElementTypes";
 
 
@@ -24,7 +25,7 @@ type SquareButtonProps = {
 export default function SquareButton (props: SquareButtonProps) {
 
 
-    const navigation = useNavigation<StackNavigationProp<ScreensParamList, 'Recipe'>>();
+    const navigation = useNavigation<RecipeScreenProp>();
 
     const title = props.recipe.title
     const description = "Un plat rustique qui met tout le monde d'accord avec nos saucisses au couteau. Un plat de bistrot réconfortant pour petits et grands."

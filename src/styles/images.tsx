@@ -19,7 +19,7 @@ const imageStyle = EStyleSheet.create({
     imageInsideView: {
         width: '100%',
         height: '100%',
-        resizeMode: 'cover'
+        contentFit: 'cover'
     }
 })
 
