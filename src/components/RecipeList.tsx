@@ -5,8 +5,8 @@
 
 import React, {useEffect, useState} from 'react';
 import {Button, FlatList, Text, TextInput, TouchableOpacity, View, VirtualizedList} from 'react-native';
-import {Recipe} from '../utils/DatabaseManipulation'; 
-import {selectRecipes} from '../utils/DatabaseManipulation';
+import {Recipe} from '../utils/TableManipulation'; 
+import {selectRecipes} from '../utils/TableManipulation';
 import RecipeDetails from './RecipeDetails';
 
 // To consider for performance issues : RecyclerListView, react-native-largelist, react-native-super-grid, react-native-masonry-list

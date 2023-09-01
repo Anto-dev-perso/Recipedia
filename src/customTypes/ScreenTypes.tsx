@@ -8,6 +8,7 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { recipeTableElement } from "./DatabaseElementTypes";
+import RecipeDatabase from "@utils/RecipeDatabase";
 
 
 type StackScreenParamList = {
@@ -27,8 +28,8 @@ type TabScreenParamList = {
   const StackScreenProp = createNativeStackNavigator<StackScreenParamList>();
   const TabScreenProp = createNativeStackNavigator<TabScreenParamList>();
 
-  // type RecipeScreenProp = RouteProp<StackScreenParamList, 'Recipe'>;
   type RecipeScreenProp = NativeStackNavigationProp<StackScreenParamList, 'Recipe'>;
+  type SearchScreenProp = NativeStackNavigationProp<StackScreenParamList, 'Search'>;
+  
 
-
-  export { StackScreenParamList, RecipeScreenProp, StackScreenProp, TabScreenParamList, TabScreenProp }
+  export { StackScreenParamList, RecipeScreenProp, SearchScreenProp,StackScreenProp, TabScreenParamList, TabScreenProp }

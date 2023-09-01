@@ -10,9 +10,8 @@ import { SafeAreaView, Text, View, ScrollView, Button } from 'react-native';
 import { imageStyle } from '@styles/images'
 import { typoRender, typoStyles } from "@styles/typography";
 import TagsList from "@components/molecules/TagsList";
-import TextRender from "@components/organisms/TextRender";
-import { viewButtonStyles } from "@styles/buttons";
-import RectangleRoundedButton from "@components/atomic/RectangleRoundedButton";
+import TextRender from "@components/molecules/TextRender";
+import { viewButtonStyles, bottomPosition } from '@styles/buttons';
 import RectangleButton from "@components/atomic/RectangleButton";
 import BottomButton from "@components/molecules/BottomButton";
 import { RecipeScreenProp } from '@customTypes/ScreenTypes';
@@ -23,16 +22,10 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
     // Use a local for params props
     const props: recipeTableElement = route.params;
 
-    // TODO
-    const img = require('@assets/images/dog.jpg')
-    const temps = "25 min"
-    const ustensiles = ["Sel", "Poivre", "Huile d'olive", "2 sauteuses", "1 Passoire"]
-
-    
     return (
         <SafeAreaView style={screenViews.screenView}>
-            <ScrollView horizontal={false} style={screenViews.scrollView}>
-                <View style={imageStyle.containerStyle}>
+            <ScrollView horizontal={false} showsVerticalScrollIndicator={false} style={screenViews.scrollView}>
+                <View style={imageStyle.containerFullStyle}>
                     <Image source={{uri: props.image_Source}} style={imageStyle.imageInsideView}/>
                 </View>
 
@@ -42,14 +35,15 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
 
                 <Text style={typoStyles.paragraph}>{props.description}</Text>
 
-                <TagsList item={props.tags}/>
+                <TagsList item={props.tags} onPressFunction={() => null}/>
 
                 <TextRender title={"Ingredients"} text={props.ingredients} render={typoRender.ARRAY}/>
-                <TextRender title={"Preparation"} text={props.preparation} render={typoRender.SECTION}/>
+                <TextRender title={`Preparation (${props.time} min)`} text={props.preparation} render={typoRender.SECTION}/>
 
-                    {/* TODO add nutrition part */}
+                    {/* TODO add number of person */}
+                    {/* TODO add nutrition */}
             </ScrollView>
-            <BottomButton text="Add this recipe to the menu"/>
+            <BottomButton as={RectangleButton} position={bottomPosition.full} centered={true} text="Add this recipe to the menu" onPressFunction={() => console.log("Add to menu")}/>
         </SafeAreaView>
     )
 }

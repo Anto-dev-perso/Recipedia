@@ -5,7 +5,7 @@
 
 import SquareButton from "@components/atomic/SquareButton";
 import { viewButtonStyles } from "@styles/buttons";
-import { padding } from "@styles/spacing";
+import { padding, remValue } from "@styles/spacing";
 import { carouselStyle } from "@styles/typography";
 import React from "react";
 import { FlatList, ImageRequireSource, ImageSourcePropType, ListRenderItemInfo, Text, View } from "react-native";
@@ -15,7 +15,7 @@ type CarouselItemProps = {
   items: Array<recipeTableElement>
 }
 
-  let cardWidth = 120;
+  let cardWidth = 120*remValue;
   let titleLength = cardWidth / 5.5
 
 export default function CarouselItem (props: CarouselItemProps) {
@@ -24,11 +24,11 @@ export default function CarouselItem (props: CarouselItemProps) {
     return(
       <View>
         <SquareButton side={cardWidth} recipe={item}/>
-      <Text style={carouselStyle(titleLength).carouselTitle}>
-        {((item.title).length > titleLength) ? 
-          (((item.title).substring(0,titleLength-3)) + '...') : 
-          item.title}
-      </Text>
+        <Text style={carouselStyle(titleLength).carouselTitle}>
+          {((item.title).length > titleLength) ? 
+            (((item.title).substring(0,titleLength-3)) + '...') : 
+            item.title}
+        </Text>
       </View>
     )
   }

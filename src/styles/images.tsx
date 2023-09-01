@@ -5,21 +5,25 @@
 
 import EStyleSheet from "react-native-extended-stylesheet"
 import { palette } from "./colors"
+import { padding } from "./spacing"
 
 
 
 const imageStyle = EStyleSheet.create({
-    containerStyle: {
-        postition: 'absolute',
-        top: 0,
+    containerFullStyle: {
         width: '100%',
-        height: "250rem",
+        height: "300rem",
+        backgroundColor: palette.secondary,
+    },
+    containerCardStyle: {
+        width: '90%',
+        height: "150rem",
+        marginHorizontal: 10,
         backgroundColor: palette.secondary,
     },
     imageInsideView: {
         width: '100%',
         height: '100%',
-        contentFit: 'cover'
     }
 })
 

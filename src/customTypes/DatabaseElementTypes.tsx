@@ -3,34 +3,27 @@
  * @format
  */
 
-const recipedatabaseName = "RecipeDatabase";
-const recipeTableName = "RecipeTable"; 
-const ingredientsTableName = "IngredientsTable"; 
-const tagTableName = "TagTable"; 
-const nutritionTableName = "NutritionnalValueTable";
+export const recipeDatabaseName = "RecipesDatabase";
+export const recipeTableName = "RecipesTable"; 
+export const ingredientsTableName = "IngredientsTable"; 
+export const tagTableName = "TagsTable"; 
+export const nutritionTableName = "NutritionnalValueTable";
 
-enum encodedType {
+export const regExp = /["{}\\]+/g;
+
+export enum encodedType {
     INTEGER = "INTEGER",
     FLOAT = "FLOAT",
     BLOB = "BLOB",
     TEXT = "TEXT",
 }
 
-type databaseColumnType = {
-    name: string,
+export type databaseColumnType = {
+    colName: string,
     type: encodedType,
 };
 
-const debugRecipeColNames: Array<databaseColumnType> =  [
-    { name: "IMAGE_SOURCE", type: encodedType.TEXT},
-    { name: "TITLE", type: encodedType.TEXT},
-    { name: "DESCRIPTION", type: encodedType.TEXT},
-    { name: "TAGS", type: encodedType.TEXT},
-    { name: "INGREDIENTS", type: encodedType.TEXT},
-    { name: "PREPARATION", type: encodedType.TEXT},
-  ]
-
-type recipeTableElement = {
+export type recipeTableElement = {
     id? : number;
     image_Source: string;
     title: string;
@@ -38,71 +31,71 @@ type recipeTableElement = {
     tags: Array<string>;
     ingredients: Array<string>;
     preparation: Array<string>;
+    time: number,
 }
 
-const convertQueryToElementOfTable = (queryResult: string) => {
-    let result: recipeTableElement = { image_Source: "", title: "", description: "", tags: [""], ingredients: [""], preparation: [""]};
-    const regExp = /["{}\\]+/g;
-
-    let arrStr = queryResult.split(`","`);
-
-    // console.log("Element to map is : ",arrStr);
-    
-    
-    arrStr.forEach((str) => {
-        let elem = str.split(`":`); // { "Column name" , "Value"}
-        // console.log("elem : ",elem);
-        
-        if(elem[0].includes("ID")){
-            result.id = +elem[1].replace(regExp, "");
-        }
-        else if(elem[0].includes(debugRecipeColNames[0].name)) {
-            result.image_Source = elem[1].replace(regExp, "");
-        }
-        else if(elem[0].includes(debugRecipeColNames[1].name)) {
-            result.title = elem[1].replace(regExp, "");
-        }
-        else if(elem[0].includes(debugRecipeColNames[2].name)) {
-            result.description = elem[1].replace(regExp, "");
-        }
-        else if(elem[0].includes(debugRecipeColNames[3].name)) {
-            result.tags[0] = elem[1].replace(regExp, "");
-        }
-        else if(elem[0].includes(debugRecipeColNames[4].name)) {
-            result.ingredients[0] = elem[1].replace(regExp, "");
-        }
-        else if(elem[0].includes(debugRecipeColNames[5].name)) {
-            result.preparation[0] = elem[1].replace(regExp, "");
-        }
-        else{
-            console.warn("NO SUCH COLUMNS FOUND FOR ELEMENT : ", elem);
-            
-        }
-    })
-    return result;
-}
-
-const convertQueryToArrayOfElementOfTable = (queryResult: Array<string>) => {
-    let recipeTableElement = new Array<recipeTableElement>;
-
-    queryResult.forEach(element => {
-        recipeTableElement.push(convertQueryToElementOfTable(element))        
-    });
-    
-    return recipeTableElement;
-}
-
-type ingredientTableElement = {
+export type encodedRecipeElement = {
     id?: number,
+    image: string,
+    title: string,
+    description: string,
+    tags: string,
+    ingredients: string,
+    preparation: string,
+    time: number,
+
 }
 
-type nutritionTableElement = {
+export const recipeColumnsEncoding: Array<databaseColumnType> =  [
+    { colName: "IMAGE_SOURCE", type: encodedType.TEXT},
+    { colName: "TITLE", type: encodedType.TEXT},
+    { colName: "DESCRIPTION", type: encodedType.TEXT},
+    { colName: "TAGS", type: encodedType.TEXT},
+    { colName: "INGREDIENTS", type: encodedType.TEXT},
+    { colName: "PREPARATION", type: encodedType.TEXT},
+    { colName: "TIME", type: encodedType.INTEGER},
+  ]
+
+export const recipeColumnsNames = {
+    image: recipeColumnsEncoding[0].colName,
+    title: recipeColumnsEncoding[1].colName,
+    description: recipeColumnsEncoding[2].colName,
+    tags: recipeColumnsEncoding[3].colName,
+    ingredients: recipeColumnsEncoding[4].colName,
+    preparation: recipeColumnsEncoding[5].colName,
+    time: recipeColumnsEncoding[6].colName,
+}
+  
+export type ingredientTableElement = {
     id?: number,
+    ingName: string,
+    unit: string,
+    // season: string,
 }
 
-type tagTableElement = {
+export const ingredientsColumnsNames: Array<databaseColumnType> =  [
+    { colName: "INGREDIENT", type: encodedType.TEXT},
+    { colName: "UNIT", type: encodedType.TEXT}
+  ]
+
+
+export type nutritionTableElement = {
     id?: number,
+    type: string,
+    unit: string,
+}
+
+export const nutritionColumnsNames: Array<databaseColumnType> =  [
+    { colName: "INGREDIENT", type: encodedType.TEXT},
+    { colName: "UNIT", type: encodedType.TEXT}
+  ]
+
+export type tagTableElement = {
+    id?: number,
+    tagName: string,
 }
 
 
-export { recipedatabaseName, recipeTableName, ingredientsTableName, tagTableName, nutritionTableName, encodedType, databaseColumnType, recipeTableElement, ingredientTableElement, nutritionTableElement, tagTableElement, debugRecipeColNames, convertQueryToElementOfTable, convertQueryToArrayOfElementOfTable }
+export const tagsColumnsNames: Array<databaseColumnType> =  [
+    { colName: "NAME", type: encodedType.TEXT},
+  ]

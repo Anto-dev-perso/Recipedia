@@ -22,11 +22,11 @@ import Shopping from '@screens/Shopping';
 // import {YoutubeCamera, OCRComponent, RecipeList} from '../index';
 
 
-import DatabaseManipulation from '@utils/DatabaseManipulation';
-import { databaseColumnType, debugRecipeColNames, encodedType, recipeTableElement, recipeTableName, recipedatabaseName } from '@customTypes/DatabaseElementTypes';
 import Recipe from '@screens/Recipe';
 import Search from '@screens/Search';
 import { StackScreenParamList, TabScreenParamList} from '@customTypes/ScreenTypes';
+import { loadAsync, useFonts } from 'expo-font';
+import { fetchFonts } from '@styles/typography';
 
 
 // import CalendarComponent from './components/CalendarComponent';
@@ -37,13 +37,10 @@ import { StackScreenParamList, TabScreenParamList} from '@customTypes/ScreenType
 
 // TODO manage horizontal mode
 
-const initI18n = i18n; // instanciate the i18n instance
+// const initI18n = i18n; // instanciate the i18n instance
 
 const Tab = createBottomTabNavigator<TabScreenParamList>();
 const Stack = createNativeStackNavigator<StackScreenParamList>();
-
-
-let RecipeDatabase = new DatabaseManipulation(recipedatabaseName, recipeTableName, debugRecipeColNames);
 
 
 // const dbTest: Array<recipeTableElement> = [
@@ -172,7 +169,6 @@ let RecipeDatabase = new DatabaseManipulation(recipedatabaseName, recipeTableNam
 
 export default function App (){
 
-
 const Root = () => {
   return(
     <Tab.Navigator initialRouteName='Home'>
@@ -198,8 +194,8 @@ const Root = () => {
     console.log("Button pressed");
   }
 
+  fetchFonts()
   return(
-
     // <>
     // <StatusBar barStyle={"dark-content"}/>
     //   <SafeAreaView>

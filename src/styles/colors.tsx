@@ -61,6 +61,8 @@ const palette={
         textPrimary: '#0F0A39',
         textTertiary: '#7B7B7B',
         textGrey: '#B4B4B4',
+
+        textBackground: colors.greyGhost,
     
         borderColor: '#D4D4D4',
         backgroundColor: '#E4E4E4',

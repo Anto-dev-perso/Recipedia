@@ -5,7 +5,7 @@
 
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import {Recipe} from '../utils/DatabaseManipulation';
+import {Recipe} from '../utils/TableManipulation';
 
 type RecipeDetailsProps = {
     recipe: Recipe;

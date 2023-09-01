@@ -9,13 +9,16 @@ import EStyleSheet from "react-native-extended-stylesheet";
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
+export const remValue = screenWidth / 390
 
-EStyleSheet.build({$rem: screenWidth / 390});
+EStyleSheet.build({$rem: remValue});
 
 const padding = {
-    small: "7rem",
-    medium: "12rem",
-    large: "15rem",
+    verySmall: 3 * remValue,
+    small: 7 * remValue,
+    medium: 12 * remValue,
+    large: 15 * remValue,
+    veryLarge: 30 * remValue,
 }
 
 const screenViews = EStyleSheet.create({
@@ -26,7 +29,12 @@ const screenViews = EStyleSheet.create({
         marginBottom: "75rem",
     },
     sectionView: {
-        marginVertical: padding.large,
+        marginVertical: padding.small,
+    },
+    listView: {
+        paddingVertical: padding.small,
+        paddingLeft: padding.veryLarge,
+        paddingRight: padding.small,
     },
     tabView: {
         flexDirection: 'row',
@@ -34,4 +42,14 @@ const screenViews = EStyleSheet.create({
     }
 })
 
-export { padding, screenViews }
+const viewsSplitScreen = EStyleSheet.create({
+    splitIn2View: {
+        width: '50%',
+        padding: padding.small,
+    },
+    viewInRow: {
+        flexDirection: "row"
+    }
+})
+
+export { padding, screenViews, viewsSplitScreen }

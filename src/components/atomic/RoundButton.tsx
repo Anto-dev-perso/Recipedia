@@ -5,10 +5,10 @@
 
 import React from "react"
 import { Pressable, Text, View } from "react-native"
-import { roundButtonStyles, viewButtonStyles, opacityRound } from "@styles/buttons"
+import { roundButtonStyles, viewButtonStyles, viewInsideButtonCentered } from "@styles/buttons"
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 type RoundButtonProps = {
     onPressFunction:() => void,
@@ -25,10 +25,15 @@ type RoundButtonProps = {
 // hitSlop minus diamter/12 is empirically a good solution
 
 export default function RoundButton (props: RoundButtonProps) {
+
+    const iconSize = props.diameter/2.3;
+
     return(
         <Pressable style={roundButtonStyles(props.diameter).roundButton} hitSlop={-props.diameter/12} onPress={() => props.onPressFunction()}>  
-            <View style={viewButtonStyles.viewInsideButtons}>
-              {props.icon ? <Icon name={props.icon.name} size={props.icon.size} color={props.icon.color}/> : null }
+            <View style={viewInsideButtonCentered}>
+              {/* {props.icon ? <Ionicons name={props.icon.name} size={props.icon.size} color={props.icon.color}/> : null } */}
+
+              <FontAwesome name="camera" size={iconSize}/>
               {props.text ? <Text>{props.text}</Text> : null}
             </View>
         </Pressable>

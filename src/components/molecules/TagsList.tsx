@@ -3,7 +3,7 @@
  * @format
  */
 
-import RectangleRoundedButton from "@components/atomic/RectangleRoundedButton"
+import TagButton from "@components/atomic/TagButton"
 import { viewButtonStyles } from "@styles/buttons"
 import { typoSize } from "@styles/typography"
 import React from "react"
@@ -11,7 +11,8 @@ import { FlatList, ListRenderItemInfo, ScrollView, Text, View } from "react-nati
 
 
 type TagsListProps = {
-  item: Array<string>
+  item: Array<string>,
+  onPressFunction:(elem: string) => void,
 }
 
 export default function TagsList (props: TagsListProps) {
@@ -19,7 +20,7 @@ export default function TagsList (props: TagsListProps) {
   const renderTagItem = (item: string, index: number) => {
     return(
       <View key={index} style={viewButtonStyles.viewContainingButton}>
-        <RectangleRoundedButton text={item}/>
+        <TagButton text={item} rightIcon={true} onPressFunction={() => props.onPressFunction(item)}/>
       </View>
     )
   }

@@ -10,7 +10,7 @@ import i18next from "i18next";
 import i18n from "i18next";
 
 import { initReactI18next } from "react-i18next";
-import { getLocales } from 'react-native-localize';
+import { getLocales } from 'expo-localization';
 
 import english from './translations/english.json';
 import french from './translations/french.json';
