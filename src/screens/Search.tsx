@@ -4,10 +4,10 @@
  */
 
 import SearchBar from "@components/organisms/SearchBar";
-import { screenViews } from "@styles/spacing";
+import { screenViews, scrollView } from "@styles/spacing";
 import RecipeDatabase, { recipeDb } from "@utils/RecipeDatabase";
 import React, { useEffect, useState } from "react";
-import { Keyboard, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Alert, Keyboard, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { SearchScreenProp } from '@customTypes/ScreenTypes';
 import { FlatList } from "react-native-gesture-handler";
 import TextRender from "@components/molecules/TextRender";
@@ -15,7 +15,8 @@ import { typoRender } from "@styles/typography";
 import { recipeTableElement } from "@customTypes/DatabaseElementTypes";
 import SearchResultDisplay from "@components/organisms/SearchResultDisplay";
 import FiltersSelection from "@components/organisms/FiltersSelection";
-import { filterFromRecipe, listFilter, prepTimeValues, recipeFilterType, filterPrepTimeFromRecipe, filterIngredientsFromRecipe, filterTagsFromRecipe, recipeTitleFilteredFunction as filterTitlesFromRecipes, extractFilteredRecipeDatas } from "@customTypes/RecipeFiltersTypes";
+import { listFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
+import { extractFilteredRecipeDatas, filterPrepTimeFromRecipe, filterTagsFromRecipe, filterIngredientsFromRecipe, recipeTitleFilteredFunction } from "@utils/FilterFunctions";
 
 export default function Search ({ route, navigation }: SearchScreenProp) {
 
@@ -53,7 +54,7 @@ export default function Search ({ route, navigation }: SearchScreenProp) {
       useEffect(() => {
         let arrayFiltered = recipes;
         
-        arrayFiltered = filterTitlesFromRecipes(arrayFiltered, searchPhrase);
+        arrayFiltered = recipeTitleFilteredFunction(arrayFiltered, searchPhrase);
         arrayFiltered = filterPrepTimeFromRecipe(arrayFiltered, filtersPrepTime);
         arrayFiltered = filterTagsFromRecipe(arrayFiltered, filtersTags);
         arrayFiltered = filterIngredientsFromRecipe(arrayFiltered, filtersIngredients);
@@ -76,20 +77,21 @@ export default function Search ({ route, navigation }: SearchScreenProp) {
 
     return (
         <SafeAreaView style={screenViews.screenView}>
+            <ScrollView style={scrollView(0).view} showsVerticalScrollIndicator={false}>
                 <SearchBar clicked={searchBarClicked} searchPhrase={searchPhrase} setClicked={setSearchBarClicked} setSearchPhrase={setSearchPhrase} />
 
                 {searchBarClicked ? 
-                    // <TextRender text={filteredTitles} render={typoRender.CLICK_LIST} onClick={(str: string) => {
                     <TextRender text={filteredTitles} render={typoRender.CLICK_LIST} onClick={(str: string) => {
                         Keyboard.dismiss();
                         setSearchBarClicked(false);
                         setSearchPhrase(str);
                     }} />
                 : 
-                        <FiltersSelection addingFilter={addingAFilter} setAddingFilter={setAddingAFilter} filtersIngredients={filtersIngredients} filtersTags={filtersTags} filtersPrepTime={filtersPrepTime} setFiltersIngredients={setFiltersIngredients} setFiltersTags={setFiltersTags} setFiltersPrepTime={setFiltersPrepTime} selectedSections={typeOfFilterClick} setSelectedSections={setTypeOfFilterClick} tagsList={filteredTags} ingredientsList={filteredIngredients} />
+                        <FiltersSelection addingFilter={addingAFilter} setAddingFilter={setAddingAFilter} filtersProps={{sectionsState: typeOfFilterClick, ingredientsState: filtersIngredients, tagsState: filtersTags, prepTimeState: filtersPrepTime, setterIngredients: setFiltersIngredients, setterTags: setFiltersTags, setterPrepTime: setFiltersPrepTime, sectionsSetter: setTypeOfFilterClick}} tagsList={filteredTags} ingredientsList={filteredIngredients} />
                         
                 }
                 {(!addingAFilter && !searchBarClicked) ? <SearchResultDisplay recipeArray={filteredRecipes}/> : null}
+            </ScrollView>
         </SafeAreaView>
     )
 }

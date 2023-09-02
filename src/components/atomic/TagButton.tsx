@@ -8,14 +8,14 @@ import { Pressable, Text, View } from "react-native"
 import { rectangleRoundedButtonStyles, viewButtonStyles, viewInsideButtonCentered} from "@styles/buttons"
 import { typoStyles } from "@styles/typography"
 import { remValue } from "@styles/spacing"
-import { Entypo } from "@expo/vector-icons"
-import { iconsSize } from '../../assets/images/Icons';
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons"
+import { displayIcon, enumIconTypes, iconProp, iconsSize, materialCommunityIconName } from '@assets/images/Icons';
 
 
 type TagButtonProps = {
     text: string,
-    leftIcon?: boolean,
-    rightIcon?: boolean,
+    leftIcon?: iconProp,
+    rightIcon?: iconProp,
     onPressFunction?:() => void,
 }
 
@@ -26,9 +26,10 @@ export default function TagButton (props: TagButtonProps) {
     return(
         <Pressable style={rectangleRoundedButtonStyles(TagHeight).rectangleRoundedButton} onPress={props.onPressFunction}>
             <View style={viewInsideButtonCentered}>
-                {props.leftIcon ? <Entypo name="cross" size={iconsSize.small} color="#414a4c" style={{paddingLeft: 2}}/> : null}
+                {props.leftIcon ? displayIcon(props.leftIcon.type, props.leftIcon.name, props.leftIcon.size, props.leftIcon.color, props.leftIcon.style)
+                : null}
                 <Text style={typoStyles.element}>{props.text}</Text>
-                {props.rightIcon ? <Entypo name="cross" size={iconsSize.small} color="#414a4c" style={{paddingRight: 2}}/> : null}
+                {props.rightIcon ? displayIcon(props.rightIcon.type, props.rightIcon.name, props.rightIcon.size, props.rightIcon.color, props.rightIcon.style) : null}
             </View>
         </Pressable>
     )

@@ -9,7 +9,8 @@ import { Feather, Entypo } from "@expo/vector-icons";
 import EStyleSheet from "react-native-extended-stylesheet";
 import { searchBarStyle, typoStyles } from "@styles/typography";
 import { remValue } from "@styles/spacing";
-import { iconsSize } from "@assets/images/Icons";
+import { displayIcon, enumIconTypes, iconsSize, searchIcon } from "@assets/images/Icons";
+import { crossIcon } from '../../assets/images/Icons';
 
 type SearchBarProps = {
     clicked: boolean,
@@ -20,23 +21,27 @@ type SearchBarProps = {
 
 export default function SearchBar ( props: SearchBarProps) {
 
+  
+  const crossGesture = () => {
+      Keyboard.dismiss();
+      props.setClicked(false);
+      props.setSearchPhrase("");
+  }
+  
+
     return (
         <View style={searchBarStyle.searchBarView}>
             <View style={searchBarStyle.searchBarComponent}>
           {/* search Icon */}
-            <Feather name="search" size={iconsSize.small} color="black" style={{ marginLeft: 10*remValue }}/>
+          {displayIcon(enumIconTypes.fontAwesome, searchIcon, iconsSize.small, "#414a4c", { paddingLeft: 10 * remValue })}
+
             {/* Input field */}
             <TextInput style={typoStyles.searchBar} placeholder="Title of recipe" value={props.searchPhrase} onChangeText={props.setSearchPhrase} onFocus={() => props.setClicked(true)} onSubmitEditing={() => {
               props.setClicked(false);
             }}/>
+
             {/* cross Icon, depending on whether the search bar is clicked or not */}
-            {props.clicked && (
-              <Entypo name="cross" size={iconsSize.medium} color="#414a4c" style={{paddingRight: 10}} onPress={() => {
-                  Keyboard.dismiss();
-                  props.setClicked(false);
-                  props.setSearchPhrase("");
-              }}/>
-            )}
+            {props.clicked ? displayIcon(enumIconTypes.entypo, crossIcon, iconsSize.medium, "#414a4c", { paddingRight: 10 * remValue }, crossGesture) : null}
         </View>
       </View>
     )}

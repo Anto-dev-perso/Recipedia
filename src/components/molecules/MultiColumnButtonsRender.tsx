@@ -3,13 +3,13 @@
  * @format
  */
 
-import { PlusMinusIcons, checkboxBlank, checkboxFill, checkboxIcons, materialIconName } from "@assets/images/Icons"
+import { PlusMinusIcons, checkboxBlankIcon, checkboxFillIcon , checkboxIcons, materialCommunityIconName } from "@assets/images/Icons"
 import RectangleButton from "@components/atomic/RectangleButton"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { viewPosition } from "@styles/buttons"
 import { padding, remValue, screenViews } from "@styles/spacing"
 import { textSeparator, typoRender, typoStyles } from "@styles/typography"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FlatList, View, Text, TouchableOpacity, Pressable } from "react-native"
 import CheckBoxButton from '../atomic/CheckBoxButton';
 import { listFilter, recipeFilterType} from '@customTypes/RecipeFiltersTypes';
@@ -37,8 +37,9 @@ export default function MultiColumnButtonsRender (props: MultiColumnButtonsRende
         return filterSet;
     }
 
+    
     const renderItem = ({item}: {item: string}) => {
-
+ 
         const checkBoxInitialValue = isFilterAlreadySet(item);
 
         return(
@@ -50,7 +51,7 @@ export default function MultiColumnButtonsRender (props: MultiColumnButtonsRende
     }
 
     return(
-        <FlatList data={props.arrayToDisplay} renderItem={renderItem} numColumns={2} scrollEnabled={false}/>
+        <FlatList data={props.arrayToDisplay} extraData={props.filters} renderItem={renderItem} numColumns={2} scrollEnabled={false}/>
     )
 }
 

@@ -90,7 +90,7 @@ const carouselStyle = (length: number) => EStyleSheet.create({
 
 const searchBarStyle = EStyleSheet.create({
     searchBarView: {
-        marginTop: padding.veryLarge,
+        marginTop: padding.extraLarge,
         marginHorizontal: padding.medium,
         justifyContent: "flex-start",
         alignItems: "center",
@@ -100,6 +100,7 @@ const searchBarStyle = EStyleSheet.create({
     searchBarComponent: {
         padding: padding.small,
         flexDirection: "row",
+        flex: 1,
         width: "100%",
         backgroundColor: palette.textBackground,
         borderRadius: "20rem",

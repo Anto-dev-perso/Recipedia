@@ -6,7 +6,7 @@
 
 // import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import * as SQLite from 'expo-sqlite';
-import { recipeColumnsNames, recipeTableName, recipeDatabaseName, recipeTableElement, encodedRecipeElement, tagTableName, ingredientsTableName, ingredientsColumnsNames, tagsColumnsNames, nutritionColumnsNames, nutritionTableName, ingredientTableElement, tagTableElement, regExp, recipeColumnsEncoding } from '@customTypes/DatabaseElementTypes';
+import { recipeColumnsNames, recipeTableName, recipeDatabaseName, recipeTableElement, encodedRecipeElement, tagTableName, ingredientsTableName, ingredientsColumnsNames, tagsColumnsNames, nutritionColumnsNames, nutritionTableName, ingredientTableElement, tagTableElement, regExp, recipeColumnsEncoding, ingredientType } from '@customTypes/DatabaseElementTypes';
 import TableManipulation from './TableManipulation';
 import { EncodingSeparator, textSeparator } from '@styles/typography';
 import { Alert } from 'react-native';
@@ -142,6 +142,7 @@ const dbTest: Array<recipeTableElement> = [
       ingredients: ["Champignons de Paris blanc--250", "Crème liquide--100", "Gousse d'ail--0.5", "Macaroni demi-complets--200", "Oignon jaune--1", "Saucisse couteau nature--250"],
       preparation: ["Les saucisses--Dans une seconde sauteuse, faites chauffer un filet d'huile d'olive à feu moyen à vif.\nFaites revenir les saucisses 12 min environ. Salez, poivrez.\nPendant ce temps, faites cuire les macaroni.", "Les macaroni--Portez à ébullition une casserole d'eau salée.\nFaites cuire les macaroni selon les indications du paquet.", "Etape finale--Servez sans attendre votre saucisse au couteau nappée de crème aux champignons et accompagnée des macaroni"],
       time: 25,
+      season: "",
     },
     {
         image_Source: '../assets/images/tree.jpg',
@@ -151,6 +152,7 @@ const dbTest: Array<recipeTableElement> = [
         ingredients: ["Carotte--1", "Concentré de tomates--35", "Coriandre--", "Courgette--1", "Curcuma--0.25", "Lait de coco--150", "Oignon jaune--1", "Purée de noisettes--40", "Riz basmati--150"],
         preparation: ["Les légumes--Émincez l'oignon.\nÉpluchez la carotte.\nCoupez la courgette et la carotte en dés.\nPelez et hachez finement l'ail et le gingembre.\nDans une sauteuse, faites chauffer un filet d'huile de cuisson à feu moyen à vif.\nFaites revenir l'oignon et la carotte 5 min.\nAu bout des 5 min de cuisson, ajoutez la courgette, le curcuma, l'ail et le gingembre et poursuivez la cuisson 10 min. Salez, poivrez.\nEn parallèle, faites cuire le riz.", "Le riz--Portez à ébullition une casserole d'eau salée.\nFaites cuire le riz selon les indications du paquet.", "Le korma--Une fois les légumes cuits, ajoutez dans la sauteuse le concentré de tomates, la purée de noisettes et le lait de coco.\nCouvrez et laissez mijoter 5 min.\nGoûtez et rectifiez l'assaisonnement si nécessaire.\nCiselez la coriandre (en entier, les tiges se consomment).", "A table--Servez votre korma de légumes au lait de coco bien chaud accompagné du riz et parsemé de coriandre !"],
         time: 30,
+        season: "",
       },
       {
           image_Source: '../assets/images/strawberries.jpg',
@@ -160,6 +162,7 @@ const dbTest: Array<recipeTableElement> = [
           ingredients: ["Citron jaune--0.5", "Courgette--2", "Escalope de dinde--2", "Gousse d'ail--0.5", "Origan--0.25", "Spaghetti blancs--200", "Riz basmati--150"],
           preparation: ["Les légumes--Emincez l'oignon.\nCoupez les courgettes en rondelles.\nPressez ou hachez l'ail.\nDans une sauteuse, faites chauffer un filet d'huile d'olive à feu moyen à vif.\nFaites revenir l'oignon 5 min.\nAu bout des 5 min de cuisson, ajoutez l'ail, l'origan et les courgettes et poursuivez la cuisson 10 min. Salez, poivrez.\nEn parallèle, faites cuire les spaghetti.", "Les spaghetti--Portez à ébullition une casserole d'eau salée.\nFaites cuire les spaghetti selon les indications du paquet.\nPendant la cuisson des spaghetti, réalisez la piccata de dinde.", "La piccata de dinde--Pressez le citron jaune.\nDéposez un peu de farine dans une assiette creuse.\nCoupez les escalopes de dinde en fines lanières. Salez, poivrez et trempez-les dans la farine.\nDans une poêle, faites fondre le beurre à feu moyen à vif.\nFaites cuire la dinde 5 à 8 min. En fin de cuisson, versez le jus de citron.", "A table--Servez sans attendre votre piccata de dinde accompagnée des spaghetti et des courgettes sautées !"],
           time: 30,
+          season: "",
         },
         {
             image_Source: '../assets/images/scooter.jpg',
@@ -169,11 +172,12 @@ const dbTest: Array<recipeTableElement> = [
             ingredients: ["Champignons de Paris blanc--250", "Coquillettes demi-complètes--200", "Gousse d'ail--0.5", "Mélange d'épices chimichurri--0.25", "Oignon jaune--1", "Origan--0.25", "Purée de tomates--250", "Tofu fumé--200"],
             preparation: ["Les légumes--Emincez l'oignon.\nCoupez les courgettes en rondelles.\nPressez ou hachez l'ail.\nDans une sauteuse, faites chauffer un filet d'huile d'olive à feu moyen à vif.\nFaites revenir l'oignon 5 min.\nAu bout des 5 min de cuisson, ajoutez l'ail, l'origan et les courgettes et poursuivez la cuisson 10 min. Salez, poivrez.\nEn parallèle, faites cuire les spaghetti.", "Les spaghetti--Portez à ébullition une casserole d'eau salée.\nFaites cuire les spaghetti selon les indications du paquet.\nPendant la cuisson des spaghetti, réalisez la piccata de dinde.", "La piccata de dinde--Pressez le citron jaune.\nDéposez un peu de farine dans une assiette creuse.\nCoupez les escalopes de dinde en fines lanières. Salez, poivrez et trempez-les dans la farine.\nDans une poêle, faites fondre le beurre à feu moyen à vif.\nFaites cuire la dinde 5 à 8 min. En fin de cuisson, versez le jus de citron.", "A table--Servez sans attendre votre piccata de dinde accompagnée des spaghetti et des courgettes sautées !"],
             time: 30,
+            season: "",
           }
   ]
 
   const ingTable: Array<ingredientTableElement> = [
-    {ingName: "Champignons de Paris blanc", unit: "g"}, {ingName: "Crème liquide", unit: "mL"},{ingName: "Gousse d'ail", unit: ""}, {ingName: "Macaroni demi-complets", unit: "g"}, {ingName: "Oignon jaune", unit: ""}, {ingName: "Saucisse couteau nature", unit: "g"}, {ingName: "Carotte", unit: ""}, {ingName: "Concentré de tomates", unit: "g"}, {ingName: "Coriandre", unit: "qq brins"}, {ingName: "Courgette", unit: ""}, {ingName: "Curcuma", unit: "sachet"}, {ingName: "Lait de coco", unit: "mL"}, {ingName: "Purée de noisettes", unit: "g"}, {ingName: "Riz basmati", unit: "g"} , {ingName: "Citron jaune", unit: ""}, {ingName: "Escalope de dinde", unit: ""}, {ingName: "Origan", unit: "sachet"}, {ingName: "Spaghetti blancs", unit: "g"}, {ingName: "Coquillettes demi-complètes", unit: "g"}, {ingName: "Mélange d'épices chimichurri", unit: "sachet"}, {ingName: "Purée de tomates", unit: "g"}, {ingName: "Tofu fumé", unit: "g"}
+    {ingName: "Champignons de Paris blanc", unit: "g", type: ingredientType.vegetable, season: "*"}, {ingName: "Crème liquide", unit: "mL", type: ingredientType.dairy, season: "*"},{ingName: "Gousse d'ail", unit: "", type: ingredientType.condiment, season: "*"}, {ingName: "Macaroni demi-complets", unit: "g", type: ingredientType.base, season: "*"}, {ingName: "Oignon jaune", unit: "", type: ingredientType.condiment, season: "*"}, {ingName: "Saucisse couteau nature", unit: "g", type: ingredientType.meet, season: "*"}, {ingName: "Carotte", unit: "", type: ingredientType.vegetable, season: "*"}, {ingName: "Concentré de tomates", unit: "g", type: ingredientType.sauce, season: "*"}, {ingName: "Coriandre", unit: "qq brins", type: ingredientType.spice, season: "*"}, {ingName: "Courgette", unit: "", type: ingredientType.vegetable, season: "5--6--7--8--9--10"}, {ingName: "Curcuma", unit: "sachet", type: ingredientType.spice, season: "*"}, {ingName: "Lait de coco", unit: "mL", type: ingredientType.dairy, season: "*"}, {ingName: "Purée de noisettes", unit: "g", type: ingredientType.sauce, season: "*"}, {ingName: "Riz basmati", unit: "g", type: ingredientType.base, season: "*"} , {ingName: "Citron jaune", unit: "", type: ingredientType.condiment, season: "*"}, {ingName: "Escalope de dinde", unit: "", type: ingredientType.poultry, season: "*"}, {ingName: "Origan", unit: "sachet", type: ingredientType.spice, season: "*"}, {ingName: "Spaghetti blancs", unit: "g", type: ingredientType.base, season: "*"}, {ingName: "Coquillettes demi-complètes", unit: "g", type: ingredientType.base, season: "*"}, {ingName: "Mélange d'épices chimichurri", unit: "sachet", type: ingredientType.spice, season: "*"}, {ingName: "Purée de tomates", unit: "g", type: ingredientType.sauce, season: "*"}, {ingName: "Tofu fumé", unit: "g", type: ingredientType.tofu, season: "*"}
     // , {ingName: "Riz basmati", unit: "g"}
 ];
   const tagTable: Array<tagTableElement> = [
@@ -247,7 +251,7 @@ export default class RecipeDatabase {
         return new Promise(async (resolve, reject) => {
             let result: Array<string> = new Array();
 
-            for (let i = 0; i < ingredients.length && result; i++) {
+            for (let i = 0; i < ingredients.length; i++) {
                 const searchMap = new Map<string, string>([[ingredientsColumnsNames[0].colName, ingredients[i].split(textSeparator)[0]]]); 
                 
                 const elemFound = await this._ingredientsTable.searchElement(this._dbConnection, searchMap) as string;
@@ -285,11 +289,9 @@ export default class RecipeDatabase {
     }
     
     protected async decodeRecipe (queryResult: string): Promise<recipeTableElement> {
-        console.log("Inside decoding");
         return new Promise(async (resolve, reject) => {
-            let result: recipeTableElement = { id: 0, image_Source: "", title: "", description: "", tags: [""], ingredients: [""], preparation: [""], time: 0};
-            console.log("Query result is : ",queryResult);
-            
+            let result: recipeTableElement = { id: 0, image_Source: "", title: "", description: "", tags: [""], ingredients: [""], season: "", preparation: [""], time: 0};
+
             // ID is not separate in the same way than the others
             const idStr = queryResult.split(`,\"IMAGE_SOURCE`)[0]
         
@@ -327,7 +329,7 @@ export default class RecipeDatabase {
                 // INGREDIENTS
                 else if(elem[0].includes(recipeColumnsNames.ingredients)) {
                     try{
-                        result.ingredients = await this.decodeIngredient(elem[1].replace(regExp, ""));
+                        [result.ingredients, result.season ] = await this.decodeIngredient(elem[1].replace(regExp, ""));
                     }catch(error: any) {
                         reject(error);
                     }
@@ -345,7 +347,7 @@ export default class RecipeDatabase {
                 }
                 
             }
-            console.log("Returning from query : ", result);
+            // console.log("Returning from query : ", result);
             resolve(result);
     
         })
@@ -355,7 +357,7 @@ export default class RecipeDatabase {
     
         // TODO change type to have the quantity easily for math
         // Retrieve ID directly
-        // Ex : {"ID":5,"INGREDIENT":"INGREDIENT NAME","UNIT":"L"}
+        // Ex : {"ID":5,"INGREDIENT":"INGREDIENT NAME","UNIT":"L", "TYPE":"MEET"}
         const arrSplit = queryIngredient.split(',"');
     
         // Retrieve the quantity of this ingredient in input string
@@ -363,40 +365,106 @@ export default class RecipeDatabase {
         const quantityWithUnit = oldIngredientToEncode.split(textSeparator)[1];
     
         // Mix up previous results to have the encoding value
-        return arrSplit[0].split('ID":')[1] + '--' + quantityWithUnit;
+        return arrSplit[0].split('ID":')[1] + textSeparator + quantityWithUnit;
       }
     
-      protected async decodeIngredient (encodedIngredient: string): Promise<Array<string>>{
+      protected async decodeIngredient (encodedIngredient: string): Promise<[Array<string>, string]>{
     
         return new Promise(async (resolve, reject) => {
             let arrDecoded = new Array<string>();
+            let season = "*";
+            let firstSeasonFound = true;
             // Ex : 1--250__2--100__3--0.5__4--200__5--1__6--250 
             const ingSplit = encodedIngredient.split(EncodingSeparator)
 
             try{
-                for (let i = 0; i < ingSplit.length; i++) {
-                    const id: number = +ingSplit[i].split(textSeparator)[0]
-                    const quantity = ingSplit[i].split(textSeparator)[1]
+                for (let indexIngredient = 0; indexIngredient < ingSplit.length; indexIngredient++) {
+                    const id: number = +ingSplit[indexIngredient].split(textSeparator)[0];
+                    const quantity = ingSplit[indexIngredient].split(textSeparator)[1];
     
                     let tableIngredient = await this._ingredientsTable.searchElementById(id, this._dbConnection);
     
                     // Retrieve directly the name
-                    // Ex :  {"ID":1,"INGREDIENT":"INGREDIENT NAME","UNIT":"g"}
-                    let splitIngredient = tableIngredient.split(',')
-
-                    let decodedIngredient = quantity + " " + splitIngredient[2].split(':')[1] + textSeparator + splitIngredient[1].split(':')[1];
+                    // Ex :  {"ID":1,"INGREDIENT":"INGREDIENT NAME","UNIT":"g", "TYPE":"BASE", "SEASON":"*"}
+                    let splitIngredient = tableIngredient.split(',');
+                    
+                    let decodedIngredient = quantity + " " + splitIngredient[2].split(':')[1] + textSeparator + splitIngredient[1].split(':')[1]+ textSeparator + splitIngredient[3].split(':')[1];
                     arrDecoded.push(decodedIngredient.replace(regExp, ""));
                     
+                    
+                    // In case of *, nothing to do
+                    if(!splitIngredient[4].includes("*")){
+                        // For the first element, store directly the value
+                        if(firstSeasonFound){
+                            season = splitIngredient[4];
+                            firstSeasonFound = false;
+                        }else{
+                            season = this.decodeSeason(season, splitIngredient[4]);
+                        }
+                    }
                 }
             }catch(error: any){
                 reject(error)
             }
-            resolve(arrDecoded);
+            resolve([arrDecoded, season]);
             
         })
       }
       
-    
+    protected decodeSeason(season: string, ingredientSeason: string){
+        let result = "";
+        
+        const arrSeason = season.includes(textSeparator);
+        const arrIngSeason = ingredientSeason.includes(textSeparator);
+
+        const splitSeason =  arrSeason ? season.split(textSeparator) : new Array<string>();
+        const ingSeason =  arrIngSeason ? ingredientSeason.split(textSeparator) : new Array<string>();
+        
+                if (arrSeason && arrIngSeason){
+                    const filterSeason = splitSeason.filter((month) => {
+                        let toKeep = false;
+                        for (let i = 0; i < ingSeason.length; i++) {
+                            if(ingSeason[i].includes(month)){
+                                toKeep = true;
+                                break;
+                            }
+                        }
+                        return toKeep;
+                    });
+                    for (let i = 0; i < filterSeason.length; i++) {
+                        if(i != 0){
+                            result = result + textSeparator + filterSeason[i];
+                        }else{
+                            result = filterSeason[0];
+                        }
+                    }
+                }else if (!arrSeason && arrIngSeason){
+                    for (let i = 0; i < ingSeason.length; i++) {
+                        if(ingSeason[i].includes(season)){
+                            result = season;
+                            break;
+                        }
+                    }
+                }else if (arrSeason && !arrIngSeason) {
+                    const filterSeason = splitSeason.filter((month) => ingredientSeason == month);
+                    for (let i = 0; i < filterSeason.length; i++) {
+                        if(i != 0){
+                            result = result + textSeparator + filterSeason[i];
+                        }
+                        else{
+                            result = filterSeason[0];
+                        }
+                    }
+                }else{
+                    if(ingredientSeason == season){
+                        result = season;
+                    }else{
+                        result = "";
+                    }
+                }
+        return result;
+    }
+
     protected encodeTag (tag: string) {
     
       // Retrieve ID directly 
@@ -424,11 +492,9 @@ export default class RecipeDatabase {
         return new Promise(async (resolve, reject) => {
             let arrDecoded = new Array<string>();
             // Ex : "1__2__5__3__4"
-            const tagSplit = encodedTag.split(EncodingSeparator)
-            console.log("Tag to decode : ", encodedTag,". Split : ", tagSplit);
+            const tagSplit = encodedTag.split(EncodingSeparator);
 
             for (let i = 0; i < tagSplit.length; i++) {
-
                 try{
                     let tableTag = await this._tagsTable.searchElementById(+tagSplit[i], this._dbConnection);
                     // Retrieve directly the name

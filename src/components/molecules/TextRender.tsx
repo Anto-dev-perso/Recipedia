@@ -30,9 +30,6 @@ export default function TextRender (props: TextRenderProps) {
                 return(props.text.map((item, index) => renderAsList(item, index)))
             case typoRender.CLICK_LIST:
                 return(props.text.map((item, index) => renderAsClickableList(item, index)))
-            case typoRender.CLICK_LIST:
-                return(props.text.map((item, index) => renderAsClickableList(item, index)))
-        
         }
     }
 

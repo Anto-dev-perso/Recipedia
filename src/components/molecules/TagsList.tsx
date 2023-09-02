@@ -3,6 +3,7 @@
  * @format
  */
 
+import { enumIconTypes, iconProp, materialCommunityIconName, minusIcon  } from "@assets/images/Icons"
 import TagButton from "@components/atomic/TagButton"
 import { viewButtonStyles } from "@styles/buttons"
 import { typoSize } from "@styles/typography"
@@ -12,15 +13,21 @@ import { FlatList, ListRenderItemInfo, ScrollView, Text, View } from "react-nati
 
 type TagsListProps = {
   item: Array<string>,
+  icon?: iconProp, 
   onPressFunction:(elem: string) => void,
 }
 
 export default function TagsList (props: TagsListProps) {
 
   const renderTagItem = (item: string, index: number) => {
+
     return(
       <View key={index} style={viewButtonStyles.viewContainingButton}>
-        <TagButton text={item} rightIcon={true} onPressFunction={() => props.onPressFunction(item)}/>
+        {props.icon ? 
+          <TagButton text={item} rightIcon={props.icon} onPressFunction={() => props.onPressFunction(item)}/>
+        : 
+          <TagButton text={item} onPressFunction={() => props.onPressFunction(item)}/>
+        }
       </View>
     )
   }

@@ -3,35 +3,26 @@
  * @format
  */
 
-import { PlusMinusIcons, checkboxBlank, checkboxFill, checkboxIcons, materialIconName } from "@assets/images/Icons"
+import { PlusMinusIcons, checkboxBlankIcon, checkboxFillIcon , checkboxIcons, materialCommunityIconName } from "@assets/images/Icons"
 import RectangleButton from "@components/atomic/RectangleButton"
 import { padding, remValue, screenViews } from "@styles/spacing"
 import React, { useState, useEffect } from "react"
 import { FlatList, View, Text, TouchableOpacity, Pressable, ScrollView } from 'react-native';
 import CheckBoxButton from '../atomic/CheckBoxButton';
 import MultiColumnButtonsRender from "@components/molecules/MultiColumnButtonsRender"
-import { isSeasonValue, listFilter, prepTimeValues, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
+import { filtersCategories, isSeasonValue, listFilter, prepTimeValues, propsForFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
 import { recipeDb } from "@utils/RecipeDatabase";
+import { arrayOfIngredientWithoutType, arrayOfType, ingredientType, ingredientWithoutType } from "@customTypes/DatabaseElementTypes";
 
 
 type FullScreenFilteringProps = {
     tagsList: Array<string>,
     ingredientsList: Array<string>,
 
-    filtersIngredients: Array<recipeFilterType>,
-    filtersTags: Array<recipeFilterType>,
-    filtersPrepTime: Array<recipeFilterType>,
-    selectedSections: Array<listFilter>
-
-    setFiltersIngredients: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
-    setFiltersTags: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
-    setFiltersPrepTime: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
-    setSelectedSections: React.Dispatch<React.SetStateAction<Array<listFilter>>>,
+    filtersProps: propsForFilter,
   }
 
 export default function FullScreenFiltering (props: FullScreenFilteringProps) {
-
-    const categories: Array<listFilter> = [listFilter.inSeason, listFilter.base, listFilter.tags, listFilter.prepTime,listFilter.vegetable];
 
     const selectFilterFromProps = (filter: listFilter): [Array<recipeFilterType>, React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>, Array<string>] => {
         let filterValue: Array<recipeFilterType>;
@@ -40,34 +31,49 @@ export default function FullScreenFiltering (props: FullScreenFilteringProps) {
 
         switch (filter) {
             case listFilter.inSeason:
-                filterValue = props.filtersIngredients;
-                filterSetter = props.setFiltersIngredients;
+                filterValue = props.filtersProps.ingredientsState;
+                filterSetter = props.filtersProps.setterIngredients;
                 elementFilters = isSeasonValue;
             break;
-                case listFilter.base:
-                filterValue = props.filtersIngredients;
-                filterSetter = props.setFiltersIngredients;
-                elementFilters = props.ingredientsList;
+                case listFilter.cerealProduct:
+                filterValue = props.filtersProps.ingredientsState;
+                filterSetter = props.filtersProps.setterIngredients;
+                elementFilters = arrayOfType(props.ingredientsList, ingredientType.base);
             break;
             case listFilter.tags:
-                filterValue = props.filtersTags
-                filterSetter = props.setFiltersTags;
+                filterValue = props.filtersProps.tagsState
+                filterSetter = props.filtersProps.setterTags;
                 elementFilters = props.tagsList;
             break;
             case listFilter.prepTime:
-                filterValue = props.filtersPrepTime;
-                filterSetter = props.setFiltersPrepTime;
+                filterValue = props.filtersProps.prepTimeState;
+                filterSetter = props.filtersProps.setterPrepTime;
                 elementFilters = prepTimeValues;
             break;
             case listFilter.vegetable:
-                filterValue = props.filtersIngredients;
-                filterSetter = props.setFiltersIngredients;
-                elementFilters = props.ingredientsList;
+                filterValue = props.filtersProps.ingredientsState;
+                filterSetter = props.filtersProps.setterIngredients;
+                elementFilters = arrayOfType(props.ingredientsList, ingredientType.vegetable);
+            break;
+            case listFilter.meet:
+                filterValue = props.filtersProps.ingredientsState;
+                filterSetter = props.filtersProps.setterIngredients;
+                elementFilters = arrayOfType(props.ingredientsList, ingredientType.meet);
+            break;
+            case listFilter.poultry:
+                filterValue = props.filtersProps.ingredientsState;
+                filterSetter = props.filtersProps.setterIngredients;
+                elementFilters = arrayOfType(props.ingredientsList, ingredientType.poultry);
+            break;
+            case listFilter.spice:
+                filterValue = props.filtersProps.ingredientsState;
+                filterSetter = props.filtersProps.setterIngredients;
+                elementFilters = arrayOfType(props.ingredientsList, ingredientType.spice);
             break;
             default:
-                filterValue = props.filtersIngredients;
-                filterSetter = props.setFiltersIngredients;
-                elementFilters = props.ingredientsList;
+                filterValue = props.filtersProps.ingredientsState;
+                filterSetter = props.filtersProps.setterIngredients;
+                elementFilters = arrayOfIngredientWithoutType(props.ingredientsList);
                 break;
             }
             return [filterValue, filterSetter, elementFilters];
@@ -78,8 +84,8 @@ export default function FullScreenFiltering (props: FullScreenFilteringProps) {
         let [filterValueToUse, filterSetterToUse, elemToDisplay] = selectFilterFromProps(item);
         let toDisplay = false;
         
-            for (let i = 0; i < props.selectedSections.length; i++) {
-                if (props.selectedSections[i].includes(item)){
+            for (let i = 0; i < props.filtersProps.sectionsState.length; i++) {
+                if (props.filtersProps.sectionsState[i].includes(item)){
                     toDisplay = true;
                     break;
                 }
@@ -89,9 +95,9 @@ export default function FullScreenFiltering (props: FullScreenFilteringProps) {
             <View>
                 <RectangleButton text={item} height={50} centered={false} icon={PlusMinusIcons[Number(toDisplay)]} margins={padding.verySmall} onPressFunction={() => {
                     {toDisplay ? 
-                        props.setSelectedSections(updatedSections => props.selectedSections.filter((elem) => elem != item)) 
+                        props.filtersProps.sectionsSetter(updatedSections => props.filtersProps.sectionsState.filter((elem) => elem != item)) 
                         :
-                        props.setSelectedSections(updatedSections => [...props.selectedSections, item])
+                        props.filtersProps.sectionsSetter(updatedSections => [...props.filtersProps.sectionsState, item])
                     }
                 }}  />
                 {toDisplay ? 
@@ -102,8 +108,6 @@ export default function FullScreenFiltering (props: FullScreenFilteringProps) {
     };
 
     return(
-        <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={true}>
-            <FlatList data={categories} renderItem={renderItem} scrollEnabled={false}/>
-        </ScrollView>
+            <FlatList data={filtersCategories} renderItem={renderItem} scrollEnabled={false}/>
     )
 }

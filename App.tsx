@@ -27,6 +27,9 @@ import Search from '@screens/Search';
 import { StackScreenParamList, TabScreenParamList} from '@customTypes/ScreenTypes';
 import { loadAsync, useFonts } from 'expo-font';
 import { fetchFonts } from '@styles/typography';
+import { homeIcon, enumIconTypes, iconsSize, parametersIcon, plannerIcon, shoppingIcon, materialCommunityIconName, fontAwesomeIconName, entypoIconName, displayIcon } from '@assets/images/Icons';
+import { Entypo, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { colors, palette } from '@styles/colors';
 
 
 // import CalendarComponent from './components/CalendarComponent';
@@ -171,8 +174,47 @@ export default function App (){
 
 const Root = () => {
   return(
-    <Tab.Navigator initialRouteName='Home'>
-      <Tab.Screen name="Home" component={Home}/>
+    <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        let iconColor;
+        let iconSize;
+        let iconType: enumIconTypes;
+
+        if(focused){
+          iconColor = palette.primary;
+          iconSize = iconsSize.medium;
+        }else {
+          iconColor = "#414a4c";
+          iconSize = iconsSize.small;
+        }
+
+        switch (route.name) {
+          case 'Home':
+            iconName = homeIcon;
+            iconType = enumIconTypes.materialCommunity;
+            break;
+            case 'Shopping':
+              iconType = enumIconTypes.entypo;
+              iconName = shoppingIcon;
+              break;
+              case 'Plannification':
+                iconType = enumIconTypes.materialCommunity;
+                iconName = plannerIcon;
+            break;
+            case 'Parameters':
+              iconType = enumIconTypes.fontAwesome;
+            iconName = parametersIcon;
+            break;
+        
+        }
+
+        return displayIcon(iconType, iconName, iconSize, iconColor);
+      },
+      tabBarActiveTintColor: palette.primary,
+      tabBarInactiveTintColor: 'gray',
+    })}>
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Shopping" component={Shopping}/>
       <Tab.Screen name="Plannification" component={Plannification}/>
       <Tab.Screen name="Parameters" component={Parameters}/>
@@ -274,19 +316,3 @@ const Root = () => {
     </NavigationContainer>
   )
 }
-
-const styles = (circleDiameter: number) => StyleSheet.create({
-  rbutton: {
-    ...roundButtonStyles(circleDiameter).roundButton,
-  },
-})
-  const styles2 = (side: number) => StyleSheet.create({
-  sbutton: {
-    ...squareButtonStyles(side).squareButton,
-  },
-})
-  const styles3 = (length: number) => StyleSheet.create({
-  rectButton: {
-    ...rectangleRoundedButtonStyles.rectangleRoundedButton,
-  }
-})

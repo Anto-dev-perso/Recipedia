@@ -8,8 +8,9 @@ import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { viewPosition } from '@styles/buttons';
 import { padding, remValue, screenViews, viewsSplitScreen } from '@styles/spacing';
 import { typoStyles } from '@styles/typography';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, ListRenderItemInfo, Text, View } from 'react-native';
+import { scrollView } from '@styles/spacing';
 
 
 type SearchResultDisplayProps = {
@@ -26,10 +27,12 @@ export default function SearchResultDisplay (props: SearchResultDisplayProps) {
         )
       }
 
+
+      
+
+
     return(
-        <View style={screenViews.scrollView}>
-            <FlatList data={props.recipeArray} renderItem={renderMyItem} horizontal={false} numColumns={2} showsVerticalScrollIndicator={false} initialNumToRender={6}  />
-        </View>
+            <FlatList data={props.recipeArray} renderItem={renderMyItem} scrollEnabled={false} numColumns={2} showsVerticalScrollIndicator={false} initialNumToRender={6}  />
     )
 
 }

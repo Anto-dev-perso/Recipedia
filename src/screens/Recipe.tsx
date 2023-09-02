@@ -3,7 +3,7 @@
  * @format
  */
 
-import { screenViews } from "@styles/spacing";
+import { screenViews, scrollView } from "@styles/spacing";
 import React from "react";
 import { Image } from "expo-image";
 import { SafeAreaView, Text, View, ScrollView, Button } from 'react-native';
@@ -11,11 +11,12 @@ import { imageStyle } from '@styles/images'
 import { typoRender, typoStyles } from "@styles/typography";
 import TagsList from "@components/molecules/TagsList";
 import TextRender from "@components/molecules/TextRender";
-import { viewButtonStyles, bottomPosition } from '@styles/buttons';
+import { viewButtonStyles, bottomPosition, rectangleButtonHeight } from '@styles/buttons';
 import RectangleButton from "@components/atomic/RectangleButton";
 import BottomButton from "@components/molecules/BottomButton";
 import { RecipeScreenProp } from '@customTypes/ScreenTypes';
-import { recipeTableElement } from "@customTypes/DatabaseElementTypes";
+import { arrayOfIngredientWithoutType, recipeTableElement } from "@customTypes/DatabaseElementTypes";
+import { plusIcon  } from "@assets/images/Icons";
 
 
 export default function Recipe ({ route, navigation }: RecipeScreenProp) {
@@ -24,7 +25,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
 
     return (
         <SafeAreaView style={screenViews.screenView}>
-            <ScrollView horizontal={false} showsVerticalScrollIndicator={false} style={screenViews.scrollView}>
+            <ScrollView horizontal={false} showsVerticalScrollIndicator={false} style={scrollView(rectangleButtonHeight).view}>
                 <View style={imageStyle.containerFullStyle}>
                     <Image source={{uri: props.image_Source}} style={imageStyle.imageInsideView}/>
                 </View>
@@ -37,7 +38,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
 
                 <TagsList item={props.tags} onPressFunction={() => null}/>
 
-                <TextRender title={"Ingredients"} text={props.ingredients} render={typoRender.ARRAY}/>
+                <TextRender title={"Ingredients"} text={arrayOfIngredientWithoutType(props.ingredients)} render={typoRender.ARRAY}/>
                 <TextRender title={`Preparation (${props.time} min)`} text={props.preparation} render={typoRender.SECTION}/>
 
                     {/* TODO add number of person */}

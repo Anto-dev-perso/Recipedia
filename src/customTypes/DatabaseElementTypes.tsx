@@ -3,6 +3,8 @@
  * @format
  */
 
+import { textSeparator } from "@styles/typography";
+
 export const recipeDatabaseName = "RecipesDatabase";
 export const recipeTableName = "RecipesTable"; 
 export const ingredientsTableName = "IngredientsTable"; 
@@ -30,6 +32,7 @@ export type recipeTableElement = {
     description: string;
     tags: Array<string>;
     ingredients: Array<string>;
+    season: string;
     preparation: Array<string>;
     time: number,
 }
@@ -56,6 +59,42 @@ export const recipeColumnsEncoding: Array<databaseColumnType> =  [
     { colName: "TIME", type: encodedType.INTEGER},
   ]
 
+  export function ingredientWithoutType(ingredient: string){
+    let result = "";
+
+    const splitIngredient = ingredient.split(textSeparator);
+    result = splitIngredient[0] + textSeparator + splitIngredient[1];
+
+    return result.replace(regExp, "");
+  }
+
+  export function ingredientWithoutTypeAndQuantity(ingredient: string){
+    return ingredient.split(textSeparator)[0].replace(regExp, "");
+  }
+
+  export function arrayOfIngredientWithoutType(ingredients: Array<string>){
+    let result = new Array<string>();
+    ingredients.forEach(element => {
+        result.push(ingredientWithoutType(element))
+    });
+    
+    return result;
+  }
+
+  export function retrieveTypeFromIngredient(ingredient: string){
+    return ingredient.split(textSeparator)[1].replace(regExp, "");
+  }
+
+  export function arrayOfType(ingredients: Array<string>, filter: string){
+    let result = new Array<string>();
+    ingredients.forEach(element => {
+        if(element.includes(filter)){
+            result.push(ingredientWithoutTypeAndQuantity(element))
+        }
+    });
+    return result;
+  }
+
 export const recipeColumnsNames = {
     image: recipeColumnsEncoding[0].colName,
     title: recipeColumnsEncoding[1].colName,
@@ -65,17 +104,35 @@ export const recipeColumnsNames = {
     preparation: recipeColumnsEncoding[5].colName,
     time: recipeColumnsEncoding[6].colName,
 }
+
+export enum ingredientType {
+    base = "Base",
+    vegetable = "Vegetable",
+    condiment = "Condiment",
+    sauce = "Sauce",
+    meet = "Meet",
+    poultry = "Poultry",
+    fish = "Fish",
+    tofu = "Tofu",
+    dairy = "Dairy",
+    sugar = "Sugar",
+    spice = "Spice",
+    fruit = "Fruit",
+}
   
 export type ingredientTableElement = {
     id?: number,
     ingName: string,
     unit: string,
-    // season: string,
+    type: ingredientType,
+    season: string,
 }
 
 export const ingredientsColumnsNames: Array<databaseColumnType> =  [
     { colName: "INGREDIENT", type: encodedType.TEXT},
-    { colName: "UNIT", type: encodedType.TEXT}
+    { colName: "UNIT", type: encodedType.TEXT},
+    { colName: "TYPE", type: encodedType.TEXT},
+    { colName: "SEASON", type: encodedType.TEXT},
   ]
 
 

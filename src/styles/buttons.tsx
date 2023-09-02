@@ -58,6 +58,8 @@ export const rectangleButtonStyles = (rectHeight: number) => EStyleSheet.create(
 }
 })
 
+export const rectangleButtonHeight = 75;
+
 export const viewButtonStyles = EStyleSheet.create({
     viewContainingButton: {
         padding: padding.small,
@@ -83,7 +85,7 @@ export const viewButtonStyles = EStyleSheet.create({
         justifyContent: 'space-between',
     },
     longHorizontalButton: {
-        paddingLeft: padding.veryLarge, 
+        paddingLeft: padding.extraLarge, 
         paddingVertical: padding.medium, 
         flexWrap: 'wrap',
     },

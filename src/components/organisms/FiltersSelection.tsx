@@ -10,24 +10,19 @@ import TagButton from "@components/atomic/TagButton";
 import { viewButtonStyles } from "@styles/buttons";
 import { recipeDb } from "@utils/RecipeDatabase";
 import FullScreenFiltering from "@components/organisms/FullScreenFiltering";
-import { listFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
+import { listFilter, propsForFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
+import { crossIcon , minusIcon , plusIcon , filterPlusIcon , filterMinusIcon, displayIcon, enumIconTypes  } from "@assets/images/Icons";
+import { padding } from "@styles/spacing";
 
 type FiltersSelectionProps = {
     tagsList: Array<string>,
     ingredientsList: Array<string>,
 
-    filtersIngredients: Array<recipeFilterType>,
-    filtersTags: Array<recipeFilterType>,
-    filtersPrepTime: Array<recipeFilterType>,
-
-    selectedSections: Array<listFilter>,
     addingFilter: boolean,
 
-    setFiltersIngredients: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
-    setFiltersTags: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
-    setFiltersPrepTime: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
-    setSelectedSections: React.Dispatch<React.SetStateAction<Array<listFilter>>>,
     setAddingFilter: React.Dispatch<React.SetStateAction<boolean>>,
+
+    filtersProps: propsForFilter,
 }
 
 export default function FiltersSelection ( props: FiltersSelectionProps) {
@@ -35,13 +30,13 @@ export default function FiltersSelection ( props: FiltersSelectionProps) {
     const retrieveAllFilters = () => {
         const allFilters = new Array<string>();
 
-        props.filtersTags.forEach(element => {
+        props.filtersProps.tagsState.forEach(element => {
             allFilters.push(element.value);
         });
-        props.filtersPrepTime.forEach(element => {
+        props.filtersProps.prepTimeState.forEach(element => {
             allFilters.push(element.value);
         });
-        props.filtersIngredients.forEach(element => {
+        props.filtersProps.ingredientsState.forEach(element => {
             allFilters.push(element.value);
         });
 
@@ -52,23 +47,23 @@ export default function FiltersSelection ( props: FiltersSelectionProps) {
     const deleteElement = (item: string) => {
         let breakLoop = false;
 
-        for (let indexIngredients = 0; (indexIngredients < props.filtersIngredients.length) && !breakLoop; indexIngredients++) {
-            if(props.filtersIngredients[indexIngredients].value.toLowerCase().includes(item.toLowerCase())){
-                props.setFiltersIngredients(updatedArray => props.filtersIngredients.filter(({value}) => !value.includes(item)));
+        for (let indexIngredients = 0; (indexIngredients < props.filtersProps.ingredientsState.length) && !breakLoop; indexIngredients++) {
+            if(props.filtersProps.ingredientsState[indexIngredients].value.toLowerCase().includes(item.toLowerCase())){
+                props.filtersProps.setterIngredients(updatedArray => props.filtersProps.ingredientsState.filter(({value}) => !value.includes(item)));
                 breakLoop = true;
             }
         }
 
-        for (let indexIngredients = 0; (indexIngredients < props.filtersPrepTime.length) && !breakLoop; indexIngredients++) {
-            if(props.filtersPrepTime[indexIngredients].value.toLowerCase().includes(item.toLowerCase())){
-                props.setFiltersPrepTime(updatedArray => props.filtersPrepTime.filter(({value}) => !value.includes(item)));
+        for (let indexIngredients = 0; (indexIngredients < props.filtersProps.prepTimeState.length) && !breakLoop; indexIngredients++) {
+            if(props.filtersProps.prepTimeState[indexIngredients].value.toLowerCase().includes(item.toLowerCase())){
+                props.filtersProps.setterPrepTime(updatedArray => props.filtersProps.prepTimeState.filter(({value}) => !value.includes(item)));
                 breakLoop = true;
             }
         }
 
-        for (let indexIngredients = 0; (indexIngredients < props.filtersTags.length) && !breakLoop; indexIngredients++) {
-            if(props.filtersTags[indexIngredients].value.toLowerCase().includes(item.toLowerCase())){
-                props.setFiltersTags(updatedArray => props.filtersTags.filter(({value}) => !value.includes(item)));
+        for (let indexIngredients = 0; (indexIngredients < props.filtersProps.tagsState.length) && !breakLoop; indexIngredients++) {
+            if(props.filtersProps.tagsState[indexIngredients].value.toLowerCase().includes(item.toLowerCase())){
+                props.filtersProps.setterTags(updatedArray => props.filtersProps.tagsState.filter(({value}) => !value.includes(item)));
                 breakLoop = true;
             }
         }
@@ -76,14 +71,14 @@ export default function FiltersSelection ( props: FiltersSelectionProps) {
 
     return (
         <View>
-            <TagsList item={retrieveAllFilters()} onPressFunction={(item: string) => deleteElement(item)}/>
+            <TagsList item={retrieveAllFilters()} icon={{type: enumIconTypes.entypo, name: crossIcon, size: padding.large, color: "#414a4c", style: {paddingRight: 5}}} onPressFunction={(item: string) => deleteElement(item)}/>
             <View style={viewButtonStyles.longHorizontalButton}>
-                <TagButton text={"Add a filter"} leftIcon={true} onPressFunction={() => {
+                <TagButton text={"Add a filter"} leftIcon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: padding.veryLarge, color: "#414a4c", style: {paddingLeft: 5}}} onPressFunction={() => {
                     props.setAddingFilter(!props.addingFilter)
                 }} />
             </View>
             {props.addingFilter ?
-                <FullScreenFiltering filtersIngredients={props.filtersIngredients} filtersTags={props.filtersTags} filtersPrepTime={props.filtersPrepTime} setFiltersIngredients={props.setFiltersIngredients} setFiltersTags={props.setFiltersTags} setFiltersPrepTime={props.setFiltersPrepTime} selectedSections={props.selectedSections} setSelectedSections={props.setSelectedSections} tagsList={props.tagsList} ingredientsList={props.ingredientsList} />
+                <FullScreenFiltering filtersProps={props.filtersProps} tagsList={props.tagsList} ingredientsList={props.ingredientsList} />
             : null}
         </View>
     )

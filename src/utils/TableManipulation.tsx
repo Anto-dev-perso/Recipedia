@@ -113,8 +113,6 @@ export default class TableManipulation {
         
         return new Promise(async (resolve, reject) => {
             await db.transaction(async (tx: any) => {
-                console.log("ExecuteSql with query : ", query);
-                
                 await tx.executeSql(query, [], 
                     (tx: any, results: any) => {
                         if(results.rows.length == 1){ 

@@ -3,11 +3,15 @@
  * @format
  */
 
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StatusBar, StyleSheet } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+const scaleFactor = Dimensions.get("screen").scale / Dimensions.get("window").scale;
+const statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight : 0;
+const screenWidth = Dimensions.get('window').width * scaleFactor;
+const screenHeight = (Dimensions.get('window').height - statusBarHeight) * scaleFactor;
+
+console.log("statusBarHeight = ", statusBarHeight, ", scaleFactor : ", scaleFactor, ", windowHeight : ", Dimensions.get('window').height);
 
 export const remValue = screenWidth / 390
 
@@ -18,27 +22,32 @@ const padding = {
     small: 7 * remValue,
     medium: 12 * remValue,
     large: 15 * remValue,
-    veryLarge: 30 * remValue,
+    veryLarge: 20 * remValue,
+    extraLarge: 30 * remValue,
 }
 
 const screenViews = EStyleSheet.create({
     screenView: {
+        flex: 1,
         flexGrow: 1,
-    },
-    scrollView: {
-        marginBottom: "75rem",
     },
     sectionView: {
         marginVertical: padding.small,
     },
     listView: {
         paddingVertical: padding.small,
-        paddingLeft: padding.veryLarge,
+        paddingLeft: padding.extraLarge,
         paddingRight: padding.small,
     },
     tabView: {
         flexDirection: 'row',
         padding: padding.small,
+    }
+})
+
+export const scrollView = (margin: number) => EStyleSheet.create({
+    view:{
+        marginBottom: margin * remValue,
     }
 })
 

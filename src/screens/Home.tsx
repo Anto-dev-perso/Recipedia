@@ -23,6 +23,7 @@ import { RecipeScreenProp } from "@customTypes/ScreenTypes";
 import { useNavigation } from "@react-navigation/native";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
 import { openSearchScreen } from "@navigation/NavigationFunctions";
+import { cameraIcon, enumIconTypes, iconsSize, searchIcon } from "@assets/images/Icons";
 
 
 export default function Home () {
@@ -112,7 +113,7 @@ export default function Home () {
               <RecipeRecommandation carouselProps={elementsForCarousel} titleRecommandation="Recommandation 4"/>
             </ScrollView>
           : null}
-          <BottomButton as={RoundButton} position={bottomPosition.left} diameter={BottomButtonDiameter} onPressFunction={() => openSearchScreen(navigation)}/>
+          <BottomButton as={RoundButton} position={bottomPosition.left} diameter={BottomButtonDiameter} icon={{type: enumIconTypes.fontAwesome, name: searchIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => openSearchScreen(navigation)}/>
           <VerticalBottomButtons/>
         </SafeAreaView>
     )

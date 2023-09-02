@@ -5,25 +5,25 @@
 
 import React from "react"
 import { Pressable, Text, View } from "react-native"
-import { rectangleRoundedButtonStyles, viewButtonStyles, rectangleButtonStyles, viewInsideButtonCentered } from "@styles/buttons"
+import { rectangleRoundedButtonStyles, viewButtonStyles, rectangleButtonStyles, viewInsideButtonCentered, rectangleButtonHeight } from "@styles/buttons"
 import { typoStyles } from "@styles/typography"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { remValue } from "@styles/spacing";
-import { materialIconName } from "@assets/images/Icons";
+import { materialCommunityIconName } from "@assets/images/Icons";
 
 
 type RectangleButtonProps = {
     text: string,
     height?: number,
     onPressFunction?:() => void,
-    icon?: materialIconName,
+    icon?: materialCommunityIconName,
     centered: boolean,
     margins?: number
 }
 
 export default function RectangleButton (props: RectangleButtonProps) {
 
-    const rectHeight = (props.height ? props.height : 75 ) ;
+    const rectHeight = (props.height ? props.height :rectangleButtonHeight ) ;
     const viewButton = (props.centered ? viewInsideButtonCentered : viewButtonStyles.viewInsideButtons ) ;
 
     return(

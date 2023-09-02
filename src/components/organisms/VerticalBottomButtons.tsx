@@ -10,6 +10,8 @@ import { BottomButtonDiameter, BottomButtonOffset, bottomPosition } from "@style
 import { useState } from "react"
 import { View } from "react-native";
 import { pickImage, takePhoto } from "@utils/ImagePicker";
+import { enumIconTypes, cameraIcon, iconsSize, plusIcon, minusIcon, pencilIcon, galleryIcon } from "@assets/images/Icons";
+import { backIcon } from '../../assets/images/Icons';
 
 
 export default function VerticalBottomButtons () {
@@ -20,16 +22,16 @@ export default function VerticalBottomButtons () {
         <View>
             {multipleLayout ? (
                 <View>
-                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} onPressFunction={() => setMultipleLayout(false)}/>
+                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: minusIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => setMultipleLayout(false)}/>
                     
-                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={BottomButtonOffset} onPressFunction={() => null}/>
+                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={BottomButtonOffset} icon={{type: enumIconTypes.materialCommunity, name: pencilIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => null}/>
                     
-                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={2*BottomButtonOffset} onPressFunction={pickImage}/>
+                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={2*BottomButtonOffset} icon={{type: enumIconTypes.fontAwesome, name: galleryIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={pickImage}/>
 
-                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={3*BottomButtonOffset} onPressFunction={takePhoto}/>
+                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={3*BottomButtonOffset} icon={{type: enumIconTypes.entypo, name: cameraIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={takePhoto}/>
                 </View>
             ) : (
-                <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} onPressFunction={() => setMultipleLayout(true)}/>
+                <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => setMultipleLayout(true)}/>
             )
             }
         </View>
