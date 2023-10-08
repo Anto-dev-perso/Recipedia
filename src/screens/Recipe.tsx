@@ -17,11 +17,13 @@ import BottomButton from "@components/molecules/BottomButton";
 import { RecipeScreenProp } from '@customTypes/ScreenTypes';
 import { arrayOfIngredientWithoutType, recipeTableElement } from "@customTypes/DatabaseElementTypes";
 import { plusIcon  } from "@assets/images/Icons";
+import { recipeDb } from "@utils/RecipeDatabase";
 
 
 export default function Recipe ({ route, navigation }: RecipeScreenProp) {
     // Use a local for params props
     const props: recipeTableElement = route.params;
+    
 
     return (
         <SafeAreaView style={screenViews.screenView}>
@@ -44,7 +46,12 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                     {/* TODO add number of person */}
                     {/* TODO add nutrition */}
             </ScrollView>
-            <BottomButton as={RectangleButton} position={bottomPosition.full} centered={true} text="Add this recipe to the menu" onPressFunction={() => console.log("Add to menu")}/>
+            <BottomButton as={RectangleButton} position={bottomPosition.full} centered={true} text="Add this recipe to the menu" onPressFunction={() => {
+                recipeDb.addRecipeToShopping(props).then(() => {
+                    console.log("Finish update !");
+                }
+                )
+                }}/>
         </SafeAreaView>
     )
 }

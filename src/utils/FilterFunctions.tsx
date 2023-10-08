@@ -3,9 +3,66 @@
  * @format
  */
 
-import { recipeTableElement, regExp } from "@customTypes/DatabaseElementTypes";
-import { recipeFilterType, prepTimeValues, listFilter, currentMonth } from "@customTypes/RecipeFiltersTypes";
+import { arrayOfIngredientWithoutType, arrayOfType, ingredientType, recipeTableElement, regExp } from "@customTypes/DatabaseElementTypes";
+import { recipeFilterType, prepTimeValues, listFilter, currentMonth, propsForFilter, isSeasonValue } from "@customTypes/RecipeFiltersTypes";
 import { textSeparator } from "@styles/typography";
+
+
+export function selectFilterFromProps(filter: listFilter, filterProps: propsForFilter, tagsList: Array<string>, ingredientsList: Array<string>): [Array<recipeFilterType>, React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>, Array<string>]{
+    
+    let filterValue: Array<recipeFilterType>;
+    let filterSetter: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>;
+    let elementFilters: Array<string>;
+
+    switch (filter) {
+        case listFilter.inSeason:
+            filterValue = filterProps.ingredientsState;
+            filterSetter = filterProps.setterIngredients;
+            elementFilters = isSeasonValue;
+        break;
+            case listFilter.cerealProduct:
+            filterValue = filterProps.ingredientsState;
+            filterSetter = filterProps.setterIngredients;
+            elementFilters = arrayOfType(ingredientsList, ingredientType.base);
+        break;
+        case listFilter.tags:
+            filterValue = filterProps.tagsState
+            filterSetter = filterProps.setterTags;
+            elementFilters = tagsList;
+        break;
+        case listFilter.prepTime:
+            filterValue = filterProps.prepTimeState;
+            filterSetter = filterProps.setterPrepTime;
+            elementFilters = prepTimeValues;
+        break;
+        case listFilter.vegetable:
+            filterValue = filterProps.ingredientsState;
+            filterSetter = filterProps.setterIngredients;
+            elementFilters = arrayOfType(ingredientsList, ingredientType.vegetable);
+        break;
+        case listFilter.meet:
+            filterValue = filterProps.ingredientsState;
+            filterSetter = filterProps.setterIngredients;
+            elementFilters = arrayOfType(ingredientsList, ingredientType.meet);
+        break;
+        case listFilter.poultry:
+            filterValue = filterProps.ingredientsState;
+            filterSetter = filterProps.setterIngredients;
+            elementFilters = arrayOfType(ingredientsList, ingredientType.poultry);
+        break;
+        case listFilter.spice:
+            filterValue = filterProps.ingredientsState;
+            filterSetter = filterProps.setterIngredients;
+            elementFilters = arrayOfType(ingredientsList, ingredientType.spice);
+        break;
+        default:
+            filterValue = filterProps.ingredientsState;
+            filterSetter = filterProps.setterIngredients;
+            elementFilters = arrayOfIngredientWithoutType(ingredientsList);
+            break;
+        }
+        return [filterValue, filterSetter, elementFilters];
+}
 
 
 export function recipeTitleFilteredFunction(recipeArray: Array<recipeTableElement>, filter: string) {

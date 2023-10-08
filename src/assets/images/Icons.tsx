@@ -4,7 +4,7 @@
  */
 
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons"
-import { remValue } from "@styles/spacing";
+import { padding, remValue } from "@styles/spacing";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React from "react";
 import { GestureResponderEvent, StyleProp, TextStyle } from "react-native";
@@ -33,7 +33,9 @@ export const filterPlusIcon  : materialCommunityIconName = "filter-plus-outline"
 export const filterMinusIcon  : materialCommunityIconName = "filter-remove-outline";
 
 export const checkboxIcons = [checkboxBlankIcon, checkboxFillIcon ];
-export const PlusMinusIcons = [plusIcon , minusIcon ];
+export const PlusMinusIcons: Array<iconProp> = [
+  {type: enumIconTypes.materialCommunity, name: plusIcon ,size: padding.veryLarge, color: "#414a4c", style: {paddingLeft: 2}}, 
+  {type: enumIconTypes.materialCommunity, name: minusIcon ,size: padding.veryLarge, color: "#414a4c", style: {paddingLeft: 2}}];
 
 export const crossIcon  : entypoIconName = "cross";
 
@@ -48,6 +50,7 @@ export const cameraIcon : entypoIconName = "camera";
 export const galleryIcon : fontAwesomeIconName = "photo";
 export const backIcon : materialCommunityIconName = "keyboard-backspace";
 export const pencilIcon : materialCommunityIconName = "pencil";
+export const exportIcon : entypoIconName = "export";
 
 
 export const iconsSize = {

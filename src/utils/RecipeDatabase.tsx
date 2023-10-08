@@ -6,11 +6,12 @@
 
 // import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import * as SQLite from 'expo-sqlite';
-import { recipeColumnsNames, recipeTableName, recipeDatabaseName, recipeTableElement, encodedRecipeElement, tagTableName, ingredientsTableName, ingredientsColumnsNames, tagsColumnsNames, nutritionColumnsNames, nutritionTableName, ingredientTableElement, tagTableElement, regExp, recipeColumnsEncoding, ingredientType } from '@customTypes/DatabaseElementTypes';
+import { recipeColumnsNames, recipeTableName, recipeDatabaseName, recipeTableElement, encodedRecipeElement, tagTableName, ingredientsTableName, ingredientsColumnsNames, tagsColumnsNames, nutritionColumnsNames, nutritionTableName, ingredientTableElement, tagTableElement, regExp, recipeColumnsEncoding, ingredientType, shoppingListTableElement, shoppingListColumnsEncoding, shoppingListTableName, shoppingListColumnsNames, encodedShoppingListElement } from '@customTypes/DatabaseElementTypes';
 import TableManipulation from './TableManipulation';
 import { EncodingSeparator, textSeparator } from '@styles/typography';
 import { Alert } from 'react-native';
 import { AsyncAlert } from './AsyncAlert';
+import { listFilter } from '@customTypes/RecipeFiltersTypes';
 
 
 const dbTest: Array<recipeTableElement> = [
@@ -185,6 +186,10 @@ const dbTest: Array<recipeTableElement> = [
     //  {tagName: "Indien"},
 ];
 
+const shoppingList: Array<shoppingListTableElement> = [{ type: listFilter.poultry, name: "Escalope de dinde", quantity: 2, unit: "", recipes: ["Title1", "Title2", "Title3"], purchased: true},
+    { type: listFilter.cerealProduct, name: "Riz basmati", quantity: 200, unit: "g", recipes: ["Title1", "Title2", "Title3"], purchased: false}, { type: listFilter.cerealProduct, name: "Macaroni demi-complets", quantity: 200, unit: "g", recipes: ["Title1", "Title2", "Title3"], purchased: false}, { type: listFilter.cerealProduct, name: "Coquillettes demi-complètes", quantity: 200, unit: "g", recipes: ["Title1", "Title2", "Title3"], purchased: false}, { type: listFilter.vegetable, name: "Champignons de Paris blanc", quantity: 200, unit: "g", recipes: ["Title1", "Title2", "Title3"], purchased: false}, { type: listFilter.vegetable, name: "Carotte", quantity: 2, unit: "", recipes: ["Title1", "Title2", "Title3"], purchased: false}
+];
+
 export default class RecipeDatabase {
 
     protected _databaseName: string;
@@ -196,6 +201,10 @@ export default class RecipeDatabase {
     protected _tagsTable: TableManipulation;
     // protected _nutritionTable: TableManipulation;
 
+    protected _shoppingListTable: TableManipulation;
+
+    public _shopping: Array<shoppingListTableElement>;
+
 
     public constructor() {
         this._databaseName = recipeDatabaseName;
@@ -204,6 +213,10 @@ export default class RecipeDatabase {
         this._ingredientsTable = new TableManipulation(ingredientsTableName, ingredientsColumnsNames);
         this._tagsTable = new TableManipulation(tagTableName, tagsColumnsNames);
         // this._nutritionTable = new TableManipulation(nutritionTableName, nutritionColumnsNames);
+
+        this._shoppingListTable = new TableManipulation(shoppingListTableName, shoppingListColumnsEncoding);
+
+        this._shopping = new Array<shoppingListTableElement>();
     }
 
     /* PROTECTED METHODS */
@@ -234,7 +247,7 @@ export default class RecipeDatabase {
 
                 if(!elemFound){
                     try{
-                        result.push(await AsyncAlert(`TAG "${tags[i].toUpperCase()}" NOT FOUND.`, "Do you want to add it ?", 'OK', 'Edit before add', 'Cancel', tags[i]));
+                        result.push(await AsyncAlert(`TAG "${tags[i].toUpperCase()}" NOT FOUND.`, "Do you want to add it ?", 'OK', 'Cancel', 'Edit before add', tags[i]));
                     }catch(error: any){
                         reject(error)                        
                     }
@@ -258,12 +271,12 @@ export default class RecipeDatabase {
 
                 if(!elemFound){
                     try{
-                        result.push(await AsyncAlert(`INGREDIENT "${ingredients[i].split(textSeparator)[0].toUpperCase()}" NOT FOUND.`, "Do you want to add it ?", 'OK', 'Edit before add', 'Cancel', ingredients[i]));
+                        result.push(await AsyncAlert(`INGREDIENT "${ingredients[i].split(textSeparator)[0].toUpperCase()}" NOT FOUND.`, "Do you want to add it ?", 'OK', 'Cancel', 'Edit before add', ingredients[i]));
                     }catch(error: any){
                         reject(error)                        
                     }
                 }else{
-                    result.push(await this.encodeIngredient(elemFound, ingredients[i]))
+                    result.push(this.encodeIngredient(elemFound, ingredients[i]))
                 }
         }
         resolve(result);
@@ -368,48 +381,48 @@ export default class RecipeDatabase {
         return arrSplit[0].split('ID":')[1] + textSeparator + quantityWithUnit;
       }
     
-      protected async decodeIngredient (encodedIngredient: string): Promise<[Array<string>, string]>{
-    
-        return new Promise(async (resolve, reject) => {
-            let arrDecoded = new Array<string>();
-            let season = "*";
-            let firstSeasonFound = true;
-            // Ex : 1--250__2--100__3--0.5__4--200__5--1__6--250 
-            const ingSplit = encodedIngredient.split(EncodingSeparator)
+    protected async decodeIngredient (encodedIngredient: string): Promise<[Array<string>, string]>{
 
-            try{
-                for (let indexIngredient = 0; indexIngredient < ingSplit.length; indexIngredient++) {
-                    const id: number = +ingSplit[indexIngredient].split(textSeparator)[0];
-                    const quantity = ingSplit[indexIngredient].split(textSeparator)[1];
-    
-                    let tableIngredient = await this._ingredientsTable.searchElementById(id, this._dbConnection);
-    
-                    // Retrieve directly the name
-                    // Ex :  {"ID":1,"INGREDIENT":"INGREDIENT NAME","UNIT":"g", "TYPE":"BASE", "SEASON":"*"}
-                    let splitIngredient = tableIngredient.split(',');
-                    
-                    let decodedIngredient = quantity + " " + splitIngredient[2].split(':')[1] + textSeparator + splitIngredient[1].split(':')[1]+ textSeparator + splitIngredient[3].split(':')[1];
-                    arrDecoded.push(decodedIngredient.replace(regExp, ""));
-                    
-                    
-                    // In case of *, nothing to do
-                    if(!splitIngredient[4].includes("*")){
-                        // For the first element, store directly the value
-                        if(firstSeasonFound){
-                            season = splitIngredient[4];
-                            firstSeasonFound = false;
-                        }else{
-                            season = this.decodeSeason(season, splitIngredient[4]);
-                        }
+    return new Promise(async (resolve, reject) => {
+        let arrDecoded = new Array<string>();
+        let season = "*";
+        let firstSeasonFound = true;
+        // Ex : 1--250__2--100__3--0.5__4--200__5--1__6--250 
+        const ingSplit = encodedIngredient.split(EncodingSeparator)
+
+        try{
+            for (let indexIngredient = 0; indexIngredient < ingSplit.length; indexIngredient++) {
+                const id: number = +ingSplit[indexIngredient].split(textSeparator)[0];
+                const quantity = ingSplit[indexIngredient].split(textSeparator)[1];
+
+                let tableIngredient = await this._ingredientsTable.searchElementById(id, this._dbConnection);
+
+                // Retrieve directly the name
+                // Ex :  {"ID":1,"INGREDIENT":"INGREDIENT NAME","UNIT":"g", "TYPE":"BASE", "SEASON":"*"}
+                let splitIngredient = tableIngredient.split(',');
+                
+                let decodedIngredient = quantity + " " + splitIngredient[2].split(':')[1] + textSeparator + splitIngredient[1].split(':')[1]+ textSeparator + splitIngredient[3].split(':')[1];
+                arrDecoded.push(decodedIngredient.replace(regExp, ""));
+                
+                
+                // In case of *, nothing to do
+                if(!splitIngredient[4].includes("*")){
+                    // For the first element, store directly the value
+                    if(firstSeasonFound){
+                        season = splitIngredient[4];
+                        firstSeasonFound = false;
+                    }else{
+                        season = this.decodeSeason(season, splitIngredient[4]);
                     }
                 }
-            }catch(error: any){
-                reject(error)
             }
-            resolve([arrDecoded, season]);
-            
-        })
-      }
+        }catch(error: any){
+            reject(error)
+        }
+        resolve([arrDecoded, season]);
+        
+    })
+    }
       
     protected decodeSeason(season: string, ingredientSeason: string){
         let result = "";
@@ -510,6 +523,76 @@ export default class RecipeDatabase {
         })
     }
 
+    protected encodeShopping(shopToEncode: shoppingListTableElement): Promise<encodedShoppingListElement> {
+        return new Promise((resolve) => {
+            let shoppingConverted: encodedShoppingListElement = {
+                type: shopToEncode.type as string,
+                name: shopToEncode.name,
+                quantity: shopToEncode.quantity,
+                unit: shopToEncode.unit,
+                recipes: shopToEncode.recipes.join(EncodingSeparator),
+                purchased: shopToEncode.purchased,
+            }
+            resolve(shoppingConverted);
+        })
+    }
+
+    protected async decodeShopping (queryResult: string): Promise<shoppingListTableElement>{
+
+        return new Promise(async (resolve, reject) => {
+            let result: shoppingListTableElement = { type: listFilter.purchased, name: "", purchased: true, quantity: 0, recipes: [], unit: ""};
+
+            // ID is not separate in the same way than the others
+            const idStr = queryResult.split(`,\"TYPE`)[0];
+        
+            // Remove ID part from queryResult and split in 2 part to have the column and the value
+            let arrStr = queryResult.replace(idStr+',', "").split(`,"`);
+
+            result.id = +idStr.replace(regExp, "").split(`:`)[1];
+
+            for (let i = 0; i < arrStr.length; i++) {
+                let elem = arrStr[i].split(`":`); // { "Column name" , "Value"}
+                
+                // TYPE
+                if(elem[0].includes(shoppingListColumnsNames.type)) {
+                    
+                    result.type = elem[1].replace(regExp, "") as listFilter;
+                }
+                // INGREDIENTS
+                else if(elem[0].includes(shoppingListColumnsNames.ingredient)) {
+                    result.name = elem[1].replace(regExp, "");
+                }
+                // QUANTITY
+                else if(elem[0].includes(shoppingListColumnsNames.quantity)) {
+                    result.quantity = Number(elem[1].replace(regExp, ""));
+                }
+                // UNIT
+                else if(elem[0].includes(shoppingListColumnsNames.unit)) {
+                    result.unit = elem[1].replace(regExp, "");
+                }
+                // RECIPES TITLES
+                else if(elem[0].includes(shoppingListColumnsNames.recipeTitles)) {
+                    result.recipes = elem[1].replace(regExp, "").split(EncodingSeparator);
+                }
+                // PURCHASED
+                else if(elem[0].includes(shoppingListColumnsNames.purchased)) {
+                    result.purchased = elem[1].replace(regExp, "").toLowerCase() === 'true';
+                }
+                else{
+                    reject(`NO SUCH COLUMNS FOUND FOR ELEMENT : ${elem}`);
+                }
+                
+            }
+            console.log("Returning from query : ", result);
+            resolve(result);
+    
+        })
+    }
+
+    protected set_shopping(newShopping: Array<shoppingListTableElement>){
+        this._shopping = newShopping;
+    }
+
     /* PUBLIC METHODS */
 
     public async deleteDatabase() {
@@ -566,6 +649,23 @@ export default class RecipeDatabase {
             resolve(ingredientsrray);
         })
     }
+    
+    public async decodeArrayOfShopping (queryResult: Array<string>): Promise<Array<shoppingListTableElement>> {
+        
+        return new Promise(async (resolve, reject) => {
+            let shoppingListTableElement = new Array<shoppingListTableElement>();
+        
+            for (let i = 0; i < queryResult.length; i++) {
+                try{
+                    shoppingListTableElement.push(await this.decodeShopping(queryResult[i]))        
+                }catch(error: any) {
+                    reject(error)
+                }
+                
+            }
+            resolve(shoppingListTableElement);
+        })
+    }
 
     
 
@@ -577,17 +677,36 @@ export default class RecipeDatabase {
             await this._recipesTable.deleteTable(this._dbConnection);
             await this._ingredientsTable.deleteTable(this._dbConnection);
             await this._tagsTable.deleteTable(this._dbConnection);
+            await this._shoppingListTable.deleteTable(this._dbConnection);
             // await this._nutritionTable.deleteTable(this._dbConnection);
     
             await this._recipesTable.createTable(this._dbConnection);
             await this._ingredientsTable.createTable(this._dbConnection);
             await this._tagsTable.createTable(this._dbConnection);
+            await this._shoppingListTable.createTable(this._dbConnection);
             // await this._nutritionTable.createTable();
-    
+            
             await this._tagsTable.insertArrayOfElement(tagTable, this._dbConnection);
             await this._ingredientsTable.insertArrayOfElement(ingTable, this._dbConnection);
-    
+            
+            
             await this.addMultipleRecipes(dbTest);
+            
+            // await this.addMultipleShopping(shoppingList);
+            // await this.updateShoppingList({ type: listFilter.cerealProduct, name: "Riz basmati", quantity: 200, unit: "g", recipes: ["Title1", "Title2", "Title3"], purchased: false});
+            // X : 250 g--Champignons de Paris blanc--Vegetable
+            // this.addRecipeToShopping({
+            //     image_Source: '../assets/images/strawberries.jpg',
+            //     title: "Piccata de dinde au citron et courgettes sautées à l'ail",
+            //     description: "Nos délicieuses escalopes de dinde françaises se parent de farine, s'enrobent de beurre et se déglacent au jus de citron. Tout un programme !",
+            //     tags: ["Kids friendly", "Italien"],
+            //     ingredients: ["0.5--Citron jaune--Vegetable", "2--Courgette--Vegetable", "2--Escalope de dinde--Meet", "0.5--Gousse d'ail--Vegetable", "0.25--Origan--Vegetable", "200 g--Spaghetti blancs--Cereal Product", "150 g--Riz basmati--Cereal Product"],
+            //     preparation: ["Les légumes--Emincez l'oignon.\nCoupez les courgettes en rondelles.\nPressez ou hachez l'ail.\nDans une sauteuse, faites chauffer un filet d'huile d'olive à feu moyen à vif.\nFaites revenir l'oignon 5 min.\nAu bout des 5 min de cuisson, ajoutez l'ail, l'origan et les courgettes et poursuivez la cuisson 10 min. Salez, poivrez.\nEn parallèle, faites cuire les spaghetti.", "Les spaghetti--Portez à ébullition une casserole d'eau salée.\nFaites cuire les spaghetti selon les indications du paquet.\nPendant la cuisson des spaghetti, réalisez la piccata de dinde.", "La piccata de dinde--Pressez le citron jaune.\nDéposez un peu de farine dans une assiette creuse.\nCoupez les escalopes de dinde en fines lanières. Salez, poivrez et trempez-les dans la farine.\nDans une poêle, faites fondre le beurre à feu moyen à vif.\nFaites cuire la dinde 5 à 8 min. En fin de cuisson, versez le jus de citron.", "A table--Servez sans attendre votre piccata de dinde accompagnée des spaghetti et des courgettes sautées !"],
+            //     time: 30,
+            //     season: "",
+            //   })
+
+            
         }catch(error: any){
             console.warn(error);
             
@@ -619,6 +738,96 @@ export default class RecipeDatabase {
         }
     }
 
+
+    public async addShoppingList(shop: shoppingListTableElement){
+
+        try{
+            const shoppingEncoded = await this.encodeShopping(shop);
+            await this._shoppingListTable.insertElement(shoppingEncoded, this._dbConnection);
+        }catch(error: any){
+            console.warn("ERROR : ", error);
+        }
+      }
+
+    public async addRecipeToShopping(recipe: recipeTableElement){
+        let shopElement = new Array<shoppingListTableElement>();
+        recipe.ingredients.forEach(ing => {
+            // EX : 250 g--Champignons de Paris blanc--Vegetable
+            const splitIng = ing.split(textSeparator);
+            let quantityDecoded: number;
+            let unitDecoded: string;
+
+            if(splitIng[0].includes(" ")){
+                quantityDecoded = Number(splitIng[0].split(" ")[0]);
+                unitDecoded = splitIng[0].split(" ")[1];
+            }else{
+                quantityDecoded = Number(splitIng[0]);
+                unitDecoded = "";
+            }
+            shopElement.push({type: splitIng[2] as listFilter, name: splitIng[1], quantity: quantityDecoded, unit: unitDecoded, recipes: [recipe.title], purchased: false})
+
+        });
+        
+        for (let i = 0; i < shopElement.length; i++) {
+            await this.updateShoppingList(shopElement[i]);
+        }
+    }
+
+      public async updateShoppingList(shop: shoppingListTableElement){
+
+        try{
+            const searchMap = new Map<string, string>([[shoppingListColumnsNames.ingredient, shop.name], [shoppingListColumnsNames.unit, shop.unit]]); 
+            const elemFoundEncoded = await this._shoppingListTable.searchElement(this._dbConnection, searchMap) as string;
+            
+            console.log("New shopping is ", shop);
+            if(elemFoundEncoded === undefined){
+                this.add_shopping(shop);
+                
+                await this.addShoppingList(shop);
+            }else{
+                let elemSQL = new Map<string, number | string>();
+                const elemFoundDecoded = await this.decodeShopping(elemFoundEncoded);
+                let elemUpdated = elemFoundDecoded;
+
+                if ((shop.quantity == elemFoundDecoded.quantity) && (shop.recipes == elemFoundDecoded.recipes)){
+                    elemUpdated.purchased = shop.purchased;
+                    elemSQL.set(shoppingListColumnsNames.purchased, elemUpdated.purchased.toString());
+                }else{
+                    elemUpdated.quantity= (shop.quantity + elemFoundDecoded.quantity);
+                    elemUpdated.recipes = [...elemFoundDecoded.recipes, ...shop.recipes];
+    
+                    if(elemFoundDecoded.unit == shop.unit){
+                        elemSQL.set(shoppingListColumnsNames.quantity, elemUpdated.quantity);
+                        elemSQL.set(shoppingListColumnsNames.recipeTitles, elemUpdated.recipes.join(EncodingSeparator));
+                    }
+                }
+
+
+                if(elemUpdated.id){
+                    this.update_shopping(elemUpdated);
+                    await this._shoppingListTable.editElement(elemUpdated.id, elemSQL, this._dbConnection);
+                }else{
+                    console.error("DECODED SHOPPING LIST DOESN'T HAVE ID !");
+                }
+            }
+
+        }catch(error: any){
+            console.warn("ERROR : ", error);
+        }
+      }
+
+      public async addMultipleShopping(shops: Array<shoppingListTableElement>){
+        try {
+            for (let i = 0; i < shops.length; i++) {
+                this.add_shopping(shops[i]);
+                await this.addShoppingList(shops[i]);   
+            }
+        } catch (error) {
+            console.warn(error);
+            
+        }
+    }
+
       public async searchRandomlyElement(id: number): Promise<Array<recipeTableElement>> {
         return new Promise(async (resolve, reject) => {
             try{
@@ -635,6 +844,17 @@ export default class RecipeDatabase {
         return new Promise(async (resolve, reject) => {
             try{
             const res = await this.decodeArrayOfRecipe(await this._recipesTable.searchElement(this._dbConnection) as Array<string>)
+            resolve(res);
+            }catch(error){
+                reject(error);
+            }
+        })
+      }
+
+      public async getAllShopping(): Promise<Array<shoppingListTableElement>> {
+        return new Promise(async (resolve, reject) => {
+            try{
+            const res = await this.decodeArrayOfShopping(await this._shoppingListTable.searchElement(this._dbConnection) as Array<string>)
             resolve(res);
             }catch(error){
                 reject(error);
@@ -663,6 +883,26 @@ export default class RecipeDatabase {
             }
         })
       }
+
+      public get_shopping(){
+        return this._shopping;
+      }
+
+      public add_shopping(shop: shoppingListTableElement){
+        this._shopping.push(shop);
+    }
+
+    public remove_shopping(shop: shoppingListTableElement){
+        this._shopping = this._shopping.filter(element => element.name == shop.name);
+    }
+
+    public update_shopping(shop: shoppingListTableElement){
+        this._shopping.forEach(element => {
+            if(element.name == shop.name){
+                element = shop;
+            }
+        });
+    }
 }
 
 

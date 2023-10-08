@@ -94,6 +94,14 @@ export const viewButtonStyles = EStyleSheet.create({
     }
 })
 
+export const pressButtonStyle = (pressed: boolean) => EStyleSheet.create({
+    pressButton: {
+        backgroundColor: pressed ? palette.progressGrey : palette.backgroundColor
+    }
+ })
+
+ export const wrappingButtonWithPressed = (pressed: boolean) => EStyleSheet.flatten([viewButtonStyles.wrappingListOfButton, pressButtonStyle(pressed).pressButton])
+
 export const viewInsideButtonCentered = EStyleSheet.flatten([viewButtonStyles.viewInsideButtons, viewButtonStyles.centeredView])
 
 const viewBottomButton = (offset: number) => EStyleSheet.create({
@@ -121,9 +129,9 @@ export const viewPosition = EStyleSheet.create({
         padding: 0, // overload padding because we won't it for a full width button
     },
     splitVerticallyIn2: {
-            width: '50%',
-            padding: padding.small,
-        },
+        width: '50%',
+        padding: padding.small,
+    },
 })
 
 

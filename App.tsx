@@ -215,7 +215,11 @@ const Root = () => {
       tabBarInactiveTintColor: 'gray',
     })}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Shopping" component={Shopping}/>
+      <Tab.Screen name="Shopping" component={Shopping} options={{
+        headerRight: () => (
+          <Button onPress={() => alert('This is a button!')} title="Info"/>
+        )
+      }}/>
       <Tab.Screen name="Plannification" component={Plannification}/>
       <Tab.Screen name="Parameters" component={Parameters}/>
   </Tab.Navigator>

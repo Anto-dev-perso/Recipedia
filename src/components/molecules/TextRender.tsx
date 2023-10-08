@@ -68,7 +68,7 @@ export default function TextRender (props: TextRenderProps) {
       const renderAsClickableList = (item: string, index: number) => {
 
         return(
-            <TouchableOpacity key={index} style={screenViews.listView} onPress={() => {props.onClick ? props.onClick(item): console.warn("onClick doesn't exist !");
+            <TouchableOpacity key={index} style={screenViews.clickableListView} onPress={() => {props.onClick ? props.onClick(item): console.warn("onClick doesn't exist !");
             }}>
                 <Text style={typoStyles.paragraph}>{item}</Text>
             </TouchableOpacity>

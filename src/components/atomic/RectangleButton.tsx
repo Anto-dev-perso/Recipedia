@@ -9,14 +9,14 @@ import { rectangleRoundedButtonStyles, viewButtonStyles, rectangleButtonStyles, 
 import { typoStyles } from "@styles/typography"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { remValue } from "@styles/spacing";
-import { materialCommunityIconName } from "@assets/images/Icons";
+import { displayIcon, iconProp, iconsType, materialCommunityIconName } from "@assets/images/Icons";
 
 
 type RectangleButtonProps = {
     text: string,
     height?: number,
     onPressFunction?:() => void,
-    icon?: materialCommunityIconName,
+    icon?: iconProp,
     centered: boolean,
     margins?: number
 }
@@ -29,7 +29,7 @@ export default function RectangleButton (props: RectangleButtonProps) {
     return(
         <Pressable style={{...rectangleButtonStyles(rectHeight).rectangleButton, margin: props.margins}} onPress={props.onPressFunction}>
             <View style={viewButton}>
-                {props.icon ? <MaterialCommunityIcons name={props.icon} size={24 * remValue} color="#414a4c" style={{paddingLeft: 2}} /> : null}
+                {props.icon ? displayIcon(props.icon.type, props.icon.name, props.icon.size, props.icon.color, props.icon.style) : null}
                 <Text style={typoStyles.header}>{props.text}</Text>
             </View>
         </Pressable>

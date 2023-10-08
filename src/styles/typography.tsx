@@ -10,10 +10,10 @@ import { loadAsync } from 'expo-font';
 
 
 
-const textSeparator = "--";
-const EncodingSeparator = "__";
+export const textSeparator = "--";
+export const EncodingSeparator = "__";
 
-const fetchFonts = () => {
+export const fetchFonts = () => {
     return loadAsync({
     'Lora-VariableFont_wght': require(`../assets/fonts/Lora/Lora-VariableFont_wght.ttf`),
     'Lora-Italic-VariableFont_wght': require(`../assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf`),
@@ -25,14 +25,14 @@ const typoFamily = {
     italic: 'Lora-Italic-VariableFont_wght',
 } 
 
-const typoSize = {
+export const typoSize = {
     element: "10rem",
     paragraphSize: "14rem",
     headerSize: "18rem",
     titleSize: "22rem",
 }
 
-const typoStyles = EStyleSheet.create({
+export const typoStyles = EStyleSheet.create({
     element: {
         color: palette.textGrey,
         fontFamily: typoFamily.normal,
@@ -77,7 +77,7 @@ const typoStyles = EStyleSheet.create({
     }
 })
 
-const carouselStyle = (length: number) => EStyleSheet.create({
+export const carouselStyle = (length: number) => EStyleSheet.create({
     carouselTitle: {
         color: palette.textPrimary,
         fontFamily: typoFamily.normal,
@@ -88,7 +88,7 @@ const carouselStyle = (length: number) => EStyleSheet.create({
     }   
 })
 
-const searchBarStyle = EStyleSheet.create({
+export const searchBarStyle = EStyleSheet.create({
     searchBarView: {
         marginTop: padding.extraLarge,
         marginHorizontal: padding.medium,
@@ -109,7 +109,7 @@ const searchBarStyle = EStyleSheet.create({
       }
 })
 
-const rowTextStyle = EStyleSheet.create({
+export const rowTextStyle = EStyleSheet.create({
     leftText: {
         textAlign: "left", 
         flex: 2,
@@ -129,12 +129,15 @@ const rowTextStyle = EStyleSheet.create({
 })
 
 
-
-enum typoRender {
+export enum typoRender {
     ARRAY = "ARRAY",
     SECTION = "SECTION",
     LIST = "LIST",
     CLICK_LIST = "CLICK_LIST",
 }
 
-export { textSeparator, EncodingSeparator, typoSize, typoStyles, searchBarStyle, rowTextStyle, typoRender, carouselStyle, fetchFonts};
+export type bulletListDataType = {
+    multiplesData: boolean,
+    bulletListData: Array<string>,
+    shortData: string,
+}

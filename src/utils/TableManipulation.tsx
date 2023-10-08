@@ -35,12 +35,11 @@ export default class TableManipulation {
         let sepLen = 0;
 
         if(map.size <= this._columnsTable.length){
-            result += ' WHERE ';
             for (let [key, value] of map) {
                 if(typeof value === 'string'){
-                    result += `${key} = \"${value}\" `;
+                    result += `\"${key}\" = \"${value}\" `;
                 }else{
-                    result += `${key} = ${value}${separator} `;
+                    result += `\"${key}\" = ${value}`;
                 }
                 if(separator){
                     result += `${separator} `;
@@ -49,7 +48,7 @@ export default class TableManipulation {
             }
     
             if(separator){
-                result = result.slice(0, -2-sepLen) + ';'; // Remove the separator of last element
+                result = result.slice(0, -2-sepLen); // Remove the separator of last element
             }
         } else {
             console.warn("ERROR: you try to update too much columns for this table. Size of column table to update is ", this._columnsTable.length, " and size of columns to update for this element is ", map.size)
@@ -60,7 +59,7 @@ export default class TableManipulation {
 
     protected verifyLengthOfElement<TElement extends string>(element: Array<TElement>){
         let isCheck: boolean = true;
-        if(element.length != this._columnsTable.length){
+        if(element.length > this._columnsTable.length +1){
             console.warn("ERROR: you try to add an element in a table that is not mapping. Impossible to add this. Size of column table is ", this._columnsTable.length, " and size of element is ", element.length, "\n\nelement : ", element);
             isCheck = false;
         }
@@ -193,6 +192,8 @@ export default class TableManipulation {
             let insertQuery = this.prepareInsertQuery(element);
                 
             try{
+                console.log("Insert query : ", insertQuery);
+                
                 await this.executeQuery(insertQuery, db);
                 resolve(true);
             }catch(error: any){
@@ -206,6 +207,8 @@ export default class TableManipulation {
             let insertQuery = this.prepareInsertQuery(arrayElements);
                 
             try{
+                console.log("Query for inserting array : ", insertQuery);
+                
                 await this.executeQuery(insertQuery, db);
                 resolve(true);
             }catch(error: any){
@@ -280,10 +283,12 @@ export default class TableManipulation {
             let searchQuery = `SELECT * FROM "${this._tableName}"`;
     
             if(elementToSearch){
-                searchQuery += this.prepareQueryFromMap(elementToSearch, `AND`);
+                searchQuery += " WHERE " + this.prepareQueryFromMap(elementToSearch, `AND`) + ";";
             }
         
             try{
+                console.log("Search query : ", searchQuery);
+                
                 const res = await this.executeQuery(searchQuery, db) as string | Array<string>;
                 resolve(res);
             }catch(error: any){

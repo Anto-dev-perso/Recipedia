@@ -3,6 +3,8 @@
  * @format
  */
 
+import { shoppingListTableElement } from "./DatabaseElementTypes";
+
 export const currentMonth = new Date().getMonth() + 1;
 
 export type propsForFilter = {
@@ -22,10 +24,18 @@ export enum listFilter {
     tags = "Tags",
     inSeason = "In-season",
     cerealProduct = "Cereal Product",
+    condiment = "Condiment",
+    sauce = "Sauce",
     vegetable = "Vegetable",
     meet = "Meet",
-    poultry = "Poutry",
+    poultry = "Poultry",
     spice = "Spice",
+    fish = "Fish",
+    tofu = "Tofu",
+    dairy = "Dairy",
+    sugar = "Sugar",
+    fruit = "Fruit",
+    purchased = "Already purchased",
     // kalories: "Kalories",
 }
 
@@ -34,18 +44,45 @@ export const filtersCategories: Array<listFilter> = [
     listFilter.prepTime,
     listFilter.tags,
     listFilter.cerealProduct,
+    listFilter.condiment,
+    listFilter.sauce,
     listFilter.vegetable,
     listFilter.meet,
     listFilter.poultry,
     listFilter.spice,
+    listFilter.fish,
+    listFilter.tofu,
+    listFilter.dairy,
+    listFilter.sugar,
+    listFilter.fruit,
 ];
+
 
 export type recipeFilterType = {
     title: listFilter,
     value: string,
 }
 
-export const isSeasonValue = ["Only in-season ingredients"];
+export type propsForShopping = {
+    ingList: Array<shoppingListTableElement>,
+    setterIngList: React.Dispatch<React.SetStateAction<Array<shoppingListTableElement>>>,
+}
+
+export const shoppingCategories: Array<listFilter> = [
+    listFilter.cerealProduct,
+    listFilter.condiment,
+    listFilter.sauce,
+    listFilter.vegetable,
+    listFilter.meet,
+    listFilter.poultry,
+    listFilter.spice,
+    listFilter.fish,
+    listFilter.tofu,
+    listFilter.dairy,
+    listFilter.purchased,
+    listFilter.sugar,
+    listFilter.fruit,
+];
 
 export const prepTimeValues = [
     "0-10 min",

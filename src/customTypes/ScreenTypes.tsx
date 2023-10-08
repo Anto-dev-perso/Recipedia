@@ -9,6 +9,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { recipeTableElement } from "./DatabaseElementTypes";
 import RecipeDatabase from "@utils/RecipeDatabase";
+import { listFilter } from "./RecipeFiltersTypes";
 
 
 type StackScreenParamList = {
@@ -31,5 +32,9 @@ type TabScreenParamList = {
   type RecipeScreenProp = NativeStackNavigationProp<StackScreenParamList, 'Recipe'>;
   type SearchScreenProp = NativeStackNavigationProp<StackScreenParamList, 'Search'>;
   
+export type toggleActivationFunctions = {
+    onActivation:(item? : listFilter) => void,
+    onDeActivation:(item? : listFilter) => void,
+}
 
   export { StackScreenParamList, RecipeScreenProp, SearchScreenProp,StackScreenProp, TabScreenParamList, TabScreenProp }

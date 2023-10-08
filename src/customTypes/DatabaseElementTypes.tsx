@@ -4,12 +4,15 @@
  */
 
 import { textSeparator } from "@styles/typography";
+import { listFilter } from "./RecipeFiltersTypes";
 
 export const recipeDatabaseName = "RecipesDatabase";
 export const recipeTableName = "RecipesTable"; 
 export const ingredientsTableName = "IngredientsTable"; 
 export const tagTableName = "TagsTable"; 
 export const nutritionTableName = "NutritionnalValueTable";
+
+export const shoppingListTableName = "ShoppingListTable"; 
 
 export const regExp = /["{}\\]+/g;
 
@@ -46,7 +49,6 @@ export type encodedRecipeElement = {
     ingredients: string,
     preparation: string,
     time: number,
-
 }
 
 export const recipeColumnsEncoding: Array<databaseColumnType> =  [
@@ -106,7 +108,7 @@ export const recipeColumnsNames = {
 }
 
 export enum ingredientType {
-    base = "Base",
+    base = "Cereal Product",
     vegetable = "Vegetable",
     condiment = "Condiment",
     sauce = "Sauce",
@@ -156,3 +158,41 @@ export type tagTableElement = {
 export const tagsColumnsNames: Array<databaseColumnType> =  [
     { colName: "NAME", type: encodedType.TEXT},
   ]
+
+  export type shoppingListTableElement = {
+    id?: number,
+    type: listFilter,
+    name: string,
+    quantity: number,
+    unit: string,
+    recipes: Array<string>,
+    purchased: boolean,
+}
+
+export type encodedShoppingListElement = {
+  id?: number,
+  type: string,
+  name: string,
+  quantity: number,
+  unit: string,
+  recipes: string,
+  purchased: boolean,
+}
+
+export const shoppingListColumnsEncoding: Array<databaseColumnType> =  [
+  { colName: "TYPE", type: encodedType.TEXT},
+  { colName: "INGREDIENT", type: encodedType.TEXT},
+  { colName: "QUANTITY", type: encodedType.FLOAT},
+  { colName: "UNIT", type: encodedType.TEXT},
+  { colName: "RECIPES TITLES", type: encodedType.TEXT},
+  { colName: "PURCHASED", type: encodedType.BLOB},
+]
+
+export const shoppingListColumnsNames = {
+  type: shoppingListColumnsEncoding[0].colName,
+  ingredient: shoppingListColumnsEncoding[1].colName,
+  quantity: shoppingListColumnsEncoding[2].colName,
+  unit: shoppingListColumnsEncoding[3].colName,
+  recipeTitles: shoppingListColumnsEncoding[4].colName,
+  purchased: shoppingListColumnsEncoding[5].colName,
+}

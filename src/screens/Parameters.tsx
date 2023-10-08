@@ -3,13 +3,17 @@
  * @format
  */
 
+import { screenViews, scrollView } from "@styles/spacing";
+import { typoStyles } from "@styles/typography";
 import React from "react";
-import { Text } from "react-native";
+import { SafeAreaView, ScrollView, Text } from "react-native";
 
-export default function Parameters ({ navigation }) {
+export default function Parameters () {
     return (
-        <>
-            <Text>Parameters screnn</Text>
-        </>
+        <SafeAreaView style={screenViews.screenView}>
+            <ScrollView style={scrollView(0).view}>
+            <Text style={typoStyles.title}>Parameters</Text>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
