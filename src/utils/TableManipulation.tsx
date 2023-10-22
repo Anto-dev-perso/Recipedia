@@ -115,18 +115,18 @@ export default class TableManipulation {
                 await tx.executeSql(query, [], 
                     (tx: any, results: any) => {
                         if(results.rows.length == 1){ 
-                            console.log("ExecuteQuery : returning a single value which is ", results.rows.item(0));
+                            // console.log("ExecuteQuery : returning a single value which is ", results.rows.item(0));
                             resolve(JSON.stringify(results.rows.item(0)));
                         }else if(results.rows.length > 1){
                             let promiseArrayReturn = new Array<string>();
                             for (let i = 0; i < results.rows.length; i++) {
                                 promiseArrayReturn.push(JSON.stringify(results.rows.item(i)));
                             }
-                            console.log("ExecuteQuery : returning an array of value which are ", promiseArrayReturn);
+                            // console.log("ExecuteQuery : returning an array of value which are ", promiseArrayReturn);
                             resolve(promiseArrayReturn);
                         }
                         else{
-                            console.log("ExecuteQuery : return null", results);
+                            // console.log("ExecuteQuery : return null", results);
                             resolve();
                         }
     
@@ -192,7 +192,7 @@ export default class TableManipulation {
             let insertQuery = this.prepareInsertQuery(element);
                 
             try{
-                console.log("Insert query : ", insertQuery);
+                // console.log("Insert query : ", insertQuery);
                 
                 await this.executeQuery(insertQuery, db);
                 resolve(true);
@@ -287,7 +287,7 @@ export default class TableManipulation {
             }
         
             try{
-                console.log("Search query : ", searchQuery);
+                // console.log("Search query : ", searchQuery);
                 
                 const res = await this.executeQuery(searchQuery, db) as string | Array<string>;
                 resolve(res);

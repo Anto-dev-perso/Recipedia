@@ -12,6 +12,7 @@ import { EncodingSeparator, textSeparator } from '@styles/typography';
 import { Alert } from 'react-native';
 import { AsyncAlert } from './AsyncAlert';
 import { listFilter } from '@customTypes/RecipeFiltersTypes';
+import { fileGestion } from './FileGestion';
 
 
 const dbTest: Array<recipeTableElement> = [
@@ -136,7 +137,7 @@ const dbTest: Array<recipeTableElement> = [
     //   preparation: ["On a rainy day, go to these rocks"],
     // },
     {
-      image_Source: '../assets/images/waves.jpg',
+      image_Source: 'waves.jpg',
       title: "Saucisse au couteau, crème aux champignons et macaroni",
       description: "Un plat rustique qui met tout le monde d'accord avec nos saucisses au couteau. Un plat de bistrot réconfortant pour petits et grands.",
       tags: ["Kids friendly", "Test d'un tag débordant", "Gourmand", "Express", "Tradition"],
@@ -146,7 +147,7 @@ const dbTest: Array<recipeTableElement> = [
       season: "",
     },
     {
-        image_Source: '../assets/images/tree.jpg',
+        image_Source: 'tree.jpg',
         title: "Korma de légumes au lait de coco",
         description: "Ce mijoté indien vous est proposé en version 100% végétale avec du riz bio et des légumes cuits délicatement dans une purée de noisettes au curcuma.",
         tags: ["Végétarien", "Indien"],
@@ -156,7 +157,7 @@ const dbTest: Array<recipeTableElement> = [
         season: "",
       },
       {
-          image_Source: '../assets/images/strawberries.jpg',
+          image_Source: 'strawberries.jpg',
           title: "Piccata de dinde au citron et courgettes sautées à l'ail",
           description: "Nos délicieuses escalopes de dinde françaises se parent de farine, s'enrobent de beurre et se déglacent au jus de citron. Tout un programme !",
           tags: ["Kids friendly", "Italien"],
@@ -166,7 +167,7 @@ const dbTest: Array<recipeTableElement> = [
           season: "",
         },
         {
-            image_Source: '../assets/images/scooter.jpg',
+            image_Source: 'scooter.jpg',
             title: "Tofu fumé et sauce tomate aux épices chimichurri",
             description: "Les épices chimichurri ? Un mélange originaire d’Argentine à base d’origan, de piment doux et de thym qui relèveront à merveille notre tofu fumé !",
             tags: ["Découverte", "Végétarien"],
@@ -223,8 +224,6 @@ export default class RecipeDatabase {
 
     protected async openDatabase() {
         try {
-            console.log("Database Name = ", this._databaseName);
-            
             this._dbConnection = await SQLite.openDatabase(this._databaseName);
         } catch (error) {
             console.warn("ERROR during opening of the database : ", error);
@@ -321,7 +320,7 @@ export default class RecipeDatabase {
                 
                 // IMAGE_SOURCE
                 if(elem[0].includes(recipeColumnsNames.image)) {
-                    result.image_Source = elem[1].replace(regExp, "");
+                    result.image_Source =  fileGestion.get_directoryUri() + elem[1].replace(regExp, "");
                 }
                 // TITLE
                 else if(elem[0].includes(recipeColumnsNames.title)) {
@@ -779,7 +778,6 @@ export default class RecipeDatabase {
             const searchMap = new Map<string, string>([[shoppingListColumnsNames.ingredient, shop.name], [shoppingListColumnsNames.unit, shop.unit]]); 
             const elemFoundEncoded = await this._shoppingListTable.searchElement(this._dbConnection, searchMap) as string;
             
-            console.log("New shopping is ", shop);
             if(elemFoundEncoded === undefined){
                 this.add_shopping(shop);
                 
@@ -828,7 +826,7 @@ export default class RecipeDatabase {
         }
     }
 
-      public async searchRandomlyElement(id: number): Promise<Array<recipeTableElement>> {
+      public async searchRandomlyRecipes(id: number): Promise<Array<recipeTableElement>> {
         return new Promise(async (resolve, reject) => {
             try{
             const res = await this.decodeArrayOfRecipe(await this._recipesTable.searchRandomlyElement(id, this._dbConnection))

@@ -12,12 +12,13 @@ import RecipeDatabase from "@utils/RecipeDatabase";
 import { listFilter } from "./RecipeFiltersTypes";
 
 
-type StackScreenParamList = {
+export type StackScreenParamList = {
     Root: React.JSX.Element;
     Recipe: recipeTableElement;
     Search: undefined;
 }
-type TabScreenParamList = {
+
+export type TabScreenParamList = {
     Home: undefined;
     Shopping: undefined;
     Plannification: undefined;
@@ -26,15 +27,18 @@ type TabScreenParamList = {
   
 
   
-  const StackScreenProp = createNativeStackNavigator<StackScreenParamList>();
-  const TabScreenProp = createNativeStackNavigator<TabScreenParamList>();
+  export const StackScreenProp = createNativeStackNavigator<StackScreenParamList>();
+  export const TabScreenProp = createNativeStackNavigator<TabScreenParamList>();
 
-  type RecipeScreenProp = NativeStackNavigationProp<StackScreenParamList, 'Recipe'>;
-  type SearchScreenProp = NativeStackNavigationProp<StackScreenParamList, 'Search'>;
+  export type HomeScreenProp = NativeStackNavigationProp<TabScreenParamList, 'Home'>;
+  export type ShoppingScreenProp = NativeStackNavigationProp<TabScreenParamList, 'Shopping'>;
+  export type PlannificationScreenProp = NativeStackNavigationProp<TabScreenParamList, 'Plannification'>;
+  export type ParametersScreenProp = NativeStackNavigationProp<TabScreenParamList, 'Parameters'>;
+
+  export type RecipeScreenProp = NativeStackNavigationProp<StackScreenParamList, 'Recipe'>;
+  export type SearchScreenProp = NativeStackNavigationProp<StackScreenParamList, 'Search'>;
   
 export type toggleActivationFunctions = {
     onActivation:(item? : listFilter) => void,
     onDeActivation:(item? : listFilter) => void,
 }
-
-  export { StackScreenParamList, RecipeScreenProp, SearchScreenProp,StackScreenProp, TabScreenParamList, TabScreenProp }

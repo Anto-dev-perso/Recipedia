@@ -30,7 +30,12 @@
     },
     "plugins": [
       "expo-localization",
-      "expo-image-picker"
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "This app access your photos to recognize the recipe in it. Nothing is collect or share."
+        }
+      ]
     ]
   }
 }
