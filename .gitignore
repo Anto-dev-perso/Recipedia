@@ -37,4 +37,3 @@ yarn-error.*
 .vscode
 android
 ios
-package-lock.json
