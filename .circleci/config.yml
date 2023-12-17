@@ -9,7 +9,7 @@ version: 2.1
   #     - main
 
 orbs:
-  node: circleci/node@5.1.0
+  node: circleci/node@5.1.1
   android: circleci/android@2.3.0
   # heroku: circleci/heroku@1.2.6
 
