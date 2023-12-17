@@ -1,34 +1,29 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import RecipeRecommandation from "@components/organisms/RecipeRecommandation";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Recipe from "@screens/Recipe";
-
 import { recipeTableElement } from "@customTypes/DatabaseElementTypes";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView } from "react-native";
+import { SafeAreaView, ScrollView, StatusBar } from "react-native";
 import { screenViews } from "@styles/spacing";
 import RecipeDatabase, { recipeDb } from "@utils/RecipeDatabase";
-import { pickImage, takePhoto } from "@utils/ImagePicker";
 import { hashString } from "@utils/Hash";
-import BottomButton from "@components/molecules/BottomButton";
+import BottomTopButton from "@components/molecules/BottomTopButton";
 import RoundButton from "@components/atomic/RoundButton";
-import { BottomButtonDiameter, bottomPosition } from "@styles/buttons";
-import { RecipeScreenProp } from "@customTypes/ScreenTypes";
+import { LargeButtonDiameter, bottomTopPosition } from "@styles/buttons";
+import { RecipeScreenProp, StackScreenNavigation } from "@customTypes/ScreenTypes";
 import { useNavigation } from "@react-navigation/native";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
-import { openSearchScreen } from "@navigation/NavigationFunctions";
 import { cameraIcon, enumIconTypes, iconsSize, searchIcon } from "@assets/images/Icons";
+import { palette } from "@styles/colors";
+import { CropRectangle } from "@components/molecules/CropRectangle";
 
 
 export default function Home () {
   
-  const navigation = useNavigation<RecipeScreenProp>();
+  const { navigate } = useNavigation<StackScreenNavigation>();
   
   const [elementsForCarousel, setElementsForCarousel] = useState<recipeTableElement[]>([]);
 
@@ -90,7 +85,7 @@ export default function Home () {
   // });
 
     try {
-      let elementsReturned = await recipeDb.searchRandomlyElement(4);
+      let elementsReturned = await recipeDb.searchRandomlyRecipes(4);
       await setElementsForCarousel(elementsReturned);
     } catch (error) {
       console.log(error);
@@ -105,6 +100,7 @@ export default function Home () {
 
     return (
         <SafeAreaView style={screenViews.screenView}>
+          <StatusBar animated={true} backgroundColor={palette.primary}/>
           {(elementsForCarousel.length > 0) ? 
             <ScrollView>
               <RecipeRecommandation carouselProps={elementsForCarousel} titleRecommandation="Recommandation 1"/>
@@ -113,7 +109,7 @@ export default function Home () {
               <RecipeRecommandation carouselProps={elementsForCarousel} titleRecommandation="Recommandation 4"/>
             </ScrollView>
           : null}
-          <BottomButton as={RoundButton} position={bottomPosition.left} diameter={BottomButtonDiameter} icon={{type: enumIconTypes.fontAwesome, name: searchIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => openSearchScreen(navigation)}/>
+          <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_left} diameter={LargeButtonDiameter} icon={{type: enumIconTypes.fontAwesome, name: searchIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => navigate('Search')}/>
           <VerticalBottomButtons/>
         </SafeAreaView>
     )

@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import { arrayOfIngredientWithoutType, arrayOfType, ingredientType, recipeTableElement, regExp } from "@customTypes/DatabaseElementTypes";
 import { recipeFilterType, prepTimeValues, listFilter, currentMonth, propsForFilter, isSeasonValue } from "@customTypes/RecipeFiltersTypes";

@@ -1,14 +1,11 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 
 // import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import * as SQLite from 'expo-sqlite';
 import { recipeColumnsNames, recipeTableName, recipeDatabaseName, recipeTableElement, encodedRecipeElement, tagTableName, ingredientsTableName, ingredientsColumnsNames, tagsColumnsNames, nutritionColumnsNames, nutritionTableName, ingredientTableElement, tagTableElement, regExp, recipeColumnsEncoding, ingredientType, shoppingListTableElement, shoppingListColumnsEncoding, shoppingListTableName, shoppingListColumnsNames, encodedShoppingListElement } from '@customTypes/DatabaseElementTypes';
 import TableManipulation from './TableManipulation';
-import { EncodingSeparator, textSeparator } from '@styles/typography';
+import { EncodingSeparator, textSeparator, unitySeparator } from '@styles/typography';
 import { Alert } from 'react-native';
 import { AsyncAlert } from './AsyncAlert';
 import { listFilter } from '@customTypes/RecipeFiltersTypes';
@@ -145,6 +142,7 @@ const dbTest: Array<recipeTableElement> = [
       preparation: ["Les saucisses--Dans une seconde sauteuse, faites chauffer un filet d'huile d'olive à feu moyen à vif.\nFaites revenir les saucisses 12 min environ. Salez, poivrez.\nPendant ce temps, faites cuire les macaroni.", "Les macaroni--Portez à ébullition une casserole d'eau salée.\nFaites cuire les macaroni selon les indications du paquet.", "Etape finale--Servez sans attendre votre saucisse au couteau nappée de crème aux champignons et accompagnée des macaroni"],
       time: 25,
       season: "",
+      persons: 2,
     },
     {
         image_Source: 'tree.jpg',
@@ -155,6 +153,7 @@ const dbTest: Array<recipeTableElement> = [
         preparation: ["Les légumes--Émincez l'oignon.\nÉpluchez la carotte.\nCoupez la courgette et la carotte en dés.\nPelez et hachez finement l'ail et le gingembre.\nDans une sauteuse, faites chauffer un filet d'huile de cuisson à feu moyen à vif.\nFaites revenir l'oignon et la carotte 5 min.\nAu bout des 5 min de cuisson, ajoutez la courgette, le curcuma, l'ail et le gingembre et poursuivez la cuisson 10 min. Salez, poivrez.\nEn parallèle, faites cuire le riz.", "Le riz--Portez à ébullition une casserole d'eau salée.\nFaites cuire le riz selon les indications du paquet.", "Le korma--Une fois les légumes cuits, ajoutez dans la sauteuse le concentré de tomates, la purée de noisettes et le lait de coco.\nCouvrez et laissez mijoter 5 min.\nGoûtez et rectifiez l'assaisonnement si nécessaire.\nCiselez la coriandre (en entier, les tiges se consomment).", "A table--Servez votre korma de légumes au lait de coco bien chaud accompagné du riz et parsemé de coriandre !"],
         time: 30,
         season: "",
+        persons: 2,
       },
       {
           image_Source: 'strawberries.jpg',
@@ -165,6 +164,7 @@ const dbTest: Array<recipeTableElement> = [
           preparation: ["Les légumes--Emincez l'oignon.\nCoupez les courgettes en rondelles.\nPressez ou hachez l'ail.\nDans une sauteuse, faites chauffer un filet d'huile d'olive à feu moyen à vif.\nFaites revenir l'oignon 5 min.\nAu bout des 5 min de cuisson, ajoutez l'ail, l'origan et les courgettes et poursuivez la cuisson 10 min. Salez, poivrez.\nEn parallèle, faites cuire les spaghetti.", "Les spaghetti--Portez à ébullition une casserole d'eau salée.\nFaites cuire les spaghetti selon les indications du paquet.\nPendant la cuisson des spaghetti, réalisez la piccata de dinde.", "La piccata de dinde--Pressez le citron jaune.\nDéposez un peu de farine dans une assiette creuse.\nCoupez les escalopes de dinde en fines lanières. Salez, poivrez et trempez-les dans la farine.\nDans une poêle, faites fondre le beurre à feu moyen à vif.\nFaites cuire la dinde 5 à 8 min. En fin de cuisson, versez le jus de citron.", "A table--Servez sans attendre votre piccata de dinde accompagnée des spaghetti et des courgettes sautées !"],
           time: 30,
           season: "",
+          persons: 2,
         },
         {
             image_Source: 'scooter.jpg',
@@ -175,6 +175,7 @@ const dbTest: Array<recipeTableElement> = [
             preparation: ["Les légumes--Emincez l'oignon.\nCoupez les courgettes en rondelles.\nPressez ou hachez l'ail.\nDans une sauteuse, faites chauffer un filet d'huile d'olive à feu moyen à vif.\nFaites revenir l'oignon 5 min.\nAu bout des 5 min de cuisson, ajoutez l'ail, l'origan et les courgettes et poursuivez la cuisson 10 min. Salez, poivrez.\nEn parallèle, faites cuire les spaghetti.", "Les spaghetti--Portez à ébullition une casserole d'eau salée.\nFaites cuire les spaghetti selon les indications du paquet.\nPendant la cuisson des spaghetti, réalisez la piccata de dinde.", "La piccata de dinde--Pressez le citron jaune.\nDéposez un peu de farine dans une assiette creuse.\nCoupez les escalopes de dinde en fines lanières. Salez, poivrez et trempez-les dans la farine.\nDans une poêle, faites fondre le beurre à feu moyen à vif.\nFaites cuire la dinde 5 à 8 min. En fin de cuisson, versez le jus de citron.", "A table--Servez sans attendre votre piccata de dinde accompagnée des spaghetti et des courgettes sautées !"],
             time: 30,
             season: "",
+            persons: 2,
           }
   ]
 
@@ -289,6 +290,7 @@ export default class RecipeDatabase {
                 title: recToEncode.title,
                 description: recToEncode.description,
                 tags: recToEncode.tags.join(EncodingSeparator),
+                persons: recToEncode.persons,
                 ingredients: recToEncode.ingredients.join(EncodingSeparator),
                 preparation: recToEncode.preparation.join(EncodingSeparator),
                 time: recToEncode.time,
@@ -302,13 +304,14 @@ export default class RecipeDatabase {
     
     protected async decodeRecipe (queryResult: string): Promise<recipeTableElement> {
         return new Promise(async (resolve, reject) => {
-            let result: recipeTableElement = { id: 0, image_Source: "", title: "", description: "", tags: [""], ingredients: [""], season: "", preparation: [""], time: 0};
+            let result: recipeTableElement = { id: 0, image_Source: "", title: "", description: "", tags: [""], persons: 0, ingredients: [""], season: "", preparation: [""], time: 0};
+
 
             // ID is not separate in the same way than the others
             const idStr = queryResult.split(`,\"IMAGE_SOURCE`)[0]
         
             // Remove ID part from queryResult and split in 2 part to have the column and the value
-            let arrStr = queryResult.replace(idStr+',', "").split(`","`);
+            let arrStr = queryResult.replace(idStr+',', "").split(`,"`);
             // console.log("Element to map is : ",arrStr);
             
             
@@ -316,7 +319,7 @@ export default class RecipeDatabase {
 
             for (let i = 0; i < arrStr.length; i++) {
                 let elem = arrStr[i].split(`":`); // { "Column name" , "Value"}
-              //   console.log("elem : ",elem);
+                // console.log("elem : ",elem);
                 
                 // IMAGE_SOURCE
                 if(elem[0].includes(recipeColumnsNames.image)) {
@@ -336,6 +339,14 @@ export default class RecipeDatabase {
                         result.tags = await this.decodeTag(elem[1].replace(regExp, ""));
                     }catch(error: any) {
                         reject(error); 
+                    }
+                }
+                // PERSONS
+                else if(elem[0].includes(recipeColumnsNames.persons)) {
+                    try{
+                        result.persons = parseInt(elem[1].replace(regExp, ""));
+                    }catch(error: any) {
+                        reject(error);
                     }
                 }
                 // INGREDIENTS
@@ -400,7 +411,7 @@ export default class RecipeDatabase {
                 // Ex :  {"ID":1,"INGREDIENT":"INGREDIENT NAME","UNIT":"g", "TYPE":"BASE", "SEASON":"*"}
                 let splitIngredient = tableIngredient.split(',');
                 
-                let decodedIngredient = quantity + " " + splitIngredient[2].split(':')[1] + textSeparator + splitIngredient[1].split(':')[1]+ textSeparator + splitIngredient[3].split(':')[1];
+                let decodedIngredient = quantity + unitySeparator + splitIngredient[2].split(':')[1] + textSeparator + splitIngredient[1].split(':')[1]+ textSeparator + splitIngredient[3].split(':')[1];
                 arrDecoded.push(decodedIngredient.replace(regExp, ""));
                 
                 
@@ -756,9 +767,9 @@ export default class RecipeDatabase {
             let quantityDecoded: number;
             let unitDecoded: string;
 
-            if(splitIng[0].includes(" ")){
-                quantityDecoded = Number(splitIng[0].split(" ")[0]);
-                unitDecoded = splitIng[0].split(" ")[1];
+            if(splitIng[0].includes(unitySeparator)){
+                quantityDecoded = Number(splitIng[0].split(unitySeparator)[0]);
+                unitDecoded = splitIng[0].split(unitySeparator)[1];
             }else{
                 quantityDecoded = Number(splitIng[0]);
                 unitDecoded = "";

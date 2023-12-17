@@ -1,9 +1,6 @@
-/**
- * TODO fill this part
- * @format
- */
 
-import { colors, palette } from './colors'
+
+import { cameraPalette, colors, palette } from './colors'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { padding } from './spacing'
 import { loadAsync } from 'expo-font';
@@ -11,7 +8,18 @@ import { loadAsync } from 'expo-font';
 
 
 export const textSeparator = "--";
+export const unitySeparator = "@@";
 export const EncodingSeparator = "__";
+
+export const replaceAllBackToLine = /\n/g;
+export const findAllNumbers = /\b\d+\b/g;
+export const numberAtFirstIndex = /^\d/;
+export const containNumbers = /\d/;
+export const letterRegExp = /[a-zA-z]/;
+export const exceptLettersRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ]/g;
+export const exceptLettersAndSpacesRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ\s]/g;
+export const extractBetweenParenthesis = /\((.*?)\)/;
+
 
 export const fetchFonts = () => {
     return loadAsync({
@@ -32,6 +40,15 @@ export const typoSize = {
     titleSize: "22rem",
 }
 
+export const borderStyle = EStyleSheet.create({
+    border: {
+        borderWidth:2, 
+        color: palette.textPrimary,
+        borderColor: palette.secondary,
+        backgroundColor: palette.white,
+    }
+}) 
+
 export const typoStyles = EStyleSheet.create({
     element: {
         color: palette.textGrey,
@@ -39,8 +56,7 @@ export const typoStyles = EStyleSheet.create({
         fontSize: typoSize.element,
         fontWeight: 'normal',
         textAlign: 'left',
-        marginHorizontal: padding.large,
-        // marginVertical: padding.small,
+        paddingHorizontal: padding.large,
     },
     paragraph: {
         color: palette.textPrimary,
@@ -48,8 +64,8 @@ export const typoStyles = EStyleSheet.create({
         fontSize: typoSize.paragraphSize,
         fontWeight: 'normal',
         textAlign: 'left',
-        marginHorizontal: padding.large, 
-        paddingBottom: padding.small,
+        paddingHorizontal: padding.veryLarge, 
+        paddingVertical: padding.verySmall,
     },
     header: {
         color: palette.textPrimary,
@@ -74,8 +90,22 @@ export const typoStyles = EStyleSheet.create({
         fontSize: typoSize.headerSize,
         marginHorizontal: padding.large,
         width: "85%",
+    },
+    modal: {
+        color: palette.white,
+        fontFamily: typoFamily.normal,
+        fontSize: typoSize.headerSize,
+        fontWeight: 'bold',
+        textAlign: 'left',
+        padding: padding.medium,
+        marginTop: padding.medium,
     }
 })
+
+export const elementBorder = EStyleSheet.flatten([typoStyles.element, borderStyle.border])
+export const paragraphBorder = EStyleSheet.flatten([typoStyles.paragraph, borderStyle.border])
+export const headerBorder = EStyleSheet.flatten([typoStyles.header, borderStyle.border])
+export const titleBorder = EStyleSheet.flatten([typoStyles.title, borderStyle.border])
 
 export const carouselStyle = (length: number) => EStyleSheet.create({
     carouselTitle: {
@@ -141,3 +171,15 @@ export type bulletListDataType = {
     bulletListData: Array<string>,
     shortData: string,
 }
+export type editableText = {
+    withBorder: boolean,
+    onChangeFunction(oldParam: string, newParam: string): void,
+}
+
+export const cropText = EStyleSheet.create({
+    overlay: {
+        textTransform: 'uppercase',
+        color: cameraPalette.buttonsColor,
+        textAlign: 'center'
+    },
+})

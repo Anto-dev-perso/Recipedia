@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 // import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import * as SQLite from 'expo-sqlite';
@@ -133,7 +130,7 @@ export default class TableManipulation {
                     }, 
                     (error: any) => {
                         reject(error);
-                        console.warn('Query received error : ', error);
+                        console.warn('Query', query,' received error : ', error);
                     });
             })
         })
@@ -207,8 +204,6 @@ export default class TableManipulation {
             let insertQuery = this.prepareInsertQuery(arrayElements);
                 
             try{
-                console.log("Query for inserting array : ", insertQuery);
-                
                 await this.executeQuery(insertQuery, db);
                 resolve(true);
             }catch(error: any){

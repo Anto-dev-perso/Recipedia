@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React from "react";
 import renderer from 'react-test-renderer';

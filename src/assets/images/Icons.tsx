@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons"
 import { padding, remValue } from "@styles/spacing";
@@ -38,6 +35,7 @@ export const PlusMinusIcons: Array<iconProp> = [
   {type: enumIconTypes.materialCommunity, name: minusIcon ,size: padding.veryLarge, color: "#414a4c", style: {paddingLeft: 2}}];
 
 export const crossIcon  : entypoIconName = "cross";
+export const trashIcon : fontAwesomeIconName = "trash";
 
 export const homeIcon  : materialCommunityIconName = "home";
 export const shoppingIcon  : entypoIconName = "shopping-cart";
@@ -53,11 +51,18 @@ export const pencilIcon : materialCommunityIconName = "pencil";
 export const exportIcon : entypoIconName = "export";
 
 
+export const rotateIcon: materialCommunityIconName = "rotate-right";
+export const flipHorizontalIcon : materialCommunityIconName = "flip-horizontal";
+export const flipVerticalIcon : materialCommunityIconName = "flip-vertical";
+
 export const iconsSize = {
+    verySmall: 9 * remValue,
     small: 20 * remValue,
     medium: 27 * remValue,
     large: 40 * remValue,
 }
+
+export const iconsColor = "#414a4c";
 
 export type iconProp = {
     type: enumIconTypes,

@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import CarouselItem from "@components/molecules/CarouselItem";
 import { typoStyles } from "@styles/typography";

@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Image, Text, TouchableOpacity, View} from 'react-native';

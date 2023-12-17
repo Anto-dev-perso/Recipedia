@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 
 // From  https://medium.com/@raazthemystery273/how-to-use-i18next-react-i18next-in-react-native-f81ece184cd2

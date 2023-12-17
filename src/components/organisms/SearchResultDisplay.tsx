@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import RectangleCard from '@components/molecules/RectangleCard';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';

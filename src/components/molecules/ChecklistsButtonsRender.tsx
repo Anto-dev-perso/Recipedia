@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import { PlusMinusIcons, checkboxBlankIcon, checkboxFillIcon , checkboxIcons, materialCommunityIconName } from "@assets/images/Icons"
 import RectangleButton from "@components/atomic/RectangleButton"

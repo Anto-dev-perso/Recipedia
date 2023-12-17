@@ -1,10 +1,7 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import SquareButton from "@components/atomic/SquareButton";
-import { viewButtonStyles } from "@styles/buttons";
+import { mediumCardWidth, viewButtonStyles } from "@styles/buttons";
 import { padding, remValue } from "@styles/spacing";
 import { carouselStyle } from "@styles/typography";
 import React from "react";
@@ -15,15 +12,14 @@ type CarouselItemProps = {
   items: Array<recipeTableElement>
 }
 
-  let cardWidth = 120*remValue;
-  let titleLength = cardWidth / 5.5
+  let titleLength = mediumCardWidth / 5.5
 
 export default function CarouselItem (props: CarouselItemProps) {
 
   const renderMyItem = ({ item }: ListRenderItemInfo<recipeTableElement>) => {
     return(
       <View>
-        <SquareButton side={cardWidth} recipe={item}/>
+        <SquareButton side={mediumCardWidth} recipe={item}/>
         <Text style={carouselStyle(titleLength).carouselTitle}>
           {((item.title).length > titleLength) ? 
             (((item.title).substring(0,titleLength-3)) + '...') : 

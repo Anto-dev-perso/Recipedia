@@ -1,13 +1,10 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import SearchBar from "@components/organisms/SearchBar";
 import { screenViews, scrollView } from "@styles/spacing";
 import RecipeDatabase, { recipeDb } from "@utils/RecipeDatabase";
 import React, { useEffect, useState } from "react";
-import { Alert, Keyboard, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Alert, Keyboard, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
 import { SearchScreenProp } from '@customTypes/ScreenTypes';
 import { FlatList } from "react-native-gesture-handler";
 import TextRender from "@components/molecules/TextRender";
@@ -17,6 +14,7 @@ import SearchResultDisplay from "@components/organisms/SearchResultDisplay";
 import FiltersSelection from "@components/organisms/FiltersSelection";
 import { listFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
 import { extractFilteredRecipeDatas, filterPrepTimeFromRecipe, filterTagsFromRecipe, filterIngredientsFromRecipe, recipeTitleFilteredFunction } from "@utils/FilterFunctions";
+import { palette } from "@styles/colors";
 
 export default function Search ({ route, navigation }: SearchScreenProp) {
 
@@ -77,6 +75,7 @@ export default function Search ({ route, navigation }: SearchScreenProp) {
 
     return (
         <SafeAreaView style={screenViews.screenView}>
+            <StatusBar animated={true} backgroundColor={palette.primary}/>
             <ScrollView style={scrollView(0).view} showsVerticalScrollIndicator={false}>
                 <SearchBar clicked={searchBarClicked} searchPhrase={searchPhrase} setClicked={setSearchBarClicked} setSearchPhrase={setSearchPhrase} />
 
@@ -85,7 +84,7 @@ export default function Search ({ route, navigation }: SearchScreenProp) {
                         Keyboard.dismiss();
                         setSearchBarClicked(false);
                         setSearchPhrase(str);
-                    }} />
+                    }}/>
                 : 
                         <FiltersSelection addingFilter={addingAFilter} setAddingFilter={setAddingAFilter} filtersProps={{sectionsState: typeOfFilterClick, ingredientsState: filtersIngredients, tagsState: filtersTags, prepTimeState: filtersPrepTime, setterIngredients: setFiltersIngredients, setterTags: setFiltersTags, setterPrepTime: setFiltersPrepTime, sectionsSetter: setTypeOfFilterClick}} tagsList={filteredTags} ingredientsList={filteredIngredients} />
                         

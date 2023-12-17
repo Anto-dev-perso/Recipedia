@@ -1,37 +1,38 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React from "react";
 import RoundButton from "@components/atomic/RoundButton";
-import BottomButton from "@components/molecules/BottomButton";
-import { BottomButtonDiameter, BottomButtonOffset, bottomPosition } from "@styles/buttons";
+import BottomTopButton from "@components/molecules/BottomTopButton";
+import { LargeButtonDiameter, BottomTopButtonOffset, bottomTopPosition } from "@styles/buttons";
 import { useState } from "react"
 import { View } from "react-native";
-import { pickImage, takePhoto } from "@utils/ImagePicker";
+import { enumforImgPick, imagePickerCall} from "@utils/ImagePicker";
 import { enumIconTypes, cameraIcon, iconsSize, plusIcon, minusIcon, pencilIcon, galleryIcon } from "@assets/images/Icons";
-import { backIcon } from '../../assets/images/Icons';
+import { StackScreenNavigation } from "@customTypes/ScreenTypes";
+import { useNavigation } from "@react-navigation/native";
 
 
 export default function VerticalBottomButtons () {
 
     const [multipleLayout, setMultipleLayout] = useState(false);
 
+
+    const { navigate } = useNavigation<StackScreenNavigation>();
+
     return(
         <View>
             {multipleLayout ? (
                 <View>
-                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: minusIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => setMultipleLayout(false)}/>
+                    <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: minusIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => setMultipleLayout(false)}/>
                     
-                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={BottomButtonOffset} icon={{type: enumIconTypes.materialCommunity, name: pencilIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => null}/>
+                    <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} buttonOffset={BottomTopButtonOffset} icon={{type: enumIconTypes.materialCommunity, name: pencilIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => navigate('Recipe', {mode: 'addManually'})}/>
                     
-                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={2*BottomButtonOffset} icon={{type: enumIconTypes.fontAwesome, name: galleryIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={pickImage}/>
+                    <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} buttonOffset={2*BottomTopButtonOffset} icon={{type: enumIconTypes.fontAwesome, name: galleryIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => imagePickerCall(enumforImgPick.gallery)}/>
 
-                    <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} buttonOffset={3*BottomButtonOffset} icon={{type: enumIconTypes.entypo, name: cameraIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={takePhoto}/>
+                    <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} buttonOffset={3*BottomTopButtonOffset} icon={{type: enumIconTypes.entypo, name: cameraIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => imagePickerCall(enumforImgPick.camera)}/>
                 </View>
             ) : (
-                <BottomButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => setMultipleLayout(true)}/>
+                <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => setMultipleLayout(true)}/>
             )
             }
         </View>

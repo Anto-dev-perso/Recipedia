@@ -1,11 +1,8 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React, { useEffect, useState } from "react";
 import { View, Text } from 'react-native';
-import TagsList from "@components/molecules/TagsList";
+import HorizontalList from "@components/molecules/HorizontalList";
 import TagButton from "@components/atomic/TagButton";
 import { viewButtonStyles } from "@styles/buttons";
 import { recipeDb } from "@utils/RecipeDatabase";
@@ -71,7 +68,7 @@ export default function FiltersSelection ( props: FiltersSelectionProps) {
 
     return (
         <View>
-            <TagsList item={retrieveAllFilters()} icon={{type: enumIconTypes.entypo, name: crossIcon, size: padding.large, color: "#414a4c", style: {paddingRight: 5}}} onPressFunction={(item: string) => deleteElement(item)}/>
+            <HorizontalList list={{propType: "Tag", item: retrieveAllFilters(), icon: {type: enumIconTypes.entypo, name: crossIcon, size: padding.large, color: "#414a4c", style: {paddingRight: 5}}, onTagPress: (item: string) => deleteElement(item)}}/>
             <View style={viewButtonStyles.longHorizontalButton}>
                 <TagButton text={"Add a filter"} leftIcon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: padding.veryLarge, color: "#414a4c", style: {paddingLeft: 5}}} onPressFunction={() => {
                     props.setAddingFilter(!props.addingFilter)

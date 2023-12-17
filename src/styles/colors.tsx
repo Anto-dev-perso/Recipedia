@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 const colors={
     // White and grey color palette 
@@ -66,8 +63,20 @@ const palette={
     
         borderColor: '#D4D4D4',
         backgroundColor: '#E4E4E4',
+        modalBackground: '#404040d5',
+        white: '#F8F8FF',
         ratingColor: '#ebc307',
         progressGrey: '#C1C1C1',
 }
 
-export {colors, palette }
+const cameraPalette = {
+    statusBarColor: '#000000ff',
+    overlayColor: '#212121ff',
+    buttonsColor: '#ffffffff',
+    backgroundColor: '#303030ff',
+    selectorBorderColor: '#b7b6b280',
+    selectorColor: '#b7b6b280',
+    cornersColor: '#fffdfbff',
+}
+
+export {colors, palette, cameraPalette }

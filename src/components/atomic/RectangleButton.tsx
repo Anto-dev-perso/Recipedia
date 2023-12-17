@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React from "react"
 import { Pressable, Text, View } from "react-native"

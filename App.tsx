@@ -1,13 +1,7 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Image, Linking, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Button, Image, Linking, Pressable, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 
 import { roundButtonStyles, squareButtonStyles, rectangleRoundedButtonStyles } from '@styles/buttons';
 import { NavigationContainer } from '@react-navigation/native';
@@ -24,13 +18,15 @@ import Shopping from '@screens/Shopping';
 
 import Recipe from '@screens/Recipe';
 import Search from '@screens/Search';
-import { StackScreenParamList, TabScreenParamList} from '@customTypes/ScreenTypes';
-import { loadAsync, useFonts } from 'expo-font';
-import { fetchFonts } from '@styles/typography';
-import { homeIcon, enumIconTypes, iconsSize, parametersIcon, plannerIcon, shoppingIcon, materialCommunityIconName, fontAwesomeIconName, entypoIconName, displayIcon } from '@assets/images/Icons';
-import { Entypo, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, palette } from '@styles/colors';
+import Crop from '@screens/Crop';
+import { StackScreen, StackScreenParamList, TabScreen, TabScreenParamList} from '@customTypes/ScreenTypes';
+import { cropText, fetchFonts } from '@styles/typography';
+import { homeIcon, enumIconTypes, iconsSize, parametersIcon, plannerIcon, shoppingIcon, materialCommunityIconName, fontAwesomeIconName, entypoIconName, displayIcon, plusIcon, backIcon, rotateIcon, flipHorizontalIcon } from '@assets/images/Icons';
+import { cameraPalette, colors, palette } from '@styles/colors';
+import ModalImageSelect from '@screens/ModalImageSelect';
 
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // import CalendarComponent from './components/CalendarComponent';
 
@@ -41,10 +37,6 @@ import { colors, palette } from '@styles/colors';
 // TODO manage horizontal mode
 
 // const initI18n = i18n; // instanciate the i18n instance
-
-const Tab = createBottomTabNavigator<TabScreenParamList>();
-const Stack = createNativeStackNavigator<StackScreenParamList>();
-
 
 // const dbTest: Array<recipeTableElement> = [
 //   {
@@ -174,7 +166,7 @@ export default function App (){
 
 const Root = () => {
   return(
-    <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
+    <TabScreen.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
         let iconColor;
@@ -214,15 +206,15 @@ const Root = () => {
       tabBarActiveTintColor: palette.primary,
       tabBarInactiveTintColor: 'gray',
     })}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Shopping" component={Shopping} options={{
+      <TabScreen.Screen name="Home" component={Home}/>
+      <TabScreen.Screen name="Shopping" component={Shopping} options={{
         headerRight: () => (
           <Button onPress={() => alert('This is a button!')} title="Info"/>
         )
       }}/>
-      <Tab.Screen name="Plannification" component={Plannification}/>
-      <Tab.Screen name="Parameters" component={Parameters}/>
-  </Tab.Navigator>
+      <TabScreen.Screen name="Plannification" component={Plannification}/>
+      <TabScreen.Screen name="Parameters" component={Parameters}/>
+  </TabScreen.Navigator>
   )}
   // const [showCamera, setShowCamera] = useState(false);
   // const [showTextRecognition, setShowTextRecognition] = useState(false);
@@ -235,10 +227,6 @@ const Root = () => {
   // i18n.changeLanguage('fr'); // Can be use in parameter
   // TODO Good idea to pass translation through components props
 
-
-  const pressFunction = () => {
-    console.log("Button pressed");
-  }
 
   fetchFonts()
   return(
@@ -312,11 +300,36 @@ const Root = () => {
     // </View>
 
     <NavigationContainer>      
-      <Stack.Navigator initialRouteName='Root' screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Root" component={Root}/>
-        <Stack.Screen name="Recipe" component={Recipe}/>
-        <Stack.Screen name="Search" component={Search}/>
-      </Stack.Navigator>
+      <StackScreen.Navigator initialRouteName='Root' screenOptions={{headerShown: false}}>
+        <StackScreen.Group screenOptions={{presentation: 'transparentModal', contentStyle: {backgroundColor: palette.modalBackground}}}>
+          <StackScreen.Screen name="Modal" component={ModalImageSelect}/>
+        </StackScreen.Group>
+
+          <StackScreen.Screen name="Recipe" component={Recipe}/>
+        <StackScreen.Screen name="Root" component={Root}/>
+        <StackScreen.Screen name="Search" component={Search}/>
+        <StackScreen.Screen name="Crop" component={Crop} options={{
+          // headerStyle: {backgroundColor: cameraPalette.overlayColor},
+          headerShown: false,
+          // headerTitle: "",
+          
+          // headerRight: () => (
+          //   <View style={screenViews.tabView}>
+          //     <View style={cropView.overlay}>
+          //       {displayIcon(enumIconTypes.materialCommunity, rotateIcon, iconsSize.medium, cameraPalette.buttonsColor)}
+          //     </View>
+
+          //     <View style={cropView.overlay}>
+          //       {displayIcon(enumIconTypes.materialCommunity, flipIcon, iconsSize.medium, cameraPalette.buttonsColor)}
+          //     </View>
+              
+          //     <Pressable style={cropView.overlay} onPress={() => console.warn("TODO")}>
+          //       <Text style={cropText.overlay}>Redimensionner</Text>
+          //     </Pressable>
+          //   </View>
+          // )
+      }}/>
+      </StackScreen.Navigator>
     </NavigationContainer>
   )
 }

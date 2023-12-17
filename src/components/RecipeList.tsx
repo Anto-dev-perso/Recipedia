@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React, {useEffect, useState} from 'react';
 import {Button, FlatList, Text, TextInput, TouchableOpacity, View, VirtualizedList} from 'react-native';

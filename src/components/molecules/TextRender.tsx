@@ -1,12 +1,10 @@
-/**
- * TODO fill this part
- * @format
- */
 
+
+import { palette } from "@styles/colors"
 import { screenViews } from "@styles/spacing"
-import { textSeparator, typoRender, typoStyles } from "@styles/typography"
+import { editableText, headerBorder, paragraphBorder, textSeparator, typoRender, typoStyles, unitySeparator } from "@styles/typography"
 import React from "react"
-import { FlatList, View, Text, TouchableOpacity } from "react-native"
+import { FlatList, View, Text, TouchableOpacity, TextInput } from "react-native"
 
 
 type TextRenderProps = {
@@ -14,6 +12,7 @@ type TextRenderProps = {
     text: Array<string>
     render: typoRender,
     onClick?(param: string): void,
+    editText?: editableText,
   }
 
 
@@ -36,23 +35,62 @@ export default function TextRender (props: TextRenderProps) {
     const renderAsTable = (item: string, index: number) => {
         // For now, only 2 columns are render 
         const splitItem = item.split(textSeparator);
-    
+        
+        // So far, only ingredients use this
+        const ingName = splitItem[1];
+        const unitAndQuantity = splitItem[0];
+
+        const splitUnitAndQuantity = unitAndQuantity.split(unitySeparator);
+        const quantity = splitUnitAndQuantity[0];
+        const unit = splitUnitAndQuantity[1];
+
+        
         return(
-            <View key={index} style={screenViews.tabView}>
-                <Text style={{...typoStyles.paragraph, flex: 1}}>{splitItem[0]}</Text>
-                <Text  style={{...typoStyles.paragraph, flex: 3}}>{splitItem[1]}</Text>
+            <View key={index}>
+                {props.editText ?
+                    <View style={screenViews.tabView}>
+                        <TextInput style={{...paragraphBorder, flex: 2, textAlign: "center"}} value={quantity} onChangeText={newQuantity => props.editText?.onChangeFunction(`${newQuantity} ${unit}${textSeparator}${ingName}`, item)}/>
+
+                        <Text style={{...paragraphBorder, backgroundColor: palette.backgroundColor, flex: 1, textAlign: "center", textAlignVertical: "center"}}>{unit}</Text>
+
+                        <TextInput style={{...paragraphBorder, flex: 3}} value={ingName} onChangeText={newIngredientName => props.editText?.onChangeFunction(`${unitAndQuantity}${textSeparator}${newIngredientName}`, item)} multiline={true}/>
+                    </View> 
+                :
+                    <View style={screenViews.tabView}>
+                        <Text style={{...typoStyles.paragraph, flex: 1}}>{unitAndQuantity}</Text>
+                        <Text  style={{...typoStyles.paragraph, flex: 3}}>{ingName}</Text>
+                    </View>
+                }
             </View>
         )
-      }
+    }
 
       const renderAsSection = (item: string, index: number) => {
         // For now, only 2 columns are render 
         const splitItem = item.split(textSeparator);
 
+        const sectionTitle = splitItem[0];
+        const sectionParagraph = splitItem[1];
+
         return(
-            <View key={index} style={screenViews.sectionView}>
-                <Text style={typoStyles.header}>{index+1}) {splitItem[0]}</Text>
-                <Text  style={typoStyles.paragraph}>{splitItem[1]}</Text>
+            <View key={index}>
+                {props.editText ? 
+                    <View style={screenViews.sectionView}>
+                        <Text style={{...typoStyles.title, textAlign: "center", }}>Preparation : step {index+1}</Text>
+
+                        <Text style={typoStyles.header}>Title of step {index+1} : </Text>
+                        <TextInput style={headerBorder} value={sectionTitle} onChangeText={newTitle => props.editText?.onChangeFunction(`${newTitle}${textSeparator}${sectionParagraph}`, item)}  multiline={true}/>
+
+                        <Text style={typoStyles.header}>Content of step {index+1} : </Text>
+                        <TextInput style={paragraphBorder} value={sectionParagraph} onChangeText={newParagraph => props.editText?.onChangeFunction(`${sectionTitle}${textSeparator}${newParagraph}`, item)}  multiline={true}/>
+                    </View>
+                : 
+                    <View style={screenViews.sectionView}>
+                        <Text style={typoStyles.header}>{index+1}) {sectionTitle}</Text>
+                        <Text  style={typoStyles.paragraph}>{sectionParagraph}</Text>
+                    </View>
+                }
+
             </View>
         )
       }

@@ -1,16 +1,12 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import { Dimensions, StatusBar, StyleSheet } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import { palette } from "./colors";
+import { cameraPalette, palette } from "./colors";
 
 const scaleFactor = Dimensions.get("screen").scale / Dimensions.get("window").scale;
-const statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight : 0;
 const screenWidth = Dimensions.get('window').width * scaleFactor;
-const screenHeight = (Dimensions.get('window').height - statusBarHeight) * scaleFactor;
+const screenHeight = Dimensions.get('window').height * scaleFactor;
 
 export const remValue = screenWidth / 390
 
@@ -32,7 +28,7 @@ const screenViews = EStyleSheet.create({
         backgroundColor: palette.backgroundColor
     },
     sectionView: {
-        marginVertical: padding.small,
+        margin: padding.verySmall,
     },
     listView: {
         padding: padding.small,
@@ -62,6 +58,19 @@ const viewsSplitScreen = EStyleSheet.create({
     viewInRow: {
         flexDirection: "row"
     }
+})
+
+export const cropView = EStyleSheet.create({
+    overlay: {
+        padding: padding.small,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    background: {
+        flex: 1,
+        flexGrow: 1,
+        backgroundColor: cameraPalette.backgroundColor,
+    },
 })
 
 export { padding, screenViews, viewsSplitScreen }

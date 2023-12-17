@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React, { useState, useMemo } from "react";
 import { TouchableOpacity, Text, View } from "react-native";

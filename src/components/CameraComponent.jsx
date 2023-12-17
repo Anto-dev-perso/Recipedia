@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React, { Component, useRef } from "react";
 import { Button, PendingView, Text, TextInput, TouchableOpacity, View } from 'react-native';

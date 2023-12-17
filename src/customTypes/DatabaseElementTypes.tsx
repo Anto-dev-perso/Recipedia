@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import { textSeparator } from "@styles/typography";
 import { listFilter } from "./RecipeFiltersTypes";
@@ -28,12 +25,24 @@ export type databaseColumnType = {
     type: encodedType,
 };
 
+export enum recipeColumnsNames {
+  image = "IMAGE_SOURCE",
+  title = "TITLE",
+  description = "DESCRIPTION",
+  tags = "TAGS",
+  persons = "PERSONS",
+  ingredients = "INGREDIENTS",
+  preparation = "PREPARATION",
+  time = "TIME",
+}
+
 export type recipeTableElement = {
     id? : number;
     image_Source: string;
     title: string;
     description: string;
     tags: Array<string>;
+    persons: number;
     ingredients: Array<string>;
     season: string;
     preparation: Array<string>;
@@ -46,19 +55,21 @@ export type encodedRecipeElement = {
     title: string,
     description: string,
     tags: string,
+    persons: number,
     ingredients: string,
     preparation: string,
     time: number,
 }
 
 export const recipeColumnsEncoding: Array<databaseColumnType> =  [
-    { colName: "IMAGE_SOURCE", type: encodedType.TEXT},
-    { colName: "TITLE", type: encodedType.TEXT},
-    { colName: "DESCRIPTION", type: encodedType.TEXT},
-    { colName: "TAGS", type: encodedType.TEXT},
-    { colName: "INGREDIENTS", type: encodedType.TEXT},
-    { colName: "PREPARATION", type: encodedType.TEXT},
-    { colName: "TIME", type: encodedType.INTEGER},
+    { colName: recipeColumnsNames.image, type: encodedType.TEXT},
+    { colName: recipeColumnsNames.title, type: encodedType.TEXT},
+    { colName: recipeColumnsNames.description, type: encodedType.TEXT},
+    { colName: recipeColumnsNames.tags, type: encodedType.TEXT},
+    { colName: recipeColumnsNames.persons, type: encodedType.INTEGER},
+    { colName: recipeColumnsNames.ingredients, type: encodedType.TEXT},
+    { colName: recipeColumnsNames.preparation, type: encodedType.TEXT},
+    { colName: recipeColumnsNames.time, type: encodedType.INTEGER},
   ]
 
   export function ingredientWithoutType(ingredient: string){
@@ -96,16 +107,6 @@ export const recipeColumnsEncoding: Array<databaseColumnType> =  [
     });
     return result;
   }
-
-export const recipeColumnsNames = {
-    image: recipeColumnsEncoding[0].colName,
-    title: recipeColumnsEncoding[1].colName,
-    description: recipeColumnsEncoding[2].colName,
-    tags: recipeColumnsEncoding[3].colName,
-    ingredients: recipeColumnsEncoding[4].colName,
-    preparation: recipeColumnsEncoding[5].colName,
-    time: recipeColumnsEncoding[6].colName,
-}
 
 export enum ingredientType {
     base = "Cereal Product",
@@ -178,21 +179,21 @@ export type encodedShoppingListElement = {
   recipes: string,
   purchased: boolean,
 }
+ 
+export enum shoppingListColumnsNames {
+  type = "TYPE",
+  ingredient = "INGREDIENT",
+  quantity = "QUANTITY",
+  unit = "UNIT",
+  recipeTitles = "RECIPES TITLES",
+  purchased = "PURCHASED"
+}
 
 export const shoppingListColumnsEncoding: Array<databaseColumnType> =  [
-  { colName: "TYPE", type: encodedType.TEXT},
-  { colName: "INGREDIENT", type: encodedType.TEXT},
-  { colName: "QUANTITY", type: encodedType.FLOAT},
-  { colName: "UNIT", type: encodedType.TEXT},
-  { colName: "RECIPES TITLES", type: encodedType.TEXT},
-  { colName: "PURCHASED", type: encodedType.BLOB},
+  { colName: shoppingListColumnsNames.type, type: encodedType.TEXT},
+  { colName: shoppingListColumnsNames.ingredient, type: encodedType.TEXT},
+  { colName: shoppingListColumnsNames.quantity, type: encodedType.FLOAT},
+  { colName: shoppingListColumnsNames.unit, type: encodedType.TEXT},
+  { colName: shoppingListColumnsNames.recipeTitles, type: encodedType.TEXT},
+  { colName: shoppingListColumnsNames.purchased, type: encodedType.BLOB},
 ]
-
-export const shoppingListColumnsNames = {
-  type: shoppingListColumnsEncoding[0].colName,
-  ingredient: shoppingListColumnsEncoding[1].colName,
-  quantity: shoppingListColumnsEncoding[2].colName,
-  unit: shoppingListColumnsEncoding[3].colName,
-  recipeTitles: shoppingListColumnsEncoding[4].colName,
-  purchased: shoppingListColumnsEncoding[5].colName,
-}

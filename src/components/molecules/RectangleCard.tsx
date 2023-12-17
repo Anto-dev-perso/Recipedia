@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React from "react"
 import { Image, Pressable, Text, View } from "react-native"
@@ -9,11 +6,11 @@ import { rectangleRoundedButtonStyles, viewButtonStyles, rectangleButtonStyles }
 import { rowTextStyle, typoRender, typoStyles } from "@styles/typography"
 import { recipeTableElement } from "@customTypes/DatabaseElementTypes"
 import { remValue, viewsSplitScreen } from "@styles/spacing"
-import { openRecipeScreen } from "@navigation/NavigationFunctions"
 import { useNavigation } from "@react-navigation/native"
-import { RecipeScreenProp } from "@customTypes/ScreenTypes"
+import { RecipeScreenProp, StackScreenNavigation } from "@customTypes/ScreenTypes"
 import { imageStyle } from "@styles/images"
 import TextRender from "@components/molecules/TextRender"
+import { recipeStateType } from "@screens/Recipe"
 
 
 
@@ -22,10 +19,11 @@ type RectangleCardProps = {
 }
 
 export default function RectangleCard (props: RectangleCardProps) {
-    const navigation = useNavigation<RecipeScreenProp>();
+    const { navigate } = useNavigation<StackScreenNavigation>();
     
     return(
-        <Pressable style={rectangleButtonStyles(400).rectangleButton} onPress={() => openRecipeScreen(props.recipe, navigation)}>
+        <Pressable style={rectangleButtonStyles(400).rectangleButton} onPress={() => navigate('Recipe', {mode: 'readOnly', recipe: props.recipe})
+        }>
 
             <View style={viewButtonStyles.longVerticalButton}>
                 <View style={imageStyle.containerCardStyle}>

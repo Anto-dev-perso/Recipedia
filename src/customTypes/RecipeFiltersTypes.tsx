@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import { shoppingListTableElement } from "./DatabaseElementTypes";
 

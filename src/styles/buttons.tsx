@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import { palette } from './colors'
 import { padding, remValue } from './spacing'
@@ -14,16 +11,25 @@ let opacityRound: number = 0.7;
 let opacitySquare: number = 0.9;
 let opacityRectangleRounded: number = 1;
 
+export const mediumCardWidth = 120 * remValue;
+export const smallCardWidth = 85 * remValue;
 
-export const enum bottomPosition {
-    left = 0,
-    right = 1,
-    center = 2,
-    full = 3,
+
+export const enum bottomTopPosition {
+    top_left = 0,
+    top_right = 1,
+    top_center = 2,
+    top_full = 3,
+    bottom_left = 4,
+    bottom_right = 5,
+    bottom_center = 6,
+    bottom_full = 7,
 }
 
-export const BottomButtonDiameter = 60 * remValue;
-export const BottomButtonOffset = BottomButtonDiameter + 10 * remValue;
+export const smallButtonDiameter = 40 * remValue;
+export const mediumButtonDiameter = 50 * remValue;
+export const LargeButtonDiameter = 60 * remValue;
+export const BottomTopButtonOffset = LargeButtonDiameter + 10 * remValue;
 
 export const roundButtonStyles = (circleDiameter: number) => EStyleSheet.create({
     roundButton: {
@@ -75,9 +81,10 @@ export const viewButtonStyles = EStyleSheet.create({
         contentFit: 'cover'
     },
     wrappingListOfButton: {
-        flex: 1, 
         flexDirection: 'row',
         flexWrap: 'wrap',
+        alignItems: 'center', 
+        justifyContent: 'center'
     },
     longVerticalButton: {
         flexGrow: 1, 
@@ -91,6 +98,7 @@ export const viewButtonStyles = EStyleSheet.create({
     },
     centeredView : {
         justifyContent: 'center',
+        alignItems: 'center',
     }
 })
 
@@ -104,10 +112,15 @@ export const pressButtonStyle = (pressed: boolean) => EStyleSheet.create({
 
 export const viewInsideButtonCentered = EStyleSheet.flatten([viewButtonStyles.viewInsideButtons, viewButtonStyles.centeredView])
 
-const viewBottomButton = (offset: number) => EStyleSheet.create({
+const viewBottomTopButton = (offset: number) => EStyleSheet.create({
     bottomButton: {
         position: 'absolute', 
         bottom: offset,
+        padding: padding.small,
+    },
+    topButton: {
+        position: 'absolute', 
+        top: offset,
         padding: padding.small,
     },
 })
@@ -135,10 +148,14 @@ export const viewPosition = EStyleSheet.create({
 })
 
 
-export const bottomLeftButton = (offset: number) => EStyleSheet.flatten([viewBottomButton(offset).bottomButton, viewPosition.leftButton])
-export const bottomRightButton = (offset: number) => EStyleSheet.flatten([viewBottomButton(offset).bottomButton, viewPosition.rightButton])
-export const bottomCenterButton = (offset: number) => EStyleSheet.flatten([viewBottomButton(offset).bottomButton, viewPosition.centerButton])
-export const bottomFullButton = (offset: number) => EStyleSheet.flatten([viewBottomButton(offset).bottomButton, viewPosition.fullButton])
+export const bottomLeftButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.leftButton])
+export const bottomRightButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.rightButton])
+export const bottomCenterButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.centerButton])
+export const bottomFullButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.fullButton])
+export const topLeftButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.leftButton])
+export const topRightButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.rightButton])
+export const topCenterButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.centerButton])
+export const topFullButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.fullButton])
 
 
 

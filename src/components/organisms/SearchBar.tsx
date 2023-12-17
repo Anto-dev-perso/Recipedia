@@ -1,7 +1,4 @@
-/**
- * TODO fill this part
- * @format
- */
+
 
 import React, { useState } from "react";
 import { Button, Keyboard, TextInput, View } from "react-native";

@@ -4,38 +4,61 @@
 */
 
 import * as ImagePicker from 'expo-image-picker';
-import recognizeText from './OCR';
 import { AsyncAlert } from './AsyncAlert';
+import { localImgData } from '@customTypes/ImageTypes';
+
+
+export enum enumforImgPick {
+    camera = "camera",
+    gallery = "gallery"
+}
+
 
 async function pickImage() {
+
     // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const res = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
+        allowsEditing: false,
         quality: 1,
     })
-
-    if(result.canceled){
-        console.warn("Canceled picking");
-    }else{
-        // await recognizeText(result.assets[0].uri);
-    }
+    return res;
 }
+
 
 async function takePhoto() {
-    const permissionsResult = await ImagePicker.requestCameraPermissionsAsync();
+    let res: ImagePicker.ImagePickerResult = {canceled: true, assets: null} 
+        const permissionsResult = await ImagePicker.requestCameraPermissionsAsync();
 
-    if(permissionsResult.granted === false){
-        // TODO redirect user of re-open the po-up
-        AsyncAlert("Permission refused", "You've refused camera permissions so you can't use this functionality !\n\nTo fix this, go to your settings and allow permission.")
-    }else{
-        let result = await ImagePicker.launchCameraAsync({ allowsEditing: true, quality: 1})
-        if(result.canceled){
-            console.warn("Canceled picking");
+        if(permissionsResult.granted === false){
+            // TODO redirect user of re-open the po-up
+            AsyncAlert("Permission refused", "You've refused camera permissions so you can't use this functionality !\n\nTo fix this, go to your settings and allow permission.")
+            console.warn("PERMISSION REFUSED")
         }else{
-            // await recognizeText(result.assets[0].uri);
+            res = await ImagePicker.launchCameraAsync({ allowsEditing: false, quality: 1})
         }
-    }
+        return res;
 }
 
-export { pickImage, takePhoto }
+export async function imagePickerCall(type: enumforImgPick): Promise<localImgData>{
+    return new Promise(async (resolve, reject) => {
+
+        let pickerResult: ImagePicker.ImagePickerResult;
+        switch (type) {
+            case enumforImgPick.camera:
+                    pickerResult = await takePhoto();
+                    break;
+                case enumforImgPick.gallery:
+                    pickerResult = await pickImage();
+                    break;
+                default:
+                    pickerResult = {canceled: true, assets: null}
+                    break;
+                }
+            if(pickerResult.canceled){
+                reject("Canceled picking");
+            }else{
+                resolve({uri: pickerResult.assets[0].uri, height: pickerResult.assets[0].height, width: pickerResult.assets[0].width})
+            }
+    })
+}
