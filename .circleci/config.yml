@@ -56,7 +56,8 @@ jobs:
       #     avd-name: emulator-dev
       - run:
           working_directory: ~/workspace/repo
-          command: pwd && ls && npx detox build --configuration android.emu.release
+          # command: pwd && ls && npx detox build --configuration android.emu.release
+          command: npx expo prebuild && npx detox build --configuration android.emu.release
           name: Build app
       - persist_to_workspace:
           root: ~/workspace
@@ -77,6 +78,25 @@ jobs:
           root: ~/workspace
           paths:
             - .
+
+  Build with EAS:
+    docker:
+      - image: cimg/node:lts
+    working_directory: ~/workspace/repo
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Build EAS
+          command: npx eas-cli build -p android --non-interactive --local -e test
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - .
   # deploy:
   #   executor: heroku/default
   #   steps:
@@ -90,6 +110,7 @@ workflows:
   build and test:
     jobs: 
       - prepare_env
+      - Build with EAS
       - unit and integration tests:
           requires:
             - prepare_env
@@ -99,5 +120,4 @@ workflows:
       - E2E tests:
           requires:
             - build for E2E
-
 

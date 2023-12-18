@@ -1,14 +1,27 @@
 {
-    "build": {
-      "test": {
-        "android": {
-          "gradleCommand": ":app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release",
-          "withoutCredentials": true
-        },
-        "ios": {
-          "simulator": true
-        }
+  "cli": {
+    "version": ">= 5.9.2"
+  },
+  "build": {
+    "test": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release",
+        "withoutCredentials": true
+      },
+      "ios": {
+        "simulator": true
       }
-    }
+    },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
   }
-  
+}
