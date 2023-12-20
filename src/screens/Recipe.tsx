@@ -47,13 +47,16 @@ type addRecipeFromPicture = {
 
 export type RecipePropType = readRecipe | addRecipeManually | addRecipeFromPicture
 
-const fileUri: localImgData = {uri : fileGestion.get_directoryUri() + "bike.jpg", height: 853, width: 1280};
-
 export default function Recipe ({ route, navigation }: RecipeScreenProp) {
 
     const prop: RecipePropType = route.params;
 
-    const recipeFromProps: recipeTableElement = (prop.mode == "readOnly") ? (prop.recipe) : ({image_Source: "", ingredients: [], persons: 0, preparation: [], season: "", tags: [], time: 0, title: "", description: ""}) ;
+    const recipeFromProps: recipeTableElement = (prop.mode == "readOnly") ? (prop.recipe) : ({image_Source: "", ingredients: [], persons: 0, preparation: [], season: "", tags: [], time: 0, title: "", description: ""});
+
+    let propImg = new Array<localImgData>();
+    if(prop.mode == 'addfromPic'){
+        propImg.push(prop.img)
+    }
 
     let editMode: recipeStateType;
 
@@ -68,8 +71,6 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
             editMode = recipeStateType.add;
             break;
     }
-
-
     
 
 
@@ -77,17 +78,18 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
     const [propRecipe, setPropRecipe] = useState<recipeTableElement>(recipeFromProps);
 
 
-    // const [imgForOCR, setImgForOCR] = useState<Array<localImgData>>(prop.img ? prop.img : []);
+    const [imgForOCR, setImgForOCR] = useState<Array<localImgData>>(propImg);
 
-    const testImg = new Array<localImgData>()
-        testImg.push({uri: fileGestion.get_directoryUri() + "bike.jpg", width: 100, height:100})
-    const [imgForOCR, setImgForOCR] = useState<Array<localImgData>>(testImg);
+    // const testImg = new Array<localImgData>()
+    // testImg.push({uri: fileGestion.get_directoryUri() + "bike.jpg", width: 100, height:100})
+
+    // const [imgForOCR, setImgForOCR] = useState<Array<localImgData>>(testImg);
 
 
         const openModalforField = (field: recipeColumnsNames) => {
         navigation.navigate('Modal', {arrImg: imgForOCR, setState: setImgForOCR, onSelectFunction: (imgSelected: localImgData, newNav: StackScreenNavigation) => {
-            navigation.navigate('Crop', {imageToCrop: imgSelected, validateFunction: async (newUri: string) => {
-                await fillOneField(newUri, field);
+            navigation.navigate('Crop', {imageToCrop: imgSelected, validateFunction: async (newImg: localImgData) => {
+                await fillOneField(newImg.uri, field);
                 newNav.goBack();
             }});
         }});
@@ -97,8 +99,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
         // TODO for debug only, remove these for release
         switch (field) {
             case recipeColumnsNames.image:
-                // setPropRecipe({...propRecipe, image_Source: uri});
-                setPropRecipe({...propRecipe, image_Source: fileGestion.get_directoryUri() + "bike.jpg"});
+                setPropRecipe({...propRecipe, image_Source: uri});
                 break;
             case recipeColumnsNames.title:
                 const title = await recognizeText<string>(uri, propRecipe.title, field);
@@ -145,6 +146,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
     }
     
     const editValidation = () => { 
+        // TODO code edit and clean cache
         // recipeDb.editRecipe()
         setStackMode(recipeStateType.readOnly);
     }
@@ -294,9 +296,10 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                     return(
                         <View style={imageStyle.containerFullStyle}>
                         <View style={imageStyle.imageInsideView}>
-                            {(recipeStateType.add && propRecipe.image_Source.length == 0) ? 
+                            {(stackMode == recipeStateType.add && propRecipe.image_Source.length == 0) ? 
                                 <RoundButton style={{...viewButtonStyles.centeredView, flex: 1}} diameter={mediumButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.small, color: "#414a4c"}} onPressFunction={() => openModalforField(recipeColumnsNames.image)}/>
                             :
+                            // TODO add button to take picture when image is empty (with persmission to edit this time)
                                 <Image source={{uri: propRecipe.image_Source}} style={imageStyle.imageInsideView} contentFit="cover"/>
                             }
                         </View>
@@ -319,7 +322,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                     return (
                         <View style={screenViews.sectionView}>
                             <Text style={typoStyles.header}>Title of the recipe : </Text>
-                            {(recipeStateType.add && propRecipe.title.length == 0) ? 
+                            {(stackMode == recipeStateType.add && propRecipe.title.length == 0) ? 
                                 <RoundButton style={{...viewButtonStyles.centeredView, flex: 1}} diameter={mediumButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.small, color: "#414a4c"}} onPressFunction={() => openModalforField(recipeColumnsNames.title)}/>
                             :
                                 <TextInput style={titleBorder} value={propRecipe.title} onChangeText={newTitle => setPropRecipe({...propRecipe, title: newTitle})} multiline={true}/>
@@ -342,7 +345,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                     return (
                         <View style={screenViews.sectionView}>
                             <Text style={typoStyles.header}>Description of the recipe : </Text>
-                            {(recipeStateType.add && propRecipe.description.length == 0) ? 
+                            {( stackMode == recipeStateType.add && propRecipe.description.length == 0) ? 
                                 <RoundButton style={{...viewButtonStyles.centeredView, flex: 1}} diameter={mediumButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.small, color: "#414a4c"}} onPressFunction={() => openModalforField(recipeColumnsNames.description)}/>
                             :
                                 <TextInput style={paragraphBorder} value={propRecipe.description} onChangeText={newTitle => setPropRecipe({...propRecipe, description: newTitle})}  multiline={true}/>
@@ -371,7 +374,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                             <Text style={typoStyles.element}>Tags are a way to identify a recipe and make easier its search. Here are some examples of tags you can have : {examplesTags}</Text>
                             <View style={screenViews.tabView}>
                                 {/* TODO imake a proper implementation  */}
-                                {(recipeStateType.add && propRecipe.tags.length > 0) ? 
+                                {(stackMode == recipeStateType.add && propRecipe.tags.length > 0) ? 
                                     <View style={{flex: 3}}>
                                         <HorizontalList list={{propType: "Tag", item: propRecipe.tags, icon: {type: enumIconTypes.entypo, name: crossIcon, size: padding.large, color: iconsColor, style: {paddingRight: 5}}, editText: {
                                         withBorder: true, onChangeFunction: editTags}, onTagPress: () => null}}/>
@@ -399,13 +402,14 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                 return (
                     <View style={screenViews.sectionView}>
 
-                            {(recipeStateType.add && propRecipe.persons == 0) ? 
+                            {(stackMode == recipeStateType.add && propRecipe.persons == 0) ? 
 
                                 <View style={screenViews.tabView}>
                                     <Text style={{...typoStyles.header, flex: 5}}>This recipe is for : </Text>
                                     <RoundButton style={{...viewButtonStyles.centeredView, flex: 6, alignItems: 'flex-start'}} diameter={mediumButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.small, color: "#414a4c"}} onPressFunction={() => openModalforField(recipeColumnsNames.persons)}/>
                                 </View>
                             :
+                            // TODO Kind of buggy when 0
                             <View style={screenViews.tabView}>
                                     <Text style={{...typoStyles.header, flex: 5}}>This recipe is for : </Text>
                                     <TextInput style={{...headerBorder, flex: 1, textAlign: "center"}} value={propRecipe.persons.toString()} onChangeText={newPerson => setPropRecipe({...propRecipe, persons: Number(newPerson)})} keyboardType="numeric" maxLength={2}/>
@@ -414,7 +418,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                             }
                         <Text style={typoStyles.title}>Ingredients</Text>
 
-                        {(recipeStateType.add && propRecipe.ingredients.length == 0) ? 
+                        {(stackMode == recipeStateType.add && propRecipe.ingredients.length == 0) ? 
                             <View style={viewButtonStyles.centeredView}>
                                 <RoundButton diameter={mediumButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.small, color: "#414a4c"}} onPressFunction={() => openModalforField(recipeColumnsNames.ingredients)} />
                             </View>
@@ -452,7 +456,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                 case recipeStateType.add:
                     return (
                         <View>
-                                {(recipeStateType.add && propRecipe.time == 0) ? 
+                                {(stackMode == recipeStateType.add && propRecipe.time == 0) ? 
                                     <View style={screenViews.tabView}>
                                         <Text style={{...typoStyles.header, flex: 6}}>Time to prepare the recipe : </Text>
                                         <RoundButton style={{...viewButtonStyles.centeredView, flex: 3, alignItems: 'flex-start'}} diameter={mediumButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.small, color: "#414a4c"}} onPressFunction={() => openModalforField(recipeColumnsNames.time)}/>
@@ -466,7 +470,7 @@ export default function Recipe ({ route, navigation }: RecipeScreenProp) {
                                 }
 
                             {/* TODO let the possibility to add another time in picture */}
-                            {(recipeStateType.add && propRecipe.preparation.length == 0) ?
+                            {(stackMode == recipeStateType.add && propRecipe.preparation.length == 0) ?
                                 <View>
                                     <Text style={typoStyles.title}>{`Preparation`}</Text>
                                     <View style={{...screenViews.sectionView, ...viewButtonStyles.centeredView}}>

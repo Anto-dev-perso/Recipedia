@@ -13,11 +13,20 @@ import { useNavigation } from "@react-navigation/native";
 
 
 export default function VerticalBottomButtons () {
-
+    
     const [multipleLayout, setMultipleLayout] = useState(false);
-
-
+    
+    
     const { navigate } = useNavigation<StackScreenNavigation>();
+
+    const pickImageAndOpenNewRecipe = async (mode: enumforImgPick) => {
+        // TODO add a loading because camera can takes a while
+        try {
+            imagePickerCall(mode).then(imgPick => navigate('Recipe', {mode: "addfromPic", img: imgPick}));
+        } catch (error) {
+            console.log("Cancel press by user. Catch receive ", error);
+        }
+    }
 
     return(
         <View>
@@ -27,9 +36,9 @@ export default function VerticalBottomButtons () {
                     
                     <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} buttonOffset={BottomTopButtonOffset} icon={{type: enumIconTypes.materialCommunity, name: pencilIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => navigate('Recipe', {mode: 'addManually'})}/>
                     
-                    <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} buttonOffset={2*BottomTopButtonOffset} icon={{type: enumIconTypes.fontAwesome, name: galleryIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => imagePickerCall(enumforImgPick.gallery)}/>
+                    <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} buttonOffset={2*BottomTopButtonOffset} icon={{type: enumIconTypes.fontAwesome, name: galleryIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => pickImageAndOpenNewRecipe(enumforImgPick.gallery)}/>
 
-                    <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} buttonOffset={3*BottomTopButtonOffset} icon={{type: enumIconTypes.entypo, name: cameraIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => imagePickerCall(enumforImgPick.camera)}/>
+                    <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} buttonOffset={3*BottomTopButtonOffset} icon={{type: enumIconTypes.entypo, name: cameraIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => pickImageAndOpenNewRecipe(enumforImgPick.camera)}/>
                 </View>
             ) : (
                 <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_right} diameter={LargeButtonDiameter} icon={{type: enumIconTypes.materialCommunity, name: plusIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => setMultipleLayout(true)}/>

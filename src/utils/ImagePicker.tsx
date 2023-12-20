@@ -15,13 +15,20 @@ export enum enumforImgPick {
 
 
 async function pickImage() {
+    let res: ImagePicker.ImagePickerResult = {canceled: true, assets: null};
+    const permissionsResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    // No permissions request is necessary for launching the image library
-    const res = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
-        quality: 1,
-    })
+    if(permissionsResult.granted === false){
+        // TODO redirect user of re-open the po-up
+        AsyncAlert("Permission refused", "You've refused library permissions so you can't use this functionality !\n\nTo fix this, go to your settings and allow permission.")
+        console.warn("PERMISSION REFUSED")
+    }else{
+        res = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: false,
+            quality: 1,
+        })
+    }
     return res;
 }
 
@@ -32,10 +39,10 @@ async function takePhoto() {
 
         if(permissionsResult.granted === false){
             // TODO redirect user of re-open the po-up
-            AsyncAlert("Permission refused", "You've refused camera permissions so you can't use this functionality !\n\nTo fix this, go to your settings and allow permission.")
+            AsyncAlert("Permission refused", "You've refused camera permissions so you can't use this functionality !\n\nTo fix this, go to your settings and allow permission")
             console.warn("PERMISSION REFUSED")
         }else{
-            res = await ImagePicker.launchCameraAsync({ allowsEditing: false, quality: 1})
+            res = await ImagePicker.launchCameraAsync({ allowsEditing: false, quality: 1, mediaTypes: ImagePicker.MediaTypeOptions.Images})
         }
         return res;
 }

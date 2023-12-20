@@ -18,7 +18,7 @@ LogBox.ignoreLogs(['Non-serializable values were found in the navigation state.'
 
 export type CropPropsType = {
     imageToCrop: localImgData,
-    validateFunction(newUri: string): void,
+    validateFunction(newImg: localImgData): void,
 }
 
 export default function Crop ( {route, navigation}: CropScreenProp ) {
@@ -69,10 +69,12 @@ export default function Crop ( {route, navigation}: CropScreenProp ) {
         }
     
         const validatePress = async () => {
+            // TODO take a loooong time because camera take short videos
             if(localImage.uri.length > 0){
                 try {
                     const imgToReturn = await fileGestion.cropImage(localImage.uri, accumulatedPan, croppingImage, imageScaleFactor, cropSize);
-                    await prop.validateFunction(imgToReturn.uri);
+                    console.log("Crop image done : ", imgToReturn);
+                    await prop.validateFunction(imgToReturn);
                 } catch (error) {
                     console.warn(error);
                 }

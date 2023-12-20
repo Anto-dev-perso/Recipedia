@@ -153,7 +153,7 @@ export default class FileGestion {
                 
                 resolve(manipulateRes);
             } catch (error) {
-                console.log(error);
+                reject(error);
             }
         })
     }
