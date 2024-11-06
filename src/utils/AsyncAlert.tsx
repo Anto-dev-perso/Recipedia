@@ -6,38 +6,37 @@
 import { Alert, AlertButton } from "react-native";
 import { typoStyles } from '@styles/typography';
 
-const AsyncAlert = async (title: string, msg: string, ok?: string, cancel?: string,neutral?: string,  initialValue?: string) : Promise<string> => {
+export enum alertUserChoice {
+    cancel,
+    ok,
+    neutral
+} 
 
-    return new Promise(async (resolve, reject) => {
+function AsyncAlert(title: string, msg: string, ok?: string, cancel?: string, neutral?: string) : Promise<alertUserChoice> {
+
+    return new Promise((resolve, reject) => {
         
         let buttons = new Array<AlertButton>();
 
-        let valueToEdit: string = "";
-
-        if(initialValue){
-            valueToEdit = initialValue;
-        }
-
         if(cancel){
             buttons.push({text: cancel, onPress: () => {
-                console.warn("Cancel pressed");
-                reject(Error("Canceled by user"));
+                resolve(alertUserChoice.cancel);
             }, style: typoStyles.paragraph})
         }
 
         if(neutral){
             buttons.push({text: neutral, onPress:  () => {
                 // Let user edit the message
-                resolve(valueToEdit + " edited");
+                resolve(alertUserChoice.neutral);
             }, style: typoStyles.paragraph})
         }
 
         if(ok){
-            buttons.push({text: ok, onPress: async () => resolve(valueToEdit), style: typoStyles.paragraph})
+            buttons.push({text: ok, onPress: async () => resolve(alertUserChoice.ok), style: typoStyles.paragraph})
         }
 
 
-        Alert.alert(title, msg, buttons, {cancelable: true});
+        Alert.alert(title, msg, buttons, { cancelable: true });
 
     })
 }

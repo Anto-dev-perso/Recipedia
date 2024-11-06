@@ -9,7 +9,7 @@ import { bulletListDataType, textSeparator, typoRender, typoStyles } from "@styl
 import React, { useEffect, useState } from "react"
 import { FlatList, View, Text, TouchableOpacity, Pressable } from "react-native"
 import CheckBoxButton from '../atomic/CheckBoxButton';
-import { listFilter, propsForShopping, recipeFilterType} from '@customTypes/RecipeFiltersTypes';
+import { TListFilter, propsForShopping, recipeFilterType} from '@customTypes/RecipeFiltersTypes';
 import { shoppingListTableElement } from "@customTypes/DatabaseElementTypes"
 import { recipeDb } from "@utils/RecipeDatabase"
 
@@ -29,7 +29,7 @@ export type shoppingCheckbox = {
 }
 
 type ChecklistsButtonsRenderProps = {
-    filterTitle: listFilter,
+    filterTitle: TListFilter,
     
     arrayToDisplay: Array<string>,
 

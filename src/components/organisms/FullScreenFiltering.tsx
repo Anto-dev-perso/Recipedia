@@ -2,13 +2,14 @@
 
 import { PlusMinusIcons } from "@assets/images/Icons"
 import React from "react"
-import { listFilter, propsForFilter } from "@customTypes/RecipeFiltersTypes";
+import { propsForFilter } from "@customTypes/RecipeFiltersTypes";
 import SectionClickableList from "@components/molecules/SectionClickableList";
+import { ingredientTableElement } from "@customTypes/DatabaseElementTypes";
 
 
 type FullScreenFilteringProps = {
     tagsList: Array<string>,
-    ingredientsList: Array<string>,
+    ingredientsList: Array<ingredientTableElement>,
 
     filtersProps: propsForFilter,
   }

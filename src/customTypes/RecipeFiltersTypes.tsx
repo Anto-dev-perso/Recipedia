@@ -1,42 +1,35 @@
 
 
-import { shoppingListTableElement } from "./DatabaseElementTypes";
+import { ingredientType, shoppingListTableElement } from './DatabaseElementTypes';
 
 export const currentMonth = new Date().getMonth() + 1;
 
 export type propsForFilter = {
-    sectionsState: Array<listFilter>
+    sectionsState: Array<TListFilter>
     ingredientsState: Array<recipeFilterType>,
     tagsState: Array<recipeFilterType>,
     prepTimeState: Array<recipeFilterType>,
 
-    sectionsSetter: React.Dispatch<React.SetStateAction<Array<listFilter>>>,
+    sectionsSetter: React.Dispatch<React.SetStateAction<Array<TListFilter>>>,
     setterIngredients: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
     setterTags: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
     setterPrepTime: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
 }
 
-export enum listFilter {
+export enum nonIngredientFilters {
     prepTime = "Preparation Time",
-    tags = "Tags",
     inSeason = "In-season",
-    cerealProduct = "Cereal Product",
-    condiment = "Condiment",
-    sauce = "Sauce",
-    vegetable = "Vegetable",
-    meet = "Meet",
-    poultry = "Poultry",
-    spice = "Spice",
-    fish = "Fish",
-    tofu = "Tofu",
-    dairy = "Dairy",
-    sugar = "Sugar",
-    fruit = "Fruit",
+    tags = "Tags",
     purchased = "Already purchased",
     // kalories: "Kalories",
 }
 
-export const filtersCategories: Array<listFilter> = [
+export const listFilter = { ...ingredientType, ...nonIngredientFilters } as const;
+export type TListFilter = typeof listFilter[keyof typeof listFilter];
+
+
+// TODO can we get rid of this array ?
+export const filtersCategories: Array<TListFilter> = [
     listFilter.inSeason,
     listFilter.prepTime,
     listFilter.tags,
@@ -56,7 +49,7 @@ export const filtersCategories: Array<listFilter> = [
 
 
 export type recipeFilterType = {
-    title: listFilter,
+    title: TListFilter,
     value: string,
 }
 
@@ -65,7 +58,7 @@ export type propsForShopping = {
     setterIngList: React.Dispatch<React.SetStateAction<Array<shoppingListTableElement>>>,
 }
 
-export const shoppingCategories: Array<listFilter> = [
+export const shoppingCategories: Array<TListFilter> = [
     listFilter.cerealProduct,
     listFilter.condiment,
     listFilter.sauce,

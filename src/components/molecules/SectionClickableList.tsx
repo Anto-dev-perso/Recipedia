@@ -10,9 +10,9 @@ import React, { useState, useEffect } from "react"
 import { FlatList, View, Text, TouchableOpacity, Pressable, ScrollView } from 'react-native';
 import CheckBoxButton from '../atomic/CheckBoxButton';
 import ChecklistsButtonsRender, { filterCheckbox, shoppingCheckbox } from "@components/molecules/ChecklistsButtonsRender"
-import { filtersCategories, listFilter, prepTimeValues, propsForFilter, propsForShopping, recipeFilterType, shoppingCategories } from "@customTypes/RecipeFiltersTypes";
+import { filtersCategories, TListFilter, prepTimeValues, propsForFilter, propsForShopping, recipeFilterType, shoppingCategories, listFilter } from "@customTypes/RecipeFiltersTypes";
 import { recipeDb } from "@utils/RecipeDatabase";
-import { arrayOfIngredientWithoutType, arrayOfType, ingredientType, ingredientWithoutType, shoppingListTableElement } from "@customTypes/DatabaseElementTypes";
+import { arrayOfType, ingredientTableElement, ingredientType, ingredientWithoutType, shoppingListTableElement } from "@customTypes/DatabaseElementTypes";
 import { selectFilterFromProps } from "@utils/FilterFunctions";
 import { colors } from '@styles/colors';
 import { toggleActivationFunctions } from "@customTypes/ScreenTypes";
@@ -21,7 +21,7 @@ type propsFromSearch = {
     screen: "search",
 
     tagsList: Array<string>,
-    ingredientsList: Array<string>,
+    ingredientsList: Array<ingredientTableElement>,
     
     filtersProps: propsForFilter,
 }
@@ -42,7 +42,7 @@ type SectionClickableListProps = {
 
 export default function SectionClickableList (props: SectionClickableListProps) {
 
-    const renderItem = ({item}: {item: listFilter}) => {
+    const renderItem = ({item}: {item: TListFilter}) => {
 
         let itemRoute: filterCheckbox | shoppingCheckbox;
         let elemToDisplay = new Array<string>();

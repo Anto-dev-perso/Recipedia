@@ -4,7 +4,6 @@ import { enumIconTypes, searchIcon, iconsSize, exportIcon } from "@assets/images
 import RoundButton from "@components/atomic/RoundButton";
 import SectionClickableList from "@components/molecules/SectionClickableList";
 import { shoppingListTableElement } from "@customTypes/DatabaseElementTypes";
-import { listFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
 import { useFocusEffect } from "@react-navigation/native";
 import { bottomTopPosition, LargeButtonDiameter } from "@styles/buttons";
 import { palette } from "@styles/colors";

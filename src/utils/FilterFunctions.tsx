@@ -1,11 +1,11 @@
 
 
-import { arrayOfIngredientWithoutType, arrayOfType, ingredientType, recipeTableElement, regExp } from "@customTypes/DatabaseElementTypes";
-import { recipeFilterType, prepTimeValues, listFilter, currentMonth, propsForFilter, isSeasonValue } from "@customTypes/RecipeFiltersTypes";
+import { arrayOfType, ingredientTableElement, ingredientType, recipeTableElement, regExp, tagTableElement } from "@customTypes/DatabaseElementTypes";
+import { recipeFilterType, prepTimeValues, listFilter, currentMonth, propsForFilter, TListFilter } from "@customTypes/RecipeFiltersTypes";
 import { textSeparator } from "@styles/typography";
 
 
-export function selectFilterFromProps(filter: listFilter, filterProps: propsForFilter, tagsList: Array<string>, ingredientsList: Array<string>): [Array<recipeFilterType>, React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>, Array<string>]{
+export function selectFilterFromProps(filter: TListFilter, filterProps: propsForFilter, tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>): [Array<recipeFilterType>, React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>, Array<string>]{
     
     let filterValue: Array<recipeFilterType>;
     let filterSetter: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>;
@@ -15,12 +15,12 @@ export function selectFilterFromProps(filter: listFilter, filterProps: propsForF
         case listFilter.inSeason:
             filterValue = filterProps.ingredientsState;
             filterSetter = filterProps.setterIngredients;
-            elementFilters = isSeasonValue;
+            elementFilters = ["Only in-season ingredients"];
         break;
             case listFilter.cerealProduct:
             filterValue = filterProps.ingredientsState;
             filterSetter = filterProps.setterIngredients;
-            elementFilters = arrayOfType(ingredientsList, ingredientType.base);
+            elementFilters = arrayOfType(ingredientsList, ingredientType.cerealProduct);
         break;
         case listFilter.tags:
             filterValue = filterProps.tagsState
@@ -55,7 +55,12 @@ export function selectFilterFromProps(filter: listFilter, filterProps: propsForF
         default:
             filterValue = filterProps.ingredientsState;
             filterSetter = filterProps.setterIngredients;
-            elementFilters = arrayOfIngredientWithoutType(ingredientsList);
+
+            let tmpIngName = new Array<string>;
+            ingredientsList.forEach(ing => {
+                tmpIngName.push(ing.ingName)
+            });
+            elementFilters = tmpIngName;
             break;
         }
         return [filterValue, filterSetter, elementFilters];
@@ -70,8 +75,8 @@ export function recipeTitleFilteredFunction(recipeArray: Array<recipeTableElemen
     return result;
 }
 
-export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement>): [Array<string>, Array<string>, Array<string>] {
-    let ingredientsArray = new Array<string>();
+export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement>): [Array<string>, Array<ingredientTableElement>, Array<string>] {
+    let ingredientsArray = new Array<ingredientTableElement>();
     let tagsArray = new Array<string>();
 
     const titleSortedArray = recipeArray.map(({ title }) => (title)).sort();
@@ -80,11 +85,8 @@ export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement
 
     recipeArray.forEach(element => {
         element.ingredients.forEach(ing => {
-            const splitIngredients = ing.split(textSeparator)
-            let ingDecoded = splitIngredients[1] + textSeparator + splitIngredients[2];
-            ingDecoded = ingDecoded.replace(regExp, "");
-            if (!ingredientsArray.includes(ingDecoded)) {
-                ingredientsArray.push(ingDecoded);
+            if (!ingredientsArray.includes(ing)) {
+                ingredientsArray.push(ing);
             }
         });
         element.tags.forEach(tag => {
@@ -96,7 +98,7 @@ export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement
     tagsArray.sort();
     ingredientsArray.sort();
 
-    return [titleSortedArray, tagsArray, ingredientsArray]
+    return [titleSortedArray, ingredientsArray, tagsArray]
 }
 
 export function filterPrepTimeFromRecipe(recipeArray: Array<recipeTableElement>, filterTimeArray: Array<recipeFilterType>) {
@@ -160,7 +162,9 @@ export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filterA
                     arrayToFilter.push(item.season);
                 }
                 else {
-                    arrayToFilter = item.ingredients;
+                    item.ingredients.forEach(ing => {
+                        arrayToFilter.push(ing.ingName)
+                    });
                 }
                 keepElement = keepElement || filterInArrayOfString(arrayToFilter, filterArray[indexFilters].value);
             }
@@ -209,7 +213,7 @@ export function filterIngredientsFromRecipe(recipeArray: Array<recipeTableElemen
     return result;
 }
 
-const filterInSeason = (arr: Array<recipeTableElement>, filter: Array<listFilter>) => {
+const filterInSeason = (arr: Array<recipeTableElement>, filter: Array<TListFilter>) => {
     let result: Array<recipeTableElement> = arr;
 
     // In-season is a unique filter

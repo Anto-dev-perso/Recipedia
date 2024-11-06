@@ -6,7 +6,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { recipeTableElement } from "./DatabaseElementTypes";
 import RecipeDatabase from "@utils/RecipeDatabase";
-import { listFilter } from "./RecipeFiltersTypes";
+import { TListFilter } from "./RecipeFiltersTypes";
 import { CropPropsType } from "@screens/Crop";
 import { RecipePropType } from "@screens/Recipe";
 import { BottomTabNavigationProp, BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -47,6 +47,6 @@ export type TabScreenParamList = {
   export type ModalScreenProp = NativeStackScreenProps<StackScreenParamList, 'Modal'>;
 
 export type toggleActivationFunctions = {
-    onActivation:(item? : listFilter) => void,
-    onDeActivation:(item? : listFilter) => void,
+    onActivation:(item? : TListFilter) => void,
+    onDeActivation:(item? : TListFilter) => void,
 }

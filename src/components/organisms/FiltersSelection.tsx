@@ -7,13 +7,14 @@ import TagButton from "@components/atomic/TagButton";
 import { viewButtonStyles } from "@styles/buttons";
 import { recipeDb } from "@utils/RecipeDatabase";
 import FullScreenFiltering from "@components/organisms/FullScreenFiltering";
-import { listFilter, propsForFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
+import { propsForFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
 import { crossIcon , minusIcon , plusIcon , filterPlusIcon , filterMinusIcon, displayIcon, enumIconTypes  } from "@assets/images/Icons";
 import { padding } from "@styles/spacing";
+import { ingredientTableElement } from "@customTypes/DatabaseElementTypes";
 
 type FiltersSelectionProps = {
     tagsList: Array<string>,
-    ingredientsList: Array<string>,
+    ingredientsList: Array<ingredientTableElement>,
 
     addingFilter: boolean,
 

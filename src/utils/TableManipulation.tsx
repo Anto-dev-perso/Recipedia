@@ -105,7 +105,7 @@ export default class TableManipulation {
     }
 
 
-    protected async executeQuery(query: string, db: SQLite.Database): Promise<string | Array<string> | void> {
+    protected async executeQuery(query: string, db: SQLite.Database): Promise<string | Array<string> | number> {
         
         return new Promise(async (resolve, reject) => {
             await db.transaction(async (tx: any) => {
@@ -124,7 +124,7 @@ export default class TableManipulation {
                         }
                         else{
                             // console.log("ExecuteQuery : return null", results);
-                            resolve();
+                            resolve(results.insertId);
                         }
     
                     }, 
@@ -184,15 +184,14 @@ export default class TableManipulation {
     }
 
 
-    public async insertElement<TElement>(element: TElement, db: SQLite.Database): Promise<boolean> {
+    public async insertElement<TElement>(element: TElement, db: SQLite.Database): Promise<string | number> {
         return new Promise(async(resolve, reject) => {
             let insertQuery = this.prepareInsertQuery(element);
                 
             try{
                 // console.log("Insert query : ", insertQuery);
-                
-                await this.executeQuery(insertQuery, db);
-                resolve(true);
+                const dbResult = await this.executeQuery(insertQuery, db) as string | number;
+                resolve(dbResult);
             }catch(error: any){
                 reject(error);
             }
@@ -238,6 +237,9 @@ export default class TableManipulation {
     public async searchElementById(elementId: number, db: SQLite.Database): Promise<string> {
 
         return new Promise(async(resolve, reject) => {
+            if(isNaN(elementId)){
+                reject("ERROR : Id use for search is null")
+            }
             let searchQuery = `SELECT * FROM "${this._tableName}" WHERE ${this._idColumn} = ${elementId};`;
     
             try{

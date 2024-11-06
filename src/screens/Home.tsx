@@ -5,8 +5,8 @@ import RecipeRecommandation from "@components/organisms/RecipeRecommandation";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { recipeTableElement } from "@customTypes/DatabaseElementTypes";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StatusBar } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { RefreshControl, SafeAreaView, ScrollView, StatusBar } from "react-native";
 import { screenViews } from "@styles/spacing";
 import RecipeDatabase, { recipeDb } from "@utils/RecipeDatabase";
 import { hashString } from "@utils/Hash";
@@ -24,89 +24,52 @@ import { CropRectangle } from "@components/molecules/CropRectangle";
 export default function Home () {
   
   const { navigate } = useNavigation<StackScreenNavigation>();
+
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   
-  const [elementsForCarousel, setElementsForCarousel] = useState<recipeTableElement[]>([]);
-
-
-  const sleep = (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms))
-  }
+  const [elementsForRecommandation1, setElementsForRecommandation1] = useState<recipeTableElement[]>([]);
+  const [elementsForRecommandation2, setElementsForRecommandation2] = useState<recipeTableElement[]>([]);
+  const [elementsForRecommandation3, setElementsForRecommandation3] = useState<recipeTableElement[]>([]);
+  const [elementsForRecommandation4, setElementsForRecommandation4] = useState<recipeTableElement[]>([]);
 
   const randomlySearchElements = async () => {
 
-  //   const _image = await launchImageLibrary({ mediaType: 'mixed'},     async (response) => {
-  //     console.log('Response = ', response.assets);
-
-  //     if (response.didCancel) {
-  //       alert('User cancelled camera picker');
-  //       return;
-  //     } else if (response.errorCode == 'camera_unavailable') {
-  //       alert('Camera not available on device');
-  //       return;
-  //     } else if (response.errorCode == 'permission') {
-  //       alert('Permission not satisfied');
-  //       return;
-  //     } else if (response.errorCode == 'others') {
-  //       alert(response.errorMessage);
-  //       return;
-  //     }
-  //     console.log('base64 -> ', response.assets[0].base64);
-  //     console.log('uri -> ', response.assets[0].uri);
-  //     console.log('width -> ', response.assets[0].width);
-  //     console.log('height -> ', response.assets[0].height);
-  //     console.log('fileSize -> ', response.assets[0].fileSize);
-  //     console.log('type -> ', response.assets[0].type);
-  //     console.log('fileName -> ', response.assets[0].fileName);
-  // });
-  
-  // console.log('uri -> ', _image.assets[0].uri);
-
-
-  //   let image2: string;
-//   const dir = RNFS.PicturesDirectoryPath;
-//   const dirContent = await RNFS.readDir(dir)
-//   console.log("DEBUG : dir =  ", dir, " and read = ", dirContent);
-// const image = dirContent.find((file) => file.name === 'child.jpg');
-// console.log("Image : ", image);
-
-
-  // let img = '/storage/emulated/0/Pictures/child.jpg';
-  // RNFS.exists(img)
-  // .then((exists) => {
-  //   if (exists) {
-  //     console.log("Find image");
-      
-  //   } else {
-  //     console.log("L'image n'existe pas.");
-  //   }
-  // })
-  // .catch((error) => {
-  //   console.log('Erreur lors de la vérification de l\'existence de l\'image:', error);
-  // });
-
     try {
-      let elementsReturned = await recipeDb.searchRandomlyRecipes(4);
-      await setElementsForCarousel(elementsReturned);
+      recipeDb.searchRandomlyRecipes(3).then(elementsReturned => setElementsForRecommandation1(elementsReturned));
+      recipeDb.searchRandomlyRecipes(3).then(elementsReturned => setElementsForRecommandation2(elementsReturned));
+      recipeDb.searchRandomlyRecipes(3).then(elementsReturned => setElementsForRecommandation3(elementsReturned));
+      recipeDb.searchRandomlyRecipes(3).then(elementsReturned => setElementsForRecommandation4(elementsReturned));
     } catch (error) {
       console.log(error);
     }
   }
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await randomlySearchElements();
+    setRefreshing(false);
+  }, [])
   
   useEffect(() => {
-    recipeDb.init().then(async () => {
-      await randomlySearchElements();
-    })
+    // This condition is here mainly for coding. Because hot reload occurs, we ensure that we don't init again (make some troubles with the database)
+    if(recipeDb.get_recipes().length == 0){
+      recipeDb.init().then(async () => {
+        await randomlySearchElements();
+      })
+    }else{
+      randomlySearchElements();
+    }
   }, [])
 
     return (
         <SafeAreaView style={screenViews.screenView}>
           <StatusBar animated={true} backgroundColor={palette.primary}/>
-          {(elementsForCarousel.length > 0) ? 
-            <ScrollView>
-              <RecipeRecommandation carouselProps={elementsForCarousel} titleRecommandation="Recommandation 1"/>
-              <RecipeRecommandation carouselProps={elementsForCarousel} titleRecommandation="Recommandation 2"/>
-              <RecipeRecommandation carouselProps={elementsForCarousel} titleRecommandation="Recommandation 3"/>
-              <RecipeRecommandation carouselProps={elementsForCarousel} titleRecommandation="Recommandation 4"/>
+          {(elementsForRecommandation1.length > 0) ? 
+            <ScrollView refreshControl={<RefreshControl colors={[palette.primary]} refreshing={refreshing} onRefresh={onRefresh}/>}>
+              <RecipeRecommandation carouselProps={elementsForRecommandation1} titleRecommandation="Recommandation 1"/>
+              <RecipeRecommandation carouselProps={elementsForRecommandation2} titleRecommandation="Recommandation 2"/>
+              <RecipeRecommandation carouselProps={elementsForRecommandation3} titleRecommandation="Recommandation 3"/>
+              <RecipeRecommandation carouselProps={elementsForRecommandation4} titleRecommandation="Recommandation 4"/>
             </ScrollView>
           : null}
           <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_left} diameter={LargeButtonDiameter} icon={{type: enumIconTypes.fontAwesome, name: searchIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => navigate('Search')}/>

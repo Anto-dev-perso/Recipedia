@@ -73,7 +73,7 @@ export default function Crop ( {route, navigation}: CropScreenProp ) {
             if(localImage.uri.length > 0){
                 try {
                     const imgToReturn = await fileGestion.cropImage(localImage.uri, accumulatedPan, croppingImage, imageScaleFactor, cropSize);
-                    console.log("Crop image done : ", imgToReturn);
+                    // console.log("Crop image done : ", imgToReturn);
                     await prop.validateFunction(imgToReturn);
                 } catch (error) {
                     console.warn(error);

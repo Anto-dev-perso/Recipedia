@@ -4,84 +4,95 @@
 */
 
 import { Layout, localImgData, panType } from '@customTypes/ImageTypes';
+import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { FlipType, SaveFormat, manipulateAsync } from 'expo-image-manipulator';
 import { LayoutRectangle } from 'react-native';
 // import { Asset } from 'expo-asset';
 
 export default class FileGestion {
-    
-    
+
+
     protected _directoryName: string;
     protected _directoryUri: string;
     protected _cacheUri: string;
     protected _imageManipulatorCacheUri: string;
-    protected _camerarCacheUri: string;
-    
+    protected _cameraCacheUri: string;
+
     public constructor() {
         this._directoryName = "RecipesManager";
         this._directoryUri = FileSystem.documentDirectory + this._directoryName + "/";
         this._cacheUri = FileSystem.cacheDirectory + this._directoryName + "/";
         this._imageManipulatorCacheUri = FileSystem.cacheDirectory + "ImageManipulator/";
-        this._imageManipulatorCacheUri = FileSystem.cacheDirectory + "ExperienceData/";
-        
+        this._cameraCacheUri = FileSystem.cacheDirectory + "ExperienceData/";
+
         this.init()
     }
-    
+
     /* PROTECTED METHODS */
-    
-    
+
+
     /* PUBLIC METHODS */
     public get_directoryUri() {
         return this._directoryUri;
     }
-    
+
     public get_cacheUri() {
         return this._cacheUri;
     }
-    
-    public async clearCache() {
-        try {
-            let filesInCache = await FileSystem.readDirectoryAsync(this._imageManipulatorCacheUri);
-            
-            filesInCache.forEach(async cacheFile => {
-                FileSystem.deleteAsync(this._imageManipulatorCacheUri + cacheFile);
-            });
 
-            filesInCache = await FileSystem.readDirectoryAsync(this._camerarCacheUri);
-            filesInCache.forEach(async cacheFile => {
-                FileSystem.deleteAsync(this._camerarCacheUri + cacheFile);
-            });
-            
+    public async clearCache() {
+        let filesInCache: Array<string>;
+        try {
+            await FileSystem.deleteAsync(this._imageManipulatorCacheUri);
+            await FileSystem.makeDirectoryAsync(this._imageManipulatorCacheUri);
         } catch (error) {
-            console.warn(error);
+            console.warn("Directory error : ", error);
+        }
+        try {
+            await FileSystem.deleteAsync(this._cameraCacheUri);
+            await FileSystem.makeDirectoryAsync(this._cameraCacheUri);
+        } catch (error) {
+            console.warn("Cache error : ", error);
         }
     }
-    
+
     public async moveFile(oldUri: string, newUri: string) {
         try {
             // If needed, remove existing file
-            await FileSystem.deleteAsync(newUri, {idempotent: true});
-            await FileSystem.moveAsync({from: oldUri, to: newUri});
+            await FileSystem.deleteAsync(newUri, { idempotent: true });
+            await FileSystem.moveAsync({ from: oldUri, to: newUri });
         } catch (error) {
             console.warn(error);
         }
     }
-    
-    public async copyFile(oldUri: string, newUri: string){
-            try {
-                await FileSystem.copyAsync({from: oldUri, to: newUri});
-            } catch (error) {
-                console.warn(error);
-            }
+
+    public async copyFile(oldUri: string, newUri: string) {
+        try {
+            await FileSystem.copyAsync({ from: oldUri, to: newUri });
+        } catch (error) {
+            console.warn(error);
+        }
     }
-    
-    public async backUpFile(uriToBackUp: string) : Promise<string> {
+
+    public async saveRecipeImage(cacheFileUri: string, recName: string) {
+
+        const extension = cacheFileUri.split('.')
+        const imgUri: string = fileGestion.get_directoryUri() + recName.replace(/ /g, "_").toLowerCase() + '.' + extension[extension.length - 1];
+        try {
+            await this.copyFile(cacheFileUri, imgUri);
+            return imgUri;
+        } catch (error) {
+            console.warn(error);
+        }
+    }
+
+    public async backUpFile(uriToBackUp: string): Promise<string> {
         return new Promise(async (resolve, reject) => {
-            
+
             const oldUriSplit = uriToBackUp.split("/");
-            const backUpUri = this.get_cacheUri() + oldUriSplit[oldUriSplit.length-1];
-            
+            const backUpUri = this.get_cacheUri() + oldUriSplit[oldUriSplit.length - 1];
+
             try {
                 await this.copyFile(uriToBackUp, backUpUri);
                 resolve(backUpUri);
@@ -90,15 +101,15 @@ export default class FileGestion {
             }
         })
     }
-    
-    public async rotateImage(imgUri: string) : Promise<localImgData>{
+
+    public async rotateImage(imgUri: string): Promise<localImgData> {
         return new Promise(async (resolve, reject) => {
             try {
-                if(imgUri.length > 0){
-                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{rotate: 90}] , {compress: 1, format: SaveFormat.PNG});
-                    
+                if (imgUri.length > 0) {
+                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{ rotate: 90 }], { compress: 1, format: SaveFormat.PNG });
+
                     resolve(manipulateRes)
-                }else{
+                } else {
                     reject("Uri empty !")
                 }
             } catch (error) {
@@ -106,15 +117,15 @@ export default class FileGestion {
             }
         })
     }
-    
-    public async flipImageHorizontally(imgUri: string) : Promise<localImgData>{
+
+    public async flipImageHorizontally(imgUri: string): Promise<localImgData> {
         return new Promise(async (resolve, reject) => {
             try {
-                if(imgUri.length > 0){
-                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{flip: FlipType.Horizontal}] , {compress: 1, format: SaveFormat.PNG});
-                    
+                if (imgUri.length > 0) {
+                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{ flip: FlipType.Horizontal }], { compress: 1, format: SaveFormat.PNG });
+
                     resolve(manipulateRes);
-                }else{
+                } else {
                     reject("Uri empty !")
                 }
             } catch (error) {
@@ -122,15 +133,15 @@ export default class FileGestion {
             }
         })
     }
-    
-    public async flipImageVertically(imgUri: string) : Promise<localImgData>{
+
+    public async flipImageVertically(imgUri: string): Promise<localImgData> {
         return new Promise(async (resolve, reject) => {
             try {
-                if(imgUri.length > 0){
-                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{flip: FlipType.Vertical}] , {compress: 1, format: SaveFormat.PNG});
-                    
+                if (imgUri.length > 0) {
+                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{ flip: FlipType.Vertical }], { compress: 1, format: SaveFormat.PNG });
+
                     resolve(manipulateRes)
-                }else{
+                } else {
                     reject("Uri empty !")
                 }
             } catch (error) {
@@ -138,8 +149,8 @@ export default class FileGestion {
             }
         })
     }
-    
-    public async cropImage(imgUri: string, accumulatedPan: panType, imageBounds: LayoutRectangle, imageScaleFactor: number, cropSize: Layout) : Promise<localImgData>{
+
+    public async cropImage(imgUri: string, accumulatedPan: panType, imageBounds: LayoutRectangle, imageScaleFactor: number, cropSize: Layout): Promise<localImgData> {
         return new Promise(async (resolve, reject) => {
             try {
                 const croppingBounds = {
@@ -149,54 +160,56 @@ export default class FileGestion {
                     height: Math.round(cropSize.height * imageScaleFactor)
                 };
 
-                const manipulateRes: localImgData = await manipulateAsync(imgUri, [{crop: croppingBounds}] , {compress: 1, format: SaveFormat.PNG});
-                
+                const manipulateRes: localImgData = await manipulateAsync(imgUri, [{ crop: croppingBounds }], { compress: 1, format: SaveFormat.PNG });
+
                 resolve(manipulateRes);
             } catch (error) {
                 reject(error);
             }
         })
     }
-    
+
     public async init() {
-        // const assetLoaded = await Asset.loadAsync([
-        //     require("../assets/images/architecture.jpg"),
-        //     require("../assets/images/bike.jpg"),
-        //     require("../assets/images/cat.jpg"),
-        //     require("../assets/images/child.jpg"),
-        //     require("../assets/images/church.jpg"),
-        //     require("../assets/images/coffee.jpg"),
-        //     require("../assets/images/crimson.jpg"),
-        //     require("../assets/images/dog.jpg"),
-        //     require("../assets/images/monastery.jpg"),
-        //     require("../assets/images/motocross.jpg"),
-        //     require("../assets/images/mushrooms.jpg"),
-        //     require("../assets/images/scooter.jpg"),
-        //     require("../assets/images/strawberries.jpg"),
-        //     require("../assets/images/tree.jpg"),
-        //     require("../assets/images/waves.jpg"),
-        // ]
-        // );
-        // for (let i = 0; i < assetLoaded.length; i++) {
-        //     const newUri = this._directoryUri + '/' + assetLoaded[i].name + '.' + assetLoaded[i].type
-        //     console.log("localUri : ", assetLoaded[i].localUri, ", newUri : ", newUri);
-        //     await FileSystem.copyAsync({from: assetLoaded[i].localUri as string, to: newUri})
-        // }
-
-
         try {
-            await FileSystem.readDirectoryAsync(this._directoryUri)
+            const dirFiles = await FileSystem.readDirectoryAsync(this._directoryUri);
+            dirFiles.forEach(file => {
+                // TODO temporary for tests
+                FileSystem.deleteAsync(this._directoryUri + file);
+            });
         } catch (error) {
             console.warn(error);
             await FileSystem.makeDirectoryAsync(this._directoryUri);
         }
-        
+        // TODO temporary for tests
+        const assetLoaded = await Asset.loadAsync([
+            require("../assets/images/architecture.jpg"),
+            require("../assets/images/bike.jpg"),
+            require("../assets/images/cat.jpg"),
+            require("../assets/images/child.jpg"),
+            require("../assets/images/church.jpg"),
+            require("../assets/images/coffee.jpg"),
+            require("../assets/images/crimson.jpg"),
+            require("../assets/images/dog.jpg"),
+            require("../assets/images/monastery.jpg"),
+            require("../assets/images/motocross.jpg"),
+            require("../assets/images/mushrooms.jpg"),
+            require("../assets/images/scooter.jpg"),
+            require("../assets/images/strawberries.jpg"),
+            require("../assets/images/tree.jpg"),
+            require("../assets/images/waves.jpg"),
+        ]);
+        for (let i = 0; i < assetLoaded.length; i++) {
+            const newUri = this._directoryUri + '/' + assetLoaded[i].name + '.' + assetLoaded[i].type
+            // console.log("localUri : ", assetLoaded[i].localUri, ", newUri : ", newUri);
+            await FileSystem.copyAsync({ from: assetLoaded[i].localUri as string, to: newUri })
+        }
+
         try {
             const cacheFiles = await FileSystem.readDirectoryAsync(this._cacheUri);
 
             cacheFiles.forEach(file => {
                 FileSystem.deleteAsync(this._cacheUri + file);
-                
+
             });
         } catch (error) {
             console.warn(error);

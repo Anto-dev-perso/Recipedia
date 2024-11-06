@@ -21,7 +21,7 @@ import Search from '@screens/Search';
 import Crop from '@screens/Crop';
 import { StackScreen, StackScreenParamList, TabScreen, TabScreenParamList} from '@customTypes/ScreenTypes';
 import { cropText, fetchFonts } from '@styles/typography';
-import { homeIcon, enumIconTypes, iconsSize, parametersIcon, plannerIcon, shoppingIcon, materialCommunityIconName, fontAwesomeIconName, entypoIconName, displayIcon, plusIcon, backIcon, rotateIcon, flipHorizontalIcon } from '@assets/images/Icons';
+import { homeIcon, enumIconTypes, iconsSize, parametersIcon, plannerIcon, shoppingIcon, materialCommunityIconName, fontAwesomeIconName, entypoIconName, displayIcon, plusIcon, backIcon, rotateIcon, flipHorizontalIcon, crossIcon } from '@assets/images/Icons';
 import { cameraPalette, colors, palette } from '@styles/colors';
 import ModalImageSelect from '@screens/ModalImageSelect';
 
@@ -183,8 +183,8 @@ const Root = () => {
 
         switch (route.name) {
           case 'Home':
-            iconName = homeIcon;
             iconType = enumIconTypes.materialCommunity;
+            iconName = homeIcon;
             break;
             case 'Shopping':
               iconType = enumIconTypes.entypo;
@@ -196,8 +196,12 @@ const Root = () => {
             break;
             case 'Parameters':
               iconType = enumIconTypes.fontAwesome;
-            iconName = parametersIcon;
+              iconName = parametersIcon;
             break;
+            default:
+              iconType = enumIconTypes.entypo;
+              iconName = crossIcon
+              break;
         
         }
 
