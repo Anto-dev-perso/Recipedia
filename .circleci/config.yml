@@ -9,7 +9,7 @@ version: 2.1
   #     - main
 
 orbs:
-  node: circleci/node@5.1.0
+  node: circleci/node@5.1.1
   android: circleci/android@2.3.0
   # heroku: circleci/heroku@1.2.6
 
@@ -48,15 +48,16 @@ jobs:
       - attach_workspace:
           at: .
       - android/create-avd:
-          avd-name: Pixel_XL_API_31_Virtual_Device
+          avd-name: emulator-dev
           install: true
           system-image: system-images;android-29;default;x86
       # - android/start-emulator:
       #     no-window: false
-      #     avd-name: Pixel_XL_API_31_Virtual_Device
+      #     avd-name: emulator-dev
       - run:
           working_directory: ~/workspace/repo
-          command: pwd && ls && npx detox build --configuration android.emu.release
+          # command: pwd && ls && npx detox build --configuration android.emu.release
+          command: npx expo prebuild && npx detox build --configuration android.emu.release
           name: Build app
       - persist_to_workspace:
           root: ~/workspace
@@ -77,6 +78,25 @@ jobs:
           root: ~/workspace
           paths:
             - .
+
+  Build with EAS:
+    docker:
+      - image: cimg/node:lts
+    working_directory: ~/workspace/repo
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Build EAS
+          command: npx eas-cli build -p android --non-interactive --local -e test
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - .
   # deploy:
   #   executor: heroku/default
   #   steps:
@@ -90,6 +110,7 @@ workflows:
   build and test:
     jobs: 
       - prepare_env
+      - Build with EAS
       - unit and integration tests:
           requires:
             - prepare_env
@@ -99,5 +120,4 @@ workflows:
       - E2E tests:
           requires:
             - build for E2E
-
 

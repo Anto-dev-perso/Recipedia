@@ -1,0 +1,22 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "target": "es2015",
+      "moduleResolution": "node",
+      "jsx": "react",
+      "esModuleInterop": true,
+      "baseUrl": "./src/",
+      "paths" : {
+        "@assets/*": ["assets/*"],
+        "@components/*": ["components/*"],
+        "@i18n/*": ["i18n/*"],
+        "@navigation/*": ["navigation/*"],
+        "@screens/*": ["screens/*"],
+        "@styles/*": ["styles/*"],
+        "@customTypes/*": ["customTypes/*"],
+        "@utils/*": ["utils/*"]
+  }
+}
+  }
