@@ -25,7 +25,7 @@
     "@types/jest": "^29.5.11",
     "crypto-es": "^2.0.4",
     "detox": "^20.14.1",
-    "expo": "~49.0.5",
+    "expo": "~52.0.23",
     "expo-asset": "~8.10.1",
     "expo-dev-client": "~2.4.12",
     "expo-file-system": "~15.4.4",
