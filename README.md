@@ -1,11 +1,14 @@
 # RecipesManager
 
+[//]: # (TODO to rewrite)
+
 - Open _node_modules/react-native-sqlite-storage/react-native.config.js_
 - Remove ios part
 
-
 ## Run
-How to run : 
+
+How to run :
+
 - In a terminal, run 'npx react-native start' (--reset-cache in case of trouble) to have Metro to start
 - Open another terminal and run 'npx react-native run-android --active-arch-only'
 - Go back to metro and select 'run on Android' (with a)
@@ -15,18 +18,23 @@ To reload the app, tap 2 times R
 ## Testing
 
 ### Unit and integration testing
-To launch unit tests, run 'npx jest'; If you want (and you should) run the test while edtiting code, run 'npx jest --watch'
 
+To launch unit tests, run 'npx jest'; If you want (and you should) run the test while edtiting code, run 'npx jest
+--watch'
 
 ### E2E testing
-For End-2-End tests : 
-- Build using 'detox build --configuration android.emu.debug' for a debug binary of 'detox build --configuration android.emu.release' for a release binary
+
+For End-2-End tests :
+
+- Build using 'detox build --configuration android.emu.debug' for a debug binary of 'detox build --configuration
+  android.emu.release' for a release binary
 - For debug only, launch metro with npx react-native start
-- Run 'detox test --configuration android.emu.debug' for debug and 'detox test --configuration android.emu.release' for release
+- Run 'detox test --configuration android.emu.debug' for debug and 'detox test --configuration android.emu.release' for
+  release
 
 # Install from scratch
 
-## Node and npm 
+## Node and npm
 
 - _sudo apt install npm_
 - _sudo npm cache clean -f_
@@ -37,31 +45,33 @@ For End-2-End tests :
 
 - _sudo apt-get install openjdk-11-jdk_
 
-
 ## Android development environment
 
-### Android Studio 
+### Android Studio
 
 - Download last version from https://developer.android.com/studio/index.html
 - _sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386_
 - Unzip the tar of Android Studio in your /usr/local (for you only) or /opt (for all users)
 - Go to android-studio/bin and launch _studio.sh_
-- Follow the instructions. Make sure to to check following items : 
-  - Android Sdk
-  - Android Sdk Platform
-  - Android Virtual Device
-- (Optional) It is recommanded to have Android Studio in the list of Applications. To do so, Select __Tools -> Create Desktop Entry__
+- Follow the instructions. Make sure to to check following items :
+    - Android Sdk
+    - Android Sdk Platform
+    - Android Virtual Device
+- (Optional) It is recommanded to have Android Studio in the list of Applications. To do so, Select __Tools -> Create
+  Desktop Entry__
 
-### Sdk 
+### Sdk
 
-Android Studio install the latest Android Sdk by default. You need _Android 13 (Tiramisu)_ Sdk in particular. You can install it in Android Studio by doing : 
+Android Studio install the latest Android Sdk by default. You need _Android 13 (Tiramisu)_ Sdk in particular. You can
+install it in Android Studio by doing :
+
 - __Appearance & Behavior → System Settings → Android SDK__
 - Select _Sdk Platforms tab_
 - Check the box next _Show Package Details_
 - Look for and expand _Android 13 (Tiramisu)_
-- Make sure the following are checked : 
-  - _Android Sdk Platform 33_
-  - _Intel x86 Atom_64 System Image_ or _Google APIs Intel x86 Atom System Image_
+- Make sure the following are checked :
+    - _Android Sdk Platform 33_
+    - _Intel x86 Atom_64 System Image_ or _Google APIs Intel x86 Atom System Image_
 - Select the _SDK Tools Tab_
 - Check the box next _Show Package Details_ here too
 - Expand _Android SDK Build-Tools_
@@ -69,7 +79,7 @@ Android Studio install the latest Android Sdk by default. You need _Android 13 (
 
 ### ANDROID_HOME
 
-Add the following lines to your _$HOME/.bash_profile_ or _$HOME/.bashrc_ 
+Add the following lines to your _$HOME/.bash_profile_ or _$HOME/.bashrc_
 
 ```
 export ANDROID_HOME=$HOME/Android/Sdk
@@ -78,8 +88,10 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 ```
 
 ## Watchman
-  - Download and extract the release for your system from the latest release: https://github.com/facebook/watchman/releases
-  - Run the following : 
+
+- Download and extract the release for your system from the latest
+  release: https://github.com/facebook/watchman/releases
+- Run the following :
 
 ```
 $ unzip watchman-*-linux.zip
@@ -103,25 +115,24 @@ $ sudo chmod 2777 /usr/local/var/run/watchman
 
 ### Virtual device
 
-On Android Studio : 
+On Android Studio :
+
 - Open the _Device Manager_
 - Click on _Create Device_
-- Configure the device you want 
-
+- Configure the device you want
 
 ### Expo
 
-- npx expo + Commands (run npx expo --help) : 
-  - start
-  - export
-  - export:web
-  - run:ios
-  - run:android:
-  - prebuild
-  - install
-  - customize
-  - confir
-
+- npx expo + Commands (run npx expo --help) :
+    - start
+    - export
+    - export:web
+    - run:ios
+    - run:android:
+    - prebuild
+    - install
+    - customize
+    - confir
 
 # Notes
 
@@ -130,28 +141,33 @@ On Android Studio :
 - Bien vérifier les props des composants pour les style
 - Les StyleSheet ont des méthodes comme compose qui peut fusionner plusieurs styles
 - flex et flexDirection permet de placer dynamiquement les composants
-- Pour les cards, utiliser ScrollView avec la props horizontal (pb de perfo au refresh) ou une FlatList avec horizontal prop
+- Pour les cards, utiliser ScrollView avec la props horizontal (pb de perfo au refresh) ou une FlatList avec horizontal
+  prop
 - SectionList peut être intéressant pour la fiche recette
 
 - Alert peut être très utile. Modal intéressant pour la peronnalisation
 
 - Pour utiliser une image des sources, faire source={require('path')}
 
-- Considére des images en fond avec ImageBackground 
-- React Navigation pour naviguer entre des pages ? Rien de plus moderne ? Tab Navigator ok mais material bottom tab navigator a des animations
+- Considére des images en fond avec ImageBackground
+- React Navigation pour naviguer entre des pages ? Rien de plus moderne ? Tab Navigator ok mais material bottom tab
+  navigator a des animations
 - react-native-vector-icons conseilée pour des icones
 - font awesome utile aussi
 - route.params peut permettre de passer des éléments entre les pages
 
-- Pour ajouter des fonts, les mettre dans les dossier fonts et faire npx react-native link. Dans stylesheet, utiliser l'argument fontFamily et mettre le nom de la font
+- Pour ajouter des fonts, les mettre dans les dossier fonts et faire npx react-native link. Dans stylesheet, utiliser
+  l'argument fontFamily et mettre le nom de la font
 
-- AsyncStorage pour faire passer des données ? A considérer mais peu probable. Sert surtout à conserver des données locales (paramètres ?)
+- AsyncStorage pour faire passer des données ? A considérer mais peu probable. Sert surtout à conserver des données
+  locales (paramètres ?)
 
 - DB browser peut servir à créer et éditer les SQL database. A creuser
 
 - Redux sert à garder des States en global
-- jest -u pour mettre à jour les snapshot  
+- jest -u pour mettre à jour les snapshot
 - App icon generator pour générer les icones
 - Android studios pour les assets
-- Nom de l'application android dans android/app/src/main/values/strings.xml + Ne pas oublier de changer le nom affiché dans AndroidManifest (FInd & replace car présent plusieurs fois dans le dossier android)
+- Nom de l'application android dans android/app/src/main/values/strings.xml + Ne pas oublier de changer le nom affiché
+  dans AndroidManifest (FInd & replace car présent plusieurs fois dans le dossier android)
 - Prévoir des tests sur tablette

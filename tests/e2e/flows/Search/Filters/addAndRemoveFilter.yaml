@@ -1,0 +1,20 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Open the filter page
+- tapOn:
+    text: "󰄱, Spaghetti"
+    label: Select Spaghetti as filter
+- runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnSpaghetti.yaml
+- tapOn:
+    text: "Spaghetti, "
+    label: Remove Spaghetti as filter
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Close the filter page
+- runFlow: ../../../asserts/Search/searchScreenVisible.yaml
+- pressKey: "BACK"

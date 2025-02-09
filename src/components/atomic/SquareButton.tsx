@@ -1,56 +1,49 @@
-
-
 import React from "react"
-import { Image } from 'expo-image';
-import { ImageRequireSource, ImageSourcePropType, Pressable, View } from "react-native"
-import { squareButtonStyles, viewButtonStyles, viewInsideButtonCentered } from "@styles/buttons"
+import {Image} from 'expo-image';
+import {Pressable, View} from "react-native"
+import {squareButtonStyles, viewButtonStyles, viewInsideButtonCentered} from "@styles/buttons"
 
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from "@react-navigation/native";
-import { RecipeScreenProp, StackScreenNavigation, } from "@customTypes/ScreenTypes";
-import { recipeTableElement } from "@customTypes/DatabaseElementTypes";
-import { fileGestion } from "@utils/FileGestion";
-import { imageStyle } from '@styles/images';
-import { localImgData } from "@customTypes/ImageTypes";
-import { recipeStateType } from "@screens/Recipe";
+import {useNavigation} from "@react-navigation/native";
+import {StackScreenNavigation,} from "@customTypes/ScreenTypes";
+import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import {localImgData} from "@customTypes/ImageTypes";
 
+type propIsRecipe = { type: 'recipe', recipe: recipeTableElement };
+type propIsImg = { type: 'image', imgSrc: localImgData, onPressFunction: () => void };
 
-type SquareButtonProps = {
+export type SquareButtonProps = {
     side: number,
-} & (
-    |{recipe: recipeTableElement}
-    |{imgSrc: localImgData, onPressFunction:() => void}
-)
+} & (propIsRecipe | propIsImg)
 
 
-export default function SquareButton ({side, ...other}: SquareButtonProps) {
+export default function SquareButton(buttonProps: SquareButtonProps) {
 
-    const { navigate } = useNavigation<StackScreenNavigation>();
+    const {navigate} = useNavigation<StackScreenNavigation>();
     let recipe: recipeTableElement;
     let img: localImgData;
-    let pressFunc:() => void
-
-    if('recipe' in other && other.recipe !== undefined){
-        img = {uri: other.recipe.image_Source, width: 100, height: 100}
-        recipe = other.recipe
-    }else if ('imgSrc' in other && other.imgSrc !== undefined){
-        img = other.imgSrc;
-        pressFunc = other.onPressFunction
-    }else{
-        throw new Error(`None of props are passed ! Here is what is given in SquareBUtton component : ${side}, ${other}`)
+    let pressFunc: () => void;
+    switch (buttonProps.type) {
+        case "recipe":
+            img = {uri: buttonProps.recipe.image_Source, width: 100, height: 100};
+            recipe = buttonProps.recipe;
+            pressFunc = () => {
+                navigate('Recipe', {mode: 'readOnly', recipe: recipe});
+            };
+            break;
+        case "image":
+            img = buttonProps.imgSrc;
+            pressFunc = buttonProps.onPressFunction;
+            break;
     }
 
-    return(
-        <Pressable style={squareButtonStyles(side).squareButton} onPress={() => {
-                if(recipe){
-                    navigate('Recipe', {mode: 'readOnly', recipe: recipe})
-                }else{
-                    pressFunc()
-                }
-                }}>
+
+    return (
+        <Pressable style={squareButtonStyles(buttonProps.side).squareButton} onPress={pressFunc}>
             <View style={viewInsideButtonCentered}>
-              <Image source={img} style={viewButtonStyles.imageInsideButton} onError={() => console.log("Image not found")}/>
+                <Image source={img} style={viewButtonStyles.imageInsideButton}
+                       onError={() => console.log("Image not found")}/>
             </View>
         </Pressable>
     )

@@ -1,0 +1,19 @@
+appId: "com.recipesmanager"
+---
+- repeat:
+    while:
+      notVisible: "Vegetable Soup"
+    commands:
+      - swipe:
+          direction: "DOWN"
+      - "waitForAnimationToEnd"
+    label: Refresh until we found the Vegetable Soup
+- tapOn:
+    text: "Vegetable Soup"
+    label: Open Vegetable Soup
+#  TODO make the text clickable
+- runFlow: ../../../asserts/Recipe/ReadOnly/vegetableSoup.yaml
+- tapOn:
+    text: "󰌍"
+    label: Back to the Home Screen
+- runFlow: ../../../asserts/Home/homeScreenVisible.yaml

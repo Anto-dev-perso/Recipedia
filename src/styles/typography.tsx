@@ -1,10 +1,7 @@
-
-
-import { cameraPalette, colors, palette } from './colors'
+import {cameraPalette, palette} from './colors'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { padding } from './spacing'
-import { loadAsync } from 'expo-font';
-
+import {padding} from './spacing'
+import {loadAsync} from 'expo-font';
 
 
 export const textSeparator = "--";
@@ -21,33 +18,50 @@ export const exceptLettersAndSpacesRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ\s]/g;
 export const extractBetweenParenthesis = /\((.*?)\)/;
 
 
-export const fetchFonts = () => {
-    return loadAsync({
-    'Lora-VariableFont_wght': require(`../assets/fonts/Lora/Lora-VariableFont_wght.ttf`),
-    'Lora-Italic-VariableFont_wght': require(`../assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf`),
+export async function fetchFonts() {
+    return await loadAsync({
+        'Lora-VariableFont_wght': require(`../assets/fonts/Lora/Lora-VariableFont_wght.ttf`),
+        'Lora-Italic-VariableFont_wght': require(`../assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf`),
     })
-  }
+}
 
 const typoFamily = {
     normal: 'Lora-VariableFont_wght',
     italic: 'Lora-Italic-VariableFont_wght',
-} 
+};
 
 export const typoSize = {
     element: "10rem",
     paragraphSize: "14rem",
     headerSize: "18rem",
     titleSize: "22rem",
+};
+
+export enum typoRender {
+    ARRAY = "ARRAY",
+    SECTION = "SECTION",
+    LIST = "LIST",
+    CLICK_LIST = "CLICK_LIST",
+}
+
+export type bulletListDataType = {
+    multiplesData: boolean,
+    bulletListData: Array<string>,
+    shortData: string,
+}
+export type editableText = {
+    withBorder: boolean,
+    onChangeFunction(oldParam: string, newParam: string): void,
 }
 
 export const borderStyle = EStyleSheet.create({
     border: {
-        borderWidth:2, 
+        borderWidth: 2,
         color: palette.textPrimary,
         borderColor: palette.secondary,
         backgroundColor: palette.white,
     }
-}) 
+});
 
 export const typoStyles = EStyleSheet.create({
     element: {
@@ -64,7 +78,7 @@ export const typoStyles = EStyleSheet.create({
         fontSize: typoSize.paragraphSize,
         fontWeight: 'normal',
         textAlign: 'left',
-        paddingHorizontal: padding.veryLarge, 
+        paddingHorizontal: padding.veryLarge,
         paddingVertical: padding.verySmall,
     },
     header: {
@@ -100,12 +114,12 @@ export const typoStyles = EStyleSheet.create({
         padding: padding.medium,
         marginTop: padding.medium,
     }
-})
+});
 
-export const elementBorder = EStyleSheet.flatten([typoStyles.element, borderStyle.border])
-export const paragraphBorder = EStyleSheet.flatten([typoStyles.paragraph, borderStyle.border])
-export const headerBorder = EStyleSheet.flatten([typoStyles.header, borderStyle.border])
-export const titleBorder = EStyleSheet.flatten([typoStyles.title, borderStyle.border])
+export const elementBorder = EStyleSheet.flatten([typoStyles.element, borderStyle.border]);
+export const paragraphBorder = EStyleSheet.flatten([typoStyles.paragraph, borderStyle.border]);
+export const headerBorder = EStyleSheet.flatten([typoStyles.header, borderStyle.border]);
+export const titleBorder = EStyleSheet.flatten([typoStyles.title, borderStyle.border]);
 
 export const carouselStyle = (length: number) => EStyleSheet.create({
     carouselTitle: {
@@ -114,8 +128,8 @@ export const carouselStyle = (length: number) => EStyleSheet.create({
         fontSize: typoSize.paragraphSize,
         fontWeight: 'bold',
         textAlign: 'left',
-        marginHorizontal: (length/2),
-    }   
+        marginHorizontal: (length / 2),
+    }
 })
 
 export const searchBarStyle = EStyleSheet.create({
@@ -136,12 +150,12 @@ export const searchBarStyle = EStyleSheet.create({
         borderRadius: "20rem",
         alignItems: "center",
         justifyContent: "space-evenly",
-      }
-})
+    }
+});
 
 export const rowTextStyle = EStyleSheet.create({
     leftText: {
-        textAlign: "left", 
+        textAlign: "left",
         flex: 2,
         color: palette.textPrimary,
         fontFamily: typoFamily.normal,
@@ -149,32 +163,14 @@ export const rowTextStyle = EStyleSheet.create({
         fontWeight: 'normal',
     },
     rightText: {
-        textAlign: "right", 
+        textAlign: "right",
         flex: 1,
         color: palette.textPrimary,
         fontFamily: typoFamily.normal,
         fontSize: typoSize.paragraphSize,
         fontWeight: 'normal',
     },
-})
-
-
-export enum typoRender {
-    ARRAY = "ARRAY",
-    SECTION = "SECTION",
-    LIST = "LIST",
-    CLICK_LIST = "CLICK_LIST",
-}
-
-export type bulletListDataType = {
-    multiplesData: boolean,
-    bulletListData: Array<string>,
-    shortData: string,
-}
-export type editableText = {
-    withBorder: boolean,
-    onChangeFunction(oldParam: string, newParam: string): void,
-}
+});
 
 export const cropText = EStyleSheet.create({
     overlay: {

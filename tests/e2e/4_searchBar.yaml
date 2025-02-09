@@ -1,0 +1,8 @@
+appId: "com.recipesmanager"
+name: "Search screen can search for recipes and display it"
+---
+- runFlow: flows/Search/SearchBar/openAndClose.yaml
+- runFlow: flows/Search/SearchBar/searchNameWithMultipleRecipes.yaml
+- runFlow: flows/Search/SearchBar/clickDirectlyOnRecipe.yaml
+- runFlow: flows/Search/SearchBar/correctSearchedName.yaml
+- runFlow: flows/Search/SearchBar/removeFilter.yaml

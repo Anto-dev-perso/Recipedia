@@ -1,79 +1,92 @@
+import RecipeRecommendation from "@components/organisms/RecipeRecommendation";
 
-
-import RecipeRecommandation from "@components/organisms/RecipeRecommandation";
-
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import { recipeTableElement } from "@customTypes/DatabaseElementTypes";
-import React, { useCallback, useEffect, useState } from "react";
-import { RefreshControl, SafeAreaView, ScrollView, StatusBar } from "react-native";
-import { screenViews } from "@styles/spacing";
-import RecipeDatabase, { recipeDb } from "@utils/RecipeDatabase";
-import { hashString } from "@utils/Hash";
+import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import React, {useCallback, useEffect, useState} from "react";
+import {RefreshControl, SafeAreaView, ScrollView, StatusBar} from "react-native";
+import {screenViews} from "@styles/spacing";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import RoundButton from "@components/atomic/RoundButton";
-import { LargeButtonDiameter, bottomTopPosition } from "@styles/buttons";
-import { RecipeScreenProp, StackScreenNavigation } from "@customTypes/ScreenTypes";
-import { useNavigation } from "@react-navigation/native";
+import {bottomTopPosition, LargeButtonDiameter} from "@styles/buttons";
+import {enumIconTypes, iconsSize, searchIcon} from "@assets/images/Icons";
+import {palette} from "@styles/colors";
+import RecipeDatabase from "@utils/RecipeDatabase";
+import {HomeScreenProp} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
-import { cameraIcon, enumIconTypes, iconsSize, searchIcon } from "@assets/images/Icons";
-import { palette } from "@styles/colors";
-import { CropRectangle } from "@components/molecules/CropRectangle";
+import {recipesDataset} from "@test-data/recipesDataset";
+import {tagsDataset} from "@test-data/tagsDataset";
+import {ingredientsDataset} from "@test-data/ingredientsDataset";
+import FileGestion from "@utils/FileGestion";
+import {fetchFonts} from "@styles/typography";
 
 
-export default function Home () {
-  
-  const { navigate } = useNavigation<StackScreenNavigation>();
+export default function Home({route, navigation}: HomeScreenProp) {
 
-  const [refreshing, setRefreshing] = useState<boolean>(false);
-  
-  const [elementsForRecommandation1, setElementsForRecommandation1] = useState<recipeTableElement[]>([]);
-  const [elementsForRecommandation2, setElementsForRecommandation2] = useState<recipeTableElement[]>([]);
-  const [elementsForRecommandation3, setElementsForRecommandation3] = useState<recipeTableElement[]>([]);
-  const [elementsForRecommandation4, setElementsForRecommandation4] = useState<recipeTableElement[]>([]);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  const randomlySearchElements = async () => {
+    // TODO name these recommendation (and maybe add more ?)
+    const [elementsForRecommendation1, setElementsForRecommendation1] = useState(new Array<recipeTableElement>());
+    const [elementsForRecommendation2, setElementsForRecommendation2
+    ] = useState(new Array<recipeTableElement>());
+    const [elementsForRecommendation3, setElementsForRecommendation3] = useState(new Array<recipeTableElement>());
+    const [elementsForRecommendation4, setElementsForRecommendation4] = useState(new Array<recipeTableElement>());
 
-    try {
-      recipeDb.searchRandomlyRecipes(3).then(elementsReturned => setElementsForRecommandation1(elementsReturned));
-      recipeDb.searchRandomlyRecipes(3).then(elementsReturned => setElementsForRecommandation2(elementsReturned));
-      recipeDb.searchRandomlyRecipes(3).then(elementsReturned => setElementsForRecommandation3(elementsReturned));
-      recipeDb.searchRandomlyRecipes(3).then(elementsReturned => setElementsForRecommandation4(elementsReturned));
-    } catch (error) {
-      console.log(error);
+    function randomlySearchElements(databaseInstance: RecipeDatabase) {
+        setElementsForRecommendation1(databaseInstance.searchRandomlyRecipes(3));
+        setElementsForRecommendation2(databaseInstance.searchRandomlyRecipes(3));
+        setElementsForRecommendation3(databaseInstance.searchRandomlyRecipes(3));
+        setElementsForRecommendation4(databaseInstance.searchRandomlyRecipes(3));
     }
-  }
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await randomlySearchElements();
-    setRefreshing(false);
-  }, [])
-  
-  useEffect(() => {
-    // This condition is here mainly for coding. Because hot reload occurs, we ensure that we don't init again (make some troubles with the database)
-    if(recipeDb.get_recipes().length == 0){
-      recipeDb.init().then(async () => {
-        await randomlySearchElements();
-      })
-    }else{
-      randomlySearchElements();
-    }
-  }, [])
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        randomlySearchElements(RecipeDatabase.getInstance());
+        setRefreshing(false);
+    }, []);
+
+    useEffect(() => {
+        // TODO this part should be at initialization of the App but when we hot reload, it don't get re-init again
+        // So keep it here so that it is indeed call at each hot reload
+        fetchFonts().then(async () => {
+            await FileGestion.getInstance().init();
+
+            const recipeDb = RecipeDatabase.getInstance();
+
+            // TODO temporary for test
+            await recipeDb.reset();
+            await recipeDb.init();
+            await recipeDb.addMultipleIngredients(ingredientsDataset);
+            await recipeDb.addMultipleTags(tagsDataset);
+            await recipeDb.addMultipleRecipes(recipesDataset);
+            // await recipeDb.exempleDb();
+
+            randomlySearchElements(recipeDb);
+        });
+    }, []);
 
     return (
         <SafeAreaView style={screenViews.screenView}>
-          <StatusBar animated={true} backgroundColor={palette.primary}/>
-          {(elementsForRecommandation1.length > 0) ? 
-            <ScrollView refreshControl={<RefreshControl colors={[palette.primary]} refreshing={refreshing} onRefresh={onRefresh}/>}>
-              <RecipeRecommandation carouselProps={elementsForRecommandation1} titleRecommandation="Recommandation 1"/>
-              <RecipeRecommandation carouselProps={elementsForRecommandation2} titleRecommandation="Recommandation 2"/>
-              <RecipeRecommandation carouselProps={elementsForRecommandation3} titleRecommandation="Recommandation 3"/>
-              <RecipeRecommandation carouselProps={elementsForRecommandation4} titleRecommandation="Recommandation 4"/>
+            <StatusBar animated={true} backgroundColor={palette.primary}/>
+            <ScrollView testID={'HomeScrollView'}
+                        refreshControl={<RefreshControl colors={[palette.primary]} refreshing={refreshing}
+                                                        onRefresh={onRefresh}/>}>
+                <RecipeRecommendation testID={'RecipeRecommendation1'} carouselProps={elementsForRecommendation1}
+                                      titleRecommendation="Recommendation 1"/>
+                <RecipeRecommendation testID={'RecipeRecommendation2'} carouselProps={elementsForRecommendation2}
+                                      titleRecommendation="Recommendation 2"/>
+                <RecipeRecommendation testID={'RecipeRecommendation3'} carouselProps={elementsForRecommendation3}
+                                      titleRecommendation="Recommendation 3"/>
+                <RecipeRecommendation testID={'RecipeRecommendation4'} carouselProps={elementsForRecommendation4}
+                                      titleRecommendation="Recommendation 4"/>
             </ScrollView>
-          : null}
-          <BottomTopButton as={RoundButton} position={bottomTopPosition.bottom_left} diameter={LargeButtonDiameter} icon={{type: enumIconTypes.fontAwesome, name: searchIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => navigate('Search')}/>
-          <VerticalBottomButtons/>
+            <BottomTopButton testID={'SearchButton'} as={RoundButton} position={bottomTopPosition.bottom_left}
+                             diameter={LargeButtonDiameter}
+                             icon={{
+                                 type: enumIconTypes.fontAwesome,
+                                 name: searchIcon,
+                                 size: iconsSize.medium,
+                                 color: "#414a4c"
+                             }} onPressFunction={() => navigation.navigate('Search')}/>
+            <VerticalBottomButtons navigation={navigation} route={route}/>
         </SafeAreaView>
     )
 }

@@ -1,12 +1,8 @@
-
-
 import EStyleSheet from "react-native-extended-stylesheet"
-import { palette } from "./colors"
-import { padding } from "./spacing"
+import {palette} from "./colors"
 
 
-
-const imageStyle = EStyleSheet.create({
+export const imageStyle = EStyleSheet.create({
     containerFullStyle: {
         width: '100%',
         height: "300rem",
@@ -23,6 +19,4 @@ const imageStyle = EStyleSheet.create({
         width: '100%',
         height: '100%',
     }
-})
-
-export { imageStyle }
+});

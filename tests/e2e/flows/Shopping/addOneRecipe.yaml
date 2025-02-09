@@ -1,0 +1,35 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ", Shopping"
+    label: First go th Shopping Screen
+- runFlow: ../../asserts/Shopping/shoppingEmpty.yaml
+- tapOn:
+    text: "󰋜, Home"
+    label: Go to Home screen
+- tapOn:
+    text: ""
+    label: Open Search screen
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
+- tapOn:
+    text: "Classic Pancakes, Breakfast, Dessert, Prep. 25 min, 2 p."
+    label: Open the Classic Pancakes recipe
+- tapOn:
+    text: "Add this recipe to the menu"
+    label: Add the Classic Pancake recipe to the menu
+- runFlow: ../../asserts/Alerts/addingRecipePancake.yaml
+- pressKey: "BACK"
+- tapOn:
+    text: ", Shopping"
+    label: Go back to Shopping screen
+- runFlow: ../../asserts/Shopping/shoppingPancake.yaml
+- tapOn:
+    text: ", Parameters"
+    label: Change to Parameters screen
+- tapOn:
+    text: ", Shopping"
+    label: Go back to Shopping Screen to verify elements are still there
+- runFlow: ../../asserts/Shopping/shoppingPancake.yaml

@@ -1,0 +1,11 @@
+appId: "com.recipesmanager"
+name: "Recipe screen test suite"
+---
+- runFlow: flows/Recipe/ReadOnly/recipeFromSearchScreen.yaml
+- runFlow: flows/Recipe/ReadOnly/recipeFromHomeScreen.yaml
+- runFlow: flows/Recipe/Edit/recipeFromSearchScreen.yaml
+- runFlow: flows/Recipe/Edit/recipeFromHomeScreen.yaml
+
+# TODO edit and validate then open search screen and open the recipe
+# TODO add OCR tests
+# TODO add a true tests for add a recipe from scratch

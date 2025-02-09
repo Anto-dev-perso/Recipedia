@@ -1,0 +1,79 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: "󰌍"
+    label: Back button is rendered
+- assertVisible:
+    id: "RecipeImage"
+    label: Image is rendered
+- assertVisible:
+    text: "PESTO PASTA"
+    label: Title is rendered
+- assertVisible:
+    text: "Pasta tossed with fresh basil pesto."
+    label: Description is rendered
+- assertVisible:
+    text: "Italian"
+    label: Tag Italian is rendered
+- assertVisible:
+    text: "Quick Meal"
+    label: Tag Quick Meal is rendered
+- assertVisible:
+    text: "INGREDIENTS (2 PERSONS)"
+    label: Ingredients title and number of persons is rendered
+- assertVisible:
+    text: "Pasta"
+    label: Ingredient Pasta is rendered
+- assertVisible:
+    text: "200 g"
+    label: Quantity of Pasta is rendered
+- assertVisible:
+    text: "Basil Leaves"
+    label: Ingredient Basil Leaves is rendered
+- assertVisible:
+    text: "50 g"
+    label: Quantity of Basil Leaves is rendered
+- assertVisible:
+    text: "Parmesan"
+    label: Ingredient Parmesan is rendered
+- assertVisible:
+    text: "30 g"
+    label: Quantity of Parmesan is rendered
+- assertVisible:
+    text: "Olive Oil"
+    label: Ingredient Olive Oil is rendered
+- assertVisible:
+    text: "50 ml"
+    label: Quantity of Olive Oil is rendered
+- assertVisible:
+    text: "Pine Nuts"
+    label: Ingredient Pine Nuts is rendered
+- swipe:
+    start: "50%,65%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "20 g"
+    label: Quantity of Pine Nuts is rendered
+- assertVisible:
+    text: "PREPARATION (20 MIN)"
+    label: Preparation title and time of preparation is rendered
+- assertVisible:
+    text: "1) Cook the pasta according to the package instructions."
+    label: First section of the preparation is rendered
+- assertVisible:
+    text: "2) Blend basil leaves, Parmesan, olive oil, and pine nuts to make pesto."
+    label: Second section of the preparation is rendered
+- assertVisible:
+    text: "3) Toss the pasta with the pesto sauce and serve warm."
+    label: Third section of the preparation is rendered
+- assertVisible:
+    text: "󰏫"
+    label: Edit Button is rendered
+- assertVisible:
+    text: "Add this recipe to the menu"
+    label: Add to menu button is rendered
+- swipe:
+    start: "50%,20%"
+    end: "50%,80%"
+    label: Swipe Up to see reset the initial position

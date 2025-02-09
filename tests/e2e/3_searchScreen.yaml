@@ -1,0 +1,20 @@
+appId: "com.recipesmanager"
+name: "Search screen can search for recipes and display it"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- runFlow: asserts/Home/homeScreenNotVisible.yaml
+- runFlow: asserts/Search/searchScreenVisible.yaml
+- pressKey: "BACK"
+- runFlow: asserts/Home/homeScreenVisible.yaml
+
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    id: "SearchBar"
+    label: Open search bar
+- tapOn:
+    text: ""
+    label: Tap on cross icon to close the search bar

@@ -1,6 +1,7 @@
-
-
-import { LayoutRectangle } from "react-native"
+export enum enumForImgPick {
+    camera = "camera",
+    gallery = "gallery"
+}
 
 export type localImgData = {
     uri: string,

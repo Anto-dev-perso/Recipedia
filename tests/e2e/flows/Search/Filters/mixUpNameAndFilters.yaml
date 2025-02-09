@@ -1,0 +1,34 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    id: "SearchBar"
+    label: Open Search Bar
+- inputText:
+    text: "Ca"
+    label: Input text 'Ca' in the Bar
+- tapOn:
+    id: "com.google.android.inputmethod.latin:id/key_pos_ime_action"
+    label: Validate the input text
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Open the filter page
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- tapOn:
+    text: "󰄱, Chocolate"
+    label: Select tag Chocolate as filter
+- swipe:
+    start: "50%,30%"
+    end: "50%,80%"
+    label: Swipe Up to reset to initial position
+- runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnCaAndChocolate.yaml
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Close the filter page
+- runFlow: ../../../asserts/Search/searchScreenFilteredOnCaAndChocolate.yaml
+- pressKey: "BACK"

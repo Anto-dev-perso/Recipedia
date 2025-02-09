@@ -1,0 +1,31 @@
+appId: "com.recipesmanager"
+---
+- repeat:
+    while:
+      notVisible: "Sushi Rolls"
+    commands:
+      - swipe:
+          direction: "DOWN"
+      - "waitForAnimationToEnd"
+    label: Refresh until we found the Sushi Rolls
+- tapOn:
+    text: "Sushi Rolls"
+    label: Open Sushi Rolls
+#  TODO make the text clickable
+- runFlow: ../../../asserts/Recipe/ReadOnly/sushiRolls.yaml
+- tapOn:
+    text: "󰏫"
+    label: Tap on the Edit button
+- runFlow: ../../../asserts/Recipe/Edit/sushiRolls.yaml
+- tapOn:
+    text: "Validate the recipe with these modifications"
+    label: Validate the modifications
+- swipe:
+    start: "50%,20%"
+    end: "50%,90%"
+    label: Swipe Up to reset to initial position
+- runFlow: ../../../asserts/Recipe/ReadOnly/sushiRolls.yaml
+- tapOn:
+    text: "󰌍"
+    label: Back to the Search Screen
+- runFlow: ../../../asserts/Home/homeScreenVisible.yaml

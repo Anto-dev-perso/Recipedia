@@ -1,27 +1,33 @@
 {
   "cli": {
-    "version": ">= 5.9.2"
+    "version": ">= 14.7.1",
+    "appVersionSource": "remote"
   },
   "build": {
-    "test": {
+    "build-and-maestro-test": {
+      "withoutCredentials": true,
+      "config": "build-and-maestro-test.yml",
       "android": {
-        "gradleCommand": ":app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release",
-        "withoutCredentials": true
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "ios": {
+        "simulator": true,
+        "image": "latest"
+      }
+    },
+    "maestro": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "developmentClient": false
       },
       "ios": {
         "simulator": true
       }
     },
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
-    },
-    "preview": {
-      "distribution": "internal"
-    },
-    "production": {}
-  },
-  "submit": {
-    "production": {}
+    "production": {
+      "autoIncrement": true
+    }
   }
 }

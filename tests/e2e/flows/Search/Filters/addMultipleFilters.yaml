@@ -1,0 +1,40 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Open the filter page
+- tapOn:
+    text: "󰄱, Romaine Lettuce"
+    label: Select Romaine Lettuce as filter
+- runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnLettuce.yaml
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Close the filter page
+- runFlow: ../../../asserts/Search/searchScreenFilteredOnLettuce.yaml
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Open the filter page
+- swipe:
+    start: "50%,65%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- tapOn:
+    text: "󰄱, Curry Powder"
+    label: Add the Curry Powder in filters
+- swipe:
+    start: "50%,30%"
+    end: "50%,80%"
+    label: Swipe Up to reset to initial position
+- runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnLettuceAndChicken.yaml
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Close the filter page
+- runFlow: ../../../asserts/Search/searchScreenFilteredOnLettuceAndChicken.yaml
+- tapOn:
+    text: "Curry Powder, "
+    label: Remove Curry Powder filter
+- runFlow: ../../../asserts/Search/searchScreenFilteredOnLettuce.yaml
+- pressKey: "BACK"

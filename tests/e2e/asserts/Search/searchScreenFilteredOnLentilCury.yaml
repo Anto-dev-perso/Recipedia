@@ -1,0 +1,41 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: ""
+    label: Search button is displayed
+- assertVisible:
+    text: "Title of recipe"
+    label: Search string is displayed
+- assertVisible:
+    text: "󰐕, Add a filter"
+    label: Add filter button is displayed
+- assertNotVisible:
+    text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
+    label: Spaghetti Bolognese is not displayed
+- assertNotVisible:
+    text: "Chicken Tacos, Mexican, Lunch, Prep. 20 min, 2 p."
+    label: Chicken Tacos is not displayed
+- assertNotVisible:
+    text: "Caesar Salad, Salad, Healthy, Prep. 15 min, 2 p."
+    label: Caesar salad is not displayed
+- assertNotVisible:
+    text: "Classic Pancakes, Breakfast, Dessert, Prep. 25 min, 2 p."
+    label: Classic Pancakes is not displayed
+- assertNotVisible:
+    text: "Margherita Pizza, Italian, Lunch, Prep. 20 min, 2 p."
+    label: Margherita Pizza is not displayed
+- assertNotVisible:
+    text: "Vegetable Soup, Healthy, Soup, Prep. 40 min, 2 p."
+    label: Vegetable Soup is not displayed
+- assertNotVisible:
+    text: "Chocolate Cake, Dessert, Chocolate, Prep. 60 min, 2 p."
+    label: Chocolate Cake is not displayed
+- assertNotVisible:
+    text: "Pesto Pasta, Italian, Quick Meal, Prep. 20 min, 2 p."
+    label: Pesto Pasta is not displayed
+- assertNotVisible:
+    text: "Sushi Rolls, Japanese, Seafood, Prep. 45 min, 2 p."
+    label: Sushi Rolls element is not displayed
+- assertVisible:
+    text: "Lentil Curry, Indian, Vegetarian, Prep. 35 min, 2 p."
+    label: Lentil Curry is displayed

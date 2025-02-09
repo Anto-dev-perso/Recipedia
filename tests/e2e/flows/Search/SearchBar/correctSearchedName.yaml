@@ -1,0 +1,31 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    id: "SearchBar"
+    label: Open Search Bar
+- tapOn:
+    text: "P"
+    label: Tap on 'P' in the keyboard
+- runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnP.yaml
+- tapOn:
+    text: "a"
+    label: Tap on 'a' in the Bar
+- runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnPa.yaml
+- tapOn:
+    id: "com.google.android.inputmethod.latin:id/key_pos_del"
+    label: Delete last key enetered
+- runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnP.yaml
+- tapOn:
+    text: "i"
+    label: Tap on 'i' in the Bar
+- runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnPi.yaml
+- hideKeyboard:
+    label: Close the keyboard
+- tapOn:
+    text: "Margherita Pizza"
+    label: Click directly on selected recipe
+- runFlow: ../../../asserts/Search/searchScreenFilteredOnPizza.yaml
+- pressKey: "BACK"

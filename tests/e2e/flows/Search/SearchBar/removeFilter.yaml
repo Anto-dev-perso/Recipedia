@@ -1,0 +1,21 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+
+- tapOn:
+    id: "SearchBar"
+    label: Open Search Bar
+- inputText:
+    text: "Lentil"
+    label: Input text 'Lentil' in the Bar
+- tapOn:
+    id: "com.google.android.inputmethod.latin:id/key_pos_ime_action"
+    label: Validate the input text
+- runFlow: ../../../asserts/Search/searchScreenFilteredOnLentilCury.yaml
+- tapOn:
+    text: ""
+    label: Remove the searched name
+- runFlow: ../../../asserts/Search/searchScreenVisible.yaml
+- pressKey: "BACK"

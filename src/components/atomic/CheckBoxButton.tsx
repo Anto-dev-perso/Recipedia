@@ -1,57 +1,58 @@
+import React, {useState} from "react";
+import {Pressable, Text, View} from 'react-native';
+import {wrappingButtonWithPressed} from "@styles/buttons";
+import {checkboxIcons, displayIcon, enumIconTypes, iconsSize} from "@assets/images/Icons";
+import {bulletListDataType, typoStyles} from '@styles/typography';
+import {toggleActivationFunctions} from "@customTypes/ScreenTypes";
+import {AsyncAlert} from "@utils/AsyncAlert";
 
 
-import React, { useEffect, useState } from "react";
-import { View, Text, Pressable } from 'react-native';
-import { viewButtonStyles, wrappingButtonWithPressed } from "@styles/buttons";
-import { recipeDb } from "@utils/RecipeDatabase";
-import FullScreenFiltering from "@components/organisms/FullScreenFiltering";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { checkboxIcons, enumIconTypes, iconsSize } from "@assets/images/Icons";
-import { bulletListDataType, typoStyles } from '@styles/typography';
-import { remValue } from "@styles/spacing";
-import { toggleActivationFunctions } from "@customTypes/ScreenTypes";
-import { displayIcon, materialCommunityIconName } from '../../assets/images/Icons';
-import { AsyncAlert } from "@utils/AsyncAlert";
-
-
-type CheckBoxButtonProps = {
+export type CheckBoxButtonProps = {
     title: string,
-    onLongPressData: bulletListDataType,
+    onLongPressData?: bulletListDataType,
     stateInitialValue: boolean,
     useCheckBoxState: boolean,
+    testID: string,
 
-    onPressFunctions: toggleActivationFunctions,
-}
+} & toggleActivationFunctions
 
-export default function CheckBoxButton ( props: CheckBoxButtonProps) {
+export default function CheckBoxButton(props: CheckBoxButtonProps) {
 
-    const [iconIndex, setIconIndex] = useState(0);
+    const [iconIndex, setIconIndex] = useState(props.stateInitialValue ? 1 : 0);
     const [pressState, setPressState] = useState(false);
 
-    useEffect(() => {
-        props.stateInitialValue ? setIconIndex(1) : setIconIndex(0) ;        
-  }, [])
+    function togglePressState() {
+        setPressState(!pressState);
+    }
+
+    function onPressFunction() {
+        iconIndex == 0 ? props.onActivation() : props.onDeActivation();
+        if (props.useCheckBoxState) {
+            setIconIndex((iconIndex + 1) % 2)
+        }
+    }
+
+    function onLongPressFunction() {
+        if (props.onLongPressData) {
+            setPressState(true);
+            AsyncAlert(`Recipes that use ${props.title}`, `Here are the list of recipes for this ingredient :${props.onLongPressData.bulletListData}`, "OK");
+        }
+    }
 
     return (
-        <Pressable style={wrappingButtonWithPressed(pressState)}
-        onPressIn={() => setPressState(true)}
-        onPressOut={() => setPressState(false)}
-            onPress={() => {
-                {iconIndex==0 ?   props.onPressFunctions.onActivation() :   props.onPressFunctions.onDeActivation() }
-                {props.useCheckBoxState ? setIconIndex( (iconIndex+1) % 2 ) : null}
-            }} 
-            onLongPress={() => {
-                setPressState(true);
-                AsyncAlert(`Recipes that use ${props.title}`, `Here are the list of recipes for this ingredient :${props.onLongPressData.bulletListData}`, "OK");
-                
-                }}>
+        <Pressable testID={props.testID + '::Pressable'} style={wrappingButtonWithPressed(pressState)}
+                   onPressIn={togglePressState}
+                   onPressOut={togglePressState}
+                   onPress={onPressFunction}
+                   onLongPress={onLongPressFunction}>
+            {displayIcon(enumIconTypes.materialCommunity, checkboxIcons[iconIndex], iconsSize.medium, "#414a4c", {paddingLeft: 2})}
 
-        {displayIcon(enumIconTypes.materialCommunity, checkboxIcons[iconIndex], iconsSize.medium, "#414a4c", {paddingLeft: 2})}
-
-        <View >
-            <Text style={typoStyles.paragraph}>{props.title}</Text>
-            {props.onLongPressData ? <Text style={typoStyles.element}>{props.onLongPressData.shortData}</Text> : null}
-        </View>
-    </Pressable>
+            <View>
+                <Text testID={props.testID + '::Title'} style={typoStyles.paragraph}>{props.title}</Text>
+                {props.onLongPressData ?
+                    <Text testID={props.testID + '::LongPressData'}
+                          style={typoStyles.element}>{props.onLongPressData.shortData}</Text> : null}
+            </View>
+        </Pressable>
     )
 }

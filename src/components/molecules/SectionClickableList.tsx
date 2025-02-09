@@ -1,138 +1,114 @@
-/**
-* TODO fill this part
-* @format
-*/
+import {iconProp} from "@assets/images/Icons"
+import React, {useState} from "react"
+import {FlatList, ListRenderItemInfo, View} from 'react-native';
+import CheckListsButtonsRender, {filterCheckbox, shoppingCheckbox} from "@components/molecules/CheckListsButtonsRender"
+import {
+    filtersCategories,
+    listFilter,
+    propsForShopping,
+    shoppingCategories,
+    TListFilter
+} from "@customTypes/RecipeFiltersTypes";
+import {selectFilterValuesToDisplay} from "@utils/FilterFunctions";
+import {FiltersPassingProps} from "@components/organisms/FiltersSelection";
+import RectangleButton from "@components/atomic/RectangleButton";
+import {padding} from "@styles/spacing";
 
-import { PlusMinusIcons, checkboxBlankIcon, checkboxFillIcon , checkboxIcons, enumIconTypes, iconProp, iconsType, materialCommunityIconName } from "@assets/images/Icons"
-import RectangleButton from "@components/atomic/RectangleButton"
-import { padding, remValue, screenViews } from "@styles/spacing"
-import React, { useState, useEffect } from "react"
-import { FlatList, View, Text, TouchableOpacity, Pressable, ScrollView } from 'react-native';
-import CheckBoxButton from '../atomic/CheckBoxButton';
-import ChecklistsButtonsRender, { filterCheckbox, shoppingCheckbox } from "@components/molecules/ChecklistsButtonsRender"
-import { filtersCategories, TListFilter, prepTimeValues, propsForFilter, propsForShopping, recipeFilterType, shoppingCategories, listFilter } from "@customTypes/RecipeFiltersTypes";
-import { recipeDb } from "@utils/RecipeDatabase";
-import { arrayOfType, ingredientTableElement, ingredientType, ingredientWithoutType, shoppingListTableElement } from "@customTypes/DatabaseElementTypes";
-import { selectFilterFromProps } from "@utils/FilterFunctions";
-import { colors } from '@styles/colors';
-import { toggleActivationFunctions } from "@customTypes/ScreenTypes";
+export type propsFromSearch = { screen: "search", } & FiltersPassingProps
 
-type propsFromSearch = {
-    screen: "search",
+export type propsFromShopping = { screen: "shopping", } & propsForShopping;
 
-    tagsList: Array<string>,
-    ingredientsList: Array<ingredientTableElement>,
-    
-    filtersProps: propsForFilter,
-}
-
-type propsFromShopping = {
-    screen: "shopping",
-
-
-    shoppingProps: propsForShopping;
-}
-
-type SectionClickableListProps = {
-    route: propsFromSearch | propsFromShopping
-
+export type SectionClickableListProps = {
+    screen: "search" | "shopping"
     icon?: Array<iconProp>,
-    useOnPress?: boolean,
-}
+    testMode?: boolean,
+} & (propsFromSearch | propsFromShopping)
 
-export default function SectionClickableList (props: SectionClickableListProps) {
+export default function SectionClickableList(props: SectionClickableListProps) {
 
-    const renderItem = ({item}: {item: TListFilter}) => {
+    const [filterCategoryClicked, setFilterCategoryClicked] = useState(props?.screen === 'search' ? new Map<TListFilter, boolean>(filtersCategories.map(filter => [filter, false])) : new Map<TListFilter, boolean>());
+
+
+    // TODO maybe put this in a separate file for a better readability
+    function renderItem({item}: ListRenderItemInfo<TListFilter>): JSX.Element {
 
         let itemRoute: filterCheckbox | shoppingCheckbox;
         let elemToDisplay = new Array<string>();
-        let toDisplay: boolean;
-        
-        switch (props.route.screen) {
+
+        switch (props.screen) {
             case "search":
-                let filterValueToUse : Array<recipeFilterType>;
-                let filterSetterToUse: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>;
-                let stringArray: Array<string>;
-
-                [filterValueToUse, filterSetterToUse, stringArray] = selectFilterFromProps(item, props.route.filtersProps, props.route.tagsList, props.route.ingredientsList);
-
-                stringArray.forEach(element => {
-                    elemToDisplay.push(element);
-                });
-
-                itemRoute = {type: "search", filters: filterValueToUse, setFilters: filterSetterToUse};
-                
-                toDisplay = false;
-                for (let i = 0; i < props.route.filtersProps.sectionsState.length; i++) {
-                    if (props.route.filtersProps.sectionsState[i].includes(item)){
-                        toDisplay = true;
-                        break;
-                    }
-                };
+                elemToDisplay = selectFilterValuesToDisplay(item, props.tagsList, props.ingredientsList);
+                itemRoute = {
+                    type: "search",
+                    filtersState: props.filtersState,
+                    addFilter: props.addFilter,
+                    removeFilter: props.removeFilter
+                } as const;
                 break;
 
             case "shopping":
-            default:
-                let initValue: boolean;
-
-                toDisplay = true;
-                if(item == listFilter.purchased){
-                    initValue = true;
-
-                    
-                    
-                    props.route.shoppingProps.ingList.forEach(element => {
-                        if(element.purchased){
-                            elemToDisplay.push(element.name);
-                        }
-                    });
-                }else{
-                    initValue = false;
-                    props.route.shoppingProps.ingList.forEach(element => {
-                        if(element.type == item && !element.purchased){
-                            elemToDisplay.push(element.name);
-                        }
-                    });
-                }
-
-                itemRoute = {type: "shopping", checkBoxInitialValue: initValue, shoppingProps: props.route.shoppingProps};
+                elemToDisplay = props.ingList.filter(ingredient => ingredient.type == item).map(ingFiltered => ingFiltered.name);
+                itemRoute = {
+                    type: "shopping",
+                    checkBoxInitialValue: item == listFilter.purchased,
+                    ingList: props.ingList,
+                    updateIngredientFromShopping: props.updateIngredientFromShopping,
+                } as shoppingCheckbox;
                 break;
+            default:
+                itemRoute = {
+                    type: "shopping",
+                    checkBoxInitialValue: false,
+                    ingList: [],
+                    updateIngredientFromShopping: () => {
+                        console.warn('setterIngList:: empty implementation due to missing case in renderItem');
+                    },
+                } as shoppingCheckbox;
+                console.warn('renderItem::Should not be reachable');
         }
-            
+
+        // TODO magic number not very good
+        const iconFromProps = props.icon ? props.icon[Number(1)] : undefined;
 
 
-        const iconFromProps = props.icon ? props.icon[Number(toDisplay)] : undefined;
+        function updateCategoryClicked() {
+            switch (props.screen) {
+                case "search":
+                    filterCategoryClicked.set(item, !filterCategoryClicked.get(item) as boolean);
 
-
-        const functionfromProps = () => {
-            if(props.useOnPress && props.route.screen == "search"){
-                if(toDisplay){
-                    return props.route.filtersProps.sectionsSetter(props.route.filtersProps.sectionsState.filter((elem) => elem != item)) 
-                }else {
-                    return props.route.filtersProps.sectionsSetter([...props.route.filtersProps.sectionsState, item])
-                }
+                    // Make a copy for react to trigger re-rendering
+                    setFilterCategoryClicked(new Map(filterCategoryClicked));
+                    break;
+                case "shopping":
+                    // Do nothing
+                    break;
             }
-        };
+        }
 
-        
-        return(
+        return (
             <View>
-                {elemToDisplay.length > 0 ?
-                    <RectangleButton text={item} height={50} centered={false} icon={iconFromProps} margins={padding.verySmall} onPressFunction={functionfromProps}  />
-                :
-                null}
-                
-                {toDisplay ?
-                    <ChecklistsButtonsRender arrayToDisplay={elemToDisplay} filterTitle={item} route={itemRoute}/>
-                : null}
-            </View>
-            )
-        
-    }
-    
-    const dataToDisplay = (props.route.screen == "search") ? filtersCategories : shoppingCategories;
+                {elemToDisplay.length == 0 ? null :
+                    <View>
+                        <RectangleButton testID={`RectangleButtonForCategory - ${item}`} text={item} height={50}
+                                         centered={false} icon={iconFromProps}
+                                         margins={padding.verySmall} onPressFunction={updateCategoryClicked}/>
+                        <CheckListsButtonsRender testID={`CheckListForCategory - ${item}`} testMode={props.testMode}
+                                                 arrayToDisplay={elemToDisplay}
+                                                 filterTitle={item}
+                                                 route={itemRoute}/>
+                    </View>}
 
-        return(
-            <FlatList data={dataToDisplay} renderItem={renderItem} scrollEnabled={false}/>
+            </View>
         )
+    }
+
+    const dataToRender = (props.screen == "search") ? filtersCategories : shoppingCategories;
+    return (
+        <FlatList data={dataToRender} renderItem={renderItem}
+                  scrollEnabled={false} {...(props.testMode ? {
+            initialNumToRender: dataToRender.length,
+            maxToRenderPerBatch: dataToRender.length,
+            windowSize: dataToRender.length
+        } : null)}/>
+    )
 }

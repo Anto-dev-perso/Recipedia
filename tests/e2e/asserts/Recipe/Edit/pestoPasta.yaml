@@ -1,0 +1,185 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: "󰌍"
+    label: Back button is rendered
+- assertVisible:
+    id: "RecipeImage"
+    label: Image is rendered
+- assertVisible:
+    text: "Title of the recipe : "
+    label: Intro text for the title is rendered
+- assertVisible:
+    text: "PESTO PASTA"
+    label: Title of the recipe is rendered
+- assertVisible:
+    text: "Description of the recipe : "
+    label: Intro text for the description is rendered
+- assertVisible:
+    text: "PASTA TOSSED WITH FRESH BASIL PESTO."
+    label: Description of the recipe is rendered
+- assertVisible:
+    text: "Tags of the recipe : "
+    label: Intro text for the tags is rendered
+- assertVisible:
+    text: "Tags are a way to identify a recipe and make easier its search.\n\
+    Here are some examples of tags you can have : .*, .*, .*"
+    label: Explanation text for the tags is rendered
+- assertVisible:
+    text: "Italian"
+    label: First tag of the recipe is rendered
+- assertVisible:
+    text: ""
+    index: 0
+    label: Cross icon of the first tag is rendered
+- assertVisible:
+    text: "Quick Meal"
+    label: Second tag of the recipe is rendered
+- assertVisible:
+    text: ""
+    index: 1
+    label: Cross icon of the second tag is rendered
+- assertVisible:
+    text: "󰐕"
+    label: Add button for the tag is rendered
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "This recipe is for : "
+    label: Intro text for the number of persons is rendered
+- assertVisible:
+    text: "2"
+    label: Number of persons is rendered
+- assertVisible:
+    text: " persons"
+    label: Outro text for the number of persons is rendered
+- assertVisible:
+    text: "INGREDIENTS"
+    label: Section Ingredients is rendered
+- assertVisible:
+    text: "Quantity"
+    label: Column Quantity is rendered
+- assertVisible:
+    text: "Unit"
+    label: Column Unit is rendered
+- assertVisible:
+    text: "Ingredient name"
+    label: Column Ingredient name is rendered
+- assertVisible:
+    text: "200"
+    label: Quantity of first ingredient is rendered
+- assertVisible:
+    text: "g"
+    index: 0
+    label: First occurrence of the g unit is rendered
+- assertVisible:
+    text: "Pasta"
+    label: Ingredient Pasta is rendered
+- assertVisible:
+    text: "50"
+    index: 0
+    label: Quantity of second ingredient is rendered
+- assertVisible:
+    text: "g"
+    index: 1
+    label: Second occurrence of the g unit is rendered
+- assertVisible:
+    text: "Basil Leaves"
+    label: Ingredient Basil Leaves is rendered
+- assertVisible:
+    text: "30"
+    label: Quantity of third ingredient is rendered
+- assertVisible:
+    text: "g"
+    index: 2
+    label: Third occurrence of the g unit is rendered
+- assertVisible:
+    text: "Parmesan"
+    label: Ingredient Parmesan is rendered
+- assertVisible:
+    text: "50"
+    index: 1
+    label: Quantity of fourth ingredient is rendered
+- assertVisible:
+    text: "ml"
+    label: ml unit is rendered
+- assertVisible:
+    text: "Olive Oil"
+    label: Ingredient Olive Oil is rendered
+- assertVisible:
+    text: "20"
+    index: 0
+    label: Quantity of fifth ingredient is rendered
+- assertVisible:
+    text: "g"
+    index: 3
+    label: Fourth occurrence of the g unit is rendered
+- assertVisible:
+    text: "Pine Nuts"
+    label: Ingredient Pine Nuts is rendered
+- assertVisible:
+    text: "󰐕"
+    label: Add button of the ingredients is rendered
+- assertVisible:
+    text: "Time to prepare the recipe :"
+    label: Intro text for the time to prepare is rendered
+- assertVisible:
+    text: "20"
+    index: 1
+    label: Time to prepare is rendered
+- assertVisible:
+    text: "min"
+    label: Outro text for the time to prepare is rendered
+
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "PREPARATION : STEP 1"
+    label: Preparation section for first step is rendered
+- assertVisible:
+    text: "Title of step 1 : "
+    label: Intro text for the title of first step is rendered
+- assertVisible:
+    text: "Cook the pasta according to the package instructions."
+    label: First preparation step title is rendered
+- assertVisible:
+    text: "Content of step 1 : "
+    label: Intro text for first step is rendered
+- assertVisible:
+    text: "PREPARATION : STEP 2"
+    label: Preparation section for second step is rendered
+- assertVisible:
+    text: "Title of step 2 : "
+    label: Intro text for the title of second step is rendered
+- assertVisible:
+    text: "Blend basil leaves, Parmesan, olive oil, and pine nuts to make pesto."
+    label: Second preparation step title is rendered
+- assertVisible:
+    text: "Content of step 2 : "
+    label: Intro text for second step is rendered
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "PREPARATION : STEP 3"
+    label: Preparation section for third step is rendered
+- assertVisible:
+    text: "Title of step 3 : "
+    label: Intro text for the title of third step is rendered
+- assertVisible:
+    text: "Toss the pasta with the pesto sauce and serve warm."
+    label: Third preparation step title is rendered
+- assertVisible:
+    text: "Content of step 3 : "
+    label: Intro text for third step is rendered
+- assertVisible:
+    text: "󰐕"
+    label: Add button of the preparation is rendered
+- assertVisible:
+    text: "Validate the recipe with these modifications"
+    label: Validate the modifications button is rendered

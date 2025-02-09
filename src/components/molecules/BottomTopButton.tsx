@@ -1,22 +1,38 @@
-
-
 import React from "react"
-import { Pressable, Text, View, Button, StyleProp, ViewStyle } from 'react-native';
-import { bottomTopPosition, bottomFullButton, bottomLeftButton, bottomRightButton, bottomCenterButton, topCenterButton, topFullButton, topLeftButton, topRightButton } from "@styles/buttons"
+import {Button, StyleProp, View, ViewStyle} from 'react-native';
+import {
+    bottomCenterButton,
+    bottomFullButton,
+    bottomLeftButton,
+    bottomRightButton,
+    bottomTopPosition,
+    topCenterButton,
+    topFullButton,
+    topLeftButton,
+    topRightButton
+} from "@styles/buttons"
 
-type BottomTopButtonProps<T extends React.ElementType>  = {
-    as: T,
-    position: bottomTopPosition,
-    buttonOffset?: number,
-    onPressFunction(): void,
-} 
-& React.ComponentProps<T>;
+export type BottomTopButtonProps<T extends React.ElementType> = {
+        as: T,
+        position: bottomTopPosition,
+        buttonOffset?: number,
+        onPressFunction(): void,
 
-export default function BottomTopButton<T extends React.ElementType> ( {as, position, buttonOffset, ... restProps}: BottomTopButtonProps<T> ) {
+        testID: string,
+    }
+    & React.ComponentProps<T>;
+
+export default function BottomTopButton<T extends React.ElementType>({
+                                                                         as,
+                                                                         position,
+                                                                         buttonOffset,
+                                                                         testID,
+                                                                         ...restProps
+                                                                     }: BottomTopButtonProps<T>) {
     const Button = as;
     let buttonStyle: StyleProp<ViewStyle>;
     let offset: number;
-    
+
     // Bottom buttons can have a vertical offset. In this case, use the prop else set the offset to 0
     buttonOffset ? (offset = buttonOffset) : (offset = 0);
 
@@ -45,14 +61,14 @@ export default function BottomTopButton<T extends React.ElementType> ( {as, posi
         case bottomTopPosition.bottom_full:
             buttonStyle = bottomFullButton(offset);
             break;
-    
+
         default:
             break;
     }
 
-    return(
-    <View style={buttonStyle}>
-        <Button {...restProps}/>
-    </View>
+    return (
+        <View style={buttonStyle} testID={testID}>
+            <Button {...restProps}/>
+        </View>
     )
 }

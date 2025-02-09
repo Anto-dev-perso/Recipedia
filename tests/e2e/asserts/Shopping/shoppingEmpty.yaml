@@ -1,0 +1,10 @@
+appId: "com.recipesmanager"
+
+---
+- assertVisible:
+    text: "Shopping"
+    index: 0
+    label: Shopping screen title is displayed
+- assertVisible:
+    text: "SHOPPING LIST"
+    label: Shopping list title is displayed

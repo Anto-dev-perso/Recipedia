@@ -1,0 +1,18 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Open the filter page
+- runFlow: ../../../asserts/Search/Filters/filtersViewNoFilter.yaml
+- swipe:
+    start: "50%,15%"
+    end: "50%,95%"
+    label: Swipe Up to reset to initial position
+- tapOn:
+    text: "󰐕, Add a filter"
+    label: Close the filter page
+- runFlow: ../../../asserts/Search/searchScreenVisible.yaml
+- pressKey: "BACK"

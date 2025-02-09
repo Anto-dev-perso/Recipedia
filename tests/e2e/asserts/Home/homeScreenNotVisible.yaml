@@ -1,0 +1,47 @@
+appId: "com.recipesmanager"
+---
+- assertNotVisible:
+    id: "com.android.systemui:id/status_bar_launch_animation_container"
+    label: Status bar is displayed
+- assertNotVisible:
+    text: "󰐕"
+    label: Plus button is displayed
+- assertNotVisible:
+    text: ""
+    label: Search button is displayed
+- assertNotVisible:
+    text: "Home"
+    index: 0
+    label: Home screen title is displayed
+- assertNotVisible:
+    text: "RECOMMENDATION 1"
+    label: Recommendation1 is displayed
+- assertNotVisible:
+    text: "RECOMMENDATION 2"
+    label: Recommendation 2 is displayed
+- assertNotVisible:
+    text: "RECOMMENDATION 3"
+    label: Recommendation 3 is displayed
+- assertNotVisible:
+    text: "RECOMMENDATION 4"
+    label: Recommendation 4 is displayed
+
+- assertNotVisible:
+    text: "󰋜"
+    label: Home icon is displayed
+- assertNotVisible:
+    text: "Home"
+    index: 1
+    label: Home text is displayed
+- assertNotVisible:
+    text: ""
+    label: icon is displayed
+- assertNotVisible:
+    text: "Shopping"
+    label: text is displayed
+- assertNotVisible:
+    text: ""
+    label: Parameters icon is displayed
+- assertNotVisible:
+    text: "Parameters"
+    label: Parameters text is displayed

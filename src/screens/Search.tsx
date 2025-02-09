@@ -1,89 +1,100 @@
-
-
 import SearchBar from "@components/organisms/SearchBar";
-import { screenViews, scrollView } from "@styles/spacing";
-import RecipeDatabase, { recipeDb } from "@utils/RecipeDatabase";
-import React, { useEffect, useState } from "react";
-import { Alert, Keyboard, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
-import { SearchScreenProp } from '@customTypes/ScreenTypes';
-import { FlatList } from "react-native-gesture-handler";
+import {screenViews, scrollView} from "@styles/spacing";
+import React, {useEffect, useState} from "react";
+import {Keyboard, SafeAreaView, ScrollView, StatusBar} from "react-native";
+import {SearchScreenProp} from '@customTypes/ScreenTypes';
 import TextRender from "@components/molecules/TextRender";
-import { typoRender } from "@styles/typography";
-import { ingredientTableElement, recipeTableElement } from "@customTypes/DatabaseElementTypes";
-import SearchResultDisplay from "@components/organisms/SearchResultDisplay";
+import {typoRender} from "@styles/typography";
+import {ingredientTableElement, recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import {TListFilter} from "@customTypes/RecipeFiltersTypes";
+import {
+    addValueToMultimap,
+    editTitleInMultimap,
+    extractFilteredRecipeDatas,
+    filterFromRecipe,
+    removeValueToMultimap
+} from "@utils/FilterFunctions";
+import {palette} from "@styles/colors";
 import FiltersSelection from "@components/organisms/FiltersSelection";
-import { TListFilter, recipeFilterType } from "@customTypes/RecipeFiltersTypes";
-import { extractFilteredRecipeDatas, filterPrepTimeFromRecipe, filterTagsFromRecipe, filterIngredientsFromRecipe, recipeTitleFilteredFunction } from "@utils/FilterFunctions";
-import { palette } from "@styles/colors";
+import SearchResultDisplay from "@components/organisms/SearchResultDisplay";
+import RecipeDatabase from "@utils/RecipeDatabase";
 
-export default function Search ({ route, navigation }: SearchScreenProp) {
+export default function Search({route, navigation}: SearchScreenProp) {
+    const [filtersState, setFiltersState] = useState(new Map<TListFilter, Array<string>>());
 
-    const [filteredRecipes, setFilteredRecipes] = useState<Array<recipeTableElement>>([]);
+    const [filteredRecipes, setFilteredRecipes] = useState<Array<recipeTableElement>>(RecipeDatabase.getInstance().get_recipes());
 
-    const [filteredIngredients, setFilteredIngredients] = useState<Array<ingredientTableElement>>([]);
-    const [filteredTags, setFilteredTags] = useState<Array<string>>([]);
-    const [filteredTitles, setFilteredTitles] = useState<Array<string>>([]);
+    const [filteredIngredients, setFilteredIngredients] = useState(new Array<ingredientTableElement>());
+    const [filteredTags, setFilteredTags] = useState(new Array<string>());
+    const [filteredTitles, setFilteredTitles] = useState(new Array<string>());
+    const [searchPhrase, setSearchPhrase] = useState('');
+
 
     const [searchBarClicked, setSearchBarClicked] = useState(false);
     const [addingAFilter, setAddingAFilter] = useState(false);
-    const [typeOfFilterClick, setTypeOfFilterClick] = useState<Array<TListFilter>>([]);
 
-    const [searchPhrase, setSearchPhrase] = useState("");
+// TODO maybe changing this file to a class so that we can use constructor
 
-    const [filtersIngredients, setFiltersIngredients] = useState<Array<recipeFilterType>>([]);
-    const [filtersTags, setFiltersTags] = useState<Array<recipeFilterType>>([]);
-    const [filtersPrepTime, setFiltersPrepTime] = useState<Array<recipeFilterType>>([]);
+    useEffect(() => {
+        const recipesFiltered = filterFromRecipe(filteredRecipes, filtersState);
+
+        setFilteredRecipes(recipesFiltered);
+        const [titles, ingredients, tags] = extractFilteredRecipeDatas(recipesFiltered);
+        setFilteredTitles(titles);
+        setFilteredIngredients(ingredients);
+        setFilteredTags(tags);
+
+        // }, [searchPhrase, filtersTags, filtersPrepTime, filtersIngredients]);
+    }, [filtersState]);
 
 
     useEffect(() => {
-        const dbRecipes = recipeDb.get_recipes();
-        setFilteredRecipes(dbRecipes);
 
-        let [titles, ingredients, tags] = extractFilteredRecipeDatas(dbRecipes);
+        const [titles, ingredients, tags] = extractFilteredRecipeDatas(filteredRecipes);
         setFilteredTitles(titles);
         setFilteredTags(tags);
         setFilteredIngredients(ingredients);
-      }, [])
+        // TODO maybe call the database with the filter in it so that we benefit of the SQL optimizations and we don't take too much RAM
 
-      useEffect(() => {
-        let arrayFiltered = recipeDb.get_recipes();
-        
-        arrayFiltered = recipeTitleFilteredFunction(arrayFiltered, searchPhrase);
-        arrayFiltered = filterPrepTimeFromRecipe(arrayFiltered, filtersPrepTime);
-        arrayFiltered = filterTagsFromRecipe(arrayFiltered, filtersTags);
-        arrayFiltered = filterIngredientsFromRecipe(arrayFiltered, filtersIngredients);
-        
-        let [titles, ingredients, tags] = extractFilteredRecipeDatas(arrayFiltered);
-        setFilteredTitles(titles);
+    }, []);
 
-        setFilteredRecipes(arrayFiltered);
-        
-      }, [searchPhrase, filtersTags, filtersPrepTime, filtersIngredients])
 
-      useEffect(() => {
-        let [titles, ingredients, tags] = extractFilteredRecipeDatas(filteredRecipes);
-        
-        setFilteredTags(tags);
-        setFilteredIngredients(ingredients);
-        
-      }, [addingAFilter])
+    function updateSearchString(newSearchString: string) {
+        editTitleInMultimap(filtersState, newSearchString);
+        setSearchPhrase(newSearchString);
+        setFiltersState(new Map(filtersState));
+    }
 
+    function addAFilterToTheState(filterTitle: TListFilter, value: string) {
+        addValueToMultimap(filtersState, filterTitle, value);
+        setFiltersState(new Map(filtersState));
+    }
+
+    function removeAFilterToTheState(filterTitle: TListFilter, value: string) {
+        removeValueToMultimap(filtersState, filterTitle, value);
+        setFilteredRecipes(RecipeDatabase.getInstance().get_recipes());
+        setFiltersState(new Map(filtersState));
+    }
 
     return (
-        <SafeAreaView style={screenViews.screenView}>
+        <SafeAreaView style={screenViews.screenView} testID={'SearchScreen'}>
             <StatusBar animated={true} backgroundColor={palette.primary}/>
             <ScrollView style={scrollView(0).view} showsVerticalScrollIndicator={false}>
-                <SearchBar clicked={searchBarClicked} searchPhrase={searchPhrase} setClicked={setSearchBarClicked} setSearchPhrase={setSearchPhrase} />
+                <SearchBar clicked={searchBarClicked} searchPhrase={searchPhrase} setClicked={setSearchBarClicked}
+                           setSearch={updateSearchString}/>
 
-                {searchBarClicked ? 
-                    <TextRender text={filteredTitles} render={typoRender.CLICK_LIST} onClick={(str: string) => {
+                {searchBarClicked ?
+                    <TextRender text={filteredTitles}
+                                render={typoRender.CLICK_LIST} onClick={(str: string) => {
                         Keyboard.dismiss();
                         setSearchBarClicked(false);
                         setSearchPhrase(str);
                     }}/>
-                : 
-                        <FiltersSelection addingFilter={addingAFilter} setAddingFilter={setAddingAFilter} filtersProps={{sectionsState: typeOfFilterClick, ingredientsState: filtersIngredients, tagsState: filtersTags, prepTimeState: filtersPrepTime, setterIngredients: setFiltersIngredients, setterTags: setFiltersTags, setterPrepTime: setFiltersPrepTime, sectionsSetter: setTypeOfFilterClick}} tagsList={filteredTags} ingredientsList={filteredIngredients} />
-                        
+                    :
+                    <FiltersSelection printSectionClickable={addingAFilter} setPrintSectionClickable={setAddingAFilter}
+                                      tagsList={filteredTags} ingredientsList={filteredIngredients}
+                                      filtersState={filtersState} addFilter={addAFilterToTheState}
+                                      removeFilter={removeAFilterToTheState}/>
                 }
                 {(!addingAFilter && !searchBarClicked) ? <SearchResultDisplay recipeArray={filteredRecipes}/> : null}
             </ScrollView>

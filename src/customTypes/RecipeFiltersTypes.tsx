@@ -1,73 +1,43 @@
-
-
-import { ingredientType, shoppingListTableElement } from './DatabaseElementTypes';
+import {ingredientType, shoppingListTableElement} from './DatabaseElementTypes';
 
 export const currentMonth = new Date().getMonth() + 1;
-
-export type propsForFilter = {
-    sectionsState: Array<TListFilter>
-    ingredientsState: Array<recipeFilterType>,
-    tagsState: Array<recipeFilterType>,
-    prepTimeState: Array<recipeFilterType>,
-
-    sectionsSetter: React.Dispatch<React.SetStateAction<Array<TListFilter>>>,
-    setterIngredients: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
-    setterTags: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
-    setterPrepTime: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>,
+export type filtersAccessAndModifiers = {
+    filtersState: Map<TListFilter, Array<string>>,
+    addFilter: (filter: TListFilter, value: string) => void,
+    removeFilter: (filter: TListFilter, value: string) => void,
 }
 
+
 export enum nonIngredientFilters {
+    recipeTitleInclude = "recipeTitleInclude",
     prepTime = "Preparation Time",
     inSeason = "In-season",
     tags = "Tags",
     purchased = "Already purchased",
-    // kalories: "Kalories",
+    // calories: "Calories",
 }
 
-export const listFilter = { ...ingredientType, ...nonIngredientFilters } as const;
+export const listFilter = {...ingredientType, ...nonIngredientFilters} as const;
+
 export type TListFilter = typeof listFilter[keyof typeof listFilter];
+export const filtersCategories: Array<TListFilter> = Object.values(listFilter);
 
-
-// TODO can we get rid of this array ?
-export const filtersCategories: Array<TListFilter> = [
-    listFilter.inSeason,
-    listFilter.prepTime,
-    listFilter.tags,
-    listFilter.cerealProduct,
-    listFilter.condiment,
-    listFilter.sauce,
-    listFilter.vegetable,
-    listFilter.meet,
-    listFilter.poultry,
-    listFilter.spice,
-    listFilter.fish,
-    listFilter.tofu,
-    listFilter.dairy,
-    listFilter.sugar,
-    listFilter.fruit,
-];
-
-
-export type recipeFilterType = {
-    title: TListFilter,
-    value: string,
-}
 
 export type propsForShopping = {
     ingList: Array<shoppingListTableElement>,
-    setterIngList: React.Dispatch<React.SetStateAction<Array<shoppingListTableElement>>>,
+    updateIngredientFromShopping: (ingredientName: string) => void,
 }
 
 export const shoppingCategories: Array<TListFilter> = [
-    listFilter.cerealProduct,
+    listFilter.grainOrCereal,
     listFilter.condiment,
     listFilter.sauce,
     listFilter.vegetable,
-    listFilter.meet,
+    listFilter.meat,
     listFilter.poultry,
     listFilter.spice,
     listFilter.fish,
-    listFilter.tofu,
+    listFilter.plantProtein,
     listFilter.dairy,
     listFilter.purchased,
     listFilter.sugar,
@@ -83,4 +53,4 @@ export const prepTimeValues = [
     "30-40 min",
     "40-50 min",
     "+60 min",
-]
+];

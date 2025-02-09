@@ -1,0 +1,52 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: ""
+    label: Search button is displayed
+- assertVisible:
+    text: "Title of recipe"
+    label: Search string is displayed
+- assertVisible:
+    text: "󰐕, Add a filter"
+    label: Add filter button is displayed
+- assertVisible:
+    text: "Romaine Lettuce, "
+    label: Lettuce filter button is displayed
+- assertNotVisible:
+    text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
+    label: Spaghetti Bolognese is not displayed
+- assertVisible:
+    text: "Chicken Tacos, Mexican, Lunch, Prep. 20 min, 2 p."
+    label: Chicken Tacos is displayed
+- assertNotVisible:
+    text: "Classic Pancakes, Breakfast, Dessert, Prep. 25 min, 2 p."
+    label: Classic Pancakes is not displayed
+- assertVisible:
+    text: "Caesar Salad, Salad, Healthy, Prep. 15 min, 2 p."
+    label: Caesar Salad of database is displayed
+- swipe:
+    start: "49%,80%"
+    end: "47%,30%"
+    label: Swipe down to see other items
+- assertNotVisible:
+    text: "Margherita Pizza, Italian, Lunch, Prep. 20 min, 2 p."
+    label: Margherita Pizza is not displayed
+- assertVisible:
+    text: "Vegetable Soup, Healthy, Soup, Prep. 40 min, 2 p."
+    label: Vegetable Soup is displayed
+- assertNotVisible:
+    text: "Chocolate Cake, Dessert, Chocolate, Prep. 60 min, 2 p."
+    label: Chocolate Cake is not displayed
+- assertNotVisible:
+    text: "Pesto Pasta, Italian, Quick Meal, Prep. 20 min, 2 p."
+    label: Pesto Pasta is not displayed
+- assertNotVisible:
+    text: "Sushi Rolls, Japanese, Seafood, Prep. 45 min, 2 p."
+    label: Sushi Rolls element of database is not displayed
+- assertVisible:
+    text: "Lentil Curry, Indian, Vegetarian, Prep. 35 min, 2 p."
+    label: Lentil Curry is displayed
+- swipe:
+    start: "50%,30%"
+    end: "50%,80%"
+    label: Swipe up to return on initial state

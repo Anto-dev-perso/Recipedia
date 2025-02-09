@@ -1,0 +1,82 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: "󰌍"
+    label: Back button is rendered
+- assertVisible:
+    id: "RecipeImage"
+    label: Image is rendered
+- assertVisible:
+    text: "SUSHI ROLLS"
+    label: Title is rendered
+- assertVisible:
+    text: "Classic sushi rolls with nori, rice, and fillings."
+    label: Description is rendered
+- assertVisible:
+    text: "Japanese"
+    label: Tag Japanese is rendered
+- assertVisible:
+    text: "Seafood"
+    label: Tag Seafood is rendered
+- assertVisible:
+    text: "INGREDIENTS (4 PERSONS)"
+    label: Ingredients title and number of persons is rendered
+- assertVisible:
+    text: "Sushi Rice"
+    label: Ingredient Sushi Rice is rendered
+- assertVisible:
+    text: "250 g"
+    label: Quantity of Sushi Rice is rendered
+- assertVisible:
+    text: "Nori Sheets"
+    label: Ingredient Nori Sheets is rendered
+- assertVisible:
+    text: "5 pieces"
+    label: Quantity of Nori Sheets is rendered
+- assertVisible:
+    text: "Salmon"
+    label: Ingredient Salmon is rendered
+- assertVisible:
+    text: "200 g"
+    label: Quantity of Salmon is rendered
+- assertVisible:
+    text: "Avocado"
+    label: Ingredient Avocado is rendered
+- assertVisible:
+    text: "100 g"
+    label: Quantity of Avocado is rendered
+- assertVisible:
+    text: "Soy Sauce"
+    label: Ingredient Soy Sauce is rendered
+- assertVisible:
+    text: "50 ml"
+    label: Quantity of Soy Sauce is rendered
+- swipe:
+    start: "50%,85%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "PREPARATION (45 MIN)"
+    label: Preparation title and time of preparation is rendered
+- assertVisible:
+    text: "1) Cook the sushi rice and let it cool."
+    label: First section of the preparation is rendered
+- assertVisible:
+    text: "2) Place a sheet of nori on a bamboo mat and spread rice evenly over it."
+    label: Second section of the preparation is rendered
+- assertVisible:
+    text: "3) Add salmon and avocado as fillings and roll tightly."
+    label: Third section of the preparation is rendered
+- assertVisible:
+    text: "4) Slice the roll into pieces and serve with soy sauce."
+    label: Fourth section of the preparation is rendered
+- assertVisible:
+    text: "󰏫"
+    label: Edit Button is rendered
+- assertVisible:
+    text: "Add this recipe to the menu"
+    label: Add to menu button is rendered
+- swipe:
+    start: "50%,20%"
+    end: "50%,80%"
+    label: Swipe Up to reset to initial position

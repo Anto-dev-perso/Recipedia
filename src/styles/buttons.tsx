@@ -1,7 +1,5 @@
-
-
-import { palette } from './colors'
-import { padding, remValue } from './spacing'
+import {palette} from './colors'
+import {padding, remValue} from './spacing'
 import EStyleSheet from "react-native-extended-stylesheet";
 
 let shapeWidth: number = 1;
@@ -42,7 +40,7 @@ export const roundButtonStyles = (circleDiameter: number) => EStyleSheet.create(
         padding: padding.medium,
         borderColor: palette.bonusColor2,
     },
-})
+});
 
 export const squareButtonStyles = (side: number) => EStyleSheet.create({
     squareButton: {
@@ -53,7 +51,7 @@ export const squareButtonStyles = (side: number) => EStyleSheet.create({
         height: side,
         marginHorizontal: padding.medium,
     },
-})
+});
 
 export const rectangleButtonStyles = (rectHeight: number) => EStyleSheet.create({
     rectangleButton: {
@@ -61,8 +59,8 @@ export const rectangleButtonStyles = (rectHeight: number) => EStyleSheet.create(
         borderWidth: shapeWidth,
         borderColor: palette.borderColor,
         height: rectHeight * remValue,
-}
-})
+    }
+});
 
 export const rectangleButtonHeight = 75;
 
@@ -71,7 +69,7 @@ export const viewButtonStyles = EStyleSheet.create({
         padding: padding.small,
     },
     viewInsideButtons: {
-        flexDirection: 'row', 
+        flexDirection: 'row',
         alignItems: 'center',
         height: '100%',
     },
@@ -83,47 +81,47 @@ export const viewButtonStyles = EStyleSheet.create({
     wrappingListOfButton: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center'
     },
     longVerticalButton: {
-        flexGrow: 1, 
-        flexDirection: 'column', 
+        flexGrow: 1,
+        flexDirection: 'column',
         justifyContent: 'space-between',
     },
     longHorizontalButton: {
-        paddingLeft: padding.extraLarge, 
-        paddingVertical: padding.medium, 
+        paddingLeft: padding.extraLarge,
+        paddingVertical: padding.medium,
         flexWrap: 'wrap',
     },
-    centeredView : {
+    centeredView: {
         justifyContent: 'center',
         alignItems: 'center',
     }
-})
+});
 
 export const pressButtonStyle = (pressed: boolean) => EStyleSheet.create({
     pressButton: {
         backgroundColor: pressed ? palette.progressGrey : palette.backgroundColor
     }
- })
+});
 
- export const wrappingButtonWithPressed = (pressed: boolean) => EStyleSheet.flatten([viewButtonStyles.wrappingListOfButton, pressButtonStyle(pressed).pressButton])
+export const wrappingButtonWithPressed = (pressed: boolean) => EStyleSheet.flatten([viewButtonStyles.wrappingListOfButton, pressButtonStyle(pressed).pressButton]);
 
-export const viewInsideButtonCentered = EStyleSheet.flatten([viewButtonStyles.viewInsideButtons, viewButtonStyles.centeredView])
+export const viewInsideButtonCentered = EStyleSheet.flatten([viewButtonStyles.viewInsideButtons, viewButtonStyles.centeredView]);
 
 const viewBottomTopButton = (offset: number) => EStyleSheet.create({
     bottomButton: {
-        position: 'absolute', 
+        position: 'absolute',
         bottom: offset,
         padding: padding.small,
     },
     topButton: {
-        position: 'absolute', 
+        position: 'absolute',
         top: offset,
         padding: padding.small,
     },
-})
+});
 
 export const viewPosition = EStyleSheet.create({
     leftButton: {
@@ -145,26 +143,25 @@ export const viewPosition = EStyleSheet.create({
         width: '50%',
         padding: padding.small,
     },
-})
+});
 
 
-export const bottomLeftButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.leftButton])
-export const bottomRightButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.rightButton])
-export const bottomCenterButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.centerButton])
-export const bottomFullButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.fullButton])
-export const topLeftButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.leftButton])
-export const topRightButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.rightButton])
-export const topCenterButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.centerButton])
-export const topFullButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.fullButton])
-
+export const bottomLeftButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.leftButton]);
+export const bottomRightButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.rightButton]);
+export const bottomCenterButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.centerButton]);
+export const bottomFullButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.fullButton]);
+export const topLeftButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.leftButton]);
+export const topRightButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.rightButton]);
+export const topCenterButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.centerButton]);
+export const topFullButton = (offset: number) => EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.fullButton]);
 
 
 export const rectangleRoundedButtonStyles = (rectRoundHeight: number) => EStyleSheet.create({
     rectangleRoundedButton: {
-    backgroundColor: palette.accent,
-    borderWidth: shapeWidth,
-    borderColor: palette.bonusColor2,
-    height: rectRoundHeight * remValue,
-    borderRadius: (rectRoundHeight/2) * remValue,
-}
-})
+        backgroundColor: palette.accent,
+        borderWidth: shapeWidth,
+        borderColor: palette.bonusColor2,
+        height: rectRoundHeight * remValue,
+        borderRadius: (rectRoundHeight / 2) * remValue,
+    }
+});

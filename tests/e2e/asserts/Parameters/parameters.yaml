@@ -1,0 +1,10 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: "Parameters"
+    index: 0
+    label: Parameters screen title is displayed
+- assertVisible:
+    text: "PARAMETERS"
+    index: 1
+    label: Parameters title is displayed

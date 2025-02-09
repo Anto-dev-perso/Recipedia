@@ -1,0 +1,278 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: ""
+    label: Search button is displayed
+- assertVisible:
+    text: "Title of recipe"
+    label: Search string is displayed
+- assertVisible:
+    text: "󰐕, Add a filter"
+    label: Add filter button is displayed
+- assertVisible:
+    text: "󰍴, Grain or Cereal"
+    label: Grain or Cereal category is rendered
+- assertVisible:
+    text: "󰄱, Spaghetti"
+    label: Spaghetti filter is rendered
+- assertVisible:
+    text: "󰄱, Taco Shells"
+    label: Taco Shells filter is rendered
+- assertVisible:
+    text: "󰄱, Flour"
+    label: Flour filter is rendered
+- assertVisible:
+    text: "󰄱, Croutons"
+    label: Croutons filter is rendered
+- assertVisible:
+    text: "󰄱, Pizza Dough"
+    label: Pizza Dough filter is rendered
+- assertVisible:
+    text: "󰄱, Flour"
+    label: Flour filter is rendered
+- assertVisible:
+    text: "󰄱, Pasta"
+    label: Pasta filter is rendered
+- assertVisible:
+    text: "󰄱, Sushi Rice"
+    label: Sushi Rice filter is rendered
+- assertVisible:
+    text: "󰍴, Legumes"
+    label: Legumes category is rendered
+- assertVisible:
+    text: "󰄱, Red Lentils"
+    label: Red Lentils filter is rendered
+- assertVisible:
+    text: "󰍴, Vegetable"
+    label: Vegetable category is rendered
+- assertVisible:
+    text: "󰄱, Lettuce"
+    label: Lettuce filter is rendered
+- assertVisible:
+    text: "󰄱, Romaine Lettuce"
+    label: Romaine Lettuce filter is rendered
+- assertVisible:
+    text: "󰄱, Carrots"
+    label: Carrots filter is rendered
+- assertVisible:
+    text: "󰄱, Celery"
+    label: Celery filter is rendered
+- assertVisible:
+    text: "󰄱, Potatoes"
+    label: Potatoes filter is rendered
+- assertVisible:
+    text: "󰄱, Onions"
+    label: Onions filter is rendered
+- assertVisible:
+    text: "󰄱, Tomatoes"
+    label: Tomatoes filter is rendered
+- assertVisible:
+    text: "󰍴, Plant Protein"
+    label: Plant Protein category is rendered
+- assertVisible:
+    text: "󰄱, Eggs"
+    label: Eggs filter is rendered
+- swipe:
+    start: "50%,85%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "󰍴, Condiment"
+    label: Condiment category is rendered
+- assertVisible:
+    text: "󰄱, Nori Sheets"
+    label: Nori Sheets filter is rendered
+- assertVisible:
+    text: "󰄱, Soy Sauce"
+    label: Soy Sauce filter is rendered
+- assertVisible:
+    text: "󰍴, Sauce"
+    label: Sauce category is rendered
+- assertVisible:
+    text: "󰄱, Tomato Sauce"
+    label: Tomato Sauce filter is rendered
+- assertVisible:
+    text: "󰄱, Caesar Dressing"
+    label: Caesar Dressing filter is rendered
+- assertVisible:
+    text: "󰄱, Vegetable Broth"
+    label: Vegetable Broth filter is rendered
+- assertVisible:
+    text: "󰄱, Coconut Milk"
+    label: Coconut Milk filter is rendered
+- assertVisible:
+    text: "󰍴, Meat"
+    label: Meat category is rendered
+- assertVisible:
+    text: "󰄱, Ground Beef"
+    label: Ground Beef filter is rendered
+- assertVisible:
+    text: "󰍴, Poultry"
+    label: Poultry category is rendered
+- assertVisible:
+    text: "󰄱, Chicken Breast"
+    label: Chicken Breast filter is rendered
+- assertVisible:
+    text: "󰍴, Fish"
+    label: Fish category is rendered
+- assertVisible:
+    text: "󰄱, Salmon"
+    label: Salmon filter is rendered
+- swipe:
+    start: "50%,85%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "󰍴, Dairy"
+    label: Dairy category is rendered
+- assertVisible:
+    text: "󰄱, Milk"
+    label: Milk filter is rendered
+- assertVisible:
+    text: "󰍴, Cheese"
+    label: Cheese category is rendered
+- assertVisible:
+    text: "󰄱, Parmesan"
+    label: Parmesan filter is rendered
+- assertVisible:
+    text: "󰄱, Cheddar"
+    label: Cheddar filter is rendered
+- assertVisible:
+    text: "󰄱, Mozzarella"
+    label: Mozzarella filter is rendered
+- assertVisible:
+    text: "󰍴, Sugar"
+    label: Sugar category is rendered
+- assertVisible:
+    text: "󰄱, Sugar"
+    label: Sugar filter is rendered
+- assertVisible:
+    text: "󰍴, Spice"
+    label: Spice category is rendered
+- assertVisible:
+    text: "󰄱, Basil Leaves"
+    label: Basil Leaves filter is rendered
+- assertVisible:
+    text: "󰄱, Cocoa Powder"
+    label: Cocoa Powder filter is rendered
+- assertVisible:
+    text: "󰄱, Curry Powder"
+    label: Curry Powder filter is rendered
+- assertVisible:
+    text: "󰍴, Fruit"
+    label: Fruit category is rendered
+- assertVisible:
+    text: "󰄱, Avocado"
+    label: Avocado filter is rendered
+- swipe:
+    start: "50%,85%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "󰍴, Oil and Fat"
+    label: Oil and Fat category is rendered
+- assertVisible:
+    text: "󰄱, Butter"
+    label: Butter filter is rendered
+- assertVisible:
+    text: "󰄱, Olive Oil"
+    label: Olive Oil filter is rendered
+- assertVisible:
+    text: "󰍴, Nuts and Seeds"
+    label: Nuts and Seeds category is rendered
+- assertVisible:
+    text: "󰄱, Pine Nuts"
+    label: Pine Nuts filter is rendered
+- assertVisible:
+    text: "󰍴, Preparation Time"
+    label: Preparation Time category is rendered
+- assertVisible:
+    text: "󰄱, 0-10 min"
+    label: 0-10 min filter is rendered
+- assertVisible:
+    text: "󰄱, 10-15 min"
+    label: 10-15 min filter is rendered
+- assertVisible:
+    text: "󰄱, 15-20 min"
+    label: 15-20 min filter is rendered
+- assertVisible:
+    text: "󰄱, 20-25 min"
+    label: 20-25 min filter is rendered
+- assertVisible:
+    text: "󰄱, 25-30 min"
+    label: 25-30 min filter is rendered
+- assertVisible:
+    text: "󰄱, 30-40 min"
+    label: 30-40 min filter is rendered
+- assertVisible:
+    text: "󰄱, 40-50 min"
+    label: 40-50 min filter is rendered
+- assertVisible:
+    text: "󰄱, +60 min"
+    label: +60 min filter is rendered
+- assertVisible:
+    text: "󰍴, In-season"
+    label: In-Season category is rendered
+- assertVisible:
+    text: "󰄱, Only in-season ingredients"
+    label: Only in-season ingredients filter is rendered
+- swipe:
+    start: "50%,85%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "󰍴, Tags"
+    label: Tags category is rendered
+- assertVisible:
+    text: "󰄱, Breakfast"
+    label: Breakfast filter is rendered
+- assertVisible:
+    text: "󰄱, Chocolate"
+    label: Chocolate filter is rendered
+- assertVisible:
+    text: "󰄱, Dessert"
+    label: Dessert filter is rendered
+- assertVisible:
+    text: "󰄱, Dinner"
+    label: Dinner filter is rendered
+- assertVisible:
+    text: "󰄱, Healthy"
+    label: Healthy filter is rendered
+- assertVisible:
+    text: "󰄱, Indian"
+    label: Indian filter is rendered
+- assertVisible:
+    text: "󰄱, Italian"
+    label: Italian filter is rendered
+- assertVisible:
+    text: "󰄱, Japanese"
+    label: Japanese filter is rendered
+- assertVisible:
+    text: "󰄱, Lunch"
+    label: Lunch filter is rendered
+- assertVisible:
+    text: "󰄱, Mexican"
+    label: Mexican filter is rendered
+- assertVisible:
+    text: "󰄱, Quick Meal"
+    label: Quick Meal filter is rendered
+- assertVisible:
+    text: "󰄱, Salad"
+    label: Salad filter is rendered
+- assertVisible:
+    text: "󰄱, Seafood"
+    label: Seafood filter is rendered
+- assertVisible:
+    text: "󰄱, Soup"
+    label: Soup filter is rendered
+- assertVisible:
+    text: "󰄱, Vegetarian"
+    label: Vegetarian filter is rendered
+- swipe:
+    start: "50%,15%"
+    end: "50%,95%"
+    label: Swipe Up to reset to initial position
+- swipe:
+    start: "50%,20%"
+    end: "50%,90%"
+    label: Swipe Up to reset to initial position

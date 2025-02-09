@@ -1,0 +1,15 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    id: "SearchBar"
+    label: Open Search Bar
+- hideKeyboard:
+    label: Close the keyboard
+- tapOn:
+    text: "Lentil Curry"
+    label: Click directly on selected recipe
+- runFlow: ../../../asserts/Search/searchScreenFilteredOnLentilCury.yaml
+- pressKey: "BACK"

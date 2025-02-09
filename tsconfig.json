@@ -4,19 +4,41 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "target": "es2015",
-      "moduleResolution": "node",
-      "jsx": "react",
-      "esModuleInterop": true,
-      "baseUrl": "./src/",
-      "paths" : {
-        "@assets/*": ["assets/*"],
-        "@components/*": ["components/*"],
-        "@i18n/*": ["i18n/*"],
-        "@navigation/*": ["navigation/*"],
-        "@screens/*": ["screens/*"],
-        "@styles/*": ["styles/*"],
-        "@customTypes/*": ["customTypes/*"],
-        "@utils/*": ["utils/*"]
+    "moduleResolution": "node",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "baseUrl": "./src/",
+    "paths": {
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@i18n/*": [
+        "i18n/*"
+      ],
+      "@navigation/*": [
+        "navigation/*"
+      ],
+      "@screens/*": [
+        "screens/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@customTypes/*": [
+        "customTypes/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@test-data/*": [
+        "../tests/data/*"
+      ],
+      "@mocks/*": [
+        "../tests/mocks/*"
+      ]
+    }
   }
 }
-  }

@@ -1,0 +1,61 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
+    label: Open the Spaghetti Bolognese recipe
+- tapOn:
+    text: "Add this recipe to the menu"
+    label: Add the Spaghetti Bolognese recipe to the menu
+- runFlow: ../../asserts/Alerts/addingRecipeSpaghetti.yaml
+- pressKey: "BACK"
+- tapOn:
+    text: ", Shopping"
+    label: Go back to Shopping screen
+- runFlow: ../../asserts/Shopping/shoppingSpaghetti.yaml
+- tapOn:
+    text: "󰋜, Home"
+    label: Return to Home Screen
+- repeat:
+    while:
+      notVisible: "Caesar Salad"
+    commands:
+      - swipe:
+          direction: "DOWN"
+      - "waitForAnimationToEnd"
+    label: Refresh until we found the Caesar Salad
+- tapOn:
+    text: "Caesar Salad"
+    label: Open Caesar Salad
+- tapOn:
+    text: "Add this recipe to the menu"
+    label: Add the Caesar Salad recipe to the menu
+- runFlow: ../../asserts/Alerts/addingRecipeCaesar.yaml
+- tapOn:
+    text: ", Shopping"
+    label: Go back to Shopping screen
+- runFlow: ../../asserts/Shopping/shoppingSpaghettiAndCaesar.yaml
+- tapOn:
+    text: "󰋜, Home"
+    label: Return to Home Screen
+- repeat:
+    while:
+      notVisible: "Margherita Pizza"
+    commands:
+      - swipe:
+          direction: "DOWN"
+      - "waitForAnimationToEnd"
+    label: Refresh until we found the Margherita Pizza
+- tapOn:
+    text: "Margherita Pizza"
+    label: Open Margherita Pizza
+- tapOn:
+    text: "Add this recipe to the menu"
+    label: Add the Margherita Pizza recipe to the menu
+- runFlow: ../../asserts/Alerts/addingRecipePizza.yaml
+- tapOn:
+    text: ", Shopping"
+    label: Go back to Shopping screen
+- runFlow: ../../asserts/Shopping/shoppingSpaghettiCaesarAndPizza.yaml

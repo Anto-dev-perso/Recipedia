@@ -1,225 +1,254 @@
+import {arrayOfType, ingredientTableElement, recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import {listFilter, prepTimeValues, TListFilter} from "@customTypes/RecipeFiltersTypes";
 
 
-import { arrayOfType, ingredientTableElement, ingredientType, recipeTableElement, regExp, tagTableElement } from "@customTypes/DatabaseElementTypes";
-import { recipeFilterType, prepTimeValues, listFilter, currentMonth, propsForFilter, TListFilter } from "@customTypes/RecipeFiltersTypes";
-import { textSeparator } from "@styles/typography";
-
-
-export function selectFilterFromProps(filter: TListFilter, filterProps: propsForFilter, tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>): [Array<recipeFilterType>, React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>, Array<string>]{
-    
-    let filterValue: Array<recipeFilterType>;
-    let filterSetter: React.Dispatch<React.SetStateAction<Array<recipeFilterType>>>;
-    let elementFilters: Array<string>;
-
+export function selectFilterValuesToDisplay(filter: TListFilter, tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>): Array<string> {
     switch (filter) {
         case listFilter.inSeason:
-            filterValue = filterProps.ingredientsState;
-            filterSetter = filterProps.setterIngredients;
-            elementFilters = ["Only in-season ingredients"];
-        break;
-            case listFilter.cerealProduct:
-            filterValue = filterProps.ingredientsState;
-            filterSetter = filterProps.setterIngredients;
-            elementFilters = arrayOfType(ingredientsList, ingredientType.cerealProduct);
-        break;
+            return new Array<string>("Only in-season ingredients");
         case listFilter.tags:
-            filterValue = filterProps.tagsState
-            filterSetter = filterProps.setterTags;
-            elementFilters = tagsList;
-        break;
+            return tagsList;
         case listFilter.prepTime:
-            filterValue = filterProps.prepTimeState;
-            filterSetter = filterProps.setterPrepTime;
-            elementFilters = prepTimeValues;
-        break;
+            return prepTimeValues;
+        case listFilter.recipeTitleInclude:
+        case listFilter.purchased:
+        case listFilter.grainOrCereal:
+        case listFilter.legumes:
         case listFilter.vegetable:
-            filterValue = filterProps.ingredientsState;
-            filterSetter = filterProps.setterIngredients;
-            elementFilters = arrayOfType(ingredientsList, ingredientType.vegetable);
-        break;
-        case listFilter.meet:
-            filterValue = filterProps.ingredientsState;
-            filterSetter = filterProps.setterIngredients;
-            elementFilters = arrayOfType(ingredientsList, ingredientType.meet);
-        break;
+        case listFilter.plantProtein:
+        case listFilter.condiment:
+        case listFilter.sauce:
+        case listFilter.meat:
         case listFilter.poultry:
-            filterValue = filterProps.ingredientsState;
-            filterSetter = filterProps.setterIngredients;
-            elementFilters = arrayOfType(ingredientsList, ingredientType.poultry);
-        break;
+        case listFilter.fish:
+        case listFilter.seafood:
+        case listFilter.dairy:
+        case listFilter.cheese:
+        case listFilter.sugar:
         case listFilter.spice:
-            filterValue = filterProps.ingredientsState;
-            filterSetter = filterProps.setterIngredients;
-            elementFilters = arrayOfType(ingredientsList, ingredientType.spice);
-        break;
+        case listFilter.fruit:
+        case listFilter.oilAndFat:
+        case listFilter.nutsAndSeeds:
+        case listFilter.sweetener:
+        case listFilter.undefined:
+            return arrayOfType(ingredientsList, filter).map(ing => ing.ingName);
         default:
-            filterValue = filterProps.ingredientsState;
-            filterSetter = filterProps.setterIngredients;
-
-            let tmpIngName = new Array<string>;
-            ingredientsList.forEach(ing => {
-                tmpIngName.push(ing.ingName)
-            });
-            elementFilters = tmpIngName;
-            break;
-        }
-        return [filterValue, filterSetter, elementFilters];
-}
-
-
-export function recipeTitleFilteredFunction(recipeArray: Array<recipeTableElement>, filter: string) {
-    let result = recipeArray;
-    if (filter.length > 0) {
-        result = result.filter((item) => item.title.toLowerCase().includes(filter.toLowerCase()));
+            console.warn("selectFilterValuesToDisplay:: default shall not be reach");
+            return new Array<string>();
     }
-    return result;
 }
+
 
 export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement>): [Array<string>, Array<ingredientTableElement>, Array<string>] {
-    let ingredientsArray = new Array<ingredientTableElement>();
-    let tagsArray = new Array<string>();
+    // TODO is set really faster in this case ? To profile
+    const ingredientsUniqueCollection = new Set<ingredientTableElement>();
+    const tagsUniqueCollection = new Set<string>();
 
-    const titleSortedArray = recipeArray.map(({ title }) => (title)).sort();
-
-
-
-    recipeArray.forEach(element => {
-        element.ingredients.forEach(ing => {
-            if (!ingredientsArray.includes(ing)) {
-                ingredientsArray.push(ing);
-            }
-        });
-        element.tags.forEach(tag => {
-            if (!tagsArray.includes(tag)) {
-                tagsArray.push(tag);
-            }
-        });
-    });
-    tagsArray.sort();
-    ingredientsArray.sort();
-
-    return [titleSortedArray, ingredientsArray, tagsArray]
-}
-
-export function filterPrepTimeFromRecipe(recipeArray: Array<recipeTableElement>, filterTimeArray: Array<recipeFilterType>) {
-    let result: Array<recipeTableElement> = recipeArray;
-
-    if (filterTimeArray.length > 0) {
-
-        let allowedTimes = new Array<number>();
-
-        filterTimeArray.forEach(range => {
-            if (range.value == prepTimeValues.at(prepTimeValues.length - 1)) {
-                for (let i = 60; i < 120; i += 5) {
-                    allowedTimes.push(i);
-                }
-            } else {
-                let splitTime = range.value.replace(" min", "").split(`-`);
-
-                splitTime.forEach(time => {
-                    const timeInNumber = Number(time)
-                    if (!allowedTimes.includes(timeInNumber)) {
-                        allowedTimes.push(timeInNumber);
-                    }
-                });
-            }
-        });
-        result = result.filter((item) => allowedTimes.includes(item.time));
+    for (const element of recipeArray) {
+        for (const ing of element.ingredients) {
+            ingredientsUniqueCollection.add(ing);
+        }
+        for (const tag of element.tags) {
+            tagsUniqueCollection.add(tag.tagName);
+        }
     }
 
-    return result;
+    const titleSortedArray = recipeArray.map(({title}) => title).sort();
+
+    return [titleSortedArray, Array.from(ingredientsUniqueCollection).sort(), Array.from(tagsUniqueCollection).sort()]
 }
 
-function filterInArrayOfString(strArray: Array<string>, filter: string) {
-    let breakNeeded = false;
-
-    if (filter == "*") {
-        breakNeeded = true;
+// TODO find a better type for the multimap (maybe https://github.com/teppeis/multimaps
+export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter: Map<TListFilter, Array<string>>): Array<recipeTableElement> {
+    if (filter.size == 0) {
+        return new Array<recipeTableElement>(...recipeArray);
     }
+    return new Array<recipeTableElement>(...recipeArray.filter(recipe => {
+        let elementToKeep = true;
+        for (const [key, value] of filter) {
+            switch (key) {
+                case listFilter.prepTime:
+                    elementToKeep = elementToKeep && applyToRecipeFilterPrepTime(recipe, value);
+                    break;
+                case listFilter.recipeTitleInclude:
+                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.title, value);
+                    break;
+                case listFilter.inSeason:
+                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.season, value);
+                    break;
+                case listFilter.tags:
+                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.tags.map(tag => tag.tagName), value);
+                    break;
+                case listFilter.purchased:
+                    // Nothing to do so break
+                    break;
+                case listFilter.grainOrCereal:
+                case listFilter.legumes:
+                case listFilter.vegetable:
+                case listFilter.plantProtein:
+                case listFilter.condiment:
+                case listFilter.sauce:
+                case listFilter.meat:
+                case listFilter.poultry:
+                case listFilter.fish:
+                case listFilter.seafood:
+                case listFilter.dairy:
+                case listFilter.cheese:
+                case listFilter.sugar:
+                case listFilter.spice:
+                case listFilter.fruit:
+                case listFilter.oilAndFat:
+                case listFilter.nutsAndSeeds:
+                case listFilter.sweetener:
+                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.ingredients.map(ing => ing.type), key);
+                    break;
+                case listFilter.undefined:
+                default:
+                    console.error("filterFromRecipe:: Impossible to reach");
+                    break;
+            }
+        }
+        return elementToKeep;
+    }));
+}
 
-    for (let i = 0; (i < strArray.length) && !breakNeeded; i++) {
-        if (strArray[i] == "*") {
-            breakNeeded = true;
+// TODO return a boolean to say that we modify or not
+// It will help not re-triggering rendering if no modification happens
+export function addValueToMultimap<TKey, TValue>(multimap: Map<TKey, Array<TValue>>, key: TKey, value: TValue) {
+    const values = multimap.get(key);
+    if (values === undefined) {
+        multimap.set(key, new Array<TValue>(value))
+    } else {
+        if (!values.includes(value)) {
+            values.push(value)
+        }
+    }
+}
+
+// TODO return a boolean to say that we modify or not
+// It will help not re-triggering rendering if no modification happens
+export function removeValueToMultimap<TKey, TValue>(multimap: Map<TKey, Array<TValue>>, key: TKey, value: TValue) {
+    const values = multimap.get(key);
+    if (values !== undefined) {
+        const valueIndex = values.indexOf(value);
+        if (valueIndex != -1) {
+            values.splice(valueIndex, 1)
+            if (values.length == 0) {
+                multimap.delete(key);
+            }
         } else {
-            breakNeeded = breakNeeded || (strArray[i].toLowerCase().includes(filter.toLowerCase()));
+            console.warn(`removeValueFromMultimap: Trying to remove value ${value} at key ${key} from multimap but value finding fails`);
         }
+    } else {
+        console.warn(`removeValueFromMultimap: Trying to remove value ${value} at key ${key} from multimap but key finding fails`);
     }
-    return breakNeeded;
 }
 
-export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filterArray: Array<recipeFilterType>) {
-    let filteredArray = recipeArray;
+// TODO return a boolean to say that we modify or not
+// It will help not re-triggering rendering if no modification happens
+export function editTitleInMultimap(multimap: Map<TListFilter, Array<string>>, newSearchString: string) {
+    // TODO to refactor to a direct modification of the Multimap
+    const value = multimap.get(listFilter.recipeTitleInclude);
+    if (multimap.size == 0 || value === undefined) {
+        multimap.set(listFilter.recipeTitleInclude, new Array<string>(newSearchString))
+    } else {
+        if (value.length > 1) {
+            console.warn("updateSearchString:: Not possible")
+        } else {
+            value[0] = newSearchString;
+        }
+    }
+}
 
-    if (filterArray.length > 0) {
-        filteredArray = filteredArray.filter((item) => {
-            let keepElement = false;
 
-            for (let indexFilters = 0; (indexFilters < filterArray.length) && !keepElement; indexFilters++) {
-                let arrayToFilter = new Array<string>();
-                if (filterArray[indexFilters].title == listFilter.tags) {
-                    arrayToFilter = item.tags;
-                } else if (filterArray[indexFilters].title == listFilter.inSeason) {
-                    arrayToFilter.push(item.season);
-                }
-                else {
-                    item.ingredients.forEach(ing => {
-                        arrayToFilter.push(ing.ingName)
-                    });
-                }
-                keepElement = keepElement || filterInArrayOfString(arrayToFilter, filterArray[indexFilters].value);
+// TODO in case of creating a multimap
+/*
+        const tmp = new Map<string, Array<string>>();
+        for (const filter of filterMultimap) {
+            switch (filter.title) {
+                case listFilter.prepTime:
+                    addValueToMultimap(tmp, listFilter.prepTime, filter.value);
+                    break;
+                case listFilter.recipeTitleInclude:
+                    addValueToMultimap(tmp, listFilter.recipeTitleInclude, filter.value);
+                    break;
+                case listFilter.inSeason:
+                    addValueToMultimap(tmp, listFilter.inSeason, filter.value);
+                    break;
+                case listFilter.tags:
+                    addValueToMultimap(tmp, listFilter.tags, filter.value);
+                    break;
+                case listFilter.grainOrCereal:
+                case listFilter.legumes:
+                case listFilter.vegetable:
+                case listFilter.plantProtein:
+                case listFilter.condiment:
+                case listFilter.sauce:
+                case listFilter.meat:
+                case listFilter.poultry:
+                case listFilter.fish:
+                case listFilter.seafood:
+                case listFilter.dairy:
+                case listFilter.cheese:
+                case listFilter.sugar:
+                case listFilter.spice:
+                case listFilter.fruit:
+                case listFilter.oilAndFat:
+                case listFilter.nutsAndSeeds:
+                case listFilter.sweetener:
+                    // TODO for now use grainOrCereal but not that a good idea
+                    addValueToMultimap(tmp, listFilter.grainOrCereal, filter.value);
+                    break;
+                case listFilter.undefined:
+                default:
+                    console.error(`filterFromRecipe:: Unknown type `, filter.title);
             }
-            return keepElement;
-        });
+        }
+        */
+
+export function retrieveAllFilters(filters: Map<TListFilter, Array<string>>): Array<string> {
+    const allFilters = new Array<string>();
+    for (const [_, value] of filters) {
+        allFilters.push(...value);
     }
-    return filteredArray;
+    return allFilters;
 }
 
-export function filterTagsFromRecipe(recipeArray: Array<recipeTableElement>, filterTagsArray: Array<recipeFilterType>) {
-    return filterFromRecipe(recipeArray, filterTagsArray);
-}
 
-export function filterIngredientsFromRecipe(recipeArray: Array<recipeTableElement>, filterIngredients: Array<recipeFilterType>) {
-    let result: Array<recipeTableElement> = recipeArray;
-
-
-    if (filterIngredients.length > 0) {
-
-        let inSeasonFilter = new Array<recipeFilterType>();
-        let baseFilter = new Array<recipeFilterType>();
-        let otherIngredientsFilters = new Array<recipeFilterType>();
-
-
-        filterIngredients.forEach(filter => {
-            if (filter.title == listFilter.inSeason) {
-                inSeasonFilter.push({ title: filter.title, value: currentMonth.toString() });
-            } else if (filter.title == listFilter.cerealProduct) {
-                baseFilter.push(filter);
-            } else {
-                otherIngredientsFilters.push(filter);
+function isTheElementContainsTheFilter(elementToTest: string | Array<string>, filters: Array<string> | string): boolean {
+    if (filters instanceof Array) {
+        for (const filterValue of filters) {
+            if (filterValue == "*") {
+                return true;
             }
-        });
-
-        if (baseFilter.length > 0) {
-            result = filterFromRecipe(result, baseFilter);
+            // Careful here because includes does not lean the same for array and string
+            // For array, we want s strict equality while a string not
+            // string case will happen on title only and we won't have strict equality here
+            if (elementToTest.includes(filterValue)) {
+                return true;
+            }
         }
-        if (inSeasonFilter.length > 0) {
-            result = filterFromRecipe(result, inSeasonFilter);
-        }
-        if (otherIngredientsFilters.length > 0) {
-            result = filterFromRecipe(result, otherIngredientsFilters);
-        }
+    } else {
+        return elementToTest.includes(filters);
     }
 
-    return result;
+    return false;
 }
 
-const filterInSeason = (arr: Array<recipeTableElement>, filter: Array<TListFilter>) => {
-    let result: Array<recipeTableElement> = arr;
-
-    // In-season is a unique filter
-    if (filter.length > 0) {
-        // TODO
-
+function applyToRecipeFilterPrepTime(recipe: recipeTableElement, filterTimeIntervals: Array<string>): boolean {
+    for (const curFilter of filterTimeIntervals) {
+        if (curFilter == prepTimeValues[prepTimeValues.length - 1]) {
+            if (Number(curFilter.replace(" min", "").replace("+", "")) <= recipe.time) {
+                return true;
+            }
+        } else {
+            const [beginTime, endTime] = curFilter.replace(" min", "").split(`-`);
+            if (Number(beginTime) <= recipe.time && recipe.time <= Number(endTime)) {
+                return true;
+            }
+        }
     }
-    return result;
+    return false;
+
+
 }

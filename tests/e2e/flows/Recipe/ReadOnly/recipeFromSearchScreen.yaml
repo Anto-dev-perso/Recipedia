@@ -1,0 +1,14 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: ""
+    label: Open Search screen
+- tapOn:
+    text: "Chicken Tacos, Mexican, Lunch, Prep. 20 min, 2 p."
+    label: Open Chicken Tacos recipe
+- runFlow: ../../../asserts/Recipe/ReadOnly/chickenTacos.yaml
+- tapOn:
+    text: "󰌍"
+    label: Back to the Search Screen
+- runFlow: ../../../asserts/Search/searchScreenVisible.yaml
+- pressKey: "BACK"
