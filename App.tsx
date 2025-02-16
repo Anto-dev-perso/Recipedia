@@ -23,6 +23,7 @@ import {
 import {palette} from '@styles/colors';
 import ModalImageSelect from '@screens/ModalImageSelect';
 import EStyleSheet from "react-native-extended-stylesheet";
+import RecipeDatabase from "@utils/RecipeDatabase";
 
 
 // TODO manage horizontal mode
@@ -86,11 +87,15 @@ export default function App() {
                 tabBarInactiveTintColor: 'gray',
             })}>
                 <TabScreen.Screen name="Home" component={Home}/>
-                <TabScreen.Screen name="Shopping" component={Shopping} options={{
-                    headerRight: () => (
-                        <Button onPress={() => alert('this is a button')} title="Info"/>
-                    )
-                }}/>
+                <TabScreen.Screen name="Shopping" component={Shopping} options={({navigation}) => ({
+                    headerRight: () =>
+                        (
+                            <Button onPress={async () => {
+                                await RecipeDatabase.getInstance().resetShoppingList();
+                                navigation.setParams({refresh: Date.now()});
+                            }} title="Delete"/>
+                        )
+                })}/>
                 {/*<TabScreen.Screen name="Plannification" component={Plannification}/>*/}
                 <TabScreen.Screen name="Parameters" component={Parameters}/>
             </TabScreen.Navigator>

@@ -6,12 +6,13 @@ import {SearchScreenProp} from '@customTypes/ScreenTypes';
 import TextRender from "@components/molecules/TextRender";
 import {typoRender} from "@styles/typography";
 import {ingredientTableElement, recipeTableElement} from "@customTypes/DatabaseElementTypes";
-import {TListFilter} from "@customTypes/RecipeFiltersTypes";
+import {listFilter, TListFilter} from "@customTypes/RecipeFiltersTypes";
 import {
     addValueToMultimap,
     editTitleInMultimap,
     extractFilteredRecipeDatas,
     filterFromRecipe,
+    removeTitleInMultimap,
     removeValueToMultimap
 } from "@utils/FilterFunctions";
 import {palette} from "@styles/colors";
@@ -44,7 +45,6 @@ export default function Search({route, navigation}: SearchScreenProp) {
         setFilteredIngredients(ingredients);
         setFilteredTags(tags);
 
-        // }, [searchPhrase, filtersTags, filtersPrepTime, filtersIngredients]);
     }, [filtersState]);
 
 
@@ -60,9 +60,18 @@ export default function Search({route, navigation}: SearchScreenProp) {
 
 
     function updateSearchString(newSearchString: string) {
-        editTitleInMultimap(filtersState, newSearchString);
-        setSearchPhrase(newSearchString);
+        if (newSearchString === "") {
+            removeTitleInMultimap(filtersState);
+            setFilteredRecipes(RecipeDatabase.getInstance().get_recipes());
+        } else {
+            const previousTitle = filtersState.get(listFilter.recipeTitleInclude);
+            if (previousTitle !== undefined && previousTitle.length == 1 && previousTitle[0].length > newSearchString.length) {
+                setFilteredRecipes(RecipeDatabase.getInstance().get_recipes());
+            }
+            editTitleInMultimap(filtersState, newSearchString);
+        }
         setFiltersState(new Map(filtersState));
+        setSearchPhrase(newSearchString);
     }
 
     function addAFilterToTheState(filterTitle: TListFilter, value: string) {
@@ -74,6 +83,9 @@ export default function Search({route, navigation}: SearchScreenProp) {
         removeValueToMultimap(filtersState, filterTitle, value);
         setFilteredRecipes(RecipeDatabase.getInstance().get_recipes());
         setFiltersState(new Map(filtersState));
+        if (filterTitle == listFilter.recipeTitleInclude) {
+            setSearchPhrase("");
+        }
     }
 
     return (
@@ -88,7 +100,7 @@ export default function Search({route, navigation}: SearchScreenProp) {
                                 render={typoRender.CLICK_LIST} onClick={(str: string) => {
                         Keyboard.dismiss();
                         setSearchBarClicked(false);
-                        setSearchPhrase(str);
+                        updateSearchString(str);
                     }}/>
                     :
                     <FiltersSelection printSectionClickable={addingAFilter} setPrintSectionClickable={setAddingAFilter}

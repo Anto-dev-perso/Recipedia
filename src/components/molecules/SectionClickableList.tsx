@@ -32,11 +32,13 @@ export default function SectionClickableList(props: SectionClickableListProps) {
     // TODO maybe put this in a separate file for a better readability
     function renderItem({item}: ListRenderItemInfo<TListFilter>): JSX.Element {
 
+        let itemShallDisplayCheckBox = true;
         let itemRoute: filterCheckbox | shoppingCheckbox;
         let elemToDisplay = new Array<string>();
 
         switch (props.screen) {
             case "search":
+                itemShallDisplayCheckBox = filterCategoryClicked.get(item) as boolean;
                 elemToDisplay = selectFilterValuesToDisplay(item, props.tagsList, props.ingredientsList);
                 itemRoute = {
                     type: "search",
@@ -68,7 +70,7 @@ export default function SectionClickableList(props: SectionClickableListProps) {
         }
 
         // TODO magic number not very good
-        const iconFromProps = props.icon ? props.icon[Number(1)] : undefined;
+        const iconFromProps = props.icon ? props.icon[Number(itemShallDisplayCheckBox)] : undefined;
 
 
         function updateCategoryClicked() {
@@ -92,10 +94,12 @@ export default function SectionClickableList(props: SectionClickableListProps) {
                         <RectangleButton testID={`RectangleButtonForCategory - ${item}`} text={item} height={50}
                                          centered={false} icon={iconFromProps}
                                          margins={padding.verySmall} onPressFunction={updateCategoryClicked}/>
-                        <CheckListsButtonsRender testID={`CheckListForCategory - ${item}`} testMode={props.testMode}
-                                                 arrayToDisplay={elemToDisplay}
-                                                 filterTitle={item}
-                                                 route={itemRoute}/>
+                        {itemShallDisplayCheckBox ?
+                            <CheckListsButtonsRender testID={`CheckListForCategory - ${item}`} testMode={props.testMode}
+                                                     arrayToDisplay={elemToDisplay}
+                                                     filterTitle={item}
+                                                     route={itemRoute}/> : null}
+
                     </View>}
 
             </View>

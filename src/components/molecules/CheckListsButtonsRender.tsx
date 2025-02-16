@@ -43,19 +43,16 @@ export default function CheckListsButtonsRender(props: ChecklistsButtonsRenderPr
     function renderItemOfArray({item}: ListRenderItemInfo<string>): JSX.Element {
 
         let viewFromProps: EStyleSheet.AnyObject;
-        let checkboxState: boolean;
 
         let dataOnLongPress: bulletListDataType | undefined;
         switch (props.route.type) {
             case "search":
                 viewFromProps = viewPosition.splitVerticallyIn2;
-                checkboxState = true;
 
                 dataOnLongPress = undefined;
                 break;
             case "shopping":
                 viewFromProps = screenViews.listView;
-                checkboxState = false;
 
                 const recipesTitle = new Array<string>();
                 for (const element of props.route.ingList) {
@@ -72,7 +69,6 @@ export default function CheckListsButtonsRender(props: ChecklistsButtonsRenderPr
                 break;
             default:
                 viewFromProps = {};
-                checkboxState = false;
                 dataOnLongPress = undefined;
 
         }
@@ -103,7 +99,7 @@ export default function CheckListsButtonsRender(props: ChecklistsButtonsRenderPr
             <View style={viewFromProps}>
                 <CheckBoxButton testID={`CheckBoxButton - ${item}`} title={item} onLongPressData={dataOnLongPress}
                                 stateInitialValue={isFilterAlreadySet(item)}
-                                useCheckBoxState={checkboxState} onActivation={clickOnElementNotCheck}
+                                onActivation={clickOnElementNotCheck}
                                 onDeActivation={clickOnElementCheck}/>
             </View>
         )

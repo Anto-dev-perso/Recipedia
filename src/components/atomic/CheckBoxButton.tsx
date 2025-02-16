@@ -11,7 +11,6 @@ export type CheckBoxButtonProps = {
     title: string,
     onLongPressData?: bulletListDataType,
     stateInitialValue: boolean,
-    useCheckBoxState: boolean,
     testID: string,
 
 } & toggleActivationFunctions
@@ -27,9 +26,7 @@ export default function CheckBoxButton(props: CheckBoxButtonProps) {
 
     function onPressFunction() {
         iconIndex == 0 ? props.onActivation() : props.onDeActivation();
-        if (props.useCheckBoxState) {
-            setIconIndex((iconIndex + 1) % 2)
-        }
+        setIconIndex((iconIndex + 1) % 2)
     }
 
     function onLongPressFunction() {

@@ -516,6 +516,7 @@ export default class RecipeDatabase {
         this._recipes = new Array<recipeTableElement>();
         this._ingredients = new Array<ingredientTableElement>();
         this._tags = new Array<tagTableElement>();
+        this._shopping = new Array<shoppingListTableElement>();
     }
 
     public async init() {
@@ -889,8 +890,6 @@ export default class RecipeDatabase {
 
     // TODO nutrition
 
-    /* PROTECTED METHODS */
-
     // TODO to test
     public setPurchasedOfShopping(ingredientId: number, newPurchasedValue: boolean) {
         if (ingredientId > 0 && ingredientId <= this._shopping.length) {
@@ -915,6 +914,15 @@ export default class RecipeDatabase {
         console.error("update_shopping Element of shopping named ", shop.name, " doesn't exist already");
     }
 
+
+    public async resetShoppingList() {
+
+        this._shopping.length = 0;
+        await this._shoppingListTable.deleteTable(this._dbConnection);
+        await this._shoppingListTable.createTable(this._dbConnection);
+    }
+
+    /* PROTECTED METHODS */
     protected openDatabase() {
         try {
             this._dbConnection = SQLite.openDatabase(this._databaseName);

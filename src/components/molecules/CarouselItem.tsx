@@ -4,6 +4,8 @@ import {carouselStyle} from "@styles/typography";
 import React from "react";
 import {FlatList, ListRenderItemInfo, Text, View} from "react-native";
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import {StackScreenNavigation} from "@customTypes/ScreenTypes";
+import {useNavigation} from "@react-navigation/native";
 
 type CarouselItemProps = {
     items: Array<recipeTableElement>
@@ -13,11 +15,19 @@ let titleLength = mediumCardWidth / 5.5;
 
 export default function CarouselItem(props: CarouselItemProps) {
 
+    const {navigate} = useNavigation<StackScreenNavigation>();
+
     function renderMyItem({item}: ListRenderItemInfo<recipeTableElement>) {
+
+
+        const goToRecipe = () => {
+            navigate('Recipe', {mode: 'readOnly', recipe: item});
+        };
+
         return (
             <View>
-                <SquareButton side={mediumCardWidth} type={'recipe'} recipe={item}/>
-                <Text style={carouselStyle(titleLength).carouselTitle}>
+                <SquareButton side={mediumCardWidth} type={'recipe'} recipe={item} onPressFunction={goToRecipe}/>
+                <Text style={carouselStyle(titleLength).carouselTitle} onPress={goToRecipe}>
                     {((item.title).length > titleLength) ?
                         (((item.title).substring(0, titleLength - 3)) + '...') :
                         item.title}

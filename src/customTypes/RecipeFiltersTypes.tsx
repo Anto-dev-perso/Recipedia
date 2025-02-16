@@ -28,21 +28,9 @@ export type propsForShopping = {
     updateIngredientFromShopping: (ingredientName: string) => void,
 }
 
-export const shoppingCategories: Array<TListFilter> = [
-    listFilter.grainOrCereal,
-    listFilter.condiment,
-    listFilter.sauce,
-    listFilter.vegetable,
-    listFilter.meat,
-    listFilter.poultry,
-    listFilter.spice,
-    listFilter.fish,
-    listFilter.plantProtein,
-    listFilter.dairy,
-    listFilter.purchased,
-    listFilter.sugar,
-    listFilter.fruit,
-];
+export type TIngredientCategories = typeof ingredientType[keyof typeof ingredientType];
+export const shoppingCategories: Array<TIngredientCategories> = Object.values(ingredientType);
+
 
 export const prepTimeValues = [
     "0-10 min",

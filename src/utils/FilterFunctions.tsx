@@ -41,12 +41,14 @@ export function selectFilterValuesToDisplay(filter: TListFilter, tagsList: Array
 
 export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement>): [Array<string>, Array<ingredientTableElement>, Array<string>] {
     // TODO is set really faster in this case ? To profile
-    const ingredientsUniqueCollection = new Set<ingredientTableElement>();
+    const ingredientsUniqueCollection = new Array<ingredientTableElement>();
     const tagsUniqueCollection = new Set<string>();
 
     for (const element of recipeArray) {
         for (const ing of element.ingredients) {
-            ingredientsUniqueCollection.add(ing);
+            if (ingredientsUniqueCollection.find(ingredient => ingredient.ingName === ing.ingName) === undefined) {
+                ingredientsUniqueCollection.push(ing);
+            }
         }
         for (const tag of element.tags) {
             tagsUniqueCollection.add(tag.tagName);
@@ -55,7 +57,7 @@ export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement
 
     const titleSortedArray = recipeArray.map(({title}) => title).sort();
 
-    return [titleSortedArray, Array.from(ingredientsUniqueCollection).sort(), Array.from(tagsUniqueCollection).sort()]
+    return [titleSortedArray, ingredientsUniqueCollection.sort(), Array.from(tagsUniqueCollection).sort()]
 }
 
 // TODO find a better type for the multimap (maybe https://github.com/teppeis/multimaps
@@ -100,7 +102,7 @@ export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter:
                 case listFilter.oilAndFat:
                 case listFilter.nutsAndSeeds:
                 case listFilter.sweetener:
-                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.ingredients.map(ing => ing.type), key);
+                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.ingredients.map(ing => ing.ingName), value);
                     break;
                 case listFilter.undefined:
                 default:
@@ -132,7 +134,7 @@ export function removeValueToMultimap<TKey, TValue>(multimap: Map<TKey, Array<TV
     if (values !== undefined) {
         const valueIndex = values.indexOf(value);
         if (valueIndex != -1) {
-            values.splice(valueIndex, 1)
+            values.splice(valueIndex, 1);
             if (values.length == 0) {
                 multimap.delete(key);
             }
@@ -158,6 +160,11 @@ export function editTitleInMultimap(multimap: Map<TListFilter, Array<string>>, n
             value[0] = newSearchString;
         }
     }
+}
+
+// TODO test me
+export function removeTitleInMultimap(multimap: Map<TListFilter, Array<string>>) {
+    multimap.delete(listFilter.recipeTitleInclude);
 }
 
 

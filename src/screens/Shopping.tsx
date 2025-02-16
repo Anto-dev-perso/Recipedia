@@ -4,14 +4,14 @@ import {useFocusEffect} from "@react-navigation/native";
 import {palette} from "@styles/colors";
 import {screenViews, scrollView} from "@styles/spacing";
 import {typoStyles} from "@styles/typography";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ScrollView, StatusBar, Text} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ShoppingScreenProp} from '@customTypes/ScreenTypes';
 import RecipeDatabase from "@utils/RecipeDatabase";
 
 
-export default function Shopping({navigation}: ShoppingScreenProp) {
+export default function Shopping({navigation, route}: ShoppingScreenProp) {
 
     const [shoppingList, setShoppingList] = useState(new Array<shoppingListTableElement>());
 
@@ -20,6 +20,10 @@ export default function Shopping({navigation}: ShoppingScreenProp) {
             setShoppingList([...RecipeDatabase.getInstance().get_shopping()]);
         });
     });
+
+    useEffect(() => {
+        setShoppingList([...RecipeDatabase.getInstance().get_shopping()]);
+    }, [route.params?.refresh]);
 
     function updateShoppingList(ingredientName: string) {
         const newShoppingList = shoppingList.map(item => item);
