@@ -34,7 +34,7 @@ jobs:
           at: ~/workspace
       - run:
           name: Run tests
-          command: npm run test:unit
+          command: npm run test:unit-coverage
       - store_artifacts:
           path: jest-results.json
           destination: test-results
@@ -43,65 +43,69 @@ jobs:
           paths:
             - .
 
-  Build for E2E:
-    executor:
-      name: android/android_machine
-      resource_class: large
-      tag: default
-    working_directory: ~/workspace
-    steps:
-      - attach_workspace:
-          at: .
-      - restore_cache:
-          keys:
-            - gradle-cache-v1-{{ checksum "build.gradle" }}
-      - android/create_avd:
-          avd_name: CI_EMULATOR
-          install: true
-          system_image: system-images;android-31;default;x86_64
-      - run:
-        name: Install EAS CLI
-        command: npm install -g eas-cli
-      - run:
-          working_directory: ~/workspace/repo
-          command: npm run build:android
-          name: Build app
-      - android/save_gradle_cache:
-          cache_prefix: gradle-cache-v1
-      - persist_to_workspace:
-          root: ~/workspace
-          paths:
-            - .
-
+  # TODO cache build so that it doesn't have to re build everything
   E2E tests:
     executor:
       name: android/android_machine
-      resource_class: large
       tag: default
     working_directory: ~/workspace/repo
     steps:
       - attach_workspace:
           at: ~/workspace
+      - restore_cache:
+          keys:
+            - v1-gradle-{{ checksum "package.json" }}-{{ checksum "eas.json" }}
+            - v1-gradle-
+      - run:
+          name: Set Java version
+          command: |
+            sudo apt-get update
+            sudo apt-get install openjdk-17-jdk
+            sudo update-java-alternatives --set java-1.17.0-openjdk-amd64
+            echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> $BASH_ENV
+            echo 'export PATH=$JAVA_HOME/bin:$PATH' >> $BASH_ENV
       - android/create_avd:
           avd_name: CI_EMULATOR
           install: true
-          system_image: system-images;android-31;default;x86_64
-      - android/start_emulator:
-          avd_name: CI_EMULATOR
-          no_window: true
-          restore_gradle_cache_prefix: v1a
+          system_image: system-images;android-34;google_apis;x86_64
+          additional_args: "--device pixel_5"
       - run:
-          name: Install app in Android Emulator
-          command: npm run install:android
+          name: Install EAS CLI
+          command: npm install -g eas-cli
       - run:
-          name: Run E2E tests
-          command: npm run test:e2e-android
-      - android/save_gradle_cache:
-          cache_prefix: v1a
-      - persist_to_workspace:
-          root: ~/workspace
+          working_directory: ~/workspace/repo
+          command: |
+            npm run build:android
+          name: Build app
+      - save_cache:
           paths:
-            - .
+            - ~/.gradle/caches
+            - ~/.gradle/wrapper
+          key: v1-gradle-{{ checksum "package.json" }}-{{ checksum "eas.json" }}
+      - run:
+          name: Install Maestro CLI
+          command: |
+            curl -Ls "https://get.maestro.mobile.dev" | bash
+            echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> $BASH_ENV
+      - run:
+          name: Start emulator , install app and run E2E tests
+          command: |
+            emulator -avd CI_EMULATOR -no-window > /dev/null 2>&1 &
+            echo "Waiting for emulator to fully boot..."
+            adb wait-for-device
+            echo "Waiting for Android system to fully start..."
+            until adb shell getprop sys.boot_completed; do;sleep 5;done
+            echo "Emulator is fully booted!"  
+            adb devices
+            npm run install:android
+            # Ensure ADB is running correctly
+            adb kill-server
+            adb start-server
+            adb devices
+            npm run test:e2e-android
+      - store_artifacts:
+          path: report.xml
+          destination: report.xml
 
   #  Build with EAS:
   #    docker:
@@ -137,10 +141,7 @@ workflows:
       - Unit tests:
           requires:
             - Install packages
-      - Build for E2E:
-          requires:
-            - Install packages
       - E2E tests:
           requires:
-            - Build for E2E
+            - Install packages
       #      - Build with EAS
