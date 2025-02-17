@@ -12,7 +12,7 @@
     "install:ios": "TODO",
     "test:unit": "jest --config jest.config.js",
     "test:unit-watch": "jest --watchAll --config jest.config.js",
-    "test:unit-coverage": "jest --coverage --config jest.config.js",
+    "test:unit-coverage": "jest --coverage --json --outputFile=jest-results.json --config jest.config.js",
     "test:e2e-android": " maestro test tests/e2e/*",
     "test:e2e-ios": " maestro test tests/e2e/*   TODO",
     "test:all:android": "npm run test:unit && npm run test:e2e-android",

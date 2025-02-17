@@ -1,20 +1,20 @@
 version: 2.1
 
-# on:
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 orbs:
-  node: circleci/node@5.1.1
-  android: circleci/android@2.3.0
+  node: circleci/node@7.1.0
+  android: circleci/android@3.1.0
   # heroku: circleci/heroku@1.2.6
 
-jobs: 
-  prepare_env:
+jobs:
+  Install packages:
     executor: node/default
     working_directory: ~/workspace/repo
     steps:
@@ -26,7 +26,7 @@ jobs:
           paths:
             - .
 
-  unit and integration tests:
+  Unit tests:
     executor: node/default
     working_directory: ~/workspace/repo
     steps:
@@ -34,70 +34,94 @@ jobs:
           at: ~/workspace
       - run:
           name: Run tests
-          command: npm run test
+          command: npm run test:unit
+      - store_artifacts:
+          path: jest-results.json
+          destination: test-results
       - persist_to_workspace:
           root: ~/workspace
           paths:
             - .
 
-  build for E2E:
-    docker:
-      - image: cimg/android:2023.04.1-node
+  Build for E2E:
+    executor:
+      name: android/android_machine
+      resource_class: large
+      tag: default
     working_directory: ~/workspace
     steps:
       - attach_workspace:
           at: .
-      - android/create-avd:
-          avd-name: emulator-dev
+      - restore_cache:
+          keys:
+            - gradle-cache-v1-{{ checksum "build.gradle" }}
+      - android/create_avd:
+          avd_name: CI_EMULATOR
           install: true
-          system-image: system-images;android-29;default;x86
-      # - android/start-emulator:
-      #     no-window: false
-      #     avd-name: emulator-dev
+          system_image: system-images;android-31;default;x86_64
+      - run:
+        name: Install EAS CLI
+        command: npm install -g eas-cli
       - run:
           working_directory: ~/workspace/repo
-          # command: pwd && ls && npx detox build --configuration android.emu.release
-          command: npx expo prebuild && npx detox build --configuration android.emu.release
+          command: npm run build:android
           name: Build app
+      - android/save_gradle_cache:
+          cache_prefix: gradle-cache-v1
       - persist_to_workspace:
           root: ~/workspace
           paths:
             - .
 
   E2E tests:
-    docker:
-      - image: cimg/android:2023.04.1-node
+    executor:
+      name: android/android_machine
+      resource_class: large
+      tag: default
     working_directory: ~/workspace/repo
     steps:
       - attach_workspace:
           at: ~/workspace
+      - android/create_avd:
+          avd_name: CI_EMULATOR
+          install: true
+          system_image: system-images;android-31;default;x86_64
+      - android/start_emulator:
+          avd_name: CI_EMULATOR
+          no_window: true
+          restore_gradle_cache_prefix: v1a
+      - run:
+          name: Install app in Android Emulator
+          command: npm run install:android
       - run:
           name: Run E2E tests
-          command: npx detox test --configuration android.emu.release
+          command: npm run test:e2e-android
+      - android/save_gradle_cache:
+          cache_prefix: v1a
       - persist_to_workspace:
           root: ~/workspace
           paths:
             - .
 
-  Build with EAS:
-    docker:
-      - image: cimg/node:lts
-    working_directory: ~/workspace/repo
-    steps:
-      - attach_workspace:
-          at: ~/workspace
-      - checkout
-      - run:
-          name: Install dependencies
-          command: npm ci
-      - run:
-          name: Build EAS
-          command: npx eas-cli build -p android --non-interactive --local -e test
-      - persist_to_workspace:
-          root: ~/workspace
-          paths:
-            - .
-  # deploy:
+  #  Build with EAS:
+  #    docker:
+  #      - image: cimg/node:lts
+  #    working_directory: ~/workspace/repo
+  #    steps:
+  #      - attach_workspace:
+  #          at: ~/workspace
+  #      - checkout
+  #      - run:
+  #          name: Install dependencies
+  #          command: npm ci
+  #      - run:
+  #          name: Build EAS
+  #          command: npx eas-cli build -p android --non-interactive --local -e test
+  #      - persist_to_workspace:
+  #          root: ~/workspace
+  #          paths:
+  #            - .
+  #  # deploy:
   #   executor: heroku/default
   #   steps:
   #     - attach_workspace:
@@ -107,17 +131,16 @@ jobs:
 
 
 workflows:
-  build and test:
-    jobs: 
-      - prepare_env
-      - Build with EAS
-      - unit and integration tests:
+  Test Android:
+    jobs:
+      - Install packages
+      - Unit tests:
           requires:
-            - prepare_env
-      - build for E2E:
-          requires: 
-            - prepare_env
+            - Install packages
+      - Build for E2E:
+          requires:
+            - Install packages
       - E2E tests:
           requires:
-            - build for E2E
-
+            - Build for E2E
+      #      - Build with EAS
