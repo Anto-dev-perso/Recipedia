@@ -147,9 +147,9 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Basil Leaves"
     label: Basil Leaves filter is not rendered
-- assertNotVisible:
-    text: "󰄲, Cocoa Powder"
-    label: Cocoa Powder filter is not rendered
+- assertVisible:
+    text: "󰄱, Cocoa Powder"
+    label: Cocoa Powder filter is rendered
 - assertNotVisible:
     text: "󰄱, Curry Powder"
     label: Curry Powder filter is not rendered

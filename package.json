@@ -7,12 +7,16 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "build:android": "eas build --local --profile maestro --platform android",
+    "build:ios": "eas build --local --profile maestro --platform ios",
     "install:android": "adb install build*.apk",
+    "install:ios": "TODO",
     "test:unit": "jest --config jest.config.js",
     "test:unit-watch": "jest --watchAll --config jest.config.js",
     "test:unit-coverage": "jest --coverage --config jest.config.js",
     "test:e2e-android": " maestro test tests/e2e/*",
-    "test:all": "npm run test:unit && npm run test:e2e-android"
+    "test:e2e-ios": " maestro test tests/e2e/*   TODO",
+    "test:all:android": "npm run test:unit && npm run test:e2e-android",
+    "test:all:ios": "TODO"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",

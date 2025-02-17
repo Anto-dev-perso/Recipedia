@@ -21,6 +21,12 @@ appId: "com.recipesmanager"
     text: "󰄱, Pizza Dough, 1 recipe"
     label: Ingredient Pizza Dough is displayed unchecked
 - assertVisible:
+    text: "Vegetable"
+    label: Category Vegetable is displayed
+- assertVisible:
+    text: "󰄱, Romaine Lettuce, 1 recipe"
+    label: Ingredient Romaine Lettuce is displayed unchecked
+- assertVisible:
     text: "Sauce"
     label: Category Sauce is displayed
 - assertVisible:
@@ -29,12 +35,6 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Caesar Dressing, 1 recipe"
     label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "Vegetable"
-    label: Category Vegetable is displayed
-- assertVisible:
-    text: "󰄱, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
 - assertVisible:
     text: "Meat"
     label: Category Meat is displayed
@@ -46,6 +46,15 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
+    text: "Cheese"
+    label: Category Cheese is displayed
+- assertVisible:
+    text: "󰄱, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
+- assertVisible:
+    text: "󰄱, Mozzarella, 1 recipe"
+    label: Ingredient Mozzarella is displayed unchecked
+- assertVisible:
     text: "Spice"
     label: Category Spice is displayed
 - assertVisible:
@@ -54,278 +63,52 @@ appId: "com.recipesmanager"
 - swipe:
     start: "50%,30%"
     end: "50%,60%"
-    label: Swipe down to see other items
+    label: Swipe Up to reset the initial position
 - longPressOn:
-    text: "󰄱, Spaghetti, 1 recipe"
+    id: "CheckBoxButton - Spaghetti::Pressable"
     label: Long Press on Spaghetti
 - runFlow: ../Alerts/longPressOnSpaghettiBologneseOnly.yaml
 - longPressOn:
-    text: "󰄱, Croutons, 1 recipe"
+    id: "CheckBoxButton - Croutons::Pressable"
     label: Long Press on Croutons
 - runFlow: ../Alerts/longPressOnCroutonsCaesarOnly.yaml
 - longPressOn:
-    text: "󰄱, Pizza Dough, 1 recipe"
+    id: "CheckBoxButton - Pizza Dough::Pressable"
     label: Long Press on Pizza Dough
 - runFlow: ../Alerts/longPressOnPizzaPizzaOnly.yaml
 - longPressOn:
-    text: "󰄱, Tomato Sauce, 2 recipes"
+    id: "CheckBoxButton - Romaine Lettuce::Pressable"
+    label: Long Press on Romaine Lettuce
+- runFlow: ../Alerts/longPressOnLettuceCaesarOnly.yaml
+- longPressOn:
+    id: "CheckBoxButton - Tomato Sauce::Pressable"
     label: Long Press on Tomato Sauce
 - runFlow: ../Alerts/longPressOnTomatoSauceSpaghettiAndPizza.yaml
 - longPressOn:
-    text: "󰄱, Caesar Dressing, 1 recipe"
+    id: "CheckBoxButton - Caesar Dressing::Pressable"
     label: Long Press on Caesar Dressing
 - runFlow: ../Alerts/longPressOnCaesarDressingCaesarOnly.yaml
-- longPressOn:
-    text: "󰄱, Romaine Lettuce, 1 recipe"
-    label: Long Press on Romaine Lettuce
-- runFlow: ../Alerts/longPressOnLettuceCaesarOnly.yaml
 - swipe:
     start: "50%,60%"
     end: "50%,30%"
     label: Swipe down to see other items
 - longPressOn:
-    text: "󰄱, Basil Leaves, 1 recipe"
+    id: "CheckBoxButton - Ground Beef::Pressable"
+    label: Long Press on Ground Beef
+- runFlow: ../Alerts/longPressOnGroundBeefPizzaOnly.yaml
+- longPressOn:
+    id: "CheckBoxButton - Parmesan::Pressable"
+    label: Long Press on Parmesan
+- runFlow: ../Alerts/longPressOnParmesanSpaghettiAndCaesar.yaml
+- longPressOn:
+    id: "CheckBoxButton - Mozzarella::Pressable"
+    label: Long Press on Mozzarella
+- runFlow: ../Alerts/longPressOnMozzarellaPizza.yaml
+- longPressOn:
+    id: "CheckBoxButton - Basil Leaves::Pressable"
     label: Long Press on Basil Leaves
 - runFlow: ../Alerts/longPressOnBasilLeavesPizzaOnly.yaml
-- tapOn:
-    text: "󰄱, Spaghetti, 1 recipe"
-    label: Press Spaghetti button
 - swipe:
     start: "50%,30%"
     end: "50%,60%"
     label: Swipe Up to reset to initial position
-- assertVisible:
-    text: "󰄲, Spaghetti, 1 recipe"
-    label: Ingredient Spaghetti is displayed checked
-- assertVisible:
-    text: "󰄱, Tomato Sauce, 2 recipes"
-    label: Ingredient Tomato Sauce is displayed unchecked
-- assertVisible:
-    text: "󰄱, Ground Beef, 1 recipe"
-    label: Ingredient Ground Beef is displayed unchecked
-- assertVisible:
-    text: "󰄱, Croutons, 1 recipe"
-    label: Ingredient Croutons is displayed unchecked
-- assertVisible:
-    text: "󰄱, Caesar Dressing, 1 recipe"
-    label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "󰄱, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
-- assertVisible:
-    text: "󰄱, Pizza Dough, 1 recipe"
-    label: Ingredient Pizza Dough is displayed unchecked
-- assertVisible:
-    text: "󰄱, Basil Leaves, 1 recipe"
-    label: Ingredient Basil Leaves is displayed unchecked
-- tapOn:
-    text: "󰄱, Tomato Sauce, 2 recipes"
-    label: Press Tomato Sauce button
-- assertVisible:
-    text: "󰄲, Spaghetti, 1 recipe"
-    label: Ingredient Spaghetti is displayed checked
-- assertVisible:
-    text: "󰄲, Tomato Sauce, 2 recipes"
-    label: Ingredient Tomato Sauce is displayed checked
-- assertVisible:
-    text: "󰄱, Ground Beef, 1 recipe"
-    label: Ingredient Ground Beef is displayed unchecked
-- assertVisible:
-    text: "󰄱, Croutons, 1 recipe"
-    label: Ingredient Croutons is displayed unchecked
-- assertVisible:
-    text: "󰄱, Caesar Dressing, 1 recipe"
-    label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "󰄱, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
-- assertVisible:
-    text: "󰄱, Pizza Dough, 1 recipe"
-    label: Ingredient Pizza Dough is displayed unchecked
-- assertVisible:
-    text: "󰄱, Basil Leaves, 1 recipe"
-    label: Ingredient Basil Leaves is displayed unchecked
-- tapOn:
-    text: "󰄱, Ground Beef, 1 recipe"
-    label: Press Ground Beef button
-- assertVisible:
-    id: "CheckBoxButton - Spaghetti::Pressable"
-    text: "󰄲, Spaghetti, 1 recipe"
-    label: Ingredient Spaghetti is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Tomato Sauce::Pressable"
-    text: "󰄲, Tomato Sauce, 2 recipes"
-    label: Ingredient Tomato Sauce is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Ground Beef::Pressable"
-    text: "󰄲, Ground Beef, 1 recipe"
-    label: Ingredient Ground Beef is displayed checked
-- assertVisible:
-    text: "󰄱, Croutons, 1 recipe"
-    label: Ingredient Croutons is displayed unchecked
-- assertVisible:
-    text: "󰄱, Caesar Dressing, 1 recipe"
-    label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "󰄱, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
-- assertVisible:
-    text: "󰄱, Pizza Dough, 1 recipe"
-    label: Ingredient Pizza Dough is displayed unchecked
-- assertVisible:
-    text: "󰄱, Basil Leaves, 1 recipe"
-    label: Ingredient Basil Leaves is displayed unchecked
-- tapOn:
-    text: "󰄱, Croutons, 1 recipe"
-    label: Press Croutons Beef button
-- assertVisible:
-    id: "CheckBoxButton - Spaghetti::Pressable"
-    text: "󰄲, Spaghetti, 1 recipe"
-    label: Ingredient Spaghetti is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Tomato Sauce::Pressable"
-    text: "󰄲, Tomato Sauce, 2 recipes"
-    label: Ingredient Tomato Sauce is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Ground Beef::Pressable"
-    text: "󰄲, Ground Beef, 1 recipe"
-    label: Ingredient Ground Beef is displayed checked
-- assertVisible:
-    text: "󰄲, Croutons, 1 recipe"
-    label: Ingredient Croutons is displayed unchecked
-- assertVisible:
-    text: "󰄱, Caesar Dressing, 1 recipe"
-    label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "󰄱, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
-- assertVisible:
-    text: "󰄱, Pizza Dough, 1 recipe"
-    label: Ingredient Pizza Dough is displayed unchecked
-- assertVisible:
-    text: "󰄱, Basil Leaves, 1 recipe"
-    label: Ingredient Basil Leaves is displayed unchecked
-- tapOn:
-    text: "󰄱, Caesar Dressing, 1 recipe"
-    label: Press Caesar Dressing button
-- assertVisible:
-    id: "CheckBoxButton - Spaghetti::Pressable"
-    text: "󰄲, Spaghetti, 1 recipe"
-    label: Ingredient Spaghetti is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Tomato Sauce::Pressable"
-    text: "󰄲, Tomato Sauce, 2 recipes"
-    label: Ingredient Tomato Sauce is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Ground Beef::Pressable"
-    text: "󰄲, Ground Beef, 1 recipe"
-    label: Ingredient Ground Beef is displayed checked
-- assertVisible:
-    text: "󰄲, Croutons, 1 recipe"
-    label: Ingredient Croutons is displayed unchecked
-- assertVisible:
-    text: "󰄲, Caesar Dressing, 1 recipe"
-    label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "󰄱, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
-- assertVisible:
-    text: "󰄱, Pizza Dough, 1 recipe"
-    label: Ingredient Pizza Dough is displayed unchecked
-- assertVisible:
-    text: "󰄱, Basil Leaves, 1 recipe"
-    label: Ingredient Basil Leaves is displayed unchecked
-- tapOn:
-    text: "󰄱, Romaine Lettuce, 1 recipe"
-    label: Press Romaine Lettuce button
-- assertVisible:
-    id: "CheckBoxButton - Spaghetti::Pressable"
-    text: "󰄲, Spaghetti, 1 recipe"
-    label: Ingredient Spaghetti is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Tomato Sauce::Pressable"
-    text: "󰄲, Tomato Sauce, 2 recipes"
-    label: Ingredient Tomato Sauce is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Ground Beef::Pressable"
-    text: "󰄲, Ground Beef, 1 recipe"
-    label: Ingredient Ground Beef is displayed checked
-- assertVisible:
-    text: "󰄲, Croutons, 1 recipe"
-    label: Ingredient Croutons is displayed unchecked
-- assertVisible:
-    text: "󰄲, Caesar Dressing, 1 recipe"
-    label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "󰄲, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
-- assertVisible:
-    text: "󰄱, Pizza Dough, 1 recipe"
-    label: Ingredient Pizza Dough is displayed unchecked
-- assertVisible:
-    text: "󰄱, Basil Leaves, 1 recipe"
-    label: Ingredient Basil Leaves is displayed unchecked
-- tapOn:
-    text: "󰄱, Pizza Dough, 1 recipe"
-    label: Press Pizza Dough button
-- assertVisible:
-    id: "CheckBoxButton - Spaghetti::Pressable"
-    text: "󰄲, Spaghetti, 1 recipe"
-    label: Ingredient Spaghetti is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Tomato Sauce::Pressable"
-    text: "󰄲, Tomato Sauce, 2 recipes"
-    label: Ingredient Tomato Sauce is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Ground Beef::Pressable"
-    text: "󰄲, Ground Beef, 1 recipe"
-    label: Ingredient Ground Beef is displayed checked
-- assertVisible:
-    text: "󰄲, Croutons, 1 recipe"
-    label: Ingredient Croutons is displayed unchecked
-- assertVisible:
-    text: "󰄲, Caesar Dressing, 1 recipe"
-    label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "󰄲, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
-- assertVisible:
-    text: "󰄲, Pizza Dough, 1 recipe"
-    label: Ingredient Pizza Dough is displayed unchecked
-- assertVisible:
-    text: "󰄱, Basil Leaves, 1 recipe"
-    label: Ingredient Basil Leaves is displayed unchecked
-- swipe:
-    start: "50%,60%"
-    end: "50%,30%"
-    label: Swipe down to see other items
-- tapOn:
-    text: "󰄱, Basil Leaves, 1 recipe"
-    label: Press Basil Leaves button
-- assertVisible:
-    id: "CheckBoxButton - Spaghetti::Pressable"
-    text: "󰄲, Spaghetti, 1 recipe"
-    label: Ingredient Spaghetti is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Tomato Sauce::Pressable"
-    text: "󰄲, Tomato Sauce, 2 recipes"
-    label: Ingredient Tomato Sauce is displayed checked
-- assertVisible:
-    id: "CheckBoxButton - Ground Beef::Pressable"
-    text: "󰄲, Ground Beef, 1 recipe"
-    label: Ingredient Ground Beef is displayed checked
-- assertVisible:
-    text: "󰄲, Croutons, 1 recipe"
-    label: Ingredient Croutons is displayed unchecked
-- assertVisible:
-    text: "󰄲, Caesar Dressing, 1 recipe"
-    label: Ingredient Caesar Dressing is displayed unchecked
-- assertVisible:
-    text: "󰄲, Romaine Lettuce, 1 recipe"
-    label: Ingredient Romaine Lettuce is displayed unchecked
-- assertVisible:
-    text: "󰄲, Pizza Dough, 1 recipe"
-    label: Ingredient Pizza Dough is displayed unchecked
-- assertVisible:
-    text: "󰄲, Basil Leaves, 1 recipe"
-    label: Ingredient Basil Leaves is displayed unchecked

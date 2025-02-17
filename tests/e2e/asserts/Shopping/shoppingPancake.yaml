@@ -24,8 +24,14 @@ appId: "com.recipesmanager"
     text: "Dairy"
     label: Category Dairy is displayed
 - assertVisible:
+    text: "Oil and Fat"
+    label: Category Oil and Fat is displayed
+- assertVisible:
     text: "󰄱, Milk, 1 recipe"
     label: Ingredient Milk is displayed unchecked
+- assertVisible:
+    text: "󰄱, Butter, 1 recipe"
+    label: Ingredient Butter is displayed unchecked
 - longPressOn:
     text: "󰄱, Flour, 1 recipe"
     label: Long Press on Flour
@@ -38,10 +44,13 @@ appId: "com.recipesmanager"
     text: "󰄱, Milk, 1 recipe"
     label: Long Press on Milk
 - runFlow: ../Alerts/longPressOnMilkPancakeOnly.yaml
+- longPressOn:
+    text: "󰄱, Butter, 1 recipe"
+    label: Long Press on Butter
+- runFlow: ../Alerts/longPressOnButterPancakeOnly.yaml
 - tapOn:
     text: "󰄱, Flour, 1 recipe"
     label: Press Flour button
-# TODO doesn't work
 - assertVisible:
     text: "󰄲, Flour, 1 recipe"
     label: Ingredient Flour is displayed checked
@@ -51,6 +60,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Milk, 1 recipe"
     label: Ingredient Milk is displayed unchecked
+- assertVisible:
+    id: "CheckBoxButton - Butter::Pressable"
+    text: "󰄱, Butter, 1 recipe"
+    label: Ingredient Butter is displayed unchecked
 - tapOn:
     text: "󰄱, Eggs, 1 recipe"
     label: Press Eggs button
@@ -63,6 +76,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Milk, 1 recipe"
     label: Ingredient Milk is displayed unchecked
+- assertVisible:
+    id: "CheckBoxButton - Butter::Pressable"
+    text: "󰄱, Butter, 1 recipe"
+    label: Ingredient Butter is displayed unchecked
 - tapOn:
     text: "󰄱, Milk, 1 recipe"
     label: Press Milk button
@@ -78,3 +95,38 @@ appId: "com.recipesmanager"
     id: "CheckBoxButton - Milk::Pressable"
     text: "󰄲, Milk, 1 recipe"
     label: Ingredient Milk is displayed checked
+- assertVisible:
+    id: "CheckBoxButton - Butter::Pressable"
+    text: "󰄱, Butter, 1 recipe"
+    label: Ingredient Butter is displayed unchecked
+- tapOn:
+    text: "󰄱, Butter, 1 recipe"
+    label: Press Butter button
+- assertVisible:
+    id: "CheckBoxButton - Flour::Pressable"
+    text: "󰄲, Flour, 1 recipe"
+    label: Ingredient Flour is displayed checked
+- assertVisible:
+    id: "CheckBoxButton - Eggs::Pressable"
+    text: "󰄲, Eggs, 1 recipe"
+    label: Ingredient Eggs is displayed checked
+- assertVisible:
+    id: "CheckBoxButton - Milk::Pressable"
+    text: "󰄲, Milk, 1 recipe"
+    label: Ingredient Milk is displayed checked
+- assertVisible:
+    id: "CheckBoxButton - Butter::Pressable"
+    text: "󰄲, Butter, 1 recipe"
+    label: Ingredient Butter is displayed checked
+- tapOn:
+    text: "󰄲, Flour, 1 recipe"
+    label: Press Flour button
+- tapOn:
+    text: "󰄲, Eggs, 1 recipe"
+    label: Press Eggs button
+- tapOn:
+    text: "󰄲, Milk, 1 recipe"
+    label: Press Milk button
+- tapOn:
+    text: "󰄲, Butter, 1 recipe"
+    label: Press Butter button

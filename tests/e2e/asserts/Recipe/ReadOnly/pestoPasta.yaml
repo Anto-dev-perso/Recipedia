@@ -76,4 +76,4 @@ appId: "com.recipesmanager"
 - swipe:
     start: "50%,20%"
     end: "50%,80%"
-    label: Swipe Up to see reset the initial position
+    label: Swipe Up to reset the initial position

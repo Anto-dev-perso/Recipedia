@@ -10,14 +10,14 @@ appId: "com.recipesmanager"
     text: "󰐕, Add a filter"
     label: Add filter button is displayed
 - assertVisible:
+    text: "15-20 min, "
+    label: Prep Time button is displayed
+- assertVisible:
     text: "Romaine Lettuce, "
     label: Lettuce filter button is displayed
 - assertVisible:
-    text: "Curry Powder, "
-    label: Curry Powder button is displayed
-- assertNotVisible:
     text: "󰍴, Grain or Cereal"
-    label: Grain or Cereal category is not rendered
+    label: Grain or Cereal category is rendered
 - assertNotVisible:
     text: "󰄱, Spaghetti"
     label: Spaghetti filter is not rendered
@@ -27,9 +27,9 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Flour"
     label: Flour filter is not rendered
-- assertNotVisible:
+- assertVisible:
     text: "󰄱, Croutons"
-    label: Croutons filter is not rendered
+    label: Croutons filter is rendered
 - assertNotVisible:
     text: "󰄱, Pizza Dough"
     label: Pizza Dough filter is not rendered
@@ -42,19 +42,18 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Sushi Rice"
     label: Sushi Rice filter is not rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰍴, Legumes"
-    label: Legumes category is rendered
-- assertVisible:
+    label: Legumes category is not rendered
+- assertNotVisible:
     text: "󰄱, Red Lentils"
-    label: Red Lentils filter is rendered
+    label: Red Lentils filter is not rendered
 - assertVisible:
     text: "󰍴, Vegetable"
     label: Vegetable category is rendered
 - assertNotVisible:
     text: "󰄱, Lettuce"
     label: Lettuce filter is not rendered
-# TODO bug
 - assertVisible:
     text: "󰄲, Romaine Lettuce"
     label: Romaine Lettuce filter is rendered
@@ -67,13 +66,12 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Potatoes"
     label: Potatoes filter is not rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰄱, Onions"
-    label: Onions filter is rendered
-# TODO bug
-- assertVisible:
-    text: "󰄲, Tomatoes"
-    label: Tomatoes filter is rendered
+    label: Onions filter is not rendered
+- assertNotVisible:
+    text: "󰄱, Tomatoes"
+    label: Tomatoes filter is not rendered
 - assertNotVisible:
     text: "󰍴, Plant Protein"
     label: Plant Protein category is not rendered
@@ -95,15 +93,15 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Tomato Sauce"
     label: Tomato Sauce filter is not rendered
-- assertNotVisible:
+- assertVisible:
     text: "󰄱, Caesar Dressing"
     label: Caesar Dressing filter is rendered
 - assertNotVisible:
     text: "󰄱, Vegetable Broth"
-    label: Vegetable Broth filter is rendered
-- assertVisible:
+    label: Vegetable Broth filter is not rendered
+- assertNotVisible:
     text: "󰄱, Coconut Milk"
-    label: Coconut Milk filter is rendered
+    label: Coconut Milk filter is not rendered
 - assertNotVisible:
     text: "󰍴, Meat"
     label: Meat category is not rendered
@@ -128,12 +126,12 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Milk"
     label: Milk filter is not rendered
-- assertNotVisible:
+- assertVisible:
     text: "󰍴, Cheese"
-    label: Cheese category is not rendered
-- assertNotVisible:
+    label: Cheese category is rendered
+- assertVisible:
     text: "󰄱, Parmesan"
-    label: Parmesan filter is not rendered
+    label: Parmesan filter is rendered
 - assertNotVisible:
     text: "󰄱, Cheddar"
     label: Cheddar filter is not rendered
@@ -146,22 +144,18 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Sugar"
     label: Sugar filter is not rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰍴, Spice"
-    label: Spice category is rendered
+    label: Spice category is not rendered
 - assertNotVisible:
     text: "󰄱, Basil Leaves"
     label: Basil Leaves filter is not rendered
 - assertNotVisible:
     text: "󰄱, Cocoa Powder"
     label: Cocoa Powder filter is not rendered
-- assertVisible:
-    text: "󰄲, Curry Powder"
-    label: Curry Powder filter is rendered
-- swipe:
-    start: "50%,85%"
-    end: "50%,30%"
-    label: Swipe down to see other items
+- assertNotVisible:
+    text: "󰄱, Curry Powder"
+    label: Curry Powder filter is not rendered
 - assertNotVisible:
     text: "󰍴, Fruit"
     label: Fruit category is not rendered
@@ -183,6 +177,10 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Pine Nuts"
     label: Pine Nuts filter is not rendered
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "󰍴, Preparation Time"
     label: Preparation Time category is rendered
@@ -193,7 +191,7 @@ appId: "com.recipesmanager"
     text: "󰄱, 10-15 min"
     label: 10-15 min filter is rendered
 - assertVisible:
-    text: "󰄱, 15-20 min"
+    text: "󰄲, 15-20 min"
     label: 15-20 min filter is rendered
 - assertVisible:
     text: "󰄱, 20-25 min"
@@ -231,12 +229,12 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Dinner"
     label: Dinner filter is not rendered
-- assertNotVisible:
-    text: "󰄱, Healthy"
-    label: Healthy filter is not rendered
 - assertVisible:
+    text: "󰄱, Healthy"
+    label: Healthy filter is rendered
+- assertNotVisible:
     text: "󰄱, Indian"
-    label: Indian filter is rendered
+    label: Indian filter is not rendered
 - assertNotVisible:
     text: "󰄱, Italian"
     label: Italian filter is not rendered
@@ -252,19 +250,19 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Quick Meal"
     label: Quick Meal filter is not rendered
-- assertNotVisible:
+- assertVisible:
     text: "󰄱, Salad"
-    label: Salad filter is not rendered
+    label: Salad filter is rendered
 - assertNotVisible:
     text: "󰄱, Seafood"
     label: Seafood filter is not rendered
 - assertNotVisible:
     text: "󰄱, Soup"
     label: Soup filter is not rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰄱, Vegetarian"
-    label: Vegetarian filter is rendered
+    label: Vegetarian filter is not rendered
 - swipe:
     start: "50%,15%"
     end: "50%,95%"
-    label: Swipe down to see other items
+    label: Swipe Up to reset the initial position

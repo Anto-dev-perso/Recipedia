@@ -26,7 +26,7 @@ export type SectionClickableListProps = {
 
 export default function SectionClickableList(props: SectionClickableListProps) {
 
-    const [filterCategoryClicked, setFilterCategoryClicked] = useState(props?.screen === 'search' ? new Map<TListFilter, boolean>(filtersCategories.map(filter => [filter, false])) : new Map<TListFilter, boolean>());
+    const [filterCategoryClicked, setFilterCategoryClicked] = useState(props?.screen === 'search' ? new Map<TListFilter, boolean>(filtersCategories.map(filter => [filter, props.testMode ? true : false])) : new Map<TListFilter, boolean>());
 
 
     // TODO maybe put this in a separate file for a better readability

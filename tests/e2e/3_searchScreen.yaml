@@ -15,6 +15,9 @@ name: "Search screen can search for recipes and display it"
 - tapOn:
     id: "SearchBar"
     label: Open search bar
+- hideKeyboard:
+    label: Close the keyboard
 - tapOn:
     text: ""
     label: Tap on cross icon to close the search bar
+- pressKey: "BACK"

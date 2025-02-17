@@ -3,5 +3,3 @@ name: "Shopping screen test suite"
 ---
 - runFlow: flows/Shopping/addOneRecipe.yaml
 - runFlow: flows/Shopping/addMultipleRecipes.yaml
-
-# TODO missing a delete button

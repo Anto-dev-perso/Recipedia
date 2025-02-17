@@ -27,6 +27,12 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed unchecked
+- assertVisible:
+    text: "Cheese"
+    label: Category Cheese is displayed
+- assertVisible:
+    text: "󰄱, Parmesan, 1 recipe"
+    label: Ingredient Parmesan is displayed unchecked
 - longPressOn:
     text: "󰄱, Spaghetti, 1 recipe"
     label: Long Press on Spaghetti
@@ -39,6 +45,10 @@ appId: "com.recipesmanager"
     text: "󰄱, Ground Beef, 1 recipe"
     label: Long Press on Ground Beef
 - runFlow: ../Alerts/longPressOnGroundBeefSpaghettiOnly.yaml
+- longPressOn:
+    text: "󰄱, Parmesan, 1 recipe"
+    label: Long Press on Parmesan
+- runFlow: ../Alerts/longPressOnParmesanSpaghettiOnly.yaml
 - tapOn:
     text: "󰄱, Spaghetti, 1 recipe"
     label: Press Spaghetti button
@@ -51,6 +61,9 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed unchecked
+- assertVisible:
+    text: "󰄱, Parmesan, 1 recipe"
+    label: Ingredient Parmesan is displayed unchecked
 - tapOn:
     text: "󰄱, Tomato Sauce, 1 recipe"
     label: Press Tomato Sauce button
@@ -63,6 +76,9 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed unchecked
+- assertVisible:
+    text: "󰄱, Parmesan, 1 recipe"
+    label: Ingredient Parmesan is displayed unchecked
 - tapOn:
     text: "󰄱, Ground Beef, 1 recipe"
     label: Press Ground Beef button
@@ -78,3 +94,36 @@ appId: "com.recipesmanager"
     id: "CheckBoxButton - Ground Beef::Pressable"
     text: "󰄲, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed checked
+- assertVisible:
+    text: "󰄱, Parmesan, 1 recipe"
+    label: Ingredient Parmesan is displayed unchecked
+- tapOn:
+    text: "󰄱, Parmesan, 1 recipe"
+    label: Press Parmesan button
+- assertVisible:
+    id: "CheckBoxButton - Spaghetti::Pressable"
+    text: "󰄲, Spaghetti, 1 recipe"
+    label: Ingredient Spaghetti is displayed checked
+- assertVisible:
+    id: "CheckBoxButton - Tomato Sauce::Pressable"
+    text: "󰄲, Tomato Sauce, 1 recipe"
+    label: Ingredient Tomato Sauce is displayed checked
+- assertVisible:
+    id: "CheckBoxButton - Ground Beef::Pressable"
+    text: "󰄲, Ground Beef, 1 recipe"
+    label: Ingredient Ground Beef is displayed checked
+- assertVisible:
+    text: "󰄲, Parmesan, 1 recipe"
+    label: Ingredient Parmesan is displayed unchecked
+- tapOn:
+    text: "󰄲, Spaghetti, 1 recipe"
+    label: Press Spaghetti button
+- tapOn:
+    text: "󰄲, Tomato Sauce, 1 recipe"
+    label: Press Tomato Sauce button
+- tapOn:
+    text: "󰄲, Ground Beef, 1 recipe"
+    label: Press Ground Beef button
+- tapOn:
+    text: "󰄲, Parmesan, 1 recipe"
+    label: Press Parmesan button

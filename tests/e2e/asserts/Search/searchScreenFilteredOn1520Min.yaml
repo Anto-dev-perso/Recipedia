@@ -10,38 +10,43 @@ appId: "com.recipesmanager"
     text: "󰐕, Add a filter"
     label: Add filter button is displayed
 - assertVisible:
-    text: "Romaine Lettuce, "
-    label: Lettuce filter button is displayed
-- assertVisible:
-    text: "Curry Powder, "
-    label: Curry Powder button is displayed
+    text: "15-20 min, "
+    label: Prep Time filter button is displayed
 - assertNotVisible:
     text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
     label: Spaghetti Bolognese is not displayed
-- assertNotVisible:
+- assertVisible:
     text: "Chicken Tacos, Mexican, Lunch, Prep. 20 min, 2 p."
-    label: Chicken Tacos is not displayed
+    label: Chicken Tacos is displayed
 - assertNotVisible:
     text: "Classic Pancakes, Breakfast, Dessert, Prep. 25 min, 2 p."
     label: Classic Pancakes is not displayed
-- assertNotVisible:
+- assertVisible:
     text: "Caesar Salad, Salad, Healthy, Prep. 15 min, 2 p."
-    label: Caesar Salad of database is not displayed
-- assertNotVisible:
+    label: Caesar Salad of database is displayed
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
     text: "Margherita Pizza, Italian, Lunch, Prep. 20 min, 2 p."
-    label: Margherita Pizza is not displayed
+    label: Margherita Pizza is displayed
 - assertNotVisible:
     text: "Vegetable Soup, Healthy, Soup, Prep. 40 min, 2 p."
     label: Vegetable Soup is not displayed
 - assertNotVisible:
     text: "Chocolate Cake, Dessert, Chocolate, Prep. 60 min, 2 p."
     label: Chocolate Cake is not displayed
-- assertNotVisible:
+- assertVisible:
     text: "Pesto Pasta, Italian, Quick Meal, Prep. 20 min, 2 p."
-    label: Pesto Pasta is not displayed
+    label: Pesto Pasta is displayed
 - assertNotVisible:
     text: "Sushi Rolls, Japanese, Seafood, Prep. 45 min, 2 p."
     label: Sushi Rolls element of database is not displayed
-- assertVisible:
+- assertNotVisible:
     text: "Lentil Curry, Indian, Vegetarian, Prep. 35 min, 2 p."
-    label: Lentil Curry is displayed
+    label: Lentil Curry is not displayed
+- swipe:
+    start: "50%,30%"
+    end: "50%,80%"
+    label: Swipe up to return on initial state

@@ -33,3 +33,9 @@ appId: "com.recipesmanager"
     text: ", Shopping"
     label: Go back to Shopping Screen to verify elements are still there
 - runFlow: ../../asserts/Shopping/shoppingPancake.yaml
+- tapOn:
+    text: "DELETE"
+    label: Delete Shopping List for next test
+- tapOn:
+    text: "󰋜, Home"
+    label: Return to Home Screen

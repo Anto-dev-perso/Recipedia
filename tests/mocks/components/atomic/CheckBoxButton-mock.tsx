@@ -12,9 +12,6 @@ export function checkBoxButtonMock(checkBoxButtonProps: CheckBoxButtonProps) {
             <Text testID={checkBoxButtonProps.testID + "::StateInitialValue"}>
                 {checkBoxButtonProps.stateInitialValue}
             </Text>
-            <Text testID={checkBoxButtonProps.testID + "::UseCheckBoxState"}>
-                {checkBoxButtonProps.useCheckBoxState}
-            </Text>
             <Text testID={checkBoxButtonProps.testID + "::OnLongPressData"}>
                 {JSON.stringify(checkBoxButtonProps.onLongPressData)}
             </Text>

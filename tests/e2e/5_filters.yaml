@@ -5,3 +5,5 @@ name: "Tests suite checking that filters are working correctly"
 - runFlow: flows/Search/Filters/addAndRemoveFilter.yaml
 - runFlow: flows/Search/Filters/addMultipleFilters.yaml
 - runFlow: flows/Search/Filters/mixUpNameAndFilters.yaml
+
+# TODO remove a filter with the filter button

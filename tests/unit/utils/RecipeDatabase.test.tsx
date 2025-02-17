@@ -267,6 +267,18 @@ describe('RecipeDatabase tests with database completely filled', () => {
         await db.reset();
     });
 
+
+    test('ResetShoppingList reset the table of shopping elements', async () => {
+        const ingredientsInDatabase = [...db.get_ingredients()];
+
+        await db.resetShoppingList();
+
+        expect(db.get_recipes()).toEqual(recipesDataset);
+        expect(db.get_tags()).toEqual(tagsDataset);
+        expect(db.get_ingredients()).toEqual(ingredientsInDatabase);
+        expect(db.get_shopping()).toEqual([]);
+    });
+
     test('Delete database reset everything', async () => {
         // TODO deleteDatabase to call at exit ?
         // @ts-ignore deleteDatabase should not been called but still be tested
@@ -275,6 +287,7 @@ describe('RecipeDatabase tests with database completely filled', () => {
         expect(db.get_recipes()).toEqual([]);
         expect(db.get_tags()).toEqual([]);
         expect(db.get_ingredients()).toEqual([]);
+        expect(db.get_shopping()).toEqual([]);
     });
 
     // TODO to be upgrade with database deleting (not implemented yet)

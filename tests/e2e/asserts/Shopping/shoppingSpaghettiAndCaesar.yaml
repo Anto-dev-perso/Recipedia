@@ -38,6 +38,20 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed unchecked
+- swipe:
+    start: "50%,60%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "Cheese"
+    label: Category Cheese is displayed
+- assertVisible:
+    text: "󰄱, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
+- swipe:
+    start: "50%,30%"
+    end: "50%,60%"
+    label: Swipe Up to reset the initial position
 - longPressOn:
     text: "󰄱, Spaghetti, 1 recipe"
     label: Long Press on Spaghetti
@@ -58,6 +72,22 @@ appId: "com.recipesmanager"
     text: "󰄱, Romaine Lettuce, 1 recipe"
     label: Long Press on Romaine Lettuce
 - runFlow: ../Alerts/longPressOnLettuceCaesarOnly.yaml
+- longPressOn:
+    text: "󰄱, Ground Beef, 1 recipe"
+    label: Long Press on Ground Beef
+- runFlow: ../Alerts/longPressOnGroundBeefPizzaOnly.yaml
+- swipe:
+    start: "50%,60%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- longPressOn:
+    text: "󰄱, Parmesan, 2 recipes"
+    label: Long Press on Parmesan
+- runFlow: ../Alerts/longPressOnParmesanSpaghettiAndCaesar.yaml
+- swipe:
+    start: "50%,30%"
+    end: "50%,60%"
+    label: Swipe Up to reset the initial position
 - tapOn:
     text: "󰄱, Spaghetti, 1 recipe"
     label: Press Spaghetti button
@@ -70,6 +100,9 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed unchecked
+- assertVisible:
+    text: "󰄱, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
 - assertVisible:
     text: "󰄱, Croutons, 1 recipe"
     label: Ingredient Croutons is displayed unchecked
@@ -91,6 +124,9 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed unchecked
+- assertVisible:
+    text: "󰄱, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
 - assertVisible:
     text: "󰄱, Croutons, 1 recipe"
     label: Ingredient Croutons is displayed unchecked
@@ -116,6 +152,31 @@ appId: "com.recipesmanager"
     text: "󰄲, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed checked
 - assertVisible:
+    text: "󰄱, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
+- swipe:
+    start: "50%,60%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- tapOn:
+    text: "󰄱, Parmesan, 2 recipes"
+    label: Press Parmesan button
+- assertVisible:
+    id: "CheckBoxButton - Spaghetti::Pressable"
+    text: "󰄲, Spaghetti, 1 recipe"
+    label: Ingredient Spaghetti is displayed checked
+- assertVisible:
+    id: "CheckBoxButton - Tomato Sauce::Pressable"
+    text: "󰄲, Tomato Sauce, 1 recipe"
+    label: Ingredient Tomato Sauce is displayed checked
+- assertVisible:
+    id: "CheckBoxButton - Ground Beef::Pressable"
+    text: "󰄲, Ground Beef, 1 recipe"
+    label: Ingredient Ground Beef is displayed checked
+- assertVisible:
+    text: "󰄲, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
+- assertVisible:
     text: "󰄱, Croutons, 1 recipe"
     label: Ingredient Croutons is displayed unchecked
 - assertVisible:
@@ -124,6 +185,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Romaine Lettuce, 1 recipe"
     label: Ingredient Romaine Lettuce is displayed unchecked
+- swipe:
+    start: "50%,30%"
+    end: "50%,60%"
+    label: Swipe Up to reset the initial position
 - tapOn:
     text: "󰄱, Croutons, 1 recipe"
     label: Press Croutons button
@@ -139,6 +204,9 @@ appId: "com.recipesmanager"
     id: "CheckBoxButton - Ground Beef::Pressable"
     text: "󰄲, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed checked
+- assertVisible:
+    text: "󰄲, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
 - assertVisible:
     text: "󰄲, Croutons, 1 recipe"
     label: Ingredient Croutons is displayed unchecked
@@ -164,6 +232,9 @@ appId: "com.recipesmanager"
     text: "󰄲, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed checked
 - assertVisible:
+    text: "󰄲, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
+- assertVisible:
     text: "󰄲, Croutons, 1 recipe"
     label: Ingredient Croutons is displayed unchecked
 - assertVisible:
@@ -188,6 +259,9 @@ appId: "com.recipesmanager"
     text: "󰄲, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed checked
 - assertVisible:
+    text: "󰄲, Parmesan, 2 recipes"
+    label: Ingredient Parmesan is displayed unchecked
+- assertVisible:
     text: "󰄲, Croutons, 1 recipe"
     label: Ingredient Croutons is displayed unchecked
 - assertVisible:
@@ -196,3 +270,25 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄲, Romaine Lettuce, 1 recipe"
     label: Ingredient Romaine Lettuce is displayed unchecked
+- tapOn:
+    text: "󰄲, Spaghetti, 1 recipe"
+    label: Press Spaghetti button
+- tapOn:
+    text: "󰄲, Tomato Sauce, 1 recipe"
+    label: Press Tomato Sauce button
+- tapOn:
+    text: "󰄲, Ground Beef, 1 recipe"
+    label: Press Ground Beef button
+- tapOn:
+    text: "󰄲, Parmesan, 2 recipes"
+    label: Press Parmesan button
+- tapOn:
+    text: "󰄲, Croutons, 1 recipe"
+    label: Press Croutons button
+- tapOn:
+    text: "󰄲, Caesar Dressing, 1 recipe"
+    label: Press Caesar Dressing button
+- tapOn:
+    text: "󰄲, Romaine Lettuce, 1 recipe"
+    label: Press Romaine Lettuce button
+# TODO change to id for longPress because it is dangling

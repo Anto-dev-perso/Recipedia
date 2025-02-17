@@ -9,9 +9,9 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰐕, Add a filter"
     label: Add filter button is displayed
-- assertNotVisible:
+- assertVisible:
     text: "15-20 min, "
-    label: 15-20 min button is not displayed
+    label: 15-20 min button is displayed
 - assertVisible:
     text: "Romaine Lettuce, "
     label: Lettuce filter button is displayed

@@ -3,14 +3,16 @@ import {
     editTitleInMultimap,
     extractFilteredRecipeDatas,
     filterFromRecipe,
+    removeTitleInMultimap,
     removeValueToMultimap,
     retrieveAllFilters,
     selectFilterValuesToDisplay,
 } from '@utils/FilterFunctions';
 import {listFilter, prepTimeValues, TListFilter} from '@customTypes/RecipeFiltersTypes';
 import {recipesDataset} from "@test-data/recipesDataset";
-import {ingredientTableElement, recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import {ingredientTableElement, isIngredientEqual, recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import {tagsDataset} from "@test-data/tagsDataset";
+import {ingredientsDataset} from "@test-data/ingredientsDataset";
 
 describe('FilterFunctions', () => {
 
@@ -52,11 +54,9 @@ describe('FilterFunctions', () => {
 
 
     test('extractFilteredRecipeDatas extracts and sorts data', () => {
-
-
         let [resTitles, resIngredients, resTags] = extractFilteredRecipeDatas(Array<recipeTableElement>(recipesDataset[0]));
         let expectedTags = recipesDataset[0].tags.map(tag => tag.tagName).sort();
-        let expectedIngredient = recipesDataset[0].ingredients.sort()
+        let expectedIngredient = recipesDataset[0].ingredients.sort();
 
         expect(resTitles).toEqual([recipesDataset[0].title]);
         expect(resTags).toEqual(expectedTags);
@@ -64,10 +64,10 @@ describe('FilterFunctions', () => {
 
         [resTitles, resIngredients, resTags] = extractFilteredRecipeDatas(Array<recipeTableElement>(recipesDataset[0], recipesDataset[8]));
         expectedTags = [...recipesDataset[0].tags.map(tag => tag.tagName), ...recipesDataset[
-            8].tags.map(tag => tag.tagName)].sort()
+            8].tags.map(tag => tag.tagName)].sort();
         expectedIngredient = [...recipesDataset[0].ingredients, ...recipesDataset[8].ingredients].filter((elem: ingredientTableElement, index: number, self: Array<ingredientTableElement>) => {
             return index == self.indexOf(elem)
-        }).sort()
+        }).sort();
 
         expect(resTitles).toEqual([recipesDataset[0].title, recipesDataset[8].title]);
         expect(resTags).toEqual(expectedTags);
@@ -82,7 +82,11 @@ describe('FilterFunctions', () => {
         for (const dataset of recipesDataset) {
             expectedTitles = [...expectedTitles, dataset.title];
             expectedTags = [...expectedTags, ...dataset.tags.map(tag => tag.tagName)];
-            expectedIngredient = [...expectedIngredient, ...dataset.ingredients.map(ing => ing)];
+            for (const ingredient of dataset.ingredients) {
+                if (expectedIngredient.find(previousIng => isIngredientEqual(previousIng, ingredient)) === undefined) {
+                    expectedIngredient.push(ingredient);
+                }
+            }
         }
 
         expectedTitles.sort();
@@ -188,21 +192,23 @@ describe('FilterFunctions', () => {
     });
 
     test('filterFromRecipe with only ingredient type filters', () => {
-        const filtersIngredientType = new Map<TListFilter, Array<string>>([[listFilter.cheese, [listFilter.cheese]]]);
+        const filtersIngredientType = new Map<TListFilter, Array<string>>([[listFilter.cheese, ingredientsDataset.filter(ing => ing.type === listFilter.cheese).map(ing => ing.ingName)]]);
 
-        const expectedArr = new Array<recipeTableElement>(recipesDataset[0], recipesDataset[1], recipesDataset[3], recipesDataset[4], recipesDataset[7]);
+        let expectedArr = new Array<recipeTableElement>(recipesDataset[0], recipesDataset[1], recipesDataset[3], recipesDataset[4], recipesDataset[7]);
 
         expect(filterFromRecipe(recipesDataset, filtersIngredientType)).toEqual(expectedArr);
 
-        addValueToMultimap(filtersIngredientType, listFilter.grainOrCereal, listFilter.grainOrCereal);
+        addValueToMultimap(filtersIngredientType, listFilter.grainOrCereal, 'Taco Shells');
+        expectedArr = new Array<recipeTableElement>(recipesDataset[1]);
+
         expect(filterFromRecipe(recipesDataset, filtersIngredientType)).toEqual(expectedArr);
 
-        addValueToMultimap(filtersIngredientType, listFilter.poultry, listFilter.poultry);
-        expect(filterFromRecipe(recipesDataset, filtersIngredientType)).toEqual([recipesDataset[1]]);
+        addValueToMultimap(filtersIngredientType, listFilter.poultry, 'Chicken Breast');
+        expect(filterFromRecipe(recipesDataset, filtersIngredientType)).toEqual(expectedArr);
     });
 
     test('filterFromRecipe with mixed filters (in bonus, addValueToMultimap test)', () => {
-        const filtersMixed = new Map<TListFilter, Array<string>>([[listFilter.cheese, [listFilter.cheese]]]);
+        const filtersMixed = new Map<TListFilter, Array<string>>([[listFilter.cheese, ingredientsDataset.filter(ing => ing.type === listFilter.cheese).map(ing => ing.ingName)]]);
 
         const expectedArr = new Array<recipeTableElement>(recipesDataset[0], recipesDataset[1], recipesDataset[3], recipesDataset[4], recipesDataset[7]);
 
@@ -271,7 +277,6 @@ describe('FilterFunctions', () => {
         expect(workingFilters).toEqual(new Map<TListFilter, Array<string>>());
     });
 
-
     test('retrieveAllFilters shall return an array of string filters', () => {
         const filtersMixed = new Map<TListFilter, Array<string>>([[listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]], [listFilter.purchased, ['true', 'false']], [listFilter.grainOrCereal, ['Pasta']], [listFilter.tags, ['Quick Meal']]]);
         const expectedResult = new Array<string>(prepTimeValues[3], prepTimeValues[3], 'true', 'false', 'Pasta', 'Quick Meal');
@@ -303,6 +308,20 @@ describe('FilterFunctions', () => {
         filtersMixed = new Map<TListFilter, Array<string>>([[listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]], [listFilter.purchased, ['true', 'false']], [listFilter.grainOrCereal, ['Pasta']], [listFilter.tags, ['Quick Meal']], [listFilter.recipeTitleInclude, ['A recipe title']]]);
 
         editTitleInMultimap(filtersMixed, 'New title');
+        expect(filtersMixed).toEqual(expectedResult);
+    });
+
+    test('removeTitleInMultimap shall remove the title given  if it exist', () => {
+
+        let filtersMixed = new Map<TListFilter, Array<string>>([[listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]], [listFilter.purchased, ['true', 'false']], [listFilter.grainOrCereal, ['Pasta']], [listFilter.tags, ['Quick Meal']]]);
+        let expectedResult = new Map<TListFilter, Array<string>>([[listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]], [listFilter.purchased, ['true', 'false']], [listFilter.grainOrCereal, ['Pasta']], [listFilter.tags, ['Quick Meal']]]);
+
+        removeTitleInMultimap(filtersMixed);
+        expect(filtersMixed).toEqual(expectedResult);
+
+        filtersMixed = new Map<TListFilter, Array<string>>([[listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]], [listFilter.purchased, ['true', 'false']], [listFilter.grainOrCereal, ['Pasta']], [listFilter.tags, ['Quick Meal']], [listFilter.recipeTitleInclude, ['A recipe title']]]);
+
+        removeTitleInMultimap(filtersMixed);
         expect(filtersMixed).toEqual(expectedResult);
     });
 });

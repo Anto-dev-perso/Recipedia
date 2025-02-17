@@ -59,3 +59,9 @@ appId: "com.recipesmanager"
     text: ", Shopping"
     label: Go back to Shopping screen
 - runFlow: ../../asserts/Shopping/shoppingSpaghettiCaesarAndPizza.yaml
+- tapOn:
+    text: "DELETE"
+    label: Delete Shopping List for next test
+- tapOn:
+    text: "󰋜, Home"
+    label: Return to Home Screen

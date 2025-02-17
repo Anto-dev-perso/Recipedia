@@ -6,6 +6,7 @@ appId: "com.recipesmanager"
 - tapOn:
     text: "󰐕, Add a filter"
     label: Open the filter page
+- runFlow: expandAllCategories.yaml
 - tapOn:
     text: "󰄱, Spaghetti"
     label: Select Spaghetti as filter
@@ -13,6 +14,7 @@ appId: "com.recipesmanager"
 - tapOn:
     text: "Spaghetti, "
     label: Remove Spaghetti as filter
+# TODO spaghetti checkbox shall not be ticked now
 - tapOn:
     text: "󰐕, Add a filter"
     label: Close the filter page

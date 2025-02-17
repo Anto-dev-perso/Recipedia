@@ -15,6 +15,9 @@ appId: "com.recipesmanager"
 - tapOn:
     text: "󰐕, Add a filter"
     label: Open the filter page
+- tapOn:
+    text: "󰐕, Tags"
+    label: Tap on Tags category to select an element inside
 - swipe:
     start: "50%,80%"
     end: "50%,30%"
@@ -22,10 +25,7 @@ appId: "com.recipesmanager"
 - tapOn:
     text: "󰄱, Chocolate"
     label: Select tag Chocolate as filter
-- swipe:
-    start: "50%,30%"
-    end: "50%,80%"
-    label: Swipe Up to reset to initial position
+- runFlow: expandCategoriesCaAndChocolate.yaml
 - runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnCaAndChocolate.yaml
 - tapOn:
     text: "󰐕, Add a filter"

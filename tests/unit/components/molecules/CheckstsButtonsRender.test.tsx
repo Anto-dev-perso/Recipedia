@@ -13,7 +13,6 @@ describe('CheckBoxButton Component', () => {
         stateInitialValue: false,
         testID: "CheckBoxButton",
         title: 'Default Button',
-        useCheckBoxState: true,
         onActivation: mockOnActivation,
         onDeActivation: mockOnDeActivation
     };
@@ -22,7 +21,6 @@ describe('CheckBoxButton Component', () => {
         stateInitialValue: false,
         testID: "CheckBoxButton",
         title: 'Default Button',
-        useCheckBoxState: false,
         onActivation: mockOnActivation,
         onDeActivation: mockOnDeActivation
     };
@@ -145,8 +143,8 @@ describe('CheckBoxButton Component', () => {
 
         fireEvent.press(getByTestId('CheckBoxButton::Pressable'));
 
-        expect(mockOnActivation).toHaveBeenCalledTimes(2);
-        expect(mockOnDeActivation).toHaveBeenCalledTimes(0);
+        expect(mockOnActivation).toHaveBeenCalledTimes(1);
+        expect(mockOnDeActivation).toHaveBeenCalledTimes(1);
     });
 
     test('triggers onPressIn and onPressOut events without UseState', () => {

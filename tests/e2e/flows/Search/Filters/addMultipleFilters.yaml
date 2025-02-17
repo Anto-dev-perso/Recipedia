@@ -6,35 +6,41 @@ appId: "com.recipesmanager"
 - tapOn:
     text: "󰐕, Add a filter"
     label: Open the filter page
+- runFlow: expandAllCategories.yaml
+- swipe:
+    start: "50%,85%"
+    end: "50%,20%"
+    label: Swipe down to see other items
+- swipe:
+    start: "50%,85%"
+    end: "50%,20%"
+    label: Swipe down to see other items
 - tapOn:
-    text: "󰄱, Romaine Lettuce"
-    label: Select Romaine Lettuce as filter
-- runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnLettuce.yaml
+    text: "󰄱, 15-20 min"
+    label: Select 15-20 min as filter
+- swipe:
+    start: "50%,20%"
+    end: "50%,80%"
+    label: Swipe Up to reset to initial position
+- runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOn1520Min.yaml
 - tapOn:
     text: "󰐕, Add a filter"
     label: Close the filter page
-- runFlow: ../../../asserts/Search/searchScreenFilteredOnLettuce.yaml
+- runFlow: ../../../asserts/Search/searchScreenFilteredOn1520Min.yaml
 - tapOn:
     text: "󰐕, Add a filter"
     label: Open the filter page
-- swipe:
-    start: "50%,65%"
-    end: "50%,30%"
-    label: Swipe down to see other items
+- runFlow: expandCategories1520Min.yaml
 - tapOn:
-    text: "󰄱, Curry Powder"
-    label: Add the Curry Powder in filters
-- swipe:
-    start: "50%,30%"
-    end: "50%,80%"
-    label: Swipe Up to reset to initial position
-- runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnLettuceAndChicken.yaml
+    text: "󰄱, Romaine Lettuce"
+    label: Add the Romaine Lettuce in filters
+- runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOn1520MinAndLettuce.yaml
 - tapOn:
     text: "󰐕, Add a filter"
     label: Close the filter page
-- runFlow: ../../../asserts/Search/searchScreenFilteredOnLettuceAndChicken.yaml
+- runFlow: ../../../asserts/Search/searchScreenFilteredOn1520MinAndLettuce.yaml
 - tapOn:
-    text: "Curry Powder, "
-    label: Remove Curry Powder filter
+    text: "15-20 min, "
+    label: Remove 15-20 min filter
 - runFlow: ../../../asserts/Search/searchScreenFilteredOnLettuce.yaml
 - pressKey: "BACK"

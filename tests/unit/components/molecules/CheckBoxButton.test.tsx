@@ -58,8 +58,6 @@ describe('SectionClickableList Component', () => {
             const isFilterExist = defaultPropsSearch.route.filtersState.get(listFilter.tags);
 
             expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::UseCheckBoxState`).props.children).toEqual(true);
-
 
             if (isFilterExist === undefined) {
                 expect(queryByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`)).toBeNull();
@@ -89,8 +87,6 @@ describe('SectionClickableList Component', () => {
             const isFilterExist = defaultPropsSearch.route.filtersState.get(listFilter.tags);
 
             expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::UseCheckBoxState`).props.children).toEqual(true);
-
 
             if (isFilterExist === undefined) {
                 expect(queryByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`)).toBeNull();
@@ -114,8 +110,6 @@ describe('SectionClickableList Component', () => {
             const isFilterExist = defaultPropsSearch.route.filtersState.get(listFilter.tags);
 
             expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::UseCheckBoxState`).props.children).toEqual(true);
-
 
             if (isFilterExist === undefined) {
                 expect(queryByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`)).toBeNull();
@@ -144,7 +138,6 @@ describe('SectionClickableList Component', () => {
 
             expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
             expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(false);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::UseCheckBoxState`).props.children).toEqual(false);
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toEqual(JSON.stringify(expectedData));
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();
@@ -174,7 +167,6 @@ describe('SectionClickableList Component', () => {
 
             expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
             expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(false);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::UseCheckBoxState`).props.children).toEqual(false);
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toEqual(JSON.stringify(expectedData));
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();
@@ -198,7 +190,6 @@ describe('SectionClickableList Component', () => {
 
             expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
             expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(false);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::UseCheckBoxState`).props.children).toEqual(false);
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toEqual(JSON.stringify(expectedData));
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
             expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();

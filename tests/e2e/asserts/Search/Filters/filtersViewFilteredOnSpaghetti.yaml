@@ -18,42 +18,42 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄲, Spaghetti"
     label: Spaghetti filter is rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰄱, Taco Shells"
-    label: Taco Shells filter is rendered
-- assertVisible:
+    label: Taco Shells filter is not rendered
+- assertNotVisible:
     text: "󰄱, Flour"
-    label: Flour filter is rendered
-- assertVisible:
+    label: Flour filter is not rendered
+- assertNotVisible:
     text: "󰄱, Croutons"
-    label: Croutons filter is rendered
-- assertVisible:
+    label: Croutons filter is not rendered
+- assertNotVisible:
     text: "󰄱, Pizza Dough"
-    label: Pizza Dough filter is rendered
-- assertVisible:
+    label: Pizza Dough filter is not rendered
+- assertNotVisible:
     text: "󰄱, Flour"
-    label: Flour filter is rendered
-- assertVisible:
+    label: Flour filter is not rendered
+- assertNotVisible:
     text: "󰄱, Pasta"
-    label: Pasta filter is rendered
-- assertVisible:
+    label: Pasta filter is not rendered
+- assertNotVisible:
     text: "󰄱, Sushi Rice"
-    label: Sushi Rice filter is rendered
+    label: Sushi Rice filter is not rendered
 - assertNotVisible:
     text: "󰍴, Legumes"
     label: Legumes category is not  rendered
 - assertNotVisible:
     text: "󰄱, Red Lentils"
     label: Red Lentils filter is not  rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰍴, Vegetable"
-    label: Vegetable category is rendered
-- assertVisible:
+    label: Vegetable category is not rendered
+- assertNotVisible:
     text: "󰄱, Lettuce"
-    label: Lettuce filter is rendered
-- assertVisible:
+    label: Lettuce filter is not rendered
+- assertNotVisible:
     text: "󰄱, Romaine Lettuce"
-    label: Romaine Lettuce filter is rendered
+    label: Romaine Lettuce filter is not rendered
 - assertNotVisible:
     text: "󰄱, Carrots"
     label: Carrots filter is not rendered
@@ -69,34 +69,30 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Tomatoes"
     label: Tomatoes filter is not rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰍴, Plant Protein"
-    label: Plant Protein category is rendered
-- assertVisible:
+    label: Plant Protein category is not rendered
+- assertNotVisible:
     text: "󰄱, Eggs"
-    label: Eggs filter is rendered
-- swipe:
-    start: "50%,85%"
-    end: "50%,30%"
-    label: Swipe down to see other items
-- assertVisible:
+    label: Eggs filter is not rendered
+- assertNotVisible:
     text: "󰍴, Condiment"
-    label: Condiment category is rendered
-- assertVisible:
+    label: Condiment category is not rendered
+- assertNotVisible:
     text: "󰄱, Nori Sheets"
-    label: Nori Sheets filter is rendered
-- assertVisible:
+    label: Nori Sheets filter is not rendered
+- assertNotVisible:
     text: "󰄱, Soy Sauce"
-    label: Soy Sauce filter is rendered
+    label: Soy Sauce filter is not rendered
 - assertVisible:
     text: "󰍴, Sauce"
     label: Sauce category is rendered
 - assertVisible:
     text: "󰄱, Tomato Sauce"
     label: Tomato Sauce filter is rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰄱, Caesar Dressing"
-    label: Caesar Dressing filter is rendered
+    label: Caesar Dressing filter is not rendered
 - assertNotVisible:
     text: "󰄱, Vegetable Broth"
     label: Vegetable Broth filter is not rendered
@@ -109,83 +105,79 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Ground Beef"
     label: Ground Beef filter is rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰍴, Poultry"
-    label: Poultry category is rendered
-- assertVisible:
+    label: Poultry category is not rendered
+- assertNotVisible:
     text: "󰄱, Chicken Breast"
-    label: Chicken Breast filter is rendered
-- assertVisible:
+    label: Chicken Breast filter is not rendered
+- assertNotVisible:
     text: "󰍴, Fish"
-    label: Fish category is rendered
-- assertVisible:
+    label: Fish category is not rendered
+- assertNotVisible:
     text: "󰄱, Salmon"
-    label: Salmon filter is rendered
-- assertVisible:
+    label: Salmon filter is not rendered
+- assertNotVisible:
     text: "󰍴, Dairy"
-    label: Dairy category is rendered
-- assertVisible:
+    label: Dairy category is not rendered
+- assertNotVisible:
     text: "󰄱, Milk"
-    label: Milk filter is rendered
-- swipe:
-    start: "50%,85%"
-    end: "50%,30%"
-    label: Swipe down to see other items
+    label: Milk filter is not rendered
 - assertVisible:
     text: "󰍴, Cheese"
     label: Cheese category is rendered
 - assertVisible:
     text: "󰄱, Parmesan"
     label: Parmesan filter is rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰄱, Cheddar"
-    label: Cheddar filter is rendered
-- assertVisible:
+    label: Cheddar filter is not rendered
+- assertNotVisible:
     text: "󰄱, Mozzarella"
-    label: Mozzarella filter is rendered
-- assertVisible:
+    label: Mozzarella filter is not rendered
+- assertNotVisible:
     text: "󰍴, Sugar"
-    label: Sugar category is rendered
-- assertVisible:
+    label: Sugar category is not rendered
+- assertNotVisible:
     text: "󰄱, Sugar"
-    label: Sugar filter is rendered
-- assertVisible:
+    label: Sugar filter is not rendered
+- assertNotVisible:
     text: "󰍴, Spice"
-    label: Spice category is rendered
-- assertVisible:
+    label: Spice category is not rendered
+- assertNotVisible:
     text: "󰄱, Basil Leaves"
-    label: Basil Leaves filter is rendered
-- assertVisible:
+    label: Basil Leaves filter is not rendered
+- assertNotVisible:
     text: "󰄱, Cocoa Powder"
-    label: Cocoa Powder filter is rendered
+    label: Cocoa Powder filter is not rendered
 - assertNotVisible:
     text: "󰄱, Curry Powder"
     label: Curry Powder filter is not rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰍴, Fruit"
-    label: Fruit category is rendered
-- assertVisible:
+    label: Fruit category is not rendered
+- assertNotVisible:
     text: "󰄱, Avocado"
-    label: Avocado filter is rendered
-- assertVisible:
+    label: Avocado filter is not rendered
+- assertNotVisible:
     text: "󰍴, Oil and Fat"
-    label: Oil and Fat category is rendered
-- assertVisible:
+    label: Oil and Fat category is not rendered
+- assertNotVisible:
     text: "󰄱, Butter"
-    label: Butter filter is rendered
-- assertVisible:
+    label: Butter filter is not rendered
+- assertNotVisible:
     text: "󰄱, Olive Oil"
-    label: Olive Oil filter is rendered
+    label: Olive Oil filter is not rendered
+- assertNotVisible:
+    text: "󰍴, Nuts and Seeds"
+    label: Nuts and Seeds category is not rendered
+- assertNotVisible:
+    text: "󰄱, Pine Nuts"
+    label: Pine Nuts filter is not rendered
 - swipe:
-    start: "50%,85%"
+    start: "50%,70%"
     end: "50%,30%"
     label: Swipe down to see other items
-- assertVisible:
-    text: "󰍴, Nuts and Seeds"
-    label: Nuts and Seeds category is rendered
-- assertVisible:
-    text: "󰄱, Pine Nuts"
-    label: Pine Nuts filter is rendered
 - assertVisible:
     text: "󰍴, Preparation Time"
     label: Preparation Time category is rendered
@@ -222,45 +214,45 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰍴, Tags"
     label: Tags category is rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰄱, Breakfast"
-    label: Breakfast filter is rendered
-- assertVisible:
+    label: Breakfast filter is not rendered
+- assertNotVisible:
     text: "󰄱, Chocolate"
-    label: Chocolate filter is rendered
-- assertVisible:
+    label: Chocolate filter is not rendered
+- assertNotVisible:
     text: "󰄱, Dessert"
-    label: Dessert filter is rendered
+    label: Dessert filter is not rendered
 - assertVisible:
     text: "󰄱, Dinner"
     label: Dinner filter is rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰄱, Healthy"
-    label: Healthy filter is rendered
+    label: Healthy filter is not rendered
 - assertNotVisible:
     text: "󰄱, Indian"
     label: Indian filter is not rendered
 - assertVisible:
     text: "󰄱, Italian"
     label: Italian filter is rendered
-- assertVisible:
+- assertNotVisible:
     text: "󰄱, Japanese"
-    label: Japanese filter is rendered
-- assertVisible:
+    label: Japanese filter is not rendered
+- assertNotVisible:
     text: "󰄱, Lunch"
-    label: Lunch filter is rendered
-- assertVisible:
+    label: Lunch filter is not rendered
+- assertNotVisible:
     text: "󰄱, Mexican"
-    label: Mexican filter is rendered
-- assertVisible:
+    label: Mexican filter is not rendered
+- assertNotVisible:
     text: "󰄱, Quick Meal"
-    label: Quick Meal filter is rendered
-- assertVisible:
+    label: Quick Meal filter is not rendered
+- assertNotVisible:
     text: "󰄱, Salad"
-    label: Salad filter is rendered
-- assertVisible:
+    label: Salad filter is not rendered
+- assertNotVisible:
     text: "󰄱, Seafood"
-    label: Seafood filter is rendered
+    label: Seafood filter is not rendered
 - assertNotVisible:
     text: "󰄱, Soup"
     label: Soup filter is not rendered
@@ -270,8 +262,4 @@ appId: "com.recipesmanager"
 - swipe:
     start: "50%,15%"
     end: "50%,95%"
-    label: Swipe Up to reset to initial position
-- swipe:
-    start: "50%,20%"
-    end: "50%,90%"
     label: Swipe Up to reset to initial position
