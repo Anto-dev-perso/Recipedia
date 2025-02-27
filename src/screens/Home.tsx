@@ -12,11 +12,11 @@ import {palette} from "@styles/colors";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {HomeScreenProp} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
-import {recipesDataset} from "@test-data/recipesDataset";
-import {tagsDataset} from "@test-data/tagsDataset";
-import {ingredientsDataset} from "@test-data/ingredientsDataset";
-import FileGestion from "@utils/FileGestion";
 import {fetchFonts} from "@styles/typography";
+import FileGestion from "@utils/FileGestion";
+import {tagsDataset} from "@test-data/tagsDataset";
+import {recipesDataset} from "@test-data/recipesDataset";
+import {ingredientsDataset} from "@test-data/ingredientsDataset";
 
 
 export default function Home({route, navigation}: HomeScreenProp) {
@@ -57,7 +57,6 @@ export default function Home({route, navigation}: HomeScreenProp) {
             await recipeDb.addMultipleIngredients(ingredientsDataset);
             await recipeDb.addMultipleTags(tagsDataset);
             await recipeDb.addMultipleRecipes(recipesDataset);
-            // await recipeDb.exempleDb();
 
             randomlySearchElements(recipeDb);
         });

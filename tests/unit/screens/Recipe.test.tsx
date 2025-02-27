@@ -11,7 +11,7 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {listFilter} from "@customTypes/RecipeFiltersTypes";
 
 
-jest.mock('expo-sqlite', () => require('@mocks/utils/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 
 jest.mock('@components/organisms/RecipeTags', () => require('@mocks/components/organisms/RecipeTags-mock').recipeTagsMock);

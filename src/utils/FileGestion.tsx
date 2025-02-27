@@ -1,9 +1,12 @@
 import {Layout, localImgData, panType} from '@customTypes/ImageTypes';
-import {Asset} from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import {FlipType, manipulateAsync, SaveFormat} from 'expo-image-manipulator';
 import {LayoutRectangle} from 'react-native';
+import {Asset} from "expo-asset";
 // import { Asset } from 'expo-asset';
+//  TODO is new version changing stuff for image manipulator ?
+// TODO asset could be loaded at compile time ?
+//  TODO is expo-file-system/next better ?
 
 // TODO to test
 export default class FileGestion {
@@ -185,7 +188,7 @@ export default class FileGestion {
         try {
             const dirFiles = await FileSystem.readDirectoryAsync(this._directoryUri);
             dirFiles.forEach(file => {
-                // TODO temporary for tests
+                //     TODO temporary for tests
                 FileSystem.deleteAsync(this._directoryUri + file);
             });
         } catch (error) {
@@ -212,7 +215,7 @@ export default class FileGestion {
         ]);
         for (let i = 0; i < assetLoaded.length; i++) {
             const newUri = this._directoryUri + '/' + assetLoaded[i].name + '.' + assetLoaded[i].type;
-            // console.log("localUri : ", assetLoaded[i].localUri, ", newUri : ", newUri);
+            //     console.log("localUri : ", assetLoaded[i].localUri, ", newUri : ", newUri);
             await FileSystem.copyAsync({from: assetLoaded[i].localUri as string, to: newUri})
         }
 

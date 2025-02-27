@@ -11,6 +11,7 @@ import {CropScreenProp} from "@customTypes/ScreenTypes";
 import {cameraPalette} from "@styles/colors";
 import {cropView, remValue, screenViews} from "@styles/spacing";
 import {cropText} from "@styles/typography";
+// TODO we now have also Image.loadAsync and useImage. Is it usefull ?
 import {Image} from 'expo-image';
 import React, {useEffect, useState} from "react";
 import {LayoutRectangle, LogBox, Pressable, SafeAreaView, StatusBar, Text, View} from "react-native";
@@ -18,6 +19,8 @@ import {CropRectangle} from "@components/molecules/CropRectangle";
 import {Layout, localImgData, panType} from "@customTypes/ImageTypes";
 import FileGestion from "@utils/FileGestion";
 
+// TODO Can't we use ImageManipulator.manipulate ?
+//  TODO remove this logbox
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state.'])
 
 export type CropPropsType = {

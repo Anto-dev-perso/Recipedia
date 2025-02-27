@@ -3,7 +3,7 @@ appId: "com.recipesmanager"
 ---
 
 - assertVisible:
-    id: "android:id/alertTitle"
+    id: "com.recipesmanager:id/alertTitle"
     text: "SUCCESSFULLY ADDED RECIPE TO SHOPPING LIST"
     label: Alert title is rendered
 - assertVisible:

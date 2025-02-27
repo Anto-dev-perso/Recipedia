@@ -7,12 +7,16 @@ import {TabScreenParamList} from "@customTypes/ScreenTypes";
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
 
 
-jest.mock('expo-sqlite', () => require('@mocks/utils/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 
 jest.mock('@components/organisms/VerticalBottomButtons', () => require('@mocks/components/organisms/VerticalBottomButtons-mock').verticalBottomButtonsMock);
 jest.mock('@components/organisms/RecipeRecommendation', () => require('@mocks/components/organisms/RecipeRecommendation-mock').recipeRecommendationMock);
 jest.mock('@components/molecules/BottomTopButton', () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock);
+
+jest.mock('expo-font', () => ({
+    loadAsync: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
+}));
 
 describe('Home Screen', () => {
     const mockNavigation: Partial<BottomTabNavigationProp<TabScreenParamList, 'Home'>> = {

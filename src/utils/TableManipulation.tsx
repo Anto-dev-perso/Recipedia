@@ -1,113 +1,102 @@
-import * as SQLite from 'expo-sqlite';
+import {SQLiteDatabase, SQLiteRunResult} from 'expo-sqlite';
 import {databaseColumnType} from '@customTypes/DatabaseElementTypes';
 
 export default class TableManipulation {
 
-
-    /* ATTRIBUTES */
     protected m_tableName: string;
     protected m_columnsTable: Array<databaseColumnType>; // define all columns (except ID). All are not null
     protected m_idColumn = "ID";
 
-
-    /* METHODS */
-
     constructor(tabName: string, colNames: Array<databaseColumnType>) {
-
-
         if (tabName.length <= 0) {
-            console.warn("ERROR when creating the table : No name for the table");
+            console.warn("ERROR: Table name cannot be empty");
             this.m_tableName = "";
         } else {
             this.m_tableName = tabName;
         }
         if (colNames.length <= 0) {
-            console.error("ERROR when creating the table : No column names");
+            console.error("ERROR: No column names specified");
             this.m_columnsTable = new Array<databaseColumnType>();
-        }
-        {
+        } else {
             this.m_columnsTable = colNames;
         }
     }
 
-    public async deleteTable(db: SQLite.Database): Promise<boolean> {
+    public async deleteTable(db: SQLiteDatabase): Promise<boolean> {
         const dropQuery = `DROP TABLE IF EXISTS ${this.m_tableName}`;
         try {
-            await this.executeQuery(dropQuery, db);
+            await db.execAsync(dropQuery);
             return true;
-        } catch (error) {
+        } catch (error: any) {
             console.warn('deleteTable: \nQuery: \"', dropQuery, '\"\nReceived error : ', error);
             return false;
         }
     }
 
-    public async createTable(db: SQLite.Database): Promise<boolean> {
-        let createQuery = `CREATE TABLE IF NOT EXISTS \"${this.m_tableName}\"
+    // TODO for multiple queries with different parameters, we can use prepareAsync
+    public async createTable(db: SQLiteDatabase): Promise<boolean> {
+        let createQuery = `CREATE TABLE IF NOT EXISTS "${this.m_tableName}"
                            (
                                ${this.m_idColumn}
                                INTEGER
-                               NOT
-                               NULL
-                               UNIQUE, `;
+                               PRIMARY
+                               KEY
+                               AUTOINCREMENT, `;
         // TODO find all forEach and refactor it
         this.m_columnsTable.forEach(element => {
             createQuery += `\"${element.colName}\" ${element.type} NOT NULL, `;
         });
-        createQuery += `PRIMARY KEY(ID AUTOINCREMENT) );`;
-
+        createQuery = createQuery.slice(0, -2) + `);`;
         try {
-            await this.executeQuery(createQuery, db);
+            await db.execAsync(createQuery);
             return true;
-        } catch (error) {
+        } catch (error: any) {
             console.warn('createTable: \nQuery: \"', createQuery, '\"\nReceived error : ', error);
             return false;
         }
     }
 
-    public async deleteElementById(id: number, db: SQLite.Database): Promise<boolean> {
+    public async deleteElementById(id: number, db: SQLiteDatabase): Promise<boolean> {
         const deleteQuery = `DELETE
-                             from "${this.m_tableName}"
-                             where rowid = ${id};`;
+                             FROM "${this.m_tableName}"
+                             WHERE ${this.m_idColumn} = ?;`;
         try {
-            await this.executeQuery(deleteQuery, db);
+            await db.runAsync(deleteQuery, [id]);
             return true;
         } catch (error: any) {
             console.warn('deleteElementById: \nQuery: \"', deleteQuery, '\"\nReceived error : ', error);
             return false;
         }
-
     }
 
-    public async insertElement<TElement>(element: TElement, db: SQLite.Database): Promise<string | number | undefined> {
+    public async insertElement<TElement>(element: TElement, db: SQLiteDatabase): Promise<string | number | undefined> {
         const [insertQuery, params] = this.prepareInsertQuery(element);
         if (insertQuery.length == 0) {
-            return "Invalid insert query";
+            console.warn("Invalid insert query");
+            return undefined;
         }
         if (params.length == 0) {
-            return "Empty values"
+            console.warn("Empty values");
+            return undefined;
         }
 
         try {
-            return await this.executeQuery(insertQuery, db, params) as string | number;
+            const result: SQLiteRunResult = await db.runAsync(insertQuery, params);
+            return result.lastInsertRowId;
         } catch (error: any) {
             console.warn('insertElement: \nQuery: \"', insertQuery, '\"\nReceived error : ', error);
             return undefined;
         }
-    };
+    }
 
-    public async insertArrayOfElement<TElement>(arrayElements: Array<TElement>, db: SQLite.Database): Promise<boolean> {
-        let [insertQuery, params] = this.prepareInsertQuery(arrayElements);
+    public async insertArrayOfElement<TElement>(arrayElements: Array<TElement>, db: SQLiteDatabase): Promise<boolean> {
+        const [insertQuery, params] = this.prepareInsertQuery(arrayElements);
         if (insertQuery.length == 0) {
             console.warn('insertArrayOfElement<', typeof arrayElements[0], '>: query is empty due to an issue');
             return false;
         }
-        if (insertQuery.length == 0 || params.length == 0) {
-            console.warn('insertArrayOfElement<', typeof arrayElements[0], '>: values are empty');
-            return false;
-        }
-
         try {
-            await this.executeQuery(insertQuery, db, params);
+            await db.runAsync(insertQuery, params);
             return true;
         } catch (error: any) {
             console.warn('insertArrayOfElement<', typeof arrayElements[0], '>: \nQuery: \"', insertQuery, '\"\nReceived error : ', error);
@@ -115,64 +104,64 @@ export default class TableManipulation {
         }
     }
 
-    public async editElement(id: number, elementToUpdate: Map<string, number | string>, db: SQLite.Database): Promise<boolean> {
+    public async editElement(id: number, elementToUpdate: Map<string, number | string>, db: SQLiteDatabase): Promise<boolean> {
         let updateQuery = `UPDATE "${this.m_tableName}"
                            SET `;
         // SET column1 = value1, column2 = value2...., columnN = valueN
         // WHERE [condition];
-
         const queryFromMap = this.prepareQueryFromMap(elementToUpdate, ",");
-        if (queryFromMap.length == 0) {
+        if (queryFromMap.length === 0) {
             return false;
-        } else {
-            updateQuery += queryFromMap + `   WHERE ID = ${id};`;
-            try {
-                await this.executeQuery(updateQuery, db);
-                return true;
-            } catch (error: any) {
-                console.warn('editElement: \nQuery: \"', updateQuery, '\"\nReceived error : ', error);
-                return false;
-            }
+        }
+
+        updateQuery += queryFromMap + ` WHERE ID = ${id};`;
+        try {
+            await db.runAsync(updateQuery);
+            return true;
+        } catch (error: any) {
+            console.warn('editElement: \nQuery: \"', updateQuery, '\"\nReceived error : ', error);
+            return false;
         }
     };
 
-    public async searchElementById(elementId: number, db: SQLite.Database): Promise<string> {
+
+    public async searchElementById<T>(elementId: number, db: SQLiteDatabase): Promise<T | undefined> {
         if (isNaN(elementId)) {
             console.error('searchElementById: Id use for search is null');
-            return "";
+            return undefined;
         }
-        let searchQuery = `SELECT *
-                           FROM "${this.m_tableName}"
-                           WHERE ${this.m_idColumn} = ${elementId};`;
+        const searchQuery = `SELECT *
+                             FROM "${this.m_tableName}"
+                             WHERE ${this.m_idColumn} = ?`;
 
         try {
-            return (await this.executeQuery(searchQuery, db) as string);
+            const result = await db.getFirstAsync<T>(searchQuery, elementId);
+            if (result === null) {
+                return undefined;
+            }
+            return result;
         } catch (error: any) {
             console.warn('searchElementById: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
-            return "";
+            return undefined;
         }
     }
 
-    public async searchRandomlyElement(numOfElements: number, db: SQLite.Database, columns?: Array<string>): Promise<Array<string> | undefined> {
+    public async searchRandomlyElement<T>(numOfElements: number, db: SQLiteDatabase, columns?: Array<string>): Promise<Array<T> | undefined> {
         if (numOfElements <= 0) {
             return undefined;
         }
 
         let searchQuery = `SELECT `;
-        if (columns) {
-            columns.forEach(col => {
-                searchQuery += `${col}, `;
-
-            });
-            searchQuery = searchQuery.slice(0, -2);
+        if (columns && columns.length > 0) {
+            searchQuery += columns.join(", ");
         } else {
-            searchQuery += `*`
+            searchQuery += `*`;
         }
-        searchQuery += ` FROM "${this.m_tableName}" ORDER BY RANDOM() LIMIT ${numOfElements};`;
+        searchQuery += ` FROM "${this.m_tableName}" ORDER BY RANDOM() LIMIT ?`;
 
         try {
-            console.log("Random search returned :", await this.executeQuery(searchQuery, db) as Array<string>)
-            return (await this.executeQuery(searchQuery, db) as Array<string>);
+            return await db.getAllAsync<T>(searchQuery, [numOfElements]);
+
         } catch (error: any) {
             console.warn('searchRandomlyElement: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
             return undefined;
@@ -180,7 +169,7 @@ export default class TableManipulation {
     }
 
     // TODO replace Map by an Array
-    public async searchElement(db: SQLite.Database, elementToSearch?: Map<string, number | string>): Promise<string | Array<string>> {
+    public async searchElement<T>(db: SQLiteDatabase, elementToSearch?: Map<string, number | string>): Promise<T | Array<T> | undefined> {
 
         let searchQuery = `SELECT *
                            FROM "${this.m_tableName}"`;
@@ -190,15 +179,16 @@ export default class TableManipulation {
         }
 
         try {
-            // console.log("Search query : ", searchQuery);
-            return (await this.executeQuery(searchQuery, db) as string | Array<string>);
+            return await db.getAllAsync<T>(searchQuery);
         } catch (error: any) {
             console.warn('searchElement: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
-            return "";
+            return undefined;
         }
     }
 
     /* PROTECTED METHODS */
+
+    // TODO update this method to return query and params
     protected prepareQueryFromMap(map: Map<string, number | string>, separator?: string) {
         let result = "";
         let sepLen = 0;
@@ -244,7 +234,7 @@ export default class TableManipulation {
 
         if (!(elementToInsert instanceof Array)) {
 
-            for (const key of Object.keys(elementToInsert as Object).filter(key => key !== 'id')) {
+            for (const key of Object.keys(elementToInsert as Object).filter(key => key !== 'ID')) {
                 const valueToPush = (elementToInsert[key as TElementKey] as string).toString();
                 if (valueToPush.toString() === 'false') {
                     returnValues.push('0');
@@ -283,36 +273,6 @@ export default class TableManipulation {
             insertQuery += placeHolders.join(',') + ';';
         }
         return [insertQuery, returnValues];
-    }
-
-    protected async executeQuery(query: string, db: SQLite.Database, args?: Array<string>): Promise<string | Array<string> | number> {
-        return new Promise(async (resolve, reject) => {
-            db.transaction(async (tx: SQLite.SQLTransaction) => {
-                tx.executeSql(query, args ? args : [],
-                    (_backTx: SQLite.SQLTransaction, results: SQLite.SQLResultSet) => {
-                        // console.log("ExecuteQuery have as result: ", results, " with object[0]=", results.rows._array[0]);
-                        if (results.rows.length == 1) {
-                            // console.log("ExecuteQuery : returning a single value which is ", results.rows.item(0));
-                            resolve(JSON.stringify(results.rows._array[0]));
-                        } else if (results.rows.length > 1) {
-                            let promiseArrayReturn = new Array<string>();
-                            for (let i = 0; i < results.rows.length; i++) {
-                                promiseArrayReturn.push(JSON.stringify(results.rows._array[i]));
-                            }
-                            // console.log("ExecuteQuery : returning an array of value which are ", promiseArrayReturn);
-                            resolve(promiseArrayReturn);
-                        } else {
-                            // console.log("ExecuteQuery : return null", results);
-                            resolve(results.insertId ? results.insertId : 0);
-                        }
-
-                    },
-                    (_backTx: SQLite.SQLTransaction, error: SQLite.SQLError) => {
-                        reject(error);
-                        return false;
-                    });
-            })
-        })
     }
 
 }

@@ -1,41 +1,45 @@
-const config = require('./tsconfig.json')
+import fs from 'fs';
+import path from 'path';
+import {fileURLToPath} from 'url';
 
-const { baseUrl, paths } = config.compilerOptions
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const tsconfigPath = path.resolve(__dirname, 'tsconfig.json');
+const tsconfig = JSON.parse(fs.readFileSync(tsconfigPath, 'utf8'));
+
+const {baseUrl, paths} = tsconfig.compilerOptions;
 
 const getAliases = () => {
-  return Object.entries(paths).reduce((aliases, alias) => {
-    const key = alias[0].replace('/*', '')
-    const value = baseUrl + alias[1][0].replace('*', '')
-    return {
-      ...aliases,
-      [key]: value,
-    }
-  }, {})
-}
-
-
-module.exports = function(api) {
-  api.cache(true);
-  return {
-    presets: ['babel-preset-expo'],
-  };
+    return Object.entries(paths).reduce((aliases, alias) => {
+        const key = alias[0].replace('/*', '');
+        const value = baseUrl + alias[1][0].replace('*', '');
+        return {
+            ...aliases,
+            [key]: value,
+        };
+    }, {});
 };
 
-module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],  
-  plugins: [
-    ["module-resolver", {
-      extensions: [
-        '.js',
-        '.jsx',
-        '.ts',
-        '.tsx',
-        '.android.js',
-        '.android.tsx',
-        '.ios.js',
-        '.ios.tsx',
-      ],
-      alias: getAliases(),
-    }],
-  ]
+export default function (api) {
+    api.cache(true);
+    return {
+        presets: ['babel-preset-expo'],
+        plugins: [
+            [
+                'module-resolver',
+                {
+                    extensions: [
+                        '.js',
+                        '.jsx',
+                        '.ts',
+                        '.android.tsx',
+                        '.ios.js',
+                        '.ios.tsx',
+                    ],
+                    alias: getAliases(),
+                },
+            ],
+        ],
+    };
 };

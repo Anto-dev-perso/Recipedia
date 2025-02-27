@@ -5,7 +5,7 @@ import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
 import {TabScreenParamList} from "@customTypes/ScreenTypes";
 
 
-jest.mock('expo-sqlite', () => require('@mocks/utils/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 jest.mock('@utils/ImagePicker', () => require('@mocks/utils/ImagePicker-mock').imagePickerMock());
 

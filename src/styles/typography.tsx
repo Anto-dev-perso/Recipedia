@@ -17,7 +17,7 @@ export const exceptLettersRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ]/g;
 export const exceptLettersAndSpacesRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ\s]/g;
 export const extractBetweenParenthesis = /\((.*?)\)/;
 
-
+//  TODO can be loaded at build time (https://docs.expo.dev/versions/latest/sdk/font/)
 export async function fetchFonts() {
     return await loadAsync({
         'Lora-VariableFont_wght': require(`../assets/fonts/Lora/Lora-VariableFont_wght.ttf`),

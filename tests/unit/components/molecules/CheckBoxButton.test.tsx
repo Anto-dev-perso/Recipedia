@@ -1,201 +1,202 @@
-import CheckListsButtonsRender, {ChecklistsButtonsRenderProps} from "@components/molecules/CheckListsButtonsRender";
-import {shoppingDataset} from "@test-data/shoppingListsDataset";
-import {ingredientsDataset} from "@test-data/ingredientsDataset";
-import {listFilter, TListFilter} from "@customTypes/RecipeFiltersTypes";
-import {tagsDataset} from "@test-data/tagsDataset";
-import {fireEvent, render} from "@testing-library/react-native";
-import React from "react";
-import {bulletListDataType} from "@styles/typography";
-import {shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
+import React from 'react';
+import {fireEvent, render} from '@testing-library/react-native';
+import CheckBoxButton, {CheckBoxButtonProps} from '@components/atomic/CheckBoxButton';
+import {palette} from "@styles/colors";
 
-jest.mock('@components/atomic/CheckBoxButton', () => require('@mocks/components/atomic/CheckBoxButton-mock').checkBoxButtonMock);
-describe('SectionClickableList Component', () => {
-    const mockAddFilter = jest.fn();
-    const mockRemoveFilter = jest.fn();
-    const mockUpdateIngredientFromShopping = jest.fn();
+jest.mock('@expo/vector-icons', () => require('@mocks/expo/expo-vector-icons-mock'));
 
+describe('CheckBoxButton Component', () => {
+    const mockOnPress = jest.fn();
+    const mockOnActivation = jest.fn();
+    const mockOnDeActivation = jest.fn();
 
-    const defaultPropsSearch: ChecklistsButtonsRenderProps = {
-        testID: '',
-        testMode: true,
-        filterTitle: listFilter.tags,
-        arrayToDisplay: tagsDataset.map(tag => tag.tagName),
-
-        route: {
-            type: 'search',
-            filtersState: new Map<TListFilter, Array<string>>([[listFilter.tags, ['Italian', 'Vegetarian']], [listFilter.vegetable, ['Potatoes']], [listFilter.cheese, ['Parmesan']]]),
-            addFilter: mockAddFilter,
-            removeFilter: mockRemoveFilter,
-
-        }
-    };
-    const defaultPropsShopping: ChecklistsButtonsRenderProps = {
-        testID: '',
-        testMode: true,
-        filterTitle: listFilter.grainOrCereal,
-        arrayToDisplay: ingredientsDataset.map(ing => ing.ingName),
-        route: {
-            type: 'shopping',
-            checkBoxInitialValue: false,
-            ingList: shoppingDataset[shoppingDataset.length - 1],
-
-            updateIngredientFromShopping: mockUpdateIngredientFromShopping,
-        }
+    const defaultPropsUseState: CheckBoxButtonProps = {
+        stateInitialValue: false,
+        testID: "CheckBoxButton",
+        title: 'Default Button',
+        onActivation: mockOnActivation,
+        onDeActivation: mockOnDeActivation
     };
 
+    const defaultPropsDontUseState: CheckBoxButtonProps = {
+        stateInitialValue: false,
+        testID: "CheckBoxButton",
+        title: 'Default Button',
+        onActivation: mockOnActivation,
+        onDeActivation: mockOnDeActivation
+    };
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test('renders correctly in search mode', () => {
-        const {queryByTestId, getByTestId} = render(<CheckListsButtonsRender {...defaultPropsSearch} />);
+// TODO add onLongPressData tests
+    test('renders correctly with useState', () => {
+        const {queryByTestId, getByTestId} = render(<CheckBoxButton {...defaultPropsUseState}/>);
 
-        for (let i = 0; i < defaultPropsSearch.arrayToDisplay.length; i++) {
-            const currentName = defaultPropsSearch.arrayToDisplay[i];
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
 
-            //@ts-ignore the route is always search in this tests
-            const isFilterExist = defaultPropsSearch.route.filtersState.get(listFilter.tags);
-
-            expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-
-            if (isFilterExist === undefined) {
-                expect(queryByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`)).toBeNull();
-            } else {
-                expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(isFilterExist.includes(currentName));
-            }
-
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toBeUndefined();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();
-        }
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.backgroundColor,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
     });
 
-    test('check onActivation/DeActivation in search mode', () => {
-        const {queryByTestId, getByTestId} = render(<CheckListsButtonsRender {...defaultPropsSearch}/>);
+    test('triggers onPress when clicked with useState', () => {
+        const {queryByTestId, getByTestId} = render(
+            <CheckBoxButton {...defaultPropsUseState}/>
+        );
 
-        const namePress = defaultPropsSearch.arrayToDisplay[11];
-        fireEvent.press(getByTestId(`CheckBoxButton - ${namePress}::OnActivation`));
+        fireEvent.press(getByTestId('CheckBoxButton::Pressable'));
 
-        expect(mockAddFilter).toHaveBeenCalledWith(defaultPropsSearch.filterTitle, namePress);
+        expect(mockOnActivation).toHaveBeenCalledTimes(1);
+        expect(mockOnDeActivation).toHaveBeenCalledTimes(0);
 
-        // Component isn't changed
-        for (let i = 0; i < defaultPropsSearch.arrayToDisplay.length; i++) {
-            const currentName = defaultPropsSearch.arrayToDisplay[i];
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.backgroundColor,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
 
-            //@ts-ignore the route is always search in this tests
-            const isFilterExist = defaultPropsSearch.route.filtersState.get(listFilter.tags);
+        fireEvent.press(getByTestId('CheckBoxButton::Pressable'));
 
-            expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-
-            if (isFilterExist === undefined) {
-                expect(queryByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`)).toBeNull();
-            } else {
-                expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(isFilterExist.includes(currentName));
-            }
-
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toBeUndefined();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();
-        }
-        fireEvent.press(getByTestId(`CheckBoxButton - ${namePress}::OnDeActivation`));
-
-        expect(mockRemoveFilter).toHaveBeenCalledWith(defaultPropsSearch.filterTitle, namePress);
-
-        // Component isn't changed
-        for (let i = 0; i < defaultPropsSearch.arrayToDisplay.length; i++) {
-            const currentName = defaultPropsSearch.arrayToDisplay[i];
-
-            //@ts-ignore the route is always search in this tests
-            const isFilterExist = defaultPropsSearch.route.filtersState.get(listFilter.tags);
-
-            expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-
-            if (isFilterExist === undefined) {
-                expect(queryByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`)).toBeNull();
-            } else {
-                expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(isFilterExist.includes(currentName));
-            }
-
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toBeUndefined();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();
-        }
+        expect(mockOnActivation).toHaveBeenCalledTimes(1);
+        expect(mockOnDeActivation).toHaveBeenCalledTimes(1);
     });
 
-    test('renders correctly in shopping mode', () => {
-        const {getByTestId} = render(<CheckListsButtonsRender {...defaultPropsShopping} />);
+    test('triggers onPressIn and onPressOut events with UseState', () => {
+        const {queryByTestId, getByTestId} = render(<CheckBoxButton {...defaultPropsUseState}/>);
 
-        for (let i = 0; i < defaultPropsShopping.arrayToDisplay.length; i++) {
-            const currentName = defaultPropsShopping.arrayToDisplay[i];
-            //@ts-ignore the route is always shopping in this tests
-            const expectedTitlesForThisIng = (defaultPropsShopping.route.ingList.find(ing => ing.name === currentName) as shoppingListTableElement).recipesTitle.map(title => "\n\t- " + title);
-            const expectedData: bulletListDataType = {
-                bulletListData: expectedTitlesForThisIng,
-                multiplesData: expectedTitlesForThisIng.length > 1,
-                shortData: expectedTitlesForThisIng.length + " recipe" + (expectedTitlesForThisIng.length > 1 ? "s" : ""),
-            };
+        fireEvent(getByTestId('CheckBoxButton::Pressable'), 'onPressIn');
 
-            expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(false);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toEqual(JSON.stringify(expectedData));
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();
-        }
 
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.progressGrey,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
+
+        // Simulate onPressOut
+        fireEvent(getByTestId('CheckBoxButton::Pressable'), 'onPressOut');
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.backgroundColor,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
     });
 
-    test('check onActivation/DeActivation in shopping mode', () => {
-        const {getByTestId} = render(<CheckListsButtonsRender {...defaultPropsShopping}/>);
+    test('renders correctly without useState', () => {
+        const {queryByTestId, getByTestId} = render(<CheckBoxButton {...defaultPropsDontUseState}/>);
 
-        const namePress = defaultPropsShopping.arrayToDisplay[6];
-        fireEvent.press(getByTestId(`CheckBoxButton - ${namePress}::OnActivation`));
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
 
-        expect(mockUpdateIngredientFromShopping).toHaveBeenCalledTimes(1);
-        expect(mockUpdateIngredientFromShopping).toHaveBeenCalledWith(namePress);
-        // Component isn't changed
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.backgroundColor,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
+    });
 
-        for (let i = 0; i < defaultPropsShopping.arrayToDisplay.length; i++) {
-            const currentName = defaultPropsShopping.arrayToDisplay[i];
-            //@ts-ignore the route is always shopping in this tests
-            const expectedTitlesForThisIng = (defaultPropsShopping.route.ingList.find(ing => ing.name === currentName) as shoppingListTableElement).recipesTitle.map(title => "\n\t- " + title);
-            const expectedData: bulletListDataType = {
-                bulletListData: expectedTitlesForThisIng,
-                multiplesData: expectedTitlesForThisIng.length > 1,
-                shortData: expectedTitlesForThisIng.length + " recipe" + (expectedTitlesForThisIng.length > 1 ? "s" : ""),
-            };
+    test('triggers onPress when clicked without useState', () => {
+        const {queryByTestId, getByTestId} = render(
+            <CheckBoxButton {...defaultPropsDontUseState}/>
+        );
 
-            expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(false);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toEqual(JSON.stringify(expectedData));
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();
+        fireEvent.press(getByTestId('CheckBoxButton::Pressable'));
 
-        }
+        expect(mockOnActivation).toHaveBeenCalledTimes(1);
+        expect(mockOnDeActivation).toHaveBeenCalledTimes(0);
 
-        fireEvent.press(getByTestId(`CheckBoxButton - ${namePress}::OnDeActivation`));
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.backgroundColor,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
 
-        expect(mockUpdateIngredientFromShopping).toHaveBeenCalledTimes(2);
-        expect(mockUpdateIngredientFromShopping).toHaveBeenCalledWith(namePress);
-        // Component isn't changed
-        for (let i = 0; i < defaultPropsShopping.arrayToDisplay.length; i++) {
-            const currentName = defaultPropsShopping.arrayToDisplay[i];
-            //@ts-ignore the route is always shopping in this tests
-            const expectedTitlesForThisIng = (defaultPropsShopping.route.ingList.find(ing => ing.name === currentName) as shoppingListTableElement).recipesTitle.map(title => "\n\t- " + title);
-            const expectedData: bulletListDataType = {
-                bulletListData: expectedTitlesForThisIng,
-                multiplesData: expectedTitlesForThisIng.length > 1,
-                shortData: expectedTitlesForThisIng.length + " recipe" + (expectedTitlesForThisIng.length > 1 ? "s" : ""),
-            };
+        fireEvent.press(getByTestId('CheckBoxButton::Pressable'));
 
-            expect(getByTestId(`CheckBoxButton - ${currentName}::Title`).props.children).toEqual(currentName);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::StateInitialValue`).props.children).toEqual(false);
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnLongPressData`).props.children).toEqual(JSON.stringify(expectedData));
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnActivation`).props.children).toBeTruthy();
-            expect(getByTestId(`CheckBoxButton - ${currentName}::OnDeActivation`).props.children).toBeTruthy();
+        expect(mockOnActivation).toHaveBeenCalledTimes(1);
+        expect(mockOnDeActivation).toHaveBeenCalledTimes(1);
+    });
 
-        }
+    test('triggers onPressIn and onPressOut events without UseState', () => {
+        const {queryByTestId, getByTestId} = render(<CheckBoxButton {...defaultPropsDontUseState}/>);
 
+        fireEvent(getByTestId('CheckBoxButton::Pressable'), 'onPressIn');
+
+
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.progressGrey,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
+
+        // Simulate onPressOut
+        fireEvent(getByTestId('CheckBoxButton::Pressable'), 'onPressOut');
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.backgroundColor,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
+    });
+
+    test('renders correctly with long data', () => {
+        const {getByTestId} = render(<CheckBoxButton {...defaultPropsUseState} onLongPressData={{
+            multiplesData: true,
+            bulletListData: ['Data1', 'Data2', 'Data3', 'Data4', 'Data5'],
+            shortData: 'MultipleData'
+        }}/>);
+
+        expect(getByTestId('CheckBoxButton::Title').props.children).toEqual(defaultPropsUseState.title);
+        expect(getByTestId('CheckBoxButton::LongPressData').props.children).toEqual('MultipleData');
+
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
+        expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
+            alignItems: "center",
+            backgroundColor: palette.backgroundColor,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center"
+        });
     });
 
 });

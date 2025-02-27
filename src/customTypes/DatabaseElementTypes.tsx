@@ -48,15 +48,15 @@ export type recipeTableElement = {
 }
 
 export type encodedRecipeElement = {
-    id?: number,
-    image: string,
-    title: string,
-    description: string,
-    tags: string,
-    persons: number,
-    ingredients: string,
-    preparation: string,
-    time: number,
+    ID: number,
+    IMAGE_SOURCE: string,
+    TITLE: string,
+    DESCRIPTION: string,
+    TAGS: string,
+    PERSONS: number,
+    INGREDIENTS: string,
+    PREPARATION: string,
+    TIME: number,
 }
 
 export const recipeColumnsEncoding: Array<databaseColumnType> = [
@@ -80,11 +80,11 @@ export type ingredientTableElement = {
     season: Array<string>,
 }
 export type encodedIngredientElement = {
-    id?: number,
-    ingName: string,
-    unit: string,
-    type: string,
-    season: string,
+    ID: number,
+    INGREDIENT: string,
+    UNIT: string,
+    TYPE: string,
+    SEASON: string,
 };
 
 export const ingredientsColumnsNames: Array<databaseColumnType> = [
@@ -92,7 +92,7 @@ export const ingredientsColumnsNames: Array<databaseColumnType> = [
     {colName: "UNIT", type: encodedType.TEXT},
     {colName: "TYPE", type: encodedType.TEXT},
     {colName: "SEASON", type: encodedType.TEXT},
-]
+];
 
 
 export type nutritionTableElement = {
@@ -104,17 +104,21 @@ export type nutritionTableElement = {
 export const nutritionColumnsNames: Array<databaseColumnType> = [
     {colName: "INGREDIENT", type: encodedType.TEXT},
     {colName: "UNIT", type: encodedType.TEXT}
-]
-
+];
 export type tagTableElement = {
     id?: number,
     tagName: string,
 }
 
-
 export const tagsColumnsNames: Array<databaseColumnType> = [
     {colName: "NAME", type: encodedType.TEXT},
-]
+];
+
+export type encodedTagElement = {
+    ID: number,
+    NAME: string;
+};
+
 
 export type shoppingListTableElement = {
     id?: number,
@@ -127,13 +131,13 @@ export type shoppingListTableElement = {
 }
 
 export type encodedShoppingListElement = {
-    id?: number,
-    type: string,
-    name: string,
-    quantity: number,
-    unit: string,
-    recipes: string,
-    purchased: boolean,
+    ID: number,
+    TYPE: string,
+    INGREDIENT: string,
+    QUANTITY: number,
+    UNIT: string,
+    TITLES: string,
+    PURCHASED: number,
 }
 
 export enum shoppingListColumnsNames {
@@ -141,7 +145,7 @@ export enum shoppingListColumnsNames {
     ingredient = "INGREDIENT",
     quantity = "QUANTITY",
     unit = "UNIT",
-    recipeTitles = "RECIPES TITLES",
+    recipeTitles = "TITLES",
     purchased = "PURCHASED"
 }
 

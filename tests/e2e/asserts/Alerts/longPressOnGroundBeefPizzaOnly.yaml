@@ -2,7 +2,7 @@ appId: "com.recipesmanager"
 
 ---
 - assertVisible:
-    id: "android:id/alertTitle"
+    id: "com.recipesmanager:id/alertTitle"
     text: "Recipes that use Ground Beef"
     label: Alert title is rendered
 - assertVisible:

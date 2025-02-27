@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Home from '@screens/Home';
 import Parameters from '@screens/Parameters';
 import Shopping from '@screens/Shopping';
-
+// TODO use eslint-config-expo ?
 // import {YoutubeCamera, OCRComponent, RecipeList} from '../index';
 import Recipe from '@screens/Recipe';
 import Search from '@screens/Search';

@@ -2,25 +2,26 @@ import TableManipulation from '@utils/TableManipulation';
 import {jest} from '@jest/globals';
 import {databaseColumnType, encodedType} from '@customTypes/DatabaseElementTypes';
 
-// @ts-ignore
 import * as SQLite from 'expo-sqlite';
 
-jest.mock('expo-sqlite', () => require('@mocks/utils/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
+
+type TestDbType = { ID?: number, name: string, age: number };
 
 describe('TableManipulation', () => {
+    const memoryDb = ':memory';
     const mockColumns: Array<databaseColumnType> = [
         {colName: 'name', type: encodedType.TEXT},
         {colName: 'age', type: encodedType.INTEGER},
     ];
     const table = new TableManipulation('TestTable', mockColumns);
 
-    let DB: SQLite.Database;
-    beforeEach(() => {
-        DB = SQLite.openDatabase('TestTable.db');
+    let DB: SQLite.SQLiteDatabase;
+    beforeEach(async () => {
+        DB = await SQLite.openDatabaseAsync(memoryDb);
     });
     afterEach(async () => {
-        // @ts-ignore deleteAsync exist thanks to the mock
-        await DB.deleteAsync();
+        await SQLite.deleteDatabaseAsync(memoryDb);
     });
 
     test('TableManipulation with empty parameter shall log an error', async () => {
@@ -32,23 +33,23 @@ describe('TableManipulation', () => {
 
         new TableManipulation('', mockColumns);
         expect(consoleWarningSpy).toHaveBeenCalledWith(
-            'ERROR when creating the table : No name for the table'
+            'ERROR: Table name cannot be empty'
         );
         expect(consoleWarningSpy).toHaveBeenCalledTimes(1);
 
         new TableManipulation('test', new Array<databaseColumnType>());
         expect(consoleErrorSpy).toHaveBeenCalledWith(
-            'ERROR when creating the table : No column names'
+            'ERROR: No column names specified'
         );
         expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
 
         new TableManipulation('', new Array<databaseColumnType>());
         expect(consoleErrorSpy).toHaveBeenCalledWith(
-            'ERROR when creating the table : No column names'
+            'ERROR: No column names specified'
         );
         expect(consoleErrorSpy).toHaveBeenCalledTimes(2);
         expect(consoleWarningSpy).toHaveBeenCalledWith(
-            'ERROR when creating the table : No name for the table'
+            'ERROR: Table name cannot be empty'
         );
         expect(consoleWarningSpy).toHaveBeenCalledTimes(2);
 
@@ -76,7 +77,7 @@ describe('TableManipulation', () => {
         expect(await table.insertElement({name: '', age: 0}, DB)).toEqual(3);
         expect(await table.insertElement({name: 'Negative Number', age: -1}, DB)).toEqual(4);
 
-        expect(await table.insertElement({}, DB)).toEqual("Empty values");
+        expect(await table.insertElement({}, DB)).toBeUndefined();
         expect(await table.insertElement({
             id: 5,
             name: 'Too much args',
@@ -125,67 +126,97 @@ describe('TableManipulation', () => {
     test('searchElementById should generate a valid SELECT query', async () => {
         await table.createTable(DB);
 
-        const arrayInserted = new Array<Object>({name: 'John Doe', age: 30}, {
+        const arrayInserted = new Array<TestDbType>({name: 'John Doe', age: 30}, {
             name: 'Toto',
             age: 8
         }, {name: 'Sparky', age: 7}, {name: 'CutyCat', age: 2});
         await table.insertArrayOfElement(arrayInserted, DB);
 
-        expect(await table.searchElementById(2, DB)).toEqual(JSON.stringify({ID: 2, ...arrayInserted[1]}));
-        expect(await table.searchElementById(4, DB)).toEqual(JSON.stringify({ID: 4, ...arrayInserted[3]}));
-        expect(await table.searchElementById(1, DB)).toEqual(JSON.stringify({ID: 1, ...arrayInserted[0]}));
-        expect(await table.searchElementById(3, DB)).toEqual(JSON.stringify({ID: 3, ...arrayInserted[2]}));
+        expect(await table.searchElementById(2, DB)).toEqual({ID: 2, ...arrayInserted[1]});
+        expect(await table.searchElementById(4, DB)).toEqual({ID: 4, ...arrayInserted[3]});
+        expect(await table.searchElementById(1, DB)).toEqual({ID: 1, ...arrayInserted[0]});
+        expect(await table.searchElementById(3, DB)).toEqual({ID: 3, ...arrayInserted[2]});
 
-        expect(await table.searchElementById(-1, DB)).toEqual(0);
-        expect(await table.searchElementById(5, DB)).toEqual(0);
+        expect(await table.searchElementById(-1, DB)).toBeUndefined();
+        expect(await table.searchElementById(5, DB)).toBeUndefined();
     });
 
     test('searchRandomlyElement should return random element(s)', async () => {
-        const elementsInTable = new Array<string>();
+        const elementsInTable = new Array<TestDbType>();
         await table.createTable(DB);
 
-        expect(await table.searchRandomlyElement(1, DB)).toBe(0);
+        expect(await table.searchRandomlyElement(1, DB)).toEqual([]);
 
 
-        await table.insertElement({name: 'John Doe', age: 30}, DB);
-        elementsInTable.push(JSON.stringify({ID: 1, name: 'John Doe', age: 30}));
-        expect(await table.searchRandomlyElement(1, DB)).toEqual(elementsInTable[0]);
+        let newElem: TestDbType = {name: 'John Doe', age: 30};
+        let elemCounter = 1;
 
-        await table.insertElement({name: 'Toto', age: 8}, DB);
-        elementsInTable.push(JSON.stringify({ID: 2, name: 'Toto', age: 8}));
-        // @ts-ignore
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+        expect(await table.searchRandomlyElement(1, DB)).toEqual(elementsInTable);
+
+        newElem = {name: 'Toto', age: 8};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+        // @ts-ignore will always return an array
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(2, DB)));
 
-        await table.insertElement({name: 'Titi', age: 3}, DB);
-        elementsInTable.push(JSON.stringify({ID: 3, name: 'Titi', age: 3}));
+        newElem = {name: 'Titi', age: 3};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(3, DB) as Array<string>));
 
-        await table.insertElement({name: 'GrandMa', age: 91}, DB);
-        elementsInTable.push(JSON.stringify({ID: 4, name: 'GrandMa', age: 91}));
+        newElem = {name: 'GrandMa', age: 91};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(4, DB) as Array<string>));
 
-        await table.insertElement({name: 'GrandPa', age: 84}, DB);
-        elementsInTable.push(JSON.stringify({ID: 5, name: 'GrandPa', age: 84}));
+        newElem = {name: 'GrandPa', age: 84};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(5, DB) as Array<string>));
 
-        await table.insertElement({name: 'Papa', age: 43}, DB);
-        elementsInTable.push(JSON.stringify({ID: 6, name: 'Papa', age: 43}));
+        newElem = {name: 'Papa', age: 43};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(6, DB) as Array<string>));
 
-        await table.insertElement({name: 'Mama', age: 41}, DB);
-        elementsInTable.push(JSON.stringify({ID: 7, name: 'Mama', age: 41}));
+        newElem = {name: 'Mama', age: 41};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(7, DB) as Array<string>));
 
-        await table.insertElement({name: 'Sparky', age: 7}, DB);
-        elementsInTable.push(JSON.stringify({ID: 8, name: 'Sparky', age: 7}));
+        newElem = {name: 'Sparky', age: 7};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(8, DB) as Array<string>));
 
-        await table.insertElement({name: 'CutyCat', age: 2}, DB);
-        elementsInTable.push(JSON.stringify({ID: 9, name: 'CutyCat', age: 2}));
+        newElem = {name: 'CutyCat', age: 2};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(9, DB) as Array<string>));
 
-        await table.insertElement({name: 'Smith', age: 58}, DB);
-        elementsInTable.push(JSON.stringify({ID: 10, name: 'Smith', age: 58}));
+        newElem = {name: 'Smith', age: 58};
+        await table.insertElement(newElem, DB);
+        elementsInTable.push({ID: elemCounter, ...newElem});
+        elemCounter++;
+
         expect(elementsInTable).toEqual(expect.arrayContaining(await table.searchRandomlyElement(10, DB) as Array<string>));
 
         expect(await table.searchRandomlyElement(0, DB)).toBeUndefined();

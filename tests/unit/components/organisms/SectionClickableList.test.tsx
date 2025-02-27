@@ -8,7 +8,6 @@ import {extractTagsName} from "@customTypes/DatabaseElementTypes";
 import {PlusMinusIcons} from "@assets/images/Icons";
 import {shoppingDataset} from "@test-data/shoppingListsDataset";
 
-
 jest.mock('@components/atomic/RectangleButton', () => require('@mocks/components/atomic/RectangleButton-mock').rectangleButtonMock);
 jest.mock('@components/molecules/CheckListsButtonsRender', () => require('@mocks/components/molecules/CheckListsButtonsRender-mock').checkListsButtonMock);
 

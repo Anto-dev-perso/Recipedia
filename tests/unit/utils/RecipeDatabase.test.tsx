@@ -5,7 +5,7 @@ import {ingredientsDataset} from "@test-data/ingredientsDataset";
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import {shoppingAddedMultipleTimes, shoppingDataset} from "@test-data/shoppingListsDataset";
 
-jest.mock('expo-sqlite', () => require('@mocks/utils/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
 
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 
@@ -100,7 +100,7 @@ describe('RecipeDatabase basic tests', () => {
         // TODO found a test where the insertion worked but don't return a number
     });
 
-    test('Add and retrieve a multiplicity of tags', async () => {
+    test('Add and retrieve a multiplicity of in', async () => {
 
         await db.addMultipleIngredients(ingredientsDataset);
         const ingredient = db.get_ingredients();

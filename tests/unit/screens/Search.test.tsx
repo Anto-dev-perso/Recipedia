@@ -6,7 +6,7 @@ import {tagsDataset} from "@test-data/tagsDataset";
 import {recipesDataset} from "@test-data/recipesDataset";
 
 
-jest.mock('expo-sqlite', () => require('@mocks/utils/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 jest.mock('@components/organisms/FiltersSelection', () => require('@mocks/components/organisms/FiltersSelection-mock').filtersSelectionMock);
 jest.mock('@components/organisms/SearchBar', () => require('@mocks/components/organisms/SearchBar-mock').searchBarMock);
