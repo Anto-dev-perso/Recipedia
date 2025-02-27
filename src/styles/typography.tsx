@@ -1,7 +1,7 @@
 import {cameraPalette, palette} from './colors'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import {padding} from './spacing'
-import {loadAsync} from 'expo-font';
+import {useFonts} from "expo-font";
 
 
 export const textSeparator = "--";
@@ -17,9 +17,8 @@ export const exceptLettersRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ]/g;
 export const exceptLettersAndSpacesRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ\s]/g;
 export const extractBetweenParenthesis = /\((.*?)\)/;
 
-//  TODO can be loaded at build time (https://docs.expo.dev/versions/latest/sdk/font/)
-export async function fetchFonts() {
-    return await loadAsync({
+export function fetchFonts() {
+    return useFonts({
         'Lora-VariableFont_wght': require(`../assets/fonts/Lora/Lora-VariableFont_wght.ttf`),
         'Lora-Italic-VariableFont_wght': require(`../assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf`),
     })

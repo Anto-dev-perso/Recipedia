@@ -12,7 +12,6 @@ import {palette} from "@styles/colors";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {HomeScreenProp} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
-import {fetchFonts} from "@styles/typography";
 import FileGestion from "@utils/FileGestion";
 import {tagsDataset} from "@test-data/tagsDataset";
 import {recipesDataset} from "@test-data/recipesDataset";
@@ -46,11 +45,9 @@ export default function Home({route, navigation}: HomeScreenProp) {
     useEffect(() => {
         // TODO this part should be at initialization of the App but when we hot reload, it don't get re-init again
         // So keep it here so that it is indeed call at each hot reload
-        fetchFonts().then(async () => {
-            await FileGestion.getInstance().init();
 
-            const recipeDb = RecipeDatabase.getInstance();
-
+        const recipeDb = RecipeDatabase.getInstance();
+        FileGestion.getInstance().init().then(async () => {
             // TODO temporary for test
             await recipeDb.reset();
             await recipeDb.init();

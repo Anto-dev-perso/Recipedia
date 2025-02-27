@@ -24,6 +24,7 @@ import {palette} from '@styles/colors';
 import ModalImageSelect from '@screens/ModalImageSelect';
 import EStyleSheet from "react-native-extended-stylesheet";
 import RecipeDatabase from "@utils/RecipeDatabase";
+import {fetchFonts} from "@styles/typography";
 
 
 // TODO manage horizontal mode
@@ -39,6 +40,7 @@ import RecipeDatabase from "@utils/RecipeDatabase";
 
 export default function App() {
 
+    fetchFonts();
 
     function Root() {
         return (

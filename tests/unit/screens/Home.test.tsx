@@ -16,6 +16,7 @@ jest.mock('@components/molecules/BottomTopButton', () => require('@mocks/compone
 
 jest.mock('expo-font', () => ({
     loadAsync: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
+    useFonts: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
 }));
 
 describe('Home Screen', () => {

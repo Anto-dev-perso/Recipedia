@@ -11,7 +11,7 @@ export function fileGestionMock() {
         flipImageHorizontally: jest.fn().mockResolvedValue({uri: './flipped-horizontal.jpg'}),
         flipImageVertically: jest.fn().mockResolvedValue({uri: './flipped-vertical.jpg'}),
         cropImage: jest.fn().mockResolvedValue({uri: './cropped.jpg'}),
-        init: jest.fn(),
+        init: jest.fn().mockResolvedValue(undefined),
     };
     return {
         getInstance: jest.fn(() => mockInstance),
