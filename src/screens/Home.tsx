@@ -12,10 +12,6 @@ import {palette} from "@styles/colors";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {HomeScreenProp} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
-import FileGestion from "@utils/FileGestion";
-import {tagsDataset} from "@test-data/tagsDataset";
-import {recipesDataset} from "@test-data/recipesDataset";
-import {ingredientsDataset} from "@test-data/ingredientsDataset";
 
 
 export default function Home({route, navigation}: HomeScreenProp) {
@@ -43,20 +39,7 @@ export default function Home({route, navigation}: HomeScreenProp) {
     }, []);
 
     useEffect(() => {
-        // TODO this part should be at initialization of the App but when we hot reload, it don't get re-init again
-        // So keep it here so that it is indeed call at each hot reload
-
-        const recipeDb = RecipeDatabase.getInstance();
-        FileGestion.getInstance().init().then(async () => {
-            // TODO temporary for test
-            await recipeDb.reset();
-            await recipeDb.init();
-            await recipeDb.addMultipleIngredients(ingredientsDataset);
-            await recipeDb.addMultipleTags(tagsDataset);
-            await recipeDb.addMultipleRecipes(recipesDataset);
-
-            randomlySearchElements(recipeDb);
-        });
+        randomlySearchElements(RecipeDatabase.getInstance());
     }, []);
 
     return (

@@ -1,5 +1,5 @@
-import React from 'react';
-import {Button} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Button, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '@screens/Home';
 import Parameters from '@screens/Parameters';
@@ -25,6 +25,10 @@ import ModalImageSelect from '@screens/ModalImageSelect';
 import EStyleSheet from "react-native-extended-stylesheet";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {fetchFonts} from "@styles/typography";
+import FileGestion from "@utils/FileGestion";
+import {ingredientsDataset} from "@test-data/ingredientsDataset";
+import {tagsDataset} from "@test-data/tagsDataset";
+import {recipesDataset} from "@test-data/recipesDataset";
 
 
 // TODO manage horizontal mode
@@ -39,6 +43,23 @@ import {fetchFonts} from "@styles/typography";
 
 
 export default function App() {
+
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    useEffect(() => {
+        FileGestion.getInstance().init().then(async () => {
+
+            const recipeDb = RecipeDatabase.getInstance();
+            await recipeDb.reset();
+            await recipeDb.init();
+
+            await recipeDb.addMultipleIngredients(ingredientsDataset);
+            await recipeDb.addMultipleTags(tagsDataset);
+            await recipeDb.addMultipleRecipes(recipesDataset);
+
+            setIsInitialized(true);
+        });
+    }, []);
 
     fetchFonts();
 
@@ -104,16 +125,18 @@ export default function App() {
         )
     }
 
-    // const [showCamera, setShowCamera] = useState(false);
-    // const [showTextRecognition, setShowTextRecognition] = useState(false);
-    // const [showSQL, setShowSQL] = useState(false);
-
-    // const [showTestText, setShowTestText] = useState(false);
-
     // const { t, i18n } = useTranslation();
 
     // i18n.changeLanguage('fr'); // Can be use in parameter
     // TODO Good idea to pass translation through components props
+
+    if (!isInitialized) {
+        return (
+            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
 
     return (
         // <>
@@ -194,7 +217,6 @@ export default function App() {
                 }}>
                     <StackScreen.Screen name="Modal" component={ModalImageSelect}/>
                 </StackScreen.Group>
-
                 <StackScreen.Screen name="Recipe" component={Recipe}/>
                 <StackScreen.Screen name="Root" component={Root}/>
                 <StackScreen.Screen name="Search" component={Search}/>
