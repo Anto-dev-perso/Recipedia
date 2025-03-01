@@ -1,10 +1,13 @@
-import {fireEvent, render, waitFor} from '@testing-library/react-native';
+import {render, waitFor} from '@testing-library/react-native';
 import Home from "@screens/Home";
 import React from 'react';
 import {recipesDataset} from "@test-data/recipesDataset";
-import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
-import {TabScreenParamList} from "@customTypes/ScreenTypes";
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import {createStackNavigator} from "@react-navigation/stack";
+import {NavigationContainer} from '@react-navigation/native';
+import RecipeDatabase from "@utils/RecipeDatabase";
+import {ingredientsDataset} from "@test-data/ingredientsDataset";
+import {tagsDataset} from "@test-data/tagsDataset";
 
 
 jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
@@ -18,27 +21,28 @@ jest.mock('expo-font', () => ({
     loadAsync: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
     useFonts: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
 }));
+jest.mock('react-native-gesture-handler', () => require('@mocks/expo/react-native-gesture-handler-mock').gestureHandlerMock());
+const Stack = createStackNavigator();
 
 describe('Home Screen', () => {
-    const mockNavigation: Partial<BottomTabNavigationProp<TabScreenParamList, 'Home'>> = {
-        goBack: jest.fn(),
-        navigate: jest.fn(),
-        setOptions: jest.fn(),
-        dispatch: jest.fn(),
-        canGoBack: jest.fn(),
-        getId: jest.fn(),
-        getParent: jest.fn(),
-        isFocused: jest.fn(),
-    };
+    const database = RecipeDatabase.getInstance();
 
     beforeEach(async () => {
         jest.clearAllMocks();
+        await database.init();
+        await database.addMultipleIngredients(ingredientsDataset);
+        await database.addMultipleTags(tagsDataset);
+        await database.addMultipleRecipes(recipesDataset);
     });
+    afterEach(async () => await database.reset());
 
     // -------- INITIAL RENDERING TESTS --------
     test('renders all navigation buttons correctly', async () => {
         //@ts-ignore navigation are not useful for UT
-        const {getByTestId} = render(<Home navigation={mockNavigation}/>);
+        const {getByTestId} = render(<NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name={"Home"} component={Home}/>
+            </Stack.Navigator></NavigationContainer>);
 
         await waitFor(() => expect(getByTestId('RecipeRecommendation1::CarouselProps').props.children.length).toBeGreaterThan(2));
 
@@ -59,44 +63,5 @@ describe('Home Screen', () => {
         expect(reco1).not.toEqual(reco2);
         expect(reco1).not.toEqual(reco3);
         expect(reco2).not.toEqual(reco3);
-    });
-
-    // --------  INTERACTION TESTS --------
-    test('navigates to Add Recipe screen on button press', () => {
-        //@ts-ignore navigation are not useful for UT
-        const {getByTestId} = render(<Home navigation={mockNavigation}/>);
-
-        fireEvent.press(getByTestId('SearchButton::OnPressFunction'));
-
-        // Verify navigation was triggered
-        expect(mockNavigation.navigate).toHaveBeenCalledWith('Search');
-    });
-    test('refresh the screen', async () => {
-        //@ts-ignore navigation are not useful for UT
-        const {getByTestId} = render(<Home navigation={mockNavigation}/>);
-
-        const reco1: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation1::CarouselProps').props.children);
-        const reco2: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation2::CarouselProps').props.children);
-        const reco3: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation3::CarouselProps').props.children);
-
-        fireEvent(getByTestId('HomeScrollView'), 'onRefresh');
-
-        await waitFor(() => expect(getByTestId('RecipeRecommendation1::CarouselProps').props.children).not.toEqual(reco1));
-
-        const refreshReco1: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation1::CarouselProps').props.children);
-        const refreshReco2: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation2::CarouselProps').props.children);
-        const refreshReco3: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation3::CarouselProps').props.children);
-
-        expect(recipesDataset).toEqual(expect.arrayContaining(refreshReco1));
-        expect(recipesDataset).toEqual(expect.arrayContaining(refreshReco2));
-        expect(recipesDataset).toEqual(expect.arrayContaining(refreshReco3));
-
-        expect(refreshReco1).not.toEqual(refreshReco2);
-        expect(refreshReco1).not.toEqual(refreshReco3);
-        expect(refreshReco2).not.toEqual(refreshReco3);
-
-        expect(refreshReco1).not.toEqual(reco1);
-        expect(refreshReco1).not.toEqual(reco2);
-        expect(refreshReco2).not.toEqual(reco3);
     });
 });

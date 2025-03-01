@@ -231,9 +231,43 @@ describe('TableManipulation', () => {
         expect(random1).not.toEqual(random2);
     });
 
+    test('deleteElementById should delete only elements with theirs identifiers', async () => {
+        const elementsInTable = new Array<TestDbType>({ID: 1, name: 'John Doe', age: 30},
+            {ID: 2, name: 'Toto', age: 8},
+            {ID: 3, name: 'Titi', age: 3},
+            {ID: 4, name: 'GrandMa', age: 91},
+            {ID: 5, name: 'GrandPa', age: 84},
+            {ID: 6, name: 'Papa', age: 43},
+            {ID: 7, name: 'Mama', age: 41},
+            {ID: 8, name: 'Sparky', age: 7},
+            {ID: 9, name: 'CutyCat', age: 2},
+            {ID: 10, name: 'Smith', age: 58});
+        await table.createTable(DB);
+
+        expect(await table.deleteElementById(1, DB)).toEqual(false);
+        expect(expect.arrayContaining(await table.searchRandomlyElement(elementsInTable.length, DB) as Array<string>)).toEqual([]);
+
+        expect(await table.insertArrayOfElement(elementsInTable, DB)).toEqual(true);
+        expect(expect.arrayContaining(await table.searchRandomlyElement(elementsInTable.length, DB) as Array<string>)).toEqual(elementsInTable);
+
+        expect(await table.deleteElementById(11, DB)).toEqual(false);
+
+        for (let i = elementsInTable.length; i > 0; i--) {
+
+            expect(await table.deleteElementById(i, DB)).toEqual(true);
+            elementsInTable.pop();
+            if (elementsInTable.length > 0) {
+                expect(expect.arrayContaining(await table.searchRandomlyElement(elementsInTable.length, DB) as Array<string>)).toEqual(elementsInTable);
+            } else {
+                expect(expect.arrayContaining(await table.searchRandomlyElement(1, DB) as Array<string>)).toEqual([]);
+            }
+        }
+
+    });
+
 
 // TODO
-// deleteElementById
 //     editElement
     // searchElement
+    // deleteElement
 });

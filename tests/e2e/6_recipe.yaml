@@ -9,3 +9,4 @@ name: "Recipe screen test suite"
 # TODO edit and validate then open search screen and open the recipe
 # TODO add OCR tests
 # TODO add a true tests for add a recipe from scratch
+# TODO test the recipe deletion (add a recipe then delete it from Home, Search) + what happen if the recipe was in the shopping list

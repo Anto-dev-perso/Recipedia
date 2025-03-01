@@ -19,6 +19,7 @@ import {palette} from "@styles/colors";
 import FiltersSelection from "@components/organisms/FiltersSelection";
 import SearchResultDisplay from "@components/organisms/SearchResultDisplay";
 import RecipeDatabase from "@utils/RecipeDatabase";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function Search({route, navigation}: SearchScreenProp) {
     const [filtersState, setFiltersState] = useState(new Map<TListFilter, Array<string>>());
@@ -36,27 +37,44 @@ export default function Search({route, navigation}: SearchScreenProp) {
 
 // TODO maybe changing this file to a class so that we can use constructor
 
-    useEffect(() => {
-        const recipesFiltered = filterFromRecipe(filteredRecipes, filtersState);
+    function updateFilteredRecipes(recipeArray: Array<recipeTableElement>) {
+        const recipesFiltered = filterFromRecipe(recipeArray, filtersState);
+        setFilteredRecipes([...recipesFiltered]);
+        extractTitleTagsAndIngredients(recipesFiltered);
+    }
 
-        setFilteredRecipes(recipesFiltered);
-        const [titles, ingredients, tags] = extractFilteredRecipeDatas(recipesFiltered);
+    function extractTitleTagsAndIngredients(recipeArray: Array<recipeTableElement>) {
+        const [titles, ingredients, tags] = extractFilteredRecipeDatas(recipeArray);
         setFilteredTitles(titles);
         setFilteredIngredients(ingredients);
         setFilteredTags(tags);
+        // TODO maybe call the database with the filter in it so that we benefit of the SQL optimizations and we don't take too much RAM
+    }
 
+    useEffect(() => {
+        updateFilteredRecipes(filteredRecipes);
     }, [filtersState]);
 
-
     useEffect(() => {
-
-        const [titles, ingredients, tags] = extractFilteredRecipeDatas(filteredRecipes);
-        setFilteredTitles(titles);
-        setFilteredTags(tags);
-        setFilteredIngredients(ingredients);
-        // TODO maybe call the database with the filter in it so that we benefit of the SQL optimizations and we don't take too much RAM
-
+        extractTitleTagsAndIngredients(filteredRecipes);
     }, []);
+
+
+    useFocusEffect(() => {
+        if (filteredRecipes.length === RecipeDatabase.getInstance().get_recipes().length) {
+            return;
+        }
+        let recipeDeletedName = "";
+        for (const recipe of filteredRecipes) {
+            if (!RecipeDatabase.getInstance().isRecipeExist(recipe)) {
+                recipeDeletedName = recipe.title;
+                break;
+            }
+        }
+        if (recipeDeletedName.length > 0) {
+            updateFilteredRecipes(filteredRecipes.filter((recipe) => recipe.title !== recipeDeletedName));
+        }
+    });
 
 
     function updateSearchString(newSearchString: string) {

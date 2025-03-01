@@ -61,10 +61,38 @@ export default class TableManipulation {
                              FROM "${this.m_tableName}"
                              WHERE ${this.m_idColumn} = ?;`;
         try {
-            await db.runAsync(deleteQuery, [id]);
-            return true;
+            const runRes = await db.runAsync(deleteQuery, [id]);
+            if (runRes.changes == 0) {
+                console.warn("deleteElementById: Can't delete element with id ", id);
+                return false;
+            } else {
+                return true;
+            }
         } catch (error: any) {
             console.warn('deleteElementById: \nQuery: \"', deleteQuery, '\"\nReceived error : ', error);
+            return false;
+        }
+    }
+
+    public async deleteElement(db: SQLiteDatabase, elementToSearch?: Map<string, number | string>): Promise<boolean> {
+
+        let deleteQuery = `DELETE
+                           FROM "${this.m_tableName}"`;
+
+        if (elementToSearch) {
+            deleteQuery += " WHERE " + this.prepareQueryFromMap(elementToSearch, `AND`) + ";";
+        }
+
+        try {
+            const runRes = await db.runAsync(deleteQuery);
+            if (runRes.changes == 0) {
+                console.warn("deleteElement: Can't delete element with search: ", elementToSearch);
+                return false;
+            } else {
+                return true;
+            }
+        } catch (error: any) {
+            console.warn('deleteElement: \nQuery: \"', deleteQuery, '\"\nReceived error : ', error);
             return false;
         }
     }
@@ -104,7 +132,7 @@ export default class TableManipulation {
         }
     }
 
-    public async editElement(id: number, elementToUpdate: Map<string, number | string>, db: SQLiteDatabase): Promise<boolean> {
+    public async editElementById(id: number, elementToUpdate: Map<string, number | string>, db: SQLiteDatabase): Promise<boolean> {
         let updateQuery = `UPDATE "${this.m_tableName}"
                            SET `;
         // SET column1 = value1, column2 = value2...., columnN = valueN
@@ -196,9 +224,9 @@ export default class TableManipulation {
         if (map.size <= this.m_columnsTable.length) {
             for (let [key, value] of map) {
                 if (typeof value === 'string') {
-                    result += `\'${key}\' = \'${value}\' `;
+                    result += `\"${key}\" = \'${value}\' `;
                 } else {
-                    result += `\'${key}\' = ${value}`;
+                    result += `\"${key}\" = ${value} `;
                 }
                 if (separator) {
                     result += `${separator} `;
@@ -255,7 +283,7 @@ export default class TableManipulation {
             for (const element of elementToInsert) {
                 const elementValues = new Array<string>();
 
-                for (const key of Object.keys(element as Object).filter(key => key !== 'id')) {
+                for (const key of Object.keys(element as Object).filter(key => key !== 'ID')) {
                     const valueToPush = (element[key as TElementKey] as TElementKey).toString();
                     if (valueToPush == 'false') {
                         elementValues.push('0');

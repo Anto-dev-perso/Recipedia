@@ -35,7 +35,7 @@ import RecipeText, {RecipeTextAddOrEditProps, RecipeTextAddProps} from "@compone
 import {headerBorder, textSeparator, titleBorder, typoRender, typoStyles, unitySeparator} from "@styles/typography";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import RecipeTags, {RecipeTagProps} from "@components/organisms/RecipeTags";
-import {AsyncAlert} from "@utils/AsyncAlert";
+import {alertUserChoice, AsyncAlert} from "@utils/AsyncAlert";
 import FileGestion from "@utils/FileGestion";
 
 export enum recipeStateType {readOnly = 0, edit = 1, add = 2,}
@@ -123,7 +123,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
 
     forceReRender = () => {
         this.setState((prevState) => ({forceUpdateKey: prevState.forceUpdateKey + 1}))
-    }
+    };
 
     setStackMode = (newStackMode: recipeStateType) => {
         this.setState({stackMode: newStackMode});
@@ -169,6 +169,24 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         this.setState({imgForOCR: newOCR});
     };
 
+    onDelete = async () => {
+        if (this.props.route.params.mode !== "addFromPic") {
+            const choice = await AsyncAlert("Recipe deletion", "Are you sure you want to delete this recipe titled " + this.state.recipeTitle + " ?", "Yes", "No");
+            if (choice === alertUserChoice.ok) {
+                let msg: string;
+                if (!await RecipeDatabase.getInstance().deleteRecipe(this.props.route.params.recipe)) {
+                    msg = "An error occurred while deleting this recipe titled " + this.state.recipeTitle;
+                } else {
+                    msg = "Recipe titled " + this.state.recipeTitle + " has been successfully deleted";
+                }
+
+                const promiseReturn = AsyncAlert("Recipe deletion", msg, "Understood");
+                this.props.navigation.goBack();
+            }
+        } else {
+            console.warn("Call onDelete on mode ", this.state.stackMode, " which is not possible")
+        }
+    };
     // TODO let the possibility to add manually the field
 
     editTags = (oldTag: string, newTag: string) => {
@@ -801,9 +819,9 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
 
                     {/* TODO add nutrition */}
                 </ScrollView>
-
                 {/*TODO add a generic component to tell which bottom button we want*/}
-                <BottomTopButton as={RoundButton} position={bottomTopPosition.top_left} buttonOffset={0}
+                <BottomTopButton testID={'BackButton'} as={RoundButton} position={bottomTopPosition.top_left}
+                                 buttonOffset={0}
                                  onPressFunction={() => navigation.goBack()} diameter={LargeButtonDiameter} icon={{
                     type: enumIconTypes.materialCommunity,
                     name: backIcon,
@@ -812,10 +830,12 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                 }}/>
 
                 {this.state.stackMode == recipeStateType.readOnly ?
-                    <View>
-                        <BottomTopButton testID={'RecipeDelete'} as={RoundButton} position={bottomTopPosition.top_right}
+                    <>
+                        <BottomTopButton testID={'RecipeDelete'} as={RoundButton}
+                                         position={bottomTopPosition.top_right}
                                          buttonOffset={0}
-                                         onPressFunction={() => null} diameter={LargeButtonDiameter} icon={{
+                                         onPressFunction={() => this.onDelete()}
+                                         diameter={LargeButtonDiameter} icon={{
                             type: enumIconTypes.fontAwesome,
                             name: trashIcon,
                             size: iconsSize.medium,
@@ -831,7 +851,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                             size: iconsSize.medium,
                             color: "#414a4c"
                         }}/>
-                    </View>
+                    </>
                     : null}
 
                 <BottomTopButton testID={'RecipeValidate'} as={RectangleButton} position={bottomTopPosition.bottom_full}

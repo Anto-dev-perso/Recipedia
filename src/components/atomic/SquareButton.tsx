@@ -33,7 +33,9 @@ export default function SquareButton(buttonProps: SquareButtonProps) {
         <Pressable style={squareButtonStyles(buttonProps.side).squareButton} onPress={buttonProps.onPressFunction}>
             <View style={viewInsideButtonCentered}>
                 <Image source={img} style={viewButtonStyles.imageInsideButton}
-                       onError={() => console.log("Image not found")}/>
+                       onError={() => {
+                           // console.log("Image not found")
+                       }}/>
             </View>
         </Pressable>
     )

@@ -94,6 +94,10 @@ describe('Recipe Component tests', () => {
         //@ts-ignore route and navigation are not useful for UT
         const {getByTestId} = render(<Recipe route={{params: mockRouteReadOnly}} navigation={mockNavigation}/>);
 
+        expect(getByTestId('BackButton::OnPressFunction')).toBeTruthy();
+        expect(getByTestId('RecipeDelete::OnPressFunction')).toBeTruthy();
+        expect(getByTestId('RecipeEdit::OnPressFunction')).toBeTruthy();
+
         // Image part
         expect(getByTestId('RecipeImage::ImgUri').props.children).toEqual('"tacos.jpg"');
 
@@ -132,7 +136,12 @@ describe('Recipe Component tests', () => {
 
     test('Initial state is correctly set in edit mode', () => {
         //@ts-ignore route and navigation are not useful for UT
-        const {getByTestId} = render(<Recipe route={{params: mockRouteEdit}} navigation={mockNavigation}/>);
+        const {getByTestId, queryByTestId} = render(<Recipe route={{params: mockRouteEdit}}
+                                                            navigation={mockNavigation}/>);
+
+        expect(getByTestId('BackButton::OnPressFunction')).toBeTruthy();
+        expect(queryByTestId('RecipeDelete::OnPressFunction')).not.toBeTruthy();
+        expect(queryByTestId('RecipeEdit::OnPressFunction')).not.toBeTruthy();
 
         // Image part
         expect(getByTestId('RecipeImage::ImgUri').props.children).toEqual('"chocolate_cake.jpg"');
@@ -193,8 +202,12 @@ describe('Recipe Component tests', () => {
 
     test('Initial state is correctly set in add mode', () => {
         //@ts-ignore route and navigation are not useful for UT
-        const {getByTestId} = render(<Recipe route={{params: mockRouteAdd}} navigation={mockNavigation}/>);
+        const {getByTestId, queryByTestId} = render(<Recipe route={{params: mockRouteAdd}}
+                                                            navigation={mockNavigation}/>);
 
+        expect(getByTestId('BackButton::OnPressFunction')).toBeTruthy();
+        expect(queryByTestId('RecipeDelete::OnPressFunction')).not.toBeTruthy();
+        expect(queryByTestId('RecipeEdit::OnPressFunction')).not.toBeTruthy();
         // Image part
         expect(getByTestId('RecipeImage::ImgUri').props.children).toEqual('""');
         expect(getByTestId('RecipeImage::SetImgUri').props.children).toBeTruthy();

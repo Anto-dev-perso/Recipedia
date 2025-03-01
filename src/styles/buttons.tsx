@@ -118,7 +118,7 @@ const viewBottomTopButton = (offset: number) => EStyleSheet.create({
     },
     topButton: {
         position: 'absolute',
-        top: offset,
+        top: -offset,
         padding: padding.small,
     },
 });

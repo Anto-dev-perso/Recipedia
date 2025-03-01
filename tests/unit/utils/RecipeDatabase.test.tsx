@@ -2,7 +2,7 @@ import RecipeDatabase from '@utils/RecipeDatabase';
 import {recipesDataset} from '@test-data/recipesDataset';
 import {tagsDataset} from "@test-data/tagsDataset";
 import {ingredientsDataset} from "@test-data/ingredientsDataset";
-import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import {isRecipeEqual, recipeTableElement, shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
 import {shoppingAddedMultipleTimes, shoppingDataset} from "@test-data/shoppingListsDataset";
 
 jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
@@ -239,6 +239,145 @@ describe('RecipeDatabase tests with all recipes already in the database', () => 
         expect(db.get_shopping()).toEqual(shoppingDataset[shoppingDataset.length - 1]);
     });
 
+    test('Remove a recipe from shopping and ensure it is deleted', async () => {
+        expect(expect.arrayContaining(db.get_shopping())).toEqual([]);
+        let expected = new Array<shoppingListTableElement>(
+            {
+                id: 1,
+                name: "Pasta",
+                purchased: false,
+                quantity: 200,
+                recipesTitle: ["Pesto Pasta"],
+                type: "Grain or Cereal",
+                unit: "g"
+            },
+            {
+                id: 2,
+                name: "Basil Leaves",
+                purchased: false,
+                quantity: 50,
+                recipesTitle: ["Pesto Pasta"],
+                type: "Spice",
+                unit: "g"
+            },
+            {
+                id: 3,
+                name: "Parmesan",
+                purchased: false,
+                quantity: 60,
+                recipesTitle: ["Pesto Pasta", "Caesar Salad"],
+                type: "Cheese",
+                unit: "g"
+            }, {
+                id: 4,
+                name: "Olive Oil",
+                purchased: false,
+                quantity: 50,
+                recipesTitle: ["Pesto Pasta"],
+                type: "Oil and Fat",
+                unit: "ml"
+            },
+            {
+                id: 5,
+                name: "Pine Nuts",
+                purchased: false,
+                quantity: 20,
+                recipesTitle: ["Pesto Pasta"],
+                type: "Nuts and Seeds",
+                unit: "g"
+            },
+            {
+                id: 6,
+                name: "Taco Shells",
+                purchased: false,
+                quantity: 6,
+                recipesTitle: ["Chicken Tacos"],
+                type: "Grain or Cereal",
+                unit: "pieces"
+            },
+            {
+                id: 7,
+                name: "Chicken Breast",
+                purchased: false,
+                quantity: 300,
+                recipesTitle: ["Chicken Tacos"],
+                type: "Poultry",
+                unit: "g"
+            },
+            {
+                id: 8,
+                name: "Lettuce",
+                purchased: false,
+                quantity: 50,
+                recipesTitle: ["Chicken Tacos"],
+                type: "Vegetable",
+                unit: "g"
+            },
+            {
+                id: 9,
+                name: "Cheddar",
+                purchased: false,
+                quantity: 50,
+                recipesTitle: ["Chicken Tacos"],
+                type: "Cheese",
+                unit: "g"
+            },
+            {
+                id: 10,
+                name: "Romaine Lettuce",
+                purchased: false,
+                quantity: 100,
+                recipesTitle: ["Caesar Salad"],
+                type: "Vegetable",
+                unit: "g"
+            },
+            {
+                id: 11,
+                name: "Croutons",
+                purchased: false,
+                quantity: 50,
+                recipesTitle: ["Caesar Salad"],
+                type: "Grain or Cereal",
+                unit: "g"
+            },
+            {
+                id: 12,
+                name: "Caesar Dressing",
+                purchased: false,
+                quantity: 50,
+                recipesTitle: ["Caesar Salad"],
+                type: "Sauce",
+                unit: "ml"
+            });
+
+        await db.addRecipeToShopping(recipesDataset[7]);
+        await db.addRecipeToShopping(recipesDataset[1]);
+        await db.addRecipeToShopping(recipesDataset[3]);
+
+        expect(await db.deleteRecipe(recipesDataset[0])).toEqual(true);
+        expect(expect.arrayContaining(db.get_shopping())).toEqual(expected);
+
+
+        expect(await db.deleteRecipe(recipesDataset[7])).toEqual(true);
+        expected = expected.filter(shop => !(shop.name === "Pasta") && !(shop.name === "Basil Leaves") && !(shop.name === "Olive Oil") && !(shop.name === "Pine Nuts"));
+        expected.map(shop => {
+            if (shop.name.includes("Parmesan")) {
+                shop.recipesTitle = ["Caesar Salad"];
+                shop.quantity = 30;
+            }
+        });
+
+        expect(expect.arrayContaining(db.get_shopping())).toEqual(expected);
+
+        expect(await db.deleteRecipe({...recipesDataset[1], id: undefined})).toEqual(true);
+        expected = expected.filter(shop => !(shop.name === "Taco Shells") && !(shop.name === "Chicken Breast") && !(shop.name === "Lettuce") && !(shop.name === "Cheddar"));
+        
+        expect(expect.arrayContaining(db.get_shopping())).toEqual(expected);
+
+        expect(await db.deleteRecipe(recipesDataset[3])).toEqual(true);
+        expect(expect.arrayContaining(db.get_shopping())).toEqual([]);
+    });
+
     // TODO found a test where the insertion fails
     // TODO found a test where the insertion worked but don't return a number
     // TODO found a test where the encodeShopping is call without an id
@@ -267,6 +406,36 @@ describe('RecipeDatabase tests with database completely filled', () => {
         await db.reset();
     });
 
+    test('isRecipeExist return true if the recipe is in the database', () => {
+        expect(db.isRecipeExist({
+            description: "",
+            image_Source: "",
+            ingredients: new Array(),
+            persons: 0,
+            preparation: new Array(),
+            season: new Array(),
+            tags: new Array(),
+            time: 0,
+            title: ""
+        })).toBe(false);
+        expect(db.isRecipeExist({
+            description: "A real description",
+            image_Source: "/path/to/an/image",
+            ingredients: new Array(),
+            persons: 2,
+            preparation: new Array(),
+            season: ['*'],
+            tags: new Array(tagsDataset[3]),
+            time: 20,
+            title: "A real title"
+        })).toBe(false);
+
+        expect(db.isRecipeExist({...recipesDataset[7], title: "", id: undefined})).toBe(false);
+
+        expect(db.isRecipeExist({...recipesDataset[5], id: undefined})).toBe(true);
+        expect(db.isRecipeExist(recipesDataset[0])).toBe(true);
+
+    });
 
     test('ResetShoppingList reset the table of shopping elements', async () => {
         const ingredientsInDatabase = [...db.get_ingredients()];
@@ -288,6 +457,30 @@ describe('RecipeDatabase tests with database completely filled', () => {
         expect(db.get_tags()).toEqual([]);
         expect(db.get_ingredients()).toEqual([]);
         expect(db.get_shopping()).toEqual([]);
+    });
+
+    test('Remove a recipe and ensure it is deleted', async () => {
+        const recipesBefore = new Array(...db.get_recipes());
+
+        expect(await db.deleteRecipe(recipesDataset[4])).toEqual(true);
+        recipesBefore.filter(recipe => !isRecipeEqual(recipe, recipesDataset[4]));
+
+        expect(expect.arrayContaining(db.get_recipes())).toEqual(recipesBefore);
+
+        expect(await db.deleteRecipe(recipesDataset[4])).toEqual(false);
+
+        expect(await db.deleteRecipe({...recipesDataset[9], id: undefined})).toEqual(true);
+        recipesBefore.filter(recipe => !isRecipeEqual(recipe, recipesDataset[9]));
+
+        expect(expect.arrayContaining(db.get_recipes())).toEqual(recipesBefore);
+
+        expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, title: ""})).toEqual(false);
+        expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, description: ""})).toEqual(false);
+        expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, image_Source: ""})).toEqual(false);
+        expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, season: []})).toEqual(true);
+        recipesBefore.filter(recipe => !isRecipeEqual(recipe, recipesDataset[2]));
+
+        expect(expect.arrayContaining(db.get_recipes())).toEqual(recipesBefore);
     });
 
     // TODO to be upgrade with database deleting (not implemented yet)

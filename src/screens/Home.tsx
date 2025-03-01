@@ -12,12 +12,14 @@ import {palette} from "@styles/colors";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {HomeScreenProp} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
+import {useFocusEffect} from "@react-navigation/native";
 
 
 export default function Home({route, navigation}: HomeScreenProp) {
 
     const [refreshing, setRefreshing] = useState<boolean>(false);
 
+    const howManyItemInCarousel = 4;
     // TODO name these recommendation (and maybe add more ?)
     const [elementsForRecommendation1, setElementsForRecommendation1] = useState(new Array<recipeTableElement>());
     const [elementsForRecommendation2, setElementsForRecommendation2
@@ -26,10 +28,10 @@ export default function Home({route, navigation}: HomeScreenProp) {
     const [elementsForRecommendation4, setElementsForRecommendation4] = useState(new Array<recipeTableElement>());
 
     function randomlySearchElements(databaseInstance: RecipeDatabase) {
-        setElementsForRecommendation1(databaseInstance.searchRandomlyRecipes(3));
-        setElementsForRecommendation2(databaseInstance.searchRandomlyRecipes(3));
-        setElementsForRecommendation3(databaseInstance.searchRandomlyRecipes(3));
-        setElementsForRecommendation4(databaseInstance.searchRandomlyRecipes(3));
+        setElementsForRecommendation1(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
+        setElementsForRecommendation2(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
+        setElementsForRecommendation3(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
+        setElementsForRecommendation4(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
     }
 
     const onRefresh = useCallback(() => {
@@ -41,6 +43,36 @@ export default function Home({route, navigation}: HomeScreenProp) {
     useEffect(() => {
         randomlySearchElements(RecipeDatabase.getInstance());
     }, []);
+
+    useFocusEffect(() => {
+        const recipeDb = RecipeDatabase.getInstance();
+        const recipeTitleDeleted = new Set<string>;
+        const checkIfRecipeExistAndUpdateTitlesToDelete = (recipeArray: Array<recipeTableElement>) => {
+            for (const recipe of recipeArray) {
+                if (!recipeDb.isRecipeExist(recipe)) {
+                    recipeTitleDeleted.add(recipe.title);
+                }
+            }
+        };
+        checkIfRecipeExistAndUpdateTitlesToDelete(elementsForRecommendation1);
+        checkIfRecipeExistAndUpdateTitlesToDelete(elementsForRecommendation2);
+        checkIfRecipeExistAndUpdateTitlesToDelete(elementsForRecommendation3);
+        checkIfRecipeExistAndUpdateTitlesToDelete(elementsForRecommendation4);
+
+        if (recipeTitleDeleted.size > 0) {
+            const filterArrayAndUpdateState = (recipeArray: Array<recipeTableElement>, setState: React.Dispatch<React.SetStateAction<Array<recipeTableElement>>>,) => {
+                const filteredArray = recipeArray.filter(recipe => !recipeTitleDeleted.has(recipe.title));
+                if (filteredArray.length < howManyItemInCarousel) {
+                    setState([...filteredArray, ...recipeDb.searchRandomlyRecipes(howManyItemInCarousel - filteredArray.length)]);
+                }
+            };
+            filterArrayAndUpdateState(elementsForRecommendation1, setElementsForRecommendation1);
+            filterArrayAndUpdateState(elementsForRecommendation2, setElementsForRecommendation2);
+            filterArrayAndUpdateState(elementsForRecommendation3, setElementsForRecommendation3);
+            filterArrayAndUpdateState(elementsForRecommendation4, setElementsForRecommendation4);
+        }
+
+    });
 
     return (
         <SafeAreaView style={screenViews.screenView}>

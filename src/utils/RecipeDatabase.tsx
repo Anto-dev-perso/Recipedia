@@ -202,8 +202,7 @@ export default class RecipeDatabase {
         if (typeof dbRes === "number" && !Number.isNaN(dbRes)) {
             dbRecipe = await this._recipesTable.searchElementById<encodedRecipeElement>(dbRes, this._dbConnection)
         } else {
-            const searchedTitle = new Map<string, string>([[recipeColumnsNames.title, recipe.title], [recipeColumnsNames.description, rec.description], [recipeColumnsNames.image, rec.image_Source], [recipeColumnsNames.persons, recipe.persons.toString()], [recipeColumnsNames.time, recipe.time.toString()]]);
-            dbRecipe = await this._recipesTable.searchElement<encodedRecipeElement>(this._dbConnection, searchedTitle) as encodedRecipeElement;
+            dbRecipe = await this._recipesTable.searchElement<encodedRecipeElement>(this._dbConnection, this.constructSearchRecipeStructure(rec)) as encodedRecipeElement;
         }
         if (dbRecipe === undefined) {
             console.warn("addRecipe: Searching for recipe  ", recipeConverted.TITLE, " didn't worked")
@@ -258,7 +257,7 @@ export default class RecipeDatabase {
         previousShop.quantity = (shopToAdd.quantity + previousShop.quantity);
         previousShop.recipesTitle = [...previousShop.recipesTitle, ...shopToAdd.recipesTitle];
 
-        if (await this._shoppingListTable.editElement(previousShop.id, new Map<string, number | string>([[shoppingListColumnsNames.quantity, previousShop.quantity], [shoppingListColumnsNames.recipeTitles, previousShop.recipesTitle.join(EncodingSeparator)]]), this._dbConnection)) {
+        if (await this._shoppingListTable.editElementById(previousShop.id, new Map<string, number | string>([[shoppingListColumnsNames.quantity, previousShop.quantity], [shoppingListColumnsNames.recipeTitles, previousShop.recipesTitle.join(EncodingSeparator)]]), this._dbConnection)) {
             this.update_shopping(previousShop);
             return true;
         }
@@ -267,7 +266,7 @@ export default class RecipeDatabase {
 
     public async purchaseIngredientOfShoppingList(ingredientId: number, newPurchasedValue: boolean) {
 
-        if (await this._shoppingListTable.editElement(ingredientId, new Map<string, number | string>([[shoppingListColumnsNames.purchased, newPurchasedValue.toString()]]), this._dbConnection)) {
+        if (await this._shoppingListTable.editElementById(ingredientId, new Map<string, number | string>([[shoppingListColumnsNames.purchased, newPurchasedValue.toString()]]), this._dbConnection)) {
             this.setPurchasedOfShopping(ingredientId, newPurchasedValue);
             return true;
         }
@@ -320,8 +319,28 @@ export default class RecipeDatabase {
         }
     }
 
+    public async deleteRecipe(recipe: recipeTableElement): Promise<boolean> {
+        let recipeDeleted: boolean;
+        if (recipe.id !== undefined) {
+            recipeDeleted = await this._recipesTable.deleteElementById(recipe.id, this._dbConnection);
+        } else {
+            recipeDeleted = await this._recipesTable.deleteElement(this._dbConnection, this.constructSearchRecipeStructure(recipe));
+        }
+        if (recipeDeleted) {
+            // TODO add a remove_recipe_from_shopping
+            await this.removeRecipeFromShopping(recipe);
+            this.remove_recipe(recipe);
+        }
+        return recipeDeleted;
+    }
+
+
     public get_recipes(): Array<recipeTableElement> {
         return this._recipes;
+    }
+
+    public isRecipeExist(recipeToSearch: recipeTableElement): boolean {
+        return this.find_recipe(recipeToSearch) !== undefined;
     }
 
     public get_ingredients() {
@@ -462,6 +481,9 @@ export default class RecipeDatabase {
         }
     }
 
+
+    // TODO nutrition
+
     // TODO to test
     public update_shopping(shop: shoppingListTableElement) {
         if (shop.id !== undefined) {
@@ -475,7 +497,6 @@ export default class RecipeDatabase {
         }
         console.error("update_shopping Element of shopping named ", shop.name, " doesn't exist already");
     }
-
 
     public async resetShoppingList() {
 
@@ -575,6 +596,10 @@ export default class RecipeDatabase {
         }
         return result;
 
+    }
+
+    protected constructSearchRecipeStructure(recipe: recipeTableElement): Map<string, string | number> {
+        return new Map<string, string | number>([[recipeColumnsNames.title, recipe.title], [recipeColumnsNames.description, recipe.description], [recipeColumnsNames.image, recipe.image_Source]]);
     }
 
     protected encodeRecipe(recToEncode: recipeTableElement): encodedRecipeElement {
@@ -864,6 +889,52 @@ export default class RecipeDatabase {
             console.warn("addRecipe: Searching for recipe  ", shop.recipesTitle, " didn't worked")
         } else {
             this.add_shopping(this.decodeShopping(dbShopping));
+        }
+    }
+
+    protected async removeRecipeFromShopping(recipe: recipeTableElement) {
+        const editedShopping = new Set<string>;
+        const deletedShopping = new Set<string>;
+        for (const shop of this._shopping) {
+            if (shop.recipesTitle.includes(recipe.title)) {
+                const recipeIng = recipe.ingredients.find((ingredient) => ingredient.ingName === shop.name);
+                if (recipeIng === undefined) {
+                    console.warn("removeRecipeFromShopping: Error can't find ingredient in recipe");
+                } else if (recipeIng.quantity === undefined) {
+                    console.warn("removeRecipeFromShopping: Error can't find quantity in ingredient");
+                } else {
+                    shop.quantity -= recipeIng.quantity;
+                    if (shop.quantity <= 0) {
+                        deletedShopping.add(recipeIng.ingName);
+                    } else {
+                        editedShopping.add(recipeIng.ingName);
+                    }
+                }
+            }
+        }
+        for (const nameToEdit of editedShopping) {
+            const currentShopping = this._shopping.find(shop => shop.name
+                === nameToEdit) as shoppingListTableElement;
+
+            const editMap = new Map<string, number | string>([[shoppingListColumnsNames.quantity, currentShopping.quantity], [shoppingListColumnsNames.recipeTitles, currentShopping.recipesTitle.join(EncodingSeparator)]]);
+            if (currentShopping.id !== undefined) {
+                await this._shoppingListTable.editElementById(currentShopping.id, editMap, this._dbConnection);
+            } else {
+                const foundShopping = await this._shoppingListTable.searchElement<encodedShoppingListElement>(this._dbConnection, new Map<string, string>([[shoppingListColumnsNames.ingredient, currentShopping.name]])) as encodedShoppingListElement;
+                await this._shoppingListTable.editElementById(foundShopping.ID, editMap, this._dbConnection);
+            }
+            currentShopping.recipesTitle.splice(currentShopping.recipesTitle.indexOf(recipe.title), 1);
+        }
+        for (const nameToDelete of deletedShopping) {
+            const currentShopping = this._shopping.find(shop => shop.name
+                === nameToDelete) as shoppingListTableElement;
+
+            if (currentShopping.id !== undefined) {
+                await this._shoppingListTable.deleteElementById(currentShopping.id, this._dbConnection);
+            } else {
+                await this._shoppingListTable.deleteElement(this._dbConnection, new Map<string, string>([[shoppingListColumnsNames.ingredient, nameToDelete]]));
+            }
+            this._shopping.splice(this._shopping.findIndex(shop => shop.name === nameToDelete), 1);
         }
     }
 
