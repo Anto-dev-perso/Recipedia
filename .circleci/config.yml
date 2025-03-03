@@ -20,6 +20,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
+          override-ci-command: npm install --include=dev
       - persist_to_workspace:
           root: ~/workspace
           paths:
@@ -59,9 +60,6 @@ jobs:
             echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> $BASH_ENV
             echo 'export PATH=$JAVA_HOME/bin:$PATH' >> $BASH_ENV
       - run:
-          name: Install Node.js & npm
-          command: sudo apt update && sudo apt install -y nodejs npm
-      - run:
           name: Install EAS CLI
           command: npm install -g eas-cli
       - run:
@@ -87,18 +85,37 @@ jobs:
       - run:
           name: Start emulator , install app and run E2E tests
           command: |
-            emulator -avd CI_EMULATOR -no-window > /dev/null 2>&1 &
+            # Start the emulator
+            emulator -avd CI_EMULATOR -no-window -wipe-data -partition-size 1024 > /dev/null 2>&1 &
             echo "Waiting for emulator to fully boot..."
+            
+            # Wait for ADB to detect the emulator
             adb wait-for-device
+            
+            # Ensure Android system is fully started
             echo "Waiting for Android system to fully start..."
-            until adb shell getprop sys.boot_completed; do;sleep 5;done
-            echo "Emulator is fully booted!"  
+            until adb shell getprop sys.boot_completed > /dev/null 2>&1; do sleep 5; done
+            echo "Emulator is fully booted!"
+            
+            #  Ensure system services are fully initialized 
+            echo "Waiting for package manager to be available..."
+            until adb shell pm list packages > /dev/null 2>&1; do sleep 5; done
+            echo "Package manager is ready!"
+            
+            #  Ensure settings provider is ready 
+            echo "Waiting for settings provider to be available..."
+            until adb shell content query --uri content://settings/global --where "name='airplane_mode_on'" > /dev/null 2>&1; do sleep 5; done
+            echo "Settings provider is ready!"
+            
+            # Ensure Storage Manager Service is ready
+            echo "Waiting for storage manager service..."
+            until adb shell dumpsys package | grep -m 1 "StorageManagerService"; do sleep 5; done
+            echo "Storage manager service is ready!"
+            
+            # Show available devices
             adb devices
+            
             npm run install:android
-            # Ensure ADB is running correctly
-            adb kill-server
-            adb start-server
-            adb devices
             npm run test:e2e-android
       - store_artifacts:
           path: report.xml

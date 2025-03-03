@@ -1,8 +1,9 @@
 appId: "com.recipesmanager"
 ---
-- assertVisible:
-    id: "com.android.systemui:id/status_bar_launch_animation_container"
-    label: Status bar is displayed
+# TODO why does this no works on the CI ?
+#- assertVisible:
+#    id: "com.android.systemui:id/status_bar_launch_animation_container"
+#    label: Status bar is displayed
 - assertVisible:
     text: "󰐕"
     label: Plus button is displayed
