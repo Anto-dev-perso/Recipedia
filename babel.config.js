@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 import {fileURLToPath} from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,6 +39,7 @@ export default function (api) {
                     ],
                     alias: getAliases(),
                 },
+                "react-native-paper/babel",
             ],
         ],
     };

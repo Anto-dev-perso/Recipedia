@@ -4,7 +4,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import Home from '@screens/Home';
 import Parameters from '@screens/Parameters';
 import Shopping from '@screens/Shopping';
-// TODO use eslint-config-expo ?
 // import {YoutubeCamera, OCRComponent, RecipeList} from '../index';
 import Recipe from '@screens/Recipe';
 import Search from '@screens/Search';
@@ -29,6 +28,7 @@ import FileGestion from "@utils/FileGestion";
 import {ingredientsDataset} from "@test-data/ingredientsDataset";
 import {tagsDataset} from "@test-data/tagsDataset";
 import {recipesDataset} from "@test-data/recipesDataset";
+import {PaperProvider} from "react-native-paper";
 
 
 // TODO manage horizontal mode
@@ -39,7 +39,10 @@ import {recipesDataset} from "@test-data/recipesDataset";
 // TODO useMemo for time consuming function
 
 // TODO add translations
-// const initI18n = i18n; // instanciate the i18n instance
+// TODO use eslint-config-expo ?
+// TODO replace react-navigation by expo-router
+
+//  const initI18n = i18n; // instanciate the i18n instance
 
 
 export default function App() {
@@ -139,111 +142,43 @@ export default function App() {
     }
 
     return (
-        // <>
-        // <StatusBar barStyle={"dark-content"}/>
-        //   <SafeAreaView>
-        //     <ScrollView>
-        //     {showCamera ? (
-        //       <YoutubeCamera onBackPress={() => setShowCamera(false)}/>) : (
-        //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        //         <Button title="Ouvrir la caméra" onPress={() => setShowCamera(true)} />
-        //         </View>
-        //       )}
-        //     </ScrollView>
-        //   </SafeAreaView>
-        // </>
+        <PaperProvider>
+            <NavigationContainer>
+                <StackScreen.Navigator initialRouteName='Root' screenOptions={{headerShown: false}}>
+                    <StackScreen.Group screenOptions={{
+                        presentation: 'transparentModal',
+                        contentStyle: {backgroundColor: palette.modalBackground}
+                    }}>
+                        <StackScreen.Screen name="Modal" component={ModalImageSelect}/>
+                    </StackScreen.Group>
+                    <StackScreen.Screen name="Recipe" component={Recipe}/>
+                    <StackScreen.Screen name="Root" component={Root}/>
+                    <StackScreen.Screen name="Search" component={Search}/>
+                    <StackScreen.Screen name="Crop" component={Crop} options={{
+                        // headerStyle: {backgroundColor: cameraPalette.overlayColor},
+                        headerShown: false,
+                        // headerTitle: "",
 
+                        // headerRight: () => (
+                        //   <View style={screenViews.tabView}>
+                        //     <View style={cropView.overlay}>
+                        //       {displayIcon(enumIconTypes.materialCommunity, rotateIcon, iconsSize.medium, cameraPalette.buttonsColor)}
+                        //     </View>
 
-        // <ScrollView>
-        // {showCamera ? (<YoutubeCamera onBackPress={() => setShowCamera(false)} />) : (
-        //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        //       <Button title="Open the camera" onPress={() => setShowCamera(true)} />
-        //     </View>
-        //   )}
-        //  {showTextRecognition ? (
-        //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        //     <OCRComponent onBackPress={() => setShowTextRecognition(false)} />
-        //   </View>
-        // ) : (
-        //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        //     <Button title="Recognize the text of a picture" onPress={() => setShowTextRecognition(true)} />
-        // </View> )}
-        //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        //     <Button title="Open the database" onPress={() => openConnection()} />
-        //     <Button title="Create the database" onPress={() => createTable()} />
-        //     <Button title="Insert in the database" onPress={() => insertRecipe()} />
-        //     <Button title="Search in the database" onPress={() => selectRecipes()} />
-        //     <Button title="Delete the database" onPress={() => deleteTable()} />
-        //   </View>
-        // </ScrollView>
+                        //     <View style={cropView.overlay}>
+                        //       {displayIcon(enumIconTypes.materialCommunity, flipIcon, iconsSize.medium, cameraPalette.buttonsColor)}
+                        //     </View>
 
-        // <View style={{flex:1, flexDirection: 'column'}}>
-        //   {/* <Button title="Open the database" onPress={() => openConnection()} />
-        //   <Button title="Create the database" onPress={() => createTable()} />
-        //   <Button title="Search in the database" onPress={() => selectRecipes()} /> */}
-        //   {/* <RecipeList/>
-        //   <CalendarComponent/> */}
-        //     {/* <Button title={t('common.translated-text')}/> */}
-        //     {/* <Button title="Button for E2E test" testID='test_id' onPress={() => setShowTestText(true)} />
-        //     {showTestText ?  <Text>The button has been pressed</Text> : null} */}
-        //   {/* <View>
-        //     <Text style={typoStyles.title}>
-        //       Test of custom font</Text>
-        //   </View> */}
-
-        // {/* Debug */}
-        // <View style={{backgroundColor: 'blue', flex:1, flexDirection:'row'}}>
-        //     <RoundButton diameter={100} text='Text to display' icon={{name: "rocket", size: 50, color: "#900"}} onPressFunction={pressFunction}/>
-        //     <RoundButton diameter={200} text='Another text' onPressFunction={pressFunction}/>
-        //     <RoundButton diameter={70} onPressFunction={pressFunction}/>
-        //   </View>
-        //   <View style={{backgroundColor: 'orange', flex:1, flexDirection:'row'}}>
-        //     <SquareButton side={100} onPressFunction={pressFunction}/>
-        //     <SquareButton side={200} image={require('./assets/images/Test.jpg')} onPressFunction={pressFunction}/>
-        //   </View>
-        //   <View style={{backgroundColor: 'green', flex:1.3, flexDirection:'column'}}>
-        //     <RectangleRoundedButton length={100} text='Rectangle square button'/>
-        //     <RectangleRoundedButton length={150}/>
-        //   </View>
-
-        // </View>
-
-
-        <NavigationContainer>
-            <StackScreen.Navigator initialRouteName='Root' screenOptions={{headerShown: false}}>
-                <StackScreen.Group screenOptions={{
-                    presentation: 'transparentModal',
-                    contentStyle: {backgroundColor: palette.modalBackground}
-                }}>
-                    <StackScreen.Screen name="Modal" component={ModalImageSelect}/>
-                </StackScreen.Group>
-                <StackScreen.Screen name="Recipe" component={Recipe}/>
-                <StackScreen.Screen name="Root" component={Root}/>
-                <StackScreen.Screen name="Search" component={Search}/>
-                <StackScreen.Screen name="Crop" component={Crop} options={{
-                    // headerStyle: {backgroundColor: cameraPalette.overlayColor},
-                    headerShown: false,
-                    // headerTitle: "",
-
-                    // headerRight: () => (
-                    //   <View style={screenViews.tabView}>
-                    //     <View style={cropView.overlay}>
-                    //       {displayIcon(enumIconTypes.materialCommunity, rotateIcon, iconsSize.medium, cameraPalette.buttonsColor)}
-                    //     </View>
-
-                    //     <View style={cropView.overlay}>
-                    //       {displayIcon(enumIconTypes.materialCommunity, flipIcon, iconsSize.medium, cameraPalette.buttonsColor)}
-                    //     </View>
-
-                    //     <Pressable style={cropView.overlay} onPress={() => console.warn("TODO")}>
-                    //       <Text style={cropText.overlay}>Redimensionner</Text>
-                    //     </Pressable>
-                    //   </View>
-                    // )
-                }}/>
-            </StackScreen.Navigator>
-        </NavigationContainer>
-    )
+                        //     <Pressable style={cropView.overlay} onPress={() => console.warn("TODO")}>
+                        //       <Text style={cropText.overlay}>Redimensionner</Text>
+                        //     </Pressable>
+                        //   </View>
+                        // )
+                    }}/>
+                </StackScreen.Navigator>
+            </NavigationContainer>
+        </PaperProvider>
+    );
 };
 const styles = EStyleSheet.create({
     splashContainer: {

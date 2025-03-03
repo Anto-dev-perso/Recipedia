@@ -11,7 +11,6 @@ on:
 orbs:
   node: circleci/node@7.1.0
   android: circleci/android@3.1.0
-  # heroku: circleci/heroku@1.2.6
 
 jobs:
   Install packages:
@@ -38,10 +37,6 @@ jobs:
       - store_artifacts:
           path: jest-results.json
           destination: test-results
-      - persist_to_workspace:
-          root: ~/workspace
-          paths:
-            - .
 
   # TODO cache build so that it doesn't have to re build everything
   E2E tests:
@@ -55,7 +50,6 @@ jobs:
       - restore_cache:
           keys:
             - v1-gradle-{{ checksum "package.json" }}-{{ checksum "eas.json" }}
-            - v1-gradle-
       - run:
           name: Set Java version
           command: |
@@ -64,11 +58,9 @@ jobs:
             sudo update-java-alternatives --set java-1.17.0-openjdk-amd64
             echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> $BASH_ENV
             echo 'export PATH=$JAVA_HOME/bin:$PATH' >> $BASH_ENV
-      - android/create_avd:
-          avd_name: CI_EMULATOR
-          install: true
-          system_image: system-images;android-34;google_apis;x86_64
-          additional_args: "--device pixel_5"
+      - run:
+          name: Install Node.js & npm
+          command: sudo apt update && sudo apt install -y nodejs npm
       - run:
           name: Install EAS CLI
           command: npm install -g eas-cli
@@ -87,6 +79,11 @@ jobs:
           command: |
             curl -Ls "https://get.maestro.mobile.dev" | bash
             echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> $BASH_ENV
+      - android/create_avd:
+          avd_name: CI_EMULATOR
+          install: true
+          system_image: system-images;android-34;google_apis;x86_64
+          additional_args: "--device pixel_5"
       - run:
           name: Start emulator , install app and run E2E tests
           command: |

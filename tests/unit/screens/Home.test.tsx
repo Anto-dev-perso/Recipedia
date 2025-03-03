@@ -10,7 +10,7 @@ import {ingredientsDataset} from "@test-data/ingredientsDataset";
 import {tagsDataset} from "@test-data/tagsDataset";
 
 
-jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 
 jest.mock('@components/organisms/VerticalBottomButtons', () => require('@mocks/components/organisms/VerticalBottomButtons-mock').verticalBottomButtonsMock);
@@ -21,7 +21,7 @@ jest.mock('expo-font', () => ({
     loadAsync: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
     useFonts: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
 }));
-jest.mock('react-native-gesture-handler', () => require('@mocks/expo/react-native-gesture-handler-mock').gestureHandlerMock());
+jest.mock('react-native-gesture-handler', () => require('@mocks/deps/react-native-gesture-handler-mock').gestureHandlerMock());
 const Stack = createStackNavigator();
 
 describe('Home Screen', () => {

@@ -3,7 +3,7 @@ import {fireEvent, render} from '@testing-library/react-native';
 import CheckBoxButton, {CheckBoxButtonProps} from '@components/atomic/CheckBoxButton';
 import {palette} from "@styles/colors";
 
-jest.mock('@expo/vector-icons', () => require('@mocks/expo/expo-vector-icons-mock'));
+jest.mock('@expo/vector-icons', () => require('@mocks/deps/expo-vector-icons-mock'));
 
 describe('CheckBoxButton Component', () => {
     const mockOnPress = jest.fn();

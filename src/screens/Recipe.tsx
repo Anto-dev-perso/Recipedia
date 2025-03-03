@@ -214,25 +214,40 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         const [unitAndQuantity, newName] = newIngredient.split(textSeparator);
         const [newQuantity, newUnit] = unitAndQuantity.split(unitySeparator);
 
-        const oldIngToCompareWith: ingredientTableElement = {
+
+        const ingredientCopy = new Array<ingredientTableElement>(...this.state.recipeIngredients);
+        const foundIndex = ingredientCopy.findIndex(ingredient => isIngredientEqual(ingredient, {
             ingName: oldName,
             quantity: Number(oldQuantity),
             unit: oldUnit,
             season: ["*"],
             type: ingredientType.undefined
-        };
-
-        this.setRecipeIngredients(this.state.recipeIngredients.map(ingredient => {
-            if (isIngredientEqual(ingredient, oldIngToCompareWith)) {
-                return {
-                    ...ingredient, ingName: newName,
-                    quantity: Number(newQuantity),
-                    unit: newUnit
-                };
-            } else {
-                return {...ingredient};
-            }
         }));
+
+        if (foundIndex === -1) {
+            console.warn("Can't find ingredient named ", oldName, " for edit");
+        } else {
+            // Copy to avoid editing the original array (needed anyway for useState)
+            const foundIngredient = {...ingredientCopy[foundIndex]};
+            if (oldName !== newName) {
+                foundIngredient.ingName = newName;
+            }
+            if (oldQuantity !== newQuantity) {
+                foundIngredient.quantity = Number(newQuantity);
+            }
+            if (oldUnit !== newUnit) {
+                foundIngredient.unit = newUnit;
+            }
+
+            if (foundIngredient.unit === "") {
+                const ingredientExist = RecipeDatabase.getInstance().get_ingredients().find(ingredient => ingredient.ingName.toLowerCase() === newName.toLowerCase());
+                if (ingredientExist) {
+                    foundIngredient.unit = ingredientExist.unit;
+                }
+            }
+            ingredientCopy[foundIndex] = foundIngredient;
+            this.setRecipeIngredients(ingredientCopy);
+        }
     };
 
     addNewIngredient = () => {
@@ -374,7 +389,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
 
 
     fillOneField = (uri: string, field: recipeColumnsNames) => {
-        // TODO for debug only hardocded values, remove these for release
+        // TODO for debug only hardcoded values, remove these for release
         switch (field) {
             case recipeColumnsNames.image:
                 // this.setRecipeImage(uri);
@@ -762,7 +777,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         return (
             <SafeAreaView style={screenViews.screenView} key={this.state.forceUpdateKey}>
                 <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
-                            style={scrollView(rectangleButtonHeight).view}>
+                            style={scrollView(rectangleButtonHeight).view} nestedScrollEnabled={true}>
                     <StatusBar animated={true} backgroundColor={palette.primary}/>
 
                     {/*Image*/}

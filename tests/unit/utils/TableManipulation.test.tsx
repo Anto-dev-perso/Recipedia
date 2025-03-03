@@ -4,7 +4,7 @@ import {databaseColumnType, encodedType} from '@customTypes/DatabaseElementTypes
 
 import * as SQLite from 'expo-sqlite';
 
-jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 
 type TestDbType = { ID?: number, name: string, age: number };
 

@@ -11,7 +11,7 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {listFilter} from "@customTypes/RecipeFiltersTypes";
 
 
-jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 
 jest.mock('@components/organisms/RecipeTags', () => require('@mocks/components/organisms/RecipeTags-mock').recipeTagsMock);
@@ -20,7 +20,7 @@ jest.mock('@components/organisms/RecipeText', () => require('@mocks/components/o
 jest.mock('@components/organisms/RecipeTextRender', () => require('@mocks/components/organisms/RecipeTextRender-mock').recipeTextRenderMock);
 jest.mock('@components/molecules/BottomTopButton', () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock);
 
-// TODO can be put oustide of this file (in mock for instance)
+// TODO can be put outside of this file (in mock for instance)
 const openModalForFieldMock = (recipeInstance: Recipe) => {
     return jest.fn((field: recipeColumnsNames) => {
         switch (field) {
@@ -73,8 +73,8 @@ describe('Recipe Component tests', () => {
 
     const mockRouteEdit: RecipePropType = {
         mode: 'addManually',
-        recipe: recipesDataset[6]
-    };
+        recipe: {...recipesDataset[6]} as const
+    } as const;
 
     const mockRouteAdd: RecipePropType = {mode: 'addFromPic', img: {uri: 'not used', height: 100, width: 100}};
 
@@ -87,7 +87,10 @@ describe('Recipe Component tests', () => {
         await dbInstance.addMultipleTags(tagsDataset);
         await dbInstance.addMultipleRecipes(recipesDataset);
     });
-    afterEach(async () => await dbInstance.reset());
+    afterEach(async () => {
+        await dbInstance.reset();
+        mockRouteEdit.recipe = {...recipesDataset[6]};
+    });
 
     // -------- INIT CASES --------
     test('Initial state is correctly set in readOnly mode', () => {
@@ -667,6 +670,7 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipePreparation::SuffixText').props.children).toBeUndefined();
 
     });
+
     test('add recipeDescription and reflects in RecipeDescription only', async () => {
         const recipeRef = React.createRef<Recipe>();
         const {rerender, getByTestId, queryByTestId} = render(
@@ -886,6 +890,7 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipePreparation::SuffixText').props.children).toBeUndefined();
 
     });
+
     test('add recipePersons and reflects in RecipePersons only', async () => {
         const recipeRef = React.createRef<Recipe>();
         const {rerender, getByTestId, queryByTestId} = render(
@@ -1039,6 +1044,7 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipePreparation::SuffixText').props.children).toBeUndefined();
 
     });
+
     test('add recipeIngredients and reflects in RecipeIngredients only', async () => {
         const recipeRef = React.createRef<Recipe>();
         const {rerender, getByTestId, queryByTestId} = render(
@@ -1191,6 +1197,7 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipePreparation::SuffixText').props.children).toBeUndefined();
 
     });
+
     test('add recipeTime and reflects in RecipeTime only', async () => {
         const recipeRef = React.createRef<Recipe>();
         const {rerender, getByTestId, queryByTestId} = render(
@@ -1344,6 +1351,7 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipePreparation::SuffixText').props.children).toBeUndefined();
 
     });
+
     test('add recipePreparation and reflects in RecipePreparation only', async () => {
         const recipeRef = React.createRef<Recipe>();
         const {rerender, getByTestId, queryByTestId} = render(
@@ -1722,5 +1730,5 @@ describe('Recipe Component tests', () => {
 
     });
 
-    // TODo add delete test
+    // TODO add delete test
 });

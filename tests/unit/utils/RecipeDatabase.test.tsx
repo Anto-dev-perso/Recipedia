@@ -5,7 +5,7 @@ import {ingredientsDataset} from "@test-data/ingredientsDataset";
 import {isRecipeEqual, recipeTableElement, shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
 import {shoppingAddedMultipleTimes, shoppingDataset} from "@test-data/shoppingListsDataset";
 
-jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 
@@ -371,7 +371,7 @@ describe('RecipeDatabase tests with all recipes already in the database', () => 
 
         expect(await db.deleteRecipe({...recipesDataset[1], id: undefined})).toEqual(true);
         expected = expected.filter(shop => !(shop.name === "Taco Shells") && !(shop.name === "Chicken Breast") && !(shop.name === "Lettuce") && !(shop.name === "Cheddar"));
-        
+
         expect(expect.arrayContaining(db.get_shopping())).toEqual(expected);
 
         expect(await db.deleteRecipe(recipesDataset[3])).toEqual(true);

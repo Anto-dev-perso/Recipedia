@@ -1,4 +1,3 @@
-import {palette} from "@styles/colors"
 import {screenViews} from "@styles/spacing"
 import {
     editableText,
@@ -10,8 +9,12 @@ import {
     unitySeparator
 } from "@styles/typography"
 import React from "react"
-import {Text, TextInput, TouchableOpacity, View} from "react-native"
+import {TouchableOpacity, View} from "react-native"
+import {Text, TextInput} from "react-native-paper";
+import {palette} from "@styles/colors";
+import TextInputWithDropDown from "@components/molecules/TextInputWithDropDown";
 
+// TODO use variant for Text
 
 export type TextRenderProps = {
     title?: string
@@ -50,9 +53,9 @@ export default function TextRender(props: TextRenderProps) {
             <View key={index}>
                 {props.editText ?
                     <View style={screenViews.tabView}>
-                        <TextInput style={{...paragraphBorder, flex: 2, textAlign: "center"}} value={quantity}
-                                   onChangeText={newQuantity => props.editText?.onChangeFunction(`${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`, item)}/>
-
+                        <TextInput style={{...paragraphBorder, flex: 2, textAlign: "center"}}
+                                   value={quantity}
+                                   onChangeText={newQuantity => props.editText?.onChangeFunction(item, `${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`)}/>
                         <Text style={{
                             ...paragraphBorder,
                             backgroundColor: palette.backgroundColor,
@@ -61,9 +64,11 @@ export default function TextRender(props: TextRenderProps) {
                             textAlignVertical: "center"
                         }}>{unit}</Text>
 
-                        <TextInput style={{...paragraphBorder, flex: 3}} value={ingName}
-                                   onChangeText={newIngredientName => props.editText?.onChangeFunction(`${unitAndQuantity}${textSeparator}${newIngredientName}`, item)}
-                                   multiline={true}/>
+                        <View style={{flex: 3}}>
+                            <TextInputWithDropDown value={ingName}
+                                                   onChangeText={newIngredientName => props.editText?.onChangeFunction(item, `${unitAndQuantity}${textSeparator}${newIngredientName}`)}
+                                                   style={{...paragraphBorder}}/>
+                        </View>
                     </View>
                     :
                     <View style={screenViews.tabView}>

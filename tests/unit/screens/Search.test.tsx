@@ -9,13 +9,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 
 
-jest.mock('expo-sqlite', () => require('@mocks/expo/expo-sqlite-mock').expoSqliteMock());
+jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 jest.mock('@components/organisms/FiltersSelection', () => require('@mocks/components/organisms/FiltersSelection-mock').filtersSelectionMock);
 jest.mock('@components/organisms/SearchBar', () => require('@mocks/components/organisms/SearchBar-mock').searchBarMock);
 jest.mock('@components/organisms/SearchResultDisplay', () => require('@mocks/components/organisms/SearchResultDisplay-test').searchResultDisplayMock);
 
-jest.mock('react-native-gesture-handler', () => require('@mocks/expo/react-native-gesture-handler-mock').gestureHandlerMock());
+jest.mock('react-native-gesture-handler', () => require('@mocks/deps/react-native-gesture-handler-mock').gestureHandlerMock());
 const Stack = createStackNavigator();
 
 describe('Search Screen', () => {
