@@ -1,0 +1,19 @@
+name: E2E Tests Workflow
+
+#on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    types:
+#      - opened
+#      - reopened
+#  schedule:
+#    - cron: '0 0 * * *'  # Runs every night at midnight UTC
+
+jobs:
+  build_and_maestro:
+    type: build
+    params:
+      platform: android
+      profile: build-and-maestro-test

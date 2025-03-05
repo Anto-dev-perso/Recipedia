@@ -10,7 +10,6 @@ on:
 
 orbs:
   node: circleci/node@7.1.0
-  android: circleci/android@3.1.0
 
 jobs:
   Install packages:
@@ -39,114 +38,19 @@ jobs:
           path: jest-results.json
           destination: test-results
 
-  # TODO cache build so that it doesn't have to re build everything
   E2E tests:
-    executor:
-      name: android/android_machine
-      tag: default
+    executor: node/default
     working_directory: ~/workspace/repo
     steps:
       - attach_workspace:
           at: ~/workspace
-      - restore_cache:
-          keys:
-            - v1-gradle-{{ checksum "package.json" }}-{{ checksum "eas.json" }}
-      - run:
-          name: Set Java version
-          command: |
-            sudo apt-get update
-            sudo apt-get install openjdk-17-jdk
-            sudo update-java-alternatives --set java-1.17.0-openjdk-amd64
-            echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> $BASH_ENV
-            echo 'export PATH=$JAVA_HOME/bin:$PATH' >> $BASH_ENV
       - run:
           name: Install EAS CLI
           command: npm install -g eas-cli
       - run:
-          working_directory: ~/workspace/repo
-          command: |
-            npm run build:android
-          name: Build app
-      - save_cache:
-          paths:
-            - ~/.gradle/caches
-            - ~/.gradle/wrapper
-          key: v1-gradle-{{ checksum "package.json" }}-{{ checksum "eas.json" }}
-      - run:
-          name: Install Maestro CLI
-          command: |
-            curl -Ls "https://get.maestro.mobile.dev" | bash
-            echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> $BASH_ENV
-      - android/create_avd:
-          avd_name: CI_EMULATOR
-          install: true
-          system_image: system-images;android-34;google_apis;x86_64
-          additional_args: "--device pixel_5"
-      - run:
-          name: Start emulator , install app and run E2E tests
-          command: |
-            # Start the emulator
-            emulator -avd CI_EMULATOR -no-window -wipe-data -partition-size 1024 > /dev/null 2>&1 &
-            echo "Waiting for emulator to fully boot..."
-            
-            # Wait for ADB to detect the emulator
-            adb wait-for-device
-            
-            # Ensure Android system is fully started
-            echo "Waiting for Android system to fully start..."
-            until adb shell getprop sys.boot_completed > /dev/null 2>&1; do sleep 5; done
-            echo "Emulator is fully booted!"
-            
-            #  Ensure system services are fully initialized 
-            echo "Waiting for package manager to be available..."
-            until adb shell pm list packages > /dev/null 2>&1; do sleep 5; done
-            echo "Package manager is ready!"
-            
-            #  Ensure settings provider is ready 
-            echo "Waiting for settings provider to be available..."
-            until adb shell content query --uri content://settings/global --where "name='airplane_mode_on'" > /dev/null 2>&1; do sleep 5; done
-            echo "Settings provider is ready!"
-            
-            # Ensure Storage Manager Service is ready
-            echo "Waiting for storage manager service..."
-            until adb shell dumpsys package | grep -m 1 "StorageManagerService"; do sleep 5; done
-            echo "Storage manager service is ready!"
-            
-            # Show available devices
-            adb devices
-            
-            npm run install:android
-            npm run test:e2e-android
-      - store_artifacts:
-          path: report.xml
-          destination: report.xml
-
-  #  Build with EAS:
-  #    docker:
-  #      - image: cimg/node:lts
-  #    working_directory: ~/workspace/repo
-  #    steps:
-  #      - attach_workspace:
-  #          at: ~/workspace
-  #      - checkout
-  #      - run:
-  #          name: Install dependencies
-  #          command: npm ci
-  #      - run:
-  #          name: Build EAS
-  #          command: npx eas-cli build -p android --non-interactive --local -e test
-  #      - persist_to_workspace:
-  #          root: ~/workspace
-  #          paths:
-  #            - .
-  #  # deploy:
-  #   executor: heroku/default
-  #   steps:
-  #     - attach_workspace:
-  #       at: ~ /project
-  #     - heroku/deploy-via-git:
-  #         force: true    #   force push when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
-
+          name: Trigger EAS Build with Maestro Config
+          no_output_timeout: 40m
+          command: eas build --profile build-and-maestro-test --platform android
 
 workflows:
   Test Android:
@@ -158,4 +62,3 @@ workflows:
       - E2E tests:
           requires:
             - Install packages
-      #      - Build with EAS

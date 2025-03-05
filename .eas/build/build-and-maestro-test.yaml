@@ -1,0 +1,14 @@
+build:
+  name: Create a build and run Maestro tests on it
+  steps:
+    - eas/build
+    - eas/maestro_test:
+        inputs:
+          flow_path: |
+            tests/e2e/1_launchApp.yaml
+            tests/e2e/2_bottomButtons.yaml
+            tests/e2e/3_searchScreen.yaml
+            tests/e2e/4_searchBar.yaml
+            tests/e2e/5_filters.yaml
+            tests/e2e/6_recipe.yaml
+            tests/e2e/7_shopping®.yaml

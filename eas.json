@@ -4,19 +4,7 @@
     "appVersionSource": "remote"
   },
   "build": {
-    "build-and-maestro-test": {
-      "withoutCredentials": true,
-      "config": "build-and-maestro-test.yml",
-      "android": {
-        "buildType": "apk",
-        "image": "latest"
-      },
-      "ios": {
-        "simulator": true,
-        "image": "latest"
-      }
-    },
-    "maestro": {
+    "development": {
       "distribution": "internal",
       "android": {
         "buildType": "apk",
@@ -28,6 +16,18 @@
     },
     "production": {
       "autoIncrement": true
+    },
+    "build-and-maestro-test": {
+      "withoutCredentials": true,
+      "config": "build-and-maestro-test.yaml",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "ios": {
+        "simulator": true,
+        "image": "latest"
+      }
     }
   }
 }
