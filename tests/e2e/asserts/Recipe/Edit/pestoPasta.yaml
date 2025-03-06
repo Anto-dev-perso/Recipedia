@@ -18,6 +18,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "PASTA TOSSED WITH FRESH BASIL PESTO."
     label: Description of the recipe is rendered
+- swipe:
+    start: "50%,70%"
+    end: "50%,40%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Tags of the recipe : "
     label: Intro text for the tags is rendered
@@ -42,10 +46,6 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰐕"
     label: Add button for the tag is rendered
-- swipe:
-    start: "50%,80%"
-    end: "50%,30%"
-    label: Swipe down to see other items
 - assertVisible:
     text: "This recipe is for : "
     label: Intro text for the number of persons is rendered
@@ -58,6 +58,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "INGREDIENTS"
     label: Section Ingredients is rendered
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Quantity"
     label: Column Quantity is rendered
@@ -119,6 +123,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Pine Nuts"
     label: Ingredient Pine Nuts is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "󰐕"
     label: Add button of the ingredients is rendered
@@ -132,7 +140,6 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "min"
     label: Outro text for the time to prepare is rendered
-
 - swipe:
     start: "50%,80%"
     end: "50%,30%"
@@ -152,6 +159,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "PREPARATION : STEP 2"
     label: Preparation section for second step is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Title of step 2 : "
     label: Intro text for the title of second step is rendered
@@ -161,13 +172,13 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Content of step 2 : "
     label: Intro text for second step is rendered
-- swipe:
-    start: "50%,80%"
-    end: "50%,30%"
-    label: Swipe down to see other items
 - assertVisible:
     text: "PREPARATION : STEP 3"
     label: Preparation section for third step is rendered
+- swipe:
+    start: "50%,80%"
+    end: "50%,20%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Title of step 3 : "
     label: Intro text for the title of third step is rendered

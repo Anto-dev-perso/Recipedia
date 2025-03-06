@@ -172,6 +172,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Olive Oil"
     label: Olive Oil filter is rendered
+- swipe:
+    start: "50%,75%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "󰍴, Nuts and Seeds"
     label: Nuts and Seeds category is rendered
@@ -264,6 +268,10 @@ appId: "com.recipesmanager"
     text: "󰄱, Vegetarian"
     label: Vegetarian filter is not rendered
 - swipe:
-    start: "50%,15%"
-    end: "50%,95%"
+    start: "50%,20%"
+    end: "50%,80%"
+    label: Swipe Up to reset to initial position
+- swipe:
+    start: "50%,20%"
+    end: "50%,80%"
     label: Swipe Up to reset to initial position

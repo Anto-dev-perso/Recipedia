@@ -11,4 +11,4 @@ build:
             tests/e2e/4_searchBar.yaml
             tests/e2e/5_filters.yaml
             tests/e2e/6_recipe.yaml
-            tests/e2e/7_shopping®.yaml
+            tests/e2e/7_shopping.yaml

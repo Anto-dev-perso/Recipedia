@@ -34,6 +34,10 @@ appId: "com.recipesmanager"
 - tapOn:
     text: "󰐕, Dairy"
     label: Tap on Dairy to see filters under this category
+- swipe:
+    start: "50%,20%"
+    end: "50%,70%"
+    label: Swipe Up
 - tapOn:
     text: "󰐕, Fish"
     label: Tap on Fish to see filters under this category
@@ -43,16 +47,16 @@ appId: "com.recipesmanager"
 - tapOn:
     text: "󰐕, Meat"
     label: Tap on Meat to see filters under this category
-- swipe:
-    start: "50%,15%"
-    end: "50%,95%"
-    label: Swipe Up to reset to initial position
 - tapOn:
     text: "󰐕, Sauce"
     label: Tap on Sauce to see filters under this category
 - tapOn:
     text: "󰐕, Condiment"
     label: Tap on Condiment to see filters under this category
+- swipe:
+    start: "50%,20%"
+    end: "50%,70%"
+    label: Swipe Up
 - tapOn:
     text: "󰐕, Plant Protein"
     label: Tap on Plant Protein to see filters under this category

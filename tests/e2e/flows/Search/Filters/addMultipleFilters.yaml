@@ -15,9 +15,17 @@ appId: "com.recipesmanager"
     start: "50%,85%"
     end: "50%,20%"
     label: Swipe down to see other items
+- swipe:
+    start: "50%,85%"
+    end: "50%,20%"
+    label: Swipe down to see other items
 - tapOn:
     text: "󰄱, 15-20 min"
     label: Select 15-20 min as filter
+- swipe:
+    start: "50%,20%"
+    end: "50%,90%"
+    label: Swipe Up to reset to initial position
 - swipe:
     start: "50%,20%"
     end: "50%,80%"

@@ -9,12 +9,14 @@ appId: "com.recipesmanager"
 - inputText:
     text: "Ca"
     label: Input text 'Ca' in the Bar
-- tapOn:
-    id: "com.google.android.inputmethod.latin:id/key_pos_ime_action"
-    label: Validate the input text
+- pressKey: "enter"
 - tapOn:
     text: "󰐕, Add a filter"
     label: Open the filter page
+- swipe:
+    start: "50%,85%"
+    end: "50%,20%"
+    label: Swipe down to see other items
 - tapOn:
     text: "󰐕, Tags"
     label: Tap on Tags category to select an element inside

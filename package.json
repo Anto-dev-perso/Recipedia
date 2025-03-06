@@ -13,9 +13,9 @@
     "test:unit": "jest --config jest.config.js",
     "test:unit-watch": "jest --watchAll --config jest.config.js",
     "test:unit-coverage": "jest --coverage --json --outputFile=jest-results.json --config jest.config.js",
-    "test:e2e-android": " maestro test --format junit tests/e2e/*",
-    "test:e2e-ios": " maestro test tests/e2e/*   TODO",
-    "build-and-test:android": "npm run build:android && npm run install:android && npm run test:e2e-android",
+    "test:e2e:android": " maestro test --format junit tests/e2e/*",
+    "test:e2e:ios": " maestro test tests/e2e/*   TODO",
+    "build-and-test:e2e:android": "npm run build:android && npm run install:android && npm run test:e2e:android",
     "test:all:android": "npm run test:unit && npm run build-and-test:android",
     "test:all:ios": "TODO"
   },

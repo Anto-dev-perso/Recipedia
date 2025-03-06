@@ -22,7 +22,8 @@
       "config": "build-and-maestro-test.yaml",
       "android": {
         "buildType": "apk",
-        "image": "latest"
+        "image": "latest",
+        "developmentClient": false
       },
       "ios": {
         "simulator": true,

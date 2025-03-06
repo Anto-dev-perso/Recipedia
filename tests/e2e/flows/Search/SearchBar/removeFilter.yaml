@@ -10,9 +10,7 @@ appId: "com.recipesmanager"
 - inputText:
     text: "Lentil"
     label: Input text 'Lentil' in the Bar
-- tapOn:
-    id: "com.google.android.inputmethod.latin:id/key_pos_ime_action"
-    label: Validate the input text
+- pressKey: "enter"
 - runFlow: ../../../asserts/Search/searchScreenFilteredOnLentilCury.yaml
 - tapOn:
     text: ""

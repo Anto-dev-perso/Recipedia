@@ -1,9 +1,6 @@
 appId: "com.recipesmanager"
 ---
 # TODO why does this no works on the CI ?
-#- assertVisible:
-#    id: "com.android.systemui:id/status_bar_launch_animation_container"
-#    label: Status bar is displayed
 - assertVisible:
     text: "󰐕"
     label: Plus button is displayed
@@ -23,10 +20,17 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "RECOMMENDATION 3"
     label: Recommendation 3 is displayed
+- swipe:
+    start: "50%,60%"
+    end: "50%,20%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "RECOMMENDATION 4"
     label: Recommendation 4 is displayed
-
+- swipe:
+    start: "50%,20%"
+    end: "50%,60%"
+    label: Swipe Up to reset the initial position
 - assertVisible:
     text: "󰋜"
     label: Home icon is displayed

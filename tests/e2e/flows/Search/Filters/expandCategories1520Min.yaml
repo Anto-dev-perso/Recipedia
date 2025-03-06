@@ -1,5 +1,9 @@
 appId: "com.recipesmanager"
 ---
+- swipe:
+    start: "50%,75%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - tapOn:
     text: "󰐕, Tags"
     label: Tap on Tags to see filters under this category
@@ -33,3 +37,7 @@ appId: "com.recipesmanager"
 - tapOn:
     text: "󰐕, Grain or Cereal"
     label: Tap on Grain Or Cereal to see filters under this category
+- swipe:
+    start: "50%,30%"
+    end: "50%,90%"
+    label: Swipe Up to reset the screen

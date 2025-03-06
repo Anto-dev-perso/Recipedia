@@ -7,6 +7,10 @@ appId: "com.recipesmanager"
     start: "50%,90%"
     end: "50%,20%"
     label: Swipe down to see other items
+- swipe:
+    start: "50%,90%"
+    end: "50%,20%"
+    label: Swipe down to see other items
 - tapOn:
     text: "Pesto Pasta"
     label: Open Pesto Pasta recipe

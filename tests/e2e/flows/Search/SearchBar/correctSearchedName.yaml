@@ -14,9 +14,7 @@ appId: "com.recipesmanager"
     text: "a"
     label: Tap on 'a' in the Bar
 - runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnPa.yaml
-- tapOn:
-    id: "com.google.android.inputmethod.latin:id/key_pos_del"
-    label: Delete last key enetered
+- pressKey: 'backspace'
 - runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnP.yaml
 - tapOn:
     text: "i"

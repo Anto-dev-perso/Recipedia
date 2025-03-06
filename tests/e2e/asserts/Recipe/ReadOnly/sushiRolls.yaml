@@ -21,6 +21,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "INGREDIENTS (4 PERSONS)"
     label: Ingredients title and number of persons is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Sushi Rice"
     label: Ingredient Sushi Rice is rendered

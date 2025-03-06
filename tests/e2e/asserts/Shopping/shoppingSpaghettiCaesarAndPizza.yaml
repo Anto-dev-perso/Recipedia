@@ -35,16 +35,16 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, Caesar Dressing, 1 recipe"
     label: Ingredient Caesar Dressing is displayed unchecked
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Meat"
     label: Category Meat is displayed
 - assertVisible:
     text: "󰄱, Ground Beef, 1 recipe"
     label: Ingredient Ground Beef is displayed unchecked
-- swipe:
-    start: "50%,60%"
-    end: "50%,30%"
-    label: Swipe down to see other items
 - assertVisible:
     text: "Cheese"
     label: Category Cheese is displayed
@@ -61,8 +61,8 @@ appId: "com.recipesmanager"
     text: "󰄱, Basil Leaves, 1 recipe"
     label: Ingredient Basil Leaves is displayed unchecked
 - swipe:
-    start: "50%,30%"
-    end: "50%,60%"
+    start: "50%,15%"
+    end: "50%,90%"
     label: Swipe Up to reset the initial position
 - longPressOn:
     id: "CheckBoxButton - Spaghetti::Pressable"
@@ -89,8 +89,8 @@ appId: "com.recipesmanager"
     label: Long Press on Caesar Dressing
 - runFlow: ../Alerts/longPressOnCaesarDressingCaesarOnly.yaml
 - swipe:
-    start: "50%,60%"
-    end: "50%,30%"
+    start: "50%,90%"
+    end: "50%,20%"
     label: Swipe down to see other items
 - longPressOn:
     id: "CheckBoxButton - Ground Beef::Pressable"
@@ -109,6 +109,6 @@ appId: "com.recipesmanager"
     label: Long Press on Basil Leaves
 - runFlow: ../Alerts/longPressOnBasilLeavesPizzaOnly.yaml
 - swipe:
-    start: "50%,30%"
-    end: "50%,60%"
+    start: "50%,10%"
+    end: "50%,90%"
     label: Swipe Up to reset to initial position

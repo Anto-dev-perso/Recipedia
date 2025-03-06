@@ -255,6 +255,10 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Chicken Breast"
     label: Chicken Breast filter is not rendered
+- swipe:
+    start: "50%,85%"
+    end: "50%,30%"
+    label: Swipe down to see other item
 - assertVisible:
     text: "󰐕, Fish"
     label: Fish category is rendered with + icon
@@ -415,6 +419,10 @@ appId: "com.recipesmanager"
 - assertNotVisible:
     text: "󰄱, Olive Oil"
     label: Olive Oil filter is not rendered
+- swipe:
+    start: "50%,85%"
+    end: "50%,30%"
+    label: Swipe down to see other item
 - assertVisible:
     text: "󰐕, Nuts and Seeds"
     label: Nuts and Seeds category is rendered with + icon

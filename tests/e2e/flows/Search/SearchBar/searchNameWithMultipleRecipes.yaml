@@ -10,8 +10,6 @@ appId: "com.recipesmanager"
     text: "Ca"
     label: Input text 'Ca' in the Bar
 - runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnCa.yaml
-- tapOn:
-    id: "com.google.android.inputmethod.latin:id/key_pos_ime_action"
-    label: Validate the input text
+- pressKey: "enter"
 - runFlow: ../../../asserts/Search/searchScreenFilteredOnCa.yaml
 - pressKey: "BACK"
