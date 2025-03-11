@@ -23,12 +23,13 @@ import {palette} from '@styles/colors';
 import ModalImageSelect from '@screens/ModalImageSelect';
 import EStyleSheet from "react-native-extended-stylesheet";
 import RecipeDatabase from "@utils/RecipeDatabase";
-import {fetchFonts} from "@styles/typography";
 import FileGestion from "@utils/FileGestion";
+import {PaperProvider} from "react-native-paper";
+import {lightTheme} from "@styles/theme";
+import {fetchFonts} from "@styles/typography";
 import {ingredientsDataset} from "@test-data/ingredientsDataset";
 import {tagsDataset} from "@test-data/tagsDataset";
 import {recipesDataset} from "@test-data/recipesDataset";
-import {PaperProvider} from "react-native-paper";
 
 
 // TODO manage horizontal mode
@@ -42,12 +43,17 @@ import {PaperProvider} from "react-native-paper";
 // TODO use eslint-config-expo ?
 // TODO replace react-navigation by expo-router
 
+
+// TODO add special gastronomy (gluten free, lactose, etc)
+
 //  const initI18n = i18n; // instanciate the i18n instance
 
 
 export default function App() {
 
     const [isInitialized, setIsInitialized] = useState(false);
+
+    fetchFonts();
 
     useEffect(() => {
         FileGestion.getInstance().init().then(async () => {
@@ -56,15 +62,19 @@ export default function App() {
             await recipeDb.reset();
             await recipeDb.init();
 
-            await recipeDb.addMultipleIngredients(ingredientsDataset);
-            await recipeDb.addMultipleTags(tagsDataset);
-            await recipeDb.addMultipleRecipes(recipesDataset);
+            if (recipeDb.get_ingredients().length === 0) {
+                await recipeDb.addMultipleIngredients(ingredientsDataset);
+            }
+            if (recipeDb.get_tags().length === 0) {
+                await recipeDb.addMultipleTags(tagsDataset);
+            }
+            if (recipeDb.get_recipes().length === 0) {
+                await recipeDb.addMultipleRecipes(recipesDataset);
+            }
 
             setIsInitialized(true);
         });
     }, []);
-
-    fetchFonts();
 
     function Root() {
         return (
@@ -89,7 +99,7 @@ export default function App() {
                             iconName = homeIcon;
                             break;
                         case 'Shopping':
-                            iconType = enumIconTypes.entypo;
+                            iconType = enumIconTypes.materialCommunity;
                             iconName = shoppingIcon;
                             break;
                         case 'Plannification':
@@ -97,12 +107,12 @@ export default function App() {
                             iconName = plannerIcon;
                             break;
                         case 'Parameters':
-                            iconType = enumIconTypes.fontAwesome;
+                            iconType = enumIconTypes.materialCommunity;
                             iconName = parametersIcon;
                             break;
                         default:
-                            iconType = enumIconTypes.entypo;
-                            iconName = crossIcon
+                            iconType = enumIconTypes.materialCommunity;
+                            iconName = crossIcon;
                             break;
 
                     }
@@ -142,7 +152,7 @@ export default function App() {
     }
 
     return (
-        <PaperProvider>
+        <PaperProvider theme={lightTheme}>
             <NavigationContainer>
                 <StackScreen.Navigator initialRouteName='Root' screenOptions={{headerShown: false}}>
                     <StackScreen.Group screenOptions={{

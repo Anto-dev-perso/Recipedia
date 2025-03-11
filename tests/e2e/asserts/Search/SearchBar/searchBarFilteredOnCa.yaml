@@ -1,13 +1,16 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
-    text: ""
+    text: "󰍉"
     label: Search button is displayed
 - assertVisible:
     text: "Title of recipe"
     label: Search string is displayed
 - assertNotVisible:
-    text: "󰐕, Add a filter"
+    text: "󰻱"
+    label: Assert icon add filter is not displayed
+- assertNotVisible:
+    text: "Add a filter"
     label: Add filter button is not displayed
 - assertNotVisible:
     text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
@@ -40,7 +43,7 @@ appId: "com.recipesmanager"
     text: "Lentil Curry, Indian, Vegetarian, Prep. 35 min, 2 p."
     label: Lentil Curry is not displayed
 - assertVisible:
-    text: ""
+    text: "󰅖"
     label: Cross icon is displayed
 - assertVisible:
     text: "Caesar Salad"

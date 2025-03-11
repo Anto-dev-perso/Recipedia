@@ -37,15 +37,13 @@ describe('FiltersSelection Component', () => {
         expect(getByTestId('HorizontalList::PropType').props.children).toEqual('"Tag"');
         expect(getByTestId('HorizontalList::Item').props.children).toEqual(JSON.stringify(defaultProps.tagsList));
 
-        expect(getByTestId('HorizontalList::Icon').props.children).toEqual('"cross"');
-        expect(getByTestId('HorizontalList::EditText').props.children).toBeUndefined();
+        expect(getByTestId('HorizontalList::Icon').props.children).toEqual('"close"');
         expect(getByTestId('HorizontalList::OnTagPress')).toBeTruthy();
 
         expect(getByTestId('TagButton::Text').props.children).toEqual('"Add a filter"');
-        expect(getByTestId('TagButton::LeftIcon').props.children).toEqual('"plus"');
+        expect(getByTestId('TagButton::LeftIcon').props.children).toEqual('"filter-plus-outline"');
 
         expect(getByTestId('TagButton::RightIcon').props.children).toBeUndefined();
-        expect(getByTestId('TagButton::EditText').props.children).toBeUndefined();
 
         expect(getByTestId('TagButton::OnPressFunction')).toBeTruthy();
 
@@ -62,7 +60,7 @@ describe('FiltersSelection Component', () => {
         rerender(<FiltersSelection {...props} />);
 
         expect(getByTestId('SectionClickableList::Screen').props.children).toEqual('"search"');
-        expect(getByTestId('SectionClickableList::Icon').props.children).toEqual('["plus","minus"]');
+        expect(getByTestId('SectionClickableList::Icon').props.children).toEqual('[null,null]');
         expect(getByTestId('SectionClickableList::TagsList').props.children).toEqual(JSON.stringify(defaultProps.tagsList));
         expect(getByTestId('SectionClickableList::IngredientsList').props.children).toEqual(JSON.stringify(defaultProps.ingredientsList));
 

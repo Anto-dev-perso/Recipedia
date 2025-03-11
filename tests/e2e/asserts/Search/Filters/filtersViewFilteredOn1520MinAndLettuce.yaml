@@ -1,22 +1,34 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
-    text: ""
+    text: "󰍉"
     label: Search button is displayed
 - assertVisible:
     text: "Title of recipe"
     label: Search string is displayed
 - assertVisible:
-    text: "󰐕, Add a filter"
+    text: "󰈴"
+    label: Assert icon add filter is displayed
+- assertVisible:
+    text: "Add a filter"
     label: Add filter button is displayed
 - assertVisible:
-    text: "15-20 min, "
+    text: "󰅖"
+    label: Cross icon is rendered
+- assertVisible:
+    text: "15-20 min"
     label: Prep Time button is displayed
 - assertVisible:
-    text: "Romaine Lettuce, "
+    text: "󰅖"
+    label: Cross icon is rendered
+- assertVisible:
+    text: "Romaine Lettuce"
     label: Lettuce filter button is displayed
 - assertVisible:
-    text: "󰍴, Grain or Cereal"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Grain or Cereal"
     label: Grain or Cereal category is rendered
 - assertNotVisible:
     text: "󰄱, Spaghetti"
@@ -49,7 +61,10 @@ appId: "com.recipesmanager"
     text: "󰄱, Red Lentils"
     label: Red Lentils filter is not rendered
 - assertVisible:
-    text: "󰍴, Vegetable"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Vegetable"
     label: Vegetable category is rendered
 - assertNotVisible:
     text: "󰄱, Lettuce"
@@ -88,7 +103,10 @@ appId: "com.recipesmanager"
     text: "󰄱, Soy Sauce"
     label: Soy Sauce filter is not rendered
 - assertVisible:
-    text: "󰍴, Sauce"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Sauce"
     label: Sauce category is rendered
 - assertNotVisible:
     text: "󰄱, Tomato Sauce"
@@ -127,7 +145,10 @@ appId: "com.recipesmanager"
     text: "󰄱, Milk"
     label: Milk filter is not rendered
 - assertVisible:
-    text: "󰍴, Cheese"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Cheese"
     label: Cheese category is rendered
 - assertVisible:
     text: "󰄱, Parmesan"
@@ -182,7 +203,10 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "󰍴, Preparation Time"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Preparation Time"
     label: Preparation Time category is rendered
 - assertVisible:
     text: "󰄱, 0-10 min"
@@ -208,14 +232,25 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰄱, +60 min"
     label: +60 min filter is rendered
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
-    text: "󰍴, In-season"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "In-season"
     label: In-Season category is rendered
 - assertVisible:
     text: "󰄱, Only in-season ingredients"
     label: Only in-season ingredients filter is rendered
 - assertVisible:
-    text: "󰍴, Tags"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Tags"
+    label: Tags category is rendered
     label: Tags category is rendered
 - assertNotVisible:
     text: "󰄱, Breakfast"

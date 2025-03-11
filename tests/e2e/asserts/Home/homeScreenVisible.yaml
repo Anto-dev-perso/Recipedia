@@ -5,7 +5,7 @@ appId: "com.recipesmanager"
     text: "󰐕"
     label: Plus button is displayed
 - assertVisible:
-    text: ""
+    text: "󰍉"
     label: Search button is displayed
 - assertVisible:
     text: "Home"
@@ -39,13 +39,13 @@ appId: "com.recipesmanager"
     index: 1
     label: Home text is displayed
 - assertVisible:
-    text: ""
-    label: icon is displayed
+    text: "󰄐"
+    label: Shopping icon is displayed
 - assertVisible:
     text: "Shopping"
     label: text is displayed
 - assertVisible:
-    text: ""
+    text: "󰒓"
     label: Parameters icon is displayed
 - assertVisible:
     text: "Parameters"

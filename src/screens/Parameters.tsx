@@ -7,7 +7,6 @@ import {SafeAreaView, StatusBar, Text, View} from "react-native";
 // TODO to implement
 export default function Parameters() {
 
-
     return (
         <SafeAreaView style={screenViews.screenView}>
             <StatusBar animated={true} backgroundColor={palette.primary}/>

@@ -63,12 +63,14 @@ export type RecipeStates = {
     recipeTime: string,
     imgForOCR: Array<localImgData>,
     forceUpdateKey: number,
+    randomTags: Array<string>,
 }
 
 class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
     constructor(recipeProps: RecipeScreenProp) {
         super(recipeProps);
         const params = this.props.route.params;
+        const tags = RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.tagName);
         switch (params.mode) {
             case "readOnly":
                 this.state = {
@@ -84,6 +86,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     recipeTime: params.recipe.time.toString(),
                     imgForOCR: [],
                     forceUpdateKey: 0,
+                    randomTags: tags,
                 };
                 break;
             case "addManually":
@@ -99,7 +102,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     recipePreparation: params.recipe ? params.recipe.preparation : [],
                     recipeTime: params.recipe ? params.recipe.time.toString() : "",
                     imgForOCR: [],
-                    forceUpdateKey: 0,
+                    forceUpdateKey: 0, randomTags: tags,
                 };
                 break;
             case "addFromPic":
@@ -115,7 +118,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     recipePreparation: [],
                     recipeTime: "",
                     imgForOCR: new Array<localImgData>(params.img),
-                    forceUpdateKey: 0,
+                    forceUpdateKey: 0, randomTags: tags,
                 };
                 break;
         }
@@ -189,21 +192,14 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
     };
     // TODO let the possibility to add manually the field
 
-    editTags = (oldTag: string, newTag: string) => {
+    removeTag = (tag: string) => {
 
-        // TODO pass through RecipeDatabase instead
-        this.setRecipeTags(this.state.recipeTags.map(tag => {
-            if (tag.tagName == oldTag) {
-                return {...tag, tagName: newTag};
-            } else {
-                return {...tag};
-            }
-        }));
+        this.setRecipeTags(this.state.recipeTags.filter(tagElement => tagElement.tagName !== tag));
     };
 
-    addTag = () => {
-        this.setRecipeTags(new Array(...this.state.recipeTags, {tagName: ""}));
-    }
+    addTag = (newTag: string) => {
+        this.setRecipeTags(new Array(...this.state.recipeTags, {tagName: newTag}));
+    };
 
     // TODO to rework
     editIngredients = (oldIngredient: string, newIngredient: string) => {
@@ -517,8 +513,6 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
 
                 tagProps = {
                     type: 'readOnly', tagsList: extractTagsName(this.state.recipeTags),
-                    // TODO implement (if needed) an onPress for tags readOnly
-                    onPress: () => console.log("Not implemented")
                 };
 
                 preparationProps =
@@ -565,9 +559,9 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                 tagProps = {
                     type: 'addOrEdit',
                     tagsList: extractTagsName(this.state.recipeTags),
-                    randomTags: RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.tagName).join(', '),
+                    randomTags: this.state.randomTags.join(', '),
                     addNewTag: this.addTag,
-                    changeTag: this.editTags,
+                    removeTag: this.removeTag,
                 };
 
                 timeAddOrEditProps = {
@@ -682,9 +676,9 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
 
                 tagProps = {
                     type: 'addOrEdit', tagsList: extractTagsName(this.state.recipeTags),
-                    randomTags: RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.tagName).join(', '),
+                    randomTags: this.state.randomTags.join(', '),
                     addNewTag: this.addTag,
-                    changeTag: this.editTags,
+                    removeTag: this.removeTag,
                 };
 
                 if (this.state.recipeTime.length == 0) {
@@ -771,13 +765,13 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     } as RecipeTextRenderAddOrEditProps;
                 }
                 break;
-
         }
 
         return (
             <SafeAreaView style={screenViews.screenView} key={this.state.forceUpdateKey}>
                 <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
-                            style={scrollView(rectangleButtonHeight).view} nestedScrollEnabled={true}>
+                            style={scrollView(rectangleButtonHeight).view} keyboardShouldPersistTaps={"handled"}
+                            nestedScrollEnabled={true}>
                     <StatusBar animated={true} backgroundColor={palette.primary}/>
 
                     {/*Image*/}

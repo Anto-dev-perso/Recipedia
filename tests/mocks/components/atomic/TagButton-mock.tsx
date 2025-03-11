@@ -11,13 +11,10 @@ export function tagButtonMock(tagButtonProps: TagButtonProps) {
                 {JSON.stringify(tagButtonProps.text)}
             </Text>
             <Text testID="TagButton::LeftIcon">
-                {JSON.stringify(tagButtonProps.leftIcon?.name)}
+                {JSON.stringify(tagButtonProps.leftIcon)}
             </Text>
             <Text testID="TagButton::RightIcon">
-                {JSON.stringify(tagButtonProps.rightIcon?.name)}
-            </Text>
-            <Text testID="TagButton::EditText">
-                {JSON.stringify(tagButtonProps.editText)}
+                {JSON.stringify(tagButtonProps.rightIcon)}
             </Text>
             {tagButtonProps.onPressFunction !== undefined ?
                 <Button testID="TagButton::OnPressFunction"

@@ -22,7 +22,7 @@ export default function SearchBar(props: SearchBarProps) {
         <View style={searchBarStyle.searchBarView} testID={"SearchBar"}>
             <View style={searchBarStyle.searchBarComponent}>
                 {/* search Icon */}
-                {displayIcon(enumIconTypes.fontAwesome, searchIcon, iconsSize.small, "#414a4c", {paddingLeft: 10 * remValue})}
+                {displayIcon(enumIconTypes.materialCommunity, searchIcon, iconsSize.small, "#414a4c", {paddingLeft: 10 * remValue})}
 
                 {/* Input field */}
                 <TextInput style={typoStyles.searchBar} placeholder="Title of recipe" value={props.searchPhrase}
@@ -32,7 +32,7 @@ export default function SearchBar(props: SearchBarProps) {
                            }}/>
 
                 {/* cross Icon, depending on whether the search bar is clicked or not */}
-                {props.clicked ? displayIcon(enumIconTypes.entypo, crossIcon, iconsSize.medium, "#414a4c", {paddingRight: 10 * remValue}, crossGesture) : null}
+                {props.clicked ? displayIcon(enumIconTypes.materialCommunity, crossIcon, iconsSize.medium, "#414a4c", {paddingRight: 10 * remValue}, crossGesture) : null}
             </View>
         </View>
     )

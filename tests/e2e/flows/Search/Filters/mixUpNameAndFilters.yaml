@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 - tapOn:
     id: "SearchBar"
@@ -11,14 +11,14 @@ appId: "com.recipesmanager"
     label: Input text 'Ca' in the Bar
 - pressKey: "enter"
 - tapOn:
-    text: "󰐕, Add a filter"
+    text: "Add a filter"
     label: Open the filter page
 - swipe:
     start: "50%,85%"
     end: "50%,20%"
     label: Swipe down to see other items
 - tapOn:
-    text: "󰐕, Tags"
+    text: "Tags"
     label: Tap on Tags category to select an element inside
 - swipe:
     start: "50%,80%"
@@ -30,7 +30,7 @@ appId: "com.recipesmanager"
 - runFlow: expandCategoriesCaAndChocolate.yaml
 - runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnCaAndChocolate.yaml
 - tapOn:
-    text: "󰐕, Add a filter"
+    text: "Add a filter"
     label: Close the filter page
 - runFlow: ../../../asserts/Search/searchScreenFilteredOnCaAndChocolate.yaml
 - pressKey: "BACK"

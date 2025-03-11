@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 - tapOn:
     id: "SearchBar"
@@ -9,6 +9,8 @@ appId: "com.recipesmanager"
 - inputText:
     text: "Ca"
     label: Input text 'Ca' in the Bar
+- hideKeyboard:
+    label: Close the keyboard
 - runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnCa.yaml
 - pressKey: "enter"
 - runFlow: ../../../asserts/Search/searchScreenFilteredOnCa.yaml

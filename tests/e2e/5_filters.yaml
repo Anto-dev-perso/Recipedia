@@ -1,6 +1,8 @@
 appId: "com.recipesmanager"
 name: "Tests suite checking that filters are working correctly"
 ---
+- launchApp
+
 - runFlow: flows/Search/Filters/openAndClose.yaml
 - runFlow: flows/Search/Filters/addAndRemoveFilter.yaml
 - runFlow: flows/Search/Filters/addMultipleFilters.yaml

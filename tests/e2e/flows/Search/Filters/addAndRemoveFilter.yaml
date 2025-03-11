@@ -1,10 +1,10 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 - tapOn:
-    text: "󰐕, Add a filter"
+    text: "Add a filter"
     label: Open the filter page
 - runFlow: expandAllCategories.yaml
 - tapOn:
@@ -12,11 +12,11 @@ appId: "com.recipesmanager"
     label: Select Spaghetti as filter
 - runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOnSpaghetti.yaml
 - tapOn:
-    text: "Spaghetti, "
+    text: "Spaghetti"
     label: Remove Spaghetti as filter
 # TODO spaghetti checkbox shall not be ticked now
 - tapOn:
-    text: "󰐕, Add a filter"
+    text: "Add a filter"
     label: Close the filter page
 - runFlow: ../../../asserts/Search/searchScreenVisible.yaml
 - pressKey: "BACK"

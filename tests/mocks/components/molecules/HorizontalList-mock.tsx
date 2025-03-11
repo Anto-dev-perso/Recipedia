@@ -201,14 +201,11 @@ export function horizontalListMock(horizontalListProps: HorizontalListProps) {
             {horizontalListProps.propType == "Tag" ?
                 <View>
                     <Text testID="HorizontalList::Icon">
-                        {JSON.stringify(horizontalListProps.icon?.name)}
-                    </Text>
-                    <Text testID="HorizontalList::EditText">
-                        {JSON.stringify(horizontalListProps.editText)}
+                        {JSON.stringify(horizontalListProps.icon)}
                     </Text>
                     <Button testID="HorizontalList::OnTagPress"
                             onPress={() => {
-                                horizontalListProps.onTagPress(horizontalListProps.item[cptTagPress]);
+                                horizontalListProps.onTagPress?.(horizontalListProps.item[cptTagPress]);
                                 cptTagPress++;
                             }}
                             title="Click on Tag"/>

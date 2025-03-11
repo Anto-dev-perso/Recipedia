@@ -1,20 +1,18 @@
-import {iconProp} from "@assets/images/Icons"
+import {IconName} from "@assets/images/Icons"
 import SquareButton from "@components/atomic/SquareButton"
-import TagButton from "@components/atomic/TagButton"
 import {localImgData} from "@customTypes/ImageTypes"
 import {StackScreenNavigation} from "@customTypes/ScreenTypes"
 import {useNavigation} from "@react-navigation/native"
 import {smallCardWidth, viewButtonStyles} from "@styles/buttons"
-import {editableText} from "@styles/typography"
 import React from "react"
 import {View, ViewStyle} from "react-native"
+import TagButton from "@components/atomic/TagButton";
 
 export type TagProp = {
     propType: "Tag"
     item: Array<string>,
-    icon?: iconProp,
-    editText?: editableText,
-    onTagPress: (elem: string) => void,
+    icon?: IconName,
+    onTagPress?: (elem: string) => void,
 }
 
 export type ImageProp = {
@@ -37,12 +35,11 @@ export default function HorizontalList(props: HorizontalListProps) {
 
     const navigation = useNavigation<StackScreenNavigation>();
 
-    function renderItem(item: string | localImgData, index: number, icon?: iconProp) {
+    function renderItem(item: string | localImgData, index: number, icon?: IconName) {
         return (
             <View key={index} style={viewButtonStyles.viewContainingButton}>
                 {props.propType == "Tag" ?
-                    <TagButton text={item as string} rightIcon={icon} onPressFunction={() => selectOnPress(item)}
-                               editText={props.editText}/>
+                    <TagButton text={item as string} rightIcon={icon} onPressFunction={() => selectOnPress(item)}/>
                     :
                     <SquareButton side={smallCardWidth} imgSrc={item as localImgData}
                                   onPressFunction={() => selectOnPress(item)} type={'image'}/>
@@ -55,7 +52,7 @@ export default function HorizontalList(props: HorizontalListProps) {
     function selectOnPress(item: string | localImgData) {
         switch (props.propType) {
             case "Tag":
-                props.onTagPress(item as string);
+                props.onTagPress?.(item as string);
                 break;
             case "Image":
                 props.onImgPress(item as localImgData, navigation);

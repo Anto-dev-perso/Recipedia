@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 
 - tapOn:
@@ -11,7 +11,7 @@ appId: "com.recipesmanager"
     label: Close the keyboard
 - runFlow: ../../../asserts/Search/SearchBar/searchBarNotFiltered.yaml
 - tapOn:
-    text: ""
+    text: "󰅖"
     label: Tap on cross icon to close the Search Bar
 - runFlow: ../../../asserts/Search/searchScreenVisible.yaml
 - pressKey: "BACK"

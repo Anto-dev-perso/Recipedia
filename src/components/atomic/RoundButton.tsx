@@ -9,6 +9,7 @@ export type RoundButtonProps = {
     style?: StyleProp<ViewStyle>,
     text?: string,
     icon?: iconProp,
+    testID?: string,
 }
 
 // TODO hitBox of round button is kind of buggy in React Native. This topic fix it : https://www.jsparling.com/round-buttons-in-react-native/#:~:text=The%20key%20to%20making%20the,height%20%2C%20width%20%2C%20and%20borderRadius%20.
@@ -20,7 +21,8 @@ export default function RoundButton(props: RoundButtonProps) {
     return (
         <View style={props.style}>
             {/*TODO direct call to onPressFunction instead*/}
-            <Pressable style={roundButtonStyles(props.diameter).roundButton} hitSlop={-props.diameter / 12}
+            <Pressable testID={props.testID} style={roundButtonStyles(props.diameter).roundButton}
+                       hitSlop={-props.diameter / 12}
                        onPress={() => props.onPressFunction()}>
                 <View style={viewInsideButtonCentered}>
 

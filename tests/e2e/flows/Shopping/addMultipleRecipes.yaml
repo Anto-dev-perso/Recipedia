@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 - tapOn:
     text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
@@ -12,7 +12,7 @@ appId: "com.recipesmanager"
 - runFlow: ../../asserts/Alerts/addingRecipeSpaghetti.yaml
 - pressKey: "BACK"
 - tapOn:
-    text: ", Shopping"
+    text: "󰄐, Shopping"
     label: Go back to Shopping screen
 - runFlow: ../../asserts/Shopping/shoppingSpaghetti.yaml
 - tapOn:
@@ -34,7 +34,7 @@ appId: "com.recipesmanager"
     label: Add the Caesar Salad recipe to the menu
 - runFlow: ../../asserts/Alerts/addingRecipeCaesar.yaml
 - tapOn:
-    text: ", Shopping"
+    text: "󰄐, Shopping"
     label: Go back to Shopping screen
 - runFlow: ../../asserts/Shopping/shoppingSpaghettiAndCaesar.yaml
 - tapOn:
@@ -56,7 +56,7 @@ appId: "com.recipesmanager"
     label: Add the Margherita Pizza recipe to the menu
 - runFlow: ../../asserts/Alerts/addingRecipePizza.yaml
 - tapOn:
-    text: ", Shopping"
+    text: "󰄐, Shopping"
     label: Go back to Shopping screen
 - runFlow: ../../asserts/Shopping/shoppingSpaghettiCaesarAndPizza.yaml
 - tapOn:

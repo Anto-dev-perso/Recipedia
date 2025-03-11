@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 - tapOn:
     text: "Chicken Tacos, Mexican, Lunch, Prep. 20 min, 2 p."

@@ -1,6 +1,8 @@
 appId: "com.recipesmanager"
 name: "Check that home right buttons are expanding"
 ---
+- launchApp
+
 - tapOn:
     text: "󰐕"
     label: Tap on Plus button
@@ -11,10 +13,10 @@ name: "Check that home right buttons are expanding"
     text: "󰏫"
     label: Pen button is displayed
 - assertVisible:
-    text: ""
+    text: "󰋫"
     label: Picture button is displayed
 - assertVisible:
-    text: ""
+    text: "󰄀"
     label: Camera button is displayed
 - assertNotVisible:
     text: "󰐕"
