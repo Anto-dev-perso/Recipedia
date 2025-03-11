@@ -63,7 +63,7 @@ appId: "com.recipesmanager"
     text: "INGREDIENTS"
     label: Section Ingredients is rendered
 - swipe:
-    start: "50%,80%"
+    start: "50%,70%"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:

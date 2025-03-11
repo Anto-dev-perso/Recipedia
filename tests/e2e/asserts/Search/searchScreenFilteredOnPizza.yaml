@@ -7,7 +7,7 @@ appId: "com.recipesmanager"
     text: "Title of recipe"
     label: Search string is displayed
 - assertVisible:
-    text: "󰈴"
+    text: "󰻱"
     label: Assert icon add filter is displayed
 - assertVisible:
     text: "Add a filter"

@@ -46,6 +46,9 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰐕"
     label: Add button for the tag is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
 - assertVisible:
     text: "This recipe is for : "
     label: Intro text for the number of persons is rendered
@@ -68,7 +71,7 @@ appId: "com.recipesmanager"
     text: "Ingredient name"
     label: Column Ingredient name is rendered
 - swipe:
-    start: "50%,80%"
+    start: "50%,60%"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
@@ -107,6 +110,9 @@ appId: "com.recipesmanager"
     text: "g"
     index: 2
     label: Third occurrence of the g unit is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,30%"
 - assertVisible:
     text: "Avocado"
     label: Ingredient Avocado is rendered
@@ -123,7 +129,7 @@ appId: "com.recipesmanager"
     text: "󰐕"
     label: Add button of the ingredients is rendered
 - swipe:
-    start: "50%,80%"
+    start: "50%,60%"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
