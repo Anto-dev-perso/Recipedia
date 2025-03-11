@@ -1,10 +1,10 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 - tapOn:
-    text: "󰐕, Add a filter"
+    text: "Add a filter"
     label: Open the filter page
 - runFlow: expandAllCategories.yaml
 - swipe:
@@ -32,11 +32,11 @@ appId: "com.recipesmanager"
     label: Swipe Up to reset to initial position
 - runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOn1520Min.yaml
 - tapOn:
-    text: "󰐕, Add a filter"
+    text: "Add a filter"
     label: Close the filter page
 - runFlow: ../../../asserts/Search/searchScreenFilteredOn1520Min.yaml
 - tapOn:
-    text: "󰐕, Add a filter"
+    text: "Add a filter"
     label: Open the filter page
 - runFlow: expandCategories1520Min.yaml
 - tapOn:
@@ -44,11 +44,11 @@ appId: "com.recipesmanager"
     label: Add the Romaine Lettuce in filters
 - runFlow: ../../../asserts/Search/Filters/filtersViewFilteredOn1520MinAndLettuce.yaml
 - tapOn:
-    text: "󰐕, Add a filter"
+    text: "Add a filter"
     label: Close the filter page
 - runFlow: ../../../asserts/Search/searchScreenFilteredOn1520MinAndLettuce.yaml
 - tapOn:
-    text: "15-20 min, "
+    text: "15-20 min"
     label: Remove 15-20 min filter
 - runFlow: ../../../asserts/Search/searchScreenFilteredOnLettuce.yaml
 - pressKey: "BACK"

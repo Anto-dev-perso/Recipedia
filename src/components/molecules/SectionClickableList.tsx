@@ -1,4 +1,4 @@
-import {iconProp} from "@assets/images/Icons"
+import {IconName} from "@assets/images/Icons"
 import React, {useState} from "react"
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
 import CheckListsButtonsRender, {filterCheckbox, shoppingCheckbox} from "@components/molecules/CheckListsButtonsRender"
@@ -20,7 +20,7 @@ export type propsFromShopping = { screen: "shopping", } & propsForShopping;
 
 export type SectionClickableListProps = {
     screen: "search" | "shopping"
-    icon?: Array<iconProp>,
+    icon?: Array<IconName>,
     testMode?: boolean,
 } & (propsFromSearch | propsFromShopping)
 
@@ -91,7 +91,7 @@ export default function SectionClickableList(props: SectionClickableListProps) {
             <View>
                 {elemToDisplay.length == 0 ? null :
                     <View>
-                        <RectangleButton testID={`RectangleButtonForCategory - ${item}`} text={item} height={50}
+                        <RectangleButton testID={`RectangleButtonForCategory - ${item}`} text={item}
                                          centered={false} icon={iconFromProps}
                                          margins={padding.verySmall} onPressFunction={updateCategoryClicked}/>
                         {itemShallDisplayCheckBox ?

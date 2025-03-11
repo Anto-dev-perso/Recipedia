@@ -33,14 +33,14 @@ appId: "com.recipesmanager"
     text: "Japanese"
     label: First tag of the recipe is rendered
 - assertVisible:
-    text: ""
+    text: "󰅖"
     index: 0
     label: Cross icon of the first tag is rendered
 - assertVisible:
     text: "Seafood"
     label: Second tag of the recipe is rendered
 - assertVisible:
-    text: ""
+    text: "󰅖"
     index: 1
     label: Cross icon of the second tag is rendered
 - assertVisible:

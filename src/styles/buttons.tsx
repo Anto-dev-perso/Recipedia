@@ -62,7 +62,6 @@ export const rectangleButtonStyles = (rectHeight: number) => EStyleSheet.create(
     }
 });
 
-export const rectangleButtonHeight = 75;
 
 export const viewButtonStyles = EStyleSheet.create({
     viewContainingButton: {

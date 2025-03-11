@@ -7,9 +7,6 @@ export function rectangleButtonMock(rectangleProps: RectangleButtonProps) {
         <Text testID={rectangleProps.testID + "::Text"}>
             {rectangleProps.text}
         </Text>
-        <Text testID={rectangleProps.testID + "::Height"}>
-            {rectangleProps.height?.toString()}
-        </Text>
         <Text testID={rectangleProps.testID + "::Icon"}>
             {JSON.stringify(rectangleProps.icon)}
         </Text>

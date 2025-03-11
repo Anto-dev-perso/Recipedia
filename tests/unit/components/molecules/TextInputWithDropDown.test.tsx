@@ -14,12 +14,15 @@ jest.mock('react-native-paper', () => require('@mocks/deps/react-native-paper-mo
 describe('TextInputWithDropDown Component', () => {
     const mockOnChangeText = jest.fn();
 
+    const dbInstance = RecipeDatabase.getInstance();
+
     const defaultProps: TextInputWithDropDownType = {
+        absoluteDropDown: true, referenceTextArray: new Array<string>,
         label: 'Ingredient',
         outline: true,
-        onChangeText: mockOnChangeText,
+        onValidate: mockOnChangeText,
     };
-    const dbInstance = RecipeDatabase.getInstance();
+
     beforeEach(async () => {
         jest.clearAllMocks();
 
@@ -27,6 +30,7 @@ describe('TextInputWithDropDown Component', () => {
         await dbInstance.addMultipleIngredients(ingredientsDataset);
         await dbInstance.addMultipleTags(tagsDataset);
         await dbInstance.addMultipleRecipes(recipesDataset);
+        defaultProps.referenceTextArray = dbInstance.get_ingredients().map(ingredient => ingredient.ingName).sort();
     });
     afterEach(async () => {
         jest.clearAllMocks();
@@ -46,9 +50,6 @@ describe('TextInputWithDropDown Component', () => {
 
     test('renders correctly with value in props', async () => {
         const props: TextInputWithDropDownType = {...defaultProps, value: 'Salm'};
-        // await act(async () => {
-        //     const {getByTestId, queryByTestId} = render(<TextInputWithDropDown {...props} />);
-        // });
         const {getByTestId, queryByTestId} = render(<TextInputWithDropDown {...props} />);
 
         await waitFor(() => expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual('Salm'));
@@ -78,7 +79,7 @@ describe('TextInputWithDropDown Component', () => {
         }
     });
 
-    test('shows dropdown when text input is on focus and hiding when input no more have elements in the array', async () => {
+    test('shows dropdown when text input is on focus and hiding when input no more having elements in the array', async () => {
         const {getByTestId, queryByTestId} = render(<TextInputWithDropDown {...defaultProps} />);
 
         const input = getByTestId('TextInputWithDropDown::TextInput');
@@ -102,7 +103,7 @@ describe('TextInputWithDropDown Component', () => {
 
         await waitFor(() => expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy());
         expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual(textInput);
-        expect(mockOnChangeText).toHaveBeenCalledWith(textInput);
+        expect(mockOnChangeText).not.toHaveBeenCalled();
         for (const ingredient of dbInstance.get_ingredients()) {
             expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
             expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName)).not.toBeTruthy();
@@ -120,7 +121,7 @@ describe('TextInputWithDropDown Component', () => {
 
         await waitFor(() => expect(getByTestId('TextInputWithDropDown::DropdownContainer')).toBeTruthy());
         expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual(textInput);
-        expect(mockOnChangeText).toHaveBeenCalledWith(textInput);
+        expect(mockOnChangeText).not.toHaveBeenCalled();
         for (const ingredient of dbInstance.get_ingredients()) {
             if (ingredient.ingName.toLowerCase().includes('past')) {
                 expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).toBeTruthy();
@@ -153,7 +154,7 @@ describe('TextInputWithDropDown Component', () => {
         await waitFor(() => expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual(textInput)
         );
         expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy();
-        expect(mockOnChangeText).toHaveBeenCalledWith(textInput);
+        expect(mockOnChangeText).not.toHaveBeenCalled();
         for (const ingredient of dbInstance.get_ingredients()) {
             expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
             expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName)).not.toBeTruthy();
@@ -163,6 +164,6 @@ describe('TextInputWithDropDown Component', () => {
             fireEvent(input, 'submitEditing');
         });
         expect(mockOnChangeText).toHaveBeenCalledWith(textInput);
-        expect(mockOnChangeText).toHaveBeenCalledTimes(2);
+        expect(mockOnChangeText).toHaveBeenCalledTimes(1);
     });
 });

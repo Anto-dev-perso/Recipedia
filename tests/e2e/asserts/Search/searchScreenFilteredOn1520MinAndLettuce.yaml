@@ -1,19 +1,25 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
-    text: ""
+    text: "󰍉"
     label: Search button is displayed
 - assertVisible:
     text: "Title of recipe"
     label: Search string is displayed
 - assertVisible:
-    text: "󰐕, Add a filter"
+    text: "󰻱"
+    label: Assert icon add filter is displayed
+- assertVisible:
+    text: "Add a filter"
     label: Add filter button is displayed
 - assertVisible:
-    text: "15-20 min, "
+    text: "󰅖"
+    label: Icon of filter is displayed
+- assertVisible:
+    text: "15-20 min"
     label: 15-20 min button is displayed
 - assertVisible:
-    text: "Romaine Lettuce, "
+    text: "Romaine Lettuce"
     label: Lettuce filter button is displayed
 - assertNotVisible:
     text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."

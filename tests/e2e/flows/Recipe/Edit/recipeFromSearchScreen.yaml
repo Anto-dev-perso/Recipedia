@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 - swipe:
     start: "50%,90%"

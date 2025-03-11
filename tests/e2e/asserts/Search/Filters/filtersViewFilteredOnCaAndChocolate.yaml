@@ -1,22 +1,31 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
-    text: ""
+    text: "󰍉"
     label: Search button is displayed
 - assertVisible:
     text: "Title of recipe"
     label: Search string is displayed
 - assertVisible:
-    text: "󰐕, Add a filter"
+    text: "󰈴"
+    label: Assert icon add filter is displayed
+- assertVisible:
+    text: "Add a filter"
     label: Add filter button is displayed
 - assertVisible:
-    text: "Ca, "
-    label: Lettuce filter button is displayed
+    text: "Ca"
+    label: Filter on text is displayed
 - assertVisible:
-    text: "Chocolate, "
+    text: "󰅖"
+    label: Icon of filter is displayed
+- assertVisible:
+    text: "Chocolate"
     label: Curry Powder button is displayed
 - assertVisible:
-    text: "󰍴, Grain or Cereal"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Grain or Cereal"
     label: Grain or Cereal category is rendered
 - assertNotVisible:
     text: "󰄱, Spaghetti"
@@ -136,13 +145,19 @@ appId: "com.recipesmanager"
     text: "󰄱, Mozzarella"
     label: Mozzarella filter is not rendered
 - assertVisible:
-    text: "󰍴, Sugar"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Sugar"
     label: Sugar category is rendered
 - assertVisible:
     text: "󰄱, Sugar"
     label: Sugar filter is rendered
 - assertVisible:
-    text: "󰍴, Spice"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Spice"
     label: Spice category is rendered
 - assertNotVisible:
     text: "󰄱, Basil Leaves"
@@ -160,7 +175,10 @@ appId: "com.recipesmanager"
     text: "󰄱, Avocado"
     label: Avocado filter is not rendered
 - assertVisible:
-    text: "󰍴, Oil and Fat"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Oil and Fat"
     label: Oil and Fat category is rendered
 - assertVisible:
     text: "󰄱, Butter"
@@ -179,7 +197,10 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "󰍴, Preparation Time"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Preparation Time"
     label: Preparation Time category is rendered
 - assertVisible:
     text: "󰄱, 0-10 min"
@@ -206,13 +227,20 @@ appId: "com.recipesmanager"
     text: "󰄱, +60 min"
     label: +60 min filter is rendered
 - assertVisible:
-    text: "󰍴, In-season"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "In-season"
     label: In-Season category is rendered
 - assertVisible:
     text: "󰄱, Only in-season ingredients"
     label: Only in-season ingredients filter is rendered
 - assertVisible:
-    text: "󰍴, Tags"
+    text: "󰍴"
+    label: Minus icon is rendered
+- assertVisible:
+    text: "Tags"
+    label: Tags category is rendered
     label: Tags category is rendered
 - assertNotVisible:
     text: "󰄱, Breakfast"

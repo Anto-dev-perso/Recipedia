@@ -13,6 +13,7 @@ import {TouchableOpacity, View} from "react-native"
 import {Text, TextInput} from "react-native-paper";
 import {palette} from "@styles/colors";
 import TextInputWithDropDown from "@components/molecules/TextInputWithDropDown";
+import RecipeDatabase from "@utils/RecipeDatabase";
 
 // TODO use variant for Text
 
@@ -65,9 +66,10 @@ export default function TextRender(props: TextRenderProps) {
                         }}>{unit}</Text>
 
                         <View style={{flex: 3}}>
-                            <TextInputWithDropDown value={ingName}
-                                                   onChangeText={newIngredientName => props.editText?.onChangeFunction(item, `${unitAndQuantity}${textSeparator}${newIngredientName}`)}
-                                                   style={{...paragraphBorder}}/>
+                            <TextInputWithDropDown absoluteDropDown={true}
+                                                   referenceTextArray={RecipeDatabase.getInstance().get_ingredients().map(ingredient => ingredient.ingName).sort()}
+                                                   value={ingName}
+                                                   onValidate={newIngredientName => props.editText?.onChangeFunction(item, `${unitAndQuantity}${textSeparator}${newIngredientName}`)}/>
                         </View>
                     </View>
                     :

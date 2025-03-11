@@ -112,7 +112,6 @@ describe('Recipe Component tests', () => {
 
         // Tags
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Mexican","Lunch"]');
-        expect(getByTestId('RecipeTags::OnPress')).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":42.30769230769231,"fontWeight":"bold","textAlign":"left","textTransform":"uppercase","padding":23.076923076923077},"value":"Ingredients (2 persons)"}');
@@ -169,11 +168,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert","Chocolate"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"6"}');
@@ -190,7 +189,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"60"}');
@@ -239,11 +238,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::Flex').props.children).toEqual('6');
@@ -262,7 +261,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
         expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
@@ -318,11 +317,11 @@ describe('Recipe Component tests', () => {
             expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
             expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
             expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-            expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+            expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
             // Persons
             expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-            expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+            expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
             expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
             expect(getByTestId('RecipePersons::Flex').props.children).toEqual('6');
@@ -341,7 +340,7 @@ describe('Recipe Component tests', () => {
 
             // Time
             expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-            expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+            expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
             expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
             expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
@@ -407,11 +406,11 @@ describe('Recipe Component tests', () => {
             expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
             expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
             expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-            expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+            expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
             // Persons
             expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-            expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+            expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
             expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
             expect(getByTestId('RecipePersons::Flex').props.children).toEqual('6');
@@ -430,7 +429,7 @@ describe('Recipe Component tests', () => {
 
             // Time
             expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-            expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+            expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
             expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
             expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
@@ -482,11 +481,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert","Chocolate"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"6"}');
@@ -504,7 +503,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"60"}');
@@ -565,11 +564,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::Flex').props.children).toEqual('6');
@@ -588,7 +587,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
         expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
@@ -635,11 +634,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert","Chocolate"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"6"}');
@@ -657,7 +656,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"60"}');
@@ -718,11 +717,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::Flex').props.children).toEqual('6');
@@ -741,7 +740,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
         expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
@@ -759,11 +758,11 @@ describe('Recipe Component tests', () => {
     });
 
     // -------- CHANGE ON TAGS CASES --------
-    test('updates recipeTags and reflects in RecipeTags only', () => {
+    test('remove recipeTags and reflects in RecipeTags only', () => {
         //@ts-ignore route and navigation are not useful for UT
         const {getByTestId} = render(<Recipe route={{params: mockRouteEdit}} navigation={mockNavigation}/>);
 
-        fireEvent.press(getByTestId('RecipeTags::ChangeTag'));
+        fireEvent.press(getByTestId('RecipeTags::RemoveTag'));
 
 
         // Image part
@@ -786,14 +785,14 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeDescription::SetTextToEdit').props.children).toBeTruthy();
 
         // Tags
-        expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert changed","Chocolate"]');
+        expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Chocolate"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"6"}');
@@ -811,7 +810,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"60"}');
@@ -855,11 +854,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert","Chocolate"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"23"}');
@@ -877,7 +876,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"60"}');
@@ -937,11 +936,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(queryByTestId('RecipePersons::Flex')).toBeNull();
@@ -962,7 +961,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
         expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
@@ -1009,11 +1008,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert","Chocolate"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"6"}');
@@ -1031,7 +1030,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"60"}');
@@ -1090,11 +1089,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::Flex').props.children).toEqual('6');
@@ -1115,7 +1114,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
         expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
@@ -1162,11 +1161,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert","Chocolate"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"6"}');
@@ -1184,7 +1183,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"71"}');
@@ -1242,11 +1241,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::Flex').props.children).toEqual('6');
@@ -1265,7 +1264,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{\"style\":{\"color\":\"#0F0A39\",\"fontFamily\":\"Lora-VariableFont_wght\",\"fontSize\":34.61538461538461,\"fontWeight\":\"bold\",\"textAlign\":\"left\",\"padding\":23.076923076923077,\"flex\":1},\"value\":\"min\"}');
         expect(queryByTestId('RecipeTime::Flex')).toBeNull();
@@ -1315,11 +1314,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert","Chocolate"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"6"}');
@@ -1337,7 +1336,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"60"}');
@@ -1396,11 +1395,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ').length).toEqual(3);
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::Flex').props.children).toEqual('6');
@@ -1419,7 +1418,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
         expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
@@ -1492,7 +1491,7 @@ describe('Recipe Component tests', () => {
 
         fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'New Recipe Title');
         fireEvent.press(getByTestId('RecipeDescription::SetTextToEdit'), 'New Recipe Description');
-        fireEvent.press(getByTestId('RecipeTags::ChangeTag'));
+        fireEvent.press(getByTestId('RecipeTags::RemoveTag'));
         fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '23');
         fireEvent.press(getByTestId('RecipeIngredients::TextEdited'), ' updated');
         fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), '71');
@@ -1515,8 +1514,7 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":26.923076923076923,"fontWeight":"normal","textAlign":"left","paddingHorizontal":38.46153846153846,"paddingVertical":5.769230769230769},"value":"New Recipe Description"}');
 
         // Tags
-        expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Dessert changed","Chocolate"]');
-        expect(getByTestId('RecipeTags::OnPress')).toBeTruthy();
+        expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Chocolate"]');
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":42.30769230769231,"fontWeight":"bold","textAlign":"left","textTransform":"uppercase","padding":23.076923076923077},"value":"Ingredients (23 persons)"}');
@@ -1561,7 +1559,7 @@ describe('Recipe Component tests', () => {
         fireEvent.press(getByTestId('RecipeImage::OpenModal'));
         fireEvent.press(getByTestId('RecipeTitle::OpenModal'));
         fireEvent.press(getByTestId('RecipeDescription::OpenModal'));
-        fireEvent.press(getByTestId('RecipeTags::ChangeTag'));
+        fireEvent.press(getByTestId('RecipeTags::RemoveTag'));
         fireEvent.press(getByTestId('RecipePersons::OpenModal'));
         fireEvent.press(getByTestId('RecipeIngredients::OpenModal'));
         fireEvent.press(getByTestId('RecipeTime::OpenModal'));
@@ -1582,12 +1580,12 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('[]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(queryByTestId('RecipePersons::Flex')).toBeNull();
@@ -1609,7 +1607,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual("{\"flexDirection\":\"row\",\"padding\":13.461538461538462}");
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{\"style\":{\"color\":\"#0F0A39\",\"fontFamily\":\"Lora-VariableFont_wght\",\"fontSize\":34.61538461538461,\"fontWeight\":\"bold\",\"textAlign\":\"left\",\"padding\":23.076923076923077,\"flex\":1},\"value\":\"min\"}');
         expect(queryByTestId('RecipeTime::Flex')).toBeNull();
@@ -1695,11 +1693,11 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeTags::TagsList').props.children).toEqual('["Mexican","Lunch"]');
         expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
         expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
-        expect(getByTestId('RecipeTags::ChangeTag').props.children).toBeTruthy();
+        expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
 
         // Persons
         expect(getByTestId('RecipePersons::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row","padding":13.461538461538462}');
+        expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
         expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
         expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"2"}');
@@ -1716,7 +1714,7 @@ describe('Recipe Component tests', () => {
 
         // Time
         expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
-        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{\"flexDirection\":\"row\",\"padding\":13.461538461538462}');
+        expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
         expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
         expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
         expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"20"}');

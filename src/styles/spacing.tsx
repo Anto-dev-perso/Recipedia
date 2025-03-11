@@ -38,7 +38,6 @@ export const screenViews = EStyleSheet.create({
     },
     tabView: {
         flexDirection: 'row',
-        padding: padding.small,
     }
 });
 

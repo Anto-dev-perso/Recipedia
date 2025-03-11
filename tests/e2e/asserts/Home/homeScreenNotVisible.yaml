@@ -24,8 +24,8 @@ appId: "com.recipesmanager"
     index: 1
     label: Home text is not displayed
 - assertNotVisible:
-    text: ""
-    label: icon is not displayed
+    text: "󰄐"
+    label: Shopping icon is not displayed
 - assertNotVisible:
     text: "Shopping"
     label: text is not displayed

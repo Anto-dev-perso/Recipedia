@@ -1,6 +1,8 @@
 appId: "com.recipesmanager"
 name: "Recipe screen test suite"
 ---
+- launchApp
+
 - runFlow: flows/Recipe/ReadOnly/recipeFromSearchScreen.yaml
 - runFlow: flows/Recipe/ReadOnly/recipeFromHomeScreen.yaml
 - runFlow: flows/Recipe/Edit/recipeFromSearchScreen.yaml

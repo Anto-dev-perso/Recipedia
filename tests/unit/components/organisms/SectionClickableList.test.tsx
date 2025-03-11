@@ -50,7 +50,6 @@ describe('SectionClickableList Component', () => {
             const category = filtersCategories[i];
             if (category == listFilter.recipeTitleInclude || category == listFilter.purchased || category == listFilter.seafood || category == listFilter.sweetener || category == listFilter.undefined) {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
@@ -60,7 +59,6 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::RemoveFilter`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`).props.children).toEqual('50');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
@@ -82,7 +80,6 @@ describe('SectionClickableList Component', () => {
             const category = filtersCategories[i];
             if (category == listFilter.recipeTitleInclude || category == listFilter.purchased || category == listFilter.seafood || category == listFilter.sweetener || category == listFilter.undefined) {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
@@ -92,7 +89,6 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::RemoveFilter`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`).props.children).toEqual('50');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
@@ -122,7 +118,6 @@ describe('SectionClickableList Component', () => {
             const category = filtersCategories[i];
             if (category == listFilter.recipeTitleInclude || category == listFilter.purchased || category == listFilter.seafood || category == listFilter.sweetener || category == listFilter.undefined) {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
@@ -132,7 +127,6 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::RemoveFilter`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`).props.children).toEqual('50');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
@@ -156,7 +150,6 @@ describe('SectionClickableList Component', () => {
             const category = filtersCategories[i];
             if (category == listFilter.recipeTitleInclude || category == listFilter.purchased || category == listFilter.seafood || category == listFilter.sweetener || category == listFilter.undefined) {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
@@ -166,7 +159,6 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::RemoveFilter`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`).props.children).toEqual('50');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
@@ -187,7 +179,6 @@ describe('SectionClickableList Component', () => {
             const category = filtersCategories[i];
             if (category == listFilter.recipeTitleInclude || category == listFilter.purchased || category == listFilter.seafood || category == listFilter.sweetener || category == listFilter.undefined) {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
@@ -197,7 +188,6 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::RemoveFilter`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`).props.children).toEqual('50');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
@@ -218,7 +208,6 @@ describe('SectionClickableList Component', () => {
             const category = filtersCategories[i];
             if (category == listFilter.prepTime || category == listFilter.inSeason) {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`).props.children).toEqual('50');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
@@ -228,7 +217,6 @@ describe('SectionClickableList Component', () => {
                 expect(getByTestId(`CheckListForCategory - ${filtersCategories[i]}::RemoveFilter`).props.children).toBeTruthy();
             } else {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
@@ -248,7 +236,6 @@ describe('SectionClickableList Component', () => {
             const category = filtersCategories[i];
             if (category == listFilter.recipeTitleInclude || category == listFilter.purchased || category == listFilter.prepTime || category == listFilter.inSeason || category == listFilter.tags || category == listFilter.seafood || category == listFilter.sweetener || category == listFilter.undefined) {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
@@ -258,8 +245,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::updateIngredientFromShopping`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`).props.children).toEqual('50');
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toEqual('{"type":0,"name":"minus","size":38.46153846153846,"color":"#414a4c","style":{"paddingLeft":2}}');
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toEqual('"minus"');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
@@ -281,7 +267,6 @@ describe('SectionClickableList Component', () => {
             const category = filtersCategories[i];
             if (category == listFilter.recipeTitleInclude || category == listFilter.purchased || category == listFilter.prepTime || category == listFilter.inSeason || category == listFilter.tags || category == listFilter.seafood || category == listFilter.sweetener || category == listFilter.undefined) {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
@@ -291,8 +276,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::updateIngredientFromShopping`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`).props.children).toEqual('50');
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toEqual('{"type":0,"name":"minus","size":38.46153846153846,"color":"#414a4c","style":{"paddingLeft":2}}');
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toEqual('"minus"');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
@@ -314,7 +298,6 @@ describe('SectionClickableList Component', () => {
 
         for (let i = 0; i < filtersCategories.length; i++) {
             expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
-            expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Height`)).toBeNull();
             expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
             expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
             expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();

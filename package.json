@@ -10,9 +10,10 @@
     "build:ios": "eas build --local --profile development --platform ios",
     "install:android": "adb install build*.apk",
     "install:ios": "TODO",
-    "test:unit": "jest --config jest.config.js",
-    "test:unit-watch": "jest --watchAll --config jest.config.js",
-    "test:unit-coverage": "jest --coverage --json --outputFile=jest-results.json --config jest.config.js",
+    "test:unit": "jest --verbose --config jest.config.js",
+    "test:unit-fail-only": "jest --verbose --onlyFailures --config jest.config.js",
+    "test:unit-watch": "jest --watchAll --verbose --config jest.config.js",
+    "test:unit-coverage": "jest --verbose --coverage --json --outputFile=jest-results.json --config jest.config.js",
     "test:e2e:android": " maestro test --format junit tests/e2e/*",
     "test:e2e:ios": " maestro test tests/e2e/*   TODO",
     "build-and-test:e2e:android": "npm run build:android && npm run install:android && npm run test:e2e:android",
@@ -42,7 +43,8 @@
     "react-native-gesture-handler": "~2.20.2",
     "react-native-paper": "^5.13.1",
     "react-native-safe-area-context": "4.12.0",
-    "react-native-screens": "~4.4.0"
+    "react-native-screens": "~4.4.0",
+    "@shopify/flash-list": "1.7.3"
   },
   "resolutions": {
     "react": "18.3.1",

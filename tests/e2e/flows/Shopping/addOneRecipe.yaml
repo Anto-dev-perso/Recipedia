@@ -1,14 +1,14 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    text: ", Shopping"
+    text: "󰄐, Shopping"
     label: First go th Shopping Screen
 - runFlow: ../../asserts/Shopping/shoppingEmpty.yaml
 - tapOn:
     text: "󰋜, Home"
     label: Go to Home screen
 - tapOn:
-    text: ""
+    text: "󰍉"
     label: Open Search screen
 - swipe:
     start: "50%,60%"
@@ -23,14 +23,14 @@ appId: "com.recipesmanager"
 - runFlow: ../../asserts/Alerts/addingRecipePancake.yaml
 - pressKey: "BACK"
 - tapOn:
-    text: ", Shopping"
+    text: "󰄐, Shopping"
     label: Go back to Shopping screen
 - runFlow: ../../asserts/Shopping/shoppingPancake.yaml
 - tapOn:
-    text: ", Parameters"
+    text: "󰒓, Parameters"
     label: Change to Parameters screen
 - tapOn:
-    text: ", Shopping"
+    text: "󰄐, Shopping"
     label: Go back to Shopping Screen to verify elements are still there
 - runFlow: ../../asserts/Shopping/shoppingPancake.yaml
 - tapOn:
