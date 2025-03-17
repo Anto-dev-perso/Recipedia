@@ -44,21 +44,12 @@ export default function VerticalBottomButtons({navigation}: HomeScreenProp) {
                         size: iconsSize.medium,
                         color: "#414a4c"
                     }} onPressFunction={() => navigation.navigate('Recipe', {
-                        mode: 'addManually', recipe: {
-                            image_Source: '', title: '',
-                            description: "",
-                            tags: [],
-                            persons: 0,
-                            ingredients: [],
-                            season: [],
-                            preparation: [],
-                            time: 0
-                        }
+                        mode: 'addManually'
                     })}/>
 
                     <BottomTopButton testID={'GalleryButton'} as={RoundButton} position={bottomTopPosition.bottom_right}
                                      diameter={LargeButtonDiameter} buttonOffset={2 * BottomTopButtonOffset} icon={{
-                        type: enumIconTypes.fontAwesome,
+                        type: enumIconTypes.materialCommunity,
                         name: galleryIcon,
                         size: iconsSize.medium,
                         color: "#414a4c"
@@ -66,7 +57,7 @@ export default function VerticalBottomButtons({navigation}: HomeScreenProp) {
 
                     <BottomTopButton testID={'CameraButton'} as={RoundButton} position={bottomTopPosition.bottom_right}
                                      diameter={LargeButtonDiameter} buttonOffset={3 * BottomTopButtonOffset} icon={{
-                        type: enumIconTypes.entypo,
+                        type: enumIconTypes.materialCommunity,
                         name: cameraIcon,
                         size: iconsSize.medium,
                         color: "#414a4c"

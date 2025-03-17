@@ -1,0 +1,21 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    id: "RecipeIngredients::RoundButton"
+    label: Press new ingredient button
+- tapOn:
+    id: "RecipeIngredients::0::QuantityInput"
+    label: Press on quantity input
+- inputText:
+    text: "4321"
+    label: Write the quantity in the input text
+- hideKeyboard:
+    label: Close the keyboard
+- tapOn:
+    id: "RecipeIngredients::0::Dropdown::TextInput"
+    label: Press on ingredient name input
+- inputText:
+    text: "Celery"
+    label: Write the quantity in the input text
+- hideKeyboard:
+    label: Close the keyboard

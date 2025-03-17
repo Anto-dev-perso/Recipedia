@@ -19,7 +19,7 @@ appId: "com.recipesmanager"
     text: "Quick Meal"
     label: Tag Quick Meal is rendered
 - assertVisible:
-    text: "INGREDIENTS (2 PERSONS)"
+    text: "Ingredients (2 persons)"
     label: Ingredients title and number of persons is rendered
 - swipe:
     start: "50%,65%"
@@ -60,7 +60,7 @@ appId: "com.recipesmanager"
     text: "20 g"
     label: Quantity of Pine Nuts is rendered
 - assertVisible:
-    text: "PREPARATION (20 MIN)"
+    text: "Preparation (20 min)"
     label: Preparation title and time of preparation is rendered
 - assertVisible:
     text: "1) Cook the pasta according to the package instructions."

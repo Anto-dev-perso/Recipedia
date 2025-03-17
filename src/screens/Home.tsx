@@ -92,7 +92,7 @@ export default function Home({route, navigation}: HomeScreenProp) {
             <BottomTopButton testID={'SearchButton'} as={RoundButton} position={bottomTopPosition.bottom_left}
                              diameter={LargeButtonDiameter}
                              icon={{
-                                 type: enumIconTypes.fontAwesome,
+                                 type: enumIconTypes.materialCommunity,
                                  name: searchIcon,
                                  size: iconsSize.medium,
                                  color: "#414a4c"

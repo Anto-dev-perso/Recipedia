@@ -60,7 +60,7 @@ appId: "com.recipesmanager"
     text: " persons"
     label: Outro text for the number of persons is rendered
 - assertVisible:
-    text: "INGREDIENTS"
+    text: "Ingredients"
     label: Section Ingredients is rendered
 - swipe:
     start: "50%,70%"
@@ -149,7 +149,7 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "PREPARATION : STEP 1"
+    text: "Preparation : step 1"
     label: Preparation section for first step is rendered
 - assertVisible:
     text: "Title of step 1 : "
@@ -161,7 +161,7 @@ appId: "com.recipesmanager"
     text: "Content of step 1 : "
     label: Intro text for first step is rendered
 - assertVisible:
-    text: "PREPARATION : STEP 2"
+    text: "Preparation : step 2"
     label: Preparation section for second step is rendered
 - swipe:
     start: "50%,60%"
@@ -177,7 +177,7 @@ appId: "com.recipesmanager"
     text: "Content of step 2 : "
     label: Intro text for second step is rendered
 - assertVisible:
-    text: "PREPARATION : STEP 3"
+    text: "Preparation : step 3"
     label: Preparation section for third step is rendered
 - swipe:
     start: "50%,80%"

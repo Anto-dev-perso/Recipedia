@@ -18,6 +18,7 @@ import RecipeDatabase from "@utils/RecipeDatabase";
 // TODO use variant for Text
 
 export type TextRenderProps = {
+    testID?: string,
     title?: string
     text: Array<string>
     render: typoRender,
@@ -45,19 +46,25 @@ export default function TextRender(props: TextRenderProps) {
     // TODO split into separate files all these render functions
     function renderAsTable(item: string, index: number) {
 
-        // For now, only 2 columns are render 
+        // For now, only 2 columns are render
         // So far, only ingredients use this
         const [unitAndQuantity, ingName] = item.split(textSeparator);
         const [quantity, unit] = unitAndQuantity.split(unitySeparator);
+
+        const ingredientsList = RecipeDatabase.getInstance().get_ingredients().map(ingredient => ingredient.ingName).sort();
 
         return (
             <View key={index}>
                 {props.editText ?
                     <View style={screenViews.tabView}>
-                        <TextInput style={{...paragraphBorder, flex: 2, textAlign: "center"}}
-                                   value={quantity}
-                                   onChangeText={newQuantity => props.editText?.onChangeFunction(item, `${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`)}/>
-                        <Text style={{
+                        <TextInput testID={props.testID + `::${index}::QuantityInput`}
+                                   style={{...paragraphBorder, flex: 2, textAlign: "center"}}
+                                   value={quantity.toString()}
+                                   onChangeText={newQuantity => props.editText?.onChangeFunction(index, `${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`)}
+                            // TODO this can't stay like this forever but what about the test ?
+                                   autoCorrect={false} spellCheck={false}
+                        />
+                        <Text testID={props.testID + `::${index}::Unit`} style={{
                             ...paragraphBorder,
                             backgroundColor: palette.backgroundColor,
                             flex: 1,
@@ -66,10 +73,11 @@ export default function TextRender(props: TextRenderProps) {
                         }}>{unit}</Text>
 
                         <View style={{flex: 3}}>
-                            <TextInputWithDropDown absoluteDropDown={true}
-                                                   referenceTextArray={RecipeDatabase.getInstance().get_ingredients().map(ingredient => ingredient.ingName).sort()}
+                            <TextInputWithDropDown testID={props.testID + `::${index}::Dropdown`}
+                                                   absoluteDropDown={true}
+                                                   referenceTextArray={ingredientsList}
                                                    value={ingName}
-                                                   onValidate={newIngredientName => props.editText?.onChangeFunction(item, `${unitAndQuantity}${textSeparator}${newIngredientName}`)}/>
+                                                   onValidate={newIngredientName => props.editText?.onChangeFunction(index, `${unitAndQuantity}${textSeparator}${newIngredientName}`)}/>
                         </View>
                     </View>
                     :
@@ -84,7 +92,7 @@ export default function TextRender(props: TextRenderProps) {
 
     function renderAsSection(item: string, index: number) {
         // For now, only 2 columns are render 
-        const [sectionTitle, sectionParagraph] = item.split(textSeparator);
+        const [sectionTitle, sectionParagraph] = item.length > 0 ? item.split(textSeparator) : ['', ''];
 
         return (
             <View key={index}>
@@ -93,14 +101,21 @@ export default function TextRender(props: TextRenderProps) {
                         <Text style={{...typoStyles.title, textAlign: "center",}}>Preparation : step {index + 1}</Text>
 
                         <Text style={typoStyles.header}>Title of step {index + 1} : </Text>
-                        <TextInput style={headerBorder} value={sectionTitle}
-                                   onChangeText={newTitle => props.editText?.onChangeFunction(`${newTitle}${textSeparator}${sectionParagraph}`, item)}
-                                   multiline={true}/>
+                        <TextInput testID={props.testID + `::${index}::InputTitle`} style={headerBorder}
+                                   value={sectionTitle}
+                                   onChangeText={newTitle => props.editText?.onChangeFunction(index, `${newTitle}${textSeparator}${sectionParagraph}`)}
+                                   multiline={true}
+                            // TODO this can't stay like this forever but what about the test ?
+                                   autoCorrect={false} spellCheck={false}
+                        />
 
                         <Text style={typoStyles.header}>Content of step {index + 1} : </Text>
-                        <TextInput style={paragraphBorder} value={sectionParagraph}
-                                   onChangeText={newParagraph => props.editText?.onChangeFunction(`${sectionTitle}${textSeparator}${newParagraph}`, item)}
-                                   multiline={true}/>
+                        <TextInput testID={props.testID + `::${index}::InputParagraph`} style={paragraphBorder}
+                                   value={sectionParagraph}
+                                   onChangeText={newParagraph => props.editText?.onChangeFunction(index, `${sectionTitle}${textSeparator}${newParagraph}`)}
+                                   multiline={true}
+                            // TODO this can't stay like this forever but what about the test ?
+                                   autoCorrect={false} spellCheck={false}/>
                     </View>
                     :
                     <View style={screenViews.sectionView}>

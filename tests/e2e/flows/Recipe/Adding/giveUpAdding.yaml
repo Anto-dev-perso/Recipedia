@@ -1,0 +1,31 @@
+appId: "com.recipesmanager"
+---
+- runFlow: ./Manual/openAddManually.yaml
+#- runFlow: ./Manual/tryAddOnlyImage.yaml
+- runFlow: ./Manual/tryAddOnlyImageTitle.yaml
+- runFlow: ./Manual/tryAddOnlyImageTitleDescription.yaml
+- runFlow: ./Manual/tryAddOnlyImageTitleDescriptionTag.yaml
+- runFlow: ./Manual/tryAddOnlyImageTitleDescriptionTagPerson.yaml
+- runFlow: ./Manual/tryAddOnlyImageTitleDescriptionTagPersonIngredient.yaml
+- runFlow: ./Manual/tryAddOnlyImageTitleDescriptionTagPersonIngredientTime.yaml
+- runFlow: ./Manual/tryAddFull.yaml
+- tapOn:
+    text: "󰌍"
+    label: Press back
+- tapOn:
+    text: "󰍴"
+    label: Press the Minus bottom button
+- tapOn:
+    text: "󰍉"
+    label: Open Search screen
+- tapOn:
+    text: "Title of recipe"
+    label: Tap on Search bar
+- inputText:
+    text: "Title"
+    label: Search recipe that shouldn't exist because user cancel
+- assertNotVisible:
+    text: "Title, Japanese, Prep. 56789 min, 2 p."
+    label: Recipe doesn't exist
+- pressKey: "enter"
+- pressKey: "BACK"

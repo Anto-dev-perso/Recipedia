@@ -1,0 +1,8 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: "󰐕"
+    label: Press the Plus bottom button
+- tapOn:
+    text: "󰏫"
+    label: Press the Edit bottom button

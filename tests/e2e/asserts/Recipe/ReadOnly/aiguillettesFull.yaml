@@ -1,0 +1,108 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "BackButton"
+    label: Back button is displayed
+- assertVisible:
+    text: "󰌍"
+    label: Back button icon is displayed
+- assertVisible:
+    text: "󰆴"
+    label: Delete icon is  displayed
+- assertVisible:
+    id: "RecipeDelete"
+    label: Delete button id is displayed
+- assertVisible:
+    text: "󰏫"
+    label: Edit button icon is displayed
+- assertVisible:
+    id: "RecipeImage"
+    label: Image id is displayed
+- assertVisible:
+    text: "Aiguillettes de poulet a la sauce satay"
+    label: Title text is displayed
+- assertVisible:
+    text: "CUISINEZ NOS FILETS DE POULET FRANCAIS AVEC DU RIZ BASMATI BIO ET\
+    \ UNE SAUCE SATAY MAISON: UN CONDIMENT ASIATIQUE A BASE DE CACAHUETES ET GINGEMBRE\
+    \ !"
+    label: Description text is displayed
+- assertVisible:
+    id: "chip"
+    index: 0
+    label: First tag chip is displayed
+- assertVisible:
+    text: "Healthy"
+    label: First tag text is displayed
+- assertVisible:
+    id: "chip"
+    index: 1
+    label: Second tag chip is displayed
+- assertVisible:
+    text: "Italian"
+    label: Second tag text is displayed
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "Ingredients (2 persons)"
+    label: Ingredient section and persons is displayed
+- assertVisible:
+    text: "2 g"
+    label: First ingredient quantity is displayed
+- assertVisible:
+    text: "Chicken Breast"
+    label: First ingredient name is displayed
+- assertVisible:
+    text: "2 g"
+    label: Second ingredient quantity is displayed
+- assertVisible:
+    text: "Onions"
+    label: Second ingredient name is displayed
+- assertVisible:
+    text: "5 g"
+    label: Third ingredient quantity is displayed
+- assertVisible:
+    text: "Avocado"
+    label: Third ingredient name is displayed
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "Preparation (20 min)"
+    label: Preparation section and persons are displayed
+- assertVisible:
+    text: "1) Le riz"
+    label: First preparation title is are displayed
+- assertVisible:
+    text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz\
+    \ selon les indications du paquet.Pendant ce temps, preparez les filets de poulet\
+    \ a la sauce satay."
+    label: First preparation paragraph is are displayed
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "2) La sauce"
+    label: Second preparation title is are displayed
+- assertVisible:
+    text: "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez\
+    \ et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\n\
+    Salez, poivrez. Mixez jusqu'a obtenir une texture homogene."
+    label: Second preparation paragraph is are displayed
+- assertVisible:
+    text: "3) LA CUISSON DU POULET"
+    label: Third preparation title is are displayed
+- assertVisible:
+    text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
+    \ ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson\
+    \ a feu moyen a vif."
+    label: Third preparation paragraph is are displayed
+- assertVisible:
+    id: "button-text"
+    label: Validate button id is displayed
+- assertVisible:
+    text: "Add this recipe to the menu"
+    label: Validate button text is displayed

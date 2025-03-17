@@ -51,17 +51,19 @@ export default function RecipeTags
                         {newTags.length > 0 ?
                             <FlashList data={newTags} estimatedItemSize={100} nestedScrollEnabled={true}
                                        keyboardShouldPersistTaps={"handled"} renderItem={({item}) => (
-                                <View key={item} style={{padding: padding.small}}> <TextInputWithDropDown
-                                    testID={"RecipeTags::AddOrEdit::List::" + item} absoluteDropDown={false}
-                                    referenceTextArray={allTagsNamesSorted} onValidate={(newText: string) => {
-                                    tagsProps.addNewTag(newText);
-                                    setNewTags(newTags.filter(itemToFilter => itemToFilter !== item));
-                                    setAllTagsNamesSorted(allTagsNamesSorted.filter(itemToFilter => itemToFilter !== newText));
-                                }}/> </View>)}/> : null}
+                                <View key={item} style={{padding: padding.small}}>
+                                    <TextInputWithDropDown
+                                        testID={"RecipeTags::AddOrEdit::List::" + item} absoluteDropDown={false}
+                                        referenceTextArray={allTagsNamesSorted} onValidate={(newText: string) => {
+                                        tagsProps.addNewTag(newText);
+                                        setNewTags(newTags.filter(itemToFilter => itemToFilter !== item));
+                                        setAllTagsNamesSorted(allTagsNamesSorted.filter(itemToFilter => itemToFilter !== newText));
+                                    }}/>
+                                </View>)}/> : null}
 
-                        <RoundButton
-                            style={{...viewButtonStyles.centeredView, flex: 1}}
-                            diameter={mediumButtonDiameter} icon={{
+                        <RoundButton testID={"RecipeTags::RoundButton"}
+                                     style={{...viewButtonStyles.centeredView, flex: 1}}
+                                     diameter={mediumButtonDiameter} icon={{
                             type: enumIconTypes.materialCommunity,
                             name: plusIcon,
                             size: iconsSize.small,

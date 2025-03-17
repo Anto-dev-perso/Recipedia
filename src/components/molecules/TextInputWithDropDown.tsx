@@ -1,6 +1,6 @@
 import {FlatList, Keyboard, LogBox, StyleProp, TouchableOpacity, View, ViewStyle} from "react-native";
 import {List, TextInput} from "react-native-paper";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {paragraphBorder} from "@styles/typography";
 import {palette} from "@styles/colors";
 
@@ -23,6 +23,7 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
     const [showDropdown, setShowDropdown] = useState(false);
     const [inputHeight, setInputHeight] = useState(0);
 
+    const inputRef = useRef<React.ElementRef<typeof TextInput>>(null);
 
     useEffect(() => {
         if (process.env.NODE_ENV !== 'test') {
@@ -34,8 +35,8 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
 
     useEffect(() => {
         const keyboardListener = Keyboard.addListener("keyboardDidHide", () => {
-            if (filteredTextArray.length === 0) {
-                props.onValidate?.(textInput);
+            if (inputRef.current && inputRef.current.isFocused()) {
+                handleSubmitEditing();
             }
         });
 
@@ -65,9 +66,11 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
     };
 
     const handleSubmitEditing = () => {
-        setShowDropdown(false);
-        Keyboard.dismiss();
-        props.onValidate?.(textInput);
+        // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
+        if (filteredTextArray.length <= 1) {
+            setShowDropdown(false);
+            props.onValidate?.(textInput);
+        }
     };
 
     const dropdownStyle: StyleProp<ViewStyle> = {
@@ -81,14 +84,15 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
     return (
 
         <View>
-            <TextInput testID={"TextInputWithDropDown::TextInput"} label={props.label} value={textInput}
+            <TextInput testID={props.testID + "::TextInput"} ref={inputRef} label={props.label} value={textInput}
                        onFocus={() => setShowDropdown(true)} onChangeText={handleSearch}
-                       onSubmitEditing={handleSubmitEditing} mode={props.outline === true ? "outlined" : "flat"}
+                       onEndEditing={handleSubmitEditing}
+                       mode={props.outline === true ? "outlined" : "flat"}
                        style={paragraphBorder}
                        onLayout={(event) => setInputHeight(event.nativeEvent.layout.height)}
             />
             {(showDropdown && filteredTextArray.length > 0 && !(filteredTextArray.length === 1 && filteredTextArray[0].toLowerCase() === textInput.toLowerCase())) && (
-                <View testID={"TextInputWithDropDown::DropdownContainer"}
+                <View testID={props.testID + "::DropdownContainer"}
                       style={props.absoluteDropDown ? {
                           ...dropdownStyle, position: "absolute",
                           top: inputHeight,

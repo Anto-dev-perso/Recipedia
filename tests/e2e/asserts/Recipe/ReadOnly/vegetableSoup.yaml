@@ -19,7 +19,7 @@ appId: "com.recipesmanager"
     text: "Soup"
     label: Tag Soup is rendered
 - assertVisible:
-    text: "INGREDIENTS (4 PERSONS)"
+    text: "Ingredients (4 persons)"
     label: Ingredients title and number of persons is rendered
 - swipe:
     start: "50%,65%"
@@ -54,7 +54,7 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "PREPARATION (40 MIN)"
+    text: "Preparation (40 min)"
     label: Preparation title and time of preparation is rendered
 - assertVisible:
     text: "1) Chop the vegetables into small pieces."

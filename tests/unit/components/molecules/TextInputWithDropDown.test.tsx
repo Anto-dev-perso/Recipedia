@@ -17,6 +17,7 @@ describe('TextInputWithDropDown Component', () => {
     const dbInstance = RecipeDatabase.getInstance();
 
     const defaultProps: TextInputWithDropDownType = {
+        testID: 'TextInputWithDropDown',
         absoluteDropDown: true, referenceTextArray: new Array<string>,
         label: 'Ingredient',
         outline: true,
@@ -161,9 +162,11 @@ describe('TextInputWithDropDown Component', () => {
         }
 
         await act(async () => {
-            fireEvent(input, 'submitEditing');
+            fireEvent(input, 'endEditing');
+        });
+        await waitFor(() => {
+            expect(mockOnChangeText).toHaveBeenCalledTimes(1);
         });
         expect(mockOnChangeText).toHaveBeenCalledWith(textInput);
-        expect(mockOnChangeText).toHaveBeenCalledTimes(1);
     });
 });

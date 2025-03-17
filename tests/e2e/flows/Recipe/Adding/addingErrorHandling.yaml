@@ -1,0 +1,65 @@
+appId: "com.recipesmanager"
+---
+
+# TODO add the capability to take pictures
+- runFlow: ./Manual/openAddManually.yaml
+
+- runFlow: ../../../asserts/Recipe/Edit/recipeEmpty.yaml
+- runFlow: ./Manual/tryAddEmpty.yaml
+- runFlow: ../../../asserts/Alerts/addRecipeEmpty.yaml
+
+# TODO to write when it is implemented
+#- runFlow: ./Manual/tryAddOnlyImage.yaml
+#- tapOn:
+#    text: "Add this new recipe"
+#    label: Try to validate the recipe
+#- runFlow: ../../../asserts/Alerts/addRecipeOnlyImage.yaml
+
+- runFlow: ./Manual/tryAddOnlyImageTitle.yaml
+- tapOn:
+    text: "Add this new recipe"
+    label: Try to validate the recipe
+- runFlow: ../../../asserts/Alerts/addRecipeOnlyImageTitle.yaml
+
+- runFlow: ./Manual/tryAddOnlyImageTitleDescription.yaml
+- tapOn:
+    text: "Add this new recipe"
+    label: Try to validate the recipe
+#  It is the same as title
+- runFlow: ../../../asserts/Alerts/addRecipeOnlyImageTitle.yaml
+
+- runFlow: ./Manual/tryAddOnlyImageTitleDescriptionTag.yaml
+- tapOn:
+    text: "Add this new recipe"
+    label: Try to validate the recipe
+#  It is the same as title
+- runFlow: ../../../asserts/Alerts/addRecipeOnlyImageTitle.yaml
+
+- runFlow: ./Manual/tryAddOnlyImageTitleDescriptionTagPerson.yaml
+- tapOn:
+    text: "Add this new recipe"
+    label: Try to validate the recipe
+- runFlow: ../../../asserts/Alerts/addRecipeOnlyImageTitleDescriptionTagPerson.yaml
+
+- runFlow: ./Manual/tryAddOnlyImageTitleDescriptionTagPersonIngredient.yaml
+- tapOn:
+    text: "Add this new recipe"
+    label: Try to validate the recipe
+- runFlow: ../../../asserts/Alerts/addRecipeOnlyImageTitleDescriptionTagPersonIngredient.yaml
+
+- runFlow: ./Manual/tryAddOnlyImageTitleDescriptionTagPersonIngredientTime.yaml
+- tapOn:
+    text: "Add this new recipe"
+    label: Try to validate the recipe
+#  It is the same as ingredient
+- runFlow: ../../../asserts/Alerts/addRecipeOnlyImageTitleDescriptionTagPersonIngredient.yaml
+
+- runFlow: ./Manual/tryAddFull.yaml
+- tapOn:
+    text: "Add this new recipe"
+    label: Try to validate the recipe
+- runFlow: ../../../asserts/Alerts/recipeAddFull.yaml
+
+- tapOn:
+    text: "󰍴"
+    label: Press the Minus bottom button

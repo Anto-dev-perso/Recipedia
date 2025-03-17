@@ -1,0 +1,12 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    id: "RecipeTags::RoundButton"
+    label: Add a new tag
+- tapOn:
+    id: "RecipeTags::AddOrEdit::List::.*:TextInput"
+    label: Press the new tag TextInput
+- inputText:
+    text: "Japanese"
+    label: Write the tag in the input text
+- pressKey: "enter"

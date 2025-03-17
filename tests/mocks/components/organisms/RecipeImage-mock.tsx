@@ -8,7 +8,7 @@ export function recipeImageMock(recipeImageProp: RecipeImageProps) {
     return (
         <View>
             <Text testID={recipeImageProp.testID + "::ImgUri"}>
-                {JSON.stringify(recipeImageProp.imgUri)}
+                {recipeImageProp.imgUri}
             </Text>
             {recipeImageProp.addProps ?
                 <View>

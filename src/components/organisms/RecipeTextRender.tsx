@@ -13,7 +13,8 @@ export type RecipeTextRenderEditProps = {
     textEditable: Array<string>,
     renderType: typoRender,
 
-    textEdited: (oldText: string, newText: string) => void, addNewText: () => void,
+    textEdited: (oldTextId: number, newText: string) => void,
+    addNewText: () => void,
 
     columnTitles?: {
         column1: TextProp,
@@ -24,6 +25,7 @@ export type RecipeTextRenderEditProps = {
 
 export type RecipeTextRenderAddOrEditProps =
     {
+        testID?: string,
         type: 'addOrEdit',
         viewAddButton: ViewStyle,
         prefixText?: TextProp,
@@ -42,13 +44,14 @@ export default function RecipeTextRender(textRenderProps: RecipeTextRenderProps)
         <View style={screenViews.sectionView} testID={textRenderProps.testID}>
             {textRenderProps.type === 'readOnly' ?
                 <TextRender text={textRenderProps.text} render={textRenderProps.render}/>
-                : <RecipeTextRenderEditablePart {...textRenderProps} />
+                : <RecipeTextRenderEditablePart testID={textRenderProps.testID} {...textRenderProps} />
             }
         </View>
     )
 }
 
 function RecipeTextRenderEditablePart(addOrEditProps: RecipeTextRenderAddOrEditProps) {
+    const testIDRoundButton = addOrEditProps.testID + "::RoundButton";
     return (
         <View>
             {addOrEditProps.prefixText ?
@@ -66,30 +69,31 @@ function RecipeTextRenderEditablePart(addOrEditProps: RecipeTextRenderAddOrEditP
                     </View> : null}
 
                     {/* TODO : Make it as a choice to avoid errors */}
-                    <TextRender text={addOrEditProps.textEditable}
+                    <TextRender testID={addOrEditProps.testID} text={addOrEditProps.textEditable}
                                 render={addOrEditProps.renderType}
                                 editText={{withBorder: true, onChangeFunction: addOrEditProps.textEdited}}/>
 
                     <View style={addOrEditProps.viewAddButton}>
-                        <RoundButton diameter={mediumButtonDiameter} icon={{
-                            type: enumIconTypes.materialCommunity,
-                            name: plusIcon,
-                            size: iconsSize.small,
-                            color: "#414a4c"
-                        }} onPressFunction={addOrEditProps.addNewText}/>
+                        <RoundButton testID={testIDRoundButton} diameter={mediumButtonDiameter}
+                                     icon={{
+                                         type: enumIconTypes.materialCommunity,
+                                         name: plusIcon,
+                                         size: iconsSize.small,
+                                         color: "#414a4c"
+                                     }} onPressFunction={addOrEditProps.addNewText}/>
                     </View>
                 </View>
                 :
                 <View style={viewButtonStyles.centeredView}>
-                    <RoundButton diameter={mediumButtonDiameter} icon={{
-                        type: enumIconTypes.materialCommunity,
-                        name: plusIcon,
-                        size: iconsSize.small,
-                        color: "#414a4c"
-                    }} onPressFunction={addOrEditProps.openModal}/>
+                    <RoundButton testID={testIDRoundButton} diameter={mediumButtonDiameter}
+                                 icon={{
+                                     type: enumIconTypes.materialCommunity,
+                                     name: plusIcon,
+                                     size: iconsSize.small,
+                                     color: "#414a4c"
+                                 }} onPressFunction={addOrEditProps.openModal}/>
                 </View>
             }
-            {/*<Text style={{...typoStyles.header, flex: 4}}>{addOrEditProps.suffixText}</Text>*/}
         </View>
     )
 }

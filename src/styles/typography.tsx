@@ -50,7 +50,7 @@ export type bulletListDataType = {
 }
 export type editableText = {
     withBorder: boolean,
-    onChangeFunction(oldParam: string, newParam: string): void,
+    onChangeFunction(oldValueId: number, newParam: string): void,
 }
 
 export const borderStyle = EStyleSheet.create({
@@ -94,7 +94,6 @@ export const typoStyles = EStyleSheet.create({
         fontSize: typoSize.titleSize,
         fontWeight: 'bold',
         textAlign: 'left',
-        textTransform: 'uppercase',
         padding: padding.medium,
     },
     searchBar: {

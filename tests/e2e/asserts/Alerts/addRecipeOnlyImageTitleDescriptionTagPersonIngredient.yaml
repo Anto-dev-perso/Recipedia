@@ -1,0 +1,14 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: "Missing element"
+    label: Alert title is displayed
+- assertVisible:
+    text: "You're missing some instructions for the preparation to your recipe. Please add this before validate."
+    label: Alert message containing all missing elements is displayed
+- assertVisible:
+    text: "UNDERSTOOD"
+    label: Alert validation button is displayed
+- tapOn:
+    text: "UNDERSTOOD"
+    label: Tap on the validation button

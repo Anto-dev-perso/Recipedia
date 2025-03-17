@@ -1,0 +1,9 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    id: "RecipeDescription::TextInput"
+- inputText:
+    text: "Description"
+    label: Write the description in the input text
+- hideKeyboard:
+    label: Close the keyboard

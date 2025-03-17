@@ -21,7 +21,7 @@ export type RecipeImageProps =
 
 export default function RecipeImage(imgProps: RecipeImageProps) {
 
-
+    // TODO do not show image is uri is empty to prevent warning
     return (
         <View style={imageStyle.containerFullStyle} testID={imgProps.testID}>
             {imgProps.addProps ?

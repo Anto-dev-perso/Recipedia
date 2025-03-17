@@ -42,7 +42,7 @@ export function recipeTextRenderMock(recipeTextRenderProp: RecipeTextRenderProps
                             </Text>
                             <Button testID={recipeTextRenderProp.testID + "::TextEdited"} onPress={(newText) => {
                                 // @ts-ignore can't pass in a string into a onPress but let it go for testing
-                                recipeTextRenderProp.textEdited(recipeTextRenderProp.textEditable[0], recipeTextRenderProp.textEditable[0] + newText)
+                                recipeTextRenderProp.textEdited(0, recipeTextRenderProp.textEditable[0] + newText)
                             }} title="Set Text to Edit"/>
                             {recipeTextRenderProp.columnTitles ?
                                 <View>

@@ -71,16 +71,7 @@ describe('VerticalBottomButtons Component', () => {
         fireEvent.press(getByTestId('EditButton::OnPressFunction'));
 
         expect(mockNavigation.navigate).toHaveBeenCalledWith('Recipe', {
-            mode: 'addManually', recipe: {
-                image_Source: '', title: '',
-                description: "",
-                tags: [],
-                persons: 0,
-                ingredients: [],
-                season: [],
-                preparation: [],
-                time: 0
-            }
+            mode: 'addManually'
         });
     });
 

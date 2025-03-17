@@ -19,7 +19,7 @@ appId: "com.recipesmanager"
     text: "Seafood"
     label: Tag Seafood is rendered
 - assertVisible:
-    text: "INGREDIENTS (4 PERSONS)"
+    text: "Ingredients (4 persons)"
     label: Ingredients title and number of persons is rendered
 - swipe:
     start: "50%,60%"
@@ -60,7 +60,7 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "PREPARATION (45 MIN)"
+    text: "Preparation (45 min)"
     label: Preparation title and time of preparation is rendered
 - assertVisible:
     text: "1) Cook the sushi rice and let it cool."

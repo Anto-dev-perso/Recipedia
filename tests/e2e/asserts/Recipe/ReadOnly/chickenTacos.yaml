@@ -19,7 +19,7 @@ appId: "com.recipesmanager"
     text: "Lunch"
     label: Tag Lunch is rendered
 - assertVisible:
-    text: "INGREDIENTS (2 PERSONS)"
+    text: "Ingredients (2 persons)"
     label: Ingredients title and number of persons is rendered
 - swipe:
     start: "50%,65%"
@@ -56,7 +56,7 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "PREPARATION (20 MIN)"
+    text: "Preparation (20 min)"
     label: Preparation title and time of preparation is rendered
 - assertVisible:
     text: "1) Cook the chicken breast and slice it into strips."

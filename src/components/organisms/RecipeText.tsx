@@ -13,6 +13,7 @@ export type RecipeTextEditProps = {
 
 export type RecipeTextAddOrEditProps =
     {
+        testID?: string,
         editableViewStyle?: ViewStyle,
         prefixText?: TextProp,
         suffixText?: TextProp
@@ -30,9 +31,11 @@ export default function RecipeText(textProps: RecipeTextProps) {
 
 
     return (
-        <View style={screenViews.sectionView} testID={textProps.testID}>
-            {textProps.rootText ? <Text style={textProps.rootText.style}>{textProps.rootText.value}</Text> : null}
-            {textProps.addOrEditProps ? <RecipeTextEditablePart {...textProps.addOrEditProps}/> : null}
+        <View style={screenViews.sectionView}>
+            {textProps.rootText ? <Text
+                style={textProps.rootText.style}>{textProps.rootText.value}</Text> : null}
+            {textProps.addOrEditProps ?
+                <RecipeTextEditablePart testID={textProps.testID} {...textProps.addOrEditProps}/> : null}
 
         </View>
     )
@@ -46,7 +49,8 @@ function RecipeTextEditablePart(addOrEditProps: RecipeTextAddOrEditProps) {
                 <Text style={addOrEditProps.prefixText.style}>{addOrEditProps.prefixText.value}</Text> : null}
 
             {addOrEditProps.editType === 'editable' ?
-                <TextInput style={addOrEditProps.textEditable.style} value={addOrEditProps.textEditable.value}
+                <TextInput testID={addOrEditProps.testID + "::TextInput"} style={addOrEditProps.textEditable.style}
+                           value={addOrEditProps.textEditable.value}
                            onChangeText={newTitle => addOrEditProps.setTextToEdit(newTitle)} multiline={true}/>
 
                 : <RoundButton style={{

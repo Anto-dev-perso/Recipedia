@@ -1,0 +1,14 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: "SUCCESSFULLY ADDED RECIPE TO DATABASE"
+    label: Alert title is displayed
+- assertVisible:
+    text: "Recipe titled \"Title\" has been successfully added to the database"
+    label: Alert message containing all missing elements is displayed
+- assertVisible:
+    text: "UNDERSTOOD"
+    label: Alert validation button is displayed
+- tapOn:
+    text: "UNDERSTOOD"
+    label: Tap on the validation button

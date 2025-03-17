@@ -1,0 +1,5 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: "Add this new recipe"
+    label: Try to validate the recipe

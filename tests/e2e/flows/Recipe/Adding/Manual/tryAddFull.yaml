@@ -1,0 +1,25 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    id: "RecipePreparation::RoundButton"
+    label: Press new preparation step button
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
+- tapOn:
+    id: "RecipePreparation::0::InputTitle"
+    label: Press preparation step title
+- inputText:
+    text: "Step title"
+    label: Write the preparation step title in the input text
+- hideKeyboard:
+    label: Close the keyboard
+- tapOn:
+    id: "RecipePreparation::0::InputParagraph"
+    label: Press preparation step paragraph
+- inputText:
+    text: "Step paragraph"
+    label: Write the preparation step paragraph in the input text
+- hideKeyboard:
+    label: Close the keyboard

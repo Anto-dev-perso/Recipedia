@@ -11,6 +11,8 @@ export type SearchBarProps = {
     setSearch: (newSearchString: string) => void;
 }
 
+// TODO it is case sensitive but it shouldn't be
+
 export default function SearchBar(props: SearchBarProps) {
     function crossGesture() {
         Keyboard.dismiss();

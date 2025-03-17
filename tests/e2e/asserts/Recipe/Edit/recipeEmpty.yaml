@@ -1,0 +1,130 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "BackButton"
+    label: Back button is displayed
+- assertVisible:
+    text: "󰌍"
+    label: Back button icon is displayed
+- assertNotVisible:
+    text: "󰆴"
+    label: Delete icon is not displayed
+- assertNotVisible:
+    id: "RecipeDelete"
+    label: Delete button id is not displayed
+- assertNotVisible:
+    text: "󰏫"
+    label: Edit button icon is not displayed
+- assertVisible:
+    id: "button-text"
+    label: Add recipe button id is displayed
+- assertVisible:
+    text: "Add this new recipe"
+    label: Add recipe button text is displayed
+- assertVisible:
+    id: "RecipeImage"
+    label: Image id is displayed
+- assertVisible:
+    text: "Title of the recipe : "
+    label: Title introduction text is displayed
+- assertVisible:
+    id: "RecipeTitle::TextInput"
+    text: ""
+    label: Title TextInput is displayed with empty text
+- assertVisible:
+    id: "RecipeTags::AddOrEdit::HeaderText"
+    text: ""
+    label: Description Title id is displayed with the empty text
+- assertVisible:
+    id: "RecipeDescription::TextInput"
+    text: ""
+    label: Description TextInput is displayed with the empty text
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    id: "RecipeTags::AddOrEdit::HeaderText"
+    text: ""
+    label: Header text id for the tags is displayed with the empty text
+- assertVisible:
+    id: "RecipeTags::AddOrEdit::ElementText"
+    text: "Tags are a way to identify a recipe and make easier its search.\n\
+    Here are some examples of tags you can have : .*, .*, .*"
+    label: Explanation text id for the tags is displayed with the empty text
+- assertNotVisible:
+    id: "chip"
+    label: No tag is not displayed
+- assertNotVisible:
+    text: "󰅖"
+    label: Tag's icon is not displayed
+- assertVisible:
+    text: "This recipe is for : "
+    label: Person text sentence begin is displayed
+- assertVisible:
+    id: "RecipePersons::TextInput"
+    text: ""
+    label: Person TextInput is displayed with the empty text
+- assertVisible:
+    text: " persons"
+    label: Person text sentence end is displayed
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
+- assertVisible:
+    text: "Ingredients"
+    label: Ingredient section is displayed
+- assertVisible:
+    text: "Quantity"
+    label: Quantity column is displayed
+- assertVisible:
+    text: "Unit"
+    label: Unit column is displayed
+- assertVisible:
+    text: "Ingredient name"
+    label: Ingredient name column is displayed
+- assertNotVisible:
+    id: "RecipeIngredients::0::QuantityInput"
+    label: Ingredient \#1 quantity TextInput is not displayed
+- assertNotVisible:
+    id: "RecipeIngredients::0::Dropdown:Unit"
+    label: Ingredient \#1 unit text is not displayed
+- assertNotVisible:
+    id: "RecipeIngredients::0::Dropdown::TextInput"
+    label: Ingredient \#1 name TextInput is not displayed
+- assertVisible:
+    id: "RecipeIngredients::RoundButton"
+    label: Add ingredient button is displayed with the correct icon
+- assertVisible:
+    text: "Time to prepare the recipe :"
+    label: Time to prepare text is displayed
+- assertVisible:
+    id: "RecipeTime::TextInput"
+    text: ""
+    label: Time TextInput is displayed with the correct text
+- assertVisible:
+    text: "min"
+    label: Minute text is displayed
+- assertNotVisible:
+    text: "Preparation : step 1"
+    label: Preparation \#1 text is not displayed
+- assertNotVisible:
+    text: "Title of step 1 : "
+    label: Preparation \#1 title text is not displayed
+- assertNotVisible:
+    id: "RecipePreparation::0::InputParagraph"
+    label: Preparation \#1 paragraph input text id is not displayed
+- assertNotVisible:
+    text: "Content of step 1 : "
+    label: Preparation \#1 content text is not displayed
+- assertNotVisible:
+    id: "RecipePreparation::0::InputTitle"
+    label: Preparation \#1 paragraph title input text id is not displayed
+- assertVisible:
+    id: "RecipePreparation::RoundButton"
+    label: New preparation id is displayed with the correct icon
+- swipe:
+    start: "50%,20%"
+    end: "50%,80%"
+    label: Swipe up to reset to initial state
