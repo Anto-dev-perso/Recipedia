@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start --go",
+    "start": "expo start",
+    "run:android": "expo run:android",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "build:android": "eas build --local --profile development --platform android",
-    "build:ios": "eas build --local --profile development --platform ios",
+    "build:android": "eas build --local --profile maestro --platform android",
+    "build:ios": "eas build --local --profile maestro --platform ios",
     "install:android": "adb install build*.apk && rm -f build*.apk",
     "install:ios": "TODO",
     "build-and-install:android": "npm run build:android && npm run install:android",
@@ -23,14 +24,16 @@
   },
   "dependencies": {
     "@babel/core": "^7.26.9",
+    "@react-native-ml-kit/text-recognition": "^1.5.2",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@react-navigation/stack": "^6.3.17",
+    "@shopify/flash-list": "1.7.3",
     "better-sqlite3": "^11.8.1",
     "expo": "^52.0.35",
     "expo-asset": "~11.0.3",
-    "expo-dev-client": "~5.0.12",
+    "expo-dev-client": "~5.0.14",
     "expo-file-system": "~18.0.10",
     "expo-font": "~13.0.4",
     "expo-image": "~2.0.5",
@@ -44,8 +47,7 @@
     "react-native-gesture-handler": "~2.20.2",
     "react-native-paper": "^5.13.1",
     "react-native-safe-area-context": "4.12.0",
-    "react-native-screens": "~4.4.0",
-    "@shopify/flash-list": "1.7.3"
+    "react-native-screens": "~4.4.0"
   },
   "resolutions": {
     "react": "18.3.1",

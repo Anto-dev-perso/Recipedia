@@ -5,6 +5,10 @@
   },
   "build": {
     "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "maestro": {
       "distribution": "internal",
       "android": {
         "buildType": "apk",

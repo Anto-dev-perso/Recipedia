@@ -8,8 +8,9 @@ async function pickImage(): Promise<ImagePicker.ImagePickerResult> {
 
     if (permissionsResult.granted) {
         return await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: false,
+            mediaTypes: ["images", "livePhotos"],
+            // allowsEditing: false,
+            allowsEditing: true,
             quality: 1,
         })
     } else {

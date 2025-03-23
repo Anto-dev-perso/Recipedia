@@ -10,6 +10,7 @@ export const EncodingSeparator = "__";
 
 export const replaceAllBackToLine = /\n/g;
 export const findAllNumbers = /\b\d+\b/g;
+export const allNonDigitCharacter = /\D/g;
 export const numberAtFirstIndex = /^\d/;
 export const containNumbers = /\d/;
 export const letterRegExp = /[a-zA-z]/;
