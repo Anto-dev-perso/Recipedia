@@ -38,7 +38,7 @@ jobs:
           path: jest-results.json
           destination: test-results
 
-  E2E tests:
+  E2E tests Part1:
     executor: node/default
     working_directory: ~/workspace/repo
     steps:
@@ -49,8 +49,22 @@ jobs:
           command: npm install -g eas-cli
       - run:
           name: Trigger EAS Build with Maestro Config
-          no_output_timeout: 40m
-          command: eas build --profile build-and-maestro-test --platform android
+          no_output_timeout: 60m
+          command: eas build --profile build-and-maestro-test-part1 --platform android
+
+  E2E tests Part2:
+    executor: node/default
+    working_directory: ~/workspace/repo
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: Install EAS CLI
+          command: npm install -g eas-cli
+      - run:
+          name: Trigger EAS Build with Maestro Config
+          no_output_timeout: 60m
+          command: eas build --profile build-and-maestro-test-part2 --platform android
 
 workflows:
   Test Android:
@@ -59,6 +73,9 @@ workflows:
       - Unit tests:
           requires:
             - Install packages
-      - E2E tests:
+      - E2E tests Part1:
           requires:
             - Install packages
+      - E2E tests Part2:
+          requires:
+            - E2E tests Part1

@@ -9,7 +9,3 @@ build:
             tests/e2e/2_bottomButtons.yaml
             tests/e2e/3_searchScreen.yaml
             tests/e2e/4_searchBar.yaml
-            tests/e2e/5_recipeRendering.yaml
-            tests/e2e/6_filters.yaml
-            tests/e2e/7_recipeAdding.yaml
-            tests/e2e/8_shopping.yaml
