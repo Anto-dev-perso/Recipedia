@@ -10,9 +10,9 @@
     },
     "maestro": {
       "distribution": "internal",
+      "developmentClient": false,
       "android": {
-        "buildType": "apk",
-        "developmentClient": false
+        "buildType": "apk"
       },
       "ios": {
         "simulator": true

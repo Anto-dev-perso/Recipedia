@@ -32,7 +32,8 @@
       ]
     },
     "plugins": [
-      "expo-localization"
+      "expo-localization",
+      "expo-sqlite"
     ],
     "extra": {
       "eas": {
