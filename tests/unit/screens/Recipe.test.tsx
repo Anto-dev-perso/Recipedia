@@ -1,3 +1,14 @@
+jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
+jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
+jest.mock('@utils/ImagePicker', () => require('@mocks/utils/ImagePicker-mock').imagePickerMock());
+
+jest.mock('@components/organisms/RecipeTags', () => require('@mocks/components/organisms/RecipeTags-mock').recipeTagsMock);
+jest.mock('@components/organisms/RecipeImage', () => require('@mocks/components/organisms/RecipeImage-mock').recipeImageMock);
+jest.mock('@components/organisms/RecipeText', () => require('@mocks/components/organisms/RecipeText-mock').recipeTextMock);
+jest.mock('@components/organisms/RecipeNumber', () => require('@mocks/components/organisms/RecipeNumber-mock').recipeNumberMock);
+jest.mock('@components/organisms/RecipeTextRender', () => require('@mocks/components/organisms/RecipeTextRender-mock').recipeTextRenderMock);
+jest.mock('@components/molecules/BottomTopButton', () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock);
+
 import React from 'react';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import Recipe, {editRecipeManually, RecipePropType} from "@screens/Recipe";
@@ -21,23 +32,14 @@ import {CommonQueryOptions} from "@testing-library/react-native/build/queries/op
 import {textSeparator, unitySeparator} from "@styles/typography";
 
 
-jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
-jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
-
-jest.mock('@components/organisms/RecipeTags', () => require('@mocks/components/organisms/RecipeTags-mock').recipeTagsMock);
-jest.mock('@components/organisms/RecipeImage', () => require('@mocks/components/organisms/RecipeImage-mock').recipeImageMock);
-jest.mock('@components/organisms/RecipeText', () => require('@mocks/components/organisms/RecipeText-mock').recipeTextMock);
-jest.mock('@components/organisms/RecipeTextRender', () => require('@mocks/components/organisms/RecipeTextRender-mock').recipeTextRenderMock);
-jest.mock('@components/molecules/BottomTopButton', () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock);
-
 const newImageOCR = 'New Image URI';
 const newTitleOCR = 'New Title';
 const newDescriptionOCR = 'New description';
 const newTagOCR = 'New tag';
-const newPersonOCR = '31';
-const newIngredientOCR: ingredientTableElement = {...ingredientsDataset[14], quantity: 4};
+const newPersonOCR = 31;
+const newIngredientOCR: ingredientTableElement = {...ingredientsDataset[14], quantity: "4"};
 const newPreparationOCR = 'New preparation';
-const newTimeOCR = '99';
+const newTimeOCR = 99;
 
 const defaultUri = '';
 
@@ -115,7 +117,7 @@ function checkImage(prop: RecipePropType, getByTestId: GetByIdType, queryByTestI
             expect(queryByTestId('RecipeImage::OpenModal')).toBeNull();
             break;
         case "addFromPic":
-            const imageUri = prop.img.uri;
+            const imageUri = prop.imgUri;
             expect(getByTestId('RecipeImage::ImgUri').props.children).toEqual(imageUri);
             if (imageUri == defaultUri) {
                 expect(getByTestId('RecipeImage::SetImgUri').props.children).toBeTruthy();
@@ -135,32 +137,21 @@ function checkTitle(prop: RecipePropType, getByTestId: GetByIdType, queryByTestI
             break;
         case  "edit":
             expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077},"value":"Title of the recipe : "}');
-            expect(getByTestId('RecipeTitle::EditableViewStyle').props.children).toBeUndefined();
-            expect(getByTestId('RecipeTitle::PrefixText').props.children).toBeUndefined();
-            expect(getByTestId('RecipeTitle::SuffixText').props.children).toBeUndefined();
             expect(getByTestId('RecipeTitle::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":42.30769230769231,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF"},"value":"${prop.recipe.title}"}`);
             expect(getByTestId('RecipeTitle::SetTextToEdit').props.children).toBeTruthy();
             break;
         case "addManually":
             expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077},"value":"Title of the recipe : "}');
-            expect(getByTestId('RecipeTitle::EditableViewStyle').props.children).toBeUndefined();
-            expect(getByTestId('RecipeTitle::PrefixText').props.children).toBeUndefined();
-            expect(getByTestId('RecipeTitle::SuffixText').props.children).toBeUndefined();
             expect(getByTestId('RecipeTitle::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":42.30769230769231,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF"},"value":"${newValueExpected}"}`);
             expect(getByTestId('RecipeTitle::SetTextToEdit').props.children).toBeTruthy();
             break;
         case "addFromPic":
             expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077},"value":"Title of the recipe : "}');
-            expect(getByTestId('RecipeTitle::EditableViewStyle').props.children).toBeUndefined();
-            expect(getByTestId('RecipeTitle::PrefixText').props.children).toBeUndefined();
-            expect(getByTestId('RecipeTitle::SuffixText').props.children).toBeUndefined();
-            if (prop.img.uri == defaultUri) {
+            if (prop.imgUri == defaultUri) {
                 expect(getByTestId('RecipeTitle::Flex').props.children).toEqual('1');
-                expect(getByTestId('RecipeTitle::AlignItems').props.children).toBeUndefined();
                 expect(getByTestId('RecipeTitle::OpenModal').props.children).toBeTruthy();
             } else {
                 expect(queryByTestId('RecipeTitle::Flex')).toBeNull();
-                expect(queryByTestId('RecipeTitle::AlignItems')).toBeNull();
                 expect(queryByTestId('RecipeTitle::OpenModal')).toBeNull();
             }
             break;
@@ -174,32 +165,21 @@ function checkDescription(prop: RecipePropType, getByTestId: GetByIdType, queryB
             break;
         case "edit":
             expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077},"value":"Description of the recipe : "}');
-            expect(getByTestId('RecipeDescription::EditableViewStyle').props.children).toBeUndefined();
-            expect(getByTestId('RecipeDescription::PrefixText').props.children).toBeUndefined();
-            expect(getByTestId('RecipeDescription::SuffixText').props.children).toBeUndefined();
             expect(getByTestId('RecipeDescription::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":42.30769230769231,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF"},"value":"${prop.recipe.description}"}`);
             expect(getByTestId('RecipeDescription::SetTextToEdit').props.children).toBeTruthy();
             break;
         case "addManually":
             expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077},"value":"Description of the recipe : "}');
-            expect(getByTestId('RecipeDescription::EditableViewStyle').props.children).toBeUndefined();
-            expect(getByTestId('RecipeDescription::PrefixText').props.children).toBeUndefined();
-            expect(getByTestId('RecipeDescription::SuffixText').props.children).toBeUndefined();
             expect(getByTestId('RecipeDescription::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":42.30769230769231,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF"},"value":"${newValueExpected}"}`);
             expect(getByTestId('RecipeDescription::SetTextToEdit').props.children).toBeTruthy();
             break;
         case "addFromPic":
             expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077},"value":"Description of the recipe : "}');
-            expect(getByTestId('RecipeDescription::EditableViewStyle').props.children).toBeUndefined();
-            expect(getByTestId('RecipeDescription::PrefixText').props.children).toBeUndefined();
-            expect(getByTestId('RecipeDescription::SuffixText').props.children).toBeUndefined();
-            if (prop.img.uri == defaultUri) {
+            if (prop.imgUri == defaultUri) {
                 expect(getByTestId('RecipeDescription::Flex').props.children).toEqual('1');
-                expect(getByTestId('RecipeDescription::AlignItems').props.children).toBeUndefined();
                 expect(getByTestId('RecipeDescription::OpenModal').props.children).toBeTruthy();
             } else {
                 expect(queryByTestId('RecipeDescription::Flex')).toBeNull();
-                expect(queryByTestId('RecipeDescription::AlignItems')).toBeNull();
                 expect(queryByTestId('RecipeDescription::OpenModal')).toBeNull();
             }
             break;
@@ -218,7 +198,7 @@ function checkTags(prop: RecipePropType, getByTestId: GetByIdType, newValueExpec
             expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
             break;
         case "addManually":
-            expect(getByTestId('RecipeTags::TagsList').props.children).toEqual(JSON.stringify(newValueExpected.map(tag => tag.tagName)));
+            expect(getByTestId('RecipeTags::TagsList').props.children).toEqual(JSON.stringify(newValueExpected?.map(tag => tag.tagName)));
             expect(getByTestId('RecipeTags::RandomTags').props.children.replaceAll('"', '').split(', ')).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
             expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
             expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
@@ -265,7 +245,7 @@ function checkIngredients(prop: RecipePropType, getByTestId: GetByIdType, queryB
             // @ts-ignore
             expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('{\"style\":{\"color\":\"#0F0A39\",\"fontFamily\":\"Lora-VariableFont_wght\",\"fontSize\":42.30769230769231,\"fontWeight\":\"bold\",\"textAlign\":\"left\",\"padding\":23.076923076923077},\"value\":\"Ingredients\"}');
             expect(getByTestId('RecipeIngredients::SuffixText').props.children).toBeUndefined();
-            if (prop.img.uri.length == 0) {
+            if (prop.imgUri.length == 0) {
                 expect(getByTestId('RecipeIngredients::Flex').props.children).toBeUndefined();
                 expect(getByTestId('RecipeIngredients::AlignItems').props.children).toBeUndefined();
                 expect(getByTestId('RecipeIngredients::OpenModal').props.children).toBeTruthy();
@@ -278,7 +258,7 @@ function checkIngredients(prop: RecipePropType, getByTestId: GetByIdType, queryB
     }
 }
 
-function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId: QueryByIdType, newValueExpected?: string) {
+function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId: QueryByIdType, newValueExpected?: number) {
     switch (prop.mode) {
         case "readOnly":
             expect(getByTestId('RecipePersons::RootText').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":42.30769230769231,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077},"value":"Ingredients (${prop.recipe.persons} persons)"}`);
@@ -288,7 +268,7 @@ function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTes
             expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
             expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
-            expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"${prop.recipe.persons}"}`);
+            expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":${prop.recipe.persons}}`);
             expect(getByTestId('RecipePersons::SetTextToEdit').props.children).toBeTruthy();
             break;
         case "addManually":
@@ -296,7 +276,7 @@ function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTes
             expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
             expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
-            expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"${newValueExpected}"}`);
+            expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":${newValueExpected}}`);
             expect(getByTestId('RecipePersons::SetTextToEdit').props.children).toBeTruthy();
             break;
         case "addFromPic":
@@ -304,7 +284,7 @@ function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTes
             expect(getByTestId('RecipePersons::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":5},"value":"This recipe is for : "}');
             expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":3},"value":" persons"}');
-            if (prop.img.uri == defaultUri) {
+            if (prop.imgUri == defaultUri) {
                 expect(getByTestId('RecipePersons::Flex').props.children).toEqual(`6`);
                 expect(getByTestId('RecipePersons::AlignItems').props.children).toEqual('"flex-start"');
                 expect(getByTestId('RecipePersons::OpenModal').props.children).toBeTruthy();
@@ -317,7 +297,7 @@ function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTes
     }
 }
 
-function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId: QueryByIdType, newValueExpected?: string) {
+function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId: QueryByIdType, newValueExpected?: number) {
     switch (prop.mode) {
         case "readOnly":
             expect(getByTestId('RecipeTime::RootText').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":42.30769230769231,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077},"value":"Preparation (${prop.recipe.time} min)"}`);
@@ -327,7 +307,7 @@ function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId
             expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
             expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
-            expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"${prop.recipe.time}"}`);
+            expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":${prop.recipe.time}}`);
             expect(getByTestId('RecipeTime::SetTextToEdit').props.children).toBeTruthy();
             break;
         case "addManually":
@@ -335,7 +315,7 @@ function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId
             expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":7},"value":"Time to prepare the recipe :"}');
             expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
-            expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":"${newValueExpected}"}`);
+            expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual(`{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"center","padding":23.076923076923077,"borderWidth":2,"borderColor":"#62929E","backgroundColor":"#F8F8FF","flex":1},"value":${newValueExpected}}`);
             expect(getByTestId('RecipeTime::SetTextToEdit').props.children).toBeTruthy();
             break;
         case "addFromPic":
@@ -343,7 +323,7 @@ function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId
             expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
 
-            if (prop.img.uri == defaultUri) {
+            if (prop.imgUri == defaultUri) {
                 expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
                 expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
                 expect(getByTestId('RecipeTime::AlignItems').props.children).toEqual('"flex-start"');
@@ -384,7 +364,7 @@ function checkPreparation(prop: RecipePropType, getByTestId: GetByIdType, queryB
             // @ts-ignore
             expect(getByTestId('RecipePreparation::PrefixText').props.children).toBeUndefined();
             expect(getByTestId('RecipePreparation::SuffixText').props.children).toBeUndefined();
-            if (prop.img.uri.length == 0) {
+            if (prop.imgUri.length == 0) {
                 expect(getByTestId('RecipePreparation::Flex').props.children).toBeUndefined();
                 expect(getByTestId('RecipePreparation::AlignItems').props.children).toBeUndefined();
                 expect(getByTestId('RecipePreparation::OpenModal').props.children).toBeTruthy();
@@ -418,7 +398,7 @@ describe('Recipe Component tests', () => {
         recipe: {...recipesDataset[6]} as const
     } as const;
 
-    const mockRouteAddOCR: RecipePropType = {mode: 'addFromPic', img: {uri: defaultUri, height: 100, width: 100}};
+    const mockRouteAddOCR: RecipePropType = {mode: 'addFromPic', imgUri: defaultUri};
     const mockRouteAddManually: RecipePropType = {mode: 'addManually'};
 
     const dbInstance = RecipeDatabase.getInstance();
@@ -482,8 +462,8 @@ describe('Recipe Component tests', () => {
         checkDescription(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, "");
-        checkTime(mockRouteAddManually, getByTestId, queryByTestId, "");
+        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, -1);
+        checkTime(mockRouteAddManually, getByTestId, queryByTestId, -1);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
 
@@ -515,10 +495,7 @@ describe('Recipe Component tests', () => {
 
             const newImageUri = 'Updated URI';
             fireEvent.press(getByTestId('RecipeImage::SetImgUri'), newImageUri);
-            const newAddOCRProp: RecipePropType = {
-                ...mockRouteAddOCR,
-                img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-            };
+            const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
 
             checkTitle(newAddOCRProp, getByTestId, queryByTestId);
@@ -529,7 +506,7 @@ describe('Recipe Component tests', () => {
             checkTime(newAddOCRProp, getByTestId, queryByTestId);
             checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
-            newAddOCRProp.img.uri = newImageUri;
+            newAddOCRProp.imgUri = newImageUri;
             checkImage(newAddOCRProp, getByTestId, queryByTestId);
         }
 
@@ -550,10 +527,7 @@ describe('Recipe Component tests', () => {
             rerender(<Recipe route={{params: mockRouteAddOCR}} navigation={mockNavigation} ref={recipeRef}/>);
 
             fireEvent.press(getByTestId('RecipeImage::OpenModal'));
-            const newAddOCRProp: RecipePropType = {
-                ...mockRouteAddOCR,
-                img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-            };
+            const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
             checkTitle(newAddOCRProp, getByTestId, queryByTestId);
             checkDescription(newAddOCRProp, getByTestId, queryByTestId);
@@ -562,7 +536,7 @@ describe('Recipe Component tests', () => {
             checkIngredients(newAddOCRProp, getByTestId, queryByTestId);
             checkTime(newAddOCRProp, getByTestId, queryByTestId);
             checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
-            newAddOCRProp.img.uri = "New Image URI";
+            newAddOCRProp.imgUri = "New Image URI";
 
             checkImage(newAddOCRProp, getByTestId, queryByTestId);
 
@@ -603,8 +577,8 @@ describe('Recipe Component tests', () => {
         checkDescription(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, "");
-        checkTime(mockRouteAddManually, getByTestId, queryByTestId, "");
+        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, -1);
+        checkTime(mockRouteAddManually, getByTestId, queryByTestId, -1);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
 
@@ -614,8 +588,6 @@ describe('Recipe Component tests', () => {
         const {rerender, getByTestId, queryByTestId} = render(
             //@ts-ignore route and navigation are not useful for UT
             <Recipe route={{params: mockRouteAddOCR}} navigation={mockNavigation} ref={recipeRef}/>);
-
-        const tmp = getByTestId('RecipeImage::ImgUri').props.children;
 
         const recipeInstance = recipeRef.current;
         expect(recipeInstance).not.toBeNull();
@@ -627,10 +599,7 @@ describe('Recipe Component tests', () => {
         rerender(<Recipe route={{params: mockRouteAddOCR}} navigation={mockNavigation} ref={recipeRef}/>);
 
         fireEvent.press(getByTestId('RecipeTitle::OpenModal'));
-        const newAddOCRProp: RecipePropType = {
-            ...mockRouteAddOCR,
-            img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-        };
+        const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
         checkImage(newAddOCRProp, getByTestId, queryByTestId);
         checkDescription(newAddOCRProp, getByTestId, queryByTestId);
@@ -640,7 +609,7 @@ describe('Recipe Component tests', () => {
         checkTime(newAddOCRProp, getByTestId, queryByTestId);
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newTitleOCR;
+        newAddOCRProp.imgUri = newTitleOCR;
         checkTitle(newAddOCRProp, getByTestId, queryByTestId);
     });
 
@@ -678,8 +647,8 @@ describe('Recipe Component tests', () => {
         checkDescription(mockRouteAddManually, getByTestId, queryByTestId, newDescription);
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, "");
-        checkTime(mockRouteAddManually, getByTestId, queryByTestId, "");
+        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, -1);
+        checkTime(mockRouteAddManually, getByTestId, queryByTestId, -1);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
 
@@ -699,10 +668,7 @@ describe('Recipe Component tests', () => {
         rerender(<Recipe route={{params: mockRouteAddOCR}} navigation={mockNavigation} ref={recipeRef}/>);
         fireEvent.press(getByTestId('RecipeDescription::OpenModal'));
 
-        const newAddOCRProp: RecipePropType = {
-            ...mockRouteAddOCR,
-            img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-        };
+        const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
         checkImage(newAddOCRProp, getByTestId, queryByTestId);
         checkTitle(newAddOCRProp, getByTestId, queryByTestId);
@@ -712,7 +678,7 @@ describe('Recipe Component tests', () => {
         checkTime(newAddOCRProp, getByTestId, queryByTestId);
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newDescriptionOCR;
+        newAddOCRProp.imgUri = newDescriptionOCR;
         checkDescription(newAddOCRProp, getByTestId, queryByTestId);
     });
 
@@ -766,8 +732,8 @@ describe('Recipe Component tests', () => {
         const {getByTestId, queryByTestId} = render(<Recipe route={{params: mockRouteAddManually}}
                                                             navigation={mockNavigation}/>);
 
-        const newPerson = '23';
-        fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPerson);
+        const newPerson = 23;
+        fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPerson.toString());
 
         checkImage(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkTitle(mockRouteAddManually, getByTestId, queryByTestId, "");
@@ -775,7 +741,7 @@ describe('Recipe Component tests', () => {
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
         checkPersons(mockRouteAddManually, getByTestId, queryByTestId, newPerson);
-        checkTime(mockRouteAddManually, getByTestId, queryByTestId, "");
+        checkTime(mockRouteAddManually, getByTestId, queryByTestId, -1);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
 
@@ -796,10 +762,7 @@ describe('Recipe Component tests', () => {
 
         fireEvent.press(getByTestId('RecipePersons::OpenModal'));
 
-        const newAddOCRProp: RecipePropType = {
-            ...mockRouteAddOCR,
-            img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-        };
+        const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
         checkImage(newAddOCRProp, getByTestId, queryByTestId);
         checkTitle(newAddOCRProp, getByTestId, queryByTestId);
@@ -809,7 +772,7 @@ describe('Recipe Component tests', () => {
         checkTime(newAddOCRProp, getByTestId, queryByTestId);
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newPersonOCR;
+        newAddOCRProp.imgUri = newPersonOCR.toString();
         checkPersons(newAddOCRProp, getByTestId, queryByTestId);
     });
 
@@ -852,10 +815,7 @@ describe('Recipe Component tests', () => {
 
         fireEvent.press(getByTestId('RecipeIngredients::OpenModal'));
 
-        const newAddOCRProp: RecipePropType = {
-            ...mockRouteAddOCR,
-            img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-        };
+        const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
         checkImage(newAddOCRProp, getByTestId, queryByTestId);
         checkTitle(newAddOCRProp, getByTestId, queryByTestId);
@@ -865,7 +825,7 @@ describe('Recipe Component tests', () => {
         checkTime(newAddOCRProp, getByTestId, queryByTestId);
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = JSON.stringify(newIngredientOCR);
+        newAddOCRProp.imgUri = JSON.stringify(newIngredientOCR);
         checkIngredients(newAddOCRProp, getByTestId, queryByTestId);
     });
 
@@ -895,15 +855,15 @@ describe('Recipe Component tests', () => {
         const {getByTestId, queryByTestId} = render(<Recipe route={{params: mockRouteAddManually}}
                                                             navigation={mockNavigation}/>);
 
-        const newTime = '71';
-        fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newTime);
+        const newTime = 71;
+        fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newTime.toString());
 
         checkImage(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkTitle(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkDescription(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, "");
+        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, -1);
         checkTime(mockRouteAddManually, getByTestId, queryByTestId, newTime);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
@@ -924,10 +884,7 @@ describe('Recipe Component tests', () => {
 
         fireEvent.press(getByTestId('RecipeTime::OpenModal'));
 
-        const newAddOCRProp: RecipePropType = {
-            ...mockRouteAddOCR,
-            img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-        };
+        const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
         checkImage(newAddOCRProp, getByTestId, queryByTestId);
         checkTitle(newAddOCRProp, getByTestId, queryByTestId);
@@ -937,7 +894,7 @@ describe('Recipe Component tests', () => {
         checkIngredients(newAddOCRProp, getByTestId, queryByTestId);
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newTimeOCR;
+        newAddOCRProp.imgUri = newTimeOCR.toString();
         checkTime(newAddOCRProp, getByTestId, queryByTestId);
 
     });
@@ -981,10 +938,7 @@ describe('Recipe Component tests', () => {
 
         fireEvent.press(getByTestId('RecipePreparation::OpenModal'));
 
-        const newAddOCRProp: RecipePropType = {
-            ...mockRouteAddOCR,
-            img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-        };
+        const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
         checkImage(newAddOCRProp, getByTestId, queryByTestId);
         checkTitle(newAddOCRProp, getByTestId, queryByTestId);
@@ -994,7 +948,7 @@ describe('Recipe Component tests', () => {
         checkIngredients(newAddOCRProp, getByTestId, queryByTestId);
         checkTime(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newPreparationOCR;
+        newAddOCRProp.imgUri = newPreparationOCR;
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
     });
@@ -1015,7 +969,7 @@ describe('Recipe Component tests', () => {
             id: 1,
             name: "Taco Shells",
             purchased: false,
-            quantity: 6,
+            quantity: "6",
             recipesTitle: ["Chicken Tacos"],
             type: "Grain or Cereal",
             unit: "pieces"
@@ -1023,7 +977,7 @@ describe('Recipe Component tests', () => {
             id: 2,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: ["Chicken Tacos"],
             type: "Poultry",
             unit: "g"
@@ -1031,7 +985,7 @@ describe('Recipe Component tests', () => {
             id: 3,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: ["Chicken Tacos"],
             type: "Vegetable",
             unit: "g"
@@ -1039,7 +993,7 @@ describe('Recipe Component tests', () => {
             id: 4,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: ["Chicken Tacos"],
             type: "Cheese",
             unit: "g"
@@ -1094,7 +1048,7 @@ describe('Recipe Component tests', () => {
         checkPreparation(newProp, getByTestId, queryByTestId);
     });
     //TODO change expected results when recipe edition will be implemented
-    // TODO add a validation that new recipe is well inserted in the database
+    // TODO  a validation that new recipe is well inserted in the database
 
     test('validates button on add manually mode', () => {
         //@ts-ignore route and navigation are not useful for UT
@@ -1103,13 +1057,13 @@ describe('Recipe Component tests', () => {
 
         const newTitle = 'New Recipe Title';
         const newDescription = 'New Recipe Description';
-        const newPersons = "23";
-        const newTime = "71";
+        const newPersons = 23;
+        const newTime = 71;
 
         fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), newTitle);
         fireEvent.press(getByTestId('RecipeDescription::SetTextToEdit'), newDescription);
-        fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPersons);
-        fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newTime);
+        fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPersons.toString());
+        fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newTime.toString());
         // TODO missing ingredients, preparation and tags
 
         fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
@@ -1150,33 +1104,30 @@ describe('Recipe Component tests', () => {
         fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 
 
-        const newAddOCRProp: RecipePropType = {
-            ...mockRouteAddOCR,
-            img: {width: 100, height: 100, uri: mockRouteAddOCR.img.uri}
-        };
+        const newAddOCRProp: RecipePropType = {...mockRouteAddOCR};
 
-        newAddOCRProp.img.uri = newImageOCR;
+        newAddOCRProp.imgUri = newImageOCR;
         checkImage(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newTitleOCR;
+        newAddOCRProp.imgUri = newTitleOCR;
         checkTitle(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newDescriptionOCR;
+        newAddOCRProp.imgUri = newDescriptionOCR;
         checkDescription(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newTagOCR;
+        newAddOCRProp.imgUri = newTagOCR;
         checkTags(newAddOCRProp, getByTestId);
 
-        newAddOCRProp.img.uri = newPersonOCR;
+        newAddOCRProp.imgUri = newPersonOCR.toString();
         checkPersons(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = JSON.stringify(newIngredientOCR);
+        newAddOCRProp.imgUri = JSON.stringify(newIngredientOCR);
         checkIngredients(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newTimeOCR;
+        newAddOCRProp.imgUri = newTimeOCR.toString();
         checkTime(newAddOCRProp, getByTestId, queryByTestId);
 
-        newAddOCRProp.img.uri = newPreparationOCR;
+        newAddOCRProp.imgUri = newPreparationOCR;
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
         // TODO add a validation that new recipe is well inserted in the database
@@ -1198,7 +1149,7 @@ describe('Recipe Component tests', () => {
                 unit: "g",
                 type: listFilter.spice,
                 season: ["5", "6", "7", "8", "9", "10"],
-                quantity: 4
+                quantity: "4"
             }],
             season: ["5", "6", "7", "8", "9", "10"],
             preparation: ["New preparation"],

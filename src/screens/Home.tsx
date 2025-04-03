@@ -10,13 +10,14 @@ import {bottomTopPosition, LargeButtonDiameter} from "@styles/buttons";
 import {enumIconTypes, iconsSize, searchIcon} from "@assets/images/Icons";
 import {palette} from "@styles/colors";
 import RecipeDatabase from "@utils/RecipeDatabase";
-import {HomeScreenProp} from "@customTypes/ScreenTypes";
+import {StackScreenNavigation} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
-import {useFocusEffect} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 
 
-export default function Home({route, navigation}: HomeScreenProp) {
+export default function Home() {
 
+    const {navigate} = useNavigation<StackScreenNavigation>();
     const [refreshing, setRefreshing] = useState<boolean>(false);
 
     const howManyItemInCarousel = 4;
@@ -96,8 +97,8 @@ export default function Home({route, navigation}: HomeScreenProp) {
                                  name: searchIcon,
                                  size: iconsSize.medium,
                                  color: "#414a4c"
-                             }} onPressFunction={() => navigation.navigate('Search')}/>
-            <VerticalBottomButtons navigation={navigation} route={route}/>
+                             }} onPressFunction={() => navigate('Search')}/>
+            <VerticalBottomButtons/>
         </SafeAreaView>
     )
 }

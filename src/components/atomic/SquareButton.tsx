@@ -4,12 +4,10 @@ import {Pressable, View} from "react-native"
 import {squareButtonStyles, viewButtonStyles, viewInsideButtonCentered} from "@styles/buttons"
 
 
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
-import {localImgData} from "@customTypes/ImageTypes";
 
 type propIsRecipe = { type: 'recipe', recipe: recipeTableElement };
-type propIsImg = { type: 'image', imgSrc: localImgData };
+type propIsImg = { type: 'image', imgSrc: string };
 
 export type SquareButtonProps = {
     side: number,
@@ -18,10 +16,10 @@ export type SquareButtonProps = {
 
 
 export default function SquareButton(buttonProps: SquareButtonProps) {
-    let img: localImgData;
+    let img: string;
     switch (buttonProps.type) {
         case "recipe":
-            img = {uri: buttonProps.recipe.image_Source, width: 100, height: 100};
+            img = buttonProps.recipe.image_Source;
             break;
         case "image":
             img = buttonProps.imgSrc;
@@ -32,7 +30,7 @@ export default function SquareButton(buttonProps: SquareButtonProps) {
     return (
         <Pressable style={squareButtonStyles(buttonProps.side).squareButton} onPress={buttonProps.onPressFunction}>
             <View style={viewInsideButtonCentered}>
-                <Image source={img} style={viewButtonStyles.imageInsideButton}
+                <Image source={{uri: img}} style={viewButtonStyles.imageInsideButton}
                        onError={() => {
                            // console.log("Image not found")
                        }}/>

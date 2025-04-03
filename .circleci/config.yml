@@ -49,7 +49,7 @@ jobs:
           command: npm install -g eas-cli
       - run:
           name: Trigger EAS Build with Maestro Config
-          no_output_timeout: 60m
+          no_output_timeout: 50m
           command: eas build --profile build-and-maestro-test-part1 --platform android
 
   E2E tests Part2:
@@ -63,7 +63,7 @@ jobs:
           command: npm install -g eas-cli
       - run:
           name: Trigger EAS Build with Maestro Config
-          no_output_timeout: 60m
+          no_output_timeout: 50m
           command: eas build --profile build-and-maestro-test-part2 --platform android
 
 workflows:

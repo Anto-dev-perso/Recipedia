@@ -22,9 +22,9 @@ describe('DatabaseElementTypes Helper Functions', () => {
 
     test('arrayOfType filters ingredients by type', () => {
         const ingredients: Array<ingredientTableElement> = [
-            {ingName: 'Sugar', unit: 'g', quantity: 100, type: ingredientType.sugar, season: ['*']},
-            {ingName: 'Flour', unit: 'g', quantity: 200, type: ingredientType.grainOrCereal, season: ['*']},
-            {ingName: 'Spaghetti', unit: 'g', quantity: 200, type: ingredientType.grainOrCereal, season: ['*']},
+            {ingName: 'Sugar', unit: 'g', quantity: "100", type: ingredientType.sugar, season: ['*']},
+            {ingName: 'Flour', unit: 'g', quantity: "200", type: ingredientType.grainOrCereal, season: ['*']},
+            {ingName: 'Spaghetti', unit: 'g', quantity: "200", type: ingredientType.grainOrCereal, season: ['*']},
         ];
         let filter = ingredientType.sugar;
         let result = arrayOfType(ingredients, filter);
@@ -47,14 +47,14 @@ describe('DatabaseElementTypes Helper Functions', () => {
 
     test('extractIngredientsNameWithQuantity formats ingredient names correctly', () => {
         const monoIngredient = [
-            {ingName: 'Sugar', unit: 'g', quantity: 100, type: ingredientType.sugar, season: ['*']},
+            {ingName: 'Sugar', unit: 'g', quantity: "100", type: ingredientType.sugar, season: ['*']},
         ];
         expect(extractIngredientsNameWithQuantity(monoIngredient)).toEqual(['100@@g--Sugar']);
 
         const multiIngredient = [
-            {ingName: 'Sugar', unit: 'g', quantity: 100, type: ingredientType.sugar, season: ['*']},
-            {ingName: 'Flour', unit: 'g', quantity: 200, type: ingredientType.grainOrCereal, season: ['*']},
-            {ingName: 'Spaghetti', unit: 'g', quantity: 200, type: ingredientType.grainOrCereal, season: ['*']},
+            {ingName: 'Sugar', unit: 'g', quantity: "100", type: ingredientType.sugar, season: ['*']},
+            {ingName: 'Flour', unit: 'g', quantity: "200", type: ingredientType.grainOrCereal, season: ['*']},
+            {ingName: 'Spaghetti', unit: 'g', quantity: "200", type: ingredientType.grainOrCereal, season: ['*']},
         ];
         expect(extractIngredientsNameWithQuantity(multiIngredient)).toEqual(["100@@g--Sugar", "200@@g--Flour", "200@@g--Spaghetti"]);
     });
@@ -98,7 +98,7 @@ describe('DatabaseElementTypes Helper Functions', () => {
                 ingName: 'New Ingredient',
                 season: ['never mind'],
                 type: ingredientType.undefined,
-                quantity: 0,
+                quantity: "0",
                 unit: 'unit'
             }]
         };
@@ -113,7 +113,7 @@ describe('DatabaseElementTypes Helper Functions', () => {
                 ingName: 'New Ingredient',
                 season: ['never mind'],
                 type: ingredientType.undefined,
-                quantity: 0,
+                quantity: "0",
                 unit: 'unit'
             }]
         };
@@ -149,9 +149,9 @@ describe('DatabaseElementTypes Helper Functions', () => {
         expected = {...ingredientsDataset[0], ingName: 'New Ingredient'};
         expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(false);
 
-        expected = {...ingredientsDataset[0], quantity: 0};
+        expected = {...ingredientsDataset[0], quantity: "0"};
         expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(true);
-        expect(isIngredientEqual({...ingredientsDataset[0], quantity: 50}, expected)).toBe(true);
+        expect(isIngredientEqual({...ingredientsDataset[0], quantity: "50"}, expected)).toBe(true);
 
         expected = {...ingredientsDataset[0], season: ['other']};
         expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(true);
@@ -187,7 +187,7 @@ describe('DatabaseElementTypes Helper Functions', () => {
         expected = {...firstShop, name: 'A new name'};
         expect(isShoppingEqual(firstShop, expected)).toBe(false);
 
-        expected = {...firstShop, quantity: -1};
+        expected = {...firstShop, quantity: "-1"};
         expect(isShoppingEqual(firstShop, expected)).toBe(true);
 
         expected = {...firstShop, unit: ''};

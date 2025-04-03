@@ -1,27 +1,31 @@
 import React, {useState} from "react";
-import RoundButton from "@components/atomic/RoundButton";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import {BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter} from "@styles/buttons";
 import {View} from "react-native";
-import {imagePickerCall} from "@utils/ImagePicker";
+import {pickImage, takePhoto} from "@utils/ImagePicker";
 import {cameraIcon, enumIconTypes, galleryIcon, iconsSize, minusIcon, pencilIcon, plusIcon} from "@assets/images/Icons";
-import {HomeScreenProp} from "@customTypes/ScreenTypes";
-import {enumForImgPick} from "@customTypes/ImageTypes";
+import {StackScreenNavigation} from "@customTypes/ScreenTypes";
+import {useNavigation} from "@react-navigation/native";
+import RoundButton from "@components/atomic/RoundButton";
 
 
-export default function VerticalBottomButtons({navigation}: HomeScreenProp) {
+export default function VerticalBottomButtons() {
+    const {navigate} = useNavigation<StackScreenNavigation>();
 
     const [multipleLayout, setMultipleLayout] = useState(false);
 
-    async function pickImageAndOpenNewRecipe(mode: enumForImgPick) {
-        // TODO add a loading because camera can takes a while
-        try {
-            const imgPick = await imagePickerCall(mode);
-            if (imgPick !== undefined) {
-                navigation.navigate('Recipe', {mode: "addFromPic", img: imgPick});
-            }
-        } catch (error) {
-            console.log("Cancel press by user. Catch receive ", error);
+    // TODO add a loading because camera can takes a while
+    async function takePhotoAndOpenNewRecipe() {
+        openRecipeWithUri(await takePhoto());
+    }
+
+    async function pickImageAndOpenNewRecipe() {
+        openRecipeWithUri(await pickImage());
+    }
+
+    function openRecipeWithUri(uri: string) {
+        if (uri.length > 0) {
+            navigate('Recipe', {mode: "addFromPic", imgUri: uri});
         }
     }
 
@@ -43,7 +47,7 @@ export default function VerticalBottomButtons({navigation}: HomeScreenProp) {
                         name: pencilIcon,
                         size: iconsSize.medium,
                         color: "#414a4c"
-                    }} onPressFunction={() => navigation.navigate('Recipe', {
+                    }} onPressFunction={() => navigate('Recipe', {
                         mode: 'addManually'
                     })}/>
 
@@ -53,7 +57,7 @@ export default function VerticalBottomButtons({navigation}: HomeScreenProp) {
                         name: galleryIcon,
                         size: iconsSize.medium,
                         color: "#414a4c"
-                    }} onPressFunction={() => pickImageAndOpenNewRecipe(enumForImgPick.gallery)}/>
+                    }} onPressFunction={pickImageAndOpenNewRecipe}/>
 
                     <BottomTopButton testID={'CameraButton'} as={RoundButton} position={bottomTopPosition.bottom_right}
                                      diameter={LargeButtonDiameter} buttonOffset={3 * BottomTopButtonOffset} icon={{
@@ -61,16 +65,17 @@ export default function VerticalBottomButtons({navigation}: HomeScreenProp) {
                         name: cameraIcon,
                         size: iconsSize.medium,
                         color: "#414a4c"
-                    }} onPressFunction={() => pickImageAndOpenNewRecipe(enumForImgPick.camera)}/>
+                    }} onPressFunction={takePhotoAndOpenNewRecipe}/>
                 </View>
             ) : (
                 <BottomTopButton testID={'ExpandButton'} as={RoundButton} position={bottomTopPosition.bottom_right}
-                                 diameter={LargeButtonDiameter} icon={{
-                    type: enumIconTypes.materialCommunity,
-                    name: plusIcon,
-                    size: iconsSize.medium,
-                    color: "#414a4c"
-                }} onPressFunction={() => setMultipleLayout(true)}/>
+                                 diameter={LargeButtonDiameter}
+                                 icon={{
+                                     type: enumIconTypes.materialCommunity,
+                                     name: plusIcon,
+                                     size: iconsSize.medium,
+                                     color: "#414a4c"
+                                 }} onPressFunction={() => setMultipleLayout(true)}/>
             )
             }
         </View>

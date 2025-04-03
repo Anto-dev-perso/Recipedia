@@ -7,7 +7,6 @@ import Shopping from '@screens/Shopping';
 // import {YoutubeCamera, OCRComponent, RecipeList} from '../index';
 import Recipe from '@screens/Recipe';
 import Search from '@screens/Search';
-import Crop from '@screens/Crop';
 import {StackScreen, TabScreen} from '@customTypes/ScreenTypes';
 import {
     crossIcon,
@@ -164,27 +163,6 @@ export default function App() {
                     <StackScreen.Screen name="Recipe" component={Recipe}/>
                     <StackScreen.Screen name="Root" component={Root}/>
                     <StackScreen.Screen name="Search" component={Search}/>
-                    <StackScreen.Screen name="Crop" component={Crop} options={{
-                        // headerStyle: {backgroundColor: cameraPalette.overlayColor},
-                        headerShown: false,
-                        // headerTitle: "",
-
-                        // headerRight: () => (
-                        //   <View style={screenViews.tabView}>
-                        //     <View style={cropView.overlay}>
-                        //       {displayIcon(enumIconTypes.materialCommunity, rotateIcon, iconsSize.medium, cameraPalette.buttonsColor)}
-                        //     </View>
-
-                        //     <View style={cropView.overlay}>
-                        //       {displayIcon(enumIconTypes.materialCommunity, flipIcon, iconsSize.medium, cameraPalette.buttonsColor)}
-                        //     </View>
-
-                        //     <Pressable style={cropView.overlay} onPress={() => console.warn("TODO")}>
-                        //       <Text style={cropText.overlay}>Redimensionner</Text>
-                        //     </Pressable>
-                        //   </View>
-                        // )
-                    }}/>
                 </StackScreen.Navigator>
             </NavigationContainer>
         </PaperProvider>

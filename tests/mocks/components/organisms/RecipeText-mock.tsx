@@ -10,22 +10,10 @@ export function recipeTextMock(recipeTextProp: RecipeTextProps) {
             </Text>
             {recipeTextProp.addOrEditProps ?
                 <View>
-                    <Text testID={recipeTextProp.testID + "::EditableViewStyle"}>
-                        {JSON.stringify(recipeTextProp.addOrEditProps.editableViewStyle)}
-                    </Text>
-                    <Text testID={recipeTextProp.testID + "::PrefixText"}>
-                        {JSON.stringify(recipeTextProp.addOrEditProps.prefixText)}
-                    </Text>
-                    <Text testID={recipeTextProp.testID + "::SuffixText"}>
-                        {JSON.stringify(recipeTextProp.addOrEditProps.suffixText)}
-                    </Text>
                     {recipeTextProp.addOrEditProps.editType === 'add' ?
                         <View>
                             <Text testID={recipeTextProp.testID + "::Flex"}>
                                 {JSON.stringify(recipeTextProp.addOrEditProps.flex)}
-                            </Text>
-                            <Text testID={recipeTextProp.testID + "::AlignItems"}>
-                                {JSON.stringify(recipeTextProp.addOrEditProps.alignItems)}
                             </Text>
                             <Button testID={recipeTextProp.testID + "::OpenModal"} onPress={() => {
                                 // @ts-ignore always edit here
@@ -39,9 +27,9 @@ export function recipeTextMock(recipeTextProp: RecipeTextProps) {
                                 {JSON.stringify(recipeTextProp.addOrEditProps.textEditable)}
                             </Text>
                             <Button testID={recipeTextProp.testID + "::SetTextToEdit"}
-                                    onPress={(newString) => {
+                                    onPress={(newText) => {
                                         // @ts-ignore always edit here
-                                        recipeTextProp.addOrEditProps.setTextToEdit(newString);
+                                        recipeTextProp.addOrEditProps.setTextToEdit(newText);
                                     }}
                                     title="Set Text to Edit"/>
                         </View>

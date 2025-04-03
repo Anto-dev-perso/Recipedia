@@ -1,5 +1,5 @@
 import React from "react"
-import {Button, StyleProp, View, ViewStyle} from 'react-native';
+import {StyleProp, View, ViewStyle} from 'react-native';
 import {
     bottomCenterButton,
     bottomFullButton,
@@ -31,10 +31,8 @@ export default function BottomTopButton<T extends React.ElementType>({
                                                                      }: BottomTopButtonProps<T>) {
     const Button = as;
     let buttonStyle: StyleProp<ViewStyle>;
-    let offset: number;
-
     // Bottom buttons can have a vertical offset. In this case, use the prop else set the offset to 0
-    buttonOffset ? (offset = buttonOffset) : (offset = 0);
+    const offset = buttonOffset ? buttonOffset : 0;
 
     switch (position) {
         case bottomTopPosition.top_left:
@@ -61,8 +59,8 @@ export default function BottomTopButton<T extends React.ElementType>({
         case bottomTopPosition.bottom_full:
             buttonStyle = bottomFullButton(offset);
             break;
-
         default:
+            console.warn("BottonTopButtons : Unreachable code");
             break;
     }
 

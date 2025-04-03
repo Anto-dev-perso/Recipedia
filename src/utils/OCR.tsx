@@ -1,4 +1,4 @@
-import {recipeColumnsNames} from '@customTypes/DatabaseElementTypes';
+import {ingredientTableElement, ingredientType, recipeColumnsNames} from '@customTypes/DatabaseElementTypes';
 import {
     allNonDigitCharacter,
     findAllNumbers,
@@ -9,13 +9,26 @@ import {
 } from '@styles/typography';
 
 import TextRecognition, {TextBlock, TextRecognitionResult} from "@react-native-ml-kit/text-recognition";
+import {isArrayOfNumber, isArrayOfString, isArrayOfType, isNumber, isString} from "@utils/TypeCheckingFunctions";
 
 export type personAndTimeObject = { person: number, time: number };
+export const keysPersonsAndTimeObject = Object.keys({
+    person: 0,
+    time: 0,
+} as personAndTimeObject) as (keyof personAndTimeObject)[];
+
 export type ingredientQuantityPerPersons = {
     persons: number,
     quantity: string,
 }
 export type ingredientObject = { name: string, unit: string, quantityPerPersons: Array<ingredientQuantityPerPersons> };
+export const keysIngredientObject = Object.keys({
+    name: "",
+    unit: "",
+    quantityPerPersons: []
+} as ingredientObject) as (keyof ingredientObject)[];
+
+export type WarningHandler = (message: string) => void;
 
 export async function recognizeText(imageUri: string, fieldName: recipeColumnsNames) {
     const ocr = await TextRecognition.recognize(imageUri);
@@ -71,7 +84,7 @@ function extractingNumberOrArray(ocr: Array<string>) {
 }
 
 
-function tranformOCRInOneNumber(ocr: TextRecognitionResult): number | Array<number> | personAndTimeObject | Array<personAndTimeObject> {
+function tranformOCRInOneNumber(ocr: TextRecognitionResult): number | Array<number> | Array<personAndTimeObject> {
     const elementsToConvert = convertBlockOnArrayOfString(ocr.blocks);
 
     const personsChar = 'p';
@@ -91,7 +104,7 @@ function tranformOCRInOneNumber(ocr: TextRecognitionResult): number | Array<numb
                     time: retrieveNumberFromString(timeArray[i])
                 });
             }
-            return personsAndTime.length > 1 ? personsAndTime : personsAndTime[0];
+            return personsAndTime;
         } else {
             return extractingNumberOrArray(personsArray);
         }
@@ -224,12 +237,110 @@ function retrieveNumberInStr(str: string) {
     return -1;
 }
 
-function deleteNumberInStr(str: string) {
-    let ret = "";
-    const firstLetterIndex = str.search(letterRegExp);
-    if (firstLetterIndex != -1) {
-        ret = str.slice(firstLetterIndex)
+export async function extractFieldFromImage(uri: string, field: recipeColumnsNames, currentState: {
+                                                recipePreparation: string[];
+                                                recipePersons: number;
+                                                recipeIngredients: any[];
+                                            }, onWarn: WarningHandler = console.warn
+): Promise<Partial<{
+    recipeImage: string;
+    recipeTitle: string;
+    recipeDescription: string;
+    recipePreparation: string[];
+    recipePersons: number;
+    recipeTime: number;
+    recipeIngredients: any[];
+}>> {
+    if (field === recipeColumnsNames.image) {
+        return {recipeImage: uri};
     }
 
-    return ret;
+    const ocrResult = await recognizeText(uri, field);
+    const warn = (msg: string) => onWarn(msg + ` {uri: ${uri},field: ${field},ocrResult: ${ocrResult} }`);
+    // TODO to implement OCR for tags ?
+    switch (field) {
+        case recipeColumnsNames.title:
+            if (isString(ocrResult)) {
+                return {recipeTitle: ocrResult as string};
+            } else {
+                warn("Expected string for title");
+                return {};
+            }
+        case recipeColumnsNames.description:
+            if (isString(ocrResult)) {
+                return {recipeDescription: ocrResult as string};
+            } else {
+                warn("Expected string for description");
+                return {};
+            }
+        case recipeColumnsNames.preparation:
+            if (isArrayOfString(ocrResult)) {
+                return {
+                    recipePreparation: [...currentState.recipePreparation, ...ocrResult as string[],],
+                };
+            } else {
+                warn("Expected array of strings for preparation");
+                return {};
+            }
+        case recipeColumnsNames.persons:
+        case recipeColumnsNames.time:
+            if (isNumber(ocrResult)) {
+                return field === recipeColumnsNames.persons
+                    ? {recipePersons: ocrResult as number}
+                    : {recipeTime: ocrResult as number};
+            }
+            if (Array.isArray(ocrResult)) {
+                if (isArrayOfNumber(ocrResult)) {
+                    return field === recipeColumnsNames.persons
+                        ? {recipePersons: ocrResult[0] as number}
+                        : {recipeTime: ocrResult[0] as number};
+                } else if (isArrayOfType(ocrResult, keysPersonsAndTimeObject) && ocrResult.length > 0) {
+                    const valueToTake = ocrResult[0] as personAndTimeObject;
+                    return {
+                        recipePersons: valueToTake.person as number,
+                        recipeTime: valueToTake.time as number,
+                    };
+                }
+            }
+            warn("Could not parse persons/time field");
+            return {};
+        case recipeColumnsNames.ingredients:
+            if (Array.isArray(ocrResult) && isArrayOfType(ocrResult, keysIngredientObject)) {
+                let idQuantityToSearch: number;
+                if (currentState.recipePersons > 0) {
+                    const foundPersonIndex = (ocrResult[0] as ingredientObject).quantityPerPersons.findIndex(p => (Number(p.persons) === currentState.recipePersons));
+                    if (foundPersonIndex !== -1) {
+                        idQuantityToSearch = foundPersonIndex;
+                    } else {
+                        warn(`Couldn't find exact match for persons (${currentState.recipePersons}) in ingredient. Using first available.`);
+                        idQuantityToSearch = 0;
+                    }
+                } else {
+                    idQuantityToSearch = 0;
+                    warn(
+                        `Couldn't find exact match for persons in ingredient. Using first available : ${(ocrResult[0] as ingredientObject).quantityPerPersons[0].persons}.`
+                    );
+                }
+
+                return {
+                    recipeIngredients: [
+                        ...currentState.recipeIngredients,
+                        ...(ocrResult as Array<ingredientObject>).map(ingredient => {
+                            return {
+                                ingName: ingredient.name,
+                                season: [],
+                                type: ingredientType.undefined,
+                                unit: ingredient.unit,
+                                quantity: ingredient.quantityPerPersons[idQuantityToSearch].quantity
+                            } as ingredientTableElement
+                        }),
+                    ],
+                };
+            }
+            warn("Expected array of ingredient objects");
+            return {};
+        default:
+            console.error("Unrecognized field", field);
+            return {};
+    }
 }

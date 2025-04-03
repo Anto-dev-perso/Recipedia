@@ -1,5 +1,5 @@
 import React from "react";
-import {RecipeScreenProp, StackScreenNavigation} from '@customTypes/ScreenTypes';
+import {RecipeScreenProp} from '@customTypes/ScreenTypes';
 import {
     extractIngredientsNameWithQuantity,
     extractTagsName,
@@ -9,7 +9,6 @@ import {
     recipeTableElement,
     tagTableElement
 } from "@customTypes/DatabaseElementTypes";
-import {localImgData} from "@customTypes/ImageTypes";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import {SafeAreaView, ScrollView, StatusBar, View} from "react-native";
 import {
@@ -19,12 +18,10 @@ import {
     rectangleButtonHeight,
     viewButtonStyles
 } from "@styles/buttons";
-import RectangleButton from "@components/atomic/RectangleButton";
 import {screenViews, scrollView} from "@styles/spacing";
 import {palette} from "@styles/colors";
 import RecipeImage from "@components/organisms/RecipeImage";
 import {backIcon, enumIconTypes, iconsSize, pencilIcon, trashIcon} from "@assets/images/Icons";
-import RoundButton from "@components/atomic/RoundButton";
 import RecipeTextRender, {
     RecipeTextRenderAddOrEditProps,
     RecipeTextRenderProps,
@@ -36,6 +33,11 @@ import RecipeDatabase from "@utils/RecipeDatabase";
 import RecipeTags, {RecipeTagProps} from "@components/organisms/RecipeTags";
 import {alertUserChoice, AsyncAlert} from "@utils/AsyncAlert";
 import FileGestion from "@utils/FileGestion";
+import RectangleButton from "@components/atomic/RectangleButton";
+import RoundButton from "@components/atomic/RoundButton";
+import {cropImage} from "@utils/ImagePicker";
+import {extractFieldFromImage} from "@utils/OCR";
+import RecipeNumber, {RecipeNumberAddOrEditProps} from "@components/organisms/RecipeNumber";
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -45,11 +47,12 @@ export type editRecipeManually = { mode: "edit", recipe: recipeTableElement }
 
 export type addRecipeManually = { mode: "addManually" }
 
-export type addRecipeFromPicture = { mode: "addFromPic", img: localImgData }
+export type addRecipeFromPicture = { mode: "addFromPic", imgUri: string }
 
 
 export type RecipePropType = readRecipe | editRecipeManually | addRecipeManually | addRecipeFromPicture
 
+export const defaultValueNumber = -1;
 
 export type RecipeStates = {
     stackMode: recipeStateType,
@@ -57,12 +60,12 @@ export type RecipeStates = {
     recipeTitle: string,
     recipeDescription: string,
     recipeTags: Array<tagTableElement>,
-    recipePersons: string,
+    recipePersons: number,
     recipeIngredients: Array<ingredientTableElement>,
     recipeSeason: Array<string>,
     recipePreparation: Array<string>,
-    recipeTime: string,
-    imgForOCR: Array<localImgData>,
+    recipeTime: number,
+    imgForOCR: Array<string>,
     forceUpdateKey: number,
     randomTags: Array<string>,
 }
@@ -80,11 +83,11 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     recipeTitle: params.recipe.title,
                     recipeDescription: params.recipe.description,
                     recipeTags: params.recipe.tags,
-                    recipePersons: params.recipe.persons.toString(),
+                    recipePersons: params.recipe.persons,
                     recipeIngredients: params.recipe.ingredients,
                     recipeSeason: params.recipe.season,
                     recipePreparation: params.recipe.preparation,
-                    recipeTime: params.recipe.time.toString(),
+                    recipeTime: params.recipe.time,
                     imgForOCR: [],
                     forceUpdateKey: 0,
                     randomTags: tags,
@@ -97,11 +100,11 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     recipeTitle: params.recipe ? params.recipe.title : "",
                     recipeDescription: params.recipe ? params.recipe.description : "",
                     recipeTags: params.recipe ? params.recipe.tags : [],
-                    recipePersons: params.recipe ? params.recipe.persons.toString() : "",
+                    recipePersons: params.recipe ? params.recipe.persons : defaultValueNumber,
                     recipeIngredients: params.recipe ? params.recipe.ingredients : [],
                     recipeSeason: params.recipe ? params.recipe.season : [],
                     recipePreparation: params.recipe ? params.recipe.preparation : [],
-                    recipeTime: params.recipe ? params.recipe.time.toString() : "",
+                    recipeTime: params.recipe ? params.recipe.time : defaultValueNumber,
                     imgForOCR: [],
                     forceUpdateKey: 0, randomTags: tags,
                 };
@@ -113,11 +116,11 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     recipeTitle: "",
                     recipeDescription: "",
                     recipeTags: [],
-                    recipePersons: "",
+                    recipePersons: defaultValueNumber,
                     recipeIngredients: [],
                     recipeSeason: [],
                     recipePreparation: [],
-                    recipeTime: "",
+                    recipeTime: defaultValueNumber,
                     imgForOCR: [],
                     forceUpdateKey: 0, randomTags: tags,
                 };
@@ -129,12 +132,12 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     recipeTitle: "",
                     recipeDescription: "",
                     recipeTags: [],
-                    recipePersons: "",
+                    recipePersons: 0,
                     recipeIngredients: [],
                     recipeSeason: [],
                     recipePreparation: [],
-                    recipeTime: "",
-                    imgForOCR: new Array<localImgData>(params.img),
+                    recipeTime: 0,
+                    imgForOCR: new Array<string>(params.imgUri),
                     forceUpdateKey: 0, randomTags: tags,
                 };
                 break;
@@ -165,7 +168,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         this.setState({recipeTags: newTags})
     };
 
-    setRecipePersons = (newPerson: string) => {
+    setRecipePersons = (newPerson: number) => {
         this.setState({recipePersons: newPerson});
     };
 
@@ -181,11 +184,11 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         this.setState({recipePreparation: newPreparation});
     };
 
-    setRecipeTime = (newTime: string) => {
+    setRecipeTime = (newTime: number) => {
         this.setState({recipeTime: newTime});
     };
 
-    setImgForOCR = (newOCR: Array<localImgData>) => {
+    setImgForOCR = (newOCR: Array<string>) => {
         this.setState({imgForOCR: newOCR});
     };
 
@@ -242,8 +245,8 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         if (foundIngredient.ingName !== newName) {
             foundIngredient.ingName = newName;
         }
-        if (foundIngredient.quantity !== Number(newQuantity)) {
-            foundIngredient.quantity = Number(newQuantity);
+        if (foundIngredient.quantity !== newQuantity) {
+            foundIngredient.quantity = newQuantity;
         }
         if (foundIngredient.unit !== newUnit) {
             foundIngredient.unit = newUnit;
@@ -262,7 +265,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         this.setRecipeIngredients(new Array(...this.state.recipeIngredients, {
             ingName: '',
             unit: '',
-            quantity: 0,
+            quantity: "",
             type: ingredientType.undefined,
             season: []
         }));
@@ -291,11 +294,11 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
             title: this.state.recipeTitle,
             description: this.state.recipeDescription,
             tags: this.state.recipeTags,
-            persons: Number(this.state.recipePersons),
+            persons: this.state.recipePersons,
             ingredients: this.state.recipeIngredients,
             season: this.state.recipeSeason,
             preparation: this.state.recipePreparation,
-            time: Number(this.state.recipeTime),
+            time: this.state.recipeTime,
         }
     }
     ;
@@ -334,7 +337,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         if (this.state.recipePreparation.length == 0) {
             missingElem.push("some instructions for the preparation");
         }
-        if (this.state.recipePersons.length == 0) {
+        if (this.state.recipePersons == defaultValueNumber) {
             missingElem.push("for how many persons this recipe is");
         }
 
@@ -388,68 +391,43 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
         const {navigation} = this.props;
         navigation.navigate('Modal', {
             arrImg: this.state.imgForOCR,
-            setState: this.setImgForOCR,
-            onSelectFunction: (imgSelected: localImgData, newNav: StackScreenNavigation) => {
-                navigation.navigate('Crop', {
-                    imageToCrop: imgSelected, validateFunction: (newImg: localImgData) => {
-                        this.fillOneField(newImg.uri, field);
-                        newNav.goBack();
-                    }
-                });
+            onSelectFunction: async (imgSelected: string) => {
+                this.fillOneField(await cropImage(imgSelected), field);
             }
         });
     };
 
 
-    fillOneField = (uri: string, field: recipeColumnsNames) => {
-        // TODO for debug only hardcoded values, remove these for release
-        switch (field) {
-            case recipeColumnsNames.image:
-                // this.setRecipeImage(uri);
-                this.setRecipeImage('New Image URI');
-                break;
-            case recipeColumnsNames.title:
-                // const title =  await recognizeText<string>(uri, field);
-                const title = 'New Title';
-                this.setRecipeTitle(title);
-                break;
-            case recipeColumnsNames.description:
-                // const description = await recognizeText<string>(uri, field);
-                const description = 'New description';
-                this.setRecipeDescription(description);
-                break;
-            case recipeColumnsNames.tags:
-                // TODO to implement OCR for tags ?
-                // const tags = await recognizeText<Array<string>>(uri, field);
-                this.setRecipeTags([...this.state.recipeTags, {tagName: 'New tag'}]);
-                break;
-            case recipeColumnsNames.persons:
-                // const persons = await recognizeText<number>(uri, field);
-                const persons = '31';
-                this.setRecipePersons(persons);
-                break;
-            case recipeColumnsNames.ingredients:
-                // const newIngredients = await recognizeText<Array<string>>(uri, field);
-                const newIngredients = [...this.state.recipeIngredients, {
-                    ingName: 'New ingredient',
-                    quantity: 111,
-                    season: ['8,9,10'],
-                    type: ingredientType.cheese,
-                    unit: 'g'
-                }];
-                this.setRecipeIngredients(newIngredients);
-                break;
-            case recipeColumnsNames.preparation:
-                // const newPreparation = await recognizeText<Array<string>>(uri, field);
-                const newPreparation = [...this.state.recipePreparation, 'New preparation'];
-                this.setRecipePreparation(newPreparation);
-                break;
-            case recipeColumnsNames.time:
-                const time = '99';
-                this.setRecipeTime(time);
-                break;
-        }
+    fillOneField = async (uri: string, field: recipeColumnsNames) => {
+        const newFieldData = await extractFieldFromImage(uri, field, {
+            recipePreparation: this.state.recipePreparation,
+            recipePersons: this.state.recipePersons,
+            recipeIngredients: this.state.recipeIngredients,
+        }, (msg) => {
+            console.warn("OCR warning:", msg);
+        });
 
+        if (newFieldData.recipeImage) {
+            this.setRecipeImage(newFieldData.recipeImage);
+        }
+        if (newFieldData.recipeTitle) {
+            this.setRecipeTitle(newFieldData.recipeTitle);
+        }
+        if (newFieldData.recipeDescription) {
+            this.setRecipeDescription(newFieldData.recipeDescription);
+        }
+        if (newFieldData.recipePreparation) {
+            this.setRecipePreparation(newFieldData.recipePreparation);
+        }
+        if (newFieldData.recipePersons) {
+            this.setRecipePersons(newFieldData.recipePersons);
+        }
+        if (newFieldData.recipeTime) {
+            this.setRecipeTime(newFieldData.recipeTime);
+        }
+        if (newFieldData.recipeIngredients) {
+            this.setRecipeIngredients(newFieldData.recipeIngredients);
+        }
     };
 
 
@@ -462,8 +440,8 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
 
         let titleAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
         let descriptionAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
-        let personAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
-        let timeAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
+        let personAddOrEditProps: RecipeNumberAddOrEditProps | undefined = undefined;
+        let timeAddOrEditProps: RecipeNumberAddOrEditProps | undefined = undefined;
 
         let tagProps: RecipeTagProps;
 
@@ -517,7 +495,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     prefixText: {style: {...typoStyles.header, flex: 5}, value: 'This recipe is for : '},
                     suffixText: {style: {...typoStyles.header, flex: 3}, value: ' persons'},
                     setTextToEdit: this.setRecipePersons,
-                } as RecipeTextAddOrEditProps;
+                } as RecipeNumberAddOrEditProps;
 
                 tagProps = {
                     type: 'addOrEdit',
@@ -545,7 +523,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                         value: this.state.recipeTime
                     },
                     setTextToEdit: this.setRecipeTime,
-                } as RecipeTextAddOrEditProps;
+                } as RecipeNumberAddOrEditProps;
 
                 preparationProps = {
                     type: 'addOrEdit',
@@ -605,7 +583,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     prefixText: {style: {...typoStyles.header, flex: 5}, value: 'This recipe is for : '},
                     suffixText: {style: {...typoStyles.header, flex: 3}, value: ' persons'},
                     setTextToEdit: this.setRecipePersons,
-                } as RecipeTextAddOrEditProps;
+                } as RecipeNumberAddOrEditProps;
 
                 tagProps = {
                     type: 'addOrEdit',
@@ -633,7 +611,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                         value: this.state.recipeTime
                     },
                     setTextToEdit: this.setRecipeTime,
-                } as RecipeTextAddOrEditProps;
+                } as RecipeNumberAddOrEditProps;
 
                 preparationProps = {
                     type: 'addOrEdit',
@@ -696,7 +674,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                         setTextToEdit: this.setRecipeDescription,
                     } as RecipeTextAddOrEditProps;
                 }
-                if (this.state.recipePersons.length == 0) {
+                if (this.state.recipePersons == 0) {
                     personAddOrEditProps = {
                         editType: 'add',
                         editableViewStyle: screenViews.tabView,
@@ -721,7 +699,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                         prefixText: {style: {...typoStyles.header, flex: 5}, value: 'This recipe is for : '},
                         suffixText: {style: {...typoStyles.header, flex: 3}, value: ' persons'},
                         setTextToEdit: this.setRecipePersons,
-                    } as RecipeTextAddOrEditProps;
+                    } as RecipeNumberAddOrEditProps;
                 }
 
                 tagProps = {
@@ -731,7 +709,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     removeTag: this.removeTag,
                 };
 
-                if (this.state.recipeTime.length == 0) {
+                if (this.state.recipeTime == 0) {
                     timeAddOrEditProps = {
                         editType: 'add',
                         editableViewStyle: screenViews.tabView,
@@ -743,7 +721,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                         flex: 3, alignItems: 'flex-start',
 
                         openModal: () => this.openModalForField(recipeColumnsNames.time),
-                    } as RecipeTextAddOrEditProps;
+                    } as RecipeNumberAddOrEditProps;
                 } else {
                     timeAddOrEditProps = {
                         editType: 'editable',
@@ -764,7 +742,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                             value: this.state.recipeTime
                         },
                         setTextToEdit: this.setRecipeTime,
-                    } as RecipeTextAddOrEditProps;
+                    } as RecipeNumberAddOrEditProps;
                 }
                 if (this.state.recipePreparation.length == 0) {
                     preparationProps = {
@@ -849,13 +827,11 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     <RecipeTags {...tagProps} testID={'RecipeTags'}/>
 
                     {/*Persons*/}
-                    {/*TODO shall be a keyboard number */}
-                    <RecipeText testID={'RecipePersons'}
-                                rootText={this.state.stackMode == recipeStateType.readOnly ? {
-                                    style: typoStyles.title,
-                                    value: `Ingredients (${this.state.recipePersons} persons)`
-                                } : undefined}
-                                addOrEditProps={personAddOrEditProps}/>
+                    <RecipeNumber testID={'RecipePersons'}
+                                  rootText={this.state.stackMode == recipeStateType.readOnly ? {
+                                      style: typoStyles.title,
+                                      value: `Ingredients (${this.state.recipePersons} persons)`
+                                  } : undefined} addOrEditProps={personAddOrEditProps}/>
 
                     {/*Ingredients*/}
                     {/*TODO quantity shall be keyboard number*/}
@@ -863,14 +839,13 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
 
                     {/* TODO let the possibility to add another time in picture */}
                     {/*Time*/}
-                    {/*TODO shall be a keyboard number */}
-                    <RecipeText testID={'RecipeTime'}
-                                rootText={this.state.stackMode == recipeStateType.readOnly ?
-                                    {
-                                        style: typoStyles.title,
-                                        value: `Preparation (${this.state.recipeTime} min)`,
-                                    } : undefined}
-                                addOrEditProps={timeAddOrEditProps}/>
+                    <RecipeNumber testID={'RecipeTime'}
+                                  rootText={this.state.stackMode == recipeStateType.readOnly ?
+                                      {
+                                          style: typoStyles.title,
+                                          value: `Preparation (${this.state.recipeTime} min)`,
+                                      } : undefined}
+                                  addOrEditProps={timeAddOrEditProps}/>
 
                     {/*Preparation*/}
                     <RecipeTextRender {...preparationProps} testID={'RecipePreparation'}/>

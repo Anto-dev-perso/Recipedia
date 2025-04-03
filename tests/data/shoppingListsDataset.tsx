@@ -7,7 +7,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -18,7 +18,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -29,7 +29,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -40,7 +40,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -53,7 +53,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -64,7 +64,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -75,7 +75,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -86,7 +86,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -97,7 +97,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 5,
             name: "Taco Shells",
             purchased: false,
-            quantity: 6,
+            quantity: "6",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -108,7 +108,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 6,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -119,7 +119,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 7,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -130,7 +130,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 8,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -143,7 +143,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -154,7 +154,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -165,7 +165,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -176,7 +176,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -187,7 +187,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 5,
             name: "Taco Shells",
             purchased: false,
-            quantity: 6,
+            quantity: "6",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -198,7 +198,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 6,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -209,7 +209,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 7,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -220,7 +220,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 8,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -231,7 +231,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 9,
             name: "Flour",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -242,7 +242,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 10,
             name: "Milk",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -253,7 +253,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 11,
             name: "Eggs",
             purchased: false,
-            quantity: 2,
+            quantity: "2",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -264,7 +264,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 12,
             name: "Butter",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -277,7 +277,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -288,7 +288,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -299,7 +299,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -310,7 +310,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 80,
+            quantity: "80",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Caesar Salad"
@@ -321,7 +321,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
         id: 5,
         name: "Taco Shells",
         purchased: false,
-        quantity: 6,
+        quantity: "6",
         recipesTitle: [
             "Chicken Tacos"
         ],
@@ -332,7 +332,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 6,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -343,7 +343,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 7,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -354,7 +354,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 8,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -365,7 +365,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 9,
             name: "Flour",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -376,7 +376,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 10,
             name: "Milk",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -387,7 +387,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 11,
             name: "Eggs",
             purchased: false,
-            quantity: 2,
+            quantity: "2",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -398,7 +398,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 12,
             name: "Butter",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -409,7 +409,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 13,
             name: "Romaine Lettuce",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -420,7 +420,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 14,
             name: "Croutons",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -431,7 +431,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 15,
             name: "Caesar Dressing",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -444,7 +444,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -455,7 +455,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -466,7 +466,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 350,
+            quantity: "350",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Margherita Pizza"
@@ -478,7 +478,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 80,
+            quantity: "80",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Caesar Salad"
@@ -490,7 +490,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 5,
             name: "Taco Shells",
             purchased: false,
-            quantity: 6,
+            quantity: "6",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -501,7 +501,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 6,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -512,7 +512,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 7,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -523,7 +523,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 8,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -534,7 +534,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 9,
             name: "Flour",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -545,7 +545,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 10,
             name: "Milk",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -556,7 +556,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 11,
             name: "Eggs",
             purchased: false,
-            quantity: 2,
+            quantity: "2",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -567,7 +567,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 12,
             name: "Butter",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -578,7 +578,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 13,
             name: "Romaine Lettuce",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -589,7 +589,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 14,
             name: "Croutons",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -600,7 +600,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 15,
             name: "Caesar Dressing",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -611,7 +611,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 16,
             name: "Pizza Dough",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -622,7 +622,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 17,
             name: "Mozzarella",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -633,7 +633,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 18,
             name: "Basil Leaves",
             purchased: false,
-            quantity: 10,
+            quantity: "10",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -646,7 +646,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -657,7 +657,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -668,7 +668,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 350,
+            quantity: "350",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Margherita Pizza"
@@ -680,7 +680,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 80,
+            quantity: "80",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Caesar Salad"
@@ -692,7 +692,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 5,
             name: "Taco Shells",
             purchased: false,
-            quantity: 6,
+            quantity: "6",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -703,7 +703,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 6,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -714,7 +714,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 7,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -725,7 +725,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 8,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -736,7 +736,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 9,
             name: "Flour",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -747,7 +747,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 10,
             name: "Milk",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -758,7 +758,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 11,
             name: "Eggs",
             purchased: false,
-            quantity: 2,
+            quantity: "2",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -769,7 +769,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 12,
             name: "Butter",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -780,7 +780,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 13,
             name: "Romaine Lettuce",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -791,7 +791,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 14,
             name: "Croutons",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -802,7 +802,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 15,
             name: "Caesar Dressing",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -813,7 +813,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 16,
             name: "Pizza Dough",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -824,7 +824,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 17,
             name: "Mozzarella",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -835,7 +835,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 18,
             name: "Basil Leaves",
             purchased: false,
-            quantity: 10,
+            quantity: "10",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -846,7 +846,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 19,
             name: "Carrots",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -857,7 +857,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 20,
             name: "Celery",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -868,7 +868,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 21,
             name: "Potatoes",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -879,7 +879,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 22,
             name: "Vegetable Broth",
             purchased: false,
-            quantity: 500,
+            quantity: "500",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -892,7 +892,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -903,7 +903,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -914,7 +914,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 350,
+            quantity: "350",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Margherita Pizza"
@@ -926,7 +926,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 80,
+            quantity: "80",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Caesar Salad"
@@ -938,7 +938,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 5,
             name: "Taco Shells",
             purchased: false,
-            quantity: 6,
+            quantity: "6",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -949,7 +949,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 6,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -960,7 +960,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 7,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -971,7 +971,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 8,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -982,7 +982,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 9,
             name: "Flour",
             purchased: false,
-            quantity: 400,
+            quantity: "400",
             recipesTitle: [
                 "Classic Pancakes",
                 "Chocolate Cake"
@@ -994,7 +994,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 10,
             name: "Milk",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -1005,7 +1005,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 11,
             name: "Eggs",
             purchased: false,
-            quantity: 2,
+            quantity: "2",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -1016,7 +1016,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 12,
             name: "Butter",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Classic Pancakes",
                 "Chocolate Cake"
@@ -1028,7 +1028,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 13,
             name: "Romaine Lettuce",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1039,7 +1039,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 14,
             name: "Croutons",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1050,7 +1050,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 15,
             name: "Caesar Dressing",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1061,7 +1061,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 16,
             name: "Pizza Dough",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -1072,7 +1072,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 17,
             name: "Mozzarella",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -1083,7 +1083,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 18,
             name: "Basil Leaves",
             purchased: false,
-            quantity: 10,
+            quantity: "10",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -1094,7 +1094,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 19,
             name: "Carrots",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1105,7 +1105,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 20,
             name: "Celery",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1116,7 +1116,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 21,
             name: "Potatoes",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1127,7 +1127,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 22,
             name: "Vegetable Broth",
             purchased: false,
-            quantity: 500,
+            quantity: "500",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1138,7 +1138,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 23,
             name: "Cocoa Powder",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chocolate Cake"
             ],
@@ -1149,7 +1149,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 24,
             name: listFilter.sugar,
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Chocolate Cake"
             ],
@@ -1162,7 +1162,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -1173,7 +1173,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -1184,7 +1184,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 350,
+            quantity: "350",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Margherita Pizza"
@@ -1196,7 +1196,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 110,
+            quantity: "110",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Caesar Salad",
@@ -1209,7 +1209,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 5,
             name: "Taco Shells",
             purchased: false,
-            quantity: 6,
+            quantity: "6",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -1220,7 +1220,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 6,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -1231,7 +1231,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 7,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -1242,7 +1242,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 8,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -1253,7 +1253,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 9,
             name: "Flour",
             purchased: false,
-            quantity: 400,
+            quantity: "400",
             recipesTitle: [
                 "Classic Pancakes",
                 "Chocolate Cake"
@@ -1265,7 +1265,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 10,
             name: "Milk",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -1276,7 +1276,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 11,
             name: "Eggs",
             purchased: false,
-            quantity: 2,
+            quantity: "2",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -1287,7 +1287,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 12,
             name: "Butter",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Classic Pancakes",
                 "Chocolate Cake"
@@ -1299,7 +1299,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 13,
             name: "Romaine Lettuce",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1310,7 +1310,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 14,
             name: "Croutons",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1321,7 +1321,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 15,
             name: "Caesar Dressing",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1332,7 +1332,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 16,
             name: "Pizza Dough",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -1343,7 +1343,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 17,
             name: "Mozzarella",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -1354,7 +1354,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 18,
             name: "Basil Leaves",
             purchased: false,
-            quantity: 60,
+            quantity: "60",
             recipesTitle: [
                 "Margherita Pizza",
                 "Pesto Pasta"
@@ -1366,7 +1366,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 19,
             name: "Carrots",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1377,7 +1377,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 20,
             name: "Celery",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1388,7 +1388,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 21,
             name: "Potatoes",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1399,7 +1399,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 22,
             name: "Vegetable Broth",
             purchased: false,
-            quantity: 500,
+            quantity: "500",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1410,7 +1410,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 23,
             name: "Cocoa Powder",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chocolate Cake"
             ],
@@ -1421,7 +1421,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 24,
             name: listFilter.sugar,
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Chocolate Cake"
             ],
@@ -1432,7 +1432,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 25,
             name: "Pasta",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Pesto Pasta"
             ],
@@ -1443,7 +1443,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 26,
             name: "Olive Oil",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Pesto Pasta"
             ],
@@ -1454,7 +1454,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 27,
             name: "Pine Nuts",
             purchased: false,
-            quantity: 20,
+            quantity: "20",
             recipesTitle: [
                 "Pesto Pasta"
             ],
@@ -1467,7 +1467,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 1,
             name: "Spaghetti",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -1478,7 +1478,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 2,
             name: "Ground Beef",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Spaghetti Bolognese"
             ],
@@ -1489,7 +1489,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 3,
             name: "Tomato Sauce",
             purchased: false,
-            quantity: 350,
+            quantity: "350",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Margherita Pizza"
@@ -1501,7 +1501,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 4,
             name: "Parmesan",
             purchased: false,
-            quantity: 110,
+            quantity: "110",
             recipesTitle: [
                 "Spaghetti Bolognese",
                 "Caesar Salad",
@@ -1514,7 +1514,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 5,
             name: "Taco Shells",
             purchased: false,
-            quantity: 6,
+            quantity: "6",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -1525,7 +1525,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 6,
             name: "Chicken Breast",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -1536,7 +1536,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 7,
             name: "Lettuce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -1547,7 +1547,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 8,
             name: "Cheddar",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chicken Tacos"
             ],
@@ -1558,7 +1558,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 9,
             name: "Flour",
             purchased: false,
-            quantity: 400,
+            quantity: "400",
             recipesTitle: [
                 "Classic Pancakes",
                 "Chocolate Cake"
@@ -1570,7 +1570,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 10,
             name: "Milk",
             purchased: false,
-            quantity: 300,
+            quantity: "300",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -1581,7 +1581,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 11,
             name: "Eggs",
             purchased: false,
-            quantity: 2,
+            quantity: "2",
             recipesTitle: [
                 "Classic Pancakes"
             ],
@@ -1592,7 +1592,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 12,
             name: "Butter",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Classic Pancakes",
                 "Chocolate Cake"
@@ -1604,7 +1604,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 13,
             name: "Romaine Lettuce",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1615,7 +1615,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 14,
             name: "Croutons",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1626,7 +1626,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 15,
             name: "Caesar Dressing",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Caesar Salad"
             ],
@@ -1637,7 +1637,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 16,
             name: "Pizza Dough",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -1648,7 +1648,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 17,
             name: "Mozzarella",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Margherita Pizza"
             ],
@@ -1659,7 +1659,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 18,
             name: "Basil Leaves",
             purchased: false,
-            quantity: 60,
+            quantity: "60",
             recipesTitle: [
                 "Margherita Pizza",
                 "Pesto Pasta"
@@ -1671,7 +1671,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 19,
             name: "Carrots",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1682,7 +1682,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 20,
             name: "Celery",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1693,7 +1693,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 21,
             name: "Potatoes",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1704,7 +1704,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 22,
             name: "Vegetable Broth",
             purchased: false,
-            quantity: 500,
+            quantity: "500",
             recipesTitle: [
                 "Vegetable Soup"
             ],
@@ -1715,7 +1715,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 23,
             name: "Cocoa Powder",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Chocolate Cake"
             ],
@@ -1726,7 +1726,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 24,
             name: listFilter.sugar,
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Chocolate Cake"
             ],
@@ -1737,7 +1737,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 25,
             name: "Pasta",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Pesto Pasta"
             ],
@@ -1748,7 +1748,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 26,
             name: "Olive Oil",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
             recipesTitle: [
                 "Pesto Pasta"
             ],
@@ -1759,367 +1759,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 27,
             name: "Pine Nuts",
             purchased: false,
-            quantity: 20,
-            recipesTitle: [
-                "Pesto Pasta"
-            ],
-            type: listFilter.nutsAndSeeds,
-            unit: "g"
-        },
-        {
-            id: 28,
-            name: "Sushi Rice",
-            purchased: false,
-            quantity: 250,
-            recipesTitle: [
-                "Sushi Rolls"
-            ],
-            type: listFilter.grainOrCereal,
-            unit: "g"
-        },
-        {
-            id: 29,
-            name: "Nori Sheets",
-            purchased: false,
-            quantity: 5,
-            recipesTitle: [
-                "Sushi Rolls"
-            ],
-            type: listFilter.condiment,
-            unit: "pieces"
-        },
-        {
-            id: 30,
-            name: "Salmon",
-            purchased: false,
-            quantity: 200,
-            recipesTitle: [
-                "Sushi Rolls"
-            ],
-            type: listFilter.fish,
-            unit: "g"
-        },
-        {
-            id: 31,
-            name: "Avocado",
-            purchased: false,
-            quantity: 100,
-            recipesTitle: [
-                "Sushi Rolls"
-            ],
-            type: listFilter.fruit,
-            unit: "g"
-        },
-        {
-            id: 32,
-            name: "Soy Sauce",
-            purchased: false,
-            quantity: 50,
-            recipesTitle: [
-                "Sushi Rolls"
-            ],
-            type: listFilter.condiment,
-            unit: "ml"
-        }
-    ],
-    [
-        {
-            id: 1,
-            name: "Spaghetti",
-            purchased: false,
-            quantity: 200,
-            recipesTitle: [
-                "Spaghetti Bolognese"
-            ],
-            type: listFilter.grainOrCereal,
-            unit: "g"
-        },
-        {
-            id: 2,
-            name: "Ground Beef",
-            purchased: false,
-            quantity: 300,
-            recipesTitle: [
-                "Spaghetti Bolognese"
-            ],
-            type: listFilter.meat,
-            unit: "g"
-        },
-        {
-            id: 3,
-            name: "Tomato Sauce",
-            purchased: false,
-            quantity: 350,
-            recipesTitle: [
-                "Spaghetti Bolognese",
-                "Margherita Pizza"
-            ],
-            type: listFilter.sauce,
-            unit: "ml"
-        },
-        {
-            id: 4,
-            name: "Parmesan",
-            purchased: false,
-            quantity: 110,
-            recipesTitle: [
-                "Spaghetti Bolognese",
-                "Caesar Salad",
-                "Pesto Pasta"
-            ],
-            type: listFilter.cheese,
-            unit: "g"
-        },
-        {
-            id: 5,
-            name: "Taco Shells",
-            purchased: false,
-            quantity: 6,
-            recipesTitle: [
-                "Chicken Tacos"
-            ],
-            type: listFilter.grainOrCereal,
-            unit: "pieces"
-        },
-        {
-            id: 6,
-            name: "Chicken Breast",
-            purchased: false,
-            quantity: 300,
-            recipesTitle: [
-                "Chicken Tacos"
-            ],
-            type: listFilter.poultry,
-            unit: "g"
-        },
-        {
-            id: 7,
-            name: "Lettuce",
-            purchased: false,
-            quantity: 50,
-            recipesTitle: [
-                "Chicken Tacos"
-            ],
-            type: listFilter.vegetable,
-            unit: "g"
-        },
-        {
-            id: 8,
-            name: "Cheddar",
-            purchased: false,
-            quantity: 50,
-            recipesTitle: [
-                "Chicken Tacos"
-            ],
-            type: listFilter.cheese,
-            unit: "g"
-        },
-        {
-            id: 9,
-            name: "Flour",
-            purchased: false,
-            quantity: 400,
-            recipesTitle: [
-                "Classic Pancakes",
-                "Chocolate Cake"
-            ],
-            type: listFilter.grainOrCereal,
-            unit: "g"
-        },
-        {
-            id: 10,
-            name: "Milk",
-            purchased: false,
-            quantity: 300,
-            recipesTitle: [
-                "Classic Pancakes"
-            ],
-            type: listFilter.dairy,
-            unit: "ml"
-        },
-        {
-            id: 11,
-            name: "Eggs",
-            purchased: false,
-            quantity: 2,
-            recipesTitle: [
-                "Classic Pancakes"
-            ],
-            type: listFilter.plantProtein,
-            unit: "pieces"
-        },
-        {
-            id: 12,
-            name: "Butter",
-            purchased: false,
-            quantity: 150,
-            recipesTitle: [
-                "Classic Pancakes",
-                "Chocolate Cake"
-            ],
-            type: listFilter.oilAndFat,
-            unit: "g"
-        },
-        {
-            id: 13,
-            name: "Romaine Lettuce",
-            purchased: false,
-            quantity: 100,
-            recipesTitle: [
-                "Caesar Salad"
-            ],
-            type: listFilter.vegetable,
-            unit: "g"
-        },
-        {
-            id: 14,
-            name: "Croutons",
-            purchased: false,
-            quantity: 50,
-            recipesTitle: [
-                "Caesar Salad"
-            ],
-            type: listFilter.grainOrCereal,
-            unit: "g"
-        },
-        {
-            id: 15,
-            name: "Caesar Dressing",
-            purchased: false,
-            quantity: 50,
-            recipesTitle: [
-                "Caesar Salad"
-            ],
-            type: listFilter.sauce,
-            unit: "ml"
-        },
-        {
-            id: 16,
-            name: "Pizza Dough",
-            purchased: false,
-            quantity: 250,
-            recipesTitle: [
-                "Margherita Pizza"
-            ],
-            type: listFilter.grainOrCereal,
-            unit: "g"
-        },
-        {
-            id: 17,
-            name: "Mozzarella",
-            purchased: false,
-            quantity: 150,
-            recipesTitle: [
-                "Margherita Pizza"
-            ],
-            type: listFilter.cheese,
-            unit: "g"
-        },
-        {
-            id: 18,
-            name: "Basil Leaves",
-            purchased: false,
-            quantity: 60,
-            recipesTitle: [
-                "Margherita Pizza",
-                "Pesto Pasta"
-            ],
-            type: listFilter.spice,
-            unit: "g"
-        },
-        {
-            id: 19,
-            name: "Carrots",
-            purchased: false,
-            quantity: 150,
-            recipesTitle: [
-                "Vegetable Soup"
-            ],
-            type: listFilter.vegetable,
-            unit: "g"
-        },
-        {
-            id: 20,
-            name: "Celery",
-            purchased: false,
-            quantity: 100,
-            recipesTitle: [
-                "Vegetable Soup"
-            ],
-            type: listFilter.vegetable,
-            unit: "g"
-        },
-        {
-            id: 21,
-            name: "Potatoes",
-            purchased: false,
-            quantity: 200,
-            recipesTitle: [
-                "Vegetable Soup"
-            ],
-            type: listFilter.vegetable,
-            unit: "g"
-        },
-        {
-            id: 22,
-            name: "Vegetable Broth",
-            purchased: false,
-            quantity: 500,
-            recipesTitle: [
-                "Vegetable Soup"
-            ],
-            type: listFilter.sauce,
-            unit: "ml"
-        },
-        {
-            id: 23,
-            name: "Cocoa Powder",
-            purchased: false,
-            quantity: 50,
-            recipesTitle: [
-                "Chocolate Cake"
-            ],
-            type: listFilter.spice,
-            unit: "g"
-        },
-        {
-            id: 24,
-            name: listFilter.sugar,
-            purchased: false,
-            quantity: 150,
-            recipesTitle: [
-                "Chocolate Cake"
-            ],
-            type: listFilter.sugar,
-            unit: "g"
-        },
-        {
-            id: 25,
-            name: "Pasta",
-            purchased: false,
-            quantity: 200,
-            recipesTitle: [
-                "Pesto Pasta"
-            ],
-            type: listFilter.grainOrCereal,
-            unit: "g"
-        },
-        {
-            id: 26,
-            name: "Olive Oil",
-            purchased: false,
-            quantity: 50,
-            recipesTitle: [
-                "Pesto Pasta"
-            ],
-            type: listFilter.oilAndFat,
-            unit: "ml"
-        },
-        {
-            id: 27,
-            name: "Pine Nuts",
-            purchased: false,
-            quantity: 20,
+            quantity: "20",
             recipesTitle: [
                 "Pesto Pasta"
             ],
@@ -2130,7 +1770,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 28,
             name: "Sushi Rice",
             purchased: false,
-            quantity: 250,
+            quantity: "250",
             recipesTitle: [
                 "Sushi Rolls"
             ],
@@ -2141,7 +1781,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 29,
             name: "Nori Sheets",
             purchased: false,
-            quantity: 5,
+            quantity: "5",
             recipesTitle: [
                 "Sushi Rolls"
             ],
@@ -2152,7 +1792,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 30,
             name: "Salmon",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Sushi Rolls"
             ],
@@ -2163,7 +1803,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 31,
             name: "Avocado",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Sushi Rolls"
             ],
@@ -2174,7 +1814,367 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 32,
             name: "Soy Sauce",
             purchased: false,
-            quantity: 50,
+            quantity: "50",
+            recipesTitle: [
+                "Sushi Rolls"
+            ],
+            type: listFilter.condiment,
+            unit: "ml"
+        }
+    ],
+    [
+        {
+            id: 1,
+            name: "Spaghetti",
+            purchased: false,
+            quantity: "200",
+            recipesTitle: [
+                "Spaghetti Bolognese"
+            ],
+            type: listFilter.grainOrCereal,
+            unit: "g"
+        },
+        {
+            id: 2,
+            name: "Ground Beef",
+            purchased: false,
+            quantity: "300",
+            recipesTitle: [
+                "Spaghetti Bolognese"
+            ],
+            type: listFilter.meat,
+            unit: "g"
+        },
+        {
+            id: 3,
+            name: "Tomato Sauce",
+            purchased: false,
+            quantity: "350",
+            recipesTitle: [
+                "Spaghetti Bolognese",
+                "Margherita Pizza"
+            ],
+            type: listFilter.sauce,
+            unit: "ml"
+        },
+        {
+            id: 4,
+            name: "Parmesan",
+            purchased: false,
+            quantity: "110",
+            recipesTitle: [
+                "Spaghetti Bolognese",
+                "Caesar Salad",
+                "Pesto Pasta"
+            ],
+            type: listFilter.cheese,
+            unit: "g"
+        },
+        {
+            id: 5,
+            name: "Taco Shells",
+            purchased: false,
+            quantity: "6",
+            recipesTitle: [
+                "Chicken Tacos"
+            ],
+            type: listFilter.grainOrCereal,
+            unit: "pieces"
+        },
+        {
+            id: 6,
+            name: "Chicken Breast",
+            purchased: false,
+            quantity: "300",
+            recipesTitle: [
+                "Chicken Tacos"
+            ],
+            type: listFilter.poultry,
+            unit: "g"
+        },
+        {
+            id: 7,
+            name: "Lettuce",
+            purchased: false,
+            quantity: "50",
+            recipesTitle: [
+                "Chicken Tacos"
+            ],
+            type: listFilter.vegetable,
+            unit: "g"
+        },
+        {
+            id: 8,
+            name: "Cheddar",
+            purchased: false,
+            quantity: "50",
+            recipesTitle: [
+                "Chicken Tacos"
+            ],
+            type: listFilter.cheese,
+            unit: "g"
+        },
+        {
+            id: 9,
+            name: "Flour",
+            purchased: false,
+            quantity: "400",
+            recipesTitle: [
+                "Classic Pancakes",
+                "Chocolate Cake"
+            ],
+            type: listFilter.grainOrCereal,
+            unit: "g"
+        },
+        {
+            id: 10,
+            name: "Milk",
+            purchased: false,
+            quantity: "300",
+            recipesTitle: [
+                "Classic Pancakes"
+            ],
+            type: listFilter.dairy,
+            unit: "ml"
+        },
+        {
+            id: 11,
+            name: "Eggs",
+            purchased: false,
+            quantity: "2",
+            recipesTitle: [
+                "Classic Pancakes"
+            ],
+            type: listFilter.plantProtein,
+            unit: "pieces"
+        },
+        {
+            id: 12,
+            name: "Butter",
+            purchased: false,
+            quantity: "150",
+            recipesTitle: [
+                "Classic Pancakes",
+                "Chocolate Cake"
+            ],
+            type: listFilter.oilAndFat,
+            unit: "g"
+        },
+        {
+            id: 13,
+            name: "Romaine Lettuce",
+            purchased: false,
+            quantity: "100",
+            recipesTitle: [
+                "Caesar Salad"
+            ],
+            type: listFilter.vegetable,
+            unit: "g"
+        },
+        {
+            id: 14,
+            name: "Croutons",
+            purchased: false,
+            quantity: "50",
+            recipesTitle: [
+                "Caesar Salad"
+            ],
+            type: listFilter.grainOrCereal,
+            unit: "g"
+        },
+        {
+            id: 15,
+            name: "Caesar Dressing",
+            purchased: false,
+            quantity: "50",
+            recipesTitle: [
+                "Caesar Salad"
+            ],
+            type: listFilter.sauce,
+            unit: "ml"
+        },
+        {
+            id: 16,
+            name: "Pizza Dough",
+            purchased: false,
+            quantity: "250",
+            recipesTitle: [
+                "Margherita Pizza"
+            ],
+            type: listFilter.grainOrCereal,
+            unit: "g"
+        },
+        {
+            id: 17,
+            name: "Mozzarella",
+            purchased: false,
+            quantity: "150",
+            recipesTitle: [
+                "Margherita Pizza"
+            ],
+            type: listFilter.cheese,
+            unit: "g"
+        },
+        {
+            id: 18,
+            name: "Basil Leaves",
+            purchased: false,
+            quantity: "60",
+            recipesTitle: [
+                "Margherita Pizza",
+                "Pesto Pasta"
+            ],
+            type: listFilter.spice,
+            unit: "g"
+        },
+        {
+            id: 19,
+            name: "Carrots",
+            purchased: false,
+            quantity: "150",
+            recipesTitle: [
+                "Vegetable Soup"
+            ],
+            type: listFilter.vegetable,
+            unit: "g"
+        },
+        {
+            id: 20,
+            name: "Celery",
+            purchased: false,
+            quantity: "100",
+            recipesTitle: [
+                "Vegetable Soup"
+            ],
+            type: listFilter.vegetable,
+            unit: "g"
+        },
+        {
+            id: 21,
+            name: "Potatoes",
+            purchased: false,
+            quantity: "200",
+            recipesTitle: [
+                "Vegetable Soup"
+            ],
+            type: listFilter.vegetable,
+            unit: "g"
+        },
+        {
+            id: 22,
+            name: "Vegetable Broth",
+            purchased: false,
+            quantity: "500",
+            recipesTitle: [
+                "Vegetable Soup"
+            ],
+            type: listFilter.sauce,
+            unit: "ml"
+        },
+        {
+            id: 23,
+            name: "Cocoa Powder",
+            purchased: false,
+            quantity: "50",
+            recipesTitle: [
+                "Chocolate Cake"
+            ],
+            type: listFilter.spice,
+            unit: "g"
+        },
+        {
+            id: 24,
+            name: listFilter.sugar,
+            purchased: false,
+            quantity: "150",
+            recipesTitle: [
+                "Chocolate Cake"
+            ],
+            type: listFilter.sugar,
+            unit: "g"
+        },
+        {
+            id: 25,
+            name: "Pasta",
+            purchased: false,
+            quantity: "200",
+            recipesTitle: [
+                "Pesto Pasta"
+            ],
+            type: listFilter.grainOrCereal,
+            unit: "g"
+        },
+        {
+            id: 26,
+            name: "Olive Oil",
+            purchased: false,
+            quantity: "50",
+            recipesTitle: [
+                "Pesto Pasta"
+            ],
+            type: listFilter.oilAndFat,
+            unit: "ml"
+        },
+        {
+            id: 27,
+            name: "Pine Nuts",
+            purchased: false,
+            quantity: "20",
+            recipesTitle: [
+                "Pesto Pasta"
+            ],
+            type: listFilter.nutsAndSeeds,
+            unit: "g"
+        },
+        {
+            id: 28,
+            name: "Sushi Rice",
+            purchased: false,
+            quantity: "250",
+            recipesTitle: [
+                "Sushi Rolls"
+            ],
+            type: listFilter.grainOrCereal,
+            unit: "g"
+        },
+        {
+            id: 29,
+            name: "Nori Sheets",
+            purchased: false,
+            quantity: "5",
+            recipesTitle: [
+                "Sushi Rolls"
+            ],
+            type: listFilter.condiment,
+            unit: "pieces"
+        },
+        {
+            id: 30,
+            name: "Salmon",
+            purchased: false,
+            quantity: "200",
+            recipesTitle: [
+                "Sushi Rolls"
+            ],
+            type: listFilter.fish,
+            unit: "g"
+        },
+        {
+            id: 31,
+            name: "Avocado",
+            purchased: false,
+            quantity: "100",
+            recipesTitle: [
+                "Sushi Rolls"
+            ],
+            type: listFilter.fruit,
+            unit: "g"
+        },
+        {
+            id: 32,
+            name: "Soy Sauce",
+            purchased: false,
+            quantity: "50",
             recipesTitle: [
                 "Sushi Rolls"
             ],
@@ -2185,7 +2185,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 33,
             name: "Red Lentils",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Lentil Curry"
             ],
@@ -2196,7 +2196,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 34,
             name: "Onions",
             purchased: false,
-            quantity: 100,
+            quantity: "100",
             recipesTitle: [
                 "Lentil Curry"
             ],
@@ -2207,7 +2207,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 35,
             name: "Tomatoes",
             purchased: false,
-            quantity: 150,
+            quantity: "150",
             recipesTitle: [
                 "Lentil Curry"
             ],
@@ -2218,7 +2218,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 36,
             name: "Coconut Milk",
             purchased: false,
-            quantity: 200,
+            quantity: "200",
             recipesTitle: [
                 "Lentil Curry"
             ],
@@ -2229,7 +2229,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
             id: 37,
             name: "Curry Powder",
             purchased: false,
-            quantity: 10,
+            quantity: "10",
             recipesTitle: [
                 "Lentil Curry"
             ],
@@ -2241,6 +2241,6 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
 
 export const shoppingAddedMultipleTimes: Array<shoppingListTableElement> = shoppingDataset[0].map(element => ({
     ...element,
-    quantity: element.quantity * 2,
+    quantity: (Number(element.quantity) * 2).toString(),
     recipesTitle: element.recipesTitle.concat(element.recipesTitle),
 }));

@@ -15,7 +15,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 200
+                quantity: "200"
             },
             {
                 id: 2,
@@ -23,7 +23,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.meat,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 300
+                quantity: "300"
             },
             {
                 id: 3,
@@ -31,7 +31,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 250
+                quantity: "250"
             },
             {
                 id: 4,
@@ -39,7 +39,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 50
+                quantity: "50"
             },
         ],
         season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -65,7 +65,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'pieces',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 6
+                quantity: "6"
             },
             {
                 id: 6,
@@ -73,7 +73,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.poultry,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 300
+                quantity: "300"
             },
             {
                 id: 7,
@@ -81,7 +81,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['5', '6', '7', '8', '9', '10'],
-                quantity: 50
+                quantity: "50"
             },
             {
                 id: 8,
@@ -89,7 +89,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 50
+                quantity: "50"
             },
         ],
         season: ['5', '6', '7', '8', '9', '10'],
@@ -114,7 +114,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 200
+                quantity: "200"
             },
             {
                 id: 10,
@@ -122,7 +122,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'ml',
                 type: ingredientType.dairy,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 300
+                quantity: "300"
             },
             {
                 id: 11,
@@ -130,7 +130,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'pieces',
                 type: ingredientType.plantProtein,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 2
+                quantity: "2"
             },
             {
                 id: 12,
@@ -138,7 +138,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.oilAndFat,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 50
+                quantity: "50"
             },
         ],
         season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -163,7 +163,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['5', '6', '7', '8', '9', '10'],
-                quantity: 100
+                quantity: "100"
             },
             {
                 id: 14,
@@ -171,7 +171,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 50
+                quantity: "50"
             },
             {
                 id: 32,
@@ -179,7 +179,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 50
+                quantity: "50"
             },
             {
                 id: 4,
@@ -187,7 +187,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 30
+                quantity: "30"
             },
         ],
         season: ['5', '6', '7', '8', '9', '10'],
@@ -212,7 +212,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 250
+                quantity: "250"
             },
             {
                 id: 3,
@@ -220,7 +220,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 100
+                quantity: "100"
             },
             {
                 id: 16,
@@ -228,7 +228,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 150
+                quantity: "150"
             },
             {
                 id: 15,
@@ -236,7 +236,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.spice,
                 season: ['5', '6', '7', '8', '9', '10'],
-                quantity: 10
+                quantity: "10"
             },
         ],
         season: ['5', '6', '7', '8', '9', '10'],
@@ -261,7 +261,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['10', '11', '12', '1', '2', '3', '4'],
-                quantity: 150
+                quantity: "150"
             },
             {
                 id: 18,
@@ -269,7 +269,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['1', '2', '9', '10', '11', '12'],
-                quantity: 100
+                quantity: "100"
             },
             {
                 id: 19,
@@ -277,7 +277,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 200
+                quantity: "200"
             },
             {
                 id: 20,
@@ -285,7 +285,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 500
+                quantity: "500"
             },
         ],
         season: ['10', '11', '12', '1', '2',],
@@ -310,7 +310,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 200
+                quantity: "200"
             },
             {
                 id: 21,
@@ -318,7 +318,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.spice,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 50
+                quantity: "50"
             },
             {
                 id: 22,
@@ -326,7 +326,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.sugar,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 150
+                quantity: "150"
             },
             {
                 id: 12,
@@ -334,7 +334,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.oilAndFat,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 100
+                quantity: "100"
             },
         ],
         season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -358,7 +358,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 200
+                quantity: "200"
             },
             {
                 id: 15,
@@ -366,7 +366,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.spice,
                 season: ['5', '6', '7', '8', '9', '10'],
-                quantity: 50
+                quantity: "50"
             },
             {
                 id: 4,
@@ -374,7 +374,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 30
+                quantity: "30"
             },
             {
                 id: 35,
@@ -382,7 +382,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'ml',
                 type: ingredientType.oilAndFat,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 50
+                quantity: "50"
             },
             {
                 id: 23,
@@ -390,7 +390,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.nutsAndSeeds,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 20
+                quantity: "20"
             },
         ],
         season: ['5', '6', '7', '8', '9', '10'],
@@ -415,7 +415,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 250
+                quantity: "250"
             },
             {
                 id: 25,
@@ -423,7 +423,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'pieces',
                 type: ingredientType.condiment,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 5
+                quantity: "5"
             },
             {
                 id: 26,
@@ -431,7 +431,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.fish,
                 season: ['5', '6', '7', '8', '9', '10'],
-                quantity: 200
+                quantity: "200"
             },
             {
                 id: 27,
@@ -439,7 +439,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.fruit,
                 season: ['5', '6', '7', '8', '9', '10'],
-                quantity: 100
+                quantity: "100"
             },
             {
                 id: 36,
@@ -447,7 +447,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'ml',
                 type: ingredientType.condiment,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 50
+                quantity: "50"
             },
         ],
         season: ['5', '6', '7', '8', '9', '10'],
@@ -473,7 +473,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.legumes,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 200
+                quantity: "200"
             },
             {
                 id: 29,
@@ -481,7 +481,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 100
+                quantity: "100"
             },
             {
                 id: 37,
@@ -489,7 +489,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 150
+                quantity: "150"
             },
             {
                 id: 30,
@@ -497,7 +497,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 200
+                quantity: "200"
             },
             {
                 id: 31,
@@ -505,7 +505,7 @@ export const recipesDataset: Array<recipeTableElement> = [
                 unit: 'g',
                 type: ingredientType.spice,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                quantity: 10
+                quantity: "10"
             },
         ],
         season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],

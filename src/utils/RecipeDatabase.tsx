@@ -31,6 +31,7 @@ import {EncodingSeparator, textSeparator} from '@styles/typography';
 import {alertUserChoice, AsyncAlert} from './AsyncAlert';
 import {TListFilter} from '@customTypes/RecipeFiltersTypes';
 import FileGestion from '@utils/FileGestion'
+import {isNumber, subtractNumberInString, sumNumberInString} from "@utils/TypeCheckingFunctions";
 
 export default class RecipeDatabase {
     static #instance: RecipeDatabase;
@@ -223,18 +224,16 @@ export default class RecipeDatabase {
     }
 
     public async addRecipeToShopping(recipe: recipeTableElement) {
-        const shopElement = new Array<shoppingListTableElement>();
-
-        for (const ing of recipe.ingredients) {
-            shopElement.push({
+        const shopElement = recipe.ingredients.map(ing => {
+            return {
                 type: ing.type as TListFilter,
                 name: ing.ingName,
-                quantity: (ing.quantity ? ing.quantity : 0),
+                quantity: (ing.quantity ? ing.quantity : "0"),
                 unit: ing.unit,
                 recipesTitle: Array<string>(recipe.title),
                 purchased: false
-            })
-        }
+            } as shoppingListTableElement
+        });
 
         // TODO make this a single query
         for (const shopToAdd of shopElement) {
@@ -254,7 +253,18 @@ export default class RecipeDatabase {
             return false;
         }
 
-        previousShop.quantity = (shopToAdd.quantity + previousShop.quantity);
+        const shopToAddIsNumber = isNumber(shopToAdd.quantity);
+        const oldShopIsNumber = isNumber(previousShop.quantity);
+        if (shopToAddIsNumber && oldShopIsNumber) {
+            previousShop.quantity = (Number(shopToAdd.quantity) + Number(previousShop.quantity)).toString();
+        } else if (!shopToAddIsNumber && !shopToAddIsNumber) {
+            previousShop.quantity = sumNumberInString(shopToAdd.quantity, previousShop.quantity);
+        } else {
+            // TODO to test
+            console.error("Can't have one which can be a number and other which cannot be: ", shopToAdd, " ", previousShop);
+            return false;
+        }
+
         previousShop.recipesTitle = [...previousShop.recipesTitle, ...shopToAdd.recipesTitle];
 
         if (await this._shoppingListTable.editElementById(previousShop.id, new Map<string, number | string>([[shoppingListColumnsNames.quantity, previousShop.quantity], [shoppingListColumnsNames.recipeTitles, previousShop.recipesTitle.join(EncodingSeparator)]]), this._dbConnection)) {
@@ -644,7 +654,7 @@ export default class RecipeDatabase {
 
     protected encodeIngredient(ingredientToEncode: ingredientTableElement): string {
         // To encode : ID--quantity
-        const quantity = (ingredientToEncode.quantity ? ingredientToEncode.quantity.toString() : "")
+        const quantity = (ingredientToEncode.quantity ? ingredientToEncode.quantity.toString() : "");
         let idForEncoding: number;
         if (ingredientToEncode.id === undefined) {
             const foundIngredient = this.find_ingredient(ingredientToEncode);
@@ -670,7 +680,7 @@ export default class RecipeDatabase {
 
         for (const ingredient of ingSplit) {
             const id = Number(ingredient.split(textSeparator)[0]);
-            const ingQuantity = Number(ingredient.split(textSeparator)[1]);
+            const ingQuantity = ingredient.split(textSeparator)[1];
 
             const tableIngredient = await this._ingredientsTable.searchElementById<encodedIngredientElement>(id, this._dbConnection);
             if (tableIngredient === undefined) {
@@ -840,7 +850,7 @@ export default class RecipeDatabase {
             id: encodedShop.ID,
             type: encodedShop.TYPE as TListFilter,
             name: encodedShop.INGREDIENT,
-            quantity: encodedShop.QUANTITY,
+            quantity: encodedShop.QUANTITY.toString(),
             unit: encodedShop.UNIT,
             recipesTitle: encodedShop.TITLES.includes(EncodingSeparator) ? encodedShop.TITLES.split(EncodingSeparator) : new Array<string>(encodedShop.TITLES),
             purchased: encodedShop.PURCHASED == 0 ? false : true,
@@ -895,7 +905,10 @@ export default class RecipeDatabase {
     protected async removeRecipeFromShopping(recipe: recipeTableElement) {
         const editedShopping = new Set<string>;
         const deletedShopping = new Set<string>;
+
+
         for (const shop of this._shopping) {
+            console.log("Iterating over:", shop);
             if (shop.recipesTitle.includes(recipe.title)) {
                 const recipeIng = recipe.ingredients.find((ingredient) => ingredient.ingName === shop.name);
                 if (recipeIng === undefined) {
@@ -903,8 +916,9 @@ export default class RecipeDatabase {
                 } else if (recipeIng.quantity === undefined) {
                     console.warn("removeRecipeFromShopping: Error can't find quantity in ingredient");
                 } else {
-                    shop.quantity -= recipeIng.quantity;
-                    if (shop.quantity <= 0) {
+                    shop.quantity = subtractNumberInString(recipeIng.quantity, shop.quantity);
+
+                    if ((isNumber(shop.quantity) && Number(shop.quantity) <= 0) || shop.quantity.length === 0) {
                         deletedShopping.add(recipeIng.ingName);
                     } else {
                         editedShopping.add(recipeIng.ingName);

@@ -1,4 +1,4 @@
-import {FlexAlignType, Text, TextInput, TextStyle, View, ViewStyle} from "react-native"
+import {Text, TextInput, TextStyle, View} from "react-native"
 import React from "react";
 import RoundButton from "@components/atomic/RoundButton";
 import {mediumButtonDiameter, viewButtonStyles} from "@styles/buttons";
@@ -6,7 +6,7 @@ import {enumIconTypes, iconsSize, plusIcon} from "@assets/images/Icons";
 import {screenViews} from "@styles/spacing";
 
 export type TextProp = { style: TextStyle, value: string };
-export type RecipeTextAddProps = { editType: 'add', flex: number, alignItems?: FlexAlignType, openModal: () => void };
+export type RecipeTextAddProps = { editType: 'add', flex: number, openModal: () => void };
 export type RecipeTextEditProps = {
     editType: 'editable', textEditable: TextProp, setTextToEdit: React.Dispatch<React.SetStateAction<string>>
 };
@@ -14,9 +14,6 @@ export type RecipeTextEditProps = {
 export type RecipeTextAddOrEditProps =
     {
         testID?: string,
-        editableViewStyle?: ViewStyle,
-        prefixText?: TextProp,
-        suffixText?: TextProp
     }
     & (RecipeTextAddProps | RecipeTextEditProps);
 
@@ -44,19 +41,15 @@ export default function RecipeText(textProps: RecipeTextProps) {
 
 function RecipeTextEditablePart(addOrEditProps: RecipeTextAddOrEditProps) {
     return (
-        <View style={addOrEditProps.editableViewStyle}>
-            {addOrEditProps.prefixText ?
-                <Text style={addOrEditProps.prefixText.style}>{addOrEditProps.prefixText.value}</Text> : null}
-
+        <View>
             {addOrEditProps.editType === 'editable' ?
                 <TextInput testID={addOrEditProps.testID + "::TextInput"} style={addOrEditProps.textEditable.style}
                            value={addOrEditProps.textEditable.value}
-                           onChangeText={newTitle => addOrEditProps.setTextToEdit(newTitle)} multiline={true}/>
+                           onChangeText={newText => addOrEditProps.setTextToEdit(newText)} multiline={true}/>
 
                 : <RoundButton style={{
                     ...viewButtonStyles.centeredView,
                     flex: addOrEditProps.flex,
-                    alignItems: addOrEditProps.alignItems
                 }} diameter={mediumButtonDiameter} icon={{
                     type: enumIconTypes.materialCommunity,
                     name: plusIcon,
@@ -64,8 +57,6 @@ function RecipeTextEditablePart(addOrEditProps: RecipeTextAddOrEditProps) {
                     color: "#414a4c"
                 }} onPressFunction={addOrEditProps.openModal}/>
             }
-            {addOrEditProps.suffixText ?
-                <Text style={addOrEditProps.suffixText.style}>{addOrEditProps.suffixText.value}</Text> : null}
         </View>
 
     )

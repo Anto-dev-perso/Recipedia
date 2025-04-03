@@ -1,8 +1,5 @@
 import {IconName} from "@assets/images/Icons"
 import SquareButton from "@components/atomic/SquareButton"
-import {localImgData} from "@customTypes/ImageTypes"
-import {StackScreenNavigation} from "@customTypes/ScreenTypes"
-import {useNavigation} from "@react-navigation/native"
 import {smallCardWidth, viewButtonStyles} from "@styles/buttons"
 import React from "react"
 import {View, ViewStyle} from "react-native"
@@ -17,8 +14,8 @@ export type TagProp = {
 
 export type ImageProp = {
     propType: "Image"
-    item: Array<localImgData>,
-    onImgPress: (elem: localImgData, nav: StackScreenNavigation) => void,
+    item: Array<string>,
+    onImgPress: (elem: string) => void,
 }
 
 export type HorizontalListProps = { propType: "Tag" | "Image", } & (TagProp | ImageProp);
@@ -33,15 +30,13 @@ export default function HorizontalList(props: HorizontalListProps) {
     } : viewButtonStyles.wrappingListOfButton;
 
 
-    const navigation = useNavigation<StackScreenNavigation>();
-
-    function renderItem(item: string | localImgData, index: number, icon?: IconName) {
+    function renderItem(item: string, index: number, icon?: IconName) {
         return (
             <View key={index} style={viewButtonStyles.viewContainingButton}>
                 {props.propType == "Tag" ?
                     <TagButton text={item as string} rightIcon={icon} onPressFunction={() => selectOnPress(item)}/>
                     :
-                    <SquareButton side={smallCardWidth} imgSrc={item as localImgData}
+                    <SquareButton side={smallCardWidth} imgSrc={item}
                                   onPressFunction={() => selectOnPress(item)} type={'image'}/>
                 }
             </View>
@@ -49,13 +44,13 @@ export default function HorizontalList(props: HorizontalListProps) {
     }
 
 
-    function selectOnPress(item: string | localImgData) {
+    function selectOnPress(item: string) {
         switch (props.propType) {
             case "Tag":
                 props.onTagPress?.(item as string);
                 break;
             case "Image":
-                props.onImgPress(item as localImgData, navigation);
+                props.onImgPress(item);
                 break;
         }
     }
@@ -63,7 +58,7 @@ export default function HorizontalList(props: HorizontalListProps) {
     return (
         <View style={horizontalView}>
             {/*TODO a list type would be more appropriate here*/}
-            {props.item.map((item: string | localImgData, index: number) => renderItem(item, index, (props.propType == "Tag" ? props.icon : undefined)))}
+            {props.item.map((item: string, index: number) => renderItem(item, index, (props.propType == "Tag" ? props.icon : undefined)))}
         </View>
     )
 } 

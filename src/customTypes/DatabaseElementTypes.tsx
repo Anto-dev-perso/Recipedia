@@ -75,7 +75,7 @@ export type ingredientTableElement = {
     id?: number,
     ingName: string,
     unit: string,
-    quantity?: number,
+    quantity?: string,// Force to use string because some ingredients (like gingembre) can have strings instead of numbers
     type: ingredientType,
     season: Array<string>,
 }
@@ -124,7 +124,7 @@ export type shoppingListTableElement = {
     id?: number,
     type: TListFilter,
     name: string,
-    quantity: number,
+    quantity: string,
     unit: string,
     recipesTitle: Array<string>, // TODO how to encode when we add multiple times the same recipe ?
     purchased: boolean,
@@ -134,7 +134,7 @@ export type encodedShoppingListElement = {
     ID: number,
     TYPE: string,
     INGREDIENT: string,
-    QUANTITY: number,
+    QUANTITY: string,
     UNIT: string,
     TITLES: string,
     PURCHASED: number,

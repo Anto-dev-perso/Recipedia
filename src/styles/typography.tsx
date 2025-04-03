@@ -13,6 +13,7 @@ export const findAllNumbers = /\b\d+\b/g;
 export const allNonDigitCharacter = /\D/g;
 export const numberAtFirstIndex = /^\d/;
 export const containNumbers = /\d/;
+export const separateNumbersFromStr = /\d+|\D+/g;
 export const letterRegExp = /[a-zA-z]/;
 export const exceptLettersRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ]/g;
 export const exceptLettersAndSpacesRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ\s]/g;
