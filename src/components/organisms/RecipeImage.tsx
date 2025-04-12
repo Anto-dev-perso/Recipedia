@@ -1,11 +1,11 @@
-import {Image, View} from "react-native"
+import {View} from "react-native"
 import React from "react";
 import {imageStyle} from "@styles/images";
 import {recipeColumnsNames} from "@customTypes/DatabaseElementTypes";
 import RoundButton from "@components/atomic/RoundButton";
-import {enumIconTypes, iconsSize, plusIcon} from "@assets/images/Icons";
+import {enumIconTypes, iconsSize, plusIcon} from "@assets/Icons";
 import {mediumButtonDiameter, viewButtonStyles} from "@styles/buttons";
-
+import CustomImage from "@components/atomic/CustomImage";
 
 export type RecipeImageAddingProps = {
     setImgUri: (newUri: string) => void,
@@ -33,7 +33,7 @@ export default function RecipeImage(imgProps: RecipeImageProps) {
                     color: "#414a4c"
                     // @ts-ignore  TODO addProps isn't told as set
                 }} onPressFunction={() => imgProps.addProps.openModal(recipeColumnsNames.image)}/> : null}
-            <Image source={{uri: imgProps.imgUri}} style={imageStyle.imageInsideView}/>
+            <CustomImage propsTestID={imgProps.testID}/>
         </View>
     )
 }

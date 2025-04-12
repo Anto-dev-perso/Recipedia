@@ -21,7 +21,7 @@ export const listFilter = {...ingredientType, ...nonIngredientFilters} as const;
 
 export type TListFilter = typeof listFilter[keyof typeof listFilter];
 export const filtersCategories: Array<TListFilter> = Object.values(listFilter);
-
+    
 
 export type propsForShopping = {
     ingList: Array<shoppingListTableElement>,

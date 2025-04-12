@@ -21,7 +21,7 @@ import {
 import {screenViews, scrollView} from "@styles/spacing";
 import {palette} from "@styles/colors";
 import RecipeImage from "@components/organisms/RecipeImage";
-import {backIcon, enumIconTypes, iconsSize, pencilIcon, trashIcon} from "@assets/images/Icons";
+import {backIcon, enumIconTypes, iconsSize, pencilIcon, trashIcon} from "@assets/Icons";
 import RecipeTextRender, {
     RecipeTextRenderAddOrEditProps,
     RecipeTextRenderProps,
@@ -38,6 +38,7 @@ import RoundButton from "@components/atomic/RoundButton";
 import {cropImage} from "@utils/ImagePicker";
 import {extractFieldFromImage} from "@utils/OCR";
 import RecipeNumber, {RecipeNumberAddOrEditProps} from "@components/organisms/RecipeNumber";
+import {defaultValueNumber} from "@utils/Constants";
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -51,8 +52,6 @@ export type addRecipeFromPicture = { mode: "addFromPic", imgUri: string }
 
 
 export type RecipePropType = readRecipe | editRecipeManually | addRecipeManually | addRecipeFromPicture
-
-export const defaultValueNumber = -1;
 
 export type RecipeStates = {
     stackMode: recipeStateType,
@@ -136,7 +135,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     recipeIngredients: [],
                     recipeSeason: [],
                     recipePreparation: [],
-                    recipeTime: 0,
+                    recipeTime: defaultValueNumber,
                     imgForOCR: new Array<string>(params.imgUri),
                     forceUpdateKey: 0, randomTags: tags,
                 };
@@ -283,7 +282,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
     };
 
     addNewPreparationStep = () => {
-        this.setRecipePreparation(new Array(...this.state.recipePreparation, ''));
+        this.setRecipePreparation([...this.state.recipePreparation, '']);
     };
 
     createRecipeFromStates = (): recipeTableElement => {
@@ -355,7 +354,6 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                 // @ts-ignore No need to wait
                 FileGestion.getInstance().clearCache();
 
-                const forDb = recipeToAdd;
                 await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
                 this.props.navigation.goBack();
                 await AsyncAlert("SUCCESSFULLY ADDED RECIPE TO DATABASE", `Recipe titled "${recipeToAdd.title}" has been successfully added to the database`, "Understood");
@@ -709,7 +707,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                     removeTag: this.removeTag,
                 };
 
-                if (this.state.recipeTime == 0) {
+                if (this.state.recipeTime == defaultValueNumber) {
                     timeAddOrEditProps = {
                         editType: 'add',
                         editableViewStyle: screenViews.tabView,

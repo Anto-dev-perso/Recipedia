@@ -1,5 +1,5 @@
 import React from "react"
-import {IconName} from "@assets/images/Icons";
+import {IconName} from "@assets/Icons";
 import {Button, useTheme} from 'react-native-paper'
 import {palette} from "@styles/colors";
 import {padding} from "@styles/spacing";
@@ -15,7 +15,7 @@ export type RectangleButtonProps = {
 }
 
 export default function RectangleButton(props: RectangleButtonProps) {
-    
+
     const theme = useTheme();
 
     return (

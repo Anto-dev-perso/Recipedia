@@ -30,6 +30,7 @@ import {GetByQuery, QueryByQuery} from "@testing-library/react-native/build/quer
 import {TextMatch, TextMatchOptions} from "@testing-library/react-native/build/matches";
 import {CommonQueryOptions} from "@testing-library/react-native/build/queries/options";
 import {textSeparator, unitySeparator} from "@styles/typography";
+import {defaultValueNumber} from '@utils/Constants';
 
 
 const newImageOCR = 'New Image URI';
@@ -292,8 +293,8 @@ function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTes
                 expect(queryByTestId('RecipePersons::Flex')).toBeNull();
                 expect(queryByTestId('RecipePersons::AlignItems')).toBeNull();
                 expect(queryByTestId('RecipePersons::OpenModal')).toBeNull();
-                break
             }
+            break;
     }
 }
 
@@ -322,17 +323,19 @@ function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId
             expect(getByTestId('RecipeTime::RootText').props.children).toBeUndefined();
             expect(getByTestId('RecipeTime::EditableViewStyle').props.children).toEqual('{"flexDirection":"row"}');
             expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":6},"value":"Time to prepare the recipe : "}');
-
             if (prop.imgUri == defaultUri) {
-                expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
-                expect(getByTestId('RecipeTime::Flex').props.children).toEqual('3');
+                expect(getByTestId('RecipeTime::Flex').props.children).toEqual(`3`);
                 expect(getByTestId('RecipeTime::AlignItems').props.children).toEqual('"flex-start"');
                 expect(getByTestId('RecipeTime::OpenModal').props.children).toBeTruthy();
             } else {
-                expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
                 expect(queryByTestId('RecipeTime::Flex')).toBeNull();
                 expect(queryByTestId('RecipeTime::AlignItems')).toBeNull();
                 expect(queryByTestId('RecipeTime::OpenModal')).toBeNull();
+            }
+            if (newValueExpected) {
+                expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('{"style":{"color":"#0F0A39","fontFamily":"Lora-VariableFont_wght","fontSize":34.61538461538461,"fontWeight":"bold","textAlign":"left","padding":23.076923076923077,"flex":1},"value":"min"}');
+            } else {
+                expect(queryByTestId('RecipeTime::SuffixText')).toBeNull();
             }
             break;
     }
@@ -462,8 +465,8 @@ describe('Recipe Component tests', () => {
         checkDescription(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, -1);
-        checkTime(mockRouteAddManually, getByTestId, queryByTestId, -1);
+        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
+        checkTime(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
 
@@ -577,8 +580,8 @@ describe('Recipe Component tests', () => {
         checkDescription(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, -1);
-        checkTime(mockRouteAddManually, getByTestId, queryByTestId, -1);
+        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
+        checkTime(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
 
@@ -647,8 +650,8 @@ describe('Recipe Component tests', () => {
         checkDescription(mockRouteAddManually, getByTestId, queryByTestId, newDescription);
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, -1);
-        checkTime(mockRouteAddManually, getByTestId, queryByTestId, -1);
+        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
+        checkTime(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
 
@@ -741,7 +744,7 @@ describe('Recipe Component tests', () => {
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
         checkPersons(mockRouteAddManually, getByTestId, queryByTestId, newPerson);
-        checkTime(mockRouteAddManually, getByTestId, queryByTestId, -1);
+        checkTime(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
 
@@ -863,7 +866,7 @@ describe('Recipe Component tests', () => {
         checkDescription(mockRouteAddManually, getByTestId, queryByTestId, "");
         checkTags(mockRouteAddManually, getByTestId, []);
         checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, -1);
+        checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
         checkTime(mockRouteAddManually, getByTestId, queryByTestId, newTime);
         checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     });
@@ -895,7 +898,7 @@ describe('Recipe Component tests', () => {
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
 
         newAddOCRProp.imgUri = newTimeOCR.toString();
-        checkTime(newAddOCRProp, getByTestId, queryByTestId);
+        checkTime(newAddOCRProp, getByTestId, queryByTestId, newTimeOCR);
 
     });
 
@@ -1125,7 +1128,7 @@ describe('Recipe Component tests', () => {
         checkIngredients(newAddOCRProp, getByTestId, queryByTestId);
 
         newAddOCRProp.imgUri = newTimeOCR.toString();
-        checkTime(newAddOCRProp, getByTestId, queryByTestId);
+        checkTime(newAddOCRProp, getByTestId, queryByTestId, newTimeOCR);
 
         newAddOCRProp.imgUri = newPreparationOCR;
         checkPreparation(newAddOCRProp, getByTestId, queryByTestId);
@@ -1170,7 +1173,7 @@ describe('Recipe Component tests', () => {
         //@ts-ignore route and navigation are not useful for UT
         const {getByTestId, queryByTestId} = render(<Recipe route={{params: mockRouteReadOnly}}
                                                             navigation={mockNavigation}/>);
-        const paramEdit: editRecipeManually = {...mockRouteReadOnly, mode: "edit"}
+        const paramEdit: editRecipeManually = {...mockRouteReadOnly, mode: "edit"};
         fireEvent.press(getByTestId('RecipeEdit::OnPressFunction'));
 
         checkBottomTopButtons(paramEdit, getByTestId, queryByTestId);

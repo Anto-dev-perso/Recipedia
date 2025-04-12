@@ -1,10 +1,10 @@
 import React from "react"
-import {Image} from 'expo-image';
 import {Pressable, View} from "react-native"
-import {squareButtonStyles, viewButtonStyles, viewInsideButtonCentered} from "@styles/buttons"
+import {squareButtonStyles, viewInsideButtonCentered} from "@styles/buttons"
 
 
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
+import CustomImage from "@components/atomic/CustomImage";
 
 type propIsRecipe = { type: 'recipe', recipe: recipeTableElement };
 type propIsImg = { type: 'image', imgSrc: string };
@@ -30,10 +30,7 @@ export default function SquareButton(buttonProps: SquareButtonProps) {
     return (
         <Pressable style={squareButtonStyles(buttonProps.side).squareButton} onPress={buttonProps.onPressFunction}>
             <View style={viewInsideButtonCentered}>
-                <Image source={{uri: img}} style={viewButtonStyles.imageInsideButton}
-                       onError={() => {
-                           // console.log("Image not found")
-                       }}/>
+                <CustomImage uri={img}/>
             </View>
         </Pressable>
     )

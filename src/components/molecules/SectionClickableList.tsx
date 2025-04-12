@@ -1,4 +1,4 @@
-import {IconName} from "@assets/images/Icons"
+import {IconName} from "@assets/Icons"
 import React, {useState} from "react"
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
 import CheckListsButtonsRender, {filterCheckbox, shoppingCheckbox} from "@components/molecules/CheckListsButtonsRender"

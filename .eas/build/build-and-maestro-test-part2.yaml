@@ -5,7 +5,6 @@ build:
     - eas/maestro_test:
         inputs:
           flow_path: |
-            tests/e2e/5_recipeRendering.yaml
             tests/e2e/6_filters.yaml
             tests/e2e/7_recipeAdding.yaml
             tests/e2e/8_shopping.yaml

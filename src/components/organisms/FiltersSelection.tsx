@@ -4,7 +4,7 @@ import HorizontalList from "@components/molecules/HorizontalList";
 import TagButton from "@components/atomic/TagButton";
 import {viewButtonStyles} from "@styles/buttons";
 import {filtersAccessAndModifiers} from "@customTypes/RecipeFiltersTypes";
-import {Icons, PlusMinusIcons} from "@assets/images/Icons";
+import {Icons, PlusMinusIcons} from "@assets/Icons";
 import {ingredientTableElement} from "@customTypes/DatabaseElementTypes";
 import SectionClickableList from "@components/molecules/SectionClickableList";
 import {retrieveAllFilters} from "@utils/FilterFunctions";

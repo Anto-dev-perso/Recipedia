@@ -1,5 +1,5 @@
 import React from "react"
-import {IconName} from '@assets/images/Icons';
+import {IconName} from '@assets/Icons';
 import {Chip, MD3Theme, useTheme} from "react-native-paper";
 
 

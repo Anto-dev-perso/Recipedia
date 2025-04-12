@@ -17,7 +17,7 @@ import {
     parametersIcon,
     plannerIcon,
     shoppingIcon
-} from '@assets/images/Icons';
+} from '@assets/Icons';
 import {palette} from '@styles/colors';
 import ModalImageSelect from '@screens/ModalImageSelect';
 import EStyleSheet from "react-native-extended-stylesheet";

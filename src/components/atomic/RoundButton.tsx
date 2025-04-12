@@ -1,7 +1,7 @@
 import React from "react"
 import {Pressable, StyleProp, Text, View, ViewStyle} from "react-native"
 import {roundButtonStyles, viewInsideButtonCentered} from "@styles/buttons"
-import {displayIcon, iconProp} from "@assets/images/Icons";
+import {displayIcon, iconProp} from "@assets/Icons";
 
 export type RoundButtonProps = {
     onPressFunction: () => void,

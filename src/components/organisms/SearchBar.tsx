@@ -2,7 +2,7 @@ import React from "react";
 import {Keyboard, TextInput, View} from "react-native";
 import {searchBarStyle, typoStyles} from "@styles/typography";
 import {remValue} from "@styles/spacing";
-import {crossIcon, displayIcon, enumIconTypes, iconsSize, searchIcon} from "@assets/images/Icons";
+import {crossIcon, displayIcon, enumIconTypes, iconsSize, searchIcon} from "@assets/Icons";
 
 export type SearchBarProps = {
     clicked: boolean,

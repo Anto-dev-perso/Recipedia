@@ -2,7 +2,7 @@ import {Text, TextInput, TextStyle, View} from "react-native"
 import React from "react";
 import RoundButton from "@components/atomic/RoundButton";
 import {mediumButtonDiameter, viewButtonStyles} from "@styles/buttons";
-import {enumIconTypes, iconsSize, plusIcon} from "@assets/images/Icons";
+import {enumIconTypes, iconsSize, plusIcon} from "@assets/Icons";
 import {screenViews} from "@styles/spacing";
 
 export type TextProp = { style: TextStyle, value: string };

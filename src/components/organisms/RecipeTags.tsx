@@ -2,7 +2,7 @@ import {Text, View} from "react-native"
 import React, {useState} from "react";
 import RoundButton from "@components/atomic/RoundButton";
 import {mediumButtonDiameter, viewButtonStyles} from "@styles/buttons";
-import {enumIconTypes, Icons, iconsSize, plusIcon} from "@assets/images/Icons";
+import {enumIconTypes, Icons, iconsSize, plusIcon} from "@assets/Icons";
 import {padding, screenViews} from "@styles/spacing";
 import HorizontalList from "@components/molecules/HorizontalList";
 import {typoStyles} from "@styles/typography";

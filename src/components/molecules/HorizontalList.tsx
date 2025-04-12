@@ -1,4 +1,4 @@
-import {IconName} from "@assets/images/Icons"
+import {IconName} from "@assets/Icons"
 import SquareButton from "@components/atomic/SquareButton"
 import {smallCardWidth, viewButtonStyles} from "@styles/buttons"
 import React from "react"

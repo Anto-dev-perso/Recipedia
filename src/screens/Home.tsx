@@ -7,7 +7,7 @@ import {screenViews} from "@styles/spacing";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import RoundButton from "@components/atomic/RoundButton";
 import {bottomTopPosition, LargeButtonDiameter} from "@styles/buttons";
-import {enumIconTypes, iconsSize, searchIcon} from "@assets/images/Icons";
+import {enumIconTypes, iconsSize, searchIcon} from "@assets/Icons";
 import {palette} from "@styles/colors";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {StackScreenNavigation} from "@customTypes/ScreenTypes";

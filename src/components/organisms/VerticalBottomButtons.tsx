@@ -3,7 +3,7 @@ import BottomTopButton from "@components/molecules/BottomTopButton";
 import {BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter} from "@styles/buttons";
 import {View} from "react-native";
 import {pickImage, takePhoto} from "@utils/ImagePicker";
-import {cameraIcon, enumIconTypes, galleryIcon, iconsSize, minusIcon, pencilIcon, plusIcon} from "@assets/images/Icons";
+import {cameraIcon, enumIconTypes, galleryIcon, iconsSize, minusIcon, pencilIcon, plusIcon} from "@assets/Icons";
 import {StackScreenNavigation} from "@customTypes/ScreenTypes";
 import {useNavigation} from "@react-navigation/native";
 import RoundButton from "@components/atomic/RoundButton";

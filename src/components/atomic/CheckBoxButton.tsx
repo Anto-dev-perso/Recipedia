@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Pressable, Text, View} from 'react-native';
 import {wrappingButtonWithPressed} from "@styles/buttons";
-import {checkboxIcons, displayIcon, enumIconTypes, iconsSize} from "@assets/images/Icons";
+import {checkboxIcons, displayIcon, enumIconTypes, iconsSize} from "@assets/Icons";
 import {bulletListDataType, typoStyles} from '@styles/typography';
 import {toggleActivationFunctions} from "@customTypes/ScreenTypes";
 import {AsyncAlert} from "@utils/AsyncAlert";

@@ -1,4 +1,4 @@
-import {cameraIcon, enumIconTypes, galleryIcon, iconsSize} from "@assets/images/Icons";
+import {cameraIcon, enumIconTypes, galleryIcon, iconsSize} from "@assets/Icons";
 import RoundButton from "@components/atomic/RoundButton";
 import HorizontalList from "@components/molecules/HorizontalList";
 import {ModalScreenProp} from "@customTypes/ScreenTypes";

@@ -5,7 +5,7 @@ import SectionClickableList, {SectionClickableListProps} from "@components/molec
 import {tagsDataset} from "@test-data/tagsDataset";
 import {filtersCategories, listFilter, TListFilter} from "@customTypes/RecipeFiltersTypes";
 import {extractTagsName} from "@customTypes/DatabaseElementTypes";
-import {PlusMinusIcons} from "@assets/images/Icons";
+import {PlusMinusIcons} from "@assets/Icons";
 import {shoppingDataset} from "@test-data/shoppingListsDataset";
 
 jest.mock('@components/atomic/RectangleButton', () => require('@mocks/components/atomic/RectangleButton-mock').rectangleButtonMock);

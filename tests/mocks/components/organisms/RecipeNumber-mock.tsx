@@ -10,23 +10,27 @@ export function recipeNumberMock(recipeNumberProp: RecipeNumberProps) {
             </Text>
             {recipeNumberProp.addOrEditProps ?
                 <View>
-                    <Text testID={recipeNumberProp.testID + "::EditableViewStyle"}>
-                        {JSON.stringify(recipeNumberProp.addOrEditProps.editableViewStyle)}
-                    </Text>
-                    <Text testID={recipeNumberProp.testID + "::PrefixText"}>
-                        {JSON.stringify(recipeNumberProp.addOrEditProps.prefixText)}
-                    </Text>
-                    <Text testID={recipeNumberProp.testID + "::SuffixText"}>
-                        {JSON.stringify(recipeNumberProp.addOrEditProps.suffixText)}
-                    </Text>
+                    {recipeNumberProp.addOrEditProps.editableViewStyle ?
+                        <Text testID={recipeNumberProp.testID + "::EditableViewStyle"}>
+                            {JSON.stringify(recipeNumberProp.addOrEditProps.editableViewStyle)}
+                        </Text> : null}
+                    {recipeNumberProp.addOrEditProps.prefixText ?
+                        <Text testID={recipeNumberProp.testID + "::PrefixText"}>
+                            {JSON.stringify(recipeNumberProp.addOrEditProps.prefixText)}
+                        </Text> : null}
+                    {recipeNumberProp.addOrEditProps.suffixText ?
+                        <Text testID={recipeNumberProp.testID + "::SuffixText"}>
+                            {JSON.stringify(recipeNumberProp.addOrEditProps.suffixText)}
+                        </Text> : null}
                     {recipeNumberProp.addOrEditProps.editType === 'add' ?
                         <View>
                             <Text testID={recipeNumberProp.testID + "::Flex"}>
                                 {JSON.stringify(recipeNumberProp.addOrEditProps.flex)}
                             </Text>
-                            <Text testID={recipeNumberProp.testID + "::AlignItems"}>
-                                {JSON.stringify(recipeNumberProp.addOrEditProps.alignItems)}
-                            </Text>
+                            {recipeNumberProp.addOrEditProps.alignItems ?
+                                <Text testID={recipeNumberProp.testID + "::AlignItems"}>
+                                    {JSON.stringify(recipeNumberProp.addOrEditProps.alignItems)}
+                                </Text> : null}
                             <Button testID={recipeNumberProp.testID + "::OpenModal"} onPress={() => {
                                 // @ts-ignore always edit here
                                 recipeNumberProp.addOrEditProps.openModal()

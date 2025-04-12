@@ -32,7 +32,7 @@
     "@shopify/flash-list": "1.7.3",
     "better-sqlite3": "^11.8.1",
     "expo": "~52.0.42",
-    "expo-asset": "~11.0.3",
+    "expo-asset": "~11.0.5",
     "expo-dev-client": "~5.0.19",
     "expo-file-system": "~18.0.10",
     "expo-font": "~13.0.4",

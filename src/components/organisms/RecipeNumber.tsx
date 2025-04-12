@@ -2,10 +2,11 @@ import {FlexAlignType, Text, TextInput, TextStyle, View, ViewStyle} from "react-
 import React from "react";
 import RoundButton from "@components/atomic/RoundButton";
 import {mediumButtonDiameter, viewButtonStyles} from "@styles/buttons";
-import {enumIconTypes, iconsSize, plusIcon} from "@assets/images/Icons";
+import {enumIconTypes, iconsSize, plusIcon} from "@assets/Icons";
 import {screenViews} from "@styles/spacing";
 import {TextProp} from "@components/organisms/RecipeText";
-import {defaultValueNumber} from "@screens/Recipe";
+import {defaultValueNumber} from "@utils/Constants";
+
 
 export type NumberProp = { style: TextStyle, value: number };
 export type RecipeNumberAddProps = {

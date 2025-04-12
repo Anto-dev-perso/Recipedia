@@ -11,9 +11,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.recipesmanager",
@@ -23,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/app/adaptive-icon.png",
+        "foregroundImage": "./src/assets/app/adaptive_icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.recipesmanager",
@@ -33,7 +30,16 @@
     },
     "plugins": [
       "expo-localization",
-      "expo-sqlite"
+      "expo-sqlite",
+      [
+        "expo-asset",
+        {
+          "assets": [
+            "./src/assets/app",
+            "./src/assets/images"
+          ]
+        }
+      ]
     ],
     "extra": {
       "eas": {
