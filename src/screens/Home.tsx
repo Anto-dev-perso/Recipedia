@@ -2,17 +2,17 @@ import RecipeRecommendation from "@components/organisms/RecipeRecommendation";
 
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import React, {useCallback, useEffect, useState} from "react";
-import {RefreshControl, SafeAreaView, ScrollView, StatusBar} from "react-native";
+import {RefreshControl, SafeAreaView, ScrollView} from "react-native";
 import {screenViews} from "@styles/spacing";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import RoundButton from "@components/atomic/RoundButton";
-import {bottomTopPosition, LargeButtonDiameter} from "@styles/buttons";
-import {enumIconTypes, iconsSize, searchIcon} from "@assets/Icons";
+import {bottomTopPosition} from "@styles/buttons";
 import {palette} from "@styles/colors";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {StackScreenNavigation} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
+import {Icons} from "@assets/Icons";
 
 
 export default function Home() {
@@ -77,7 +77,6 @@ export default function Home() {
 
     return (
         <SafeAreaView style={screenViews.screenView}>
-            <StatusBar animated={true} backgroundColor={palette.primary}/>
             <ScrollView testID={'HomeScrollView'}
                         refreshControl={<RefreshControl colors={[palette.primary]} refreshing={refreshing}
                                                         onRefresh={onRefresh}/>}>
@@ -91,13 +90,7 @@ export default function Home() {
                                       titleRecommendation="Recommendation 4"/>
             </ScrollView>
             <BottomTopButton testID={'SearchButton'} as={RoundButton} position={bottomTopPosition.bottom_left}
-                             diameter={LargeButtonDiameter}
-                             icon={{
-                                 type: enumIconTypes.materialCommunity,
-                                 name: searchIcon,
-                                 size: iconsSize.medium,
-                                 color: "#414a4c"
-                             }} onPressFunction={() => navigate('Search')}/>
+                             size={"medium"} icon={Icons.searchIcon} onPressFunction={() => navigate('Search')}/>
             <VerticalBottomButtons/>
         </SafeAreaView>
     )

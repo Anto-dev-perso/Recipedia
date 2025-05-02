@@ -1,28 +1,27 @@
-import {Dimensions} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import {cameraPalette, palette} from "./colors";
+import {palette} from "./colors";
 
 const scaleFactor = Dimensions.get("screen").scale / Dimensions.get("window").scale;
-const screenWidth = Dimensions.get('window').width * scaleFactor;
-const screenHeight = Dimensions.get('window').height * scaleFactor;
+export const screenWidth = Dimensions.get('window').width * scaleFactor;
+export const screenHeight = Dimensions.get('window').height * scaleFactor;
 
 export const remValue = screenWidth / 390;
 
 EStyleSheet.build({$rem: remValue});
 
 export const padding = {
-    verySmall: 3 * remValue,
-    small: 7 * remValue,
-    medium: 12 * remValue,
-    large: 15 * remValue,
-    veryLarge: 20 * remValue,
-    extraLarge: 30 * remValue,
+    verySmall: 3,
+    small: 7,
+    medium: 12,
+    large: 15,
+    veryLarge: 20,
+    extraLarge: 30,
 };
 
-export const screenViews = EStyleSheet.create({
+
+export const screenViews = StyleSheet.create({
     screenView: {
-        flex: 1,
-        flexGrow: 1,
         backgroundColor: palette.backgroundColor
     },
     sectionView: {
@@ -47,26 +46,13 @@ export const scrollView = (margin: number) => EStyleSheet.create({
     }
 });
 
-export const viewsSplitScreen = EStyleSheet.create({
+export const viewsSplitScreen = StyleSheet.create({
     splitIn2View: {
         width: '50%',
         padding: padding.small,
+        alignItems: 'center', justifyContent: 'center',
     },
     viewInRow: {
         flexDirection: "row"
     }
-});
-
-
-export const cropView = EStyleSheet.create({
-    overlay: {
-        padding: padding.small,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    background: {
-        flex: 1,
-        flexGrow: 1,
-        backgroundColor: cameraPalette.backgroundColor,
-    },
 });

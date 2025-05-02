@@ -18,6 +18,11 @@ module.exports = function (api) {
     api.cache(true);
     return {
         presets: ['babel-preset-expo'],
+        env: {
+            production: {
+                plugins: ['react-native-paper/babel'],
+            },
+        },
         plugins: [
             [
                 require.resolve('babel-plugin-module-resolver'),
@@ -33,7 +38,6 @@ module.exports = function (api) {
                     alias: getAliases(),
                 },
             ],
-            "react-native-paper/babel",
         ],
     };
 };

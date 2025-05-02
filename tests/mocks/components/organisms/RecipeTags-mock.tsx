@@ -12,7 +12,7 @@ export function recipeTagsMock(recipeTagProp: RecipeTagProps) {
             {recipeTagProp.type === 'readOnly' ? null :
                 <View>
                     <Text testID={recipeTagProp.testID + "::RandomTags"}>
-                        {JSON.stringify(recipeTagProp.randomTags)}
+                        {recipeTagProp.randomTags}
                     </Text>
                     <Button testID={recipeTagProp.testID + "::AddNewTag"}
                             onPress={() => recipeTagProp.addNewTag(recipeTagProp.tagsList[0])}

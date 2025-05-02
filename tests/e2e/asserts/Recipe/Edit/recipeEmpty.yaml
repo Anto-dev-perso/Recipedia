@@ -25,16 +25,15 @@ appId: "com.recipesmanager"
     id: "RecipeImage"
     label: Image id is displayed
 - assertVisible:
-    text: "Title of the recipe : "
+    text: "Title:"
     label: Title introduction text is displayed
 - assertVisible:
     id: "RecipeTitle::TextInput"
     text: ""
     label: Title TextInput is displayed with empty text
 - assertVisible:
-    id: "RecipeTags::AddOrEdit::HeaderText"
-    text: ""
-    label: Description Title id is displayed with the empty text
+    text: "Description:"
+    label: Description introduction text is displayed
 - assertVisible:
     id: "RecipeDescription::TextInput"
     text: ""

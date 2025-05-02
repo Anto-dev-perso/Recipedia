@@ -1,19 +1,11 @@
 import {screenViews} from "@styles/spacing"
-import {
-    editableText,
-    headerBorder,
-    paragraphBorder,
-    textSeparator,
-    typoRender,
-    typoStyles,
-    unitySeparator
-} from "@styles/typography"
+import {editableText, textSeparator, typoRender, typoStyles, unitySeparator} from "@styles/typography"
 import React from "react"
 import {TouchableOpacity, View} from "react-native"
-import {Text, TextInput} from "react-native-paper";
-import {palette} from "@styles/colors";
+import {Text, TextInput, useTheme} from "react-native-paper";
 import TextInputWithDropDown from "@components/molecules/TextInputWithDropDown";
 import RecipeDatabase from "@utils/RecipeDatabase";
+import {recipeTextRenderStyles} from "@styles/recipeComponents";
 
 // TODO use variant for Text
 
@@ -29,6 +21,8 @@ export type TextRenderProps = {
 // TODO to test
 // TODO can't we do better ? Maybe split in 3 atomic ?
 export default function TextRender(props: TextRenderProps) {
+
+    const {colors} = useTheme();
 
     function selectRender(renderChoice: typoRender) {
         switch (renderChoice) {
@@ -57,20 +51,24 @@ export default function TextRender(props: TextRenderProps) {
             <View key={index}>
                 {props.editText ?
                     <View style={screenViews.tabView}>
-                        <TextInput testID={props.testID + `::${index}::QuantityInput`}
-                                   style={{...paragraphBorder, flex: 2, textAlign: "center"}}
-                                   value={quantity.toString()}
-                                   onChangeText={newQuantity => props.editText?.onChangeFunction(index, `${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`)}
-                            // TODO this can't stay like this forever but what about the test ?
-                                   autoCorrect={false} spellCheck={false}
+                        <TextInput
+                            testID={props.testID + `::${index}::QuantityInput`}
+                            mode={'outlined'}
+                            style={recipeTextRenderStyles.firstColumn}
+                            contentStyle={recipeTextRenderStyles.columnContentStyle}
+                            value={quantity.toString()}
+                            onChangeText={newQuantity => props.editText?.onChangeFunction(index, `${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`)}
+                            autoCorrect={false}
+                            spellCheck={false} pointerEvents={"auto"}
+                            scrollEnabled={false}
+                            multiline={true} numberOfLines={1}
                         />
-                        <Text testID={props.testID + `::${index}::Unit`} style={{
-                            ...paragraphBorder,
-                            backgroundColor: palette.backgroundColor,
-                            flex: 1,
-                            textAlign: "center",
-                            textAlignVertical: "center"
-                        }}>{unit}</Text>
+                        <TextInput testID={props.testID + `::${index}::Unit`} mode={'outlined'}
+                                   style={[recipeTextRenderStyles.secondColumn, {backgroundColor: colors.backdrop}]}
+                                   contentStyle={recipeTextRenderStyles.columnContentStyle}
+                                   scrollEnabled={false}
+                                   editable={false} pointerEvents={"auto"}
+                                   multiline={true} numberOfLines={1}>{unit}</TextInput>
 
                         <View style={{flex: 3}}>
                             <TextInputWithDropDown testID={props.testID + `::${index}::Dropdown`}
@@ -82,8 +80,8 @@ export default function TextRender(props: TextRenderProps) {
                     </View>
                     :
                     <View style={screenViews.tabView}>
-                        <Text style={{...typoStyles.paragraph, flex: 1}}>{quantity} {unit}</Text>
-                        <Text style={{...typoStyles.paragraph, flex: 3}}>{ingName}</Text>
+                        <Text variant={"titleMedium"} style={{flex: 1}}>{quantity} {unit}</Text>
+                        <Text variant={"titleMedium"} style={{flex: 3}}>{ingName}</Text>
                     </View>
                 }
             </View>
@@ -97,30 +95,39 @@ export default function TextRender(props: TextRenderProps) {
         return (
             <View key={index}>
                 {props.editText ?
-                    <View style={screenViews.sectionView}>
-                        <Text style={{...typoStyles.title, textAlign: "center",}}>Preparation : step {index + 1}</Text>
+                    <View style={recipeTextRenderStyles.containerSection}>
+                        <Text variant={"headlineMedium"} style={recipeTextRenderStyles.headlineElement}>Preparation :
+                            step {index + 1}</Text>
 
-                        <Text style={typoStyles.header}>Title of step {index + 1} : </Text>
-                        <TextInput testID={props.testID + `::${index}::InputTitle`} style={headerBorder}
-                                   value={sectionTitle}
-                                   onChangeText={newTitle => props.editText?.onChangeFunction(index, `${newTitle}${textSeparator}${sectionParagraph}`)}
-                                   multiline={true}
-                            // TODO this can't stay like this forever but what about the test ?
-                                   autoCorrect={false} spellCheck={false}
-                        />
+                        <View style={recipeTextRenderStyles.containerSection}>
+                            <Text variant={"titleLarge"} style={recipeTextRenderStyles.containerElement}>Title of
+                                step {index + 1} : </Text>
+                            <TextInput testID={props.testID + `::${index}::InputTitle`}
+                                       mode={'outlined'}
+                                       value={sectionTitle}
+                                       style={recipeTextRenderStyles.containerElement}
+                                       onChangeText={newTitle => props.editText?.onChangeFunction(index, `${newTitle}${textSeparator}${sectionParagraph}`)}
+                                       multiline={false} scrollEnabled={false}
+                                // TODO this can't stay like this forever but what about the test ?
+                                       autoCorrect={false} spellCheck={false}
+                            />
 
-                        <Text style={typoStyles.header}>Content of step {index + 1} : </Text>
-                        <TextInput testID={props.testID + `::${index}::InputParagraph`} style={paragraphBorder}
-                                   value={sectionParagraph}
-                                   onChangeText={newParagraph => props.editText?.onChangeFunction(index, `${sectionTitle}${textSeparator}${newParagraph}`)}
-                                   multiline={true}
-                            // TODO this can't stay like this forever but what about the test ?
-                                   autoCorrect={false} spellCheck={false}/>
+                            <Text variant={"titleLarge"} style={recipeTextRenderStyles.containerElement}>Content of
+                                step {index + 1} : </Text>
+                            <TextInput testID={props.testID + `::${index}::InputParagraph`} mode={'outlined'}
+                                       style={recipeTextRenderStyles.containerElement} value={sectionParagraph}
+                                       onChangeText={newParagraph => props.editText?.onChangeFunction(index, `${sectionTitle}${textSeparator}${newParagraph}`)}
+                                       multiline={true} scrollEnabled={false}
+                                // TODO this can't stay like this forever but what about the test ?
+                                       autoCorrect={false} spellCheck={false}/>
+                        </View>
                     </View>
                     :
-                    <View style={screenViews.sectionView}>
-                        <Text style={typoStyles.header}>{index + 1}) {sectionTitle}</Text>
-                        <Text style={typoStyles.paragraph}>{sectionParagraph}</Text>
+                    <View style={recipeTextRenderStyles.containerSection}>
+                        <Text variant={"titleLarge"}
+                              style={recipeTextRenderStyles.headlineElement}>{index + 1}) {sectionTitle}</Text>
+                        <Text variant={"titleMedium"}
+                              style={recipeTextRenderStyles.containerElement}>{sectionParagraph}</Text>
                     </View>
                 }
 
@@ -131,7 +138,7 @@ export default function TextRender(props: TextRenderProps) {
     function renderAsList(item: string, index: number) {
 
         return (
-            <Text key={index} style={typoStyles.element}>{item}</Text>
+            <Text key={index} variant={"titleMedium"}>{item}</Text>
         )
     }
 
@@ -150,7 +157,8 @@ export default function TextRender(props: TextRenderProps) {
 
     return (
         <View>
-            {props.title ? <Text style={typoStyles.title}>{props.title}</Text> : null}
+            {props.title ? <Text variant={"headlineSmall"}
+                                 style={recipeTextRenderStyles.containerElement}>{props.title}</Text> : null}
             {selectRender(props.render)}
         </View>
     )

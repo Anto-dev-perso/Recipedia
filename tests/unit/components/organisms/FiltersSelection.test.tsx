@@ -34,11 +34,11 @@ describe('FiltersSelection Component', () => {
 
         expect(getByTestId('FilterSelection')).toBeTruthy();
 
-        expect(getByTestId('HorizontalList::PropType').props.children).toEqual('"Tag"');
+        expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
         expect(getByTestId('HorizontalList::Item').props.children).toEqual(JSON.stringify(defaultProps.tagsList));
 
-        expect(getByTestId('HorizontalList::Icon').props.children).toEqual('"close"');
-        expect(getByTestId('HorizontalList::OnTagPress')).toBeTruthy();
+        expect(getByTestId('HorizontalList::Icon').props.children).toEqual('close');
+        expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
 
         expect(getByTestId('TagButton::Text').props.children).toEqual('"Add a filter"');
         expect(getByTestId('TagButton::LeftIcon').props.children).toEqual('"filter-plus-outline"');
@@ -60,7 +60,7 @@ describe('FiltersSelection Component', () => {
         rerender(<FiltersSelection {...props} />);
 
         expect(getByTestId('SectionClickableList::Screen').props.children).toEqual('"search"');
-        expect(getByTestId('SectionClickableList::Icon').props.children).toEqual('[null,null]');
+        expect(getByTestId('SectionClickableList::Icon').props.children).toEqual(JSON.stringify(["plus", "minus"]));
         expect(getByTestId('SectionClickableList::TagsList').props.children).toEqual(JSON.stringify(defaultProps.tagsList));
         expect(getByTestId('SectionClickableList::IngredientsList').props.children).toEqual(JSON.stringify(defaultProps.ingredientsList));
 
@@ -77,7 +77,7 @@ describe('FiltersSelection Component', () => {
 
         for (let i = 0; i < props.tagsList.length; i++) {
             // Simulate pressing the "Add a filter" button
-            fireEvent.press(getByTestId('HorizontalList::OnTagPress'));
+            fireEvent.press(getByTestId('HorizontalList::OnPress'));
             expect(mockRemoveFilter).toHaveBeenCalledWith(listFilter.tags, tagsDataset[i].tagName);
             props.tagsList.splice(0, 1);
             rerender(<FiltersSelection {...props} />);

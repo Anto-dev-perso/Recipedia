@@ -8,23 +8,11 @@ export function recipeTextRenderMock(recipeTextRenderProp: RecipeTextRenderProps
         <View>
             {recipeTextRenderProp.type === 'addOrEdit' ?
                 <View>
-                    <Text testID={recipeTextRenderProp.testID + "::ViewAddButton"}>
-                        {JSON.stringify(recipeTextRenderProp.viewAddButton)}
-                    </Text>
                     <Text testID={recipeTextRenderProp.testID + "::PrefixText"}>
-                        {JSON.stringify(recipeTextRenderProp.prefixText)}
-                    </Text>
-                    <Text testID={recipeTextRenderProp.testID + "::SuffixText"}>
-                        {JSON.stringify(recipeTextRenderProp.suffixText)}
+                        {recipeTextRenderProp.prefixText}
                     </Text>
                     {recipeTextRenderProp.editType === 'add' ?
                         <View>
-                            <Text testID={recipeTextRenderProp.testID + "::Flex"}>
-                                {JSON.stringify(recipeTextRenderProp.flex)}
-                            </Text>
-                            <Text testID={recipeTextRenderProp.testID + "::AlignItems"}>
-                                {JSON.stringify(recipeTextRenderProp.alignItems)}
-                            </Text>
                             <Button testID={recipeTextRenderProp.testID + "::OpenModal"}
                                     onPress={() => {
                                         // @ts-ignore always edit here
@@ -44,16 +32,18 @@ export function recipeTextRenderMock(recipeTextRenderProp: RecipeTextRenderProps
                                 // @ts-ignore can't pass in a string into a onPress but let it go for testing
                                 recipeTextRenderProp.textEdited(0, recipeTextRenderProp.textEditable[0] + newText)
                             }} title="Set Text to Edit"/>
+                            <Button testID={recipeTextRenderProp.testID + "::AddNewText"}
+                                    onPress={(newText) => recipeTextRenderProp.addNewText()} title="Add new text"/>
                             {recipeTextRenderProp.columnTitles ?
                                 <View>
                                     <Text testID={recipeTextRenderProp.testID + "::Column1"}>
-                                        {JSON.stringify(recipeTextRenderProp.columnTitles.column1)}
+                                        {recipeTextRenderProp.columnTitles.column1}
                                     </Text>
                                     <Text testID={recipeTextRenderProp.testID + "::Column2"}>
-                                        {JSON.stringify(recipeTextRenderProp.columnTitles.column2)}
+                                        {recipeTextRenderProp.columnTitles.column2}
                                     </Text>
                                     <Text testID={recipeTextRenderProp.testID + "::Column3"}>
-                                        {JSON.stringify(recipeTextRenderProp.columnTitles.column3)}
+                                        {recipeTextRenderProp.columnTitles.column3}
                                     </Text>
                                 </View>
                                 : null}
@@ -66,13 +56,13 @@ export function recipeTextRenderMock(recipeTextRenderProp: RecipeTextRenderProps
                         {JSON.stringify(recipeTextRenderProp.text)}
                     </Text>
                     <Text testID={recipeTextRenderProp.testID + "::Title"}>
-                        {JSON.stringify(recipeTextRenderProp.title)}
+                        {recipeTextRenderProp.title}
                     </Text>
                     <Text testID={recipeTextRenderProp.testID + "::Render"}>
                         {JSON.stringify(recipeTextRenderProp.render)}
                     </Text>
                     <Text testID={recipeTextRenderProp.testID + "::WithBorder"}>
-                        {JSON.stringify(recipeTextRenderProp.editText?.withBorder)}
+                        {recipeTextRenderProp.editText?.withBorder}
                     </Text>
                     <Button testID={recipeTextRenderProp.testID + "::OnClick"}
                             onPress={() => {

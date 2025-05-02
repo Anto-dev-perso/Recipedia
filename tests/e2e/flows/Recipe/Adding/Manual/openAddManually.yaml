@@ -5,4 +5,6 @@ appId: "com.recipesmanager"
     label: Press the Plus bottom button
 - tapOn:
     text: "󰏫"
+    waitToSettleTimeoutMs: 0
+    retryTapIfNoChange: false
     label: Press the Edit bottom button

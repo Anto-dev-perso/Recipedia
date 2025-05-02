@@ -1,7 +1,6 @@
 import {FlatList, Keyboard, LogBox, StyleProp, TouchableOpacity, View, ViewStyle} from "react-native";
 import {List, TextInput} from "react-native-paper";
 import React, {useEffect, useRef, useState} from "react";
-import {paragraphBorder} from "@styles/typography";
 import {palette} from "@styles/colors";
 
 export type TextInputWithDropDownType = {
@@ -9,7 +8,6 @@ export type TextInputWithDropDownType = {
     referenceTextArray: Array<string>,
     value?: string,
     label?: string,
-    outline?: boolean,
     onValidate?: (newText: string) => void,
     testID?: string,
 };
@@ -87,8 +85,7 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
             <TextInput testID={props.testID + "::TextInput"} ref={inputRef} label={props.label} value={textInput}
                        onFocus={() => setShowDropdown(true)} onChangeText={handleSearch}
                        onEndEditing={handleSubmitEditing}
-                       mode={props.outline === true ? "outlined" : "flat"}
-                       style={paragraphBorder}
+                       mode={"outlined"}
                        onLayout={(event) => setInputHeight(event.nativeEvent.layout.height)}
             />
             {(showDropdown && filteredTextArray.length > 0 && !(filteredTextArray.length === 1 && filteredTextArray[0].toLowerCase() === textInput.toLowerCase())) && (

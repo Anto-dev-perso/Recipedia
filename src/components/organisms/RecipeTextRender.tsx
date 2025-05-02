@@ -1,12 +1,12 @@
-import {Text, View, ViewStyle} from "react-native"
+import {View} from "react-native"
 import React from "react";
 import RoundButton from "@components/atomic/RoundButton";
-import {mediumButtonDiameter, viewButtonStyles} from "@styles/buttons";
-import {enumIconTypes, iconsSize, plusIcon} from "@assets/Icons";
-import {screenViews} from "@styles/spacing";
+import {Icons, plusIcon} from "@assets/Icons";
 import TextRender, {TextRenderProps} from "@components/molecules/TextRender";
-import {RecipeTextAddProps, TextProp} from "@components/organisms/RecipeText";
+import {RecipeTextAddProps} from "@components/organisms/RecipeText";
 import {typoRender} from "@styles/typography";
+import {recipeTextRenderStyles} from "@styles/recipeComponents";
+import {Text} from "react-native-paper";
 
 export type RecipeTextRenderEditProps = {
     editType: 'editable',
@@ -17,9 +17,9 @@ export type RecipeTextRenderEditProps = {
     addNewText: () => void,
 
     columnTitles?: {
-        column1: TextProp,
-        column2: TextProp,
-        column3: TextProp,
+        column1: string,
+        column2: string,
+        column3: string,
     }
 };
 
@@ -27,9 +27,7 @@ export type RecipeTextRenderAddOrEditProps =
     {
         testID?: string,
         type: 'addOrEdit',
-        viewAddButton: ViewStyle,
-        prefixText?: TextProp,
-        suffixText?: TextProp
+        prefixText?: string,
     }
     & (RecipeTextAddProps | RecipeTextRenderEditProps);
 export type RecipeTextRenderReadOnlyProps = { type: 'readOnly' } & TextRenderProps;
@@ -41,7 +39,7 @@ export type RecipeTextRenderProps =
 export default function RecipeTextRender(textRenderProps: RecipeTextRenderProps) {
 
     return (
-        <View style={screenViews.sectionView} testID={textRenderProps.testID}>
+        <View style={recipeTextRenderStyles.containerSection} testID={textRenderProps.testID}>
             {textRenderProps.type === 'readOnly' ?
                 <TextRender text={textRenderProps.text} render={textRenderProps.render}/>
                 : <RecipeTextRenderEditablePart testID={textRenderProps.testID} {...textRenderProps} />
@@ -51,47 +49,37 @@ export default function RecipeTextRender(textRenderProps: RecipeTextRenderProps)
 }
 
 function RecipeTextRenderEditablePart(addOrEditProps: RecipeTextRenderAddOrEditProps) {
-    const testIDRoundButton = addOrEditProps.testID + "::RoundButton";
     return (
         <View>
             {addOrEditProps.prefixText ?
-                <Text style={addOrEditProps.prefixText.style}>{addOrEditProps.prefixText.value}</Text> : null}
+                <Text variant={"headlineSmall"}
+                      style={recipeTextRenderStyles.containerElement}>{addOrEditProps.prefixText}</Text> : null}
 
             {addOrEditProps.editType === 'editable' ?
                 <View>
-                    {addOrEditProps.columnTitles ? <View style={screenViews.tabView}>
-                        <Text
-                            style={addOrEditProps.columnTitles.column1.style}>{addOrEditProps.columnTitles.column1.value}</Text>
-                        <Text
-                            style={addOrEditProps.columnTitles.column2.style}>{addOrEditProps.columnTitles.column2.value}</Text>
-                        <Text
-                            style={addOrEditProps.columnTitles.column3.style}>{addOrEditProps.columnTitles.column3.value}</Text>
-                    </View> : null}
+                    {addOrEditProps.columnTitles ?
+                        <View style={recipeTextRenderStyles.tagView}>
+                            <Text variant={"titleMedium"}
+                                  style={{...recipeTextRenderStyles.containerElement, ...recipeTextRenderStyles.firstColumn}}>{addOrEditProps.columnTitles.column1}</Text>
+                            <Text variant={"titleMedium"}
+                                  style={{...recipeTextRenderStyles.containerElement, ...recipeTextRenderStyles.secondColumn}}>{addOrEditProps.columnTitles.column2}</Text>
+                            <Text variant={"titleMedium"}
+                                  style={{...recipeTextRenderStyles.containerElement, ...recipeTextRenderStyles.thirdColumn}}>{addOrEditProps.columnTitles.column3}</Text>
+                        </View> : null}
 
                     {/* TODO : Make it as a choice to avoid errors */}
                     <TextRender testID={addOrEditProps.testID} text={addOrEditProps.textEditable}
                                 render={addOrEditProps.renderType}
                                 editText={{withBorder: true, onChangeFunction: addOrEditProps.textEdited}}/>
 
-                    <View style={addOrEditProps.viewAddButton}>
-                        <RoundButton testID={testIDRoundButton} diameter={mediumButtonDiameter}
-                                     icon={{
-                                         type: enumIconTypes.materialCommunity,
-                                         name: plusIcon,
-                                         size: iconsSize.small,
-                                         color: "#414a4c"
-                                     }} onPressFunction={addOrEditProps.addNewText}/>
-                    </View>
+                    <RoundButton testID={addOrEditProps.testID} size={"medium"} icon={plusIcon}
+                                 onPressFunction={addOrEditProps.addNewText}
+                                 style={recipeTextRenderStyles.roundButtonPadding}/>
                 </View>
                 :
-                <View style={viewButtonStyles.centeredView}>
-                    <RoundButton testID={testIDRoundButton} diameter={mediumButtonDiameter}
-                                 icon={{
-                                     type: enumIconTypes.materialCommunity,
-                                     name: plusIcon,
-                                     size: iconsSize.small,
-                                     color: "#414a4c"
-                                 }} onPressFunction={addOrEditProps.openModal}/>
+                <View style={recipeTextRenderStyles.roundButtonPadding}>
+                    <RoundButton testID={addOrEditProps.testID} size={"medium"} icon={Icons.scanImageIcon}
+                                 onPressFunction={addOrEditProps.openModal}/>
                 </View>
             }
         </View>

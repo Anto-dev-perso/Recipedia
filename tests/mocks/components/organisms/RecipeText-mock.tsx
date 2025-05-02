@@ -6,15 +6,12 @@ export function recipeTextMock(recipeTextProp: RecipeTextProps) {
     return (
         <View>
             <Text testID={recipeTextProp.testID + "::RootText"}>
-                {JSON.stringify(recipeTextProp.rootText)}
+                {recipeTextProp.rootText.value}
             </Text>
             {recipeTextProp.addOrEditProps ?
                 <View>
                     {recipeTextProp.addOrEditProps.editType === 'add' ?
                         <View>
-                            <Text testID={recipeTextProp.testID + "::Flex"}>
-                                {JSON.stringify(recipeTextProp.addOrEditProps.flex)}
-                            </Text>
                             <Button testID={recipeTextProp.testID + "::OpenModal"} onPress={() => {
                                 // @ts-ignore always edit here
                                 recipeTextProp.addOrEditProps.openModal()
@@ -24,7 +21,7 @@ export function recipeTextMock(recipeTextProp: RecipeTextProps) {
                         :
                         <View>
                             <Text testID={recipeTextProp.testID + "::TextEditable"}>
-                                {JSON.stringify(recipeTextProp.addOrEditProps.textEditable)}
+                                {recipeTextProp.addOrEditProps.textEditable}
                             </Text>
                             <Button testID={recipeTextProp.testID + "::SetTextToEdit"}
                                     onPress={(newText) => {

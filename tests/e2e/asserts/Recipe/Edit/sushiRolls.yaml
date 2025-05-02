@@ -7,13 +7,13 @@ appId: "com.recipesmanager"
     id: "RecipeImage"
     label: Image is rendered
 - assertVisible:
-    text: "Title of the recipe : "
+    text: "Title:"
     label: Intro text for the title is rendered
 - assertVisible:
     text: "SUSHI ROLLS"
     label: Title of the recipe is rendered
 - assertVisible:
-    text: "Description of the recipe : "
+    text: "Description:"
     label: Intro text for the description is rendered
 - assertVisible:
     text: "CLASSIC SUSHI ROLLS WITH NORI, RICE, AND FILLINGS."
@@ -23,7 +23,7 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "Tags of the recipe : "
+    text: "Tags:"
     label: Intro text for the tags is rendered
 - assertVisible:
     text: "Tags are a way to identify a recipe and make easier its search.\n\
@@ -47,8 +47,9 @@ appId: "com.recipesmanager"
     text: "󰐕"
     label: Add button for the tag is rendered
 - swipe:
-    start: "50%,60%"
-    end: "50%,40%"
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "This recipe is for : "
     label: Intro text for the number of persons is rendered
@@ -72,7 +73,7 @@ appId: "com.recipesmanager"
     label: Column Ingredient name is rendered
 - swipe:
     start: "50%,60%"
-    end: "50%,30%"
+    end: "50%,40%"
     label: Swipe down to see other items
 - assertVisible:
     text: "250"
@@ -110,9 +111,6 @@ appId: "com.recipesmanager"
     text: "g"
     index: 2
     label: Third occurrence of the g unit is rendered
-- swipe:
-    start: "50%,60%"
-    end: "50%,30%"
 - assertVisible:
     text: "Avocado"
     label: Ingredient Avocado is rendered
@@ -125,13 +123,13 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Soy Sauce"
     label: Ingredient Soy Sauce is rendered
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "󰐕"
     label: Add button of the ingredients is rendered
-- swipe:
-    start: "50%,60%"
-    end: "50%,30%"
-    label: Swipe down to see other items
 - assertVisible:
     text: "Time to prepare the recipe :"
     label: Intro text for the time to prepare is rendered
@@ -153,13 +151,13 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Content of step 1 : "
     label: Intro text for first step is rendered
-- assertVisible:
-    text: "Preparation : step 2"
-    label: Preparation section for second step is rendered
 - swipe:
     start: "50%,70%"
     end: "50%,30%"
     label: Swipe down to see other items
+- assertVisible:
+    text: "Preparation : step 2"
+    label: Preparation section for second step is rendered
 - assertVisible:
     text: "Title of step 2 : "
     label: Intro text for the title of second step is rendered
@@ -169,13 +167,12 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Content of step 2 : "
     label: Intro text for second step is rendered
-- assertVisible:
-    text: "Preparation : step 3"
-    label: Preparation section for third step is rendered
 - swipe:
     start: "50%,70%"
     end: "50%,30%"
-    label: Swipe down to see other items
+- assertVisible:
+    text: "Preparation : step 3"
+    label: Preparation section for third step is rendered
 - assertVisible:
     text: "Title of step 3 : "
     label: Intro text for the title of third step is rendered
@@ -185,13 +182,13 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Content of step 3 : "
     label: Intro text for third step is rendered
-- assertVisible:
-    text: "Preparation : step 4"
-    label: Preparation section for Fourth step is rendered
 - swipe:
     start: "50%,70%"
     end: "50%,30%"
     label: Swipe down to see other items
+- assertVisible:
+    text: "Preparation : step 4"
+    label: Preparation section for Fourth step is rendered
 - assertVisible:
     text: "Title of step 4 : "
     label: Intro text for the title of Fourth step is rendered

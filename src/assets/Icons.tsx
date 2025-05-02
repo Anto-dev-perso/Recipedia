@@ -17,45 +17,20 @@ export const checkboxFillIcon: dictionaryIcons = "checkbox-marked";
 export const plusIcon: dictionaryIcons = "plus";
 export const minusIcon: dictionaryIcons = "minus";
 
-export const addFilterIcon: dictionaryIcons = "filter-plus-outline";
-export const removeFilterIcon: dictionaryIcons = "filter-remove";
-export const tagSearchIcon: dictionaryIcons = "tag-search-outline";
-
-export const filterPlusIcon: dictionaryIcons = "filter-plus-outline";
-export const filterMinusIcon: dictionaryIcons = "filter-remove-outline";
-
 export const checkboxIcons = [checkboxBlankIcon, checkboxFillIcon];
 export const PlusMinusIcons = [plusIcon, minusIcon];
 
 export const crossIcon: dictionaryIcons = "close";
-export const trashIcon: dictionaryIcons = "delete";
 
-export const homeIcon: dictionaryIcons = "home";
-export const shoppingIcon: dictionaryIcons = "cart";
-export const plannerIcon: dictionaryIcons = "calendar";
-export const parametersIcon: dictionaryIcons = "cog";
-
-export const webIcon: dictionaryIcons = "web";
 export const searchIcon: dictionaryIcons = "magnify";
-export const cameraIcon: dictionaryIcons = "camera";
-export const galleryIcon: dictionaryIcons = "image-area";
-export const backIcon: dictionaryIcons = "keyboard-backspace";
-export const pencilIcon: dictionaryIcons = "pencil";
-export const exportIcon: dictionaryIcons = "export";
 
-
-export const rotateIcon: dictionaryIcons = "rotate-right";
-export const flipHorizontalIcon: dictionaryIcons = "flip-horizontal";
-export const flipVerticalIcon: dictionaryIcons = "flip-vertical";
 
 export const iconsSize = {
     verySmall: 9 * remValue,
-    small: 20 * remValue,
+    small: 22 * remValue,
     medium: 27 * remValue,
     large: 40 * remValue,
 };
-
-export const iconsColor = "#414a4c";
 
 export const Icons: Record<string, dictionaryIcons> = {
     checkboxBlankIcon: "checkbox-blank-outline",
@@ -69,14 +44,19 @@ export const Icons: Record<string, dictionaryIcons> = {
     filterMinusIcon: "filter-remove-outline",
     crossIcon: "close",
     trashIcon: "delete",
-    homeIcon: "home",
-    shoppingIcon: "cart",
-    plannerIcon: "calendar",
-    parametersIcon: "cog",
+    homeUnselectedIcon: "home",
+    homeSelectedIcon: "home-outline",
+    shoppingUnselectedIcon: "cart",
+    shoppingSelectedIcon: "cart-outline",
+    plannerUnselectedIcon: "calendar",
+    plannerSelectedIcon: "calendar-outline",
+    parametersUnselectedIcon: "cog",
+    parametersSelectedIcon: "cog-outline",
     webIcon: "web",
     searchIcon: "magnify",
     cameraIcon: "camera",
     galleryIcon: "image-area",
+    scanImageIcon: 'line-scan',
     backIcon: "keyboard-backspace",
     pencilIcon: "pencil",
     exportIcon: "export",
@@ -86,14 +66,6 @@ export const Icons: Record<string, dictionaryIcons> = {
 } as const;
 export type IconName = keyof typeof Icons;
 
-
-export type iconProp = {
-    type: enumIconTypes,
-    name: iconsType,
-    size: number,
-    color: string,
-    style?: StyleProp<TextStyle>
-}
 
 // TODO to transfrom in a React component
 export function displayIcon(iconType: enumIconTypes, iconName: iconsType, iconSize: number, iconColor: string, propStyle?: StyleProp<TextStyle>, onPressFunction?: ((event: GestureResponderEvent) => void) | undefined) {

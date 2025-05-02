@@ -50,7 +50,7 @@ appId: "com.recipesmanager"
     text: "500 ml"
     label: Quantity of Vegetable Broth is rendered
 - swipe:
-    start: "50%,65%"
+    start: "50%,70%"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
@@ -62,6 +62,9 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "2) Simmer the vegetables in vegetable broth until tender."
     label: Second section of the preparation is rendered
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
 - assertVisible:
     text: "3) Serve hot."
     label: Third section of the preparation is rendered

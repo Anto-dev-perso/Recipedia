@@ -1,14 +1,14 @@
 import SectionClickableList from "@components/molecules/SectionClickableList";
 import {shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
 import {useFocusEffect} from "@react-navigation/native";
-import {palette} from "@styles/colors";
 import {screenViews, scrollView} from "@styles/spacing";
 import {typoStyles} from "@styles/typography";
 import React, {useEffect, useState} from "react";
-import {ScrollView, StatusBar, Text} from "react-native";
+import {ScrollView, Text} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ShoppingScreenProp} from '@customTypes/ScreenTypes';
 import RecipeDatabase from "@utils/RecipeDatabase";
+import {Button} from "react-native-paper";
 
 
 export default function Shopping({navigation, route}: ShoppingScreenProp) {
@@ -43,9 +43,12 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
 
     return (
         <SafeAreaView style={screenViews.screenView}>
-            <StatusBar animated={true} backgroundColor={palette.primary}/>
             <ScrollView style={scrollView(0).view} showsVerticalScrollIndicator={false}>
                 <Text testID={'ShoppingScreenTitle'} style={typoStyles.title}>Shopping list</Text>
+                <Button onPress={async () => {
+                    await RecipeDatabase.getInstance().resetShoppingList();
+                    navigation.setParams({refresh: Date.now()});
+                }}>Delete</Button>
                 <SectionClickableList
                     screen={"shopping"} ingList={shoppingList} updateIngredientFromShopping={updateShoppingList}/>
                 {/* TODO to implement */}

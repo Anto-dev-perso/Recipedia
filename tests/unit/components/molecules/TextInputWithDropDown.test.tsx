@@ -18,9 +18,9 @@ describe('TextInputWithDropDown Component', () => {
 
     const defaultProps: TextInputWithDropDownType = {
         testID: 'TextInputWithDropDown',
-        absoluteDropDown: true, referenceTextArray: new Array<string>,
+        absoluteDropDown: true,
+        referenceTextArray: new Array<string>,
         label: 'Ingredient',
-        outline: true,
         onValidate: mockOnChangeText,
     };
 
@@ -72,7 +72,7 @@ describe('TextInputWithDropDown Component', () => {
             if (ingredient.ingName == 'Salmon') {
                 expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).toBeTruthy();
                 expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName)).toBeTruthy();
-                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + "-content").props.children[0].props.children).toEqual(ingredient.ingName);
+                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName).props.children).toEqual(ingredient.ingName);
             } else {
                 expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
                 expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName)).not.toBeTruthy();
@@ -94,7 +94,7 @@ describe('TextInputWithDropDown Component', () => {
         for (const ingredient of dbInstance.get_ingredients()) {
             expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).toBeTruthy();
             expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName)).toBeTruthy();
-            expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + "-content").props.children[0].props.children).toEqual(ingredient.ingName);
+            expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName).props.children).toEqual(ingredient.ingName);
         }
 
         const textInput = 'notexistingrecipe';
@@ -127,7 +127,7 @@ describe('TextInputWithDropDown Component', () => {
             if (ingredient.ingName.toLowerCase().includes('past')) {
                 expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).toBeTruthy();
                 expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName)).toBeTruthy();
-                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + "-content").props.children[0].props.children).toEqual(ingredient.ingName);
+                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName).props.children).toEqual(ingredient.ingName);
             } else {
                 expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
                 expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName)).not.toBeTruthy();

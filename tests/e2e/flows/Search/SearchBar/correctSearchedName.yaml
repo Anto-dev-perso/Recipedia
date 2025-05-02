@@ -6,19 +6,19 @@ appId: "com.recipesmanager"
 - tapOn:
     id: "SearchBar"
     label: Open Search Bar
-- tapOn:
+- inputText:
     text: "P"
-    label: Tap on 'P' in the keyboard
+    label: Input text 'P' in the keyboard
 - runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnP.yaml
-- tapOn:
+- inputText:
     text: "a"
-    label: Tap on 'a' in the Bar
+    label: Inout text 'a' in the Bar
 - runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnPa.yaml
 - pressKey: 'backspace'
 - runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnP.yaml
-- tapOn:
+- inputText:
     text: "i"
-    label: Tap on 'i' in the Bar
+    label: Inout text 'i' in the Bar
 - runFlow: ../../../asserts/Search/SearchBar/searchBarFilteredOnPi.yaml
 - hideKeyboard:
     label: Close the keyboard

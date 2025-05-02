@@ -61,6 +61,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "1) Cook the chicken breast and slice it into strips."
     label: First section of the preparation is rendered
+- swipe:
+    start: "50%,65%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "2) Fill each taco shell with chicken, lettuce, and cheddar."
     label: Second section of the preparation is rendered

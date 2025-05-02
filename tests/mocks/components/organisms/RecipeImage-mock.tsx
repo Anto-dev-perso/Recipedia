@@ -10,22 +10,15 @@ export function recipeImageMock(recipeImageProp: RecipeImageProps) {
             <Text testID={recipeImageProp.testID + "::ImgUri"}>
                 {recipeImageProp.imgUri}
             </Text>
-            {recipeImageProp.addProps ?
-                <View>
-                    <Button testID={recipeImageProp.testID + "::SetImgUri"}
-                            onPress={(newUri) => {
-                                //@ts-ignore addProps is always defined here
-                                recipeImageProp.addProps.setImgUri(newUri)
-                            }}
-                            title="Set Img Uri"/>
-                    <Button testID={recipeImageProp.testID + "::OpenModal"}
-                            onPress={() => {
-                                //@ts-ignore addProps is always defined here
-                                recipeImageProp.addProps.openModal(recipeColumnsNames.image)
-                            }}
-                            title="Open Modal"/>
-                </View>
-                : null}
+            <Text testID={recipeImageProp.testID + "::ButtonIcon"}>
+                {recipeImageProp.buttonIcon}
+            </Text>
+            <Button testID={recipeImageProp.testID + "::OpenModal"}
+                    onPress={() => {
+                        //@ts-ignore addProps is always defined here
+                        recipeImageProp.addProps.openModal(recipeColumnsNames.image)
+                    }}
+                    title="Open Modal"/>
         </View>
     );
 }

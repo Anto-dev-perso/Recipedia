@@ -32,7 +32,7 @@ export default function FiltersSelection(props: FiltersSelectionProps) {
     return (
         <View testID={'FilterSelection'}>
             <HorizontalList propType={"Tag"} item={retrieveAllFilters(props.filtersState)} icon={Icons.crossIcon}
-                            onTagPress={(item: string) => findFilterStringAndRemove(item)}/>
+                            onPress={(item: string) => findFilterStringAndRemove(item)}/>
             <View style={viewButtonStyles.longHorizontalButton}>
                 <TagButton text={"Add a filter"}
                            leftIcon={props.printSectionClickable ? Icons.removeFilterIcon : Icons.addFilterIcon}

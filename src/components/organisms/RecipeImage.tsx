@@ -1,39 +1,51 @@
-import {View} from "react-native"
+import {StyleSheet, View} from "react-native"
 import React from "react";
-import {imageStyle} from "@styles/images";
 import {recipeColumnsNames} from "@customTypes/DatabaseElementTypes";
-import RoundButton from "@components/atomic/RoundButton";
-import {enumIconTypes, iconsSize, plusIcon} from "@assets/Icons";
-import {mediumButtonDiameter, viewButtonStyles} from "@styles/buttons";
+import {IconName} from "@assets/Icons";
 import CustomImage from "@components/atomic/CustomImage";
-
-export type RecipeImageAddingProps = {
-    setImgUri: (newUri: string) => void,
-    openModal: (field: recipeColumnsNames) => void,
-}
+import RoundButton from "@components/atomic/RoundButton";
+import {padding, screenHeight} from "@styles/spacing";
 
 export type RecipeImageProps =
     {
         imgUri: string,
-        addProps?: RecipeImageAddingProps
+        openModal: (field: recipeColumnsNames) => void,
+        buttonIcon?: IconName,
         testID?: string
     };
 
-export default function RecipeImage(imgProps: RecipeImageProps) {
+export default function RecipeImage({imgUri, openModal, buttonIcon, testID}: RecipeImageProps) {
+    const [validUri, setValidUri] = React.useState(imgUri.length > 0);
 
-    // TODO do not show image is uri is empty to prevent warning
     return (
-        <View style={imageStyle.containerFullStyle} testID={imgProps.testID}>
-            {imgProps.addProps ?
-                <RoundButton style={{...viewButtonStyles.centeredView, flex: 1}}
-                             diameter={mediumButtonDiameter} icon={{
-                    type: enumIconTypes.materialCommunity,
-                    name: plusIcon,
-                    size: iconsSize.small,
-                    color: "#414a4c"
-                    // @ts-ignore  TODO addProps isn't told as set
-                }} onPressFunction={() => imgProps.addProps.openModal(recipeColumnsNames.image)}/> : null}
-            <CustomImage propsTestID={imgProps.testID}/>
+        <View style={styles.recipeImageContainer} testID={testID}>
+            <CustomImage propsTestID={testID} uri={imgUri} onLoadError={() => {
+                setValidUri(false)
+            }} onLoadSuccess={() => setValidUri(true)}/>
+            {buttonIcon ?
+                <View style={validUri ? styles.topRightButtonContainer : styles.centerButtonContainer}>
+                    <RoundButton testID={testID} size={"medium"} icon={buttonIcon}
+                                 onPressFunction={() => openModal(recipeColumnsNames.image)}/>
+                </View>
+                : null}
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    recipeImageContainer: {height: screenHeight / 2},
+    centerButtonContainer: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    topRightButtonContainer: {
+        position: 'absolute',
+        top: padding.small,
+        right: padding.small,
+    }
+});

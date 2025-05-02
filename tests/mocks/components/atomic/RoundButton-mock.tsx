@@ -7,11 +7,8 @@ export function roundButtonMock(roundButtonProps: RoundButtonProps) {
 
     return (
         <View>
-            <Text testID="RoundButton::Text">
-                {JSON.stringify(roundButtonProps.text)}
-            </Text>
             <Text testID="RoundButton::Icon">
-                {JSON.stringify(roundButtonProps.icon)}
+                {roundButtonProps.icon}
             </Text>
             {roundButtonProps.onPressFunction !== undefined ?
                 <Button testID="RoundButton::OnPressFunction"

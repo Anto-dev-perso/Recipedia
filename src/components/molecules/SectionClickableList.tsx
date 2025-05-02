@@ -12,7 +12,6 @@ import {
 import {selectFilterValuesToDisplay} from "@utils/FilterFunctions";
 import {FiltersPassingProps} from "@components/organisms/FiltersSelection";
 import RectangleButton from "@components/atomic/RectangleButton";
-import {padding} from "@styles/spacing";
 
 export type propsFromSearch = { screen: "search", } & FiltersPassingProps
 
@@ -92,8 +91,8 @@ export default function SectionClickableList(props: SectionClickableListProps) {
                 {elemToDisplay.length == 0 ? null :
                     <View>
                         <RectangleButton testID={`RectangleButtonForCategory - ${item}`} text={item}
-                                         centered={false} icon={iconFromProps}
-                                         margins={padding.verySmall} onPressFunction={updateCategoryClicked}/>
+                                         icon={iconFromProps} centered={false} border={true}
+                                         onPressFunction={updateCategoryClicked}/>
                         {itemShallDisplayCheckBox ?
                             <CheckListsButtonsRender testID={`CheckListForCategory - ${item}`} testMode={props.testMode}
                                                      arrayToDisplay={elemToDisplay}

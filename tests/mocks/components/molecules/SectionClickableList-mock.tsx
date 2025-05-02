@@ -12,7 +12,7 @@ export function sectionClickableListMock(sectionClickableListProps: SectionClick
                 {JSON.stringify(sectionClickableListProps.screen)}
             </Text>
             <Text testID="SectionClickableList::Icon">
-                {JSON.stringify(sectionClickableListProps.icon?.map(el => el.name))}
+                {JSON.stringify(sectionClickableListProps.icon)}
             </Text>
             {sectionClickableListProps.screen == "search" ?
                 <View>

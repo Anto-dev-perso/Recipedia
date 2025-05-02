@@ -1,7 +1,7 @@
 import SearchBar from "@components/organisms/SearchBar";
 import {screenViews, scrollView} from "@styles/spacing";
 import React, {useEffect, useState} from "react";
-import {Keyboard, SafeAreaView, ScrollView, StatusBar} from "react-native";
+import {Keyboard, SafeAreaView, ScrollView} from "react-native";
 import {SearchScreenProp} from '@customTypes/ScreenTypes';
 import TextRender from "@components/molecules/TextRender";
 import {typoRender} from "@styles/typography";
@@ -15,7 +15,6 @@ import {
     removeTitleInMultimap,
     removeValueToMultimap
 } from "@utils/FilterFunctions";
-import {palette} from "@styles/colors";
 import FiltersSelection from "@components/organisms/FiltersSelection";
 import SearchResultDisplay from "@components/organisms/SearchResultDisplay";
 import RecipeDatabase from "@utils/RecipeDatabase";
@@ -108,7 +107,6 @@ export default function Search({route, navigation}: SearchScreenProp) {
 
     return (
         <SafeAreaView style={screenViews.screenView} testID={'SearchScreen'}>
-            <StatusBar animated={true} backgroundColor={palette.primary}/>
             <ScrollView style={scrollView(0).view} showsVerticalScrollIndicator={false}>
                 <SearchBar clicked={searchBarClicked} searchPhrase={searchPhrase} setClicked={setSearchBarClicked}
                            setSearch={updateSearchString}/>

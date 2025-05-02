@@ -1,16 +1,11 @@
 appId: "com.recipesmanager"
 ---
-# TODO why does this no works on the CI ?
 - assertVisible:
     text: "󰐕"
     label: Plus button is displayed
 - assertVisible:
     text: "󰍉"
     label: Search button is displayed
-- assertVisible:
-    text: "Home"
-    index: 0
-    label: Home screen title is displayed
 - assertVisible:
     text: "RECOMMENDATION 1"
     label: Recommendation1 is displayed
@@ -36,16 +31,15 @@ appId: "com.recipesmanager"
     label: Home icon is displayed
 - assertVisible:
     text: "Home"
-    index: 1
     label: Home text is displayed
 - assertVisible:
-    text: "󰄐"
+    text: "󰄑"
     label: Shopping icon is displayed
 - assertVisible:
     text: "Shopping"
-    label: text is displayed
+    label: Shopping text is displayed
 - assertVisible:
-    text: "󰒓"
+    text: "󰢻"
     label: Parameters icon is displayed
 - assertVisible:
     text: "Parameters"

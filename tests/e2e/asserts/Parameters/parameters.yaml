@@ -1,10 +1,24 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
-    text: "Parameters"
-    index: 0
-    label: Parameters screen title is displayed
-- assertVisible:
     text: "PARAMETERS"
     index: 1
     label: Parameters title is displayed
+- assertVisible:
+    text: "󰚡"
+    label: Home icon is displayed
+- assertVisible:
+    text: "Home"
+    label: Home text is displayed
+- assertVisible:
+    text: "󰄑"
+    label: Shopping icon is displayed
+- assertVisible:
+    text: "Shopping"
+    label: Shopping text is displayed
+- assertVisible:
+    text: "󰒓"
+    label: Parameters icon is displayed
+- assertVisible:
+    text: "Parameters"
+    label: Parameters text is displayed

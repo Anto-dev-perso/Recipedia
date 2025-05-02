@@ -6,18 +6,18 @@ name: "Launch and check screens are displayed correctly"
 
 - runFlow: asserts/Home/homeScreenVisible.yaml
 - tapOn:
-    text: "󰄐, Shopping"
+    text: "Shopping"
     label: Go to Shopping screen
 - runFlow: asserts/Shopping/shoppingEmpty.yaml
 
 - tapOn:
-    text: "󰋜, Home"
+    text: "Home"
     label: Return to Home screen
 - tapOn:
-    text: "󰒓, Parameters"
+    text: "Parameters"
     label: Go to Parameters screen
 - runFlow: asserts/Parameters/parameters.yaml
 - tapOn:
-    text: "󰋜, Home"
+    text: "Home"
     label: Return to Home screen
 - runFlow: asserts/Home/homeScreenVisible.yaml

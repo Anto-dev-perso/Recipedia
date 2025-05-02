@@ -8,13 +8,13 @@ export function rectangleButtonMock(rectangleProps: RectangleButtonProps) {
             {rectangleProps.text}
         </Text>
         <Text testID={rectangleProps.testID + "::Icon"}>
-            {JSON.stringify(rectangleProps.icon)}
+            {rectangleProps.icon}
         </Text>
         <Text testID={rectangleProps.testID + "::Centered"}>
             {rectangleProps.centered}
         </Text>
-        <Text testID={rectangleProps.testID + "::Margins"}>
-            {rectangleProps.margins?.toString()}
+        <Text testID={rectangleProps.testID + "::Border"}>
+            {rectangleProps.border}
         </Text>
         <Button testID={rectangleProps.testID + "::OnPressFunction"}
                 onPress={rectangleProps.onPressFunction}

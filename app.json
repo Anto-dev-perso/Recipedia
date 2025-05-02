@@ -39,7 +39,8 @@
             "./src/assets/images"
           ]
         }
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {

@@ -1,29 +1,37 @@
-import {openCamera, openCropper, openPicker, Options} from "react-native-image-crop-picker";
-import {palette} from "@styles/colors";
-
-const imageOptions: Options = {
-    mediaType: "photo",
-    cropping: true,
-    avoidEmptySpaceAroundImage: false,
-    cropperActiveWidgetColor: palette.primary,
-    cropperStatusBarColor: palette.primary,
-    cropperToolbarColor: palette.secondary,
-    cropperToolbarWidgetColor: palette.primary,
-    cropperToolbarTitle: 'Crop Image',
-    cropperTintColor: 'red',
-    freeStyleCropEnabled: true,
-    cropperCancelText: 'Cancel',
-    cropperChooseText: 'Choose',
-    showCropGuidelines: true,
-    disableCropperColorSetters: true,
-    showCropFrame: false, enableRotationGesture: false, compressImageQuality: 1,
-};
+import {openCamera, openCropper, openPicker} from "react-native-image-crop-picker";
+import {MD3Colors} from "react-native-paper/lib/typescript/types";
 
 
-export async function pickImage(): Promise<string> {
+function createImageOptionsWithTheme(themeColors: MD3Colors) {
+    const statusBarColor = themeColors.primaryContainer;
+    const actionColor = themeColors.surface;
+    const backgroundColor = themeColors.onSurface;
+    return {
+        mediaType: 'photo',
+        cropperCancelText: 'Cancel',
+        cropperChooseText: 'Choose',
+        cropping: true,
+        avoidEmptySpaceAroundImage: true,
+        cropperToolbarTitle: '',
+        freeStyleCropEnabled: true,
+        showCropGuidelines: true,
+        showCropFrame: true,
+        enableRotationGesture: true,
+        compressImageQuality: 1,
+        cropperStatusBarColor: statusBarColor,
+        cropperToolbarColor: backgroundColor,
+        cropperToolbarWidgetColor: actionColor,
+        cropperCircleOverlay: false,
+        useFrontCamera: false,
+        includeExif: true,
+        hideBottomControls: true,
+        waitAnimationEnd: true,
+    };
+}
+
+export async function pickImage(themeColors: MD3Colors): Promise<string> {
     try {
-        const pickResult = await openPicker(imageOptions);
-        console.log("pickImage: pick result", pickResult);
+        const pickResult = await openPicker({...createImageOptionsWithTheme(themeColors), mediaType: 'photo'});
         return pickResult.path;
     } catch (error) {
         console.warn(`pickImage: user cancelled ${error}`);
@@ -31,10 +39,12 @@ export async function pickImage(): Promise<string> {
     }
 }
 
-export async function cropImage(uri: string): Promise<string> {
+export async function cropImage(uri: string, themeColors: MD3Colors): Promise<string> {
     try {
-        const cropResult = await openCropper({...imageOptions, path: uri});
-        console.log("cropImage: cropResult", cropResult);
+        const cropResult = await openCropper({
+            ...createImageOptionsWithTheme(themeColors), mediaType: 'photo',
+            path: uri
+        });
         return cropResult.path;
     } catch (error) {
         console.warn(`cropImage: user cancelled ${error}`);
@@ -42,12 +52,9 @@ export async function cropImage(uri: string): Promise<string> {
     }
 }
 
-
-export async function takePhoto(): Promise<string> {
-    // TODO redirect user of re-open the po-up
+export async function takePhoto(themeColors: MD3Colors): Promise<string> {
     try {
-        const cameraResult = await openCamera(imageOptions);
-        console.log("takePhoto: pick result", cameraResult);
+        const cameraResult = await openCamera({...createImageOptionsWithTheme(themeColors), mediaType: 'photo'});
         return cameraResult.path;
     } catch (error) {
         console.warn(`takePhoto: user cancelled ${error}`);

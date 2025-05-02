@@ -81,8 +81,6 @@ export const viewButtonStyles = EStyleSheet.create({
     wrappingListOfButton: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     longVerticalButton: {
         flexGrow: 1,

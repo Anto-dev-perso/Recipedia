@@ -39,11 +39,9 @@ describe('CheckBoxButton Component', () => {
 
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.backgroundColor,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
     });
 
@@ -61,11 +59,9 @@ describe('CheckBoxButton Component', () => {
         expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.backgroundColor,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
 
         fireEvent.press(getByTestId('CheckBoxButton::Pressable'));
@@ -84,11 +80,9 @@ describe('CheckBoxButton Component', () => {
         expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.progressGrey,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
 
         // Simulate onPressOut
@@ -97,11 +91,9 @@ describe('CheckBoxButton Component', () => {
         expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.backgroundColor,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
     });
 
@@ -113,11 +105,9 @@ describe('CheckBoxButton Component', () => {
 
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.backgroundColor,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
     });
 
@@ -135,11 +125,9 @@ describe('CheckBoxButton Component', () => {
         expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.backgroundColor,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
 
         fireEvent.press(getByTestId('CheckBoxButton::Pressable'));
@@ -158,11 +146,9 @@ describe('CheckBoxButton Component', () => {
         expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.progressGrey,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
 
         // Simulate onPressOut
@@ -171,11 +157,9 @@ describe('CheckBoxButton Component', () => {
         expect(queryByTestId('CheckBoxButton::LongPressData')).toBeNull();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.backgroundColor,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
     });
 
@@ -191,11 +175,9 @@ describe('CheckBoxButton Component', () => {
 
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toBeTruthy();
         expect(getByTestId('CheckBoxButton::Pressable').props.style).toEqual({
-            alignItems: "center",
             backgroundColor: palette.backgroundColor,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center"
         });
     });
 

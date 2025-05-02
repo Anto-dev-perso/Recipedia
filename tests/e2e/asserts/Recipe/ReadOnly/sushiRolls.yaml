@@ -56,7 +56,7 @@ appId: "com.recipesmanager"
     text: "50 ml"
     label: Quantity of Soy Sauce is rendered
 - swipe:
-    start: "50%,85%"
+    start: "50%,70%"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
@@ -65,12 +65,19 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "1) Cook the sushi rice and let it cool."
     label: First section of the preparation is rendered
+- swipe:
+    start: "50%,65%"
+    end: "50%,30%"
 - assertVisible:
     text: "2) Place a sheet of nori on a bamboo mat and spread rice evenly over it."
     label: Second section of the preparation is rendered
 - assertVisible:
     text: "3) Add salmon and avocado as fillings and roll tightly."
     label: Third section of the preparation is rendered
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "4) Slice the roll into pieces and serve with soy sauce."
     label: Fourth section of the preparation is rendered
@@ -80,6 +87,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Add this recipe to the menu"
     label: Add to menu button is rendered
+- swipe:
+    start: "50%,20%"
+    end: "50%,80%"
+    label: Swipe Up to reset to initial position
 - swipe:
     start: "50%,20%"
     end: "50%,80%"

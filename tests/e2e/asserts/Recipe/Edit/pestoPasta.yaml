@@ -7,27 +7,26 @@ appId: "com.recipesmanager"
     id: "RecipeImage"
     label: Image is rendered
 - assertVisible:
-    text: "Title of the recipe : "
+    text: "Title:"
     label: Intro text for the title is rendered
 - assertVisible:
     text: "PESTO PASTA"
     label: Title of the recipe is rendered
 - assertVisible:
-    text: "Description of the recipe : "
+    text: "Description:"
     label: Intro text for the description is rendered
 - assertVisible:
-    text: "PASTA TOSSED WITH FRESH BASIL PESTO."
+    text: "Pasta tossed with fresh basil pesto."
     label: Description of the recipe is rendered
 - swipe:
     start: "50%,70%"
     end: "50%,40%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "Tags of the recipe : "
+    text: "Tags:"
     label: Intro text for the tags is rendered
 - assertVisible:
-    text: "Tags are a way to identify a recipe and make easier its search.\n\
-    Here are some examples of tags you can have : .*, .*, .*"
+    text: "Tags are a way to identify a recipe and make easier its search.\nHere are some examples of tags you can have : .*, .*, .*"
     label: Explanation text for the tags is rendered
 - assertVisible:
     text: "Italian"
@@ -154,38 +153,50 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Title of step 1 : "
     label: Intro text for the title of first step is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Cook the pasta according to the package instructions."
     label: First preparation step title is rendered
 - assertVisible:
     text: "Content of step 1 : "
     label: Intro text for first step is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Preparation : step 2"
     label: Preparation section for second step is rendered
-- swipe:
-    start: "50%,60%"
-    end: "50%,30%"
-    label: Swipe down to see other items
 - assertVisible:
     text: "Title of step 2 : "
     label: Intro text for the title of second step is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Blend basil leaves, Parmesan, olive oil, and pine nuts to make pesto."
     label: Second preparation step title is rendered
 - assertVisible:
     text: "Content of step 2 : "
     label: Intro text for second step is rendered
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Preparation : step 3"
     label: Preparation section for third step is rendered
-- swipe:
-    start: "50%,80%"
-    end: "50%,20%"
-    label: Swipe down to see other items
 - assertVisible:
     text: "Title of step 3 : "
     label: Intro text for the title of third step is rendered
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "Toss the pasta with the pesto sauce and serve warm."
     label: Third preparation step title is rendered

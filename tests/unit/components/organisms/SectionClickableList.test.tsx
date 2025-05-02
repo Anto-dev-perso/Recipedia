@@ -52,6 +52,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`)).toBeNull();
@@ -61,6 +62,7 @@ describe('SectionClickableList Component', () => {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`).props.children).toEqual(true);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
                 expect(getByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`).props.children).toEqual('{}');
@@ -82,6 +84,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`)).toBeNull();
@@ -91,6 +94,7 @@ describe('SectionClickableList Component', () => {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`).props.children).toEqual(true);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
                 expect(getByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`).props.children).toEqual('{"Sauce":["Tomato Sauce"],"recipeTitleInclude":["Pizza"]}');
@@ -120,6 +124,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`)).toBeNull();
@@ -129,6 +134,7 @@ describe('SectionClickableList Component', () => {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`).props.children).toEqual(true);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
                 if (filtersCategories[i] == listFilter.oilAndFat) {
@@ -152,6 +158,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`)).toBeNull();
@@ -161,6 +168,7 @@ describe('SectionClickableList Component', () => {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`).props.children).toEqual(true);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
                 expect(getByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`).props.children).toEqual('{"Oil and Fat":["Butter"],"Tags":["Italian","Seafood"]}');
@@ -181,6 +189,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`)).toBeNull();
@@ -190,6 +199,7 @@ describe('SectionClickableList Component', () => {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`).props.children).toEqual(true);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
                 expect(getByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`).props.children).toEqual('{"Tags":["Italian","Seafood"]}');
@@ -210,6 +220,7 @@ describe('SectionClickableList Component', () => {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toBeUndefined();
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`).props.children).toEqual(true);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
                 expect(getByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`).props.children).toEqual('{}');
@@ -219,6 +230,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::FiltersState`)).toBeNull();
@@ -238,6 +250,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::CheckBoxInitialValue`)).toBeNull();
@@ -245,8 +258,9 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::updateIngredientFromShopping`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toEqual('"minus"');
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toEqual('minus');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`).props.children).toEqual(true);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
                 expect(getByTestId(`CheckListForCategory - ${filtersCategories[i]}::CheckBoxInitialValue`).props.children).toEqual(false);
@@ -269,6 +283,7 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+                expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
                 expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::CheckBoxInitialValue`)).toBeNull();
@@ -276,8 +291,9 @@ describe('SectionClickableList Component', () => {
                 expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::updateIngredientFromShopping`)).toBeNull();
             } else {
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`).props.children).toEqual(category);
-                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toEqual('"minus"');
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`).props.children).toEqual('minus');
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`).props.children).toEqual(false);
+                expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`).props.children).toEqual(true);
                 expect(getByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`).props.children).toBeTruthy();
 
                 expect(getByTestId(`CheckListForCategory - ${filtersCategories[i]}::CheckBoxInitialValue`).props.children).toEqual(false);
@@ -300,6 +316,7 @@ describe('SectionClickableList Component', () => {
             expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Text`)).toBeNull();
             expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Icon`)).toBeNull();
             expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Centered`)).toBeNull();
+            expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::Border`)).toBeNull();
             expect(queryByTestId(`RectangleButtonForCategory - ${filtersCategories[i]}::OnPressFunction`)).toBeNull();
 
             expect(queryByTestId(`CheckListForCategory - ${filtersCategories[i]}::CheckBoxInitialValue`)).toBeNull();

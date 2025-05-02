@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {RecipeScreenProp} from '@customTypes/ScreenTypes';
 import {
     extractIngredientsNameWithQuantity,
@@ -10,7 +10,7 @@ import {
     tagTableElement
 } from "@customTypes/DatabaseElementTypes";
 import BottomTopButton from "@components/molecules/BottomTopButton";
-import {SafeAreaView, ScrollView, StatusBar, View} from "react-native";
+import {SafeAreaView, ScrollView, View} from "react-native";
 import {
     BottomTopButtonOffset,
     bottomTopPosition,
@@ -19,26 +19,30 @@ import {
     viewButtonStyles
 } from "@styles/buttons";
 import {screenViews, scrollView} from "@styles/spacing";
-import {palette} from "@styles/colors";
-import RecipeImage from "@components/organisms/RecipeImage";
-import {backIcon, enumIconTypes, iconsSize, pencilIcon, trashIcon} from "@assets/Icons";
+import RecipeImage, {RecipeImageProps} from "@components/organisms/RecipeImage";
+import {Icons} from "@assets/Icons";
 import RecipeTextRender, {
     RecipeTextRenderAddOrEditProps,
     RecipeTextRenderProps,
     RecipeTextRenderReadOnlyProps
 } from "@components/organisms/RecipeTextRender";
-import RecipeText, {RecipeTextAddOrEditProps, RecipeTextAddProps} from "@components/organisms/RecipeText";
-import {headerBorder, textSeparator, titleBorder, typoRender, typoStyles, unitySeparator} from "@styles/typography";
+import RecipeText, {RecipeTextAddOrEditProps} from "@components/organisms/RecipeText";
+import {textSeparator, typoRender, unitySeparator} from "@styles/typography";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import RecipeTags, {RecipeTagProps} from "@components/organisms/RecipeTags";
 import {alertUserChoice, AsyncAlert} from "@utils/AsyncAlert";
 import FileGestion from "@utils/FileGestion";
 import RectangleButton from "@components/atomic/RectangleButton";
 import RoundButton from "@components/atomic/RoundButton";
-import {cropImage} from "@utils/ImagePicker";
 import {extractFieldFromImage} from "@utils/OCR";
-import RecipeNumber, {RecipeNumberAddOrEditProps} from "@components/organisms/RecipeNumber";
+import RecipeNumber, {
+    RecipeNumberAddOrEditProps,
+    RecipeNumberReadAddOrEditProps
+} from "@components/organisms/RecipeNumber";
 import {defaultValueNumber} from "@utils/Constants";
+import {useTheme} from "react-native-paper";
+import ModalImageSelect from "@screens/ModalImageSelect";
+import {cropImage} from "@utils/ImagePicker";
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -53,156 +57,56 @@ export type addRecipeFromPicture = { mode: "addFromPic", imgUri: string }
 
 export type RecipePropType = readRecipe | editRecipeManually | addRecipeManually | addRecipeFromPicture
 
-export type RecipeStates = {
-    stackMode: recipeStateType,
-    recipeImage: string,
-    recipeTitle: string,
-    recipeDescription: string,
-    recipeTags: Array<tagTableElement>,
-    recipePersons: number,
-    recipeIngredients: Array<ingredientTableElement>,
-    recipeSeason: Array<string>,
-    recipePreparation: Array<string>,
-    recipeTime: number,
-    imgForOCR: Array<string>,
-    forceUpdateKey: number,
-    randomTags: Array<string>,
-}
 
-class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
-    constructor(recipeProps: RecipeScreenProp) {
-        super(recipeProps);
-        const params = this.props.route.params;
-        const tags = RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.tagName);
-        switch (params.mode) {
+export default function Recipe({route, navigation}: RecipeScreenProp) {
+
+    const {colors} = useTheme();
+
+    const props: RecipePropType = route.params;
+    const initStateFromProp = (props.mode === "readOnly" || (props.mode === "edit"));
+    const tags = RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.tagName);
+
+    function convertModeFromProps() {
+        switch (props.mode) {
             case "readOnly":
-                this.state = {
-                    stackMode: recipeStateType.readOnly,
-                    recipeImage: params.recipe.image_Source,
-                    recipeTitle: params.recipe.title,
-                    recipeDescription: params.recipe.description,
-                    recipeTags: params.recipe.tags,
-                    recipePersons: params.recipe.persons,
-                    recipeIngredients: params.recipe.ingredients,
-                    recipeSeason: params.recipe.season,
-                    recipePreparation: params.recipe.preparation,
-                    recipeTime: params.recipe.time,
-                    imgForOCR: [],
-                    forceUpdateKey: 0,
-                    randomTags: tags,
-                };
-                break;
+                return recipeStateType.readOnly;
             case "edit":
-                this.state = {
-                    stackMode: recipeStateType.edit,
-                    recipeImage: params.recipe ? params.recipe.image_Source : "",
-                    recipeTitle: params.recipe ? params.recipe.title : "",
-                    recipeDescription: params.recipe ? params.recipe.description : "",
-                    recipeTags: params.recipe ? params.recipe.tags : [],
-                    recipePersons: params.recipe ? params.recipe.persons : defaultValueNumber,
-                    recipeIngredients: params.recipe ? params.recipe.ingredients : [],
-                    recipeSeason: params.recipe ? params.recipe.season : [],
-                    recipePreparation: params.recipe ? params.recipe.preparation : [],
-                    recipeTime: params.recipe ? params.recipe.time : defaultValueNumber,
-                    imgForOCR: [],
-                    forceUpdateKey: 0, randomTags: tags,
-                };
-                break;
+                return recipeStateType.edit;
             case "addManually":
-                this.state = {
-                    stackMode: recipeStateType.addManual,
-                    recipeImage: "",
-                    recipeTitle: "",
-                    recipeDescription: "",
-                    recipeTags: [],
-                    recipePersons: defaultValueNumber,
-                    recipeIngredients: [],
-                    recipeSeason: [],
-                    recipePreparation: [],
-                    recipeTime: defaultValueNumber,
-                    imgForOCR: [],
-                    forceUpdateKey: 0, randomTags: tags,
-                };
-                break;
+                return recipeStateType.addManual;
             case "addFromPic":
-                this.state = {
-                    stackMode: recipeStateType.addOCR,
-                    recipeImage: "",
-                    recipeTitle: "",
-                    recipeDescription: "",
-                    recipeTags: [],
-                    recipePersons: 0,
-                    recipeIngredients: [],
-                    recipeSeason: [],
-                    recipePreparation: [],
-                    recipeTime: defaultValueNumber,
-                    imgForOCR: new Array<string>(params.imgUri),
-                    forceUpdateKey: 0, randomTags: tags,
-                };
-                break;
+                return recipeStateType.addOCR;
         }
     }
 
-    forceReRender = () => {
-        this.setState((prevState) => ({forceUpdateKey: prevState.forceUpdateKey + 1}))
-    };
+    const [stackMode, setStackMode] = useState(convertModeFromProps());
+    const [recipeImage, setRecipeImage] = useState(initStateFromProp ? props.recipe.image_Source : "");
+    const [recipeTitle, setRecipeTitle] = useState(initStateFromProp ? props.recipe.title : "");
+    const [recipeDescription, setRecipeDescription] = useState(initStateFromProp ? props.recipe.description : "");
+    const [recipeTags, setRecipeTags] = useState(initStateFromProp ? props.recipe.tags : new Array<tagTableElement>());
+    const [recipePersons, setRecipePersons] = useState(initStateFromProp ? props.recipe.persons : defaultValueNumber);
+    const [recipeIngredients, setRecipeIngredients] = useState(initStateFromProp ? props.recipe.ingredients : new Array<ingredientTableElement>());
+    const [recipeSeason, setRecipeSeason] = useState(initStateFromProp ? props.recipe.season : new Array<string>());
+    const [recipePreparation, setRecipePreparation] = useState(initStateFromProp ? props.recipe.preparation : new Array<string>());
+    const [recipeTime, setRecipeTime] = useState(initStateFromProp ? props.recipe.time : defaultValueNumber);
+    const [imgForOCR, setImgForOCR] = useState(props.mode === "addFromPic" ? new Array<string>(props.imgUri) : new Array<string>());
+    const [randomTags, setRandomTags] = useState(tags);
 
-    setStackMode = (newStackMode: recipeStateType) => {
-        this.setState({stackMode: newStackMode});
-    };
+    const [modalField, setModalField] = useState<recipeColumnsNames | undefined>(undefined);
 
-    setRecipeImage = (newUri: string) => {
-        this.setState({recipeImage: newUri});
-    };
 
-    setRecipeTitle = (newTitle: string) => {
-        this.setState({recipeTitle: newTitle});
-    };
-
-    setRecipeDescription = (newDescription: string) => {
-        this.setState({recipeDescription: newDescription})
-    };
-
-    setRecipeTags = (newTags: Array<tagTableElement>) => {
-        this.setState({recipeTags: newTags})
-    };
-
-    setRecipePersons = (newPerson: number) => {
-        this.setState({recipePersons: newPerson});
-    };
-
-    setRecipeIngredients = (newIngredient: Array<ingredientTableElement>) => {
-        this.setState({recipeIngredients: newIngredient});
-    };
-
-    setRecipeSeason = (newSeason: Array<string>) => {
-        this.setState({recipeSeason: newSeason});
-    };
-
-    setRecipePreparation = (newPreparation: Array<string>) => {
-        this.setState({recipePreparation: newPreparation});
-    };
-
-    setRecipeTime = (newTime: number) => {
-        this.setState({recipeTime: newTime});
-    };
-
-    setImgForOCR = (newOCR: Array<string>) => {
-        this.setState({imgForOCR: newOCR});
-    };
-
-    onDelete = async () => {
-        switch (this.state.stackMode) {
+    async function onDelete() {
+        switch (stackMode) {
             case recipeStateType.readOnly:
             case recipeStateType.edit:
-                const choice = await AsyncAlert("Recipe deletion", "Are you sure you want to delete this recipe titled " + this.state.recipeTitle + " ?", "Yes", "No");
+                const choice = await AsyncAlert("Recipe deletion", "Are you sure you want to delete this recipe titled " + recipeTitle + " ?", "Yes", "No");
                 if (choice === alertUserChoice.ok) {
                     let msg: string;
-                    //@ts-ignore params.recipe exist because we already checked with switch case
+                    //@ts-ignore params.recipe exist because we already checked with switch
                     if (!await RecipeDatabase.getInstance().deleteRecipe(this.props.route.params.recipe)) {
-                        msg = "An error occurred while deleting this recipe titled " + this.state.recipeTitle;
+                        msg = "An error occurred while deleting this recipe titled " + recipeTitle;
                     } else {
-                        msg = "Recipe titled " + this.state.recipeTitle + " has been successfully deleted";
+                        msg = "Recipe titled " + recipeTitle + " has been successfully deleted";
                     }
                     const promiseReturn = AsyncAlert("Recipe deletion", msg, "Understood");
 
@@ -210,26 +114,26 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                 break;
             case recipeStateType.addManual:
             case recipeStateType.addOCR:
-                const message = "Call onDelete on mode " + this.state.stackMode + " which is not possible";
+                const message = "Call onDelete on mode " + stackMode + " which is not possible";
                 const promiseReturn = AsyncAlert("Recipe deletion", message, "Understood");
                 break;
         }
-        this.props.navigation.goBack();
-    };
+        navigation.goBack();
+    }
+
     // TODO let the possibility to add manually the field
 
-    removeTag = (tag: string) => {
+    function removeTag(tag: string) {
+        setRecipeTags(recipeTags.filter(tagElement => tagElement.tagName !== tag));
+    }
 
-        this.setRecipeTags(this.state.recipeTags.filter(tagElement => tagElement.tagName !== tag));
-    };
-
-    addTag = (newTag: string) => {
-        this.setRecipeTags(new Array(...this.state.recipeTags, {tagName: newTag}));
-    };
+    function addTag(newTag: string) {
+        setRecipeTags([...recipeTags, {tagName: newTag}]);
+    }
 
     // TODO to rework
-    editIngredients = (oldIngredientId: number, newIngredient: string) => {
-        const ingredientCopy: Array<ingredientTableElement> = this.state.recipeIngredients.map(ingredient => ({...ingredient}));
+    function editIngredients(oldIngredientId: number, newIngredient: string) {
+        const ingredientCopy: Array<ingredientTableElement> = recipeIngredients.map(ingredient => ({...ingredient}));
         if (oldIngredientId < 0 || oldIngredientId > ingredientCopy.length) {
             console.warn("Can't find ingredient at index ", oldIngredientId, " for edit");
             return;
@@ -257,86 +161,85 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                 foundIngredient.unit = ingredientExist.unit;
             }
         }
-        this.setRecipeIngredients(ingredientCopy);
-    };
+        setRecipeIngredients(ingredientCopy);
+    }
 
-    addNewIngredient = () => {
-        this.setRecipeIngredients(new Array(...this.state.recipeIngredients, {
+    function addNewIngredient() {
+        setRecipeIngredients([...recipeIngredients, {
             ingName: '',
             unit: '',
             quantity: "",
             type: ingredientType.undefined,
             season: []
-        }));
-    };
+        }]);
+    }
 
-    editPreparation = (oldPreparationId: number, newPreparation: string) => {
+    function editPreparation(oldPreparationId: number, newPreparation: string) {
 
-        if (oldPreparationId < 0 || oldPreparationId > this.state.recipePreparation.length) {
+        if (oldPreparationId < 0 || oldPreparationId > recipePreparation.length) {
             console.warn(`editPreparation:: Can't find old preparation at index: ${oldPreparationId}`);
             return;
         }
-        const newPreparationArray = new Array(...this.state.recipePreparation);
+        const newPreparationArray = new Array(...recipePreparation);
         newPreparationArray[oldPreparationId] = newPreparation;
-        this.setRecipePreparation(newPreparationArray);
-    };
+        setRecipePreparation(newPreparationArray);
+    }
 
-    addNewPreparationStep = () => {
-        this.setRecipePreparation([...this.state.recipePreparation, '']);
-    };
+    function addNewPreparationStep() {
+        setRecipePreparation([...recipePreparation, '']);
+    }
 
-    createRecipeFromStates = (): recipeTableElement => {
-        const {route} = this.props;
+    function createRecipeFromStates(): recipeTableElement {
         return {
-            id: (route.params.mode === 'readOnly' ? route.params.recipe.id : undefined),
-            image_Source: this.state.recipeImage,
-            title: this.state.recipeTitle,
-            description: this.state.recipeDescription,
-            tags: this.state.recipeTags,
-            persons: this.state.recipePersons,
-            ingredients: this.state.recipeIngredients,
-            season: this.state.recipeSeason,
-            preparation: this.state.recipePreparation,
-            time: this.state.recipeTime,
+            id: (props.mode === 'readOnly' ? props.recipe.id : undefined),
+            image_Source: recipeImage,
+            title: recipeTitle,
+            description: recipeDescription,
+            tags: recipeTags,
+            persons: recipePersons,
+            ingredients: recipeIngredients,
+            season: recipeSeason,
+            preparation: recipePreparation,
+            time: recipeTime,
         }
     }
-    ;
-    readOnlyValidation = async () => {
-        await RecipeDatabase.getInstance().addRecipeToShopping(this.createRecipeFromStates());
-        this.props.navigation.goBack();
-        await AsyncAlert("SUCCESSFULLY ADDED RECIPE TO SHOPPING LIST", `Recipe titled "${this.state.recipeTitle}" has been successfully added to the shopping list`, "Understood");
-    };
 
-    editValidation = async () => {
+    async function readOnlyValidation() {
+        await RecipeDatabase.getInstance().addRecipeToShopping(createRecipeFromStates());
+        navigation.goBack();
+        await AsyncAlert("SUCCESSFULLY ADDED RECIPE TO SHOPPING LIST", `Recipe titled "${recipeTitle}" has been successfully added to the shopping list`, "Understood");
+    }
+
+    async function editValidation() {
         // @ts-ignore No need to wait for clearCache
         FileGestion.getInstance().clearCache();
 
         // TODO add safety to this (we won't let the user do anything)
-        await RecipeDatabase.getInstance().editRecipe(this.createRecipeFromStates());
-        this.setStackMode(recipeStateType.readOnly);
-    };
+        await RecipeDatabase.getInstance().editRecipe(createRecipeFromStates());
+        setStackMode(recipeStateType.readOnly);
+    }
 
     // TODO checking if tags aren't in doublons
     // TODO checking if ingredients aren't in doublons
     //  TODO checking if persons, time or ingredients aren't null
     // TODO ingredient quantity shouldn't be null
-    addValidation = async () => {
+    async function addValidation() {
         const missingElem = new Array<string>();
 
         // TODO image not implemented
         // if (this.state.recipeImage.length == 0) {
         //     missingElem.push("an image");
         // }
-        if (this.state.recipeTitle.length == 0) {
+        if (recipeTitle.length == 0) {
             missingElem.push("a title");
         }
-        if (this.state.recipeIngredients.length == 0) {
+        if (recipeIngredients.length == 0) {
             missingElem.push("some ingredients");
         }
-        if (this.state.recipePreparation.length == 0) {
+        if (recipePreparation.length == 0) {
             missingElem.push("some instructions for the preparation");
         }
-        if (this.state.recipePersons == defaultValueNumber) {
+        if (recipePersons == defaultValueNumber) {
             missingElem.push("for how many persons this recipe is");
         }
 
@@ -345,8 +248,8 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
             // TODO avoid try/catch here
             try {
                 // TODO deal case where 2 recipes share the same title. Is it allowed ?
-                const newUri = await FileGestion.getInstance().saveRecipeImage(this.state.recipeImage, this.state.recipeTitle);
-                let recipeToAdd = this.createRecipeFromStates();
+                const newUri = await FileGestion.getInstance().saveRecipeImage(recipeImage, recipeTitle);
+                let recipeToAdd = createRecipeFromStates();
                 // TODO can't we get rid of this local variable and directly use the states ?
                 const uriSplit = (newUri as string).split("/");
                 recipeToAdd.image_Source = uriSplit[uriSplit.length - 1];
@@ -355,7 +258,7 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
                 FileGestion.getInstance().clearCache();
 
                 await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
-                this.props.navigation.goBack();
+                navigation.goBack();
                 await AsyncAlert("SUCCESSFULLY ADDED RECIPE TO DATABASE", `Recipe titled "${recipeToAdd.title}" has been successfully added to the database`, "Understood");
             } catch (error) {
                 console.warn("addValidation: Something went wrong when validating new recipe : ", error)
@@ -382,518 +285,423 @@ class Recipe extends React.Component<RecipeScreenProp, RecipeStates> {
             }
             await AsyncAlert(alertTitle, alertMsg, "Understood")
         }
+    }
 
-    };
-
-    openModalForField = (field: recipeColumnsNames) => {
-        const {navigation} = this.props;
-        navigation.navigate('Modal', {
-            arrImg: this.state.imgForOCR,
-            onSelectFunction: async (imgSelected: string) => {
-                this.fillOneField(await cropImage(imgSelected), field);
-            }
-        });
-    };
-
-
-    fillOneField = async (uri: string, field: recipeColumnsNames) => {
+    async function fillOneField(uri: string, field: recipeColumnsNames) {
         const newFieldData = await extractFieldFromImage(uri, field, {
-            recipePreparation: this.state.recipePreparation,
-            recipePersons: this.state.recipePersons,
-            recipeIngredients: this.state.recipeIngredients,
+            recipePreparation: recipePreparation,
+            recipePersons: recipePersons,
+            recipeIngredients: recipeIngredients,
         }, (msg) => {
             console.warn("OCR warning:", msg);
         });
 
         if (newFieldData.recipeImage) {
-            this.setRecipeImage(newFieldData.recipeImage);
+            setRecipeImage(newFieldData.recipeImage);
         }
         if (newFieldData.recipeTitle) {
-            this.setRecipeTitle(newFieldData.recipeTitle);
+            setRecipeTitle(newFieldData.recipeTitle);
         }
         if (newFieldData.recipeDescription) {
-            this.setRecipeDescription(newFieldData.recipeDescription);
+            setRecipeDescription(newFieldData.recipeDescription);
         }
         if (newFieldData.recipePreparation) {
-            this.setRecipePreparation(newFieldData.recipePreparation);
+            setRecipePreparation(newFieldData.recipePreparation);
         }
         if (newFieldData.recipePersons) {
-            this.setRecipePersons(newFieldData.recipePersons);
+            setRecipePersons(newFieldData.recipePersons);
         }
         if (newFieldData.recipeTime) {
-            this.setRecipeTime(newFieldData.recipeTime);
+            setRecipeTime(newFieldData.recipeTime);
         }
         if (newFieldData.recipeIngredients) {
-            this.setRecipeIngredients(newFieldData.recipeIngredients);
+            setRecipeIngredients(newFieldData.recipeIngredients);
         }
-    };
-
-
-    render() {
-        const {navigation} = this.props;
-
-        // TODO put this into a function ? useEffect ?
-        let validationButtonText: string;
-        let validationFunction: () => Promise<void>;
-
-        let titleAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
-        let descriptionAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
-        let personAddOrEditProps: RecipeNumberAddOrEditProps | undefined = undefined;
-        let timeAddOrEditProps: RecipeNumberAddOrEditProps | undefined = undefined;
-
-        let tagProps: RecipeTagProps;
-
-        let preparationProps: RecipeTextRenderProps;
-        let ingredientsProps: RecipeTextRenderProps;
-        switch (this.state.stackMode) {
-            case recipeStateType.readOnly:
-                validationButtonText = "Add this recipe to the menu";
-                validationFunction = this.readOnlyValidation;
-
-                tagProps = {
-                    type: 'readOnly', tagsList: extractTagsName(this.state.recipeTags),
-                };
-
-                preparationProps =
-                    {
-                        type: 'readOnly',
-                        text: this.state.recipePreparation,
-                        render: typoRender.SECTION
-                    } as RecipeTextRenderReadOnlyProps;
-                ingredientsProps = {
-                    type: 'readOnly',
-                    text: extractIngredientsNameWithQuantity(this.state.recipeIngredients),
-                    render: typoRender.ARRAY
-                } as RecipeTextRenderReadOnlyProps;
-                break;
-            case recipeStateType.edit:
-                validationButtonText = "Validate the recipe with these modifications";
-                validationFunction = this.editValidation;
-
-                titleAddOrEditProps = {
-                    editType: 'editable',
-                    textEditable: {style: titleBorder, value: this.state.recipeTitle},
-                    setTextToEdit: this.setRecipeTitle,
-                } as RecipeTextAddOrEditProps;
-
-                descriptionAddOrEditProps = {
-                    editType: 'editable',
-                    textEditable: {style: titleBorder, value: this.state.recipeDescription},
-                    setTextToEdit: this.setRecipeDescription,
-                } as RecipeTextAddOrEditProps;
-
-                personAddOrEditProps = {
-                    editType: 'editable',
-                    textEditable: {
-                        style: {...headerBorder, flex: 1, textAlign: "center"},
-                        value: this.state.recipePersons
-                    },
-                    editableViewStyle: screenViews.tabView,
-
-                    prefixText: {style: {...typoStyles.header, flex: 5}, value: 'This recipe is for : '},
-                    suffixText: {style: {...typoStyles.header, flex: 3}, value: ' persons'},
-                    setTextToEdit: this.setRecipePersons,
-                } as RecipeNumberAddOrEditProps;
-
-                tagProps = {
-                    type: 'addOrEdit',
-                    tagsList: extractTagsName(this.state.recipeTags),
-                    randomTags: this.state.randomTags.join(', '),
-                    addNewTag: this.addTag,
-                    removeTag: this.removeTag,
-                };
-
-                timeAddOrEditProps = {
-                    editType: 'editable',
-                    editableViewStyle: screenViews.tabView,
-
-                    prefixText: {
-                        style: {...typoStyles.header, flex: 7},
-                        value: 'Time to prepare the recipe :'
-                    },
-                    suffixText: {
-                        style: {...typoStyles.header, flex: 1},
-                        value: 'min',
-                    },
-
-                    textEditable: {
-                        style: {...headerBorder, flex: 1, textAlign: "center"},
-                        value: this.state.recipeTime
-                    },
-                    setTextToEdit: this.setRecipeTime,
-                } as RecipeNumberAddOrEditProps;
-
-                preparationProps = {
-                    type: 'addOrEdit',
-                    editType: 'editable',
-
-                    renderType: typoRender.SECTION,
-                    textEditable: this.state.recipePreparation,
-                    textEdited: this.editPreparation,
-                    addNewText: this.addNewPreparationStep,
-
-                    viewAddButton: {...screenViews.sectionView, ...viewButtonStyles.centeredView},
-                } as RecipeTextRenderAddOrEditProps;
-
-                ingredientsProps = {
-                    type: 'addOrEdit',
-                    editType: 'editable',
-                    prefixText: {style: typoStyles.title, value: 'Ingredients',},
-                    columnTitles: {
-                        column1: {style: {...typoStyles.header, flex: 2, textAlign: "center"}, value: 'Quantity'},
-                        column2: {style: {...typoStyles.header, flex: 1, textAlign: "center"}, value: 'Unit'},
-                        column3: {
-                            style: {...typoStyles.header, flex: 3, textAlign: "center", flexWrap: 'wrap'},
-                            value: 'Ingredient name'
-                        },
-                    },
-                    renderType: typoRender.ARRAY,
-                    textEditable: extractIngredientsNameWithQuantity(this.state.recipeIngredients),
-                    textEdited: this.editIngredients,
-                    addNewText: this.addNewIngredient,
-                    viewAddButton: viewButtonStyles.centeredView,
-                } as RecipeTextRenderAddOrEditProps;
-                break;
-            case recipeStateType.addManual:
-                validationButtonText = "Add this new recipe";
-                validationFunction = this.addValidation;
-
-                titleAddOrEditProps = {
-                    editType: 'editable',
-                    textEditable: {style: titleBorder, value: this.state.recipeTitle},
-                    setTextToEdit: this.setRecipeTitle,
-                } as RecipeTextAddOrEditProps;
-
-                descriptionAddOrEditProps = {
-                    editType: 'editable',
-                    textEditable: {style: titleBorder, value: this.state.recipeDescription},
-                    setTextToEdit: this.setRecipeDescription,
-                } as RecipeTextAddOrEditProps;
-
-                personAddOrEditProps = {
-                    editType: 'editable',
-                    textEditable: {
-                        style: {...headerBorder, flex: 1, textAlign: "center"},
-                        value: this.state.recipePersons
-                    },
-                    editableViewStyle: screenViews.tabView,
-
-                    prefixText: {style: {...typoStyles.header, flex: 5}, value: 'This recipe is for : '},
-                    suffixText: {style: {...typoStyles.header, flex: 3}, value: ' persons'},
-                    setTextToEdit: this.setRecipePersons,
-                } as RecipeNumberAddOrEditProps;
-
-                tagProps = {
-                    type: 'addOrEdit',
-                    tagsList: extractTagsName(this.state.recipeTags),
-                    randomTags: this.state.randomTags.join(', '),
-                    addNewTag: this.addTag,
-                    removeTag: this.removeTag,
-                };
-
-                timeAddOrEditProps = {
-                    editType: 'editable',
-                    editableViewStyle: screenViews.tabView,
-
-                    prefixText: {
-                        style: {...typoStyles.header, flex: 7},
-                        value: 'Time to prepare the recipe :'
-                    },
-                    suffixText: {
-                        style: {...typoStyles.header, flex: 1},
-                        value: 'min',
-                    },
-
-                    textEditable: {
-                        style: {...headerBorder, flex: 1, textAlign: "center"},
-                        value: this.state.recipeTime
-                    },
-                    setTextToEdit: this.setRecipeTime,
-                } as RecipeNumberAddOrEditProps;
-
-                preparationProps = {
-                    type: 'addOrEdit',
-                    editType: 'editable',
-
-                    renderType: typoRender.SECTION,
-                    textEditable: this.state.recipePreparation,
-                    textEdited: this.editPreparation,
-                    addNewText: this.addNewPreparationStep,
-
-                    viewAddButton: {...screenViews.sectionView, ...viewButtonStyles.centeredView},
-                } as RecipeTextRenderAddOrEditProps;
-
-                ingredientsProps = {
-                    type: 'addOrEdit',
-                    editType: 'editable',
-                    prefixText: {style: typoStyles.title, value: 'Ingredients',},
-                    columnTitles: {
-                        column1: {style: {...typoStyles.header, flex: 2, textAlign: "center"}, value: 'Quantity'},
-                        column2: {style: {...typoStyles.header, flex: 1, textAlign: "center"}, value: 'Unit'},
-                        column3: {
-                            style: {...typoStyles.header, flex: 3, textAlign: "center", flexWrap: 'wrap'},
-                            value: 'Ingredient name'
-                        },
-                    },
-                    renderType: typoRender.ARRAY,
-                    textEditable: extractIngredientsNameWithQuantity(this.state.recipeIngredients),
-                    textEdited: this.editIngredients,
-                    addNewText: this.addNewIngredient,
-                    viewAddButton: viewButtonStyles.centeredView,
-                } as RecipeTextRenderAddOrEditProps;
-                break;
-            case recipeStateType.addOCR:
-                validationButtonText = "Add this new recipe";
-                validationFunction = this.addValidation;
-
-                if (this.state.recipeTitle.length == 0) {
-                    titleAddOrEditProps = {
-                        editType: 'add',
-                        flex: 1,
-                        openModal: () => this.openModalForField(recipeColumnsNames.title),
-                    } as RecipeTextAddOrEditProps;
-                } else {
-                    titleAddOrEditProps = {
-                        editType: 'editable',
-                        textEditable: {style: titleBorder, value: this.state.recipeTitle},
-                        setTextToEdit: this.setRecipeTitle,
-                    } as RecipeTextAddOrEditProps;
-                }
-                if (this.state.recipeDescription.length == 0) {
-                    descriptionAddOrEditProps = {
-                        editType: 'add',
-                        flex: 1,
-                        openModal: () => this.openModalForField(recipeColumnsNames.description),
-                    } as RecipeTextAddOrEditProps;
-                } else {
-                    descriptionAddOrEditProps = {
-                        editType: 'editable',
-                        textEditable: {style: titleBorder, value: this.state.recipeDescription},
-                        setTextToEdit: this.setRecipeDescription,
-                    } as RecipeTextAddOrEditProps;
-                }
-                if (this.state.recipePersons == 0) {
-                    personAddOrEditProps = {
-                        editType: 'add',
-                        editableViewStyle: screenViews.tabView,
-                        textEditableStyle: {...headerBorder, flex: 1, textAlign: "center"},
-                        flex: 6,
-                        alignItems: 'flex-start',
-
-                        prefixText: {style: {...typoStyles.header, flex: 5}, value: 'This recipe is for : '},
-                        suffixText: {style: {...typoStyles.header, flex: 3}, value: ' persons'},
-
-                        openModal: () => this.openModalForField(recipeColumnsNames.persons),
-                    } as RecipeTextAddProps;
-                } else {
-                    personAddOrEditProps = {
-                        editType: 'editable',
-                        textEditable: {
-                            style: {...headerBorder, flex: 1, textAlign: "center"},
-                            value: this.state.recipePersons
-                        },
-                        editableViewStyle: screenViews.tabView,
-
-                        prefixText: {style: {...typoStyles.header, flex: 5}, value: 'This recipe is for : '},
-                        suffixText: {style: {...typoStyles.header, flex: 3}, value: ' persons'},
-                        setTextToEdit: this.setRecipePersons,
-                    } as RecipeNumberAddOrEditProps;
-                }
-
-                tagProps = {
-                    type: 'addOrEdit', tagsList: extractTagsName(this.state.recipeTags),
-                    randomTags: this.state.randomTags.join(', '),
-                    addNewTag: this.addTag,
-                    removeTag: this.removeTag,
-                };
-
-                if (this.state.recipeTime == defaultValueNumber) {
-                    timeAddOrEditProps = {
-                        editType: 'add',
-                        editableViewStyle: screenViews.tabView,
-
-                        prefixText: {
-                            style: {...typoStyles.header, flex: 6},
-                            value: 'Time to prepare the recipe : '
-                        },
-                        flex: 3, alignItems: 'flex-start',
-
-                        openModal: () => this.openModalForField(recipeColumnsNames.time),
-                    } as RecipeNumberAddOrEditProps;
-                } else {
-                    timeAddOrEditProps = {
-                        editType: 'editable',
-                        editableViewStyle: screenViews.tabView,
-
-                        prefixText: {
-                            style: {...typoStyles.header, flex: 6},
-                            value: 'Time to prepare the recipe : '
-                        },
-                        suffixText: {
-                            style: {...typoStyles.header, flex: 1},
-                            value: 'min',
-                        },
-
-                        renderType: typoRender.ARRAY,
-                        textEditable: {
-                            style: {...headerBorder, flex: 1, textAlign: "center"},
-                            value: this.state.recipeTime
-                        },
-                        setTextToEdit: this.setRecipeTime,
-                    } as RecipeNumberAddOrEditProps;
-                }
-                if (this.state.recipePreparation.length == 0) {
-                    preparationProps = {
-                        type: 'addOrEdit',
-                        editType: 'add',
-                        viewAddButton: {...screenViews.sectionView, ...viewButtonStyles.centeredView},
-                        openModal: () => this.openModalForField(recipeColumnsNames.preparation),
-                    } as RecipeTextRenderAddOrEditProps;
-                } else {
-                    preparationProps = {
-                        type: 'addOrEdit',
-                        editType: 'editable',
-
-                        renderType: typoRender.SECTION,
-                        textEditable: this.state.recipePreparation,
-                        textEdited: this.editPreparation,
-                        addNewText: this.addNewPreparationStep,
-
-                        viewAddButton: {...screenViews.sectionView, ...viewButtonStyles.centeredView},
-                    } as RecipeTextRenderAddOrEditProps;
-                }
-                if (this.state.recipeIngredients.length == 0) {
-                    ingredientsProps = {
-                        type: 'addOrEdit',
-                        editType: 'add',
-                        prefixText: {style: typoStyles.title, value: 'Ingredients',},
-                        viewAddButton: viewButtonStyles.centeredView,
-                        openModal: () => this.openModalForField(recipeColumnsNames.ingredients),
-                    } as RecipeTextRenderAddOrEditProps;
-                } else {
-                    ingredientsProps = {
-                        type: 'addOrEdit',
-                        editType: 'editable',
-                        prefixText: {style: typoStyles.title, value: 'Ingredients',},
-                        columnTitles: {
-                            column1: {style: {...typoStyles.header, flex: 2, textAlign: "center"}, value: 'Quantity'},
-                            column3: {style: {...typoStyles.header, flex: 1, textAlign: "center"}, value: 'Unit'},
-                            column2: {
-                                style: {...typoStyles.header, flex: 3, textAlign: "center", flexWrap: 'wrap'},
-                                value: 'Ingredient name'
-                            },
-                        },
-
-                        textEditable: extractIngredientsNameWithQuantity(this.state.recipeIngredients),
-                        textEdited: this.editIngredients,
-                        addNewText: this.addNewIngredient,
-                        viewAddButton: viewButtonStyles.centeredView,
-                    } as RecipeTextRenderAddOrEditProps;
-                }
-                break;
-        }
-
-        return (
-            <SafeAreaView style={screenViews.screenView} key={this.state.forceUpdateKey}>
-                <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
-                            style={scrollView(rectangleButtonHeight).view} keyboardShouldPersistTaps={"handled"}
-                            nestedScrollEnabled={true}>
-                    <StatusBar animated={true} backgroundColor={palette.primary}/>
-
-                    {/*Image*/}
-                    <RecipeImage testID={'RecipeImage'} imgUri={this.state.recipeImage}
-                                 addProps={(this.state.stackMode == recipeStateType.addOCR && this.state.recipeImage.length == 0) ?
-                                     {setImgUri: this.setRecipeImage, openModal: this.openModalForField} : undefined}/>
-
-                    {/*Title*/}
-                    <RecipeText testID={'RecipeTitle'}
-                                rootText={{
-                                    style: (this.state.stackMode == recipeStateType.readOnly ? typoStyles.title : typoStyles.header),
-                                    value: (this.state.stackMode == recipeStateType.readOnly ? this.state.recipeTitle : 'Title of the recipe : ')
-                                }}
-                                addOrEditProps={titleAddOrEditProps}/>
-
-                    {/*Description*/}
-                    <RecipeText testID={'RecipeDescription'}
-                                rootText={{
-                                    style: (this.state.stackMode == recipeStateType.readOnly ? typoStyles.paragraph : typoStyles.header),
-                                    value: (this.state.stackMode == recipeStateType.readOnly ? this.state.recipeDescription : 'Description of the recipe : ')
-                                }}
-                                addOrEditProps={descriptionAddOrEditProps}/>
-
-                    {/*Tags*/}
-                    <RecipeTags {...tagProps} testID={'RecipeTags'}/>
-
-                    {/*Persons*/}
-                    <RecipeNumber testID={'RecipePersons'}
-                                  rootText={this.state.stackMode == recipeStateType.readOnly ? {
-                                      style: typoStyles.title,
-                                      value: `Ingredients (${this.state.recipePersons} persons)`
-                                  } : undefined} addOrEditProps={personAddOrEditProps}/>
-
-                    {/*Ingredients*/}
-                    {/*TODO quantity shall be keyboard number*/}
-                    <RecipeTextRender {...ingredientsProps} testID={'RecipeIngredients'}/>
-
-                    {/* TODO let the possibility to add another time in picture */}
-                    {/*Time*/}
-                    <RecipeNumber testID={'RecipeTime'}
-                                  rootText={this.state.stackMode == recipeStateType.readOnly ?
-                                      {
-                                          style: typoStyles.title,
-                                          value: `Preparation (${this.state.recipeTime} min)`,
-                                      } : undefined}
-                                  addOrEditProps={timeAddOrEditProps}/>
-
-                    {/*Preparation*/}
-                    <RecipeTextRender {...preparationProps} testID={'RecipePreparation'}/>
-
-                    {/* Add some space to avoid miss clicking */}
-                    <View style={{paddingVertical: LargeButtonDiameter / 2}}/>
-
-                    {/* TODO add nutrition */}
-                </ScrollView>
-                {/*TODO add a generic component to tell which bottom button we want*/}
-                <BottomTopButton testID={'BackButton'} as={RoundButton} position={bottomTopPosition.top_left}
-                                 buttonOffset={0}
-                                 onPressFunction={() => navigation.goBack()} diameter={LargeButtonDiameter} icon={{
-                    type: enumIconTypes.materialCommunity,
-                    name: backIcon,
-                    size: iconsSize.medium,
-                    color: "#414a4c"
-                }}/>
-
-                {this.state.stackMode == recipeStateType.readOnly ?
-                    <>
-                        <BottomTopButton testID={'RecipeDelete'} as={RoundButton}
-                                         position={bottomTopPosition.top_right}
-                                         buttonOffset={0}
-                                         onPressFunction={() => this.onDelete()}
-                                         diameter={LargeButtonDiameter} icon={{
-                            type: enumIconTypes.materialCommunity,
-                            name: trashIcon,
-                            size: iconsSize.medium,
-                            color: "#414a4c"
-                        }}/>
-                        <BottomTopButton testID={'RecipeEdit'} as={RoundButton}
-                                         position={bottomTopPosition.bottom_right}
-                                         buttonOffset={BottomTopButtonOffset}
-                                         onPressFunction={() => this.setStackMode(recipeStateType.edit)}
-                                         diameter={LargeButtonDiameter} icon={{
-                            type: enumIconTypes.materialCommunity,
-                            name: pencilIcon,
-                            size: iconsSize.medium,
-                            color: "#414a4c"
-                        }}/>
-                    </>
-                    : null}
-
-                <BottomTopButton testID={'RecipeValidate'} as={RectangleButton} position={bottomTopPosition.bottom_full}
-                                 centered={true}
-                                 text={validationButtonText} onPressFunction={async () => await validationFunction()}/>
-            </SafeAreaView>
-        )
     }
-}
 
-export default Recipe;
+    function openModalForField(field: recipeColumnsNames) {
+        setModalField(field);
+    }
+
+    let validationButtonText: string;
+    let validationFunction: () => Promise<void>;
+
+    const imgProps: RecipeImageProps = {
+        testID: 'RecipeImage',
+        imgUri: recipeImage,
+        openModal: openModalForField
+    };
+    let titleAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
+    let descriptionAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
+    let personProps: RecipeNumberReadAddOrEditProps;
+    let timeProps: RecipeNumberReadAddOrEditProps;
+
+    let tagProps: RecipeTagProps;
+
+    let preparationProps: RecipeTextRenderProps;
+    let ingredientsProps: RecipeTextRenderProps;
+    switch (stackMode) {
+        case recipeStateType.readOnly:
+            validationButtonText = "Add this recipe to the menu";
+            validationFunction = readOnlyValidation;
+
+            tagProps = {
+                type: 'readOnly', tagsList: extractTagsName(recipeTags),
+            };
+
+            preparationProps =
+                {
+                    type: 'readOnly',
+                    text: recipePreparation,
+                    render: typoRender.SECTION
+                } as RecipeTextRenderReadOnlyProps;
+            ingredientsProps = {
+                type: 'readOnly',
+                text: extractIngredientsNameWithQuantity(recipeIngredients),
+                render: typoRender.ARRAY
+            } as RecipeTextRenderReadOnlyProps;
+
+            timeProps = {
+                editType: 'read',
+                text: `Preparation (${recipeTime} min)`
+            };
+            personProps = {
+                editType: 'read',
+                text: `Ingredients (${recipePersons} persons)`
+            };
+            break;
+        case recipeStateType.edit:
+            validationButtonText = "Validate the recipe with these modifications";
+            validationFunction = editValidation;
+
+            imgProps.buttonIcon = Icons.cameraIcon;
+
+            titleAddOrEditProps = {
+                editType: 'editable',
+                textEditable: recipeTitle,
+                setTextToEdit: setRecipeTitle,
+            } as RecipeTextAddOrEditProps;
+
+            descriptionAddOrEditProps = {
+                editType: 'editable',
+                textEditable: recipeDescription,
+                setTextToEdit: setRecipeDescription,
+            } as RecipeTextAddOrEditProps;
+
+            personProps = {
+                editType: 'editable',
+                textEditable: recipePersons,
+                prefixText: 'This recipe is for : ',
+                suffixText: ' persons',
+                setTextToEdit: setRecipePersons,
+            } as RecipeNumberAddOrEditProps;
+
+            tagProps = {
+                type: 'addOrEdit',
+                tagsList: extractTagsName(recipeTags),
+                randomTags: randomTags.join(', '),
+                addNewTag: addTag,
+                removeTag: removeTag,
+            };
+
+            timeProps = {
+                editType: 'editable',
+                prefixText: 'Time to prepare the recipe :',
+                suffixText: 'min',
+                textEditable: recipeTime,
+                setTextToEdit: setRecipeTime,
+            } as RecipeNumberAddOrEditProps;
+
+            preparationProps = {
+                type: 'addOrEdit',
+                editType: 'editable',
+
+                renderType: typoRender.SECTION,
+                textEditable: recipePreparation,
+                textEdited: editPreparation,
+                addNewText: addNewPreparationStep,
+
+                viewAddButton: {...screenViews.sectionView, ...viewButtonStyles.centeredView},
+            } as RecipeTextRenderAddOrEditProps;
+
+            ingredientsProps = {
+                type: 'addOrEdit',
+                editType: 'editable',
+                prefixText: 'Ingredients',
+                columnTitles: {
+                    column1: 'Quantity',
+                    column2: 'Unit',
+                    column3: 'Ingredient name',
+                },
+                renderType: typoRender.ARRAY,
+                textEditable: extractIngredientsNameWithQuantity(recipeIngredients),
+                textEdited: editIngredients,
+                addNewText: addNewIngredient,
+                viewAddButton: viewButtonStyles.centeredView,
+            } as RecipeTextRenderAddOrEditProps;
+            break;
+        case recipeStateType.addManual:
+            validationButtonText = "Add this new recipe";
+            validationFunction = addValidation;
+
+            imgProps.buttonIcon = Icons.cameraIcon;
+            titleAddOrEditProps = {
+                editType: 'editable',
+                textEditable: recipeTitle,
+                setTextToEdit: setRecipeTitle,
+            } as RecipeTextAddOrEditProps;
+
+            descriptionAddOrEditProps = {
+                editType: 'editable',
+                textEditable: recipeDescription,
+                setTextToEdit: setRecipeDescription,
+            } as RecipeTextAddOrEditProps;
+
+            personProps = {
+                editType: 'editable',
+                textEditable: recipePersons,
+                prefixText: 'This recipe is for : ',
+                suffixText: ' persons',
+                setTextToEdit: setRecipePersons,
+            } as RecipeNumberAddOrEditProps;
+
+            tagProps = {
+                type: 'addOrEdit',
+                tagsList: extractTagsName(recipeTags),
+                randomTags: randomTags.join(', '),
+                addNewTag: addTag,
+                removeTag: removeTag,
+            };
+
+            timeProps = {
+                editType: 'editable',
+                prefixText: 'Time to prepare the recipe :',
+                suffixText: 'min',
+                textEditable: recipeTime,
+                setTextToEdit: setRecipeTime,
+            } as RecipeNumberAddOrEditProps;
+
+            preparationProps = {
+                type: 'addOrEdit',
+                editType: 'editable',
+
+                renderType: typoRender.SECTION,
+                textEditable: recipePreparation,
+                textEdited: editPreparation,
+                addNewText: addNewPreparationStep,
+            };
+
+            ingredientsProps = {
+                type: 'addOrEdit',
+                editType: 'editable',
+                prefixText: 'Ingredients',
+                columnTitles: {
+                    column1: 'Quantity',
+                    column2: 'Unit',
+                    column3: 'Ingredient name'
+                },
+                renderType: typoRender.ARRAY,
+                textEditable: extractIngredientsNameWithQuantity(recipeIngredients),
+                textEdited: editIngredients,
+                addNewText: addNewIngredient,
+            } as RecipeTextRenderAddOrEditProps;
+            break;
+        case recipeStateType.addOCR:
+            validationButtonText = "Add this new recipe";
+            validationFunction = addValidation;
+
+            imgProps.buttonIcon = Icons.scanImageIcon;
+
+            if (recipeTitle.length == 0) {
+                titleAddOrEditProps = {
+                    editType: 'add',
+                    flex: 1,
+                    openModal: () => openModalForField(recipeColumnsNames.title),
+                } as RecipeTextAddOrEditProps;
+            } else {
+                titleAddOrEditProps = {
+                    editType: 'editable',
+                    textEditable: recipeTitle,
+                    setTextToEdit: setRecipeTitle,
+                } as RecipeTextAddOrEditProps;
+            }
+            if (recipeDescription.length == 0) {
+                descriptionAddOrEditProps = {
+                    editType: 'add',
+                    flex: 1,
+                    openModal: () => openModalForField(recipeColumnsNames.description),
+                } as RecipeTextAddOrEditProps;
+            } else {
+                descriptionAddOrEditProps = {
+                    editType: 'editable',
+                    textEditable: recipeDescription,
+                    setTextToEdit: setRecipeDescription,
+                } as RecipeTextAddOrEditProps;
+            }
+            if (recipePersons == defaultValueNumber) {
+                personProps = {
+                    editType: 'add',
+                    prefixText: 'This recipe is for : ',
+                    suffixText: ' persons',
+
+                    openModal: () => openModalForField(recipeColumnsNames.persons),
+                } as RecipeNumberAddOrEditProps;
+            } else {
+                personProps = {
+                    editType: 'editable',
+                    textEditable: recipePersons,
+
+                    prefixText: 'This recipe is for : ',
+                    suffixText: ' persons',
+                    setTextToEdit: setRecipePersons,
+                } as RecipeNumberAddOrEditProps;
+            }
+
+            tagProps = {
+                type: 'addOrEdit', tagsList: extractTagsName(recipeTags),
+                randomTags: randomTags.join(', '),
+                addNewTag: addTag,
+                removeTag: removeTag,
+            };
+
+            if (recipeTime == defaultValueNumber) {
+                timeProps = {
+                    editType: 'add',
+                    prefixText: 'Time to prepare the recipe : ',
+                    suffixText: ' min',
+                    openModal: () => openModalForField(recipeColumnsNames.time),
+                } as RecipeNumberAddOrEditProps;
+            } else {
+                timeProps = {
+                    editType: 'editable',
+                    prefixText: 'Time to prepare the recipe : ',
+                    suffixText: 'min',
+
+                    textEditable: recipeTime,
+                    setTextToEdit: setRecipeTime,
+                } as RecipeNumberAddOrEditProps;
+            }
+            if (recipePreparation.length == 0) {
+                preparationProps = {
+                    type: 'addOrEdit',
+                    editType: 'add',
+                    openModal: () => openModalForField(recipeColumnsNames.preparation),
+                } as RecipeTextRenderAddOrEditProps;
+            } else {
+                preparationProps = {
+                    type: 'addOrEdit',
+                    editType: 'editable',
+
+                    renderType: typoRender.SECTION,
+                    textEditable: recipePreparation,
+                    textEdited: editPreparation,
+                    addNewText: addNewPreparationStep,
+
+                    viewAddButton: {...screenViews.sectionView, ...viewButtonStyles.centeredView},
+                } as RecipeTextRenderAddOrEditProps;
+            }
+            if (recipeIngredients.length == 0) {
+                ingredientsProps = {
+                    type: 'addOrEdit',
+                    editType: 'add',
+                    prefixText: 'Ingredients',
+                    openModal: () => openModalForField(recipeColumnsNames.ingredients),
+                } as RecipeTextRenderAddOrEditProps;
+            } else {
+                ingredientsProps = {
+                    type: 'addOrEdit',
+                    editType: 'editable',
+                    prefixText: 'Ingredients',
+                    columnTitles: {
+                        column1: 'Quantity',
+                        column3: 'Unit',
+                        column2: 'Ingredient name',
+                    },
+                    textEditable: extractIngredientsNameWithQuantity(recipeIngredients),
+                    textEdited: editIngredients,
+                    addNewText: addNewIngredient,
+                } as RecipeTextRenderAddOrEditProps;
+            }
+            break;
+    }
+
+    return (
+        <SafeAreaView style={{backgroundColor: colors.background}}>
+            <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
+                        style={scrollView(rectangleButtonHeight).view} keyboardShouldPersistTaps={"handled"}
+                        nestedScrollEnabled={true}>
+
+                {/*Image*/}
+                <RecipeImage {...imgProps}/>
+
+                {/*Title*/}
+                <RecipeText testID={'RecipeTitle'}
+                            rootText={{
+                                style: stackMode == recipeStateType.readOnly ? 'headline' : 'title',
+                                value: stackMode == recipeStateType.readOnly ? recipeTitle : 'Title:'
+                            }}
+                            addOrEditProps={titleAddOrEditProps}/>
+
+                {/*Description*/}
+                <RecipeText testID={'RecipeDescription'}
+                            rootText={{
+                                style: stackMode == recipeStateType.readOnly ? 'paragraph' : 'title',
+                                value: (stackMode == recipeStateType.readOnly ? recipeDescription : 'Description:')
+                            }}
+                            addOrEditProps={descriptionAddOrEditProps}/>
+
+                {/*Tags*/}
+                <RecipeTags {...tagProps} testID={'RecipeTags'}/>
+
+                {/*Persons*/}
+                <RecipeNumber testID={'RecipePersons'} numberProps={personProps}/>
+
+                {/*Ingredients*/}
+                {/*TODO quantity shall be keyboard number*/}
+                <RecipeTextRender {...ingredientsProps} testID={'RecipeIngredients'}/>
+
+                {/* TODO let the possibility to add another time in picture */}
+                {/*Time*/}
+                <RecipeNumber testID={'RecipeTime'} numberProps={timeProps}/>
+
+                {/*Preparation*/}
+                <RecipeTextRender {...preparationProps} testID={'RecipePreparation'}/>
+
+                {/* Add some space to avoid miss clicking */}
+                <View style={{paddingVertical: LargeButtonDiameter / 2}}/>
+
+                {/* TODO add nutrition */}
+            </ScrollView>
+            {/*TODO add a generic component to tell which bottom button we want*/}
+            <BottomTopButton testID={'BackButton'} as={RoundButton} position={bottomTopPosition.top_left}
+                             buttonOffset={0} size={"medium"}
+                             onPressFunction={() => navigation.goBack()} icon={Icons.backIcon}/>
+
+            {stackMode == recipeStateType.readOnly ?
+                <>
+                    <BottomTopButton testID={'RecipeDelete'} as={RoundButton}
+                                     position={bottomTopPosition.top_right}
+                                     buttonOffset={0}
+                                     onPressFunction={() => onDelete()}
+                                     size={"medium"} icon={Icons.trashIcon}/>
+                    <BottomTopButton testID={'RecipeEdit'} as={RoundButton}
+                                     position={bottomTopPosition.bottom_right}
+                                     buttonOffset={BottomTopButtonOffset}
+                                     onPressFunction={() => setStackMode(recipeStateType.edit)}
+                                     size={"medium"} icon={Icons.pencilIcon}/>
+                </>
+                : null}
+
+            <BottomTopButton testID={'RecipeValidate'} as={RectangleButton} position={bottomTopPosition.bottom_full}
+                             text={validationButtonText} centered={true} border={false}
+                             onPressFunction={async () => await validationFunction()}/>
+            {modalField ? <ModalImageSelect arrImg={imgForOCR} onSelectFunction={async (imgSelected: string) => {
+                const croppedUri = await cropImage(imgSelected, colors);
+                if (croppedUri.length > 0) {
+                    fillOneField(croppedUri, modalField);
+                    setModalField(undefined);
+                }
+            }} onDismissFunction={() => setModalField(undefined)}/> : null}
+        </SafeAreaView>
+    )
+}

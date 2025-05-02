@@ -1,8 +1,7 @@
-import {cameraPalette, palette} from './colors'
-import EStyleSheet from 'react-native-extended-stylesheet'
+import {palette} from './colors'
 import {padding} from './spacing'
 import {useFonts} from "expo-font";
-
+import {StyleSheet} from "react-native";
 
 export const textSeparator = "--";
 export const unitySeparator = "@@";
@@ -32,10 +31,10 @@ const typoFamily = {
 };
 
 export const typoSize = {
-    element: "10rem",
-    paragraphSize: "14rem",
-    headerSize: "18rem",
-    titleSize: "22rem",
+    element: 10,
+    paragraphSize: 14,
+    headerSize: 18,
+    titleSize: 22,
 };
 
 export enum typoRender {
@@ -55,23 +54,19 @@ export type editableText = {
     onChangeFunction(oldValueId: number, newParam: string): void,
 }
 
-export const borderStyle = EStyleSheet.create({
+export const borderStyle = StyleSheet.create({
     border: {
         borderWidth: 2,
-        color: palette.textPrimary,
-        borderColor: palette.secondary,
-        backgroundColor: palette.white,
     }
 });
 
-export const typoStyles = EStyleSheet.create({
+export const typoStyles = StyleSheet.create({
     element: {
         color: palette.textGrey,
         fontFamily: typoFamily.normal,
         fontSize: typoSize.element,
         fontWeight: 'normal',
         textAlign: 'left',
-        paddingHorizontal: padding.large,
     },
     paragraph: {
         color: palette.textPrimary,
@@ -79,8 +74,6 @@ export const typoStyles = EStyleSheet.create({
         fontSize: typoSize.paragraphSize,
         fontWeight: 'normal',
         textAlign: 'left',
-        paddingHorizontal: padding.veryLarge,
-        paddingVertical: padding.verySmall,
     },
     header: {
         color: palette.textPrimary,
@@ -88,7 +81,6 @@ export const typoStyles = EStyleSheet.create({
         fontSize: typoSize.headerSize,
         fontWeight: 'bold',
         textAlign: 'left',
-        padding: padding.medium,
     },
     title: {
         color: palette.textPrimary,
@@ -96,7 +88,7 @@ export const typoStyles = EStyleSheet.create({
         fontSize: typoSize.titleSize,
         fontWeight: 'bold',
         textAlign: 'left',
-        padding: padding.medium,
+        padding: padding.small,
     },
     searchBar: {
         color: palette.textPrimary,
@@ -116,12 +108,7 @@ export const typoStyles = EStyleSheet.create({
     }
 });
 
-export const elementBorder = EStyleSheet.flatten([typoStyles.element, borderStyle.border]);
-export const paragraphBorder = EStyleSheet.flatten([typoStyles.paragraph, borderStyle.border]);
-export const headerBorder = EStyleSheet.flatten([typoStyles.header, borderStyle.border]);
-export const titleBorder = EStyleSheet.flatten([typoStyles.title, borderStyle.border]);
-
-export const carouselStyle = (length: number) => EStyleSheet.create({
+export const carouselStyle = (length: number) => StyleSheet.create({
     carouselTitle: {
         color: palette.textPrimary,
         fontFamily: typoFamily.normal,
@@ -130,9 +117,9 @@ export const carouselStyle = (length: number) => EStyleSheet.create({
         textAlign: 'left',
         marginHorizontal: (length / 2),
     }
-})
+});
 
-export const searchBarStyle = EStyleSheet.create({
+export const searchBarStyle = StyleSheet.create({
     searchBarView: {
         marginTop: padding.extraLarge,
         marginHorizontal: padding.medium,
@@ -153,7 +140,7 @@ export const searchBarStyle = EStyleSheet.create({
     }
 });
 
-export const rowTextStyle = EStyleSheet.create({
+export const rowTextStyle = StyleSheet.create({
     leftText: {
         textAlign: "left",
         flex: 2,
@@ -171,11 +158,3 @@ export const rowTextStyle = EStyleSheet.create({
         fontWeight: 'normal',
     },
 });
-
-export const cropText = EStyleSheet.create({
-    overlay: {
-        textTransform: 'uppercase',
-        color: cameraPalette.buttonsColor,
-        textAlign: 'center'
-    },
-})

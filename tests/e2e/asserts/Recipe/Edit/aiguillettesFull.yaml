@@ -27,6 +27,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "󰐕"
     label: Add tag button icons is displayed
+- swipe:
+    start: "50%,40%"
+    end: "50%,60%"
+    label: Swipe up to see other items
 - assertVisible:
     id: "RecipePreparation::2::InputParagraph"
     text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
@@ -195,7 +199,7 @@ appId: "com.recipesmanager"
     end: "50%,60%"
     label: Swipe up to see other items
 - assertVisible:
-    id: "RecipeTags::RoundButton"
+    id: "RecipeTags::RoundButton-content"
     label: Add tag button is displayed
 - assertVisible:
     text: "󰐕"
@@ -229,11 +233,11 @@ appId: "com.recipesmanager"
     label: Explanation text id for the tags is displayed with the correct text
 - assertVisible:
     id: "RecipeTags::AddOrEdit::HeaderText"
-    text: "Tags of the recipe : "
+    text: "Tags:"
     label: Header text id for the tags is displayed with the correct text
 - swipe:
-    start: "50%,40%"
-    end: "50%,60%"
+    start: "50%,30%"
+    end: "50%,70%"
     label: Swipe up to see other items
 - assertVisible:
     id: "RecipeDescription::TextInput"
@@ -242,18 +246,18 @@ appId: "com.recipesmanager"
     \ !"
     label: Description TextInput is displayed with the correct text
 - assertVisible:
-    text: "Description of the recipe : "
+    text: "Description:"
     label: Description Title id is displayed with the correct text
 - swipe:
-    start: "50%,30%"
-    end: "50%,70%"
+    start: "50%,20%"
+    end: "50%,80%"
     label: Swipe up to see other items
 - assertVisible:
     id: "RecipeTitle::TextInput"
     text: "Aiguillettes de poulet a la sauce satay"
     label: Title TextInput is displayed with its text
 - assertVisible:
-    text: "Title of the recipe : "
+    text: "Title:"
     label: Title introduction text is displayed
 - assertVisible:
     id: "RecipeImage"

@@ -26,6 +26,10 @@ appId: "com.recipesmanager"
     \ UNE SAUCE SATAY MAISON: UN CONDIMENT ASIATIQUE A BASE DE CACAHUETES ET GINGEMBRE\
     \ !"
     label: Description text is displayed
+- swipe:
+    start: "50%,60%"
+    end: "50%,40%"
+    label: Swipe down to see other items
 - assertVisible:
     id: "chip"
     index: 0
@@ -92,6 +96,10 @@ appId: "com.recipesmanager"
     \ et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\n\
     Salez, poivrez. Mixez jusqu'a obtenir une texture homogene."
     label: Second preparation paragraph is are displayed
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "3) LA CUISSON DU POULET"
     label: Third preparation title is are displayed

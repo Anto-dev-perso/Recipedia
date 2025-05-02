@@ -1,7 +1,9 @@
-jest.mock('react-native-image-crop-picker', () => require('@mocks/deps/image-crop-picker-mock').imageCropPickerMock());
-
 import {cropImage, pickImage, takePhoto} from '@utils/ImagePicker';
 import {openCamera, openCropper, openPicker} from 'react-native-image-crop-picker'
+import {lightTheme} from "@styles/theme";
+import {MD3Colors} from "react-native-paper/lib/typescript/types";
+
+jest.mock('react-native-image-crop-picker', () => require('@mocks/deps/image-crop-picker-mock').imageCropPickerMock());
 
 
 describe('ImagePicker Utility Functions', () => {
@@ -19,6 +21,7 @@ describe('ImagePicker Utility Functions', () => {
     };
 
     const cropUri = "dummy-uri";
+    const colors = lightTheme.colors as MD3Colors;
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -28,7 +31,7 @@ describe('ImagePicker Utility Functions', () => {
         test(' when permission is granted and user select an image', async () => {
             (openPicker as jest.Mock).mockResolvedValue(mockResponsePickOK);
 
-            const result = await pickImage();
+            const result = await pickImage(colors);
 
             expect(openPicker).toHaveBeenCalled();
             expect(result).toEqual(mockResponsePickOK.path);
@@ -40,7 +43,7 @@ describe('ImagePicker Utility Functions', () => {
             const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
             });
 
-            const result = await pickImage();
+            const result = await pickImage(colors);
 
             expect(openPicker).toHaveBeenCalled();
             expect(result).toEqual("");
@@ -54,7 +57,7 @@ describe('ImagePicker Utility Functions', () => {
             const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
             });
 
-            const result = await pickImage();
+            const result = await pickImage(colors);
 
             expect(openPicker).toHaveBeenCalled();
             expect(result).toEqual("");
@@ -66,7 +69,7 @@ describe('ImagePicker Utility Functions', () => {
         test(' when permission is granted and user select an image', async () => {
             (openCamera as jest.Mock).mockResolvedValue(mockResponseCameraOK);
 
-            const result = await takePhoto();
+            const result = await takePhoto(colors);
 
             expect(openCamera).toHaveBeenCalled();
             expect(result).toEqual(mockResponseCameraOK.path);
@@ -78,7 +81,7 @@ describe('ImagePicker Utility Functions', () => {
             const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
             });
 
-            const result = await takePhoto();
+            const result = await takePhoto(colors);
 
             expect(openCamera).toHaveBeenCalled();
             expect(result).toEqual("");
@@ -92,7 +95,7 @@ describe('ImagePicker Utility Functions', () => {
             const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
             });
 
-            const result = await takePhoto();
+            const result = await takePhoto(colors);
 
             expect(openCamera).toHaveBeenCalled();
             expect(result).toEqual("");
@@ -104,7 +107,7 @@ describe('ImagePicker Utility Functions', () => {
         test(' when permission is granted and user select an image', async () => {
             (openCropper as jest.Mock).mockResolvedValue(mockResponseCameraOK);
 
-            const result = await cropImage(cropUri);
+            const result = await cropImage(cropUri, colors);
 
             expect(openCropper).toHaveBeenCalled();
             expect(result).toEqual(mockResponseCameraOK.path);
@@ -116,7 +119,7 @@ describe('ImagePicker Utility Functions', () => {
             const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
             });
 
-            const result = await cropImage(cropUri);
+            const result = await cropImage(cropUri, colors);
 
             expect(openCropper).toHaveBeenCalled();
             expect(result).toEqual("");
@@ -130,7 +133,7 @@ describe('ImagePicker Utility Functions', () => {
             const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
             });
 
-            const result = await cropImage(cropUri);
+            const result = await cropImage(cropUri, colors);
 
             expect(openCropper).toHaveBeenCalled();
             expect(result).toEqual("");

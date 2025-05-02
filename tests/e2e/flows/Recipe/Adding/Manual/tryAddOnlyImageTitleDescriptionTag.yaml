@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    id: "RecipeTags::RoundButton"
+    id: "RecipeTags::RoundButton-content"
     label: Add a new tag
 - tapOn:
     id: "RecipeTags::AddOrEdit::List::.*:TextInput"

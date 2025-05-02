@@ -1,15 +1,13 @@
-import {Text, View} from "react-native"
+import {View} from "react-native"
 import React, {useState} from "react";
 import RoundButton from "@components/atomic/RoundButton";
-import {mediumButtonDiameter, viewButtonStyles} from "@styles/buttons";
-import {enumIconTypes, Icons, iconsSize, plusIcon} from "@assets/Icons";
-import {padding, screenViews} from "@styles/spacing";
+import {Icons, plusIcon} from "@assets/Icons";
 import HorizontalList from "@components/molecules/HorizontalList";
-import {typoStyles} from "@styles/typography";
 import TextInputWithDropDown from "@components/molecules/TextInputWithDropDown";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {FlashList} from "@shopify/flash-list";
-
+import {recipeTagsStyles} from "@styles/recipeComponents";
+import {Text, useTheme} from "react-native-paper";
 
 export type RecipeTagsAddOrEditProps =
     {
@@ -31,27 +29,31 @@ export default function RecipeTags
     const [newTags, setNewTags] = useState(new Array<number>());
     const [allTagsNamesSorted, setAllTagsNamesSorted] = useState(RecipeDatabase.getInstance().get_tags().map(tag => tag.tagName).filter(dbTag => !tagsProps.tagsList.includes(dbTag)).sort());
 
+    const {colors} = useTheme();
+
     return (
-        <View style={screenViews.sectionView} testID={tagsProps.testID}>
+        <View style={recipeTagsStyles.containerSection} testID={tagsProps.testID}>
             {tagsProps.type === 'readOnly' ?
                 <HorizontalList propType={"Tag"} item={tagsProps.tagsList}/>
                 :
                 <View>
-                    <Text testID={"RecipeTags::AddOrEdit::HeaderText"} style={typoStyles.header}>Tags of the recipe
-                        : </Text>
-                    <Text testID={"RecipeTags::AddOrEdit::ElementText"} style={typoStyles.element}>Tags are a way to
+                    <Text testID={"RecipeTags::AddOrEdit::HeaderText"} variant={"headlineSmall"}
+                          style={recipeTagsStyles.containerElement}>Tags:</Text>
+                    <Text testID={"RecipeTags::AddOrEdit::ElementText"} variant={"labelMedium"}
+                          style={[recipeTagsStyles.containerElement, {color: colors.outline}]}>Tags are a
+                        way to
                         identify a recipe and make easier its
                         search.{"\n"}Here are some examples of tags you can have : {tagsProps.randomTags}</Text>
 
-                    <View style={{padding: padding.small, marginBottom: 100}}>
-                        <View style={screenViews.tabView}>
+                    <View style={recipeTagsStyles.tagsContainer}>
+                        <View style={recipeTagsStyles.tagsList}>
                             <HorizontalList propType={"Tag"} item={tagsProps.tagsList} icon={Icons.crossIcon}
-                                            onTagPress={tagsProps.removeTag}/>
+                                            onPress={tagsProps.removeTag}/>
                         </View>
                         {newTags.length > 0 ?
                             <FlashList data={newTags} estimatedItemSize={100} nestedScrollEnabled={true}
                                        keyboardShouldPersistTaps={"handled"} renderItem={({item}) => (
-                                <View key={item} style={{padding: padding.small}}>
+                                <View key={item} style={recipeTagsStyles.containerSection}>
                                     <TextInputWithDropDown
                                         testID={"RecipeTags::AddOrEdit::List::" + item} absoluteDropDown={false}
                                         referenceTextArray={allTagsNamesSorted} onValidate={(newText: string) => {
@@ -61,17 +63,11 @@ export default function RecipeTags
                                     }}/>
                                 </View>)}/> : null}
 
-                        <RoundButton testID={"RecipeTags::RoundButton"}
-                                     style={{...viewButtonStyles.centeredView, flex: 1}}
-                                     diameter={mediumButtonDiameter} icon={{
-                            type: enumIconTypes.materialCommunity,
-                            name: plusIcon,
-                            size: iconsSize.small,
-                            color: "#414a4c"
-                        }} onPressFunction={() => {
-                            setNewTags([...newTags, tagsAddedCounter]);
-                            ++tagsAddedCounter;
-                        }}/>
+                        <RoundButton testID={tagsProps.testID} size={"medium"} icon={plusIcon}
+                                     onPressFunction={() => {
+                                         setNewTags([...newTags, tagsAddedCounter]);
+                                         ++tagsAddedCounter;
+                                     }}/>
                     </View>
                 </View>
             }

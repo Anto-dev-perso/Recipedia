@@ -159,6 +159,7 @@ export const ingredientsDataset: ingredientTableElement[] = [
         season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
     },
     {id: 26, ingName: 'Salmon', unit: 'g', type: ingredientType.fish, season: ['5', '6', '7', '8', '9', '10']},
+    // TODO avocado is un piece, not in g
     {id: 27, ingName: 'Avocado', unit: 'g', type: ingredientType.fruit, season: ['5', '6', '7', '8', '9', '10']},
     {
         id: 28,

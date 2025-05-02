@@ -17,7 +17,7 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipeTags::RoundButton"
+    id: "RecipeTags::RoundButton-content"
     label: Press the round button of first tags
 - tapOn:
     id: "RecipeTags::AddOrEdit::List::0::TextInput"
@@ -27,7 +27,7 @@ appId: "com.recipesmanager"
     label: Enter text for recipe first tag
 - pressKey: "enter"
 - tapOn:
-    id: "RecipeTags::RoundButton"
+    id: "RecipeTags::RoundButton-content"
     label: Press the round button of second tags
 - tapOn:
     id: "RecipeTags::AddOrEdit::List::1::TextInput"
@@ -35,7 +35,6 @@ appId: "com.recipesmanager"
 - swipe:
     start: "50%,40%"
     end: "50%,25%"
-    duration: 500
     label: Swipe down to see other items
 - swipe:
     start: "50%,40%"
@@ -165,8 +164,8 @@ appId: "com.recipesmanager"
     id: "RecipePreparation::RoundButton"
     label: Press the round button of second preparation
 - swipe:
-    start: "50%,60%"
-    end: "50%,30%"
+    start: "90%,60%"
+    end: "90%,30%"
     label: Swipe down to see other items
 - tapOn:
     id: "RecipePreparation::1::InputTitle"
@@ -198,10 +197,12 @@ appId: "com.recipesmanager"
     label: "Close the keyboard"
 - tapOn:
     id: "RecipePreparation::RoundButton"
+    waitToSettleTimeoutMs: 0
+    retryTapIfNoChange: false
     label: Press the round button of third preparation
 - swipe:
-    start: "50%,80%"
-    end: "50%,30%"
+    start: "90%,80%"
+    end: "90%,30%"
     label: Swipe down to see other items
 - tapOn:
     id: "RecipePreparation::2::InputTitle"

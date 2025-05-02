@@ -68,6 +68,10 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "2) Blend basil leaves, Parmesan, olive oil, and pine nuts to make pesto."
     label: Second section of the preparation is rendered
+- swipe:
+    start: "50%,65%"
+    end: "50%,30%"
+    label: Swipe down to see other items
 - assertVisible:
     text: "3) Toss the pasta with the pesto sauce and serve warm."
     label: Third section of the preparation is rendered
@@ -78,6 +82,6 @@ appId: "com.recipesmanager"
     text: "Add this recipe to the menu"
     label: Add to menu button is rendered
 - swipe:
-    start: "50%,20%"
-    end: "50%,80%"
+    start: "50%,10%"
+    end: "50%,90%"
     label: Swipe Up to reset the initial position

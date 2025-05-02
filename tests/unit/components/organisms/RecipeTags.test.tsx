@@ -25,10 +25,10 @@ describe('RecipeTags Component', () => {
                 <RecipeTags type="readOnly" tagsList={sampleTags} testID="RecipeTags"/>
             );
 
-            expect(getByTestId('HorizontalList::PropType').props.children).toEqual('"Tag"');
+            expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
             expect(getByTestId('HorizontalList::Item').props.children).toEqual(JSON.stringify(sampleTags));
             expect(getByTestId('HorizontalList::Icon').props.children).toBeUndefined();
-            expect(getByTestId('HorizontalList::OnTagPress')).toBeTruthy();
+            expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
         });
     });
 
@@ -66,13 +66,12 @@ describe('RecipeTags Component', () => {
             expect(getByTestId("RecipeTags::AddOrEdit::HeaderText")).toBeTruthy();
             expect(getByTestId("RecipeTags::AddOrEdit::ElementText").props.children).toContain(randomTags);
 
-            expect(getByTestId('HorizontalList::PropType').props.children).toEqual('"Tag"');
+            expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
             expect(getByTestId('HorizontalList::Item').props.children).toEqual(JSON.stringify(defaultProps.tagsList));
-            expect(getByTestId('HorizontalList::Icon').props.children).toEqual('"close"');
-            expect(getByTestId('HorizontalList::OnTagPress')).toBeTruthy();
+            expect(getByTestId('HorizontalList::Icon').props.children).toEqual('close');
+            expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
 
-            expect(getByTestId("RoundButton::Text").props.children).toBeUndefined();
-            expect(getByTestId("RoundButton::Icon").props.children).toEqual('{"type":0,"name":"plus","size":38.46153846153846,"color":"#414a4c"}');
+            expect(getByTestId("RoundButton::Icon").props.children).toEqual('plus');
             expect(getByTestId("RoundButton::OnPressFunction")).toBeTruthy();
         });
 
