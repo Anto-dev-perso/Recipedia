@@ -35,6 +35,6 @@ yarn-error.*
 *.tsbuildinfo
 
 .vscode
-android
-ios
+android/*
+ios/*
 .idea

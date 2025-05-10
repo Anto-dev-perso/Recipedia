@@ -15,7 +15,7 @@ describe('CustomImage component behavior', () => {
             source: {url: "dummyEventUrl", width: 100, height: 100, mediaType: "unitTest", isAnimated: true}
         };
         const {getByTestId} = render(
-            <CustomImage uri={dummyUri} onLoadSuccess={onLoadMock} propsTestID={ID}/>
+            <CustomImage uri={dummyUri} onLoadSuccess={onLoadMock} testID={ID}/>
         );
 
         const expoImage = getByTestId('Test::Image');
@@ -30,7 +30,7 @@ describe('CustomImage component behavior', () => {
         const dummyError: ImageErrorEventData = {error: "error string for the test"};
 
         const {getByTestId} = render(
-            <CustomImage uri={dummyUri} onLoadError={onErrorMock} propsTestID={ID}/>
+            <CustomImage uri={dummyUri} onLoadError={onErrorMock} testID={ID}/>
         );
 
         const expoImage = getByTestId("Test::Image");

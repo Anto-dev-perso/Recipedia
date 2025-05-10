@@ -13,6 +13,7 @@ import CustomImage from "@components/atomic/CustomImage";
 
 type RectangleCardProps = {
     recipe: recipeTableElement,
+    testID: string,
 }
 
 export default function RectangleCard(props: RectangleCardProps) {
@@ -25,7 +26,7 @@ export default function RectangleCard(props: RectangleCardProps) {
 
             <View style={viewButtonStyles.longVerticalButton}>
                 <View style={imageStyle.containerCardStyle}>
-                    <CustomImage uri={props.recipe.image_Source}/>
+                    <CustomImage testID={props.testID + "::RectangleCard"} uri={props.recipe.image_Source}/>
                 </View>
                 <Text style={typoStyles.paragraph}>{props.recipe.title}</Text>
                 <TextRender text={props.recipe.tags.map(tag => tag.tagName)} render={typoRender.LIST}/>

@@ -1,0 +1,23 @@
+appId: "com.recipesmanager"
+---
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::OpenModal::RoundButton"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+- tapOn:
+    id: "RecipeIngredients::OpenModal::RoundButton"
+    label: Tap on OCR button of recipe ingredients
+- tapOn:
+    id: "Modal::List#2::SquareButton::Image"
+    label: Select ingredients picture
+- runFlow:
+    file: ../android/validateWithoutCropping.yaml
+    when:
+      platform: Android
+# TODO iOS
+#- runFlow:
+#    file: iOS/validateWithoutCropping.yaml
+#    when:
+#      platform: iOS

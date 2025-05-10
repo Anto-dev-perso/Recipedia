@@ -7,7 +7,7 @@ export type RoundButtonProps = {
     icon: IconName,
     size: 'small' | 'medium' | 'large',
     onPressFunction: () => void,
-    testID?: string,
+    testID: string,
     style?: StyleProp<ViewStyle>,
 }
 

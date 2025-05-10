@@ -1,14 +1,15 @@
 appId: "com.recipesmanager"
 ---
 - tapOn:
-    id: "RecipePreparation::RoundButton"
+    id: "RecipePreparation::AddButton::RoundButton"
     label: Press new preparation step button
-- swipe:
-    start: "50%,60%"
-    end: "50%,40%"
-    label: Swipe down to see other items
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Content"
+    direction: DOWN
+    speed: 60
 - tapOn:
-    id: "RecipePreparation::0::InputTitle"
+    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
     label: Press preparation step title
 - inputText:
     text: "Step title"
@@ -16,7 +17,7 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: Close the keyboard
 - tapOn:
-    id: "RecipePreparation::0::InputParagraph"
+    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
     label: Press preparation step paragraph
 - inputText:
     text: "Step paragraph"

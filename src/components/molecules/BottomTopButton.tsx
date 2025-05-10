@@ -26,7 +26,6 @@ export default function BottomTopButton<T extends React.ElementType>({
                                                                          as,
                                                                          position,
                                                                          buttonOffset,
-                                                                         testID,
                                                                          ...restProps
                                                                      }: BottomTopButtonProps<T>) {
     const Button = as;
@@ -65,7 +64,7 @@ export default function BottomTopButton<T extends React.ElementType>({
     }
 
     return (
-        <View style={buttonStyle} testID={testID}>
+        <View style={buttonStyle}>
             <Button {...restProps}/>
         </View>
     )

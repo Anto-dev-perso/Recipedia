@@ -8,6 +8,7 @@ export type TagButtonProps = {
     leftIcon?: IconName,
     rightIcon?: IconName,
     onPressFunction?: () => void,
+    testID: string,
 };
 
 export default function TagButton(props: TagButtonProps) {
@@ -22,7 +23,7 @@ export default function TagButton(props: TagButtonProps) {
         undefined;
 
     return (
-        <Chip style={{backgroundColor: colors.secondaryContainer, borderRadius: 20}}
+        <Chip testID={props.testID + "::Chip"} style={{backgroundColor: colors.secondaryContainer, borderRadius: 20}}
               textStyle={[fonts.bodySmall, {color: colors.onSecondaryContainer}]}
               mode={'outlined'}
               selectedColor={colors.secondary}

@@ -2,10 +2,12 @@ import {screenViews} from "@styles/spacing"
 import {editableText, textSeparator, typoRender, typoStyles, unitySeparator} from "@styles/typography"
 import React from "react"
 import {TouchableOpacity, View} from "react-native"
-import {Text, TextInput, useTheme} from "react-native-paper";
+import {Text} from "react-native-paper";
 import TextInputWithDropDown from "@components/molecules/TextInputWithDropDown";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {recipeTextRenderStyles} from "@styles/recipeComponents";
+import CustomTextInput from "@components/atomic/CustomTextInput";
+
 
 // TODO use variant for Text
 
@@ -22,8 +24,6 @@ export type TextRenderProps = {
 // TODO can't we do better ? Maybe split in 3 atomic ?
 export default function TextRender(props: TextRenderProps) {
 
-    const {colors} = useTheme();
-
     function selectRender(renderChoice: typoRender) {
         switch (renderChoice) {
             case typoRender.ARRAY:
@@ -34,6 +34,8 @@ export default function TextRender(props: TextRenderProps) {
                 return (props.text.map((item, index) => renderAsList(item, index)));
             case typoRender.CLICK_LIST:
                 return (props.text.map((item, index) => renderAsClickableList(item, index)))
+            default:
+                console.warn("TextRender::selectRender : renderChoice not recognized: ", renderChoice);
         }
     }
 
@@ -41,7 +43,7 @@ export default function TextRender(props: TextRenderProps) {
     function renderAsTable(item: string, index: number) {
 
         // For now, only 2 columns are render
-        // So far, only ingredients use this
+        // So far; only ingredients use this
         const [unitAndQuantity, ingName] = item.split(textSeparator);
         const [quantity, unit] = unitAndQuantity.split(unitySeparator);
 
@@ -51,37 +53,30 @@ export default function TextRender(props: TextRenderProps) {
             <View key={index}>
                 {props.editText ?
                     <View style={screenViews.tabView}>
-                        <TextInput
-                            testID={props.testID + `::${index}::QuantityInput`}
-                            mode={'outlined'}
-                            style={recipeTextRenderStyles.firstColumn}
-                            contentStyle={recipeTextRenderStyles.columnContentStyle}
-                            value={quantity.toString()}
-                            onChangeText={newQuantity => props.editText?.onChangeFunction(index, `${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`)}
-                            autoCorrect={false}
-                            spellCheck={false} pointerEvents={"auto"}
-                            scrollEnabled={false}
-                            multiline={true} numberOfLines={1}
-                        />
-                        <TextInput testID={props.testID + `::${index}::Unit`} mode={'outlined'}
-                                   style={[recipeTextRenderStyles.secondColumn, {backgroundColor: colors.backdrop}]}
-                                   contentStyle={recipeTextRenderStyles.columnContentStyle}
-                                   scrollEnabled={false}
-                                   editable={false} pointerEvents={"auto"}
-                                   multiline={true} numberOfLines={1}>{unit}</TextInput>
-
-                        <View style={{flex: 3}}>
-                            <TextInputWithDropDown testID={props.testID + `::${index}::Dropdown`}
-                                                   absoluteDropDown={true}
-                                                   referenceTextArray={ingredientsList}
-                                                   value={ingName}
-                                                   onValidate={newIngredientName => props.editText?.onChangeFunction(index, `${unitAndQuantity}${textSeparator}${newIngredientName}`)}/>
-                        </View>
+                        <CustomTextInput testID={props.testID + `::${index}::QuantityInput`}
+                                         style={recipeTextRenderStyles.firstColumn}
+                                         contentStyle={recipeTextRenderStyles.columnContentStyle}
+                                         value={quantity.toString()}
+                                         onChangeText={newQuantity => props.editText?.onChangeFunction(index, `${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`)}/>
+                        <CustomTextInput testID={props.testID + `::${index}::Unit`}
+                                         value={unit}
+                                         style={recipeTextRenderStyles.secondColumn}
+                                         contentStyle={recipeTextRenderStyles.columnContentStyle}
+                                         editable={false}/>
+                        <TextInputWithDropDown testID={props.testID + `::${index}::Dropdown`}
+                                               style={recipeTextRenderStyles.thirdColumn}
+                                               contentStyle={recipeTextRenderStyles.columnContentStyle}
+                                               absoluteDropDown={true}
+                                               referenceTextArray={ingredientsList}
+                                               value={ingName}
+                                               onValidate={newIngredientName => props.editText?.onChangeFunction(index, `${unitAndQuantity}${textSeparator}${newIngredientName}`)}/>
                     </View>
                     :
                     <View style={screenViews.tabView}>
-                        <Text variant={"titleMedium"} style={{flex: 1}}>{quantity} {unit}</Text>
-                        <Text variant={"titleMedium"} style={{flex: 3}}>{ingName}</Text>
+                        <Text testID={props.testID + `::${index}::QuantityAndUnit`} variant={"titleMedium"}
+                              style={{flex: 1}}>{quantity} {unit}</Text>
+                        <Text testID={props.testID + `::${index}::IngredientName`} variant={"titleMedium"}
+                              style={{flex: 3}}>{ingName}</Text>
                     </View>
                 }
             </View>
@@ -96,37 +91,32 @@ export default function TextRender(props: TextRenderProps) {
             <View key={index}>
                 {props.editText ?
                     <View style={recipeTextRenderStyles.containerSection}>
-                        <Text variant={"headlineMedium"} style={recipeTextRenderStyles.headlineElement}>Preparation :
+                        <Text testID={props.testID + `::${index}::Step`} variant={"headlineMedium"}
+                              style={recipeTextRenderStyles.headlineElement}>Preparation :
                             step {index + 1}</Text>
 
                         <View style={recipeTextRenderStyles.containerSection}>
-                            <Text variant={"titleLarge"} style={recipeTextRenderStyles.containerElement}>Title of
+                            <Text testID={props.testID + `::${index}::Title`} variant={"titleLarge"}
+                                  style={recipeTextRenderStyles.containerElement}>Title of
                                 step {index + 1} : </Text>
-                            <TextInput testID={props.testID + `::${index}::InputTitle`}
-                                       mode={'outlined'}
-                                       value={sectionTitle}
-                                       style={recipeTextRenderStyles.containerElement}
-                                       onChangeText={newTitle => props.editText?.onChangeFunction(index, `${newTitle}${textSeparator}${sectionParagraph}`)}
-                                       multiline={false} scrollEnabled={false}
-                                // TODO this can't stay like this forever but what about the test ?
-                                       autoCorrect={false} spellCheck={false}
-                            />
-
-                            <Text variant={"titleLarge"} style={recipeTextRenderStyles.containerElement}>Content of
+                            <CustomTextInput testID={props.testID + `::${index}::TextInputTitle`} value={sectionTitle}
+                                             style={recipeTextRenderStyles.containerElement}
+                                             onChangeText={newTitle => props.editText?.onChangeFunction(index, `${newTitle}${textSeparator}${sectionParagraph}`)}
+                                             multiline={true}/>
+                            <Text testID={props.testID + `::${index}::Content`} variant={"titleLarge"}
+                                  style={recipeTextRenderStyles.containerElement}>Content of
                                 step {index + 1} : </Text>
-                            <TextInput testID={props.testID + `::${index}::InputParagraph`} mode={'outlined'}
-                                       style={recipeTextRenderStyles.containerElement} value={sectionParagraph}
-                                       onChangeText={newParagraph => props.editText?.onChangeFunction(index, `${sectionTitle}${textSeparator}${newParagraph}`)}
-                                       multiline={true} scrollEnabled={false}
-                                // TODO this can't stay like this forever but what about the test ?
-                                       autoCorrect={false} spellCheck={false}/>
+                            <CustomTextInput testID={props.testID + `::${index}::TextInputContent`}
+                                             style={recipeTextRenderStyles.containerElement} value={sectionParagraph}
+                                             onChangeText={newParagraph => props.editText?.onChangeFunction(index, `${sectionTitle}${textSeparator}${newParagraph}`)}
+                                             multiline={true}/>
                         </View>
                     </View>
                     :
                     <View style={recipeTextRenderStyles.containerSection}>
-                        <Text variant={"titleLarge"}
+                        <Text testID={props.testID + `::${index}::SectionTitle`} variant={"titleLarge"}
                               style={recipeTextRenderStyles.headlineElement}>{index + 1}) {sectionTitle}</Text>
-                        <Text variant={"titleMedium"}
+                        <Text testID={props.testID + `::${index}::SectionParagraph`} variant={"titleMedium"}
                               style={recipeTextRenderStyles.containerElement}>{sectionParagraph}</Text>
                     </View>
                 }
@@ -157,7 +147,7 @@ export default function TextRender(props: TextRenderProps) {
 
     return (
         <View>
-            {props.title ? <Text variant={"headlineSmall"}
+            {props.title ? <Text testID={props.testID + "::Title"} variant={"headlineSmall"}
                                  style={recipeTextRenderStyles.containerElement}>{props.title}</Text> : null}
             {selectRender(props.render)}
         </View>

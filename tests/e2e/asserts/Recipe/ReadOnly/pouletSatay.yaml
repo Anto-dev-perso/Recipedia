@@ -1,0 +1,186 @@
+appId: "com.recipesmanager"
+---
+# TODO common part to mutualize to avoid copy/paste hell
+- assertVisible:
+    id: "BackButton::RoundButton"
+    label: Back button is displayed
+- assertVisible:
+    text: "󰌍"
+    label: Back button icon is displayed
+- assertVisible:
+    id: "RecipeValidate"
+    label: Add recipe button is displayed
+- assertVisible:
+    text: "Add this recipe to the menu"
+    label: Add recipe button has the correct text
+- assertVisible:
+    id: "RecipeDelete::RoundButton"
+    label: Delete button is displayed
+- assertVisible:
+    text: "󰆴"
+    label: Delete icon is displayed
+- assertVisible:
+    id: "RecipeEdit::RoundButton"
+    label: Edit button is rendered
+- assertVisible:
+    text: "󰏫"
+    label: Edit button has the correct icon
+- assertNotVisible:
+    id: "RecipeImage::RoundButton"
+    label: Image button is not rendered
+- assertVisible:
+    id: "RecipeImage::Image"
+    label: Image is displayed
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
+    label: Title of the recipe is rendered
+
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: "La sauce satay est une sauce d'Asie du Sud-Est à base de cacahuètes, ail et gingembre! Reproduisez-la pour accompagner notre poulet français !"
+    label: Description of the recipe is rendered
+
+- scrollUntilVisible:
+    element:
+      text: "Ingredients (2 persons)"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertNotVisible:
+    id: "RecipeTags::0::Chip"
+    label: Tags part is not rendered
+- assertVisible:
+    text: "Ingredients (2 persons)"
+    label: Ingredient section and persons is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    text: "100 g"
+    label: First ingredient quantity is displayed
+- assertVisible:
+    text: "cacahuètes grillées"
+    label: First ingredient name is displayed
+- assertVisible:
+    text: "35 g"
+    label: Second ingredient quantity is displayed
+- assertVisible:
+    text: "concentré de tomates"
+    label: Second ingredient name is displayed
+- assertVisible:
+    text: "2 "
+    label: Third ingredient quantity is displayed
+- assertVisible:
+    text: "flet de poulet"
+    label: Third ingredient name is displayed
+- assertVisible:
+    text: "1à3 cm"
+    label: Fourth ingredient quantity is displayed
+- assertVisible:
+    text: "gingembre"
+    label: Fourth ingredient name is displayed
+- assertVisible:
+    text: "1 "
+    index: 1
+    label: Fifth ingredient quantity is displayed
+- assertVisible:
+    text: "gOussed'ail"
+    label: Fifth ingredient name is displayed
+- assertVisible:
+    text: "200 mL"
+    label: Sixth ingredient quantity is displayed
+- assertVisible:
+    text: "lait de coco"
+    label: Sixth ingredient name is displayed
+- assertVisible:
+    text: "1 "
+    index: 1
+    label: Seventh ingredient quantity is displayed
+- assertVisible:
+    text: "oignon jaune"
+    label: Seventh ingredient name is displayed
+- assertVisible:
+    text: "0.5 "
+    label: Eighth ingredient quantity is displayed
+- assertVisible:
+    text: "oignon nouveau"
+    label: Eighth ingredient name is displayed
+- assertVisible:
+    text: "150 g"
+    label: Ninth ingredient quantity is displayed
+- assertVisible:
+    text: "riz basmati  Bio"
+    label: Ninth ingredient name is displayed
+- assertVisible:
+    id: "RecipeTime::Text"
+    text: "Preparation (30 min)"
+    label: Preparation section and persons are displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) Le poulet"
+    label: First preparation title is displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: First preparation paragraph is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionTitle"
+    text: "2) La sauce satay"
+    label: Second preparation title is displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: Second preparation paragraph is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionTitle"
+    text: "3) Le poulet sauce satay"
+    label: Third preparation title is displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: Third preparation paragraph is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::3::SectionParagraph"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionTitle"
+    text: "4) Le riz"
+    label: Fourth preparation title is are displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionParagraph"
+    text: "Portez une casserole d'eau salée à ébullition.\nFaites cuire le riz selon les indications du paquet.\nRetirez la base de l'oignon nouveau et émincez-le.\nDégustez sans attendre votre poulet sauce satay accompagné du riz!\nParsemez-le d'oignon nouveau."
+    label: Fourth preparation paragraph is are displayed

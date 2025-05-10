@@ -1,5 +1,5 @@
-import {cropImage, pickImage, takePhoto} from '@utils/ImagePicker';
-import {openCamera, openCropper, openPicker} from 'react-native-image-crop-picker'
+import {pickImage, takePhoto} from '@utils/ImagePicker';
+import {openCamera, openPicker} from 'react-native-image-crop-picker'
 import {lightTheme} from "@styles/theme";
 import {MD3Colors} from "react-native-paper/lib/typescript/types";
 
@@ -103,44 +103,5 @@ describe('ImagePicker Utility Functions', () => {
             expect(consoleWarningSpy).toHaveBeenCalledWith(`takePhoto: user cancelled Error: ${cancelError.message}`);
         });
     });
-    describe('cropImage', () => {
-        test(' when permission is granted and user select an image', async () => {
-            (openCropper as jest.Mock).mockResolvedValue(mockResponseCameraOK);
-
-            const result = await cropImage(cropUri, colors);
-
-            expect(openCropper).toHaveBeenCalled();
-            expect(result).toEqual(mockResponseCameraOK.path);
-        });
-
-        test(' when permission is not granted', async () => {
-            (openCropper as jest.Mock).mockRejectedValue(permissionError);
-
-            const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
-            });
-
-            const result = await cropImage(cropUri, colors);
-
-            expect(openCropper).toHaveBeenCalled();
-            expect(result).toEqual("");
-            expect(consoleWarningSpy).toHaveBeenCalledTimes(1);
-            expect(consoleWarningSpy).toHaveBeenCalledWith(`cropImage: user cancelled Error: ${permissionError.message}`);
-        });
-
-        test(' when permission is granted and user cancel', async () => {
-            (openCropper as jest.Mock).mockRejectedValue(cancelError);
-
-            const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
-            });
-
-            const result = await cropImage(cropUri, colors);
-
-            expect(openCropper).toHaveBeenCalled();
-            expect(result).toEqual("");
-            expect(consoleWarningSpy).toHaveBeenCalledTimes(1);
-            expect(consoleWarningSpy).toHaveBeenCalledWith(`cropImage: user cancelled Error: ${cancelError.message}`);
-        });
-    });
-
 
 });

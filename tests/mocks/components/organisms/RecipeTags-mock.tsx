@@ -4,20 +4,21 @@ import {RecipeTagProps} from "@components/organisms/RecipeTags";
 
 export function recipeTagsMock(recipeTagProp: RecipeTagProps) {
 
+    const tagsTestID = "RecipeTags";
     return (
         <View>
-            <Text testID={recipeTagProp.testID + "::TagsList"}>
+            <Text testID={tagsTestID + "::TagsList"}>
                 {JSON.stringify(recipeTagProp.tagsList)}
             </Text>
             {recipeTagProp.type === 'readOnly' ? null :
                 <View>
-                    <Text testID={recipeTagProp.testID + "::RandomTags"}>
+                    <Text testID={tagsTestID + "::RandomTags"}>
                         {recipeTagProp.randomTags}
                     </Text>
-                    <Button testID={recipeTagProp.testID + "::AddNewTag"}
+                    <Button testID={tagsTestID + "::AddNewTag"}
                             onPress={() => recipeTagProp.addNewTag(recipeTagProp.tagsList[0])}
                             title="Add New Tag"/>
-                    <Button testID={recipeTagProp.testID + "::RemoveTag"}
+                    <Button testID={tagsTestID + "::RemoveTag"}
                             onPress={() => recipeTagProp.removeTag(recipeTagProp.tagsList[0])}
                             title="Change Tag"/>
                 </View>

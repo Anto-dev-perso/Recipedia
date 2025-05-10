@@ -29,12 +29,15 @@ export default function FiltersSelection(props: FiltersSelectionProps) {
         }
     }
 
+    const selectionTestID = "FiltersSelection";
+
     return (
-        <View testID={'FilterSelection'}>
-            <HorizontalList propType={"Tag"} item={retrieveAllFilters(props.filtersState)} icon={Icons.crossIcon}
+        <View testID={selectionTestID}>
+            <HorizontalList testID={selectionTestID} propType={"Tag"} item={retrieveAllFilters(props.filtersState)}
+                            icon={Icons.crossIcon}
                             onPress={(item: string) => findFilterStringAndRemove(item)}/>
             <View style={viewButtonStyles.longHorizontalButton}>
-                <TagButton text={"Add a filter"}
+                <TagButton testID={selectionTestID} text={"Add a filter"}
                            leftIcon={props.printSectionClickable ? Icons.removeFilterIcon : Icons.addFilterIcon}
                            onPressFunction={() => props.setPrintSectionClickable(!props.printSectionClickable)}/>
             </View>

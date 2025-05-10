@@ -20,17 +20,17 @@ appId: "com.recipesmanager"
     id: "RecipeTags::RoundButton-content"
     label: Press the round button of first tags
 - tapOn:
-    id: "RecipeTags::AddOrEdit::List::0::TextInput"
+    id: "RecipeTags::List::0::TextInput"
     label: Press the TextInput of first tags
 - inputText:
     text: "Healthy"
     label: Enter text for recipe first tag
 - pressKey: "enter"
 - tapOn:
-    id: "RecipeTags::RoundButton-content"
+    id: "RecipeTags::RoundButton"
     label: Press the round button of second tags
 - tapOn:
-    id: "RecipeTags::AddOrEdit::List::1::TextInput"
+    id: "RecipeTags::List::1::TextInput"
     label: Press the TextInput of second tags
 - swipe:
     start: "50%,40%"
@@ -64,16 +64,16 @@ appId: "com.recipesmanager"
     end: "50%,20%"
     label: Swipe down to see other items
 - tapOn:
-    id: "RecipeIngredients::RoundButton"
+    id: "RecipeIngredients::AddButton::RoundButton"
     label: Press the round button of first ingredient
 - tapOn:
-    id: "RecipeIngredients::0::QuantityInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
     label: Press the TextInput of first ingredient's quantity
 - inputText:
     text: "200"
     label: Enter text for recipe first ingredient quantity
 - tapOn:
-    id: "RecipeIngredients::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
     label: Press theTextInput of first ingredient's name
 - inputText:
     text: "Chicken Breast"
@@ -81,13 +81,13 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipeIngredients::RoundButton"
+    id: "RecipeIngredients::AddButton::RoundButton"
     label: Press the round button of second ingredient
 - tapOn:
-    id: "RecipeIngredients::RoundButton"
+    id: "RecipeIngredients::AddButton::RoundButton"
     label: Press the round button of third ingredient
 - tapOn:
-    id: "RecipeIngredients::1::QuantityInput"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
     label: Press the TextInput of second ingredient's quantity
 - swipe:
     start: "50%,60%"
@@ -97,7 +97,7 @@ appId: "com.recipesmanager"
     text: "2"
     label: Enter text for recipe second ingredient quantity
 - tapOn:
-    id: "RecipeIngredients::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
     label: Press theTextInput of second ingredient's name
 - inputText:
     text: "Oni"
@@ -110,7 +110,7 @@ appId: "com.recipesmanager"
     id: "TextInputWithDropDown::List::Onions"
     label: Press the ingredient from the dropdown
 - tapOn:
-    id: "RecipeIngredients::2::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
     label: Press theTextInput of third ingredient's name
 - swipe:
     start: "50%,40%"
@@ -120,7 +120,7 @@ appId: "com.recipesmanager"
     id: "TextInputWithDropDown::List::Avocado"
     label: Press the ingredient from the dropdown
 - tapOn:
-    id: "RecipeIngredients::2::QuantityInput"
+    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
     label: Press the TextInput of third ingredient's quantity
 - inputText:
     text: "5"
@@ -136,14 +136,14 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipePreparation::RoundButton"
+    id: "RecipePreparation::AddButton::RoundButton"
     label: Press the round button of first preparation
 - swipe:
     start: "50%,60%"
     end: "50%,30%"
     label: Swipe down to see other items
 - tapOn:
-    id: "RecipePreparation::0::InputTitle"
+    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
     label: Press the TextInput of first preparation title
 - inputText:
     text: "Le riz"
@@ -151,7 +151,7 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipePreparation::0::InputParagraph"
+    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
     label: Press the TextInput of first preparation paragraph
 - inputText:
     text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz selon\
@@ -161,14 +161,14 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipePreparation::RoundButton"
+    id: "RecipePreparation::AddButton::RoundButton"
     label: Press the round button of second preparation
 - swipe:
     start: "90%,60%"
     end: "90%,30%"
     label: Swipe down to see other items
 - tapOn:
-    id: "RecipePreparation::1::InputTitle"
+    id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
     label: Press the TextInput of second preparation title
 - inputText:
     text: "La sauce"
@@ -176,7 +176,7 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipePreparation::1::InputParagraph"
+    id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
     label: Press the TextInput of second preparation paragraph
 - inputText:
     text: "Dans le bol d'un mixeur, deposez les ingredients suivants :"
@@ -196,7 +196,7 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipePreparation::RoundButton"
+    id: "RecipePreparation::AddButton::RoundButton"
     waitToSettleTimeoutMs: 0
     retryTapIfNoChange: false
     label: Press the round button of third preparation
@@ -205,7 +205,7 @@ appId: "com.recipesmanager"
     end: "90%,30%"
     label: Swipe down to see other items
 - tapOn:
-    id: "RecipePreparation::2::InputTitle"
+    id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
     label: Press the TextInput of third preparation title
 - inputText:
     text: "LA CUISSON DU POULET"
@@ -213,7 +213,7 @@ appId: "com.recipesmanager"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipePreparation::2::InputParagraph"
+    id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
     label: Press the TextInput of third preparation paragraph
 - inputText:
     text: "Coupez les filets de poulet en lanieres.\nemincez l'oignon.\nPressez ou\

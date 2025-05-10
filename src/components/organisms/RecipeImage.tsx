@@ -11,20 +11,20 @@ export type RecipeImageProps =
         imgUri: string,
         openModal: (field: recipeColumnsNames) => void,
         buttonIcon?: IconName,
-        testID?: string
     };
 
-export default function RecipeImage({imgUri, openModal, buttonIcon, testID}: RecipeImageProps) {
+export default function RecipeImage({imgUri, openModal, buttonIcon}: RecipeImageProps) {
     const [validUri, setValidUri] = React.useState(imgUri.length > 0);
 
+    const imageTestID = "RecipeImage";
     return (
-        <View style={styles.recipeImageContainer} testID={testID}>
-            <CustomImage propsTestID={testID} uri={imgUri} onLoadError={() => {
+        <View style={styles.recipeImageContainer} testID={imageTestID}>
+            <CustomImage testID={imageTestID} uri={imgUri} onLoadError={() => {
                 setValidUri(false)
             }} onLoadSuccess={() => setValidUri(true)}/>
             {buttonIcon ?
                 <View style={validUri ? styles.topRightButtonContainer : styles.centerButtonContainer}>
-                    <RoundButton testID={testID} size={"medium"} icon={buttonIcon}
+                    <RoundButton testID={imageTestID} size={"medium"} icon={buttonIcon}
                                  onPressFunction={() => openModal(recipeColumnsNames.image)}/>
                 </View>
                 : null}

@@ -5,15 +5,17 @@ import {recipeColumnsNames} from "@customTypes/DatabaseElementTypes";
 
 
 export function recipeImageMock(recipeImageProp: RecipeImageProps) {
+    const imageTestID = "RecipeImage";
+
     return (
         <View>
-            <Text testID={recipeImageProp.testID + "::ImgUri"}>
+            <Text testID={imageTestID + "::ImgUri"}>
                 {recipeImageProp.imgUri}
             </Text>
-            <Text testID={recipeImageProp.testID + "::ButtonIcon"}>
+            <Text testID={imageTestID + "::ButtonIcon"}>
                 {recipeImageProp.buttonIcon}
             </Text>
-            <Button testID={recipeImageProp.testID + "::OpenModal"}
+            <Button testID={imageTestID + "::OpenModal"}
                     onPress={() => {
                         //@ts-ignore addProps is always defined here
                         recipeImageProp.addProps.openModal(recipeColumnsNames.image)

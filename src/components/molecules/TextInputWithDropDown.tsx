@@ -1,15 +1,29 @@
-import {FlatList, Keyboard, LogBox, StyleProp, TouchableOpacity, View, ViewStyle} from "react-native";
+import {
+    FlatList,
+    Keyboard,
+    LayoutChangeEvent,
+    LogBox,
+    StyleProp,
+    TextStyle,
+    TouchableOpacity,
+    View,
+    ViewStyle
+} from "react-native";
 import {List, TextInput} from "react-native-paper";
 import React, {useEffect, useRef, useState} from "react";
 import {palette} from "@styles/colors";
+import CustomTextInput from "@components/atomic/CustomTextInput";
 
 export type TextInputWithDropDownType = {
     absoluteDropDown: boolean,
     referenceTextArray: Array<string>,
     value?: string,
     label?: string,
+    editable?: boolean,
     onValidate?: (newText: string) => void,
-    testID?: string,
+    testID: string,
+    style?: StyleProp<ViewStyle>,
+    contentStyle?: StyleProp<TextStyle>,
 };
 
 export default function TextInputWithDropDown(props: TextInputWithDropDownType) {
@@ -49,27 +63,31 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
         );
     }
 
-    const handleSelect = (text: string) => {
+    function handleSelect(text: string) {
         setTextInput(text);
         setFilteredTextArray([]);
         setShowDropdown(false);
         Keyboard.dismiss();
         props.onValidate?.(text);
-    };
+    }
 
-    const handleSearch = (textEntered: string) => {
+    function handleSearch(textEntered: string) {
         setTextInput(textEntered);
         setFilteredTextArray(filterArray(textEntered));
         setShowDropdown(true);
-    };
+    }
 
-    const handleSubmitEditing = () => {
+    function handleSubmitEditing() {
         // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
         if (filteredTextArray.length <= 1) {
             setShowDropdown(false);
             props.onValidate?.(textInput);
         }
-    };
+    }
+
+    function handleOnLayoutTextInput(event: LayoutChangeEvent) {
+        setInputHeight(event.nativeEvent.layout.height)
+    }
 
     const dropdownStyle: StyleProp<ViewStyle> = {
         backgroundColor: palette.backgroundColor,
@@ -80,14 +98,12 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
         maxHeight: inputHeight * 4,
     };
     return (
-
-        <View>
-            <TextInput testID={props.testID + "::TextInput"} ref={inputRef} label={props.label} value={textInput}
-                       onFocus={() => setShowDropdown(true)} onChangeText={handleSearch}
-                       onEndEditing={handleSubmitEditing}
-                       mode={"outlined"}
-                       onLayout={(event) => setInputHeight(event.nativeEvent.layout.height)}
-            />
+        <View style={props.style as ViewStyle}>
+            <CustomTextInput label={props.label} testID={props.testID} value={textInput} style={props.style}
+                             contentStyle={props.contentStyle}
+                             onFocus={() => setShowDropdown(true)} onChangeText={handleSearch}
+                             onEndEditing={handleSubmitEditing}
+                             onLayout={handleOnLayoutTextInput}/>
             {(showDropdown && filteredTextArray.length > 0 && !(filteredTextArray.length === 1 && filteredTextArray[0].toLowerCase() === textInput.toLowerCase())) && (
                 <View testID={props.testID + "::DropdownContainer"}
                       style={props.absoluteDropDown ? {
@@ -95,7 +111,7 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
                           top: inputHeight,
                           left: 0,
                           right: 0,
-                          zIndex: 1000,
+                          zIndex: 1000,  // TODO doesn't seems to work that wells
                       } : dropdownStyle}>
                     <FlatList data={filteredTextArray} keyboardShouldPersistTaps="handled"
                               nestedScrollEnabled={true} renderItem={({item}) => (

@@ -44,16 +44,16 @@ describe('Home Screen', () => {
                 <Stack.Screen name={"Home"} component={Home}/>
             </Stack.Navigator></NavigationContainer>);
 
-        await waitFor(() => expect(getByTestId('RecipeRecommendation1::CarouselProps').props.children.length).toBeGreaterThan(2));
+        await waitFor(() => expect(getByTestId('Recommendation 1::CarouselProps').props.children.length).toBeGreaterThan(2));
 
 
-        expect(getByTestId('RecipeRecommendation1::TitleRecommendation').props.children).toEqual('Recommendation 1');
-        expect(getByTestId('RecipeRecommendation2::TitleRecommendation').props.children).toEqual('Recommendation 2');
-        expect(getByTestId('RecipeRecommendation3::TitleRecommendation').props.children).toEqual('Recommendation 3');
+        expect(getByTestId('Recommendation 1::Title::TitleRecommendation').props.children).toEqual('Recommendation 1');
+        expect(getByTestId('Recommendation 2::Title::TitleRecommendation').props.children).toEqual('Recommendation 2');
+        expect(getByTestId('Recommendation 3::Title::TitleRecommendation').props.children).toEqual('Recommendation 3');
 
-        const reco1: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation1::CarouselProps').props.children);
-        const reco2: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation2::CarouselProps').props.children);
-        const reco3: Array<recipeTableElement> = JSON.parse(getByTestId('RecipeRecommendation3::CarouselProps').props.children);
+        const reco1: Array<recipeTableElement> = JSON.parse(getByTestId('Recommendation 1::CarouselProps').props.children);
+        const reco2: Array<recipeTableElement> = JSON.parse(getByTestId('Recommendation 2::CarouselProps').props.children);
+        const reco3: Array<recipeTableElement> = JSON.parse(getByTestId('Recommendation 3::CarouselProps').props.children);
 
 
         expect(recipesDataset).toEqual(expect.arrayContaining(reco1));

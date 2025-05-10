@@ -12,10 +12,10 @@ export function textInputWithDropdownMock(inputWithDropdownProps: TextInputWithD
                 {JSON.stringify(inputWithDropdownProps.referenceTextArray)}
             </Text>
             <Text testID={inputWithDropdownProps.testID + "::TextInputWithDropdown::Value"}>
-                {JSON.stringify(inputWithDropdownProps.value)}
+                {inputWithDropdownProps.value}
             </Text>
-            <Text testID={inputWithDropdownProps.testID + "::TextInputWithDropdown::Outline"}>
-                {JSON.stringify(inputWithDropdownProps.outline)}
+            <Text testID={inputWithDropdownProps.testID + "::TextInputWithDropdown::Label"}>
+                {inputWithDropdownProps.label}
             </Text>
             <Button testID={inputWithDropdownProps.testID + "::TextInputWithDropdown::OnValidate"}
                     onPress={() => {

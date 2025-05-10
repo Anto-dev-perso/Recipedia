@@ -1,5 +1,5 @@
 import {pickImage, takePhoto} from "@utils/ImagePicker";
-import React, {useState} from "react";
+import React from "react";
 import {View} from "react-native";
 import HorizontalList from "@components/molecules/HorizontalList";
 import RoundButton from "@components/atomic/RoundButton";
@@ -12,32 +12,38 @@ export type ModalImageSelectProps = {
     arrImg: Array<string>,
     onSelectFunction: (img: string) => void,
     onDismissFunction: () => void,
+    onImagesUpdated: (imageUri: string) => void,
 }
 
 // TODO to test
-export default function ModalImageSelect({arrImg, onSelectFunction, onDismissFunction}: ModalImageSelectProps) {
+export default function ModalImageSelect({
+                                             arrImg,
+                                             onSelectFunction,
+                                             onDismissFunction,
+                                             onImagesUpdated
+                                         }: ModalImageSelectProps) {
 
-    const [selectedImages, setSelectedImages] = useState(arrImg);
+    const modalTestID = "Modal";
 
     const {colors} = useTheme();
     const textVariant: VariantProp<never> = "titleMedium";
 
     async function takePhotoInModal() {
-        callSetStateWithUri(await takePhoto(colors));
+        callSetSelectedImageWithUri(await takePhoto(colors));
     }
 
     async function pickImageInModal() {
-        callSetStateWithUri(await pickImage(colors));
+        callSetSelectedImageWithUri(await pickImage(colors));
 
     }
 
-    function callSetStateWithUri(uri: string) {
+    function callSetSelectedImageWithUri(uri: string) {
         if (uri.length > 0) {
-            console.log("uri: " + uri);
-            setSelectedImages([...selectedImages, uri]);
+            onImagesUpdated(uri);
         }
     }
 
+    const testID = "ModalImageSelect";
 
     return (
         <Portal>
@@ -47,21 +53,23 @@ export default function ModalImageSelect({arrImg, onSelectFunction, onDismissFun
                 alignItems: "center",
                 marginHorizontal: padding.veryLarge
             }} onDismiss={onDismissFunction}>
-                <Text variant={textVariant} style={{marginVertical: padding.medium}}>Choose a picture among one of
+                <Text testID={testID + "::ExplanationText"} variant={textVariant}
+                      style={{marginVertical: padding.medium}}>Choose a picture among one of
                     these:</Text>
-                <HorizontalList propType={'Image'} item={selectedImages} onPress={(imgPressed) => {
-                    onSelectFunction(imgPressed);
-                }}/>
+                <HorizontalList testID={modalTestID} propType={'Image'} item={arrImg}
+                                onPress={(imgPressed) => {
+                                    onSelectFunction(imgPressed);
+                                }}/>
                 <View style={[viewsSplitScreen.viewInRow, {marginVertical: padding.veryLarge}]}>
                     <View style={[viewsSplitScreen.splitIn2View, {marginVertical: padding.medium}]}>
-                        <RoundButton onPressFunction={takePhotoInModal}
+                        <RoundButton testID={modalTestID + "::Camera"} onPressFunction={takePhotoInModal}
                                      size={"medium"} icon={Icons.cameraIcon}/>
-                        <Text variant={textVariant}>Take a new photo</Text>
+                        <Text testID={modalTestID + "::Camera::Text"} variant={textVariant}>Take a new photo</Text>
                     </View>
                     <View style={[viewsSplitScreen.splitIn2View, {marginVertical: padding.medium}]}>
-                        <RoundButton onPressFunction={pickImageInModal}
+                        <RoundButton testID={modalTestID + "::Gallery"} onPressFunction={pickImageInModal}
                                      size={"medium"} icon={Icons.galleryIcon}/>
-                        <Text variant={textVariant}>Choose from gallery</Text>
+                        <Text testID={modalTestID + "::Gallery::Text"} variant={textVariant}>Choose from gallery</Text>
                     </View>
                 </View>
             </Modal>

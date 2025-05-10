@@ -1,5 +1,5 @@
 import {fireEvent, render, waitFor} from "@testing-library/react-native";
-import RecipeTags, {RecipeTagProps} from "@components/organisms/RecipeTags";
+import RecipeTags, {RecipeTagProps, RecipeTagsAddProps} from "@components/organisms/RecipeTags";
 import React from "react";
 import {tagsDataset} from "@test-data/tagsDataset";
 import {ingredientsDataset} from "@test-data/ingredientsDataset";
@@ -22,7 +22,7 @@ describe('RecipeTags Component', () => {
     describe('readOnly mode', () => {
         it('renders a HorizontalList showing the provided tags', () => {
             const {getByTestId} = render(
-                <RecipeTags type="readOnly" tagsList={sampleTags} testID="RecipeTags"/>
+                <RecipeTags type="readOnly" tagsList={sampleTags}/>
             );
 
             expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
@@ -39,11 +39,11 @@ describe('RecipeTags Component', () => {
 
         const defaultProps: RecipeTagProps = {
             type: 'addOrEdit',
+            editType: 'edit',
             tagsList: new Array<string>(sampleTags[sampleTags.length - 1], sampleTags[sampleTags.length - 2], sampleTags[sampleTags.length - 3]),
             randomTags,
             addNewTag: addNewTagMock,
             removeTag: removeTagMock,
-            testID: "RecipeTags"
         };
 
         const dbInstance = RecipeDatabase.getInstance();
@@ -59,77 +59,104 @@ describe('RecipeTags Component', () => {
         afterEach(async () => {
             await dbInstance.reset();
         });
-        it('renders header and description texts with the add button', () => {
-            const {getByTestId} = render(<RecipeTags {...defaultProps} />);
+        describe('edit mode', () => {
+            it('renders header and description texts with the add button', () => {
+                const {getByTestId} = render(<RecipeTags {...defaultProps} />);
 
-            // Verify that the header and element texts are rendered using testIDs.
-            expect(getByTestId("RecipeTags::AddOrEdit::HeaderText")).toBeTruthy();
-            expect(getByTestId("RecipeTags::AddOrEdit::ElementText").props.children).toContain(randomTags);
+                // Verify that the header and element texts are rendered using testIDs.
+                expect(getByTestId("RecipeTags::HeaderText")).toBeTruthy();
+                expect(getByTestId("RecipeTags::ElementText").props.children).toContain(randomTags);
 
-            expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
-            expect(getByTestId('HorizontalList::Item').props.children).toEqual(JSON.stringify(defaultProps.tagsList));
-            expect(getByTestId('HorizontalList::Icon').props.children).toEqual('close');
-            expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
+                expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
+                expect(getByTestId('HorizontalList::Item').props.children).toEqual(JSON.stringify(defaultProps.tagsList));
+                expect(getByTestId('HorizontalList::Icon').props.children).toEqual('close');
+                expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
 
-            expect(getByTestId("RoundButton::Icon").props.children).toEqual('plus');
-            expect(getByTestId("RoundButton::OnPressFunction")).toBeTruthy();
+                expect(getByTestId("RecipeTags::RoundButton::Icon").props.children).toEqual('plus');
+                expect(getByTestId("RecipeTags::RoundButton::OnPressFunction")).toBeTruthy();
+            });
+
+            it('does not show a new tag input initially', () => {
+                const {queryByTestId} = render(<RecipeTags {...defaultProps} />);
+                // No new tag input should be rendered at the start.
+                expect(queryByTestId("RecipeTags::List::1")).toBeNull();
+            });
+
+            it('adds a new tag input field when the RoundButton is pressed', async () => {
+                const {getByTestId} = render(<RecipeTags {...defaultProps} />);
+
+                // Press the RoundButton (using its testID).
+                fireEvent.press(getByTestId("RecipeTags::RoundButton::OnPressFunction"));
+
+                // After pressing, a new tag input should appear with testID "RecipeTags::List::1".
+                await waitFor(() => expect(getByTestId("RecipeTags::List::0::TextInputWithDropdown::AbsoluteDropDown").props.children).toEqual(false));
+                expect(getByTestId("RecipeTags::List::0::TextInputWithDropdown::ReferenceTextArray").props.children).toEqual(JSON.stringify(sampleTags.filter(name => !defaultProps.tagsList.includes(name))));
+                expect(getByTestId("RecipeTags::List::0::TextInputWithDropdown::Value").props.children).toBeUndefined();
+                expect(getByTestId("RecipeTags::List::0::TextInputWithDropdown::Label").props.children).toBeUndefined();
+                expect(getByTestId("RecipeTags::List::0::TextInputWithDropdown::OnValidate")).toBeTruthy();
+            });
+
+            it('calls addNewTag callback when a new tag is validated and removes the input', async () => {
+                const {getByTestId, queryByTestId} = render(<RecipeTags {...defaultProps} />);
+
+                // Simulate adding a new tag input by pressing the RoundButton.
+                fireEvent.press(getByTestId("RecipeTags::RoundButton::OnPressFunction"));
+                fireEvent.press(getByTestId("RecipeTags::RoundButton::OnPressFunction"));
+
+                await waitFor(() => expect(getByTestId("RecipeTags::List::1::TextInputWithDropdown::AbsoluteDropDown").props.children).toEqual(false));
+                await waitFor(() => expect(getByTestId("RecipeTags::List::2::TextInputWithDropdown::AbsoluteDropDown").props.children).toEqual(false));
+
+                for (let i = 1; i < 3; i++) {
+                    expect(getByTestId("RecipeTags::List::" + i + "::TextInputWithDropdown::ReferenceTextArray").props.children).toEqual(JSON.stringify(sampleTags.filter(name => !defaultProps.tagsList.includes(name))));
+                    expect(getByTestId("RecipeTags::List::" + i + "::TextInputWithDropdown::Value").props.children).toBeUndefined();
+                    expect(getByTestId("RecipeTags::List::" + i + "::TextInputWithDropdown::Label").props.children).toBeUndefined();
+                    expect(getByTestId("RecipeTags::List::" + i + "::TextInputWithDropdown::OnValidate")).toBeTruthy();
+                }
+
+                // Simulate the onValidate event (user finishes entering a new tag).
+                fireEvent.press(getByTestId("RecipeTags::List::1::TextInputWithDropdown::OnValidate"));
+
+                // Verify that the addNewTag callback was called with the correct argument.
+                expect(addNewTagMock).toHaveBeenCalledWith('Test string');
+
+                // After validation, the new tag input should be removed.
+                expect(queryByTestId("RecipeTags::List::1::TextInputWithDropdown::AbsoluteDropDown")).toBeNull();
+                expect(queryByTestId("RecipeTags::List::1::TextInputWithDropdown::ReferenceTextArray")).toBeNull();
+                expect(queryByTestId("RecipeTags::List::1::TextInputWithDropdown::Value")).toBeNull();
+                expect(queryByTestId("RecipeTags::List::1::TextInputWithDropdown::Label")).toBeNull();
+                expect(queryByTestId("RecipeTags::List::1::TextInputWithDropdown::OnValidate")).toBeNull();
+
+                expect(getByTestId("RecipeTags::List::2::TextInputWithDropdown::AbsoluteDropDown").props.children).toEqual(false);
+                expect(getByTestId("RecipeTags::List::2::TextInputWithDropdown::ReferenceTextArray").props.children).toEqual(JSON.stringify(sampleTags.filter(name => !defaultProps.tagsList.includes(name))));
+                expect(getByTestId("RecipeTags::List::2::TextInputWithDropdown::Value").props.children).toBeUndefined();
+                expect(getByTestId("RecipeTags::List::2::TextInputWithDropdown::Label").props.children).toBeUndefined();
+                expect(getByTestId("RecipeTags::List::2::TextInputWithDropdown::OnValidate")).toBeTruthy();
+            });
         });
+        describe('add mode', () => {
+            it("renders header and description texts with the add button", () => {
+                const props: RecipeTagsAddProps = {
+                    ...defaultProps, editType: 'add',
+                    openModal: jest.fn()
+                };
+                const {getByTestId} = render(<RecipeTags {...props} />);
 
-        it('does not show a new tag input initially', () => {
-            const {queryByTestId} = render(<RecipeTags {...defaultProps} />);
-            // No new tag input should be rendered at the start.
-            expect(queryByTestId("RecipeTags::AddOrEdit::List::0")).toBeNull();
-        });
+                // Verify that the header and element texts are rendered using testIDs.
+                expect(getByTestId("RecipeTags::HeaderText")).toBeTruthy();
+                expect(getByTestId("RecipeTags::ElementText").props.children).toContain(randomTags);
 
-        it('adds a new tag input field when the RoundButton is pressed', async () => {
-            const {getByTestId} = render(<RecipeTags {...defaultProps} />);
+                expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
+                expect(getByTestId('HorizontalList::Item').props.children).toEqual(JSON.stringify(defaultProps.tagsList));
+                expect(getByTestId('HorizontalList::Icon').props.children).toEqual('close');
+                expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
 
-            // Press the RoundButton (using its testID).
-            fireEvent.press(getByTestId("RoundButton::OnPressFunction"));
+                expect(getByTestId("RecipeTags::RoundButton::Icon").props.children).toEqual('plus');
+                expect(getByTestId("RecipeTags::RoundButton::OnPressFunction")).toBeTruthy();
 
-            // After pressing, a new tag input should appear with testID "RecipeTags::AddOrEdit::List::0".
-            await waitFor(() => expect(getByTestId("RecipeTags::AddOrEdit::List::0::TextInputWithDropdown::AbsoluteDropDown").props.children).toEqual(false));
-            expect(getByTestId("RecipeTags::AddOrEdit::List::0::TextInputWithDropdown::ReferenceTextArray").props.children).toEqual(JSON.stringify(sampleTags.filter(name => !defaultProps.tagsList.includes(name))));
-            expect(getByTestId("RecipeTags::AddOrEdit::List::0::TextInputWithDropdown::Value").props.children).toBeUndefined();
-            expect(getByTestId("RecipeTags::AddOrEdit::List::0::TextInputWithDropdown::Outline").props.children).toBeUndefined();
-            expect(getByTestId("RecipeTags::AddOrEdit::List::0::TextInputWithDropdown::OnValidate")).toBeTruthy();
-        });
+                expect(getByTestId("RecipeTags::OpenModal::RoundButton::Icon").props.children).toEqual('line-scan');
+                expect(getByTestId("RecipeTags::OpenModal::RoundButton::OnPressFunction")).toBeTruthy();
+            })
 
-        it('calls addNewTag callback when a new tag is validated and removes the input', async () => {
-            const {getByTestId, queryByTestId} = render(<RecipeTags {...defaultProps} />);
-
-            // Simulate adding a new tag input by pressing the RoundButton.
-            fireEvent.press(getByTestId("RoundButton::OnPressFunction"));
-            fireEvent.press(getByTestId("RoundButton::OnPressFunction"));
-
-            await waitFor(() => expect(getByTestId("RecipeTags::AddOrEdit::List::1::TextInputWithDropdown::AbsoluteDropDown").props.children).toEqual(false));
-            await waitFor(() => expect(getByTestId("RecipeTags::AddOrEdit::List::2::TextInputWithDropdown::AbsoluteDropDown").props.children).toEqual(false));
-
-            for (let i = 1; i <= 2; i++) {
-                expect(getByTestId("RecipeTags::AddOrEdit::List::" + i + "::TextInputWithDropdown::ReferenceTextArray").props.children).toEqual(JSON.stringify(sampleTags.filter(name => !defaultProps.tagsList.includes(name))));
-                expect(getByTestId("RecipeTags::AddOrEdit::List::" + i + "::TextInputWithDropdown::Value").props.children).toBeUndefined();
-                expect(getByTestId("RecipeTags::AddOrEdit::List::" + i + "::TextInputWithDropdown::Outline").props.children).toBeUndefined();
-                expect(getByTestId("RecipeTags::AddOrEdit::List::" + i + "::TextInputWithDropdown::OnValidate")).toBeTruthy();
-            }
-
-            // Simulate the onValidate event (user finishes entering a new tag).
-            fireEvent.press(getByTestId("RecipeTags::AddOrEdit::List::1::TextInputWithDropdown::OnValidate"));
-
-            // Verify that the addNewTag callback was called with the correct argument.
-            expect(addNewTagMock).toHaveBeenCalledWith('Test string');
-
-            // After validation, the new tag input should be removed.
-            expect(queryByTestId("RecipeTags::AddOrEdit::List::1::TextInputWithDropdown::AbsoluteDropDown")).toBeNull();
-            expect(queryByTestId("RecipeTags::AddOrEdit::List::1::TextInputWithDropdown::ReferenceTextArray")).toBeNull();
-            expect(queryByTestId("RecipeTags::AddOrEdit::List::1::TextInputWithDropdown::Value")).toBeNull();
-            expect(queryByTestId("RecipeTags::AddOrEdit::List::1::TextInputWithDropdown::Outline")).toBeNull();
-            expect(queryByTestId("RecipeTags::AddOrEdit::List::1::TextInputWithDropdown::OnValidate")).toBeNull();
-
-            expect(getByTestId("RecipeTags::AddOrEdit::List::2::TextInputWithDropdown::AbsoluteDropDown").props.children).toEqual(false);
-            expect(getByTestId("RecipeTags::AddOrEdit::List::2::TextInputWithDropdown::ReferenceTextArray").props.children).toEqual(JSON.stringify(sampleTags.filter(name => !defaultProps.tagsList.includes(name))));
-            expect(getByTestId("RecipeTags::AddOrEdit::List::2::TextInputWithDropdown::Value").props.children).toBeUndefined();
-            expect(getByTestId("RecipeTags::AddOrEdit::List::2::TextInputWithDropdown::Outline").props.children).toBeUndefined();
-            expect(getByTestId("RecipeTags::AddOrEdit::List::2::TextInputWithDropdown::OnValidate")).toBeTruthy();
         });
     });
 });

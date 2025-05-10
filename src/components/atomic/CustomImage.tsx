@@ -8,14 +8,14 @@ export type CustomImageProps = {
     contentFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
     onLoadSuccess?: () => void;
     onLoadError?: () => void;
-    propsTestID?: string;
+    testID: string;
 };
 
 export default function CustomImage({
                                         uri,
                                         contentFit = 'cover',
                                         onLoadSuccess, onLoadError,
-                                        propsTestID
+                                        testID
                                     }: CustomImageProps) {
 
     const {colors} = useTheme();
@@ -24,7 +24,7 @@ export default function CustomImage({
         <View style={{flex: 1}}>
             <Image
                 style={[{flex: 1, backgroundColor: colors.tertiary}]}
-                testID={propsTestID + "::Image"}
+                testID={testID + "::Image"}
                 source={uri}
                 contentFit={contentFit}
                 onError={onLoadError}

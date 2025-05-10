@@ -1,0 +1,39 @@
+appId: "com.recipesmanager"
+---
+
+- addMedia:
+    - "../../../../assets/pouletSatay/image.jpg"
+    - "../../../../assets/pouletSatay/title.jpg"
+    - "../../../../assets/pouletSatay/description.jpg"
+    - "../../../../assets/pouletSatay/personsAndTime.jpg"
+    - "../../../../assets/pouletSatay/ingredients.jpg"
+    - "../../../../assets/pouletSatay/preparation.jpg"
+- evalScript: ${output.nbImageForThisRecipe = 6}
+- evalScript: ${output.isDescriptionToOCR = true}
+- evalScript: ${output.isTagsToOCR = false}
+- evalScript: ${output.isPersons = true}
+- evalScript: ${output.isTime = false}
+- runFlow: OCR/Gallery/openOCRGallery.yaml
+- runFlow: OCR/Gallery/addRecipeFromGallery.yaml
+- tapOn:
+    id: "SearchButton::RoundButton"
+    label: Open Search screen
+- tapOn:
+    id: "SearchBar"
+    label: Open Search Bar
+- inputText:
+    text: "SATAY"
+    label: Tap on the new recipe
+- hideKeyboard:
+    label: Close the keyboard
+- tapOn:
+    text: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
+    label: Tap on the new recipe
+- tapOn:
+    id: "SearchResultDisplay::RectangleCard::Image"
+    label: Open the new Recipe
+- runFlow: ../../../asserts/Recipe/ReadOnly/pouletSatay.yaml
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: Go back
+- pressKey: "BACK"

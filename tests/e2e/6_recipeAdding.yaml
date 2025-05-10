@@ -1,0 +1,37 @@
+appId: "com.recipesmanager"
+name: "Recipe Adding test suite"
+---
+- launchApp
+
+- runFlow: flows/Recipe/Adding/manuallyAddingARecipe.yaml
+- runFlow: flows/Recipe/Adding/giveUpAdding.yaml
+- runFlow: flows/Recipe/Adding/addingErrorHandling.yaml
+- runFlow: flows/Recipe/Adding/ocrHelloFresh.yaml
+- runFlow: flows/Recipe/Adding/ocrQuitoqueV3Recipe.yaml
+- runFlow: flows/Recipe/Adding/ocrQuitoqueV2Recipe.yaml
+- runFlow: flows/Recipe/Adding/ocrQuitoqueV1Recipe.yaml
+
+
+# TODO try to add a recipe already exist (what is the criteria for doublons ?)
+# TODO missing corner cases on OCR
+
+# TODO to clean if everythin is OK in CI
+#- addMedia:
+#    - "../assets/curryPoisChiches/ingredients.jpg"
+#- tapOn: "Parameters"
+#- tapOn:
+#    id: "TestOCR"
+#- repeat:
+#    while:
+#      notVisible:
+#        id: "com.android.providers.media.module:id/icon_thumbnail"
+#    commands:
+#      - pressKey: "BACK"
+#      - tapOn:
+#          id: "TestOCR"
+#- tapOn:
+#    id: "com.android.providers.media.module:id/icon_thumbnail"
+#- tapOn:
+#    id: "com.recipesmanager:id/menu_crop"
+#- tapOn:
+#    id: "SearchBar"

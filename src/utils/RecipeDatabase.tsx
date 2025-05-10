@@ -28,7 +28,6 @@ import {
 } from '@customTypes/DatabaseElementTypes';
 import TableManipulation from './TableManipulation';
 import {EncodingSeparator, textSeparator} from '@styles/typography';
-import {alertUserChoice, AsyncAlert} from './AsyncAlert';
 import {TListFilter} from '@customTypes/RecipeFiltersTypes';
 import FileGestion from '@utils/FileGestion'
 import {isNumber, subtractNumberInString, sumNumberInString} from "@utils/TypeCheckingFunctions";
@@ -545,7 +544,9 @@ export default class RecipeDatabase {
             } else {
                 // TODO
                 // result.push(await AsyncAlert(`TAG "${tags[i].tagName.toUpperCase()}" NOT FOUND.`, "Do you want to add it ?", 'OK', 'Cancel', 'Edit before add', tags[i].tagName));
-                console.error("TODO")
+                // console.error("TODO")
+                await this.addTag(tag);
+                result.push(this.find_tag(tag) as tagTableElement);
             }
         }
         return result;
@@ -569,6 +570,8 @@ export default class RecipeDatabase {
             }
         }
 
+        // TODO what to do when ingredients doesn't exist ?
+        /*
         if (newIngredients.length > 0) {
             let alertTitle: string;
             let alertMessage = "Do you want to add or edit it before  ?";
@@ -604,6 +607,10 @@ export default class RecipeDatabase {
                     break;
             }
         }
+         */
+        // TODO for now, just add the ingredients so that we can move on
+        await this.addMultipleIngredients(newIngredients);
+        result.push(...newIngredients);
         return result;
 
     }

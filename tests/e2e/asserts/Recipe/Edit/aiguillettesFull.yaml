@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
-    id: "BackButton"
+    id: "BackButton::RoundButton"
     label: Back button is displayed
 - assertVisible:
     text: "󰌍"
@@ -10,19 +10,19 @@ appId: "com.recipesmanager"
     text: "󰆴"
     label: Delete icon is not displayed
 - assertNotVisible:
-    id: "RecipeDelete"
+    id: "RecipeDelete::RoundButton"
     label: Delete button id is not displayed
 - assertNotVisible:
     text: "󰏫"
     label: Edit button icon is not displayed
 - assertVisible:
-    id: "button-text"
+    id: "RecipeValidate"
     label: Add recipe button id is displayed
 - assertVisible:
     text: "Add this new recipe"
     label: Add recipe button text is displayed
 - assertVisible:
-    id: "RecipePreparation::RoundButton"
+    id: "RecipePreparation::AddButton::RoundButton"
     label: New preparation id is displayed with the correct icon
 - assertVisible:
     text: "󰐕"
@@ -32,7 +32,7 @@ appId: "com.recipesmanager"
     end: "50%,60%"
     label: Swipe up to see other items
 - assertVisible:
-    id: "RecipePreparation::2::InputParagraph"
+    id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
     text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
     \ ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson\
     \ a feu moyen a vif."
@@ -41,7 +41,7 @@ appId: "com.recipesmanager"
     text: "Content of step 3 : "
     label: Preparation \#2 content text is displayed
 - assertVisible:
-    id: "RecipePreparation::2::InputTitle"
+    id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
     text: "LA CUISSON DU POULET"
     label: Preparation \#2 paragraph title input text id is displayed with the correct text
 - assertVisible:
@@ -50,12 +50,15 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Preparation : step 3"
     label: Preparation \#2 text is displayed
-- swipe:
-    start: "50%,30%"
-    end: "50%,70%"
-    label: Swipe up to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::Step"
+    direction: UP
+    speed: 60
+
 - assertVisible:
-    id: "RecipePreparation::1::InputParagraph"
+    id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
     text: "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez\
     \ et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\n\
     Salez, poivrez. Mixez jusqu'a obtenir une texture homogene."
@@ -64,7 +67,7 @@ appId: "com.recipesmanager"
     text: "Content of step 2 : "
     label: Preparation \#2 content text is displayed
 - assertVisible:
-    id: "RecipePreparation::1::InputTitle"
+    id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
     text: "La sauce"
     label: Preparation \#2 paragraph title input text id is displayed with the correct text
 - assertVisible:
@@ -73,12 +76,15 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Preparation : step 2"
     label: Preparation \#2 text is displayed
-- swipe:
-    start: "50%,30%"
-    end: "50%,70%"
-    label: Swipe up to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Step"
+    direction: UP
+    speed: 60
+
 - assertVisible:
-    id: "RecipePreparation::0::InputParagraph"
+    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
     text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz\
     \ selon les indications du paquet.Pendant ce temps, preparez les filets de poulet\
     \ a la sauce satay."
@@ -87,7 +93,7 @@ appId: "com.recipesmanager"
     text: "Content of step 1 : "
     label: Preparation \#1 content text is displayed
 - assertVisible:
-    id: "RecipePreparation::0::InputTitle"
+    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
     text: "Le riz"
     label: Preparation \#1 paragraph title input text id is displayed with the correct text
 - assertVisible:
@@ -96,10 +102,13 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Preparation : step 1"
     label: Preparation \#1 text is displayed
-- swipe:
-    start: "50%,30%"
-    end: "50%,70%"
-    label: Swipe up to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: UP
+    speed: 60
+
 - assertVisible:
     text: "Time to prepare the recipe :"
     label: Time to prepare text is displayed
@@ -111,59 +120,62 @@ appId: "com.recipesmanager"
     text: "min"
     label: Minute text is displayed
 - assertVisible:
-    id: "RecipeIngredients::RoundButton"
+    id: "RecipeIngredients::AddButton::RoundButton"
     label: Add ingredient button is displayed with the correct text
 - assertVisible:
     text: "󰐕"
     label: Add tag button icons is displayed
-- swipe:
-    start: "50%,40%"
-    end: "50%,60%"
-    label: Swipe up to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: UP
+    speed: 60
+
 - assertVisible:
-    id: "RecipeIngredients::2::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
     label: Ingredient \#3 name TextInput is displayed
 - assertVisible:
     text: "Avocado"
     label: Ingredient \#3 name text is displayed
 - assertVisible:
-    id: "RecipeIngredients::2::Unit"
+    id: "RecipeIngredients::TextRender::2::Unit::TextInput"
     text: "g"
     label: Ingredient \#3 unit text is displayed
 - assertVisible:
-    id: "RecipeIngredients::2::QuantityInput"
+    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
     label: Ingredient \#3 quantity TextInput is displayed
 - assertVisible:
     text: "5"
     label: Ingredient \#3 quantity text is displayed
 - assertVisible:
-    id: "RecipeIngredients::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
     label: Ingredient \#2 name TextInput is displayed
 - assertVisible:
     text: "Onions"
     label: Ingredient \#2 name text is displayed
 - assertVisible:
-    id: "RecipeIngredients::1::Unit"
+    id: "RecipeIngredients::TextRender::1::Unit::TextInput"
     text: "g"
     label: Ingredient \#2 unit text is displayed
 - assertVisible:
-    id: "RecipeIngredients::1::QuantityInput"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
     label: Ingredient \#2 quantity TextInput is displayed
 - assertVisible:
     text: "5"
     label: Ingredient \#2 quantity text is displayed
 - assertVisible:
-    id: "RecipeIngredients::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
     label: Ingredient \#1 name TextInput is displayed
 - assertVisible:
     text: "Chicken Breast"
     label: Ingredient \#1 name text is displayed
 - assertVisible:
-    id: "RecipeIngredients::0::Unit"
+    id: "RecipeIngredients::TextRender::0::Unit::TextInput"
     text: "g"
     label: Ingredient \#1 unit text is displayed
 - assertVisible:
-    id: "RecipeIngredients::0::QuantityInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
     label: Ingredient \#1 quantity TextInput is displayed
 - assertVisible:
     text: "2"
@@ -180,10 +192,13 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Ingredients"
     label: Ingredient section is displayed
-- swipe:
-    start: "50%,40%"
-    end: "50%,60%"
-    label: Swipe up to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::PrefixText"
+    direction: UP
+    speed: 40
+
 - assertVisible:
     text: " persons"
     label: Person text sentence end is displayed
@@ -194,12 +209,15 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "This recipe is for : "
     label: Person text sentence begin is displayed
-- swipe:
-    start: "50%,40%"
-    end: "50%,60%"
-    label: Swipe up to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::HeaderText"
+    direction: UP
+    speed: 60
+
 - assertVisible:
-    id: "RecipeTags::RoundButton-content"
+    id: "RecipeTags::RoundButton"
     label: Add tag button is displayed
 - assertVisible:
     text: "󰐕"
@@ -209,8 +227,7 @@ appId: "com.recipesmanager"
     index: 1
     label: Second tag's icon is displayed
 - assertVisible:
-    id: "chip"
-    index: 1
+    id: "RecipeTags::1::Chip"
     label: Second tag's chip is displayed
 - assertVisible:
     text: "Italian"
@@ -223,22 +240,24 @@ appId: "com.recipesmanager"
     text: "Healthy"
     label: Second tag's text is displayed
 - assertVisible:
-    id: "chip"
-    index: 0
+    id: "RecipeTags::0::Chip"
     label: First tag's chip is displayed
 - assertVisible:
-    id: "RecipeTags::AddOrEdit::ElementText"
+    id: "RecipeTags::ElementText"
     text: "Tags are a way to identify a recipe and make easier its search.\n\
     Here are some examples of tags you can have : .*, .*, .*"
     label: Explanation text id for the tags is displayed with the correct text
 - assertVisible:
-    id: "RecipeTags::AddOrEdit::HeaderText"
+    id: "RecipeTags::HeaderText"
     text: "Tags:"
     label: Header text id for the tags is displayed with the correct text
-- swipe:
-    start: "50%,30%"
-    end: "50%,70%"
-    label: Swipe up to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeDescription::Text"
+    direction: UP
+    speed: 60
+
 - assertVisible:
     id: "RecipeDescription::TextInput"
     text: "Cuisinez nos filets de poulet francais avec du riz basmati bio et\
@@ -248,10 +267,13 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Description:"
     label: Description Title id is displayed with the correct text
-- swipe:
-    start: "50%,20%"
-    end: "50%,80%"
-    label: Swipe up to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 60
+
 - assertVisible:
     id: "RecipeTitle::TextInput"
     text: "Aiguillettes de poulet a la sauce satay"

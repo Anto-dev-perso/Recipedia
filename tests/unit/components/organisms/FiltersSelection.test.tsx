@@ -32,7 +32,7 @@ describe('FiltersSelection Component', () => {
     test('renders correctly with default props', () => {
         const {getByTestId} = render(<FiltersSelection {...defaultProps} />);
 
-        expect(getByTestId('FilterSelection')).toBeTruthy();
+        expect(getByTestId('FiltersSelection')).toBeTruthy();
 
         expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
         expect(getByTestId('HorizontalList::Item').props.children).toEqual(JSON.stringify(defaultProps.tagsList));

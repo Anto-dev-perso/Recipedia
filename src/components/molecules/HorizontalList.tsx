@@ -17,7 +17,7 @@ export type ImageProp = {
 }
 
 export type HorizontalListProps =
-    { propType: "Tag" | "Image", onPress?: (elem: string) => void, }
+    { propType: "Tag" | "Image", onPress?: (elem: string) => void, testID: string, }
     & (TagProp | ImageProp);
 
 // TODO to test
@@ -27,10 +27,10 @@ export default function HorizontalList(props: HorizontalListProps) {
         return (
             <View key={index} style={viewButtonStyles.viewContainingButton}>
                 {props.propType == "Tag" ?
-                    <TagButton text={item as string} rightIcon={props.icon}
+                    <TagButton testID={props.testID + `::${index}`} text={item as string} rightIcon={props.icon}
                                onPressFunction={() => props.onPress?.(item)}/>
                     :
-                    <SquareButton side={smallCardWidth} imgSrc={item}
+                    <SquareButton testID={props.testID + `::List#${index}`} side={smallCardWidth} imgSrc={item}
                                   onPressFunction={() => props.onPress?.(item)} type={'image'}/>
                 }
             </View>

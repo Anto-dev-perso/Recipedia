@@ -1,0 +1,38 @@
+appId: "com.recipesmanager"
+---
+
+- addMedia:
+    - "../../../../assets/tajineMerguez/image.jpg"
+    - "../../../../assets/tajineMerguez/title.jpg"
+    - "../../../../assets/tajineMerguez/personsAndTime.jpg"
+    - "../../../../assets/tajineMerguez/ingredients.jpg"
+    - "../../../../assets/tajineMerguez/preparation.jpg"
+- evalScript: ${output.nbImageForThisRecipe = 5}
+- evalScript: ${output.isDescriptionToOCR = false}
+- evalScript: ${output.isTagsToOCR = false}
+- evalScript: ${output.isPersons = true}
+- evalScript: ${output.isTime = true}
+- runFlow: OCR/Gallery/openOCRGallery.yaml
+- runFlow: OCR/Gallery/addRecipeFromGallery.yaml
+- tapOn:
+    id: "SearchButton::RoundButton"
+    label: Open Search screen
+- tapOn:
+    id: "SearchBar"
+    label: Open Search Bar
+- inputText:
+    text: "MERGUEZ"
+    label: Tap on the new recipe
+- hideKeyboard:
+    label: Close the keyboard
+- tapOn:
+    text: "TAJINE DE MERGUEZ AU CUMIN"
+    label: Tap on the new recipe
+- tapOn:
+    id: "SearchResultDisplay::RectangleCard::Image"
+    label: Open the new Recipe
+- runFlow: ../../../asserts/Recipe/ReadOnly/tajineMerguez.yaml
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: Go back
+- pressKey: "BACK"

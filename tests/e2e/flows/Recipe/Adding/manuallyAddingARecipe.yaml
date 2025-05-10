@@ -33,4 +33,4 @@ name: "Recipe Adding test suite"
 - pressKey: "BACK"
 - tapOn:
     text: "󰍴"
-    label: Press the Plus bottom button
+    label: Reduce the bottom right buttons

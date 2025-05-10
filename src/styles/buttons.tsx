@@ -49,7 +49,7 @@ export const squareButtonStyles = (side: number) => EStyleSheet.create({
         borderColor: palette.bonusColor2,
         width: side,
         height: side,
-        marginHorizontal: padding.medium,
+        marginHorizontal: padding.small,
     },
 });
 

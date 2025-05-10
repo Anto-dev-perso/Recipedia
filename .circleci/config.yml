@@ -66,6 +66,20 @@ jobs:
           no_output_timeout: 50m
           command: eas build --non-interactive --profile build-and-maestro-test-part2 --platform android
 
+  E2E tests Part3:
+    executor: node/default
+    working_directory: ~/workspace/repo
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: Install EAS CLI
+          command: npm install -g eas-cli@16.3.0
+      - run:
+          name: Trigger EAS Build with Maestro Config
+          no_output_timeout: 50m
+          command: eas build --non-interactive --profile build-and-maestro-test-part3 --platform android
+
 workflows:
   Test Android:
     jobs:
@@ -79,3 +93,6 @@ workflows:
       - E2E tests Part2:
           requires:
             - E2E tests Part1
+      - E2E tests Part3:
+          requires:
+            - E2E tests Part2

@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
-    id: "BackButton"
+    id: "BackButton::RoundButton"
     label: Back button is displayed
 - assertVisible:
     text: "󰌍"
@@ -16,7 +16,7 @@ appId: "com.recipesmanager"
     text: "󰏫"
     label: Edit button icon is not displayed
 - assertVisible:
-    id: "button-text"
+    id: "RecipeValidate"
     label: Add recipe button id is displayed
 - assertVisible:
     text: "Add this new recipe"
@@ -43,11 +43,11 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    id: "RecipeTags::AddOrEdit::HeaderText"
+    id: "RecipeTags::HeaderText"
     text: ""
     label: Header text id for the tags is displayed with the empty text
 - assertVisible:
-    id: "RecipeTags::AddOrEdit::ElementText"
+    id: "RecipeTags::ElementText"
     text: "Tags are a way to identify a recipe and make easier its search.\n\
     Here are some examples of tags you can have : .*, .*, .*"
     label: Explanation text id for the tags is displayed with the empty text
@@ -84,7 +84,7 @@ appId: "com.recipesmanager"
     text: "Ingredient name"
     label: Ingredient name column is displayed
 - assertNotVisible:
-    id: "RecipeIngredients::0::QuantityInput"
+    id: "RecipeIngredients::0::QuantityInput::TextInput"
     label: Ingredient \#1 quantity TextInput is not displayed
 - assertNotVisible:
     id: "RecipeIngredients::0::Dropdown:Unit"
@@ -93,7 +93,7 @@ appId: "com.recipesmanager"
     id: "RecipeIngredients::0::Dropdown::TextInput"
     label: Ingredient \#1 name TextInput is not displayed
 - assertVisible:
-    id: "RecipeIngredients::RoundButton"
+    id: "RecipeIngredients::AddButton::RoundButton"
     label: Add ingredient button is displayed with the correct icon
 - assertVisible:
     text: "Time to prepare the recipe :"
@@ -121,7 +121,7 @@ appId: "com.recipesmanager"
     id: "RecipePreparation::0::InputTitle"
     label: Preparation \#1 paragraph title input text id is not displayed
 - assertVisible:
-    id: "RecipePreparation::RoundButton"
+    id: "RecipePreparation::AddButton::RoundButton"
     label: New preparation id is displayed with the correct icon
 - swipe:
     start: "50%,20%"

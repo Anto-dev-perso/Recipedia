@@ -1,0 +1,17 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: "󰐕"
+    label: Press the Plus bottom button
+- tapOn:
+    id: "CameraButton::RoundButton"
+    label: Press the Camera bottom button
+- runFlow:
+    file: ../android/takePhoto.yaml
+    when:
+      platform: Android
+# TODO iOS
+#- runFlow:
+#    file: iOS/takePhoto.yaml
+#    when:
+#      platform: iOS

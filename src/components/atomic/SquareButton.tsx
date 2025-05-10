@@ -11,7 +11,8 @@ type propIsImg = { type: 'image', imgSrc: string };
 
 export type SquareButtonProps = {
     side: number,
-    onPressFunction: () => void
+    onPressFunction: () => void,
+    testID: string,
 } & (propIsRecipe | propIsImg)
 
 
@@ -30,7 +31,7 @@ export default function SquareButton(buttonProps: SquareButtonProps) {
     return (
         <Pressable style={squareButtonStyles(buttonProps.side).squareButton} onPress={buttonProps.onPressFunction}>
             <View style={viewInsideButtonCentered}>
-                <CustomImage uri={img}/>
+                <CustomImage testID={buttonProps.testID + "::SquareButton"} uri={img}/>
             </View>
         </Pressable>
     )

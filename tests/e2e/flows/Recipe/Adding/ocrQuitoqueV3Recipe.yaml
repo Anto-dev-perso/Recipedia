@@ -1,0 +1,43 @@
+appId: "com.recipesmanager"
+---
+
+- addMedia:
+    - "../../../../assets/curryPoisChiches/image.jpg"
+    - "../../../../assets/curryPoisChiches/title.jpg"
+    - "../../../../assets/curryPoisChiches/description.jpg"
+    - "../../../../assets/curryPoisChiches/personsAndTime.jpg"
+    - "../../../../assets/curryPoisChiches/ingredients.jpg"
+    - "../../../../assets/curryPoisChiches/preparation.jpg"
+- runFlow: OCR/Camera/openOCRCamera.yaml
+- runFlow: ../../../asserts/Recipe/OCR/emptyScreen.yaml
+- runFlow: OCR/Camera/addRecipeFromCamera.yaml
+- runFlow: ../../../asserts/Recipe/OCR/curryPoisChiche.yaml
+- tapOn:
+    id: "RecipeValidate"
+    label: Validate the new recipe
+- runFlow: ../../../asserts/Alerts/validateAlert.yaml
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: Reduce the bottom right buttons
+- tapOn:
+    id: "SearchButton::RoundButton"
+    label: Open Search screen
+- tapOn:
+    id: "SearchBar"
+    label: Open Search Bar
+- inputText:
+    text: "CURRY"
+    label: Tap on the new recipe
+- hideKeyboard:
+    label: Close the keyboard
+- tapOn:
+    text: "CURRY DE POIS CHICHES ET POIREAU AUX ÉPICES CACHEMIRE"
+    label: Tap on the new recipe
+- tapOn:
+    id: "SearchResultDisplay::RectangleCard::Image"
+    label: Open the new Recipe
+- runFlow: ../../../asserts/Recipe/ReadOnly/curryPoisChiche.yaml
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: Go back
+- pressKey: "BACK"

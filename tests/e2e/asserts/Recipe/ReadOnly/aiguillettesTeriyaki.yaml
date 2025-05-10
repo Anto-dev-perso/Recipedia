@@ -1,0 +1,225 @@
+appId: "com.recipesmanager"
+---
+# TODO common part to mutualize to avoid copy/paste hell
+- assertVisible:
+    id: "BackButton::RoundButton"
+    label: Back button is displayed
+- assertVisible:
+    text: "󰌍"
+    label: Back button icon is displayed
+- assertVisible:
+    id: "RecipeValidate"
+    label: Add recipe button is displayed
+- assertVisible:
+    text: "Add this recipe to the menu"
+    label: Add recipe button has the correct text
+- assertVisible:
+    id: "RecipeDelete::RoundButton"
+    label: Delete button is displayed
+- assertVisible:
+    text: "󰆴"
+    label: Delete icon is displayed
+- assertVisible:
+    id: "RecipeEdit::RoundButton"
+    label: Edit button is rendered
+- assertVisible:
+    text: "󰏫"
+    label: Edit button has the correct icon
+- assertNotVisible:
+    id: "RecipeImage::RoundButton"
+    label: Image button is not rendered
+- assertVisible:
+    id: "RecipeImage::Image"
+    label: Image is displayed
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "Aiguillettes de poulet façon teriyaki avec des légumes poêlés & du riz basmati"
+    label: Title of the recipe is rendered
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeDescription::Text"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: "La sauce teriyaki .*"
+    label: Description of the recipe is empty
+
+- scrollUntilVisible:
+    element:
+      text: "Ingredients (2 persons)"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    label: First tag is rendered
+- assertVisible:
+    text: "<650kcal"
+    label: First tag name is rendered
+- assertVisible:
+    id: "RecipeTags::1::Chip"
+    label: Second tag is rendered
+- assertVisible:
+    text: "Familial"
+    label: First tag name is rendered
+- assertVisible:
+    id: "RecipeTags::2::Chip"
+    label: Third tag is rendered
+- assertVisible:
+    text: "Rapido"
+    label: Second tag is rendered
+
+- assertVisible:
+    text: "Ingredients (2 persons)"
+    label: Ingredient section and persons is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::10::IngredientName"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    text: "140 g"
+    index: 0
+    label: First ingredient quantity is displayed
+- assertVisible:
+    text: "Riz basmati"
+    label: First ingredient name is displayed
+- assertVisible:
+    text: "1 pièce"
+    index: 0
+    label: Second ingredient quantity is displayed
+- assertVisible:
+    text: "Oignon jaune"
+    label: Second ingredient name is displayed
+- assertVisible:
+    text: "1 pièce"
+    index: 1
+    label: Third ingredient quantity is displayed
+- assertVisible:
+    text: "Carot.*"
+    label: Third ingredient name is displayed
+- assertVisible:
+    text: "1 pièce"
+    index: 2
+    label: Fourth ingredient quantity is displayed
+- assertVisible:
+    text: "Poire.*"
+    label: Fourth ingredient name is displayed
+- assertVisible:
+    text: "3g "
+    label: Fifth ingredient quantity is displayed
+- assertVisible:
+    text: "Ciboulette"
+    label: Fifth ingredient name is displayed
+- assertVisible:
+    text: "1 pièce"
+    index: 3
+    label: Sixth ingredient quantity is displayed
+- assertVisible:
+    text: "Gousse d'ail"
+    label: Sixth ingredient name is displayed
+- assertVisible:
+    text: "2 cm"
+    label: Seventh ingredient quantity is displayed
+- assertVisible:
+    text: "Gingembre frais"
+    label: Seventh ingredient name is displayed
+- assertVisible:
+    text: "40 ml"
+    label: Eigth ingredient quantity is displayed
+- assertVisible:
+    text: "Sauce soj.*"
+    label: Eigth ingredient name is displayed
+- assertVisible:
+    text: "10 ml"
+    label: Ninth ingredient quantity is displayed
+- assertVisible:
+    text: "Huile de sésam.*"
+    label: Ninth ingredient name is displayed
+- assertVisible:
+    text: "2 pièce"
+    label: Tenth ingredient quantity is displayed
+- assertVisible:
+    text: "Filet de poulet"
+    label: Tenth ingredient name is displayed
+- assertVisible:
+    text: "2 c.*"
+    label: Eleventh ingredient quantity is displayed
+- assertVisible:
+    text: "Gomas.*"
+    label: Eleventh ingredient name is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipeTime::Text"
+    text: "Preparation (30 min)"
+    label: Preparation section and persons are displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) Cuire le riz"
+    label: First preparation title is displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: First preparation paragraph is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionTitle"
+    text: "2) Cuire les légumes"
+    label: Second preparation title is displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: Second preparation paragraph is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionTitle"
+    text: "3) Faire la sauce"
+    label: Third preparation title is displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: Third preparation paragraph is displayed
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::3::SectionParagraph"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionTitle"
+    text: "4) Finir et servir"
+    label: Fourth preparation title is displayed
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: Fourth preparation paragraph is displayed

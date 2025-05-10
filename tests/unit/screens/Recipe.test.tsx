@@ -287,8 +287,8 @@ function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTes
             break;
         case "addFromPic":
             expect(queryByTestId('RecipePersons::Text')).toBeNull();
-            expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('This recipe is for : ');
-            expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual(' persons');
+            expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('How many serving (people) ?');
+            expect(getByTestId('RecipePersons::SuffixText').props.children).toBeUndefined();
             if (prop.imgUri == defaultUri) {
                 expect(getByTestId('RecipePersons::OpenModal').props.children).toBeTruthy();
             } else {
@@ -326,13 +326,15 @@ function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId
             break;
         case "addFromPic":
             expect(queryByTestId('RecipeTime::Text')).toBeNull();
-            expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('Time to prepare the recipe : ');
             if (prop.imgUri == defaultUri) {
+                expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('Prep time (minutes):');
+                expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
                 expect(getByTestId('RecipeTime::OpenModal').props.children).toBeTruthy();
             } else {
+                expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('Time to prepare the recipe : ');
+                expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual(' min');
                 expect(queryByTestId('RecipeTime::OpenModal')).toBeNull();
             }
-            expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual(' min');
             break;
     }
 }
@@ -404,7 +406,7 @@ function checkPreparation(prop: RecipePropType, getByTestId: GetByIdType, queryB
             expect(queryByTestId('RecipePreparation::OnClick')).toBeNull();
             expect(queryByTestId('RecipePreparation::OnChangeFunction')).toBeNull();
 
-            expect(getByTestId('RecipePreparation::PrefixText').props.children).toBeUndefined();
+            expect(getByTestId('RecipePreparation::PrefixText').props.children).toEqual('Preparation :');
             if (prop.imgUri.length == 0) {
                 expect(getByTestId('RecipePreparation::OpenModal').props.children).toBeTruthy();
             } else {

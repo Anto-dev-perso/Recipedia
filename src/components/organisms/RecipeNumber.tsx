@@ -4,11 +4,14 @@ import RoundButton from "@components/atomic/RoundButton";
 import {Icons} from "@assets/Icons";
 import {defaultValueNumber} from "@utils/Constants";
 import {recipeNumberStyles, recipeTextStyles} from "@styles/recipeComponents";
-import {Text, TextInput} from 'react-native-paper'
+import {Text} from 'react-native-paper'
+import {VariantProp} from "react-native-paper/lib/typescript/components/Typography/types";
+import CustomTextInput from "@components/atomic/CustomTextInput";
 
 export type RecipeNumberAddProps = {
     editType: 'add',
-    openModal: () => void
+    openModal: () => void,
+    manuallyFill: () => void,
 };
 
 export type RecipeNumberEditProps = {
@@ -30,14 +33,14 @@ export type RecipeNumberReadAddOrEditProps = RecipeNumberAddOrEditProps | Recipe
 export type RecipeNumberProps =
     {
         numberProps: RecipeNumberReadAddOrEditProps,
-        testID?: string,
+        testID: string,
     };
 
 export default function RecipeNumber({testID, numberProps}: RecipeNumberProps) {
     return (
         <View style={recipeTextStyles.containerSection}>
             {numberProps.editType === 'read' ?
-                <Text variant={"headlineMedium"}
+                <Text testID={testID + "::Text"} variant={"headlineMedium"}
                       style={{marginVertical: 20}}>{numberProps.text}</Text>
                 :
                 <RecipeNumberEditablePart testID={testID} {...numberProps}/>}
@@ -47,23 +50,35 @@ export default function RecipeNumber({testID, numberProps}: RecipeNumberProps) {
 
 
 function RecipeNumberEditablePart(addOrEditProps: RecipeNumberAddOrEditProps) {
+
+    const view = addOrEditProps.editType === "editable" ? recipeNumberStyles.editableView : recipeNumberStyles.addView;
+    const prefixVariant: VariantProp<never> = addOrEditProps.editType === "editable" ? "titleMedium" : "headlineSmall";
     return (
-        <View style={recipeNumberStyles.editableView}>
-            {addOrEditProps.prefixText ?
-                <Text variant={"titleMedium"}>{addOrEditProps.prefixText}</Text> : null}
-
+        <View style={view}>
+            <Text testID={addOrEditProps.testID + "::PrefixText"}
+                  variant={prefixVariant}>{addOrEditProps.prefixText}</Text>
             {addOrEditProps.editType === 'editable' ?
-                <TextInput testID={addOrEditProps.testID + "::TextInput"}
-                           mode={"outlined"}
-                           value={addOrEditProps.textEditable == defaultValueNumber ? "" : addOrEditProps.textEditable.toString()}
-                           onChangeText={newNumber => addOrEditProps.setTextToEdit(Number(newNumber))}
-                           keyboardType={'numeric'}/>
+                <CustomTextInput testID={addOrEditProps.testID}
+                                 value={addOrEditProps.textEditable == defaultValueNumber ? "" : addOrEditProps.textEditable.toString()}
+                                 onChangeText={newNumber => addOrEditProps.setTextToEdit(Number(newNumber))}
+                                 keyboardType={'numeric'}
+                />
+                : <View style={recipeNumberStyles.roundButtonsContainer}>
+                    <View style={recipeNumberStyles.roundButton}>
+                        <RoundButton testID={addOrEditProps.testID + "::OpenModal"} size={"medium"}
+                                     icon={Icons.scanImageIcon}
+                                     onPressFunction={addOrEditProps.openModal}/>
+                    </View>
+                    <View style={recipeNumberStyles.roundButton}>
+                        <RoundButton testID={addOrEditProps.testID + "::ManuallyFill"} size={"medium"}
+                                     icon={Icons.pencilIcon}
+                                     onPressFunction={addOrEditProps.manuallyFill}/>
+                    </View>
+                </View>
 
-                : <RoundButton testID={addOrEditProps.testID + "::OpenModal"} size={"medium"} icon={Icons.scanImageIcon}
-                               onPressFunction={addOrEditProps.openModal}/>
             }
-            {addOrEditProps.suffixText ?
-                <Text variant={"titleMedium"}>{addOrEditProps.suffixText}</Text> : null}
+            <Text testID={addOrEditProps.testID + "::SuffixText"}
+                  variant={"titleMedium"}>{addOrEditProps.suffixText}</Text>
         </View>
 
     )

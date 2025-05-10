@@ -6,10 +6,10 @@ import {RecipeRecommendationProps} from "@components/organisms/RecipeRecommendat
 export function recipeRecommendationMock(recipeRecommendationProp: RecipeRecommendationProps) {
     return (
         <View>
-            <Text testID={recipeRecommendationProp.testID + "::TitleRecommendation"}>
+            <Text testID={recipeRecommendationProp.titleRecommendation + "::Title::TitleRecommendation"}>
                 {recipeRecommendationProp.titleRecommendation}
             </Text>
-            <Text testID={recipeRecommendationProp.testID + "::CarouselProps"}>
+            <Text testID={recipeRecommendationProp.titleRecommendation + "::CarouselProps"}>
                 {JSON.stringify(recipeRecommendationProp.carouselProps)}
             </Text>
         </View>

@@ -2,8 +2,8 @@ import RecipeRecommendation from "@components/organisms/RecipeRecommendation";
 
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import React, {useCallback, useEffect, useState} from "react";
-import {RefreshControl, SafeAreaView, ScrollView} from "react-native";
-import {screenViews} from "@styles/spacing";
+import {RefreshControl, SafeAreaView, ScrollView, View} from "react-native";
+import {padding, screenViews} from "@styles/spacing";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import RoundButton from "@components/atomic/RoundButton";
 import {bottomTopPosition} from "@styles/buttons";
@@ -77,16 +77,18 @@ export default function Home() {
 
     return (
         <SafeAreaView style={screenViews.screenView}>
+            {/* TODO for now, add padding to avoid some buggy tests*/}
+            <View style={{marginVertical: padding.large}}/>
             <ScrollView testID={'HomeScrollView'}
                         refreshControl={<RefreshControl colors={[palette.primary]} refreshing={refreshing}
                                                         onRefresh={onRefresh}/>}>
-                <RecipeRecommendation testID={'RecipeRecommendation1'} carouselProps={elementsForRecommendation1}
+                <RecipeRecommendation carouselProps={elementsForRecommendation1}
                                       titleRecommendation="Recommendation 1"/>
-                <RecipeRecommendation testID={'RecipeRecommendation2'} carouselProps={elementsForRecommendation2}
+                <RecipeRecommendation carouselProps={elementsForRecommendation2}
                                       titleRecommendation="Recommendation 2"/>
-                <RecipeRecommendation testID={'RecipeRecommendation3'} carouselProps={elementsForRecommendation3}
+                <RecipeRecommendation carouselProps={elementsForRecommendation3}
                                       titleRecommendation="Recommendation 3"/>
-                <RecipeRecommendation testID={'RecipeRecommendation4'} carouselProps={elementsForRecommendation4}
+                <RecipeRecommendation carouselProps={elementsForRecommendation4}
                                       titleRecommendation="Recommendation 4"/>
             </ScrollView>
             <BottomTopButton testID={'SearchButton'} as={RoundButton} position={bottomTopPosition.bottom_left}

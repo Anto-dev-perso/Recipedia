@@ -11,22 +11,12 @@ import {
 } from "@customTypes/DatabaseElementTypes";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import {SafeAreaView, ScrollView, View} from "react-native";
-import {
-    BottomTopButtonOffset,
-    bottomTopPosition,
-    LargeButtonDiameter,
-    rectangleButtonHeight,
-    viewButtonStyles
-} from "@styles/buttons";
-import {screenViews, scrollView} from "@styles/spacing";
+import {BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter, rectangleButtonHeight} from "@styles/buttons";
+import {scrollView} from "@styles/spacing";
 import RecipeImage, {RecipeImageProps} from "@components/organisms/RecipeImage";
 import {Icons} from "@assets/Icons";
-import RecipeTextRender, {
-    RecipeTextRenderAddOrEditProps,
-    RecipeTextRenderProps,
-    RecipeTextRenderReadOnlyProps
-} from "@components/organisms/RecipeTextRender";
-import RecipeText, {RecipeTextAddOrEditProps} from "@components/organisms/RecipeText";
+import RecipeTextRender, {RecipeTextRenderProps} from "@components/organisms/RecipeTextRender";
+import RecipeText, {RecipeTextProps, TextProp} from "@components/organisms/RecipeText";
 import {textSeparator, typoRender, unitySeparator} from "@styles/typography";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import RecipeTags, {RecipeTagProps} from "@components/organisms/RecipeTags";
@@ -35,10 +25,7 @@ import FileGestion from "@utils/FileGestion";
 import RectangleButton from "@components/atomic/RectangleButton";
 import RoundButton from "@components/atomic/RoundButton";
 import {extractFieldFromImage} from "@utils/OCR";
-import RecipeNumber, {
-    RecipeNumberAddOrEditProps,
-    RecipeNumberReadAddOrEditProps
-} from "@components/organisms/RecipeNumber";
+import RecipeNumber, {RecipeNumberProps} from "@components/organisms/RecipeNumber";
 import {defaultValueNumber} from "@utils/Constants";
 import {useTheme} from "react-native-paper";
 import ModalImageSelect from "@screens/ModalImageSelect";
@@ -86,13 +73,14 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     const [recipeTags, setRecipeTags] = useState(initStateFromProp ? props.recipe.tags : new Array<tagTableElement>());
     const [recipePersons, setRecipePersons] = useState(initStateFromProp ? props.recipe.persons : defaultValueNumber);
     const [recipeIngredients, setRecipeIngredients] = useState(initStateFromProp ? props.recipe.ingredients : new Array<ingredientTableElement>());
-    const [recipeSeason, setRecipeSeason] = useState(initStateFromProp ? props.recipe.season : new Array<string>());
     const [recipePreparation, setRecipePreparation] = useState(initStateFromProp ? props.recipe.preparation : new Array<string>());
     const [recipeTime, setRecipeTime] = useState(initStateFromProp ? props.recipe.time : defaultValueNumber);
     const [imgForOCR, setImgForOCR] = useState(props.mode === "addFromPic" ? new Array<string>(props.imgUri) : new Array<string>());
     const [randomTags, setRandomTags] = useState(tags);
 
     const [modalField, setModalField] = useState<recipeColumnsNames | undefined>(undefined);
+    const [recipePersonsManuallyEdited, setRecipePersonsManuallyEdited] = useState(false);
+    const [recipeTimeManuallyEdited, setRecipeTimeManuallyEdited] = useState(false);
 
 
     async function onDelete() {
@@ -198,7 +186,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             tags: recipeTags,
             persons: recipePersons,
             ingredients: recipeIngredients,
-            season: recipeSeason,
+            season: initStateFromProp ? props.recipe.season : new Array<string>(),
             preparation: recipePreparation,
             time: recipeTime,
         }
@@ -292,10 +280,10 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             recipePreparation: recipePreparation,
             recipePersons: recipePersons,
             recipeIngredients: recipeIngredients,
+            recipeTags: recipeTags,
         }, (msg) => {
             console.warn("OCR warning:", msg);
         });
-
         if (newFieldData.recipeImage) {
             setRecipeImage(newFieldData.recipeImage);
         }
@@ -304,6 +292,9 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         }
         if (newFieldData.recipeDescription) {
             setRecipeDescription(newFieldData.recipeDescription);
+        }
+        if (newFieldData.recipeTags) {
+            setRecipeTags(newFieldData.recipeTags);
         }
         if (newFieldData.recipePreparation) {
             setRecipePreparation(newFieldData.recipePreparation);
@@ -323,307 +314,322 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         setModalField(field);
     }
 
-    let validationButtonText: string;
-    let validationFunction: () => Promise<void>;
+    function recipeImageProp(): RecipeImageProps {
+        const defaultReturn: RecipeImageProps = {imgUri: recipeImage, openModal: openModalForField};
+        switch (stackMode) {
+            case recipeStateType.readOnly:
+                return defaultReturn;
+            case recipeStateType.edit:
+            case recipeStateType.addManual:
+                return {...defaultReturn, buttonIcon: Icons.cameraIcon};
+            case recipeStateType.addOCR:
+                return {...defaultReturn, buttonIcon: Icons.scanImageIcon};
+            default:
+                console.warn("recipeImageProp: Unknown stackMode");
+                return {
+                    imgUri: "", openModal: () => {
+                        console.warn("recipeImageProp: Unknown stackMode")
+                    }
+                };
+        }
+    }
 
-    const imgProps: RecipeImageProps = {
-        testID: 'RecipeImage',
-        imgUri: recipeImage,
-        openModal: openModalForField
-    };
-    let titleAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
-    let descriptionAddOrEditProps: RecipeTextAddOrEditProps | undefined = undefined;
-    let personProps: RecipeNumberReadAddOrEditProps;
-    let timeProps: RecipeNumberReadAddOrEditProps;
+    function recipeTitleProp(): RecipeTextProps {
+        const titleTestID = 'RecipeTitle';
+        const titleRootText: TextProp = {
+            style: stackMode == recipeStateType.readOnly ? 'headline' : 'title',
+            value: stackMode == recipeStateType.readOnly ? recipeTitle : 'Title:'
+        };
+        switch (stackMode) {
+            case recipeStateType.readOnly:
+                return {
+                    testID: titleTestID,
+                    rootText: titleRootText,
+                };
+            case recipeStateType.addOCR:
+                if (recipeTitle.length == 0) {
+                    return {
+                        testID: titleTestID,
+                        rootText: titleRootText,
+                        addOrEditProps: {editType: 'add', openModal: () => openModalForField(recipeColumnsNames.title),}
+                    };
+                }
+            // Else return the same props as edit or addManual
+            case recipeStateType.edit:
+            case recipeStateType.addManual:
+                return {
+                    testID: titleTestID,
+                    rootText: titleRootText,
+                    addOrEditProps: {
+                        editType: 'editable',
+                        textEditable: recipeTitle,
+                        setTextToEdit: setRecipeTitle,
+                    }
+                };
+            default:
+                console.warn("recipeTitleProp: Unknown stackMode");
+                return {rootText: {style: 'paragraph', value: ''}};
+        }
+    }
 
-    let tagProps: RecipeTagProps;
+    function recipeDescriptionProp(): RecipeTextProps {
+        const descriptionTestID = 'RecipeDescription';
+        const descriptionRootText: TextProp = {
+            style: stackMode == recipeStateType.readOnly ? 'paragraph' : 'title',
+            value: (stackMode == recipeStateType.readOnly ? recipeDescription : 'Description:')
+        };
+        switch (stackMode) {
+            case recipeStateType.readOnly:
+                return {rootText: descriptionRootText, testID: descriptionTestID};
+            case recipeStateType.addOCR:
+                if (recipeDescription.length == 0) {
+                    return {
+                        rootText: descriptionRootText, testID: descriptionTestID,
+                        addOrEditProps: {
+                            editType: 'add',
+                            openModal: () => openModalForField(recipeColumnsNames.description)
+                        }
+                    };
+                }
+            // Else return the same props as edit or addManual
+            case recipeStateType.edit:
+            case recipeStateType.addManual:
+                return {
+                    rootText: descriptionRootText, testID: descriptionTestID,
+                    addOrEditProps: {
+                        editType: 'editable',
+                        textEditable: recipeDescription,
+                        setTextToEdit: setRecipeDescription,
+                    }
+                };
 
-    let preparationProps: RecipeTextRenderProps;
-    let ingredientsProps: RecipeTextRenderProps;
-    switch (stackMode) {
-        case recipeStateType.readOnly:
-            validationButtonText = "Add this recipe to the menu";
-            validationFunction = readOnlyValidation;
+            default:
+                console.warn("recipeDescriptionProp: Unknown stackMode");
+                return {rootText: {style: 'paragraph', value: ''}};
+        }
+    }
 
-            tagProps = {
-                type: 'readOnly', tagsList: extractTagsName(recipeTags),
-            };
+    function recipeTagsProp(): RecipeTagProps {
+        const tagsExtracted = extractTagsName(recipeTags);
+        const editProps: RecipeTagProps = {
+            tagsList: tagsExtracted,
+            type: 'addOrEdit',
+            editType: "edit",
+            randomTags: randomTags.join(', '),
+            addNewTag: addTag,
+            removeTag: removeTag,
+        };
+        switch (stackMode) {
+            case recipeStateType.readOnly:
+                return {type: 'readOnly', tagsList: tagsExtracted};
+            case recipeStateType.addOCR:
+                return {...editProps, editType: 'add', openModal: () => openModalForField(recipeColumnsNames.tags)};
+            case recipeStateType.edit:
+            case recipeStateType.addManual:
+                return editProps;
+            default:
+                console.warn("recipeTagsProp: Unknown stackMode");
+                return {tagsList: [], type: 'readOnly'}
+        }
+    }
 
-            preparationProps =
-                {
+    function recipePersonsProp(): RecipeNumberProps {
+        const personTestID = 'RecipePersons';
+        switch (stackMode) {
+            case recipeStateType.readOnly:
+                return {
+                    testID: personTestID,
+                    numberProps: {editType: 'read', text: `Ingredients (${recipePersons} persons)`}
+                };
+            case recipeStateType.addOCR:
+                if (!recipePersonsManuallyEdited && recipePersons === defaultValueNumber) {
+                    return {
+                        testID: personTestID,
+                        numberProps: {
+                            editType: 'add',
+                            prefixText: "How many serving (people) ?",
+                            openModal: () => openModalForField(recipeColumnsNames.persons),
+                            manuallyFill: () => setRecipePersonsManuallyEdited(true),
+                        }
+                    };
+                }
+            // Else return the same props as edit or addManual
+            case recipeStateType.edit:
+            case recipeStateType.addManual:
+                return {
+                    testID: personTestID,
+                    numberProps: {
+                        editType: 'editable',
+                        textEditable: recipePersons,
+                        prefixText: "This recipe is for : ",
+                        suffixText: " persons",
+                        setTextToEdit: setRecipePersons,
+                    }
+                };
+            default:
+                console.warn("recipePersonsProp: Unknown stackMode");
+                return {
+                    testID: personTestID,
+                    numberProps: {editType: 'read', text: ''}
+                };
+        }
+    }
+
+    function recipeTimeProp(state: recipeStateType = stackMode): RecipeNumberProps {
+        const personTestID = 'RecipeTime';
+        switch (state) {
+            case recipeStateType.readOnly:
+                return {
+                    testID: personTestID,
+                    numberProps: {editType: 'read', text: `Preparation (${recipeTime} min)`}
+                };
+            case recipeStateType.addOCR:
+                if (!recipeTimeManuallyEdited && recipeTime === defaultValueNumber) {
+                    return {
+                        testID: personTestID,
+                        numberProps: {
+                            editType: 'add',
+                            prefixText: "Prep time (minutes):",
+                            openModal: () => openModalForField(recipeColumnsNames.time),
+                            manuallyFill: () => setRecipeTimeManuallyEdited(true),
+                        }
+                    };
+                }
+            // Else return the same props as edit or addManual
+            case recipeStateType.edit:
+            case recipeStateType.addManual:
+                return {
+                    testID: personTestID,
+                    numberProps: {
+                        editType: 'editable',
+                        textEditable: recipeTime,
+                        prefixText: 'Time to prepare the recipe :',
+                        suffixText: "min",
+                        setTextToEdit: setRecipeTime,
+                    }
+                };
+            default:
+                console.warn("recipePersonsProp: Unknown stackMode");
+                return {
+                    testID: personTestID,
+                    numberProps: {editType: 'read', text: ''}
+                };
+        }
+    }
+
+    function recipeIngredientsProp(): RecipeTextRenderProps {
+        const ingredientPrefixText = "Ingredients";
+        const ingredientRender: typoRender = typoRender.ARRAY;
+        const extractedIngredients = extractIngredientsNameWithQuantity(recipeIngredients);
+        const ingredientTestID = 'RecipeIngredients';
+        switch (stackMode) {
+            case recipeStateType.readOnly:
+                return {
+                    testID: ingredientTestID,
+                    type: 'readOnly',
+                    text: extractedIngredients,
+                    render: ingredientRender
+                };
+            case recipeStateType.addOCR:
+                if (recipeIngredients.length == 0) {
+                    return {
+                        testID: ingredientTestID,
+                        type: 'addOrEdit',
+                        editType: 'add',
+                        prefixText: ingredientPrefixText,
+                        openModal: () => openModalForField(recipeColumnsNames.ingredients),
+                    };
+                }
+            // Else return the same props as edit or addManual
+            case recipeStateType.edit:
+            case recipeStateType.addManual:
+                return {
+                    testID: ingredientTestID,
+                    type: 'addOrEdit',
+                    editType: 'editable',
+                    prefixText: ingredientPrefixText,
+                    columnTitles: {
+                        column1: 'Quantity',
+                        column2: 'Unit',
+                        column3: 'Ingredient name',
+                    },
+                    renderType: typoRender.ARRAY,
+                    textEditable: extractedIngredients,
+                    textEdited: editIngredients,
+                    addNewText: addNewIngredient,
+                };
+            default:
+                console.warn("recipeIngredientsProp: Unknown stackMode");
+                return {
+                    testID: ingredientTestID,
+                    type: 'readOnly',
+                    text: [],
+                    render: typoRender.LIST
+                };
+        }
+    }
+
+    function recipePreparationProp(): RecipeTextRenderProps {
+        const preparationRender: typoRender = typoRender.SECTION;
+        const preparationTestID = 'RecipePreparation';
+        switch (stackMode) {
+            case recipeStateType.readOnly:
+                return {
+                    testID: preparationTestID,
                     type: 'readOnly',
                     text: recipePreparation,
-                    render: typoRender.SECTION
-                } as RecipeTextRenderReadOnlyProps;
-            ingredientsProps = {
-                type: 'readOnly',
-                text: extractIngredientsNameWithQuantity(recipeIngredients),
-                render: typoRender.ARRAY
-            } as RecipeTextRenderReadOnlyProps;
-
-            timeProps = {
-                editType: 'read',
-                text: `Preparation (${recipeTime} min)`
-            };
-            personProps = {
-                editType: 'read',
-                text: `Ingredients (${recipePersons} persons)`
-            };
-            break;
-        case recipeStateType.edit:
-            validationButtonText = "Validate the recipe with these modifications";
-            validationFunction = editValidation;
-
-            imgProps.buttonIcon = Icons.cameraIcon;
-
-            titleAddOrEditProps = {
-                editType: 'editable',
-                textEditable: recipeTitle,
-                setTextToEdit: setRecipeTitle,
-            } as RecipeTextAddOrEditProps;
-
-            descriptionAddOrEditProps = {
-                editType: 'editable',
-                textEditable: recipeDescription,
-                setTextToEdit: setRecipeDescription,
-            } as RecipeTextAddOrEditProps;
-
-            personProps = {
-                editType: 'editable',
-                textEditable: recipePersons,
-                prefixText: 'This recipe is for : ',
-                suffixText: ' persons',
-                setTextToEdit: setRecipePersons,
-            } as RecipeNumberAddOrEditProps;
-
-            tagProps = {
-                type: 'addOrEdit',
-                tagsList: extractTagsName(recipeTags),
-                randomTags: randomTags.join(', '),
-                addNewTag: addTag,
-                removeTag: removeTag,
-            };
-
-            timeProps = {
-                editType: 'editable',
-                prefixText: 'Time to prepare the recipe :',
-                suffixText: 'min',
-                textEditable: recipeTime,
-                setTextToEdit: setRecipeTime,
-            } as RecipeNumberAddOrEditProps;
-
-            preparationProps = {
-                type: 'addOrEdit',
-                editType: 'editable',
-
-                renderType: typoRender.SECTION,
-                textEditable: recipePreparation,
-                textEdited: editPreparation,
-                addNewText: addNewPreparationStep,
-
-                viewAddButton: {...screenViews.sectionView, ...viewButtonStyles.centeredView},
-            } as RecipeTextRenderAddOrEditProps;
-
-            ingredientsProps = {
-                type: 'addOrEdit',
-                editType: 'editable',
-                prefixText: 'Ingredients',
-                columnTitles: {
-                    column1: 'Quantity',
-                    column2: 'Unit',
-                    column3: 'Ingredient name',
-                },
-                renderType: typoRender.ARRAY,
-                textEditable: extractIngredientsNameWithQuantity(recipeIngredients),
-                textEdited: editIngredients,
-                addNewText: addNewIngredient,
-                viewAddButton: viewButtonStyles.centeredView,
-            } as RecipeTextRenderAddOrEditProps;
-            break;
-        case recipeStateType.addManual:
-            validationButtonText = "Add this new recipe";
-            validationFunction = addValidation;
-
-            imgProps.buttonIcon = Icons.cameraIcon;
-            titleAddOrEditProps = {
-                editType: 'editable',
-                textEditable: recipeTitle,
-                setTextToEdit: setRecipeTitle,
-            } as RecipeTextAddOrEditProps;
-
-            descriptionAddOrEditProps = {
-                editType: 'editable',
-                textEditable: recipeDescription,
-                setTextToEdit: setRecipeDescription,
-            } as RecipeTextAddOrEditProps;
-
-            personProps = {
-                editType: 'editable',
-                textEditable: recipePersons,
-                prefixText: 'This recipe is for : ',
-                suffixText: ' persons',
-                setTextToEdit: setRecipePersons,
-            } as RecipeNumberAddOrEditProps;
-
-            tagProps = {
-                type: 'addOrEdit',
-                tagsList: extractTagsName(recipeTags),
-                randomTags: randomTags.join(', '),
-                addNewTag: addTag,
-                removeTag: removeTag,
-            };
-
-            timeProps = {
-                editType: 'editable',
-                prefixText: 'Time to prepare the recipe :',
-                suffixText: 'min',
-                textEditable: recipeTime,
-                setTextToEdit: setRecipeTime,
-            } as RecipeNumberAddOrEditProps;
-
-            preparationProps = {
-                type: 'addOrEdit',
-                editType: 'editable',
-
-                renderType: typoRender.SECTION,
-                textEditable: recipePreparation,
-                textEdited: editPreparation,
-                addNewText: addNewPreparationStep,
-            };
-
-            ingredientsProps = {
-                type: 'addOrEdit',
-                editType: 'editable',
-                prefixText: 'Ingredients',
-                columnTitles: {
-                    column1: 'Quantity',
-                    column2: 'Unit',
-                    column3: 'Ingredient name'
-                },
-                renderType: typoRender.ARRAY,
-                textEditable: extractIngredientsNameWithQuantity(recipeIngredients),
-                textEdited: editIngredients,
-                addNewText: addNewIngredient,
-            } as RecipeTextRenderAddOrEditProps;
-            break;
-        case recipeStateType.addOCR:
-            validationButtonText = "Add this new recipe";
-            validationFunction = addValidation;
-
-            imgProps.buttonIcon = Icons.scanImageIcon;
-
-            if (recipeTitle.length == 0) {
-                titleAddOrEditProps = {
-                    editType: 'add',
-                    flex: 1,
-                    openModal: () => openModalForField(recipeColumnsNames.title),
-                } as RecipeTextAddOrEditProps;
-            } else {
-                titleAddOrEditProps = {
-                    editType: 'editable',
-                    textEditable: recipeTitle,
-                    setTextToEdit: setRecipeTitle,
-                } as RecipeTextAddOrEditProps;
-            }
-            if (recipeDescription.length == 0) {
-                descriptionAddOrEditProps = {
-                    editType: 'add',
-                    flex: 1,
-                    openModal: () => openModalForField(recipeColumnsNames.description),
-                } as RecipeTextAddOrEditProps;
-            } else {
-                descriptionAddOrEditProps = {
-                    editType: 'editable',
-                    textEditable: recipeDescription,
-                    setTextToEdit: setRecipeDescription,
-                } as RecipeTextAddOrEditProps;
-            }
-            if (recipePersons == defaultValueNumber) {
-                personProps = {
-                    editType: 'add',
-                    prefixText: 'This recipe is for : ',
-                    suffixText: ' persons',
-
-                    openModal: () => openModalForField(recipeColumnsNames.persons),
-                } as RecipeNumberAddOrEditProps;
-            } else {
-                personProps = {
-                    editType: 'editable',
-                    textEditable: recipePersons,
-
-                    prefixText: 'This recipe is for : ',
-                    suffixText: ' persons',
-                    setTextToEdit: setRecipePersons,
-                } as RecipeNumberAddOrEditProps;
-            }
-
-            tagProps = {
-                type: 'addOrEdit', tagsList: extractTagsName(recipeTags),
-                randomTags: randomTags.join(', '),
-                addNewTag: addTag,
-                removeTag: removeTag,
-            };
-
-            if (recipeTime == defaultValueNumber) {
-                timeProps = {
-                    editType: 'add',
-                    prefixText: 'Time to prepare the recipe : ',
-                    suffixText: ' min',
-                    openModal: () => openModalForField(recipeColumnsNames.time),
-                } as RecipeNumberAddOrEditProps;
-            } else {
-                timeProps = {
-                    editType: 'editable',
-                    prefixText: 'Time to prepare the recipe : ',
-                    suffixText: 'min',
-
-                    textEditable: recipeTime,
-                    setTextToEdit: setRecipeTime,
-                } as RecipeNumberAddOrEditProps;
-            }
-            if (recipePreparation.length == 0) {
-                preparationProps = {
-                    type: 'addOrEdit',
-                    editType: 'add',
-                    openModal: () => openModalForField(recipeColumnsNames.preparation),
-                } as RecipeTextRenderAddOrEditProps;
-            } else {
-                preparationProps = {
+                    render: preparationRender
+                };
+            case recipeStateType.addOCR:
+                if (recipePreparation.length == 0) {
+                    return {
+                        testID: preparationTestID,
+                        type: 'addOrEdit',
+                        editType: 'add',
+                        prefixText: "Preparation :",
+                        openModal: () => openModalForField(recipeColumnsNames.preparation),
+                    };
+                }
+            // Else return the same props as edit or addManual
+            case recipeStateType.edit:
+            case recipeStateType.addManual:
+                return {
+                    testID: preparationTestID,
                     type: 'addOrEdit',
                     editType: 'editable',
-
-                    renderType: typoRender.SECTION,
+                    renderType: preparationRender,
                     textEditable: recipePreparation,
                     textEdited: editPreparation,
                     addNewText: addNewPreparationStep,
-
-                    viewAddButton: {...screenViews.sectionView, ...viewButtonStyles.centeredView},
-                } as RecipeTextRenderAddOrEditProps;
-            }
-            if (recipeIngredients.length == 0) {
-                ingredientsProps = {
-                    type: 'addOrEdit',
-                    editType: 'add',
-                    prefixText: 'Ingredients',
-                    openModal: () => openModalForField(recipeColumnsNames.ingredients),
-                } as RecipeTextRenderAddOrEditProps;
-            } else {
-                ingredientsProps = {
-                    type: 'addOrEdit',
-                    editType: 'editable',
-                    prefixText: 'Ingredients',
-                    columnTitles: {
-                        column1: 'Quantity',
-                        column3: 'Unit',
-                        column2: 'Ingredient name',
-                    },
-                    textEditable: extractIngredientsNameWithQuantity(recipeIngredients),
-                    textEdited: editIngredients,
-                    addNewText: addNewIngredient,
-                } as RecipeTextRenderAddOrEditProps;
-            }
-            break;
+                };
+            default:
+                console.warn("recipePreparationProp: Unknown stackMode");
+                return {
+                    testID: preparationTestID,
+                    type: 'readOnly',
+                    text: [],
+                    render: typoRender.LIST
+                };
+        }
     }
+
+    function recipeValidationButtonProps(): [string, () => Promise<void>] {
+        switch (stackMode) {
+            case recipeStateType.readOnly:
+                return ["Add this recipe to the menu", readOnlyValidation];
+            case recipeStateType.edit:
+                return ["Validate the recipe with these modifications", editValidation];
+            case recipeStateType.addManual:
+                return ["Add this new recipe", addValidation];
+            case recipeStateType.addOCR:
+                return ["Add this new recipe", addValidation];
+            default:
+                console.warn("recipeValidationButtonProps: Unknown stackMode");
+                return ["", async () => console.warn("Error: Unknown stackMode")];
+        }
+    }
+
+    const [validationButtonText, validationFunction] = recipeValidationButtonProps();
 
     return (
         <SafeAreaView style={{backgroundColor: colors.background}}>
@@ -632,42 +638,31 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                         nestedScrollEnabled={true}>
 
                 {/*Image*/}
-                <RecipeImage {...imgProps}/>
+                <RecipeImage {...recipeImageProp()}/>
 
                 {/*Title*/}
-                <RecipeText testID={'RecipeTitle'}
-                            rootText={{
-                                style: stackMode == recipeStateType.readOnly ? 'headline' : 'title',
-                                value: stackMode == recipeStateType.readOnly ? recipeTitle : 'Title:'
-                            }}
-                            addOrEditProps={titleAddOrEditProps}/>
+                <RecipeText {...recipeTitleProp()}/>
 
                 {/*Description*/}
-                <RecipeText testID={'RecipeDescription'}
-                            rootText={{
-                                style: stackMode == recipeStateType.readOnly ? 'paragraph' : 'title',
-                                value: (stackMode == recipeStateType.readOnly ? recipeDescription : 'Description:')
-                            }}
-                            addOrEditProps={descriptionAddOrEditProps}/>
+                <RecipeText {...recipeDescriptionProp()}/>
 
                 {/*Tags*/}
-                <RecipeTags {...tagProps} testID={'RecipeTags'}/>
+                <RecipeTags {...recipeTagsProp()} />
 
                 {/*Persons*/}
-                <RecipeNumber testID={'RecipePersons'} numberProps={personProps}/>
+                <RecipeNumber {...recipePersonsProp()}/>
 
                 {/*Ingredients*/}
-                {/*TODO quantity shall be keyboard number*/}
-                <RecipeTextRender {...ingredientsProps} testID={'RecipeIngredients'}/>
+                <RecipeTextRender {...recipeIngredientsProp()} />
 
                 {/* TODO let the possibility to add another time in picture */}
                 {/*Time*/}
-                <RecipeNumber testID={'RecipeTime'} numberProps={timeProps}/>
+                <RecipeNumber {...recipeTimeProp()}/>
 
                 {/*Preparation*/}
-                <RecipeTextRender {...preparationProps} testID={'RecipePreparation'}/>
+                <RecipeTextRender {...recipePreparationProp()} />
 
-                {/* Add some space to avoid miss clicking */}
+                {/* Add some space to avoid missing clicking */}
                 <View style={{paddingVertical: LargeButtonDiameter / 2}}/>
 
                 {/* TODO add nutrition */}
@@ -695,13 +690,15 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             <BottomTopButton testID={'RecipeValidate'} as={RectangleButton} position={bottomTopPosition.bottom_full}
                              text={validationButtonText} centered={true} border={false}
                              onPressFunction={async () => await validationFunction()}/>
-            {modalField ? <ModalImageSelect arrImg={imgForOCR} onSelectFunction={async (imgSelected: string) => {
-                const croppedUri = await cropImage(imgSelected, colors);
-                if (croppedUri.length > 0) {
-                    fillOneField(croppedUri, modalField);
-                    setModalField(undefined);
-                }
-            }} onDismissFunction={() => setModalField(undefined)}/> : null}
+            {modalField ?
+                <ModalImageSelect arrImg={imgForOCR} onSelectFunction={async (imgSelected: string) => {
+                    const croppedUri = await cropImage(imgSelected, colors);
+                    if (croppedUri.length > 0) {
+                        fillOneField(croppedUri, modalField);
+                        setModalField(undefined);
+                    }
+                }} onDismissFunction={() => setModalField(undefined)}
+                                  onImagesUpdated={(imageUri: string) => setImgForOCR([...imgForOCR, imageUri])}/> : null}
         </SafeAreaView>
     )
 }

@@ -1,5 +1,10 @@
 appId: "com.recipesmanager"
 ---
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::TextInput"
+    direction: DOWN
+    speed: 60
 - tapOn:
     id: "RecipeTime::TextInput"
     label: Press time input

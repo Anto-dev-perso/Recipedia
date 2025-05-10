@@ -1,0 +1,18 @@
+appId: "com.recipesmanager"
+---
+
+- tapOn:
+    id: "RecipePersons::OpenModal::RoundButton"
+    label: Tap on OCR button of recipe persons
+- tapOn:
+    id: "Modal::List#3::SquareButton::Image"
+    label: Select persons and time picture
+- runFlow:
+    file: ../android/validateWithoutCropping.yaml
+    when:
+      platform: Android
+# TODO iOS
+#- runFlow:
+#    file: iOS/validateWithoutCropping.yaml
+#    when:
+#      platform: iOS

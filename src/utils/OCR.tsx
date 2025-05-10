@@ -1,4 +1,9 @@
-import {ingredientTableElement, ingredientType, recipeColumnsNames} from '@customTypes/DatabaseElementTypes';
+import {
+    ingredientTableElement,
+    ingredientType,
+    recipeColumnsNames,
+    tagTableElement
+} from '@customTypes/DatabaseElementTypes';
 import {
     allNonDigitCharacter,
     findAllNumbers,
@@ -17,6 +22,11 @@ export const keysPersonsAndTimeObject = Object.keys({
     time: 0,
 } as personAndTimeObject) as (keyof personAndTimeObject)[];
 
+export type tagObject = { id?: string, tagName: string };
+export const keysTagObject = Object.keys({
+    tagName: "",
+} as tagObject) as (keyof tagObject)[];
+
 export type ingredientQuantityPerPersons = {
     persons: number,
     quantity: string,
@@ -31,32 +41,33 @@ export const keysIngredientObject = Object.keys({
 export type WarningHandler = (message: string) => void;
 
 export async function recognizeText(imageUri: string, fieldName: recipeColumnsNames) {
-    const ocr = await TextRecognition.recognize(imageUri);
-    switch (fieldName) {
-        // TODO should be really use OCR for these ?
-        case recipeColumnsNames.time:
-            return tranformOCRInOneNumber(ocr);
-        case recipeColumnsNames.persons:
-            return tranformOCRInOneNumber(ocr);
-        case recipeColumnsNames.title:
-        case recipeColumnsNames.description:
-            return tranformOCRInOneString(ocr);
-        case recipeColumnsNames.preparation:
-            return tranformOCRInPreparation(ocr);
-        case recipeColumnsNames.ingredients:
-            return tranformOCRInIngredients(ocr);
-        case recipeColumnsNames.tags:
-            // TODO to implement
-
-            //  LOG  Recognized text: <650kcal Familial Rapido
-            // LOG  Recognized line of block: <650kcal Familial Rapido
-            return "";
-        case recipeColumnsNames.image:
-            console.error("recognizeText: Image field shouldn't go through OCR");
-            return "";
-        default:
-            console.error("recognizeText: Unrecognized type");
-            return "";
+    try {
+        const ocr = await TextRecognition.recognize(imageUri);
+        switch (fieldName) {
+            // TODO should be really use OCR for these ?
+            case recipeColumnsNames.time:
+                return tranformOCRInOneNumber(ocr);
+            case recipeColumnsNames.persons:
+                return tranformOCRInOneNumber(ocr);
+            case recipeColumnsNames.title:
+            case recipeColumnsNames.description:
+                return tranformOCRInOneString(ocr);
+            case recipeColumnsNames.preparation:
+                return tranformOCRInPreparation(ocr);
+            case recipeColumnsNames.ingredients:
+                return tranformOCRInIngredients(ocr);
+            case recipeColumnsNames.tags:
+                return tranformOCRInTags(ocr);
+            case recipeColumnsNames.image:
+                console.error("recognizeText: Image field shouldn't go through OCR");
+                return "";
+            default:
+                console.error("recognizeText: Unrecognized type");
+                return "";
+        }
+    } catch (e) {
+        console.error("recognizeText: Error while OCR", e);
+        return "";
     }
 }
 
@@ -68,6 +79,14 @@ function convertBlockOnArrayOfString(ocrBloc: Array<TextBlock>): Array<string> {
 function tranformOCRInOneString(ocr: TextRecognitionResult): string {
     // Replace all \n by spaces
     return ocr.text.replace(replaceAllBackToLine, " ");
+}
+
+function tranformOCRInTags(ocr: TextRecognitionResult): Array<tagTableElement> {
+    return ocr.blocks.map(block => block.lines.map(line => line.text).join(" ")).join(" ").split(" ").filter(tag => tag.length > 0).map(tag => {
+        return {
+            tagName: tag
+        } as tagTableElement
+    });
 }
 
 function retrieveNumbersFromArrayOfStrings(str: Array<string>): Array<number> {
@@ -155,61 +174,160 @@ function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<string> {
     return result;
 }
 
+type groupType = { person: string, quantity: Array<string> };
+
 /**
  * Parses an OCR result that includes structured blocks into an array of ingredientObject.
  * The function assumes that the header (ingredient names with units) is given first, followed by data rows.
  * Each data row starts with a token like "2p" (indicating the number of persons) and is followed by one quantity per ingredient.
+ * This function tries to detect if OCR moved some elements around.
+ * Also, it do its best to detect and correct when ingredients are on multiple line so that it merge these.
  */
 function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientObject> {
+    let lines: string[] = [];
+    const ocrLines = ocr.blocks.flatMap(block => block.lines);
+    if (ocrLines[0]?.text.toLowerCase().includes("box")) ocrLines.shift();
 
-    // Collect all non-empty lines from the blocks.
-    const lines = new Array<string>();
-    for (const block of ocr.blocks) {
-        for (const line of block.lines) {
-            const trimmed = line.text.trim();
-            if (trimmed.length > 0) {
-                lines.push(trimmed);
-            }
+    for (const line of ocrLines) {
+        const trimmed = line.text.trim();
+        if (!trimmed) continue;
+        if (trimmed.includes("pers.")) {
+            lines[lines.length - 1] += "p";
+        } else {
+            lines.push(trimmed);
         }
     }
 
-    // Determine the header boundary: the ingredient list is assumed to be all lines before the first token ending with "p".
     const headerBoundary = lines.findIndex(line => line.endsWith("p"));
     if (headerBoundary === -1) {
-        throw new Error("No ingredient header found in OCR data.");
+        console.log("tranformOCRInIngredients: No ingredient header found in OCR data.");
+        return parseIngredientsNoHeader(lines);
+    }
+    let ingredientsNames = lines.slice(0, headerBoundary);
+    let dataTokens = lines.slice(headerBoundary);
+
+    let ingredientsOCR = parseIngredientsNamesAndUnits(ingredientsNames);
+
+    const groups = getIngredientsGroups(dataTokens, ingredientsOCR.length);
+
+    function areIngredientsMergeable(indexFirstSuspicious: number): boolean {
+        if (indexFirstSuspicious == firstGroup.quantity.length) {
+            return false;
+        }
+        for (let indexNextIngredient = indexFirstSuspicious + 1; indexNextIngredient < firstGroup.quantity.length && indexNextIngredient < ingredientsOCR.length; indexNextIngredient++) {
+            if (isIngredientSuspicious(firstGroup.quantity[indexNextIngredient], ingredientsOCR[indexNextIngredient].unit)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    // Parse header lines into ingredient objects.
-    const headerLines = lines.slice(0, headerBoundary);
-    const ingredientsOCR: Array<ingredientObject> = headerLines.map(header => {
-        const unitMatch = header.match(/\((.*?)\)/);
-        return {
-            name: unitMatch ? header.replace(unitMatch[0], "").trim() : header,
-            unit: unitMatch ? unitMatch[1] : "", quantityPerPersons: new Array<ingredientQuantityPerPersons>()
-        };
+    function mergeIngredients(indexFirstSuspicious: number) {
+        const currentIngredient = ingredientsOCR[indexFirstSuspicious];
+        const nextIngredient = ingredientsOCR[indexFirstSuspicious + 1];
+
+        if (nextIngredient) {
+            currentIngredient.name += " " + nextIngredient.name;
+            currentIngredient.unit += nextIngredient.unit;
+
+            ingredientsOCR.splice(indexFirstSuspicious + 1, 1);
+            return true;
+        }
+        return false;
+    }
+
+    const firstGroup = groups[0];
+    if (groups.length > 0) {
+        let indexFirstSuspicious = isSuspiciousGroup(firstGroup, ingredientsOCR);
+        while (indexFirstSuspicious > -1) {
+            if (areIngredientsMergeable(indexFirstSuspicious)) {
+                if (!mergeIngredients(indexFirstSuspicious)) {
+                    break;
+                }
+            } else {
+                console.warn("Can't merge two ingredients. Break loop as I don't know what to do");
+                break;
+            }
+            indexFirstSuspicious = isSuspiciousGroup(firstGroup, ingredientsOCR);
+        }
+    }
+    let groupToCheckId = 1;
+    while (groupToCheckId < groups.length) {
+        if (isSuspiciousGroup(groups[groupToCheckId], ingredientsOCR) === -1) {
+            groupToCheckId++;
+        } else {
+            groups.splice(groupToCheckId, 1);
+        }
+    }
+    // Map groups to ingredientObjects
+    groups.forEach(g => {
+        const personsMatch = g.person.match(/(\d+)\s*p\s*$/i);
+        const persons = personsMatch ? parseInt(personsMatch[1]) : NaN;
+        for (let ingIdx = 0; ingIdx < ingredientsOCR.length; ingIdx++) {
+            ingredientsOCR[ingIdx].quantityPerPersons.push({
+                persons,
+                quantity: g.quantity[ingIdx] ?? ""
+            });
+        }
     });
 
-    // The remaining tokens represent rows of quantities.
-    // Each row starts with a persons token (e.g., "2p") followed by one token per ingredient.
-    const dataTokens = lines.slice(headerBoundary);
-    const groupSize = 1 + ingredientsOCR.length; // 1 for persons + one per ingredient quantity
-
-    // Process each data row group.
-    for (let i = 0; i < dataTokens.length; i += groupSize) {
-        const group = dataTokens.slice(i, i + groupSize);
-        if (group.length < groupSize) {
-            console.log("OCR::tranformOCRInIngredients : skip incomplete groups");
-            continue;
-        }
-        const persons = parseInt(group[0].replace("p", ""), 10);
-        ingredientsOCR.forEach((ingredient, index) => {
-            ingredient.quantityPerPersons.push({
-                persons,
-                quantity: group[index + 1]
-            });
-        });
-    }
     return ingredientsOCR;
+}
+
+function parseIngredientsNamesAndUnits(namesAndUnits: Array<string>): Array<ingredientObject> {
+    return namesAndUnits.map(nameAndUnit => {
+        const unitMatch = nameAndUnit.match(/\((.*?)\)/);
+        return {
+            name: unitMatch ? nameAndUnit.replace(unitMatch[0], "").trim() : nameAndUnit,
+            unit: unitMatch ? unitMatch[1] : "",
+            quantityPerPersons: []
+        };
+    });
+}
+
+function getIngredientsGroups(tokens: Array<string>, nIngredients: number): Array<groupType> {
+    let groups = new Array<groupType>();
+    let group: groupType = {person: "", quantity: new Array<string>()};
+    for (const token of tokens) {
+        if (token.match(/\d+\s*p\s*$/i)) {
+            if (group.person.length > 0) {
+                while (group.quantity.length < nIngredients) {
+                    group.quantity.push("");
+                }
+                groups.push(group);
+                group = {person: "", quantity: new Array<string>()};
+            }
+            group.person = token;
+        } else {
+            if (token.includes(" ")) {
+                const tokenSplit = token.split(" ");
+                for (const split of tokenSplit) {
+                    group.quantity.push(split);
+                }
+            }
+            group.quantity.push(token);
+        }
+    }
+    groups.push(group);
+    return groups;
+}
+
+function isIngredientSuspicious(quantity: string, unit: string): boolean {
+    if (quantity.length === 0) {
+        return true;
+    }
+    const num = parseFloat(quantity.replace(/[^\d.]/g, ""));
+    return (unit === "" && num > 10);
+}
+
+function isSuspiciousGroup(group: groupType, ingredients: Array<ingredientObject>): number {
+    for (let i = 0; i < ingredients.length; i++) {
+        const quantityStr = group.quantity[i] || "";
+        if (isIngredientSuspicious(quantityStr, ingredients[i].unit)) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 function convertToLowerCaseExceptFirstLetter(str: string) {
@@ -240,12 +358,14 @@ function retrieveNumberInStr(str: string) {
 export async function extractFieldFromImage(uri: string, field: recipeColumnsNames, currentState: {
                                                 recipePreparation: string[];
                                                 recipePersons: number;
+                                                recipeTags: tagTableElement[];
                                                 recipeIngredients: any[];
                                             }, onWarn: WarningHandler = console.warn
 ): Promise<Partial<{
     recipeImage: string;
     recipeTitle: string;
     recipeDescription: string;
+    recipeTags: Array<tagTableElement>;
     recipePreparation: string[];
     recipePersons: number;
     recipeTime: number;
@@ -274,12 +394,12 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
                 return {};
             }
         case recipeColumnsNames.preparation:
-            if (isArrayOfString(ocrResult)) {
+            if (Array.isArray(ocrResult) && ocrResult.length > 0 && isArrayOfString(ocrResult)) {
                 return {
                     recipePreparation: [...currentState.recipePreparation, ...ocrResult as string[],],
                 };
             } else {
-                warn("Expected array of strings for preparation");
+                warn("Expected non empty array of strings for preparation");
                 return {};
             }
         case recipeColumnsNames.persons:
@@ -289,7 +409,7 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
                     ? {recipePersons: ocrResult as number}
                     : {recipeTime: ocrResult as number};
             }
-            if (Array.isArray(ocrResult)) {
+            if (Array.isArray(ocrResult) && ocrResult.length > 0) {
                 if (isArrayOfNumber(ocrResult)) {
                     return field === recipeColumnsNames.persons
                         ? {recipePersons: ocrResult[0] as number}
@@ -305,7 +425,7 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
             warn("Could not parse persons/time field");
             return {};
         case recipeColumnsNames.ingredients:
-            if (Array.isArray(ocrResult) && isArrayOfType(ocrResult, keysIngredientObject)) {
+            if (Array.isArray(ocrResult) && ocrResult.length > 0 && isArrayOfType(ocrResult, keysIngredientObject)) {
                 let idQuantityToSearch: number;
                 if (currentState.recipePersons > 0) {
                     const foundPersonIndex = (ocrResult[0] as ingredientObject).quantityPerPersons.findIndex(p => (Number(p.persons) === currentState.recipePersons));
@@ -337,10 +457,53 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
                     ],
                 };
             }
-            warn("Expected array of ingredient objects");
+            warn("Expected non empty array of ingredient objects");
             return {};
+        case recipeColumnsNames.tags:
+            if (Array.isArray(ocrResult) && ocrResult.length > 0 && isArrayOfType<tagTableElement>(ocrResult, keysTagObject)) {
+                return {
+                    recipeTags: [...currentState.recipeTags, ...ocrResult as tagTableElement[]],
+                };
+            } else {
+                warn("Expected non empty array of strings for tags");
+                return {};
+            }
         default:
             console.error("Unrecognized field", field);
             return {};
     }
+}
+
+/**
+ * Parses ingredients from OCR lines when there is no header/person count.
+ * Splits the lines array in half: first part is names, second part is quantities.
+ * Assumes all ingredients belong to a single group/serving, with persons = -1 (unknown).
+ */
+export function parseIngredientsNoHeader(lines: Array<string>): Array<ingredientObject> {
+    if (!lines.length) {
+        return [];
+    }
+
+    const mid = Math.floor(lines.length / 2);
+
+    const nameLines = lines.slice(0, mid);
+    const quantityLines = lines.slice(mid);
+    const result: ingredientObject[] = [];
+
+    for (let i = 0; i < Math.min(nameLines.length, quantityLines.length); i++) {
+        // Unit here is inside the quantity with a space as separator generally
+        const [quantity, unit] = quantityLines[i].split(" ");
+        const quantityPerPersons = new Array<ingredientQuantityPerPersons>({
+            persons: -1,
+            quantity: quantity
+        });
+
+        result.push({
+            name: nameLines[i],
+            unit: unit ?? "",
+            quantityPerPersons: quantityPerPersons
+        });
+    }
+
+    return result;
 }

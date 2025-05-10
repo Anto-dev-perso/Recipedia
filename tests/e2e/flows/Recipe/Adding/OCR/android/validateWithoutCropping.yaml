@@ -1,0 +1,5 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    id: "com.recipesmanager:id/menu_crop"
+    label: Validate the picture without crop

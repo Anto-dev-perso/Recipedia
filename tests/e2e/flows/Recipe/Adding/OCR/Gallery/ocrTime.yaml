@@ -1,0 +1,22 @@
+appId: "com.recipesmanager"
+---
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
+- runFlow:
+    when:
+      true: ${output.isTime == false}
+    commands:
+      - tapOn:
+          id: "RecipeTime::ManuallyFill::RoundButton"
+          label: Tap on button to enter time manually
+      - tapOn:
+          id: "RecipeTime::TextInput"
+          label: Tap on text input of the time to prepare
+      - inputText:
+          text: "30"
+          label: Enter the time to prepare this recipe
+      - pressKey: "enter"

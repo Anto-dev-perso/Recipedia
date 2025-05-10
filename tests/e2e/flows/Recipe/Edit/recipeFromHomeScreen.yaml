@@ -15,6 +15,8 @@ appId: "com.recipesmanager"
 - runFlow: ../../../asserts/Recipe/ReadOnly/sushiRolls.yaml
 - tapOn:
     text: "󰏫"
+    waitToSettleTimeoutMs: 0
+    retryTapIfNoChange: false
     label: Tap on the Edit button
 - runFlow: ../../../asserts/Recipe/Edit/sushiRolls.yaml
 - tapOn:

@@ -1,87 +1,142 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
+    id: "BackButton::RoundButton"
+    label: Back button is displayed
+- assertVisible:
     text: "󰌍"
-    label: Back button is rendered
+    label: Back button icon is displayed
+- assertVisible:
+    id: "RecipeValidate"
+    label: Add recipe button is displayed
+- assertVisible:
+    text: "Add this recipe to the menu"
+    label: Add recipe button has the correct text
+- assertVisible:
+    id: "RecipeDelete::RoundButton"
+    label: Delete button is displayed
+- assertVisible:
+    text: "󰆴"
+    label: Delete icon is displayed
+- assertVisible:
+    id: "RecipeEdit::RoundButton"
+    label: Edit button is rendered
+- assertVisible:
+    text: "󰏫"
+    label: Edit button has the correct icon
+- assertNotVisible:
+    id: "RecipeImage::RoundButton"
+    label: Image button is not rendered
 - assertVisible:
     id: "RecipeImage"
     label: Image is rendered
 - assertVisible:
+    id: "RecipeTitle::Text"
     text: "PESTO PASTA"
     label: Title is rendered
 - assertVisible:
+    id: "RecipeDescription::Text"
     text: "Pasta tossed with fresh basil pesto."
-    label: Description is rendered
+    label: Description of the recipe is rendered
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    label: First tag is rendered
 - assertVisible:
     text: "Italian"
     label: Tag Italian is rendered
+- assertVisible:
+    id: "RecipeTags::1::Chip"
+    label: Second tag is rendered
 - assertVisible:
     text: "Quick Meal"
     label: Tag Quick Meal is rendered
 - assertVisible:
     text: "Ingredients (2 persons)"
     label: Ingredients title and number of persons is rendered
-- swipe:
-    start: "50%,65%"
-    end: "50%,30%"
-    label: Swipe down to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
     text: "Pasta"
     label: Ingredient Pasta is rendered
 - assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
     text: "200 g"
     label: Quantity of Pasta is rendered
 - assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
     text: "Basil Leaves"
     label: Ingredient Basil Leaves is rendered
 - assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
     text: "50 g"
     label: Quantity of Basil Leaves is rendered
 - assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
     text: "Parmesan"
     label: Ingredient Parmesan is rendered
 - assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
     text: "30 g"
     label: Quantity of Parmesan is rendered
 - assertVisible:
+    id: "RecipeIngredients::TextRender::3::IngredientName"
     text: "Olive Oil"
     label: Ingredient Olive Oil is rendered
 - assertVisible:
+    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
     text: "50 ml"
     label: Quantity of Olive Oil is rendered
 - assertVisible:
+    id: "RecipeIngredients::TextRender::4::IngredientName"
     text: "Pine Nuts"
     label: Ingredient Pine Nuts is rendered
-- swipe:
-    start: "50%,65%"
-    end: "50%,30%"
-    label: Swipe down to see other items
 - assertVisible:
+    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
     text: "20 g"
     label: Quantity of Pine Nuts is rendered
 - assertVisible:
+    id: "RecipeTime::Text"
     text: "Preparation (20 min)"
     label: Preparation title and time of preparation is rendered
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+
 - assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
     text: "1) Cook the pasta according to the package instructions."
     label: First section of the preparation is rendered
 - assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionTitle"
     text: "2) Blend basil leaves, Parmesan, olive oil, and pine nuts to make pesto."
     label: Second section of the preparation is rendered
-- swipe:
-    start: "50%,65%"
-    end: "50%,30%"
-    label: Swipe down to see other items
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::SectionTitle"
+    direction: DOWN
+    speed: 60
+
+
 - assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionTitle"
     text: "3) Toss the pasta with the pesto sauce and serve warm."
     label: Third section of the preparation is rendered
-- assertVisible:
-    text: "󰏫"
-    label: Edit Button is rendered
-- assertVisible:
-    text: "Add this recipe to the menu"
-    label: Add to menu button is rendered
-- swipe:
-    start: "50%,10%"
-    end: "50%,90%"
-    label: Swipe Up to reset the initial position
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTitle::Text"
+    direction: UP
+    centerElement: true
+    speed: 90

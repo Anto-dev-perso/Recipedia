@@ -8,6 +8,7 @@ import {recipesDataset} from "@test-data/recipesDataset";
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
+jest.mock('@components/atomic/CustomTextInput', () => require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock);
 
 jest.mock('react-native-paper', () => require('@mocks/deps/react-native-paper-mock').reactNativePaperMock);
 
@@ -51,7 +52,8 @@ describe('TextInputWithDropDown Component', () => {
 
     test('renders correctly with value in props', async () => {
         const props: TextInputWithDropDownType = {...defaultProps, value: 'Salm'};
-        const {getByTestId, queryByTestId} = render(<TextInputWithDropDown {...props} />);
+        const {getByTestId, queryByTestId} = render(
+            <TextInputWithDropDown {...props} />);
 
         await waitFor(() => expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual('Salm'));
         expect(mockOnChangeText).not.toHaveBeenCalled();

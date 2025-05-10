@@ -8,7 +8,8 @@ import {StackScreenNavigation} from "@customTypes/ScreenTypes";
 import {useNavigation} from "@react-navigation/native";
 
 type CarouselItemProps = {
-    items: Array<recipeTableElement>
+    items: Array<recipeTableElement>,
+    testID: string,
 }
 
 let titleLength = mediumCardWidth / 5.5;
@@ -17,7 +18,7 @@ export default function CarouselItem(props: CarouselItemProps) {
 
     const {navigate} = useNavigation<StackScreenNavigation>();
 
-    function renderMyItem({item}: ListRenderItemInfo<recipeTableElement>) {
+    function renderMyItem({item, index}: ListRenderItemInfo<recipeTableElement>) {
 
 
         const goToRecipe = () => {
@@ -26,7 +27,9 @@ export default function CarouselItem(props: CarouselItemProps) {
 
         return (
             <View>
-                <SquareButton side={mediumCardWidth} type={'recipe'} recipe={item} onPressFunction={goToRecipe}/>
+                <SquareButton testID={props.testID + `CarouselItem::${index}`} side={mediumCardWidth} type={'recipe'}
+                              recipe={item}
+                              onPressFunction={goToRecipe}/>
                 <Text style={carouselStyle(titleLength).carouselTitle} onPress={goToRecipe}>
                     {((item.title).length > titleLength) ?
                         (((item.title).substring(0, titleLength - 3)) + '...') :

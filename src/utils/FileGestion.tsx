@@ -1,7 +1,4 @@
-import {Layout, localImgData, panType} from '@customTypes/ImageTypes';
 import * as FileSystem from 'expo-file-system';
-import {FlipType, manipulateAsync, SaveFormat} from 'expo-image-manipulator';
-import {LayoutRectangle} from 'react-native';
 import {Asset} from "expo-asset";
 // import { Asset } from 'expo-asset';
 //  TODO is new version changing stuff for image manipulator ?
@@ -99,85 +96,6 @@ export default class FileGestion {
             try {
                 await this.copyFile(uriToBackUp, backUpUri);
                 resolve(backUpUri);
-            } catch (error) {
-                reject(error);
-            }
-        })
-    }
-
-    public async rotateImage(imgUri: string): Promise<localImgData> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                if (imgUri.length > 0) {
-                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{rotate: 90}], {
-                        compress: 1,
-                        format: SaveFormat.PNG
-                    });
-
-                    resolve(manipulateRes)
-                } else {
-                    reject("Uri empty !")
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        })
-    }
-
-    public async flipImageHorizontally(imgUri: string): Promise<localImgData> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                if (imgUri.length > 0) {
-                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{flip: FlipType.Horizontal}], {
-                        compress: 1,
-                        format: SaveFormat.PNG
-                    });
-
-                    resolve(manipulateRes);
-                } else {
-                    reject("Uri empty !")
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        })
-    }
-
-    public async flipImageVertically(imgUri: string): Promise<localImgData> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                if (imgUri.length > 0) {
-                    const manipulateRes: localImgData = await manipulateAsync(imgUri, [{flip: FlipType.Vertical}], {
-                        compress: 1,
-                        format: SaveFormat.PNG
-                    });
-
-                    resolve(manipulateRes)
-                } else {
-                    reject("Uri empty !")
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        })
-    }
-
-    public async cropImage(imgUri: string, accumulatedPan: panType, imageBounds: LayoutRectangle, imageScaleFactor: number, cropSize: Layout): Promise<localImgData> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const croppingBounds = {
-                    originX: Math.round((accumulatedPan.x - imageBounds.x) * imageScaleFactor),
-                    originY: Math.round((accumulatedPan.y - imageBounds.y) * imageScaleFactor),
-                    width: Math.round(cropSize.width * imageScaleFactor),
-                    height: Math.round(cropSize.height * imageScaleFactor)
-                };
-
-                const manipulateRes: localImgData = await manipulateAsync(imgUri, [{crop: croppingBounds}], {
-                    compress: 1,
-                    format: SaveFormat.PNG
-                });
-
-                resolve(manipulateRes);
             } catch (error) {
                 reject(error);
             }

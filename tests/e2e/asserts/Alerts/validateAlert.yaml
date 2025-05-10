@@ -1,0 +1,6 @@
+appId: "com.recipesmanager"
+
+---
+- tapOn:
+    text: "UNDERSTOOD"
+    label: Close the Alert

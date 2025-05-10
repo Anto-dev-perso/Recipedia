@@ -14,7 +14,7 @@ export default function SearchResultDisplay(props: SearchResultDisplayProps) {
     const renderSearchResult = ({item}: ListRenderItemInfo<recipeTableElement>) => {
         return (
             <View style={viewPosition.splitVerticallyIn2}>
-                <RectangleCard recipe={item}/>
+                <RectangleCard testID={"SearchResultDisplay"} recipe={item}/>
             </View>
         )
     };

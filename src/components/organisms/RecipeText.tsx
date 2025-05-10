@@ -2,9 +2,10 @@ import {View} from "react-native"
 import React from "react";
 import RoundButton from "@components/atomic/RoundButton";
 import {Icons} from "@assets/Icons";
-import {Text, TextInput} from "react-native-paper";
+import {Text} from "react-native-paper";
 import {recipeTextStyles} from "@styles/recipeComponents";
 import {VariantProp} from "react-native-paper/lib/typescript/components/Typography/types";
+import CustomTextInput from "@components/atomic/CustomTextInput";
 
 export type TextProp = { style: 'headline' | 'title' | 'paragraph', value: string };
 export type RecipeTextAddProps = { editType: 'add', openModal: () => void };
@@ -44,7 +45,7 @@ export default function RecipeText({rootText, testID, addOrEditProps}: RecipeTex
 
     return (
         <View style={containerStyle}>
-            <Text variant={variant}
+            <Text testID={testID + "::Text"} variant={variant}
                   style={recipeTextStyles.containerElement}>{rootText.value}</Text>
             {addOrEditProps ?
                 <RecipeTextEditablePart testID={testID} {...addOrEditProps}/> : null}
@@ -54,15 +55,13 @@ export default function RecipeText({rootText, testID, addOrEditProps}: RecipeTex
 
 
 function RecipeTextEditablePart(addOrEditProps: RecipeTextAddOrEditProps) {
-    // TODO Input deserve a multiline for description but how can we do with scrolling ?
     return (
         <View>
             {addOrEditProps.editType === 'editable' ?
-                <TextInput testID={addOrEditProps.testID + "::TextInput"}
-                           mode={'outlined'}
-                           style={recipeTextStyles.containerElement}
-                           value={addOrEditProps.textEditable}
-                           onChangeText={newText => addOrEditProps.setTextToEdit(newText)}/>
+                <CustomTextInput testID={addOrEditProps.testID}
+                                 style={recipeTextStyles.containerElement}
+                                 value={addOrEditProps.textEditable} multiline={true}
+                                 onChangeText={newText => addOrEditProps.setTextToEdit(newText)}/>
 
                 :
                 <RoundButton testID={addOrEditProps.testID + "::OpenModal"} size={"medium"} icon={Icons.scanImageIcon}
