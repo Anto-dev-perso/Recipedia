@@ -8,7 +8,7 @@ appId: "com.recipesmanager"
     text: "Tags"
     label: Tap on Tags to see filters under this category
 - tapOn:
-    text: "In-season"
+    text: "Only in-season ingredients"
     label: Tap on In-season to see filters under this category
 - tapOn:
     text: "Preparation Time"

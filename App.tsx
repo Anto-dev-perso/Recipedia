@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
+import {useI18n} from '@utils/i18n';
 import {StatusBar, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '@screens/Home';
 import Parameters from '@screens/Parameters';
 import Shopping from '@screens/Shopping';
-// import {YoutubeCamera, OCRComponent, RecipeList} from '../index';
 import Recipe from '@screens/Recipe';
 import Search from '@screens/Search';
 import {StackScreen, TabScreen} from '@customTypes/ScreenTypes';
@@ -27,14 +27,11 @@ import {padding, screenHeight} from "@styles/spacing";
 // TODO assert lambda functions usage
 // TODO useMemo for time consuming function
 
-// TODO add translations
 // TODO use eslint-config-expo ?
 // TODO replace react-navigation by expo-router
 
 
 // TODO add special gastronomy (gluten free, lactose, etc)
-
-//  const initI18n = i18n; // instanciate the i18n instance
 
 function getActiveIconName(routeName: string): string {
     switch (routeName) {
@@ -69,6 +66,8 @@ function getInactiveIconName(routeName: string): string {
 export default function App() {
 
     const [isInitialized, setIsInitialized] = useState(false);
+
+    const {t} = useI18n();
 
     fetchFonts();
 
@@ -138,24 +137,20 @@ export default function App() {
                     tabBarLabelStyle: fonts.bodyMedium,
 
                 })}>
-                    <TabScreen.Screen name="Home" component={Home}/>
-                    <TabScreen.Screen name="Shopping" component={Shopping}/>
+                    <TabScreen.Screen name="Home" component={Home} options={{tabBarLabel: t('home')}}/>
+                    <TabScreen.Screen name="Shopping" component={Shopping} options={{tabBarLabel: t('shopping')}}/>
                     {/*<TabScreen.Screen name="Plannification" component={Plannification}/>*/}
-                    <TabScreen.Screen name="Parameters" component={Parameters}/>
+                    <TabScreen.Screen name="Parameters" component={Parameters}
+                                      options={{tabBarLabel: t('parameters')}}/>
                 </TabScreen.Navigator>
             </>)
 
     }
 
-    // const { t, i18n } = useTranslation();
-
-    // i18n.changeLanguage('fr'); // Can be use in parameter
-    // TODO Good idea to pass translation through components props
-
     if (!isInitialized) {
         return (
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <Text>Loading...</Text>
+                <Text>{t('loading')}</Text>
             </View>
         );
     }

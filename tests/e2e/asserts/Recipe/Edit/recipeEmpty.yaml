@@ -72,7 +72,7 @@ appId: "com.recipesmanager"
     end: "50%,30%"
     label: Swipe down to see other items
 - assertVisible:
-    text: "Ingredients"
+    text: "Ingredients: "
     label: Ingredient section is displayed
 - assertVisible:
     text: "Quantity"
@@ -81,7 +81,7 @@ appId: "com.recipesmanager"
     text: "Unit"
     label: Unit column is displayed
 - assertVisible:
-    text: "Ingredient name"
+    text: "Name"
     label: Ingredient name column is displayed
 - assertNotVisible:
     id: "RecipeIngredients::0::QuantityInput::TextInput"
@@ -106,7 +106,7 @@ appId: "com.recipesmanager"
     text: "min"
     label: Minute text is displayed
 - assertNotVisible:
-    text: "Preparation : step 1"
+    text: "Preparation: step 1"
     label: Preparation \#1 text is not displayed
 - assertNotVisible:
     text: "Title of step 1 : "

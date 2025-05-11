@@ -8,6 +8,7 @@ import {Icons, PlusMinusIcons} from "@assets/Icons";
 import {ingredientTableElement} from "@customTypes/DatabaseElementTypes";
 import SectionClickableList from "@components/molecules/SectionClickableList";
 import {retrieveAllFilters} from "@utils/FilterFunctions";
+import { useI18n } from "@utils/i18n";
 
 export type FiltersPassingProps = {
     tagsList: Array<string>,
@@ -20,6 +21,7 @@ export type FiltersSelectionProps = {
 } & FiltersPassingProps
 
 export default function FiltersSelection(props: FiltersSelectionProps) {
+    const { t } = useI18n();
 
     function findFilterStringAndRemove(item: string) {
         for (const [key, value] of props.filtersState) {
@@ -37,7 +39,7 @@ export default function FiltersSelection(props: FiltersSelectionProps) {
                             icon={Icons.crossIcon}
                             onPress={(item: string) => findFilterStringAndRemove(item)}/>
             <View style={viewButtonStyles.longHorizontalButton}>
-                <TagButton testID={selectionTestID} text={"Add a filter"}
+                <TagButton testID={selectionTestID} text={t('addFilter')}
                            leftIcon={props.printSectionClickable ? Icons.removeFilterIcon : Icons.addFilterIcon}
                            onPressFunction={() => props.setPrintSectionClickable(!props.printSectionClickable)}/>
             </View>

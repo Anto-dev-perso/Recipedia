@@ -12,7 +12,7 @@ name: "Recipe Adding test suite"
     label: Add the new recipe
 - runFlow: ../../../asserts/Recipe/addedRecipeAlert.yaml
 - tapOn:
-    text: "UNDERSTOOD"
+    text: "OK"
     label: Close the alert
 - tapOn:
     text: "󰍉"

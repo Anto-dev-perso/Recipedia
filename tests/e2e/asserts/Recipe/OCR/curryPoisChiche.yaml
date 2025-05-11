@@ -81,7 +81,7 @@ appId: "com.recipesmanager"
     label: Outro text for the number of persons is rendered
 - assertVisible:
     id: "RecipeIngredients::PrefixText"
-    text: "Ingredients"
+    text: "Ingredients: "
     label: Section Ingredients is rendered
 - assertVisible:
     id: "RecipeIngredients::Column1"
@@ -93,7 +93,7 @@ appId: "com.recipesmanager"
     label: Column Unit is rendered
 - assertVisible:
     id: "RecipeIngredients::Column3"
-    text: "Ingredient name"
+    text: "Name"
     label: Column Ingredient name is rendered
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
@@ -270,7 +270,7 @@ appId: "com.recipesmanager"
     label: Outro text for the time to prepares is rendered
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Step"
-    text: "Preparation : step 1"
+    text: "Preparation: step 1"
     label: Preparation section for first step is rendered
 
 

@@ -12,6 +12,7 @@ import {
 import {selectFilterValuesToDisplay} from "@utils/FilterFunctions";
 import {FiltersPassingProps} from "@components/organisms/FiltersSelection";
 import RectangleButton from "@components/atomic/RectangleButton";
+import {useI18n} from "@utils/i18n";
 
 export type propsFromSearch = { screen: "search", } & FiltersPassingProps
 
@@ -24,12 +25,15 @@ export type SectionClickableListProps = {
 } & (propsFromSearch | propsFromShopping)
 
 export default function SectionClickableList(props: SectionClickableListProps) {
+    const {t} = useI18n();
 
-    const [filterCategoryClicked, setFilterCategoryClicked] = useState(props?.screen === 'search' ? new Map<TListFilter, boolean>(filtersCategories.map(filter => [filter, props.testMode ? true : false])) : new Map<TListFilter, boolean>());
+    const dataToRender = (props.screen == "search") ? filtersCategories : shoppingCategories;
+
+    const [filterCategoryClicked, setFilterCategoryClicked] = useState(props?.screen === 'search' ? new Map<TListFilter, boolean>(dataToRender.map(filter => [filter, !!props.testMode])) : new Map<TListFilter, boolean>());
 
 
     // TODO maybe put this in a separate file for a better readability
-    function renderItem({item}: ListRenderItemInfo<TListFilter>): JSX.Element {
+    function renderItem({item}: ListRenderItemInfo<TListFilter>) {
 
         let itemShallDisplayCheckBox = true;
         let itemRoute: filterCheckbox | shoppingCheckbox;
@@ -38,7 +42,7 @@ export default function SectionClickableList(props: SectionClickableListProps) {
         switch (props.screen) {
             case "search":
                 itemShallDisplayCheckBox = filterCategoryClicked.get(item) as boolean;
-                elemToDisplay = selectFilterValuesToDisplay(item, props.tagsList, props.ingredientsList);
+                elemToDisplay = selectFilterValuesToDisplay(item, props.tagsList, props.ingredientsList, t);
                 itemRoute = {
                     type: "search",
                     filtersState: props.filtersState,
@@ -90,7 +94,8 @@ export default function SectionClickableList(props: SectionClickableListProps) {
             <View>
                 {elemToDisplay.length == 0 ? null :
                     <View>
-                        <RectangleButton testID={`RectangleButtonForCategory - ${item}`} text={item}
+                        <RectangleButton testID={`RectangleButtonForCategory - ${item}`}
+                                         text={t(item)}
                                          icon={iconFromProps} centered={false} border={true}
                                          onPressFunction={updateCategoryClicked}/>
                         {itemShallDisplayCheckBox ?
@@ -105,7 +110,6 @@ export default function SectionClickableList(props: SectionClickableListProps) {
         )
     }
 
-    const dataToRender = (props.screen == "search") ? filtersCategories : shoppingCategories;
     return (
         <FlatList data={dataToRender} renderItem={renderItem}
                   scrollEnabled={false} {...(props.testMode ? {

@@ -9,9 +9,11 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {ShoppingScreenProp} from '@customTypes/ScreenTypes';
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {Button} from "react-native-paper";
+import { useI18n } from "@utils/i18n";
 
 
 export default function Shopping({navigation, route}: ShoppingScreenProp) {
+    const { t } = useI18n();
 
     const [shoppingList, setShoppingList] = useState(new Array<shoppingListTableElement>());
 
@@ -44,11 +46,11 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
     return (
         <SafeAreaView style={screenViews.screenView}>
             <ScrollView style={scrollView(0).view} showsVerticalScrollIndicator={false}>
-                <Text testID={'ShoppingScreenTitle'} style={typoStyles.title}>Shopping list</Text>
+                <Text testID={'ShoppingScreenTitle'} style={typoStyles.title}>{t('shoppingList')}</Text>
                 <Button onPress={async () => {
                     await RecipeDatabase.getInstance().resetShoppingList();
                     navigation.setParams({refresh: Date.now()});
-                }}>Delete</Button>
+                }}>{t('delete')}</Button>
                 <SectionClickableList
                     screen={"shopping"} ingList={shoppingList} updateIngredientFromShopping={updateShoppingList}/>
                 {/* TODO to implement */}

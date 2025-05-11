@@ -1,15 +1,16 @@
 import {arrayOfType, ingredientTableElement, recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import {listFilter, prepTimeValues, TListFilter} from "@customTypes/RecipeFiltersTypes";
+import {TFunction} from "i18next";
 
 
-export function selectFilterValuesToDisplay(filter: TListFilter, tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>): Array<string> {
+export function selectFilterValuesToDisplay(filter: TListFilter, tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>, t: TFunction<"translation", undefined>,): Array<string> {
     switch (filter) {
         case listFilter.inSeason:
-            return new Array<string>("Only in-season ingredients");
+            return new Array<string>(t(listFilter.inSeason));
         case listFilter.tags:
             return tagsList;
         case listFilter.prepTime:
-            return prepTimeValues;
+            return prepTimeValues.map(time => t(time));
         case listFilter.recipeTitleInclude:
         case listFilter.purchased:
         case listFilter.grainOrCereal:

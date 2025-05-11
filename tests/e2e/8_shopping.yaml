@@ -1,7 +1,7 @@
 appId: "com.recipesmanager"
 name: "Shopping screen test suite"
 ---
-- launchApp
+#- launchApp
 
 - runFlow: flows/Shopping/addOneRecipe.yaml
 - runFlow: flows/Shopping/addMultipleRecipes.yaml

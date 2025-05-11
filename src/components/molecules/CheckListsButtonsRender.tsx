@@ -40,7 +40,7 @@ export default function CheckListsButtonsRender(props: ChecklistsButtonsRenderPr
     }
 
 
-    function renderItemOfArray({item}: ListRenderItemInfo<string>): JSX.Element {
+    function renderItemOfArray({item}: ListRenderItemInfo<string>) {
 
         let viewFromProps: EStyleSheet.AnyObject;
 

@@ -7,38 +7,47 @@ export type filtersAccessAndModifiers = {
     removeFilter: (filter: TListFilter, value: string) => void,
 }
 
-
+/**
+ * Non-ingredient filters with values that match translation keys
+ * The actual display values will come from translations
+ */
 export enum nonIngredientFilters {
-    recipeTitleInclude = "recipeTitleInclude",
-    prepTime = "Preparation Time",
-    inSeason = "In-season",
-    tags = "Tags",
-    purchased = "Already purchased",
-    // calories: "Calories",
+    recipeTitleInclude = 'filterTypes.recipeTitleInclude',
+    prepTime = 'filterTypes.prepTime',
+    inSeason = 'filterTypes.inSeason',
+    tags = 'filterTypes.tags',
+    purchased = 'filterTypes.purchased',
+    // calories: "filterTypes.calories",
 }
 
+// Combine all filters into a single object
 export const listFilter = {...ingredientType, ...nonIngredientFilters} as const;
 
+// Type for all filter values
 export type TListFilter = typeof listFilter[keyof typeof listFilter];
-export const filtersCategories: Array<TListFilter> = Object.values(listFilter);
-    
 
+// Array of all filter values for use in UI components
+export const filtersCategories: Array<TListFilter> = Object.values(listFilter);
+
+// Props for shopping-related components
 export type propsForShopping = {
     ingList: Array<shoppingListTableElement>,
     updateIngredientFromShopping: (ingredientName: string) => void,
 }
 
+// Type for ingredient categories
 export type TIngredientCategories = typeof ingredientType[keyof typeof ingredientType];
+
+// Array of ingredient categories for use in UI components
 export const shoppingCategories: Array<TIngredientCategories> = Object.values(ingredientType);
 
-
 export const prepTimeValues = [
-    "0-10 min",
-    "10-15 min",
-    "15-20 min",
-    "20-25 min",
-    "25-30 min",
-    "30-40 min",
-    "40-50 min",
-    "+60 min",
+    'preparationTimes.noneToTen',
+    'preparationTimes.tenToFifteen',
+    'preparationTimes.FifteenToTwenty',
+    'preparationTimes.twentyToTwentyFive',
+    'preparationTimes.twentyFiveToThirty',
+    'preparationTimes.thirtyToFourty',
+    'preparationTimes.fourtyToFifty',
+    'preparationTimes.oneHourPlus',
 ];

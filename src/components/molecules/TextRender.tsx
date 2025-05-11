@@ -7,6 +7,7 @@ import TextInputWithDropDown from "@components/molecules/TextInputWithDropDown";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {recipeTextRenderStyles} from "@styles/recipeComponents";
 import CustomTextInput from "@components/atomic/CustomTextInput";
+import {useI18n} from "@utils/i18n";
 
 
 // TODO use variant for Text
@@ -23,6 +24,8 @@ export type TextRenderProps = {
 // TODO to test
 // TODO can't we do better ? Maybe split in 3 atomic ?
 export default function TextRender(props: TextRenderProps) {
+
+    const {t} = useI18n();
 
     function selectRender(renderChoice: typoRender) {
         switch (renderChoice) {
@@ -92,20 +95,17 @@ export default function TextRender(props: TextRenderProps) {
                 {props.editText ?
                     <View style={recipeTextRenderStyles.containerSection}>
                         <Text testID={props.testID + `::${index}::Step`} variant={"headlineMedium"}
-                              style={recipeTextRenderStyles.headlineElement}>Preparation :
-                            step {index + 1}</Text>
+                              style={recipeTextRenderStyles.headlineElement}>{t('preparationOCRStep')} {index + 1}</Text>
 
                         <View style={recipeTextRenderStyles.containerSection}>
                             <Text testID={props.testID + `::${index}::Title`} variant={"titleLarge"}
-                                  style={recipeTextRenderStyles.containerElement}>Title of
-                                step {index + 1} : </Text>
+                                  style={recipeTextRenderStyles.containerElement}>{t('preparationOCRStepTitle')} {index + 1} : </Text>
                             <CustomTextInput testID={props.testID + `::${index}::TextInputTitle`} value={sectionTitle}
                                              style={recipeTextRenderStyles.containerElement}
                                              onChangeText={newTitle => props.editText?.onChangeFunction(index, `${newTitle}${textSeparator}${sectionParagraph}`)}
                                              multiline={true}/>
                             <Text testID={props.testID + `::${index}::Content`} variant={"titleLarge"}
-                                  style={recipeTextRenderStyles.containerElement}>Content of
-                                step {index + 1} : </Text>
+                                  style={recipeTextRenderStyles.containerElement}>{t('preparationOCRStepContent')} {index + 1} : </Text>
                             <CustomTextInput testID={props.testID + `::${index}::TextInputContent`}
                                              style={recipeTextRenderStyles.containerElement} value={sectionParagraph}
                                              onChangeText={newParagraph => props.editText?.onChangeFunction(index, `${sectionTitle}${textSeparator}${newParagraph}`)}

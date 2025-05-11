@@ -13,9 +13,11 @@ import {StackScreenNavigation} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {Icons} from "@assets/Icons";
+import {useI18n} from "@utils/i18n";
 
 
 export default function Home() {
+    const {t} = useI18n();
 
     const {navigate} = useNavigation<StackScreenNavigation>();
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -83,13 +85,13 @@ export default function Home() {
                         refreshControl={<RefreshControl colors={[palette.primary]} refreshing={refreshing}
                                                         onRefresh={onRefresh}/>}>
                 <RecipeRecommendation carouselProps={elementsForRecommendation1}
-                                      titleRecommendation="Recommendation 1"/>
+                                      titleRecommendation={`${t('recommendation')} 1`}/>
                 <RecipeRecommendation carouselProps={elementsForRecommendation2}
-                                      titleRecommendation="Recommendation 2"/>
+                                      titleRecommendation={`${t('recommendation')} 2`}/>
                 <RecipeRecommendation carouselProps={elementsForRecommendation3}
-                                      titleRecommendation="Recommendation 3"/>
+                                      titleRecommendation={`${t('recommendation')} 3`}/>
                 <RecipeRecommendation carouselProps={elementsForRecommendation4}
-                                      titleRecommendation="Recommendation 4"/>
+                                      titleRecommendation={`${t('recommendation')} 4`}/>
             </ScrollView>
             <BottomTopButton testID={'SearchButton'} as={RoundButton} position={bottomTopPosition.bottom_left}
                              size={"medium"} icon={Icons.searchIcon} onPressFunction={() => navigate('Search')}/>

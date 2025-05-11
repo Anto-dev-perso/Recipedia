@@ -10,7 +10,7 @@ appId: "com.recipesmanager"
     id: "RecipeValidate"
     label: Add recipe button is displayed
 - assertVisible:
-    text: "Add this recipe to the menu"
+    text: "Add to the menu"
     label: Add recipe button has the correct text
 - assertVisible:
     id: "RecipeDelete::RoundButton"

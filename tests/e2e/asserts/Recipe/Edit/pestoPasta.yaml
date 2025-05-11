@@ -100,7 +100,7 @@ appId: "com.recipesmanager"
 
 - assertVisible:
     id: "RecipeIngredients::PrefixText"
-    text: "Ingredients"
+    text: "Ingredients: "
     label: Section Ingredients is rendered
 - assertVisible:
     id: "RecipeIngredients::Column1"
@@ -112,7 +112,7 @@ appId: "com.recipesmanager"
     label: Column Unit is rendered
 - assertVisible:
     id: "RecipeIngredients::Column3"
-    text: "Ingredient name"
+    text: "Name"
     label: Column Ingredient name is rendered
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
@@ -215,7 +215,7 @@ appId: "com.recipesmanager"
 
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Step"
-    text: "Preparation : step 1"
+    text: "Preparation: step 1"
     label: Preparation section for first step is rendered
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Title"
@@ -241,7 +241,7 @@ appId: "com.recipesmanager"
 
 - assertVisible:
     id: "RecipePreparation::TextRender::1::Step"
-    text: "Preparation : step 2"
+    text: "Preparation: step 2"
     label: Preparation section for second step is rendered
 - assertVisible:
     id: "RecipePreparation::TextRender::1::Title"
@@ -268,7 +268,7 @@ appId: "com.recipesmanager"
 
 - assertVisible:
     id: "RecipePreparation::TextRender::2::Step"
-    text: "Preparation : step 3"
+    text: "Preparation: step 3"
     label: Preparation section for third step is rendered
 - assertVisible:
     id: "RecipePreparation::TextRender::2::Title"
@@ -291,6 +291,12 @@ appId: "com.recipesmanager"
       id: "RecipePreparation::AddButton::RoundButton"
     direction: DOWN
     speed: 80
+- scrollUntilVisible:
+    element:
+      text: "󰐕"
+    direction: DOWN
+    speed: 60
+
 
 - assertVisible:
     id: "RecipePreparation::AddButton::RoundButton"

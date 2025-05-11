@@ -48,7 +48,7 @@ appId: "com.recipesmanager"
     text: "Title of step 3 : "
     label: Preparation \#2 title text is displayed
 - assertVisible:
-    text: "Preparation : step 3"
+    text: "Preparation: step 3"
     label: Preparation \#2 text is displayed
 
 - scrollUntilVisible:
@@ -74,7 +74,7 @@ appId: "com.recipesmanager"
     text: "Title of step 2 : "
     label: Preparation \#2 title text is displayed
 - assertVisible:
-    text: "Preparation : step 2"
+    text: "Preparation: step 2"
     label: Preparation \#2 text is displayed
 
 - scrollUntilVisible:
@@ -100,7 +100,7 @@ appId: "com.recipesmanager"
     text: "Title of step 1 : "
     label: Preparation \#1 title text is displayed
 - assertVisible:
-    text: "Preparation : step 1"
+    text: "Preparation: step 1"
     label: Preparation \#1 text is displayed
 
 - scrollUntilVisible:
@@ -181,7 +181,7 @@ appId: "com.recipesmanager"
     text: "2"
     label: Ingredient \#1 quantity text is displayed
 - assertVisible:
-    text: "Ingredient name"
+    text: "Name"
     label: Ingredient name column is displayed
 - assertVisible:
     text: "Unit"
@@ -190,7 +190,7 @@ appId: "com.recipesmanager"
     text: "Quantity"
     label: Quantity column is displayed
 - assertVisible:
-    text: "Ingredients"
+    text: "Ingredients: "
     label: Ingredient section is displayed
 
 - scrollUntilVisible:

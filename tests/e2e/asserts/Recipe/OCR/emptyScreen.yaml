@@ -87,7 +87,7 @@ appId: "com.recipesmanager"
 
 - assertVisible:
     id: "RecipeIngredients::PrefixText"
-    text: "Ingredients"
+    text: "Ingredients: "
     label: Section Ingredients is rendered
 - assertVisible:
     id: "RecipeIngredients::OpenModal::RoundButton"

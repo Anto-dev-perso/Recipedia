@@ -8,6 +8,7 @@ import RecipeDatabase from "@utils/RecipeDatabase";
 import {FlashList} from "@shopify/flash-list";
 import {recipeTagsStyles} from "@styles/recipeComponents";
 import {Text, useTheme} from "react-native-paper";
+import {useI18n} from "@utils/i18n";
 
 export type RecipeTagsEditProps = { editType: "edit" }
 export type RecipeTagsAddProps = { editType: "add", openModal: () => void }
@@ -33,6 +34,7 @@ export default function RecipeTags
     const [newTags, setNewTags] = useState(new Array<number>());
     const [allTagsNamesSorted, setAllTagsNamesSorted] = useState(RecipeDatabase.getInstance().get_tags().map(tag => tag.tagName).filter(dbTag => !tagsProps.tagsList.includes(dbTag)).sort());
 
+    const {t} = useI18n();
     const {colors} = useTheme();
     const tagsTestID = "RecipeTags";
 
@@ -43,12 +45,9 @@ export default function RecipeTags
                 :
                 <View>
                     <Text testID={tagsTestID + "::HeaderText"} variant={"headlineSmall"}
-                          style={recipeTagsStyles.containerElement}>Tags:</Text>
+                          style={recipeTagsStyles.containerElement}>{t('tags')}:</Text>
                     <Text testID={tagsTestID + "::ElementText"} variant={"labelMedium"}
-                          style={[recipeTagsStyles.containerElement, {color: colors.outline}]}>Tags are a
-                        way to
-                        identify a recipe and make easier its
-                        search.{"\n"}Here are some examples of tags you can have : {tagsProps.randomTags}</Text>
+                          style={[recipeTagsStyles.containerElement, {color: colors.outline}]}>{t('tagExplanation')}{tagsProps.randomTags}</Text>
 
                     <View style={recipeTagsStyles.tagsContainer}>
                         <View style={recipeTagsStyles.tab}>

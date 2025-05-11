@@ -3,6 +3,7 @@ import {Keyboard, TextInput, View} from "react-native";
 import {searchBarStyle, typoStyles} from "@styles/typography";
 import {remValue} from "@styles/spacing";
 import {crossIcon, displayIcon, enumIconTypes, iconsSize, searchIcon} from "@assets/Icons";
+import { useI18n } from "@utils/i18n";
 
 export type SearchBarProps = {
     clicked: boolean,
@@ -14,6 +15,7 @@ export type SearchBarProps = {
 // TODO it is case sensitive but it shouldn't be
 
 export default function SearchBar(props: SearchBarProps) {
+    const { t } = useI18n();
     function crossGesture() {
         Keyboard.dismiss();
         props.setClicked(false);
@@ -27,7 +29,7 @@ export default function SearchBar(props: SearchBarProps) {
                 {displayIcon(enumIconTypes.materialCommunity, searchIcon, iconsSize.small, "#414a4c", {paddingLeft: 10 * remValue})}
 
                 {/* Input field */}
-                <TextInput style={typoStyles.searchBar} placeholder="Title of recipe" value={props.searchPhrase}
+                <TextInput style={typoStyles.searchBar} placeholder={t('searchRecipeTitle')} value={props.searchPhrase}
                            onChangeText={props.setSearch} onFocus={() => props.setClicked(true)}
                            onSubmitEditing={() => {
                                props.setClicked(false);

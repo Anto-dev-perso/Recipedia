@@ -15,9 +15,6 @@
       "@components/*": [
         "components/*"
       ],
-      "@i18n/*": [
-        "i18n/*"
-      ],
       "@navigation/*": [
         "navigation/*"
       ],
@@ -38,6 +35,9 @@
       ],
       "@mocks/*": [
         "../tests/mocks/*"
+      ],
+      "@translations/*": [
+        "translations/*"
       ]
     }
   }

@@ -7,7 +7,7 @@ appId: "com.recipesmanager"
     text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
     label: Open the Spaghetti Bolognese recipe
 - tapOn:
-    text: "Add this recipe to the menu"
+    text: "Add to the menu"
     label: Add the Spaghetti Bolognese recipe to the menu
 - runFlow: ../../asserts/Alerts/addingRecipeSpaghetti.yaml
 - pressKey: "BACK"
@@ -30,7 +30,7 @@ appId: "com.recipesmanager"
     text: "Caesar Salad"
     label: Open Caesar Salad
 - tapOn:
-    text: "Add this recipe to the menu"
+    text: "Add to the menu"
     label: Add the Caesar Salad recipe to the menu
 - runFlow: ../../asserts/Alerts/addingRecipeCaesar.yaml
 - tapOn:
@@ -52,7 +52,7 @@ appId: "com.recipesmanager"
     text: "Margherita Pizza"
     label: Open Margherita Pizza
 - tapOn:
-    text: "Add this recipe to the menu"
+    text: "Add to the menu"
     label: Add the Margherita Pizza recipe to the menu
 - runFlow: ../../asserts/Alerts/addingRecipePizza.yaml
 - tapOn:

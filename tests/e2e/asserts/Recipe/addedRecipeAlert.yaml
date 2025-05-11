@@ -1,5 +1,5 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible: "SUCCESSFULLY ADDED RECIPE TO DATABASE"
-- assertVisible: "Recipe titled \"Aiguillettes de poulet a la sauce satay\" has been successfully added to the database"
-- assertVisible: "UNDERSTOOD"
+- assertVisible: "Recipe \"Aiguillettes de poulet a la sauce satay\" has been successfully added to the database"
+- assertVisible: "OK"

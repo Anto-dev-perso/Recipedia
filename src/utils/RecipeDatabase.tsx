@@ -715,73 +715,11 @@ export default class RecipeDatabase {
     protected decodeIngredient(dbIngredient: encodedIngredientElement): ingredientTableElement {
 
         // Ex :  {"ID":1,"INGREDIENT":"INGREDIENT NAME","UNIT":"g", "TYPE":"BASE", "SEASON":"*"}
-        let ingType: ingredientType;
-
-        switch (dbIngredient.TYPE.toLowerCase()) {
-            case ingredientType.legumes.toLowerCase():
-                ingType = ingredientType.legumes;
-                break;
-            case ingredientType.grainOrCereal.toLowerCase():
-                ingType = ingredientType.grainOrCereal;
-                break;
-            case ingredientType.vegetable.toLowerCase():
-                ingType = ingredientType.vegetable;
-                break;
-            case ingredientType.plantProtein.toLowerCase():
-                ingType = ingredientType.plantProtein;
-                break;
-            case ingredientType.condiment.toLowerCase():
-                ingType = ingredientType.condiment;
-                break;
-            case ingredientType.sauce.toLowerCase():
-                ingType = ingredientType.sauce;
-                break;
-            case ingredientType.meat.toLowerCase():
-                ingType = ingredientType.meat;
-                break;
-            case ingredientType.poultry.toLowerCase():
-                ingType = ingredientType.poultry;
-                break;
-            case ingredientType.fish.toLowerCase():
-                ingType = ingredientType.fish;
-                break;
-            case ingredientType.seafood.toLowerCase():
-                ingType = ingredientType.seafood;
-                break;
-            case ingredientType.dairy.toLowerCase():
-                ingType = ingredientType.dairy;
-                break;
-            case ingredientType.cheese.toLowerCase():
-                ingType = ingredientType.cheese;
-                break;
-            case ingredientType.sugar.toLowerCase():
-                ingType = ingredientType.sugar;
-                break;
-            case ingredientType.spice.toLowerCase():
-                ingType = ingredientType.spice;
-                break;
-            case ingredientType.fruit.toLowerCase():
-                ingType = ingredientType.fruit;
-                break;
-            case ingredientType.oilAndFat.toLowerCase():
-                ingType = ingredientType.oilAndFat;
-                break;
-            case ingredientType.nutsAndSeeds.toLowerCase():
-                ingType = ingredientType.nutsAndSeeds;
-                break;
-            case ingredientType.sweetener.toLowerCase():
-                ingType = ingredientType.sweetener;
-                break;
-            default:
-                ingType = ingredientType.undefined;
-                break;
-        }
-
         return {
             id: dbIngredient.ID,
             ingName: dbIngredient.INGREDIENT,
             unit: dbIngredient.UNIT,
-            type: ingType,
+            type: dbIngredient.TYPE as ingredientType,
             season: dbIngredient.SEASON.split(EncodingSeparator),
         };
     }

@@ -9,8 +9,8 @@ appId: "com.recipesmanager"
     \ for the preparation"
     label: Alert message containing all missing elements is displayed
 - assertVisible:
-    text: "UNDERSTOOD"
+    text: "OK"
     label: Alert validation button is displayed
 - tapOn:
-    text: "UNDERSTOOD"
+    text: "OK"
     label: Tap on the validation button

@@ -30,6 +30,7 @@ import {defaultValueNumber} from "@utils/Constants";
 import {useTheme} from "react-native-paper";
 import ModalImageSelect from "@screens/ModalImageSelect";
 import {cropImage} from "@utils/ImagePicker";
+import {useI18n} from "@utils/i18n";
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -46,6 +47,7 @@ export type RecipePropType = readRecipe | editRecipeManually | addRecipeManually
 
 
 export default function Recipe({route, navigation}: RecipeScreenProp) {
+    const {t} = useI18n();
 
     const {colors} = useTheme();
 
@@ -87,23 +89,23 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         switch (stackMode) {
             case recipeStateType.readOnly:
             case recipeStateType.edit:
-                const choice = await AsyncAlert("Recipe deletion", "Are you sure you want to delete this recipe titled " + recipeTitle + " ?", "Yes", "No");
+                const choice = await AsyncAlert(t('deleteRecipe'), `${t('confirmDelete')} ${recipeTitle}?`, t('save'), t('cancel'));
                 if (choice === alertUserChoice.ok) {
                     let msg: string;
                     //@ts-ignore params.recipe exist because we already checked with switch
                     if (!await RecipeDatabase.getInstance().deleteRecipe(this.props.route.params.recipe)) {
-                        msg = "An error occurred while deleting this recipe titled " + recipeTitle;
+                        msg = `${t('errorOccurred')} ${t('deleteRecipe')} ${recipeTitle}`;
                     } else {
-                        msg = "Recipe titled " + recipeTitle + " has been successfully deleted";
+                        msg = `${t('recipe')} ${recipeTitle} ${t('delete')} ${t('success')}`;
                     }
-                    const promiseReturn = AsyncAlert("Recipe deletion", msg, "Understood");
+                    const promiseReturn = AsyncAlert(t('deleteRecipe'), msg, t('ok'));
 
                 }
                 break;
             case recipeStateType.addManual:
             case recipeStateType.addOCR:
                 const message = "Call onDelete on mode " + stackMode + " which is not possible";
-                const promiseReturn = AsyncAlert("Recipe deletion", message, "Understood");
+                const promiseReturn = AsyncAlert(t('deleteRecipe'), message, t('ok'));
                 break;
         }
         navigation.goBack();
@@ -195,7 +197,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     async function readOnlyValidation() {
         await RecipeDatabase.getInstance().addRecipeToShopping(createRecipeFromStates());
         navigation.goBack();
-        await AsyncAlert("SUCCESSFULLY ADDED RECIPE TO SHOPPING LIST", `Recipe titled "${recipeTitle}" has been successfully added to the shopping list`, "Understood");
+        await AsyncAlert(t('success'), `${t('recipe')} "${recipeTitle}" ${t('addedToShoppingList')}`, t('ok'));
     }
 
     async function editValidation() {
@@ -262,11 +264,12 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             let alertTitle: string;
             let alertMsg: string;
             if (missingElem.length == 1) {
-                alertTitle = "Missing element";
-                alertMsg = "You're missing " + missingElem[0] + " to your recipe. Please add this before validate."
+                alertTitle = t('alerts.missingElements.titleSingular');
+                alertMsg = "You're missing " + missingElem[0] + " to your recipe. Please add this before validate.";
+                alertMsg = t('alerts.missingElements.messageSingularBeginning') + missingElem[0] + t('alerts.missingElements.messageSingularEnding');
             } else {
-                alertTitle = "Missing elements";
-                alertMsg = "You haven't add all of the elements to your recipe. Please enter before validate at least: ";
+                alertTitle = t('alerts.missingElements.titlePlural');
+                alertMsg = t('alerts.missingElements.messagePlural');
                 for (const elem of missingElem) {
                     alertMsg += `\n\t- ${elem}`;
                 }
@@ -338,7 +341,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         const titleTestID = 'RecipeTitle';
         const titleRootText: TextProp = {
             style: stackMode == recipeStateType.readOnly ? 'headline' : 'title',
-            value: stackMode == recipeStateType.readOnly ? recipeTitle : 'Title:'
+            value: stackMode == recipeStateType.readOnly ? recipeTitle : t('title') + ':'
         };
         switch (stackMode) {
             case recipeStateType.readOnly:
@@ -376,7 +379,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         const descriptionTestID = 'RecipeDescription';
         const descriptionRootText: TextProp = {
             style: stackMode == recipeStateType.readOnly ? 'paragraph' : 'title',
-            value: (stackMode == recipeStateType.readOnly ? recipeDescription : 'Description:')
+            value: stackMode == recipeStateType.readOnly ? recipeDescription : t('Description') + ':'
         };
         switch (stackMode) {
             case recipeStateType.readOnly:
@@ -439,7 +442,10 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             case recipeStateType.readOnly:
                 return {
                     testID: personTestID,
-                    numberProps: {editType: 'read', text: `Ingredients (${recipePersons} persons)`}
+                    numberProps: {
+                        editType: 'read',
+                        text: t('ingredientReadOnlyBeforePerson') + recipePersons + t('ingredientReadOnlyAfterPerson')
+                    }
                 };
             case recipeStateType.addOCR:
                 if (!recipePersonsManuallyEdited && recipePersons === defaultValueNumber) {
@@ -447,7 +453,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                         testID: personTestID,
                         numberProps: {
                             editType: 'add',
-                            prefixText: "How many serving (people) ?",
+                            prefixText: t('personPrefixOCR'),
                             openModal: () => openModalForField(recipeColumnsNames.persons),
                             manuallyFill: () => setRecipePersonsManuallyEdited(true),
                         }
@@ -461,8 +467,8 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     numberProps: {
                         editType: 'editable',
                         textEditable: recipePersons,
-                        prefixText: "This recipe is for : ",
-                        suffixText: " persons",
+                        prefixText: t('personPrefixEdit'),
+                        suffixText: t('personSuffixEdit'),
                         setTextToEdit: setRecipePersons,
                     }
                 };
@@ -481,7 +487,10 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             case recipeStateType.readOnly:
                 return {
                     testID: personTestID,
-                    numberProps: {editType: 'read', text: `Preparation (${recipeTime} min)`}
+                    numberProps: {
+                        editType: 'read',
+                        text: t('timeReadOnlyBeforePerson') + recipeTime + t('timeReadOnlyAfterPerson')
+                    }
                 };
             case recipeStateType.addOCR:
                 if (!recipeTimeManuallyEdited && recipeTime === defaultValueNumber) {
@@ -489,7 +498,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                         testID: personTestID,
                         numberProps: {
                             editType: 'add',
-                            prefixText: "Prep time (minutes):",
+                            prefixText: t('personPrefixOCR'),
                             openModal: () => openModalForField(recipeColumnsNames.time),
                             manuallyFill: () => setRecipeTimeManuallyEdited(true),
                         }
@@ -503,8 +512,8 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     numberProps: {
                         editType: 'editable',
                         textEditable: recipeTime,
-                        prefixText: 'Time to prepare the recipe :',
-                        suffixText: "min",
+                        prefixText: t('timePrefixEdit'),
+                        suffixText: t('timeSuffixEdit'),
                         setTextToEdit: setRecipeTime,
                     }
                 };
@@ -518,7 +527,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     }
 
     function recipeIngredientsProp(): RecipeTextRenderProps {
-        const ingredientPrefixText = "Ingredients";
+        const ingredientPrefixText = t('ingredients') + ': ';
         const ingredientRender: typoRender = typoRender.ARRAY;
         const extractedIngredients = extractIngredientsNameWithQuantity(recipeIngredients);
         const ingredientTestID = 'RecipeIngredients';
@@ -549,9 +558,9 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     editType: 'editable',
                     prefixText: ingredientPrefixText,
                     columnTitles: {
-                        column1: 'Quantity',
-                        column2: 'Unit',
-                        column3: 'Ingredient name',
+                        column1: t('quantity'),
+                        column2: t('unit'),
+                        column3: t('ingredientName'),
                     },
                     renderType: typoRender.ARRAY,
                     textEditable: extractedIngredients,
@@ -586,7 +595,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                         testID: preparationTestID,
                         type: 'addOrEdit',
                         editType: 'add',
-                        prefixText: "Preparation :",
+                        prefixText: t('preparationReadOnly'),
                         openModal: () => openModalForField(recipeColumnsNames.preparation),
                     };
                 }
@@ -616,13 +625,12 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     function recipeValidationButtonProps(): [string, () => Promise<void>] {
         switch (stackMode) {
             case recipeStateType.readOnly:
-                return ["Add this recipe to the menu", readOnlyValidation];
+                return [t('validateReadOnly'), readOnlyValidation];
             case recipeStateType.edit:
-                return ["Validate the recipe with these modifications", editValidation];
+                return [t('validateEdit'), editValidation];
             case recipeStateType.addManual:
-                return ["Add this new recipe", addValidation];
             case recipeStateType.addOCR:
-                return ["Add this new recipe", addValidation];
+                return [t('validateAdd'), addValidation];
             default:
                 console.warn("recipeValidationButtonProps: Unknown stackMode");
                 return ["", async () => console.warn("Error: Unknown stackMode")];

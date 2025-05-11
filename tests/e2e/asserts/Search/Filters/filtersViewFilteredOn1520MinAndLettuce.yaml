@@ -240,7 +240,7 @@ appId: "com.recipesmanager"
     text: "󰍴"
     label: Minus icon is rendered
 - assertVisible:
-    text: "In-season"
+    text: "Only in-season ingredients"
     label: In-Season category is rendered
 - assertVisible:
     text: "󰄱, Only in-season ingredients"

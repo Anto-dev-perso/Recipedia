@@ -617,10 +617,10 @@ appId: "com.recipesmanager"
     text: "󰐕"
     label: Plus button is displayed
 - assertVisible:
-    text: "In-season"
+    text: "Only in-season ingredients"
     label: In-season category is rendered with + icon
 - tapOn:
-    text: "In-season"
+    text: "Only in-season ingredients"
     label: Tap on In-season to see filters under this category
 - swipe:
     start: "50%,85%"
@@ -630,13 +630,13 @@ appId: "com.recipesmanager"
     text: "󰍴"
     label: Minus icon is rendered
 - assertVisible:
-    text: "In-season"
+    text: "Only in-season ingredients"
     label: In-Season category is rendered
 - assertVisible:
     text: "󰄱, Only in-season ingredients"
     label: Only in-season ingredients filter is rendered
 - tapOn:
-    text: "In-season"
+    text: "Only in-season ingredients"
     label: Tap on In-season to hide filters under this category
 - assertNotVisible:
     text: "󰄱, Only in-season ingredients"

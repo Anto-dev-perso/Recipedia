@@ -72,5 +72,5 @@ appId: "com.recipesmanager"
     text: "󰏫"
     label: Edit Button is rendered
 - assertVisible:
-    text: "Add this recipe to the menu"
+    text: "Add to the menu"
     label: Add to menu button is rendered
