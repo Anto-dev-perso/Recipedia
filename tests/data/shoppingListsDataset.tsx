@@ -1147,7 +1147,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
         },
         {
             id: 24,
-            name: listFilter.sugar,
+            name: "Sugar",
             purchased: false,
             quantity: "150",
             recipesTitle: [
@@ -1419,7 +1419,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
         },
         {
             id: 24,
-            name: listFilter.sugar,
+            name: "Sugar",
             purchased: false,
             quantity: "150",
             recipesTitle: [
@@ -1724,7 +1724,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
         },
         {
             id: 24,
-            name: listFilter.sugar,
+            name: "Sugar",
             purchased: false,
             quantity: "150",
             recipesTitle: [
@@ -2084,7 +2084,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
         },
         {
             id: 24,
-            name: listFilter.sugar,
+            name: "Sugar",
             purchased: false,
             quantity: "150",
             recipesTitle: [

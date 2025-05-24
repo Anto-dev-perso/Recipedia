@@ -8,6 +8,7 @@ import {ingredientsDataset} from "@test-data/ingredientsDataset";
 jest.mock('@components/molecules/HorizontalList', () => require('@mocks/components/molecules/HorizontalList-mock').horizontalListMock);
 jest.mock('@components/molecules/SectionClickableList', () => require('@mocks/components/molecules/SectionClickableList-mock').sectionClickableListMock);
 jest.mock('@components/atomic/TagButton', () => require('@mocks/components/atomic/TagButton-mock').tagButtonMock);
+jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
 describe('FiltersSelection Component', () => {
     const mockSetPrintSectionClickable = jest.fn();
@@ -40,7 +41,7 @@ describe('FiltersSelection Component', () => {
         expect(getByTestId('HorizontalList::Icon').props.children).toEqual('close');
         expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
 
-        expect(getByTestId('TagButton::Text').props.children).toEqual('"Add a filter"');
+        expect(getByTestId('TagButton::Text').props.children).toEqual('"addFilter"');
         expect(getByTestId('TagButton::LeftIcon').props.children).toEqual('"filter-plus-outline"');
 
         expect(getByTestId('TagButton::RightIcon').props.children).toBeUndefined();

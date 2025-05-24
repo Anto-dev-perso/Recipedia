@@ -19,8 +19,12 @@ import FiltersSelection from "@components/organisms/FiltersSelection";
 import SearchResultDisplay from "@components/organisms/SearchResultDisplay";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {useFocusEffect} from "@react-navigation/native";
+import {useI18n} from "@utils/i18n";
 
 export default function Search({route, navigation}: SearchScreenProp) {
+
+    const {t} = useI18n();
+
     const [filtersState, setFiltersState] = useState(new Map<TListFilter, Array<string>>());
 
     const [filteredRecipes, setFilteredRecipes] = useState<Array<recipeTableElement>>(RecipeDatabase.getInstance().get_recipes());
@@ -37,7 +41,7 @@ export default function Search({route, navigation}: SearchScreenProp) {
 // TODO maybe changing this file to a class so that we can use constructor
 
     function updateFilteredRecipes(recipeArray: Array<recipeTableElement>) {
-        const recipesFiltered = filterFromRecipe(recipeArray, filtersState);
+        const recipesFiltered = filterFromRecipe(recipeArray, filtersState, t);
         setFilteredRecipes([...recipesFiltered]);
         extractTitleTagsAndIngredients(recipesFiltered);
     }

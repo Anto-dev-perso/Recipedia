@@ -2,6 +2,7 @@ import {palette} from './colors'
 import {padding} from './spacing'
 import {useFonts} from "expo-font";
 import {StyleSheet} from "react-native";
+import {VariantProp} from "react-native-paper/lib/typescript/components/Typography/types";
 
 export const textSeparator = "--";
 export const unitySeparator = "@@";
@@ -30,6 +31,8 @@ const typoFamily = {
     italic: 'Lora-Italic-VariableFont_wght',
 };
 
+export const BottomScreenTitle: VariantProp<never> = "headlineMedium";
+
 export const typoSize = {
     element: 10,
     paragraphSize: 14,
@@ -53,12 +56,6 @@ export type editableText = {
     withBorder: boolean,
     onChangeFunction(oldValueId: number, newParam: string): void,
 }
-
-export const borderStyle = StyleSheet.create({
-    border: {
-        borderWidth: 2,
-    }
-});
 
 export const typoStyles = StyleSheet.create({
     element: {

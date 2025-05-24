@@ -11,6 +11,7 @@ import React from 'react';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
+jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nFilterTimeMock());
 jest.mock('@components/organisms/FiltersSelection', () => require('@mocks/components/organisms/FiltersSelection-mock').filtersSelectionMock);
 jest.mock('@components/organisms/SearchBar', () => require('@mocks/components/organisms/SearchBar-mock').searchBarMock);
 jest.mock('@components/organisms/SearchResultDisplay', () => require('@mocks/components/organisms/SearchResultDisplay-test').searchResultDisplayMock);
@@ -49,19 +50,19 @@ describe('Search Screen', () => {
         expect(getByTestId('SearchResultDisplay::RecipesTitles').props.children).toEqual(JSON.stringify(recipesDataset));
 
         fireEvent.press(getByTestId('FilterSelection::AddFilterButton'));
-        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"Nuts and Seeds":["Pine Nuts"]}');
+        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"ingredientTypes.nutsAndSeeds":["Pine Nuts"]}');
         expect(getByTestId('SearchResultDisplay::RecipesTitles').props.children).toEqual(JSON.stringify([recipesDataset[7]]));
         expect(getByTestId('FiltersSelection::IngredientsList').props.children).toEqual(JSON.stringify(recipesDataset[7].ingredients));
         expect(getByTestId('FiltersSelection::TagsList').props.children).toEqual(JSON.stringify(recipesDataset[7].tags.map(tag => tag.tagName)));
 
         fireEvent.press(getByTestId('FilterSelection::AddFilterButton'));
-        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"Nuts and Seeds":["Pine Nuts"],"Already purchased":["true"]}');
+        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"ingredientTypes.nutsAndSeeds":["Pine Nuts"],"filterTypes.purchased":["true"]}');
         expect(getByTestId('SearchResultDisplay::RecipesTitles').props.children).toEqual(JSON.stringify([recipesDataset[7]]));
         expect(getByTestId('FiltersSelection::IngredientsList').props.children).toEqual(JSON.stringify(recipesDataset[7].ingredients));
         expect(getByTestId('FiltersSelection::TagsList').props.children).toEqual(JSON.stringify(recipesDataset[7].tags.map(tag => tag.tagName)));
 
         fireEvent.press(getByTestId('FilterSelection::AddFilterButton'));
-        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"Nuts and Seeds":["Pine Nuts"],"Already purchased":["true"],"Preparation Time":["25-30 min"]}');
+        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"ingredientTypes.nutsAndSeeds":["Pine Nuts"],"filterTypes.purchased":["true"],"filterTypes.prepTime":["preparationTimes.twentyFiveToThirty"]}');
         expect(getByTestId('SearchResultDisplay::RecipesTitles').props.children).toEqual(JSON.stringify([]));
         expect(getByTestId('FiltersSelection::IngredientsList').props.children).toEqual(JSON.stringify([]));
         expect(getByTestId('FiltersSelection::TagsList').props.children).toEqual(JSON.stringify([]));
@@ -80,19 +81,19 @@ describe('Search Screen', () => {
         fireEvent.press(getByTestId('FilterSelection::AddFilterButton'));
         fireEvent.press(getByTestId('FilterSelection::AddFilterButton'));
 
-        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"Nuts and Seeds":["Pine Nuts"],"Already purchased":["true"],"Preparation Time":["25-30 min"]}');
+        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"ingredientTypes.nutsAndSeeds":["Pine Nuts"],"filterTypes.purchased":["true"],"filterTypes.prepTime":["preparationTimes.twentyFiveToThirty"]}');
         expect(getByTestId('SearchResultDisplay::RecipesTitles').props.children).toEqual(JSON.stringify([]));
         expect(getByTestId('FiltersSelection::IngredientsList').props.children).toEqual(JSON.stringify([]));
-        // expect(getByTestId('FiltersSelection::TagsList').props.children).toEqual(JSON.stringify([]));
+        expect(getByTestId('FiltersSelection::TagsList').props.children).toEqual(JSON.stringify([]));
 
         fireEvent.press(getByTestId('FilterSelection::RemoveFilterButton'));
-        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"Already purchased":["true"],"Preparation Time":["25-30 min"]}');
+        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"filterTypes.purchased":["true"],"filterTypes.prepTime":["preparationTimes.twentyFiveToThirty"]}');
         expect(getByTestId('SearchResultDisplay::RecipesTitles').props.children).toEqual(JSON.stringify([recipesDataset[2]]));
-        // expect(getByTestId('FiltersSelection::IngredientsList').props.children).toEqual(JSON.stringify(recipesDataset[2].ingredients));
-        // expect(getByTestId('FiltersSelection::TagsList').props.children).toEqual(JSON.stringify(recipesDataset[2].tags.map(tag => tag.tagName)));
+        expect(getByTestId('FiltersSelection::IngredientsList').props.children).toEqual(JSON.stringify(recipesDataset[2].ingredients));
+        expect(getByTestId('FiltersSelection::TagsList').props.children).toEqual(JSON.stringify(recipesDataset[2].tags.map(tag => tag.tagName)));
 
         fireEvent.press(getByTestId('FilterSelection::RemoveFilterButton'));
-        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"Preparation Time":["25-30 min"]}');
+        expect(getByTestId('FiltersSelection::FiltersState').props.children).toEqual('{"filterTypes.prepTime":["preparationTimes.twentyFiveToThirty"]}');
 
 
         fireEvent.press(getByTestId('FilterSelection::RemoveFilterButton'));

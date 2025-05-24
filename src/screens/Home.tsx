@@ -9,14 +9,14 @@ import RoundButton from "@components/atomic/RoundButton";
 import {bottomTopPosition} from "@styles/buttons";
 import {palette} from "@styles/colors";
 import RecipeDatabase from "@utils/RecipeDatabase";
-import {StackScreenNavigation} from "@customTypes/ScreenTypes";
+import {HomeScreenProp, StackScreenNavigation} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {Icons} from "@assets/Icons";
 import {useI18n} from "@utils/i18n";
 
 
-export default function Home() {
+export default function Home({}: HomeScreenProp) {
     const {t} = useI18n();
 
     const {navigate} = useNavigation<StackScreenNavigation>();

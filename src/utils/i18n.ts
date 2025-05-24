@@ -16,6 +16,7 @@ const LANGUAGE_NAMES: { [key: string]: string } = {
 // Initialize i18next instance
 const i18n = createInstance();
 
+// Initialize with device locale first
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
     .use(

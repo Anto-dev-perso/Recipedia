@@ -8,3 +8,19 @@ export function reactNavigationMock() {
         }),
     };
 }
+
+export const mockNavigationFunctions = {
+    goBack: jest.fn(),
+    navigate: jest.fn(),
+    reset: jest.fn(),
+    isFocused: jest.fn(() => true),
+    canGoBack: jest.fn(() => false),
+    dispatch: jest.fn(),
+    getState: jest.fn(),
+    getParent: jest.fn(),
+    setParams: jest.fn(),
+    setOptions: jest.fn(),
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    getId: jest.fn(() => 'mock-id')
+};

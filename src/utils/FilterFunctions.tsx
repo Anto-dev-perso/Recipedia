@@ -62,7 +62,7 @@ export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement
 }
 
 // TODO find a better type for the multimap (maybe https://github.com/teppeis/multimaps
-export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter: Map<TListFilter, Array<string>>): Array<recipeTableElement> {
+export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter: Map<TListFilter, Array<string>>, t: TFunction<"translation", undefined>): Array<recipeTableElement> {
     if (filter.size == 0) {
         return new Array<recipeTableElement>(...recipeArray);
     }
@@ -71,7 +71,7 @@ export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter:
         for (const [key, value] of filter) {
             switch (key) {
                 case listFilter.prepTime:
-                    elementToKeep = elementToKeep && applyToRecipeFilterPrepTime(recipe, value);
+                    elementToKeep = elementToKeep && applyToRecipeFilterPrepTime(recipe, value, t);
                     break;
                 case listFilter.recipeTitleInclude:
                     elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.title, value);
@@ -243,14 +243,16 @@ function isTheElementContainsTheFilter(elementToTest: string | Array<string>, fi
     return false;
 }
 
-function applyToRecipeFilterPrepTime(recipe: recipeTableElement, filterTimeIntervals: Array<string>): boolean {
+function applyToRecipeFilterPrepTime(recipe: recipeTableElement, filterTimeIntervals: Array<string>, t: TFunction<"translation", undefined>): boolean {
     for (const curFilter of filterTimeIntervals) {
+        const translatedTimeFilter = t(curFilter);
+        const minutesTranslated = t("timeSuffixEdit");
         if (curFilter == prepTimeValues[prepTimeValues.length - 1]) {
-            if (Number(curFilter.replace(" min", "").replace("+", "")) <= recipe.time) {
+            if (Number(translatedTimeFilter.replace(minutesTranslated, "").replace("+", "")) <= recipe.time) {
                 return true;
             }
         } else {
-            const [beginTime, endTime] = curFilter.replace(" min", "").split(`-`);
+            const [beginTime, endTime] = translatedTimeFilter.replace(minutesTranslated, "").split(`-`);
             if (Number(beginTime) <= recipe.time && recipe.time <= Number(endTime)) {
                 return true;
             }

@@ -17,10 +17,12 @@ import {TextMatch, TextMatchOptions} from "@testing-library/react-native/build/m
 import {CommonQueryOptions} from "@testing-library/react-native/build/queries/options";
 import {textSeparator, unitySeparator} from "@styles/typography";
 import {defaultValueNumber} from '@utils/Constants';
+import {listFilter} from "@customTypes/RecipeFiltersTypes";
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
 jest.mock('@utils/ImagePicker', () => require('@mocks/utils/ImagePicker-mock').imagePickerMock());
+jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
 jest.mock('@components/organisms/RecipeTags', () => require('@mocks/components/organisms/RecipeTags-mock').recipeTagsMock);
 jest.mock('@components/organisms/RecipeImage', () => require('@mocks/components/organisms/RecipeImage-mock').recipeImageMock);
@@ -88,19 +90,19 @@ function checkTitle(prop: RecipePropType, getByTestId: GetByIdType, queryByTestI
             expect(queryByTestId('RecipeTitle::OpenModal')).toBeNull();
             break;
         case  "edit":
-            expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('Title:');
+            expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('title:');
             expect(getByTestId('RecipeTitle::TextEditable').props.children).toEqual(prop.recipe.title);
             expect(getByTestId('RecipeTitle::SetTextToEdit').props.children).toBeTruthy();
             expect(queryByTestId('RecipeTitle::OpenModal')).toBeNull();
             break;
         case "addManually":
-            expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('Title:');
+            expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('title:');
             expect(getByTestId('RecipeTitle::TextEditable').props.children).toEqual(newValueExpected);
             expect(getByTestId('RecipeTitle::SetTextToEdit').props.children).toBeTruthy();
             expect(queryByTestId('RecipeTitle::OpenModal')).toBeNull();
             break;
         case "addFromPic":
-            expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('Title:');
+            expect(getByTestId('RecipeTitle::RootText').props.children).toEqual('title:');
             expect(queryByTestId('RecipeTitle::TextEditable')).toBeNull();
             expect(queryByTestId('RecipeTitle::SetTextToEdit')).toBeNull();
             if (prop.imgUri == defaultUri) {
@@ -203,16 +205,16 @@ function checkIngredients(prop: RecipePropType, getByTestId: GetByIdType, queryB
             expect(queryByTestId('RecipeIngredients::OnClick')).toBeNull();
             expect(queryByTestId('RecipeIngredients::OnChangeFunction')).toBeNull();
 
-            expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('Ingredients');
+            expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('ingredients: ');
             expect(queryByTestId('RecipeIngredients::OpenModal')).toBeNull();
 
             expect(getByTestId('RecipeIngredients::TextEditable').props.children).toEqual(JSON.stringify(extractIngredientsNameWithQuantity(prop.recipe.ingredients)));
             expect(getByTestId('RecipeIngredients::RenderType').props.children).toEqual('"ARRAY"');
             expect(getByTestId('RecipeIngredients::TextEdited').props.children).toBeTruthy();
             expect(getByTestId('RecipeIngredients::AddNewText').props.children).toBeTruthy();
-            expect(getByTestId('RecipeIngredients::Column1').props.children).toEqual('Quantity');
-            expect(getByTestId('RecipeIngredients::Column2').props.children).toEqual('Unit');
-            expect(getByTestId('RecipeIngredients::Column3').props.children).toEqual('Ingredient name');
+            expect(getByTestId('RecipeIngredients::Column1').props.children).toEqual('quantity');
+            expect(getByTestId('RecipeIngredients::Column2').props.children).toEqual('unit');
+            expect(getByTestId('RecipeIngredients::Column3').props.children).toEqual('ingredientName');
             break;
         case "addManually":
             expect(queryByTestId('RecipeIngredients::Text')).toBeNull();
@@ -222,16 +224,16 @@ function checkIngredients(prop: RecipePropType, getByTestId: GetByIdType, queryB
             expect(queryByTestId('RecipeIngredients::OnClick')).toBeNull();
             expect(queryByTestId('RecipeIngredients::OnChangeFunction')).toBeNull();
 
-            expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('Ingredients');
+            expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('ingredients: ');
             expect(queryByTestId('RecipeIngredients::OpenModal')).toBeNull();
 
             expect(getByTestId('RecipeIngredients::TextEditable').props.children).toEqual(JSON.stringify([]));
             expect(getByTestId('RecipeIngredients::RenderType').props.children).toEqual('"ARRAY"');
             expect(getByTestId('RecipeIngredients::TextEdited').props.children).toBeTruthy();
             expect(getByTestId('RecipeIngredients::AddNewText').props.children).toBeTruthy();
-            expect(getByTestId('RecipeIngredients::Column1').props.children).toEqual('Quantity');
-            expect(getByTestId('RecipeIngredients::Column2').props.children).toEqual('Unit');
-            expect(getByTestId('RecipeIngredients::Column3').props.children).toEqual('Ingredient name');
+            expect(getByTestId('RecipeIngredients::Column1').props.children).toEqual('quantity');
+            expect(getByTestId('RecipeIngredients::Column2').props.children).toEqual('unit');
+            expect(getByTestId('RecipeIngredients::Column3').props.children).toEqual('ingredientName');
             break;
         case "addFromPic":
             expect(queryByTestId('RecipeIngredients::Text')).toBeNull();
@@ -241,7 +243,7 @@ function checkIngredients(prop: RecipePropType, getByTestId: GetByIdType, queryB
             expect(queryByTestId('RecipeIngredients::OnClick')).toBeNull();
             expect(queryByTestId('RecipeIngredients::OnChangeFunction')).toBeNull();
 
-            expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('Ingredients');
+            expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('ingredients: ');
             if (prop.imgUri.length == 0) {
                 expect(getByTestId('RecipeIngredients::OpenModal').props.children).toBeTruthy();
             } else {
@@ -262,7 +264,7 @@ function checkIngredients(prop: RecipePropType, getByTestId: GetByIdType, queryB
 function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId: QueryByIdType, newValueExpected?: number) {
     switch (prop.mode) {
         case "readOnly":
-            expect(getByTestId('RecipePersons::Text').props.children).toEqual(`Ingredients (${prop.recipe.persons} persons)`);
+            expect(getByTestId('RecipePersons::Text').props.children).toEqual(`ingredientReadOnlyBeforePerson${prop.recipe.persons}ingredientReadOnlyAfterPerson`);
             expect(queryByTestId('RecipePersons::PrefixText')).toBeNull();
             expect(queryByTestId('RecipePersons::SuffixText')).toBeNull();
             expect(queryByTestId('RecipePersons::TextEditable')).toBeNull();
@@ -271,23 +273,23 @@ function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTes
             break;
         case "edit":
             expect(queryByTestId('RecipePersons::Text')).toBeNull();
-            expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('This recipe is for : ');
-            expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual(' persons');
+            expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('personPrefixEdit');
+            expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('personSuffixEdit');
             expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual(prop.recipe.persons);
             expect(getByTestId('RecipePersons::SetTextToEdit').props.children).toBeTruthy();
             expect(queryByTestId('RecipePersons::OpenModal')).toBeNull();
             break;
         case "addManually":
             expect(queryByTestId('RecipePersons::Text')).toBeNull();
-            expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('This recipe is for : ');
-            expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual(' persons');
+            expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('personPrefixEdit');
+            expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('personSuffixEdit');
             expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual(newValueExpected);
             expect(getByTestId('RecipePersons::SetTextToEdit').props.children).toBeTruthy();
             expect(queryByTestId('RecipePersons::OpenModal')).toBeNull();
             break;
         case "addFromPic":
             expect(queryByTestId('RecipePersons::Text')).toBeNull();
-            expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('How many serving (people) ?');
+            expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('personPrefixOCR');
             expect(getByTestId('RecipePersons::SuffixText').props.children).toBeUndefined();
             if (prop.imgUri == defaultUri) {
                 expect(getByTestId('RecipePersons::OpenModal').props.children).toBeTruthy();
@@ -301,7 +303,7 @@ function checkPersons(prop: RecipePropType, getByTestId: GetByIdType, queryByTes
 function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId: QueryByIdType, newValueExpected?: number) {
     switch (prop.mode) {
         case "readOnly":
-            expect(getByTestId('RecipeTime::Text').props.children).toEqual(`Preparation (${prop.recipe.time} min)`);
+            expect(getByTestId('RecipeTime::Text').props.children).toEqual(`timeReadOnlyBeforePerson${prop.recipe.time}timeReadOnlyAfterPerson`);
             expect(queryByTestId('RecipeTime::PrefixText')).toBeNull();
             expect(queryByTestId('RecipeTime::SuffixText')).toBeNull();
             expect(queryByTestId('RecipeTime::TextEditable')).toBeNull();
@@ -310,16 +312,16 @@ function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId
             break;
         case "edit":
             expect(queryByTestId('RecipeTime::Text')).toBeNull();
-            expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('Time to prepare the recipe :');
-            expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('min');
+            expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('timePrefixEdit');
+            expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('timeSuffixEdit');
             expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual(prop.recipe.time);
             expect(getByTestId('RecipeTime::SetTextToEdit').props.children).toBeTruthy();
             expect(queryByTestId('RecipeTime::OpenModal')).toBeNull();
             break;
         case "addManually":
             expect(queryByTestId('RecipeTime::Text')).toBeNull();
-            expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('Time to prepare the recipe :');
-            expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('min');
+            expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('timePrefixEdit');
+            expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual('timeSuffixEdit');
             expect(getByTestId('RecipeTime::TextEditable').props.children).toEqual(newValueExpected);
             expect(getByTestId('RecipeTime::SetTextToEdit').props.children).toBeTruthy();
             expect(queryByTestId('RecipeTime::OpenModal')).toBeNull();
@@ -327,12 +329,12 @@ function checkTime(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId
         case "addFromPic":
             expect(queryByTestId('RecipeTime::Text')).toBeNull();
             if (prop.imgUri == defaultUri) {
-                expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('Prep time (minutes):');
+                expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('personPrefixOCR');
                 expect(getByTestId('RecipeTime::SuffixText').props.children).toBeUndefined();
                 expect(getByTestId('RecipeTime::OpenModal').props.children).toBeTruthy();
             } else {
-                expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('Time to prepare the recipe : ');
-                expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual(' min');
+                expect(getByTestId('RecipeTime::PrefixText').props.children).toEqual('timePrefixEdit ');
+                expect(getByTestId('RecipeTime::SuffixText').props.children).toEqual(' timeSuffixEdit');
                 expect(queryByTestId('RecipeTime::OpenModal')).toBeNull();
             }
             break;
@@ -406,7 +408,7 @@ function checkPreparation(prop: RecipePropType, getByTestId: GetByIdType, queryB
             expect(queryByTestId('RecipePreparation::OnClick')).toBeNull();
             expect(queryByTestId('RecipePreparation::OnChangeFunction')).toBeNull();
 
-            expect(getByTestId('RecipePreparation::PrefixText').props.children).toEqual('Preparation :');
+            expect(getByTestId('RecipePreparation::PrefixText').props.children).toEqual('preparationReadOnly');
             if (prop.imgUri.length == 0) {
                 expect(getByTestId('RecipePreparation::OpenModal').props.children).toBeTruthy();
             } else {
@@ -772,7 +774,7 @@ describe('Recipe Component tests', () => {
             purchased: false,
             quantity: "6",
             recipesTitle: ["Chicken Tacos"],
-            type: "Grain or Cereal",
+            type: listFilter.grainOrCereal,
             unit: "pieces"
         }, {
             id: 2,
@@ -780,7 +782,7 @@ describe('Recipe Component tests', () => {
             purchased: false,
             quantity: "300",
             recipesTitle: ["Chicken Tacos"],
-            type: "Poultry",
+            type: listFilter.poultry,
             unit: "g"
         }, {
             id: 3,
@@ -788,7 +790,7 @@ describe('Recipe Component tests', () => {
             purchased: false,
             quantity: "50",
             recipesTitle: ["Chicken Tacos"],
-            type: "Vegetable",
+            type: listFilter.vegetable,
             unit: "g"
         }, {
             id: 4,
@@ -796,7 +798,7 @@ describe('Recipe Component tests', () => {
             purchased: false,
             quantity: "50",
             recipesTitle: ["Chicken Tacos"],
-            type: "Cheese",
+            type: listFilter.cheese,
             unit: "g"
         }));
 

@@ -63,6 +63,14 @@ export const Icons: Record<string, dictionaryIcons> = {
     rotateIcon: "rotate-right",
     flipHorizontalIcon: "flip-horizontal",
     flipVerticalIcon: "flip-vertical",
+    information: "information",
+    lightDarkTheme: "theme-light-dark",
+    translate: "translate",
+    chevronRight: "chevron-right",
+    chevronLeft: "chevron-left",
+    groupPeople: "account-group",
+    apple: "food-apple",
+    tags: "tag-multiple",
 } as const;
 export type IconName = keyof typeof Icons;
 

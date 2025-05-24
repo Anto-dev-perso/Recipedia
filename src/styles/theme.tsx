@@ -61,7 +61,7 @@ export const lightTheme: ThemeProp = {
             bodyLarge: {fontFamily: 'Lora-VariableFont_wght'},
             bodyMedium: {fontFamily: 'Lora-VariableFont_wght'},
             bodySmall: {fontFamily: 'Lora-VariableFont_wght'},
-            labelLarge: {fontFamily: 'Lora-Italic-VariableFont_wght'},
+            labelLarge: {fontFamily: 'Lora-VariableFont_wght'},
             labelMedium: {fontFamily: 'Lora-Italic-VariableFont_wght'},
             labelSmall: {fontFamily: 'Lora-Italic-VariableFont_wght'},
         }
@@ -114,4 +114,3 @@ export const darkTheme: ThemeProp = {
         backdrop: "#2b322b66"
     }
 };
-// TODO dark theme
