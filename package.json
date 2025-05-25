@@ -16,7 +16,7 @@
     "test:unit-fail-only": "jest ---silent --onlyFailures --config jest.config.js",
     "test:unit-watch": "jest --watchAll --silent --config jest.config.js",
     "test:unit-coverage": "jest --silent --coverage --json --outputFile=jest-results.json --config jest.config.js",
-    "test:e2e:android": " maestro test --format junit tests/e2e/*",
+    "test:e2e:android": " maestro test --debug-output=maestro_logs --format junit tests/e2e/*",
     "test:e2e:ios": " maestro test tests/e2e/*   TODO",
     "build-install-and-test:e2e:android": "npm run build:android && npm run install:android && npm run test:e2e:android",
     "test:all:android": "npm run test:unit && npm run build-and-test:android",

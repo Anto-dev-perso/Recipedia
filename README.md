@@ -17,6 +17,14 @@ To reload the app, tap 2 times R
 
 ## Testing
 
+### CI Pipeline
+
+This project uses GitHub Actions for continuous integration. The CI pipeline runs:
+- Unit tests
+- E2E tests with Maestro (split into three parts)
+
+For more details on the CI setup, see the [CI Setup Documentation](docs/ci-setup.md).
+
 ### Unit and integration testing
 
 To launch unit tests, run 'npx jest'; If you want (and you should) run the test while edtiting code, run 'npx jest
@@ -24,13 +32,25 @@ To launch unit tests, run 'npx jest'; If you want (and you should) run the test 
 
 ### E2E testing
 
-For End-2-End tests :
+For End-to-End tests, we use Maestro:
 
-- Build using 'detox build --configuration android.emu.debug' for a debug binary of 'detox build --configuration
-  android.emu.release' for a release binary
-- For debug only, launch metro with npx react-native start
-- Run 'detox test --configuration android.emu.debug' for debug and 'detox test --configuration android.emu.release' for
-  release
+1. Install Maestro:
+   ```bash
+   curl -Ls "https://get.maestro.mobile.dev" | bash
+   ```
+
+2. Build and install the app:
+   ```bash
+   npm run build:android
+   npm run install:android
+   ```
+
+3. Run the tests:
+   ```bash
+   npm run test:e2e:android
+   ```
+
+For more details on E2E testing, see the [CI Setup Documentation](docs/ci-setup.md).
 
 # Install from scratch
 
