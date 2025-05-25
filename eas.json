@@ -20,32 +20,6 @@
     },
     "production": {
       "autoIncrement": true
-    },
-    "build-and-maestro-test-part1": {
-      "withoutCredentials": true,
-      "config": "build-and-maestro-test-part1.yaml",
-      "android": {
-        "buildType": "apk",
-        "image": "latest",
-        "developmentClient": false
-      },
-      "ios": {
-        "simulator": true,
-        "image": "latest"
-      }
-    },
-    "build-and-maestro-test-part2": {
-      "withoutCredentials": true,
-      "config": "build-and-maestro-test-part2.yaml",
-      "android": {
-        "buildType": "apk",
-        "image": "latest",
-        "developmentClient": false
-      },
-      "ios": {
-        "simulator": true,
-        "image": "latest"
-      }
     }
   }
 }
