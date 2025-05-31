@@ -39,7 +39,7 @@ describe('SettingsItemCard Component', () => {
             expect(queryByTestId(`${testIDProp}::0::TagName`)).toBeNull();
             expect(queryByTestId(`${testIDProp}::0::Unsupported`)).toBeNull();
 
-            expect(getByTestId(`${testIDProp}::0::IngredientName`).props.children).toEqual(defaultProps.item.ingName);
+            expect(getByTestId(`${testIDProp}::0::IngredientName`).props.children).toEqual(defaultProps.item.name);
             expect(getByTestId(`${testIDProp}::0::IntroType`).props.children).toEqual(["type", ":"]);
             expect(getByTestId(`${testIDProp}::0::Type`).props.children).toEqual(defaultProps.item.type);
             expect(getByTestId(`${testIDProp}::0::IntroUnit`).props.children).toEqual(["unit", ":"]);
@@ -94,7 +94,7 @@ describe('SettingsItemCard Component', () => {
             );
 
             expect(getByTestId(`${testIDProp}::0::TagName`).props.children).toEqual(defaultProps
-                .item.tagName);
+                .item.name);
             expect(queryByTestId(`${testIDProp}::0::Unsupported`)).toBeNull();
 
             expect(queryByTestId(`${testIDProp}::0::IngredientName`)).toBeNull();

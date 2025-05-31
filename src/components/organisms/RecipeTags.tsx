@@ -32,7 +32,7 @@ export default function RecipeTags
 (tagsProps: RecipeTagProps) {
 
     const [newTags, setNewTags] = useState(new Array<number>());
-    const [allTagsNamesSorted, setAllTagsNamesSorted] = useState(RecipeDatabase.getInstance().get_tags().map(tag => tag.tagName).filter(dbTag => !tagsProps.tagsList.includes(dbTag)).sort());
+    const [allTagsNamesSorted, setAllTagsNamesSorted] = useState(RecipeDatabase.getInstance().get_tags().map(tag => tag.name).filter(dbTag => !tagsProps.tagsList.includes(dbTag)).sort());
 
     const {t} = useI18n();
     const {colors} = useTheme();

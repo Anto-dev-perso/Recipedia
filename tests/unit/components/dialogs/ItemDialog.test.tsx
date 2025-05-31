@@ -16,7 +16,7 @@ describe('ItemDialog Component', () => {
     // Test data
     const mockIngredient: ingredientTableElement = {
         id: 1,
-        ingName: 'Test Ingredient',
+        name: 'Test Ingredient',
         type: ingredientType.fruit,
         unit: 'kg',
         season: ['1', '2', '3']
@@ -24,7 +24,7 @@ describe('ItemDialog Component', () => {
 
     const mockTag: tagTableElement = {
         id: 2,
-        tagName: 'Test Tag'
+        name: 'Test Tag'
     };
 
     const mockOnClose = jest.fn();
@@ -222,10 +222,7 @@ describe('ItemDialog Component', () => {
                 fireEvent.press(getByTestId('TagDialog::AddModal::ConfirmButton'));
 
                 // Check that onConfirmTag was called with the correct mode and values
-                expect(mockOnConfirmTag).toHaveBeenCalledWith('add', expect.objectContaining({
-                    id: mockTag.id,
-                    tagName: mockTag.tagName
-                }));
+                expect(mockOnConfirmTag).toHaveBeenCalledWith('add', mockTag);
             });
             test('edit mode', () => {
 
@@ -233,10 +230,7 @@ describe('ItemDialog Component', () => {
 
                 fireEvent.press(getByTestId('TagDialog::EditModal::ConfirmButton'));
 
-                expect(mockOnConfirmTag).toHaveBeenCalledWith('edit', expect.objectContaining({
-                    id: mockTag.id,
-                    tagName: mockTag.tagName
-                }));
+                expect(mockOnConfirmTag).toHaveBeenCalledWith('edit', mockTag);
             });
             test('delete mode', () => {
 
@@ -244,11 +238,9 @@ describe('ItemDialog Component', () => {
 
                 fireEvent.press(getByTestId('TagDialog::DeleteModal::ConfirmButton'));
 
-                expect(mockOnConfirmTag).toHaveBeenCalledWith('delete', expect.objectContaining({
-                    id: mockTag.id,
-                    tagName: mockTag.tagName
-                }));
+                expect(mockOnConfirmTag).toHaveBeenCalledWith('delete', mockTag);
             });
+
         });
 
         describe('calls onClose when confirm button is pressed in ', () => {
@@ -320,13 +312,7 @@ describe('ItemDialog Component', () => {
         fireEvent.press(getByTestId('IngredientDialog::AddModal::ConfirmButton'));
 
         // Check that onConfirmIngredient was called with the correct mode and values
-        expect(mockOnConfirmIngredient).toHaveBeenCalledWith('add', expect.objectContaining({
-            id: mockIngredient.id,
-            ingName: mockIngredient.ingName,
-            type: mockIngredient.type,
-            unit: mockIngredient.unit,
-            season: mockIngredient.season
-        }));
+        expect(mockOnConfirmIngredient).toHaveBeenCalledWith('add', mockIngredient);
     });
 
     test('calls onConfirmIngredient when confirm button is pressed in edit mode', () => {
@@ -347,13 +333,7 @@ describe('ItemDialog Component', () => {
         fireEvent.press(getByTestId('IngredientDialog::EditModal::ConfirmButton'));
 
         // Check that onConfirmIngredient was called with the correct mode and values
-        expect(mockOnConfirmIngredient).toHaveBeenCalledWith('edit', expect.objectContaining({
-            id: mockIngredient.id,
-            ingName: mockIngredient.ingName,
-            type: mockIngredient.type,
-            unit: mockIngredient.unit,
-            season: mockIngredient.season
-        }));
+        expect(mockOnConfirmIngredient).toHaveBeenCalledWith('edit', mockIngredient);
     });
     test('calls onConfirmIngredient when confirm button is pressed in delete mode', () => {
         const props: ItemDialogProps = {

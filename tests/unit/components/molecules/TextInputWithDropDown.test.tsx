@@ -33,7 +33,7 @@ describe('TextInputWithDropDown Component', () => {
         await dbInstance.addMultipleIngredients(ingredientsDataset);
         await dbInstance.addMultipleTags(tagsDataset);
         await dbInstance.addMultipleRecipes(recipesDataset);
-        defaultProps.referenceTextArray = dbInstance.get_ingredients().map(ingredient => ingredient.ingName).sort();
+        defaultProps.referenceTextArray = dbInstance.get_ingredients().map(ingredient => ingredient.name).sort();
     });
     afterEach(async () => {
         jest.clearAllMocks();
@@ -46,8 +46,8 @@ describe('TextInputWithDropDown Component', () => {
         expect(getByTestId('TextInputWithDropDown::TextInput')).toBeTruthy();
         expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy();
         for (const ingredient of dbInstance.get_ingredients()) {
-            expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
-            expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title')).not.toBeTruthy();
+            expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).not.toBeTruthy();
+            expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title')).not.toBeTruthy();
         }
     });
 
@@ -60,8 +60,8 @@ describe('TextInputWithDropDown Component', () => {
         expect(mockOnChangeText).not.toHaveBeenCalled();
         expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy();
         for (const ingredient of dbInstance.get_ingredients()) {
-            expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
-            expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title')).not.toBeTruthy();
+            expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).not.toBeTruthy();
+            expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title')).not.toBeTruthy();
         }
 
         await act(async () => {
@@ -72,13 +72,13 @@ describe('TextInputWithDropDown Component', () => {
         expect(mockOnChangeText).not.toHaveBeenCalled();
 
         for (const ingredient of dbInstance.get_ingredients()) {
-            if (ingredient.ingName == 'Salmon') {
-                expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).toBeTruthy();
-                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title')).toBeTruthy();
-                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + "::Title").props.children).toEqual(ingredient.ingName);
+            if (ingredient.name == 'Salmon') {
+                expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).toBeTruthy();
+                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title')).toBeTruthy();
+                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.name + "::Title").props.children).toEqual(ingredient.name);
             } else {
-                expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
-                expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName)).not.toBeTruthy();
+                expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).not.toBeTruthy();
+                expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.name)).not.toBeTruthy();
             }
         }
     });
@@ -95,9 +95,9 @@ describe('TextInputWithDropDown Component', () => {
         expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual('');
         expect(mockOnChangeText).not.toHaveBeenCalled();
         for (const ingredient of dbInstance.get_ingredients()) {
-            expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).toBeTruthy();
-            expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + "::Title")).toBeTruthy();
-            expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title').props.children).toEqual(ingredient.ingName);
+            expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).toBeTruthy();
+            expect(getByTestId('TextInputWithDropDown::List::' + ingredient.name + "::Title")).toBeTruthy();
+            expect(getByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title').props.children).toEqual(ingredient.name);
         }
 
         const textInput = 'notexistingrecipe';
@@ -109,8 +109,8 @@ describe('TextInputWithDropDown Component', () => {
         expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual(textInput);
         expect(mockOnChangeText).not.toHaveBeenCalled();
         for (const ingredient of dbInstance.get_ingredients()) {
-            expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
-            expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title')).not.toBeTruthy();
+            expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).not.toBeTruthy();
+            expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title')).not.toBeTruthy();
         }
     });
 
@@ -127,13 +127,13 @@ describe('TextInputWithDropDown Component', () => {
         expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual(textInput);
         expect(mockOnChangeText).not.toHaveBeenCalled();
         for (const ingredient of dbInstance.get_ingredients()) {
-            if (ingredient.ingName.toLowerCase().includes('past')) {
-                expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).toBeTruthy();
-                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title')).toBeTruthy();
-                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title').props.children).toEqual(ingredient.ingName);
+            if (ingredient.name.toLowerCase().includes('past')) {
+                expect(getByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).toBeTruthy();
+                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title')).toBeTruthy();
+                expect(getByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title').props.children).toEqual(ingredient.name);
             } else {
-                expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
-                expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title')).not.toBeTruthy();
+                expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).not.toBeTruthy();
+                expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title')).not.toBeTruthy();
             }
         }
 
@@ -160,8 +160,8 @@ describe('TextInputWithDropDown Component', () => {
         expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy();
         expect(mockOnChangeText).not.toHaveBeenCalled();
         for (const ingredient of dbInstance.get_ingredients()) {
-            expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.ingName)).not.toBeTruthy();
-            expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.ingName + '::Title')).not.toBeTruthy();
+            expect(queryByTestId('TextInputWithDropDown::TouchableOpacity::' + ingredient.name)).not.toBeTruthy();
+            expect(queryByTestId('TextInputWithDropDown::List::' + ingredient.name + '::Title')).not.toBeTruthy();
         }
 
         await act(async () => {

@@ -2507,56 +2507,56 @@ describe('OCR Utility Functions', () => {
                 const result = await extractFieldFromImage('uri', recipeColumnsNames.ingredients, baseState, mockWarn);
                 expect(result).toEqual({
                     recipeIngredients: new Array<ingredientTableElement>({
-                            ingName: "cacahuètes grillées",
+                            name: "cacahuètes grillées",
                             unit: "g",
                             season: [],
                             type: ingredientType.undefined,
                             quantity: "200",
                         },
                         {
-                            ingName: "concentré de tomates",
+                            name: "concentré de tomates",
                             unit: "g", season: [],
                             type: ingredientType.undefined,
                             quantity: "70",
                         },
                         {
-                            ingName: "filet de poulet",
+                            name: "filet de poulet",
                             unit: "", season: [],
                             type: ingredientType.undefined,
                             quantity: "4"
                         },
                         {
-                            ingName: "gingembre",
+                            name: "gingembre",
                             unit: "cm", season: [],
                             type: ingredientType.undefined,
                             quantity: "1à3",
                         },
                         {
-                            ingName: "goussed'ail",
+                            name: "goussed'ail",
                             unit: "", season: [],
                             type: ingredientType.undefined,
                             quantity: "2",
                         },
                         {
-                            ingName: "lait de coco",
+                            name: "lait de coco",
                             unit: "mL", season: [],
                             type: ingredientType.undefined,
                             quantity: "400",
                         },
                         {
-                            ingName: "oignon jaune",
+                            name: "oignon jaune",
                             unit: "", season: [],
                             type: ingredientType.undefined,
                             quantity: "2",
                         },
                         {
-                            ingName: "oignon nouveau",
+                            name: "oignon nouveau",
                             unit: "", season: [],
                             type: ingredientType.undefined,
                             quantity: "1",
                         },
                         {
-                            ingName: "riz basmati  Bio",
+                            name: "riz basmati  Bio",
                             unit: "g", season: [],
                             type: ingredientType.undefined,
                             quantity: "300",
@@ -2852,7 +2852,7 @@ describe('OCR Utility Functions', () => {
     });
 
     describe('on tags field', () => {
-        const mockResulTags: TextRecognitionResult = {
+        const mockResultTags: TextRecognitionResult = {
             text: '<650kcal Familial Rapido ',
             blocks: new Array<TextBlock>({
                 recognizedLanguages: [], text: "", lines: new Array<TextLine>({
@@ -2862,19 +2862,19 @@ describe('OCR Utility Functions', () => {
                 })
             })
         };
-        const expectedTags = new Array<tagTableElement>({tagName: "<650kcal"}, {tagName: "Familial"}, {tagName: "Rapido"});
+        const expectedTags = new Array<tagTableElement>({name: "<650kcal"}, {name: "Familial"}, {name: "Rapido"});
 
         describe('on recognizeText', () => {
             test('returns the correct value', async () => {
-                mockRecognize.mockResolvedValue(mockResulTags);
+                mockRecognize.mockResolvedValue(mockResultTags);
 
                 expect(await recognizeText(uriForOCR, recipeColumnsNames.tags)).toEqual(expectedTags);
             });
         });
         describe('on extractFieldFromImage', () => {
             test('returns the correct value', async () => {
-                mockRecognize.mockResolvedValue(mockResulTags);
-                const tagAlreadyPresent: tagTableElement = {tagName: 'Existing tags'};
+                mockRecognize.mockResolvedValue(mockResultTags);
+                const tagAlreadyPresent: tagTableElement = {name: 'Existing tags'};
 
                 const result = await extractFieldFromImage(uriForOCR, recipeColumnsNames.tags, {
                     ...baseState,

@@ -2,7 +2,7 @@ import RecipeDatabase from '@utils/RecipeDatabase';
 import {recipesDataset} from '@test-data/recipesDataset';
 import {tagsDataset} from "@test-data/tagsDataset";
 import {ingredientsDataset} from "@test-data/ingredientsDataset";
-import {isRecipeEqual, recipeTableElement, shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
+import {ingredientType, recipeTableElement, shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
 import {shoppingAddedMultipleTimes, shoppingDataset} from "@test-data/shoppingListsDataset";
 import {listFilter} from "@customTypes/RecipeFiltersTypes";
 
@@ -58,11 +58,11 @@ describe('RecipeDatabase', () => {
                 expect(tags[i]).toEqual(newTag);
             }
 
-            await db.addTag({tagName: "Tag with a' inside it"});
+            await db.addTag({name: "Tag with a' inside it"});
             const tags = db.get_tags();
 
             expect(tags.length).toBe(tagsDataset.length + 1);
-            expect(tags[tags.length - 1].tagName).toEqual("Tag with a' inside it");
+            expect(tags[tags.length - 1].name).toEqual("Tag with a' inside it");
             // TODO found a test where the insertion fails
             // TODO found a test where the insertion worked but don't return a number
             // TODO found a test where the encodeTag is call without an id
@@ -381,6 +381,55 @@ describe('RecipeDatabase', () => {
             expect(expect.arrayContaining(db.get_shopping())).toEqual([]);
         });
 
+        test('Remove a tag and ensure it is deleted', async () => {
+
+            expect(await db.deleteTag(tagsDataset[12])).toEqual(true);
+            expect(db.get_tags()).not.toContainEqual(tagsDataset[12]);
+
+            expect(await db.deleteTag(tagsDataset[12])).toEqual(false);
+
+            expect(await db.deleteTag({...tagsDataset[15], id: undefined})).toEqual(true);
+            expect(db.get_tags()).not.toContainEqual(tagsDataset[15]);
+
+            expect(await db.deleteTag({...tagsDataset[2], id: undefined, name: ""})).toEqual(false);
+
+            expect(db.get_tags()).toContainEqual(tagsDataset[2]);
+        });
+
+        test('Remove an ingredient and ensure it is deleted', async () => {
+
+            expect(await db.deleteIngredient(ingredientsDataset[30])).toEqual(true);
+            expect(db.get_ingredients()).not.toContainEqual(ingredientsDataset[30]);
+
+            expect(await db.deleteIngredient(ingredientsDataset[30])).toEqual(false);
+
+            expect(await db.deleteIngredient({...ingredientsDataset[21], id: undefined})).toEqual(true);
+            expect(db.get_ingredients()).not.toContainEqual(ingredientsDataset[21]);
+
+
+            expect(await db.deleteIngredient({...ingredientsDataset[11], id: undefined, name: ""})).toEqual(false);
+            expect(await db.deleteIngredient({...ingredientsDataset[11], id: undefined, unit: ""})).toEqual(false);
+            expect(await db.deleteIngredient({
+                ...ingredientsDataset[11],
+                id: undefined,
+                type: ingredientType.undefined
+            })).toEqual(false);
+            expect(await db.deleteIngredient({
+                ...ingredientsDataset[11],
+                id: undefined,
+                name: "",
+                unit: "",
+                type: ingredientType.undefined
+            })).toEqual(false);
+            expect(db.get_ingredients()).not.toContainEqual(ingredientsDataset[11]);
+
+            expect(await db.deleteIngredient({...ingredientsDataset[11], id: undefined, quantity: ""})).toEqual(true);
+            expect(db.get_ingredients()).not.toContainEqual(ingredientsDataset[11]);
+
+            expect(await db.deleteIngredient({...ingredientsDataset[32], id: undefined, season: []})).toEqual(true);
+            expect(db.get_ingredients()).not.toContainEqual(ingredientsDataset[32]);
+        });
+
         // TODO found a test where the insertion fails
         // TODO found a test where the insertion worked but don't return a number
         // TODO found a test where the encodeShopping is call without an id
@@ -463,27 +512,32 @@ describe('RecipeDatabase', () => {
         });
 
         test('Remove a recipe and ensure it is deleted', async () => {
-            const recipesBefore = new Array(...db.get_recipes());
-
             expect(await db.deleteRecipe(recipesDataset[4])).toEqual(true);
-            recipesBefore.filter(recipe => !isRecipeEqual(recipe, recipesDataset[4]));
-
-            expect(expect.arrayContaining(db.get_recipes())).toEqual(recipesBefore);
+            expect(db.get_recipes()).not.toContainEqual(recipesDataset[4]);
 
             expect(await db.deleteRecipe(recipesDataset[4])).toEqual(false);
 
             expect(await db.deleteRecipe({...recipesDataset[9], id: undefined})).toEqual(true);
-            recipesBefore.filter(recipe => !isRecipeEqual(recipe, recipesDataset[9]));
+            expect(db.get_recipes()).not.toContainEqual(recipesDataset[9]);
 
-            expect(expect.arrayContaining(db.get_recipes())).toEqual(recipesBefore);
-
+            expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, image_Source: ""})).toEqual(false);
             expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, title: ""})).toEqual(false);
             expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, description: ""})).toEqual(false);
-            expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, image_Source: ""})).toEqual(false);
-            expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, season: []})).toEqual(true);
-            recipesBefore.filter(recipe => !isRecipeEqual(recipe, recipesDataset[2]));
+            expect(db.get_recipes()).toContainEqual(recipesDataset[2]);
 
-            expect(expect.arrayContaining(db.get_recipes())).toEqual(recipesBefore);
+            expect(await db.deleteRecipe({...recipesDataset[2], id: undefined, tags: []})).toEqual(true);
+            expect(db.get_recipes()).not.toContainEqual(recipesDataset[2]);
+
+            expect(await db.deleteRecipe({...recipesDataset[3], id: undefined, persons: -1})).toEqual(true);
+            expect(db.get_recipes()).not.toContainEqual(recipesDataset[3]);
+            expect(await db.deleteRecipe({...recipesDataset[5], id: undefined, ingredients: []})).toEqual(true);
+            expect(db.get_recipes()).not.toContainEqual(recipesDataset[5]);
+            expect(await db.deleteRecipe({...recipesDataset[6], id: undefined, season: []})).toEqual(true);
+            expect(db.get_recipes()).not.toContainEqual(recipesDataset[6]);
+            expect(await db.deleteRecipe({...recipesDataset[7], id: undefined, preparation: []})).toEqual(true);
+            expect(db.get_recipes()).not.toContainEqual(recipesDataset[7]);
+            expect(await db.deleteRecipe({...recipesDataset[8], id: undefined, time: -1})).toEqual(true);
+            expect(db.get_recipes()).not.toContainEqual(recipesDataset[8]);
         });
 
         // TODO to be upgrade with database deleting (not implemented yet)
@@ -523,20 +577,6 @@ describe('RecipeDatabase', () => {
 
         // TODO implement and test cases where we verify a tag but it doesn't exist (yet)
         // TODO implement and test cases where we verify an ingredient but it doesn't exist (yet)
-
-        // TODO implement first then test it
-        // test('Remove a recipe and ensure it is deleted', async () => {
-        //     const recipesBefore = await db.getAllRecipes();
-        //
-        //     // Arbitrary take one recipe from the dataset and remove it
-        //     const recipeToDelete=recipesDataset[4];
-        //     await db.removeRecipe(recipeToDelete);
-        //     const recipesAfter = await db.getAllRecipes();
-        //
-        //     expect(recipesAfter.length).toEqual(recipesBefore.length - 1);
-        //     expect(recipesBefore).toContain(recipesAfter);
-        //     expect(recipesAfter).not.toContain(recipeToDelete);
-        // });
 
 
         test('Randomly select recipes', async () => {

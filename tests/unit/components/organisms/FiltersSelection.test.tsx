@@ -19,10 +19,10 @@ describe('FiltersSelection Component', () => {
     const defaultProps: FiltersSelectionProps = {
         printSectionClickable: false,
         setPrintSectionClickable: mockSetPrintSectionClickable,
-        filtersState: new Map<TListFilter, Array<string>>([[listFilter.tags, tagsDataset.map(tag => tag.tagName)]]),
+        filtersState: new Map<TListFilter, Array<string>>([[listFilter.tags, tagsDataset.map(tag => tag.name)]]),
         addFilter: mockAddFilter,
         removeFilter: mockRemoveFilter,
-        tagsList: tagsDataset.map(tag => tag.tagName),
+        tagsList: tagsDataset.map(tag => tag.name),
         ingredientsList: ingredientsDataset,
     } as const;
 
@@ -79,7 +79,7 @@ describe('FiltersSelection Component', () => {
         for (let i = 0; i < props.tagsList.length; i++) {
             // Simulate pressing the "Add a filter" button
             fireEvent.press(getByTestId('HorizontalList::OnPress'));
-            expect(mockRemoveFilter).toHaveBeenCalledWith(listFilter.tags, tagsDataset[i].tagName);
+            expect(mockRemoveFilter).toHaveBeenCalledWith(listFilter.tags, tagsDataset[i].name);
             props.tagsList.splice(0, 1);
             rerender(<FiltersSelection {...props} />);
         }

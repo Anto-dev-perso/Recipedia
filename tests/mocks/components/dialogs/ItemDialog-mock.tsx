@@ -20,9 +20,9 @@ export function itemDialogMock({item, mode, onClose, testId}: ItemDialogProps) {
         </Text>
         <Button testID={dialogTestID + "::Item::OnConfirm"} onPress={() => {
             if (item.type === 'tag') {
-                item.onConfirmTag(mode, {...item.value, tagName: "New Value"})
+                item.onConfirmTag(mode, {...item.value, name: "New Value"})
             } else {
-                item.onConfirmIngredient(mode, {...item.value, ingName: "New Value"})
+                item.onConfirmIngredient(mode, {...item.value, name: "New Value"})
             }
         }} title="Confirm"/>
     </View>)

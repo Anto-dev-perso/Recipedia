@@ -32,7 +32,7 @@ export function selectFilterValuesToDisplay(filter: TListFilter, tagsList: Array
         case listFilter.nutsAndSeeds:
         case listFilter.sweetener:
         case listFilter.undefined:
-            return arrayOfType(ingredientsList, filter).map(ing => ing.ingName);
+            return arrayOfType(ingredientsList, filter).map(ing => ing.name);
         default:
             console.warn("selectFilterValuesToDisplay:: default shall not be reach");
             return new Array<string>();
@@ -47,12 +47,12 @@ export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement
 
     for (const element of recipeArray) {
         for (const ing of element.ingredients) {
-            if (ingredientsUniqueCollection.find(ingredient => ingredient.ingName === ing.ingName) === undefined) {
+            if (ingredientsUniqueCollection.find(ingredient => ingredient.name === ing.name) === undefined) {
                 ingredientsUniqueCollection.push(ing);
             }
         }
         for (const tag of element.tags) {
-            tagsUniqueCollection.add(tag.tagName);
+            tagsUniqueCollection.add(tag.name);
         }
     }
 
@@ -80,7 +80,7 @@ export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter:
                     elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.season, value);
                     break;
                 case listFilter.tags:
-                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.tags.map(tag => tag.tagName), value);
+                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.tags.map(tag => tag.name), value);
                     break;
                 case listFilter.purchased:
                     // Nothing to do so break
@@ -103,7 +103,7 @@ export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter:
                 case listFilter.oilAndFat:
                 case listFilter.nutsAndSeeds:
                 case listFilter.sweetener:
-                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.ingredients.map(ing => ing.ingName), value);
+                    elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.ingredients.map(ing => ing.name), value);
                     break;
                 case listFilter.undefined:
                 default:

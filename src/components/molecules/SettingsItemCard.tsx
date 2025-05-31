@@ -38,17 +38,17 @@ export default function SettingsItemCard<T extends SettingsItem>({
     return (
         <Card style={{marginBottom: padding.medium}}>
             <Card.Content>
-                {type === 'tag' && 'tagName' in item ?
+                {type === 'tag' && 'name' in item ?
                     <Text testID={itemCardTestId + `::TagName`} variant="titleLarge"
                           style={{fontWeight: 'bold'}}>
-                        {item.tagName}
+                        {item.name}
                     </Text>
                     :
-                    type === 'ingredient' && 'ingName' in item ? (
+                    type === 'ingredient' && 'unit' in item ? (
                         <View>
                             <Text testID={itemCardTestId + `::IngredientName`}
                                   variant={"titleLarge"} style={{fontWeight: 'bold', marginBottom: padding.small}}>
-                                {item.ingName}
+                                {item.name}
                             </Text>
                             <View style={styles.infoRow}>
                                 <Text testID={itemCardTestId + "::IntroType"}
@@ -63,7 +63,7 @@ export default function SettingsItemCard<T extends SettingsItem>({
                             <SeasonalityCalendar testID={itemCardTestId} selectedMonths={item.season} readOnly={true}/>
                         </View>
                     ) : (
-                        <Text testID={itemCardTestId + "::Unsupported"}>Unsupported item type</Text>
+                        <Text testID={itemCardTestId + "::Unsupported"}>Unsupported item type:{type}</Text>
                     )}
             </Card.Content>
             <Card.Actions>

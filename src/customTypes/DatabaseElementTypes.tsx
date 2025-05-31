@@ -73,7 +73,7 @@ export const recipeColumnsEncoding: Array<databaseColumnType> = [
 
 export type ingredientTableElement = {
     id?: number,
-    ingName: string,
+    name: string,
     unit: string,
     quantity?: string,// Force to use string because some ingredients (like gingembre) can have strings instead of numbers
     type: ingredientType,
@@ -87,11 +87,19 @@ export type encodedIngredientElement = {
     SEASON: string,
 };
 
-export const ingredientsColumnsNames: Array<databaseColumnType> = [
-    {colName: "INGREDIENT", type: encodedType.TEXT},
-    {colName: "UNIT", type: encodedType.TEXT},
-    {colName: "TYPE", type: encodedType.TEXT},
-    {colName: "SEASON", type: encodedType.TEXT},
+
+export enum ingredientsColumnsNames {
+    ingredient = "INGREDIENT",
+    unit = "UNIT",
+    type = "TYPE",
+    season = "SEASON",
+}
+
+export const ingredientColumnsEncoding: Array<databaseColumnType> = [
+    {colName: ingredientsColumnsNames.ingredient, type: encodedType.TEXT},
+    {colName: ingredientsColumnsNames.unit, type: encodedType.TEXT},
+    {colName: ingredientsColumnsNames.type, type: encodedType.TEXT},
+    {colName: ingredientsColumnsNames.season, type: encodedType.TEXT},
 ];
 
 
@@ -105,13 +113,18 @@ export const nutritionColumnsNames: Array<databaseColumnType> = [
     {colName: "INGREDIENT", type: encodedType.TEXT},
     {colName: "UNIT", type: encodedType.TEXT}
 ];
+
 export type tagTableElement = {
     id?: number,
-    tagName: string,
+    name: string,
 }
 
-export const tagsColumnsNames: Array<databaseColumnType> = [
-    {colName: "NAME", type: encodedType.TEXT},
+export enum tagsColumnsNames {
+    name = "NAME",
+}
+
+export const tagColumnsEncoding: Array<databaseColumnType> = [
+    {colName: tagsColumnsNames.name, type: encodedType.TEXT},
 ];
 
 export type encodedTagElement = {
@@ -165,16 +178,23 @@ export function arrayOfType(ingredients: Array<ingredientTableElement>, filter: 
 
 // TODO use more this function
 export function extractIngredientsNameWithQuantity(ingredients: Array<ingredientTableElement>): Array<string> {
-    return ingredients.map(ingredient => ingredient.quantity + unitySeparator + ingredient.unit + textSeparator + ingredient.ingName);
+    return ingredients.map(ingredient => ingredient.quantity + unitySeparator + ingredient.unit + textSeparator + ingredient.name);
 }
 
 export function extractTagsName(tags: Array<tagTableElement>): Array<string> {
     let result = new Array<string>();
     tags.forEach(element => {
-        result.push(element.tagName)
+        result.push(element.name)
     });
 
     return result;
+}
+
+export function isRecipePartiallyEqual(recipe1: recipeTableElement, recipe2: recipeTableElement): boolean {
+    return ((recipe1.image_Source == recipe2.image_Source)
+        && (recipe1.title == recipe2.title)
+        && (recipe1.description == recipe2.description)
+    )
 }
 
 export function isRecipeEqual(recipe1: recipeTableElement, recipe2: recipeTableElement): boolean {
@@ -192,14 +212,14 @@ export function isRecipeEqual(recipe1: recipeTableElement, recipe2: recipeTableE
 }
 
 export function isIngredientEqual(ingredient1: ingredientTableElement, ingredient2: ingredientTableElement): boolean {
-    return ((ingredient1.ingName == ingredient2.ingName)
+    return ((ingredient1.name == ingredient2.name)
         && (ingredient1.unit == ingredient2.unit)
         && ((ingredient1.type == ingredientType.undefined) || (ingredient2.type == ingredientType.undefined) || (ingredient1.type == ingredient2.type))
     )
 }
 
 export function isTagEqual(tag1: tagTableElement, tag2: tagTableElement): boolean {
-    return (tag1.tagName == tag2.tagName)
+    return (tag1.name == tag2.name)
 }
 
 export function isShoppingEqual(shop1: shoppingListTableElement, shop2: shoppingListTableElement): boolean {

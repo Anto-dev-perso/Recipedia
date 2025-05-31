@@ -62,7 +62,7 @@ describe('IngredientsSettings Screen', () => {
         await db.addMultipleRecipes(recipesDataset);
         await db.addMultipleShopping(recipesDataset);
 
-        sortedDataset = db.get_ingredients().sort((a, b) => a.ingName.localeCompare(b.ingName));
+        sortedDataset = db.get_ingredients().sort((a, b) => a.name.localeCompare(b.name));
     });
 
     test('renders correctly with initial tags', () => {

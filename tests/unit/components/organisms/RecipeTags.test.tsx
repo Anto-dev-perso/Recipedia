@@ -17,7 +17,7 @@ jest.mock('@expo/vector-icons', () => require('@mocks/deps/expo-vector-icons-moc
 jest.mock('@shopify/flash-list', () => require('@mocks/deps/flashlist-mock').flashListMock());
 
 describe('RecipeTags Component', () => {
-    const sampleTags = tagsDataset.map(tag => tag.tagName).sort();
+    const sampleTags = tagsDataset.map(tag => tag.name).sort();
 
     describe('readOnly mode', () => {
         it('renders a HorizontalList showing the provided tags', () => {

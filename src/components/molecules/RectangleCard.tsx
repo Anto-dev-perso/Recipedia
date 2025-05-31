@@ -29,7 +29,7 @@ export default function RectangleCard(props: RectangleCardProps) {
                     <CustomImage testID={props.testID + "::RectangleCard"} uri={props.recipe.image_Source}/>
                 </View>
                 <Text style={typoStyles.paragraph}>{props.recipe.title}</Text>
-                <TextRender text={props.recipe.tags.map(tag => tag.tagName)} render={typoRender.LIST}/>
+                <TextRender text={props.recipe.tags.map(tag => tag.name)} render={typoRender.LIST}/>
 
                 <View style={viewsSplitScreen.viewInRow}>
                     <Text style={rowTextStyle.leftText}>Prep. {props.recipe.time} min</Text>

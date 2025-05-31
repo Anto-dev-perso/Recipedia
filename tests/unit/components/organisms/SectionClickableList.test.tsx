@@ -147,7 +147,7 @@ describe('SectionClickableList Component', () => {
             }
         }
 
-        props.filtersState.set(listFilter.tags, [tagsDataset[0].tagName, tagsDataset[9].tagName]);
+        props.filtersState.set(listFilter.tags, [tagsDataset[0].name, tagsDataset[9].name]);
         fireEvent.press(getByTestId('CheckListForCategory - filterTypes.tags::AddFilter'));
 
         expect(mockAddFilter).toHaveBeenCalledTimes(2);

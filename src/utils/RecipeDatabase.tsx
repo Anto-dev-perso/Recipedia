@@ -5,12 +5,14 @@ import {
     encodedRecipeElement,
     encodedShoppingListElement,
     encodedTagElement,
+    ingredientColumnsEncoding,
     ingredientsColumnsNames,
     ingredientsTableName,
     ingredientTableElement,
     ingredientType,
     isIngredientEqual,
     isRecipeEqual,
+    isRecipePartiallyEqual,
     isShoppingEqual,
     isTagEqual,
     recipeColumnsEncoding,
@@ -22,6 +24,7 @@ import {
     shoppingListColumnsNames,
     shoppingListTableElement,
     shoppingListTableName,
+    tagColumnsEncoding,
     tagsColumnsNames,
     tagTableElement,
     tagTableName
@@ -59,8 +62,8 @@ export default class RecipeDatabase {
         this._databaseName = recipeDatabaseName;
 
         this._recipesTable = new TableManipulation(recipeTableName, recipeColumnsEncoding);
-        this._ingredientsTable = new TableManipulation(ingredientsTableName, ingredientsColumnsNames);
-        this._tagsTable = new TableManipulation(tagTableName, tagsColumnsNames);
+        this._ingredientsTable = new TableManipulation(ingredientsTableName, ingredientColumnsEncoding);
+        this._tagsTable = new TableManipulation(tagTableName, tagColumnsEncoding);
         // this._nutritionTable = new TableManipulation(nutritionTableName, nutritionColumnsNames);
 
         this._shoppingListTable = new TableManipulation(shoppingListTableName, shoppingListColumnsEncoding);
@@ -119,7 +122,7 @@ export default class RecipeDatabase {
 
     public async addIngredient(ingredient: ingredientTableElement): Promise<ingredientTableElement | undefined> {
         const ingToAdd: encodedIngredientElement = {
-            ID: ingredient.id ? ingredient.id : 0, INGREDIENT: ingredient.ingName,
+            ID: ingredient.id ? ingredient.id : 0, INGREDIENT: ingredient.name,
             UNIT: ingredient.unit,
             TYPE: ingredient.type,
             SEASON: ingredient.season.join(EncodingSeparator)
@@ -134,12 +137,11 @@ export default class RecipeDatabase {
         if (typeof dbRes === "number" && !Number.isNaN(dbRes)) {
             dbIngredient = await this._ingredientsTable.searchElementById<encodedIngredientElement>(dbRes, this._dbConnection);
         } else {
-            const searchTag = new Map<string, string>([[ingredientsColumnsNames[0].colName, ingredient.ingName], [ingredientsColumnsNames[1].colName, ingredient.unit], [ingredientsColumnsNames[2].colName, ingredient.type]]);
-            dbIngredient = await this._ingredientsTable.searchElement<encodedIngredientElement>(this._dbConnection, searchTag) as encodedIngredientElement;
+            dbIngredient = await this._ingredientsTable.searchElement<encodedIngredientElement>(this._dbConnection, this.constructSearchIngredientStructure(ingredient)) as encodedIngredientElement;
         }
 
         if (dbIngredient === undefined) {
-            console.warn("addIngredient: Searching for ingredient  ", ingredient.ingName, " didn't worked");
+            console.warn("addIngredient: Searching for ingredient  ", ingredient.name, " didn't worked");
             return undefined;
         }
         const decodedIng = this.decodeIngredient(dbIngredient);
@@ -148,7 +150,7 @@ export default class RecipeDatabase {
     }
 
     public async addTag(newTag: tagTableElement) {
-        const tagToAdd: encodedTagElement = {ID: newTag.id ? newTag.id : 0, NAME: newTag.tagName};
+        const tagToAdd: encodedTagElement = {ID: newTag.id ? newTag.id : 0, NAME: newTag.name};
         const dbRes = await this._tagsTable.insertElement(tagToAdd, this._dbConnection);
         if (dbRes === undefined || dbRes == 'Invalid insert query' || dbRes == 'Empty values') {
             console.warn("addTag: Can't add the tag because insertion in the database didn't worked");
@@ -159,11 +161,10 @@ export default class RecipeDatabase {
         if (typeof dbRes === "number" && !Number.isNaN(dbRes)) {
             dbTag = await this._tagsTable.searchElementById<encodedTagElement>(dbRes, this._dbConnection);
         } else {
-            const searchTag = new Map<string, string>([[tagsColumnsNames[0].colName, newTag.tagName]]);
-            dbTag = await this._tagsTable.searchElement<encodedTagElement>(this._dbConnection, searchTag) as encodedTagElement;
+            dbTag = await this._tagsTable.searchElement<encodedTagElement>(this._dbConnection, this.constructSearchTagStructure(newTag)) as encodedTagElement;
         }
         if (dbTag === undefined) {
-            console.warn("addTag: Searching for tag ", newTag.tagName, " didn't worked")
+            console.warn("addTag: Searching for tag ", newTag.name, " didn't worked")
         } else {
             this.add_tags(this.decodeTag(dbTag));
         }
@@ -226,7 +227,7 @@ export default class RecipeDatabase {
         const shopElement = recipe.ingredients.map(ing => {
             return {
                 type: ing.type as TListFilter,
-                name: ing.ingName,
+                name: ing.name,
                 quantity: (ing.quantity ? ing.quantity : "0"),
                 unit: ing.unit,
                 recipesTitle: Array<string>(recipe.title),
@@ -336,11 +337,36 @@ export default class RecipeDatabase {
             recipeDeleted = await this._recipesTable.deleteElement(this._dbConnection, this.constructSearchRecipeStructure(recipe));
         }
         if (recipeDeleted) {
-            // TODO add a remove_recipe_from_shopping
             await this.removeRecipeFromShopping(recipe);
             this.remove_recipe(recipe);
         }
         return recipeDeleted;
+    }
+
+    public async deleteIngredient(ingredient: ingredientTableElement): Promise<boolean> {
+        let ingredientDeleted: boolean;
+        if (ingredient.id !== undefined) {
+            ingredientDeleted = await this._ingredientsTable.deleteElementById(ingredient.id, this._dbConnection);
+        } else {
+            ingredientDeleted = await this._ingredientsTable.deleteElement(this._dbConnection, this.constructSearchIngredientStructure(ingredient));
+        }
+        if (ingredientDeleted) {
+            this.remove_ingredient(ingredient);
+        }
+        return ingredientDeleted;
+    }
+
+    public async deleteTag(tag: tagTableElement): Promise<boolean> {
+        let tagDeleted: boolean;
+        if (tag.id !== undefined) {
+            tagDeleted = await this._tagsTable.deleteElementById(tag.id, this._dbConnection);
+        } else {
+            tagDeleted = await this._tagsTable.deleteElement(this._dbConnection, this.constructSearchTagStructure(tag));
+        }
+        if (tagDeleted) {
+            this.remove_tag(tag);
+        }
+        return tagDeleted;
     }
 
 
@@ -442,7 +468,7 @@ export default class RecipeDatabase {
         if (recipeToFind.id !== undefined) {
             findFunc = (element: recipeTableElement) => element.id === recipeToFind.id;
         } else {
-            findFunc = (element: recipeTableElement) => isRecipeEqual(element, recipeToFind);
+            findFunc = (element: recipeTableElement) => isRecipePartiallyEqual(element, recipeToFind);
         }
         return this._recipes.find(element => findFunc(element));
     }
@@ -619,6 +645,16 @@ export default class RecipeDatabase {
         return new Map<string, string | number>([[recipeColumnsNames.title, recipe.title], [recipeColumnsNames.description, recipe.description], [recipeColumnsNames.image, recipe.image_Source]]);
     }
 
+
+    protected constructSearchIngredientStructure(ingredient: ingredientTableElement): Map<string, string | number> {
+        return new Map<string, string>([[ingredientsColumnsNames.ingredient, ingredient.name], [ingredientsColumnsNames.unit, ingredient.unit], [ingredientsColumnsNames.type, ingredient.type]]);
+    }
+
+
+    protected constructSearchTagStructure(tag: tagTableElement): Map<string, string | number> {
+        return new Map<string, string | number>([[tagsColumnsNames.name, tag.name]]);
+    }
+
     protected encodeRecipe(recToEncode: recipeTableElement): encodedRecipeElement {
         return {
             ID: recToEncode.id ? recToEncode.id : 0,
@@ -717,7 +753,7 @@ export default class RecipeDatabase {
         // Ex :  {"ID":1,"INGREDIENT":"INGREDIENT NAME","UNIT":"g", "TYPE":"BASE", "SEASON":"*"}
         return {
             id: dbIngredient.ID,
-            ingName: dbIngredient.INGREDIENT,
+            name: dbIngredient.INGREDIENT,
             unit: dbIngredient.UNIT,
             type: dbIngredient.TYPE as ingredientType,
             season: dbIngredient.SEASON.split(EncodingSeparator),
@@ -768,7 +804,7 @@ export default class RecipeDatabase {
 
     protected decodeTag(dbTag: encodedTagElement): tagTableElement {
         // Ex : {"ID":4,"NAME":"TAG NAME"}
-        return {id: dbTag.ID, tagName: dbTag.NAME};
+        return {id: dbTag.ID, name: dbTag.NAME};
     }
 
     protected decodeArrayOfTags(queryResult: Array<encodedTagElement>): Array<tagTableElement> {
@@ -853,9 +889,8 @@ export default class RecipeDatabase {
 
 
         for (const shop of this._shopping) {
-            console.log("Iterating over:", shop);
             if (shop.recipesTitle.includes(recipe.title)) {
-                const recipeIng = recipe.ingredients.find((ingredient) => ingredient.ingName === shop.name);
+                const recipeIng = recipe.ingredients.find((ingredient) => ingredient.name === shop.name);
                 if (recipeIng === undefined) {
                     console.warn("removeRecipeFromShopping: Error can't find ingredient in recipe");
                 } else if (recipeIng.quantity === undefined) {
@@ -864,9 +899,9 @@ export default class RecipeDatabase {
                     shop.quantity = subtractNumberInString(recipeIng.quantity, shop.quantity);
 
                     if ((isNumber(shop.quantity) && Number(shop.quantity) <= 0) || shop.quantity.length === 0) {
-                        deletedShopping.add(recipeIng.ingName);
+                        deletedShopping.add(recipeIng.name);
                     } else {
-                        editedShopping.add(recipeIng.ingName);
+                        editedShopping.add(recipeIng.name);
                     }
                 }
             }

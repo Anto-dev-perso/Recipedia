@@ -10,7 +10,8 @@ export default function TagsSettings({}: TagsSettingsProp) {
     const database = RecipeDatabase.getInstance();
 
     // State for managing tags
-    const [tags, setTags] = useState(database.get_tags().sort((a, b) => a.tagName.localeCompare(b.tagName)));
+    const [tags, setTags] = useState(database.get_tags().sort((a, b) => a.name.localeCompare(b.name)));
+    // TODO database could return a sorted array directly
 
     // Dialog states
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -19,21 +20,22 @@ export default function TagsSettings({}: TagsSettingsProp) {
 
     const testId = "TagsSettings";
 
-    const handleEditItem = (newTag: tagTableElement) => {
+    const handleEditTag = (newTag: tagTableElement) => {
         setTags(tags.map(t =>
             t.id === newTag.id
-                ? {...t, tagName: newTag.tagName.trim()}
+                ? {...t, name: newTag.name.trim()}
                 : t
         ));
         // TODO edit the database
     };
 
-    const handleDeleteItem = (tag: tagTableElement) => {
-        setTags(tags.filter(t => t.id !== tag.id));
-        // TODO delete from database
+    const handleDeleteTag = async (tag: tagTableElement) => {
+        if (await database.deleteTag(tag)) {
+            setTags(tags.filter(t => t.id !== tag.id));
+        }
     };
 
-    const handleAddItem = async (newTag: tagTableElement) => {
+    const handleAddtag = async (newTag: tagTableElement) => {
         // TODO database could return this
         newTag.id = Math.max(0, ...tags.map(t => t.id ?? 0)) + 1;
         setTags([...tags, newTag]);
@@ -68,21 +70,22 @@ export default function TagsSettings({}: TagsSettingsProp) {
     const handleDialogConfirm = async (mode: DialogMode, newTag: tagTableElement) => {
         switch (mode) {
             case 'add':
-                await handleAddItem(newTag);
+                await handleAddtag(newTag);
                 break;
             case 'edit':
                 if (selectedTag) {
-                    handleEditItem(newTag);
+                    handleEditTag(newTag);
                 }
                 break;
             case 'delete':
                 if (selectedTag) {
-                    handleDeleteItem(newTag);
+                    await handleDeleteTag(newTag);
                 }
                 break;
         }
     };
 
+    // TODO add a counter of how many recipes use this element before deleting it
     return (
         <View>
             <SettingsItemList items={tags} testIdPrefix={testId} onAddPress={openAddDialog}

@@ -35,7 +35,7 @@ export default function ItemDialog({onClose, testId, mode, item}: ItemDialogProp
     const [visible, setVisible] = useState(true);
     const [typeMenuVisible, setTypeMenuVisible] = useState(false);
 
-    const [itemName, setItemName] = useState(item.type === 'ingredient' ? item.value.ingName : item.value.tagName);
+    const [itemName, setItemName] = useState(item.value.name);
 
     const [ingType, setIngType] = useState<ingredientType>(item.type === 'ingredient' ? item.value.type : ingredientType.undefined);
     const [ingUnit, setIngUnit] = useState(item.type === 'ingredient' ? item.value.unit : '');
@@ -58,14 +58,14 @@ export default function ItemDialog({onClose, testId, mode, item}: ItemDialogProp
             case 'ingredient':
                 item.onConfirmIngredient(mode, {
                     id: item.value.id,
-                    ingName: itemName,
+                    name: itemName,
                     type: ingType,
                     unit: ingUnit,
                     season: ingSeason
                 });
                 break;
             case 'tag':
-                item.onConfirmTag(mode, {id: item.value.id, tagName: itemName} as tagTableElement);
+                item.onConfirmTag(mode, {id: item.value.id, name: itemName});
                 break;
             default:
                 console.warn("Unreachable code.");

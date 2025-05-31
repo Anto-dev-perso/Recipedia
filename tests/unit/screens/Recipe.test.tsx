@@ -150,20 +150,20 @@ function checkDescription(prop: RecipePropType, getByTestId: GetByIdType, queryB
 function checkTags(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId: QueryByIdType, newValueExpected?: Array<tagTableElement>) {
     switch (prop.mode) {
         case "readOnly":
-            expect(getByTestId('RecipeTags::TagsList').props.children).toEqual(JSON.stringify(prop.recipe.tags.map(tag => tag.tagName)));
+            expect(getByTestId('RecipeTags::TagsList').props.children).toEqual(JSON.stringify(prop.recipe.tags.map(tag => tag.name)));
             expect(queryByTestId('RecipeTags::RandomTags')).toBeNull();
             expect(queryByTestId('RecipeTags::AddNewTag')).toBeNull();
             expect(queryByTestId('RecipeTags::RemoveTag')).toBeNull();
             break;
         case "edit":
-            expect(getByTestId('RecipeTags::TagsList').props.children).toEqual(JSON.stringify(prop.recipe.tags.map(tag => tag.tagName)));
-            expect(getByTestId('RecipeTags::RandomTags').props.children).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
+            expect(getByTestId('RecipeTags::TagsList').props.children).toEqual(JSON.stringify(prop.recipe.tags.map(tag => tag.name)));
+            expect(getByTestId('RecipeTags::RandomTags').props.children).not.toEqual(recipesDataset[6].tags.map(tag => tag.name));
             expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
             expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
             break;
         case "addManually":
-            expect(getByTestId('RecipeTags::TagsList').props.children).toEqual(JSON.stringify(newValueExpected?.map(tag => tag.tagName)));
-            expect(getByTestId('RecipeTags::RandomTags').props.children).not.toEqual(recipesDataset[6].tags.map(tag => tag.tagName));
+            expect(getByTestId('RecipeTags::TagsList').props.children).toEqual(JSON.stringify(newValueExpected?.map(tag => tag.name)));
+            expect(getByTestId('RecipeTags::RandomTags').props.children).not.toEqual(recipesDataset[6].tags.map(tag => tag.name));
             expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
             expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
             break;
@@ -179,7 +179,7 @@ function checkTags(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId
 function checkIngredients(prop: RecipePropType, getByTestId: GetByIdType, queryByTestId: QueryByIdType) {
     switch (prop.mode) {
         case "readOnly":
-            expect(getByTestId('RecipeIngredients::Text').props.children).toEqual(JSON.stringify(prop.recipe.ingredients.map(ing => ing.quantity + unitySeparator + ing.unit + textSeparator + ing.ingName)));
+            expect(getByTestId('RecipeIngredients::Text').props.children).toEqual(JSON.stringify(prop.recipe.ingredients.map(ing => ing.quantity + unitySeparator + ing.unit + textSeparator + ing.name)));
             expect(getByTestId('RecipeIngredients::Title').props.children).toBeUndefined();
             expect(getByTestId('RecipeIngredients::Render').props.children).toEqual('"ARRAY"');
             expect(getByTestId('RecipeIngredients::WithBorder').props.children).toBeUndefined();
@@ -684,7 +684,7 @@ describe('Recipe Component tests', () => {
         const updateValue = ' updated';
         fireEvent.press(getByTestId('RecipeIngredients::TextEdited'), updateValue);
         const newEditProp: editRecipeManually = {...mockRouteEdit};
-        newEditProp.recipe.ingredients[0].ingName += updateValue;
+        newEditProp.recipe.ingredients[0].name += updateValue;
 
         checkImage(newEditProp, getByTestId);
         checkTitle(newEditProp, getByTestId, queryByTestId);
@@ -823,7 +823,7 @@ describe('Recipe Component tests', () => {
             }
         };
         const updateIngredientWith = ' updated';
-        newProp.recipe.ingredients[0].ingName = newProp.recipe.ingredients[0].ingName.concat(updateIngredientWith);
+        newProp.recipe.ingredients[0].name = newProp.recipe.ingredients[0].name.concat(updateIngredientWith);
 
         const updatePreparationWith = '.New part of a paragraph';
         newProp.recipe.preparation[0] = newProp.recipe.preparation[0].concat(updatePreparationWith);

@@ -50,7 +50,7 @@ export default function TextRender(props: TextRenderProps) {
         const [unitAndQuantity, ingName] = item.split(textSeparator);
         const [quantity, unit] = unitAndQuantity.split(unitySeparator);
 
-        const ingredientsList = RecipeDatabase.getInstance().get_ingredients().map(ingredient => ingredient.ingName).sort();
+        const ingredientsList = RecipeDatabase.getInstance().get_ingredients().map(ingredient => ingredient.name).sort();
 
         return (
             <View key={index}>

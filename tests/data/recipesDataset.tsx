@@ -6,12 +6,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'spaghetti.jpg',
         title: 'Spaghetti Bolognese',
         description: 'A classic Italian pasta dish.',
-        tags: [{id: 1, tagName: 'Italian'}, {id: 2, tagName: 'Dinner'}],
+        tags: [{id: 1, name: 'Italian'}, {id: 2, name: 'Dinner'}],
         persons: 4,
         ingredients: [
             {
                 id: 1,
-                ingName: 'Spaghetti',
+                name: 'Spaghetti',
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -19,7 +19,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 2,
-                ingName: 'Ground Beef',
+                name: 'Ground Beef',
                 unit: 'g',
                 type: ingredientType.meat,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -27,7 +27,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 3,
-                ingName: 'Tomato Sauce',
+                name: 'Tomato Sauce',
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -35,7 +35,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 4,
-                ingName: 'Parmesan',
+                name: 'Parmesan',
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -56,12 +56,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'tacos.jpg',
         title: 'Chicken Tacos',
         description: 'Mexican-style tacos with chicken.',
-        tags: [{id: 3, tagName: 'Mexican'}, {id: 4, tagName: 'Lunch'}],
+        tags: [{id: 3, name: 'Mexican'}, {id: 4, name: 'Lunch'}],
         persons: 2,
         ingredients: [
             {
                 id: 5,
-                ingName: 'Taco Shells',
+                name: 'Taco Shells',
                 unit: 'pieces',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -69,7 +69,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 6,
-                ingName: 'Chicken Breast',
+                name: 'Chicken Breast',
                 unit: 'g',
                 type: ingredientType.poultry,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -77,7 +77,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 7,
-                ingName: 'Lettuce',
+                name: 'Lettuce',
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['5', '6', '7', '8', '9', '10'],
@@ -85,7 +85,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 8,
-                ingName: 'Cheddar',
+                name: 'Cheddar',
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -105,12 +105,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'pancakes.jpg',
         title: 'Classic Pancakes',
         description: 'Fluffy and golden pancakes.',
-        tags: [{id: 5, tagName: 'Breakfast'}, {id: 6, tagName: 'Dessert'}],
+        tags: [{id: 5, name: 'Breakfast'}, {id: 6, name: 'Dessert'}],
         persons: 4,
         ingredients: [
             {
                 id: 9,
-                ingName: 'Flour',
+                name: 'Flour',
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -118,7 +118,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 10,
-                ingName: 'Milk',
+                name: 'Milk',
                 unit: 'ml',
                 type: ingredientType.dairy,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -126,7 +126,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 11,
-                ingName: 'Eggs',
+                name: 'Eggs',
                 unit: 'pieces',
                 type: ingredientType.plantProtein,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -134,7 +134,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 12,
-                ingName: 'Butter',
+                name: 'Butter',
                 unit: 'g',
                 type: ingredientType.oilAndFat,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -154,12 +154,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'caesar_salad.jpg',
         title: 'Caesar Salad',
         description: 'Crisp lettuce with creamy Caesar dressing.',
-        tags: [{id: 14, tagName: 'Salad'}, {id: 7, tagName: 'Healthy'}],
+        tags: [{id: 14, name: 'Salad'}, {id: 7, name: 'Healthy'}],
         persons: 2,
         ingredients: [
             {
                 id: 13,
-                ingName: 'Romaine Lettuce',
+                name: 'Romaine Lettuce',
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['5', '6', '7', '8', '9', '10'],
@@ -167,7 +167,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 14,
-                ingName: 'Croutons',
+                name: 'Croutons',
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -175,7 +175,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 32,
-                ingName: 'Caesar Dressing',
+                name: 'Caesar Dressing',
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -183,7 +183,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 4,
-                ingName: 'Parmesan',
+                name: 'Parmesan',
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -203,12 +203,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'pizza.jpg',
         title: 'Margherita Pizza',
         description: 'Classic pizza with tomato and mozzarella.',
-        tags: [{id: 1, tagName: 'Italian'}, {id: 4, tagName: 'Lunch'}],
+        tags: [{id: 1, name: 'Italian'}, {id: 4, name: 'Lunch'}],
         persons: 2,
         ingredients: [
             {
                 id: 33,
-                ingName: 'Pizza Dough',
+                name: 'Pizza Dough',
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -216,7 +216,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 3,
-                ingName: 'Tomato Sauce',
+                name: 'Tomato Sauce',
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -224,7 +224,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 16,
-                ingName: 'Mozzarella',
+                name: 'Mozzarella',
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -232,7 +232,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 15,
-                ingName: 'Basil Leaves',
+                name: 'Basil Leaves',
                 unit: 'g',
                 type: ingredientType.spice,
                 season: ['5', '6', '7', '8', '9', '10'],
@@ -252,12 +252,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'vegetable_soup.jpg',
         title: 'Vegetable Soup',
         description: 'A warm and hearty vegetable soup.',
-        tags: [{id: 7, tagName: 'Healthy'}, {id: 8, tagName: 'Soup'}],
+        tags: [{id: 7, name: 'Healthy'}, {id: 8, name: 'Soup'}],
         persons: 4,
         ingredients: [
             {
                 id: 17,
-                ingName: 'Carrots',
+                name: 'Carrots',
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['10', '11', '12', '1', '2', '3', '4'],
@@ -265,7 +265,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 18,
-                ingName: 'Celery',
+                name: 'Celery',
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['1', '2', '9', '10', '11', '12'],
@@ -273,7 +273,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 19,
-                ingName: 'Potatoes',
+                name: 'Potatoes',
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -281,7 +281,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 20,
-                ingName: 'Vegetable Broth',
+                name: 'Vegetable Broth',
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -301,12 +301,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'chocolate_cake.jpg',
         title: 'Chocolate Cake',
         description: 'Rich and moist chocolate cake.',
-        tags: [{id: 6, tagName: 'Dessert'}, {id: 13, tagName: 'Chocolate'}],
+        tags: [{id: 6, name: 'Dessert'}, {id: 13, name: 'Chocolate'}],
         persons: 6,
         ingredients: [
             {
                 id: 9,
-                ingName: 'Flour',
+                name: 'Flour',
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -314,7 +314,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 21,
-                ingName: 'Cocoa Powder',
+                name: 'Cocoa Powder',
                 unit: 'g',
                 type: ingredientType.spice,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -322,7 +322,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 22,
-                ingName: 'Sugar',
+                name: 'Sugar',
                 unit: 'g',
                 type: ingredientType.sugar,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -330,7 +330,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 12,
-                ingName: 'Butter',
+                name: 'Butter',
                 unit: 'g',
                 type: ingredientType.oilAndFat,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -349,12 +349,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'pesto_pasta.jpg',
         title: 'Pesto Pasta',
         description: 'Pasta tossed with fresh basil pesto.',
-        tags: [{id: 1, tagName: 'Italian'}, {id: 9, tagName: 'Quick Meal'}],
+        tags: [{id: 1, name: 'Italian'}, {id: 9, name: 'Quick Meal'}],
         persons: 2,
         ingredients: [
             {
                 id: 34,
-                ingName: 'Pasta',
+                name: 'Pasta',
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -362,7 +362,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 15,
-                ingName: 'Basil Leaves',
+                name: 'Basil Leaves',
                 unit: 'g',
                 type: ingredientType.spice,
                 season: ['5', '6', '7', '8', '9', '10'],
@@ -370,7 +370,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 4,
-                ingName: 'Parmesan',
+                name: 'Parmesan',
                 unit: 'g',
                 type: ingredientType.cheese,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -378,7 +378,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 35,
-                ingName: 'Olive Oil',
+                name: 'Olive Oil',
                 unit: 'ml',
                 type: ingredientType.oilAndFat,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -386,7 +386,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 23,
-                ingName: 'Pine Nuts',
+                name: 'Pine Nuts',
                 unit: 'g',
                 type: ingredientType.nutsAndSeeds,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -406,12 +406,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'sushi_rolls.jpg',
         title: 'Sushi Rolls',
         description: 'Classic sushi rolls with nori, rice, and fillings.',
-        tags: [{id: 11, tagName: 'Japanese'}, {id: 10, tagName: 'Seafood'}],
+        tags: [{id: 11, name: 'Japanese'}, {id: 10, name: 'Seafood'}],
         persons: 4,
         ingredients: [
             {
                 id: 24,
-                ingName: 'Sushi Rice',
+                name: 'Sushi Rice',
                 unit: 'g',
                 type: ingredientType.grainOrCereal,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -419,7 +419,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 25,
-                ingName: 'Nori Sheets',
+                name: 'Nori Sheets',
                 unit: 'pieces',
                 type: ingredientType.condiment,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -427,7 +427,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 26,
-                ingName: 'Salmon',
+                name: 'Salmon',
                 unit: 'g',
                 type: ingredientType.fish,
                 season: ['5', '6', '7', '8', '9', '10'],
@@ -435,7 +435,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 27,
-                ingName: 'Avocado',
+                name: 'Avocado',
                 unit: 'g',
                 type: ingredientType.fruit,
                 season: ['5', '6', '7', '8', '9', '10'],
@@ -443,7 +443,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 36,
-                ingName: 'Soy Sauce',
+                name: 'Soy Sauce',
                 unit: 'ml',
                 type: ingredientType.condiment,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -464,12 +464,12 @@ export const recipesDataset: Array<recipeTableElement> = [
         image_Source: 'lentil_curry.jpg',
         title: 'Lentil Curry',
         description: 'A spicy and flavorful lentil curry.',
-        tags: [{id: 15, tagName: 'Indian'}, {id: 12, tagName: 'Vegetarian'}],
+        tags: [{id: 15, name: 'Indian'}, {id: 12, name: 'Vegetarian'}],
         persons: 4,
         ingredients: [
             {
                 id: 28,
-                ingName: 'Red Lentils',
+                name: 'Red Lentils',
                 unit: 'g',
                 type: ingredientType.legumes,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -477,7 +477,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 29,
-                ingName: 'Onions',
+                name: 'Onions',
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -485,7 +485,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 37,
-                ingName: 'Tomatoes',
+                name: 'Tomatoes',
                 unit: 'g',
                 type: ingredientType.vegetable,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -493,7 +493,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 30,
-                ingName: 'Coconut Milk',
+                name: 'Coconut Milk',
                 unit: 'ml',
                 type: ingredientType.sauce,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -501,7 +501,7 @@ export const recipesDataset: Array<recipeTableElement> = [
             },
             {
                 id: 31,
-                ingName: 'Curry Powder',
+                name: 'Curry Powder',
                 unit: 'g',
                 type: ingredientType.spice,
                 season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],

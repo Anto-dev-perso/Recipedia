@@ -53,7 +53,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     const props: RecipePropType = route.params;
     const initStateFromProp = (props.mode === "readOnly" || (props.mode === "edit"));
-    const tags = RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.tagName);
+    const tags = RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.name);
 
     function convertModeFromProps() {
         switch (props.mode) {
@@ -114,11 +114,11 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     // TODO let the possibility to add manually the field
 
     function removeTag(tag: string) {
-        setRecipeTags(recipeTags.filter(tagElement => tagElement.tagName !== tag));
+        setRecipeTags(recipeTags.filter(tagElement => tagElement.name !== tag));
     }
 
     function addTag(newTag: string) {
-        setRecipeTags([...recipeTags, {tagName: newTag}]);
+        setRecipeTags([...recipeTags, {name: newTag}]);
     }
 
     // TODO to rework
@@ -135,8 +135,8 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
         // Copy to avoid editing the original array (needed anyway for useState)
         const foundIngredient = ingredientCopy[oldIngredientId];
-        if (foundIngredient.ingName !== newName) {
-            foundIngredient.ingName = newName;
+        if (foundIngredient.name !== newName) {
+            foundIngredient.name = newName;
         }
         if (foundIngredient.quantity !== newQuantity) {
             foundIngredient.quantity = newQuantity;
@@ -146,7 +146,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         }
 
         if (foundIngredient.unit === "") {
-            const ingredientExist = RecipeDatabase.getInstance().get_ingredients().find(ingredient => ingredient.ingName.toLowerCase() === newName.toLowerCase());
+            const ingredientExist = RecipeDatabase.getInstance().get_ingredients().find(ingredient => ingredient.name.toLowerCase() === newName.toLowerCase());
             if (ingredientExist) {
                 foundIngredient.unit = ingredientExist.unit;
             }
@@ -156,7 +156,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     function addNewIngredient() {
         setRecipeIngredients([...recipeIngredients, {
-            ingName: '',
+            name: '',
             unit: '',
             quantity: "",
             type: ingredientType.undefined,

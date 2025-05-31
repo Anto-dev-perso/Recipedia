@@ -22,9 +22,9 @@ export const keysPersonsAndTimeObject = Object.keys({
     time: 0,
 } as personAndTimeObject) as (keyof personAndTimeObject)[];
 
-export type tagObject = { id?: string, tagName: string };
+export type tagObject = { id?: string, name: string };
 export const keysTagObject = Object.keys({
-    tagName: "",
+    name: "",
 } as tagObject) as (keyof tagObject)[];
 
 export type ingredientQuantityPerPersons = {
@@ -84,7 +84,7 @@ function tranformOCRInOneString(ocr: TextRecognitionResult): string {
 function tranformOCRInTags(ocr: TextRecognitionResult): Array<tagTableElement> {
     return ocr.blocks.map(block => block.lines.map(line => line.text).join(" ")).join(" ").split(" ").filter(tag => tag.length > 0).map(tag => {
         return {
-            tagName: tag
+            name: tag
         } as tagTableElement
     });
 }
@@ -447,7 +447,7 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
                         ...currentState.recipeIngredients,
                         ...(ocrResult as Array<ingredientObject>).map(ingredient => {
                             return {
-                                ingName: ingredient.name,
+                                name: ingredient.name,
                                 season: [],
                                 type: ingredientType.undefined,
                                 unit: ingredient.unit,
