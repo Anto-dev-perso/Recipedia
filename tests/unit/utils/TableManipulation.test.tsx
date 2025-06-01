@@ -266,8 +266,39 @@ describe('TableManipulation', () => {
     });
 
 
-// TODO
-//     editElement
+    test('editElementById should update a row by ID (success)', async () => {
+        await table.createTable(DB);
+
+        const id = await table.insertElement<TestDbType>({name: 'EditMe', age: 20}, DB);
+        expect(id).not.toBeUndefined();
+
+        const updateMap = new Map<string, number | string>([[mockColumns[0].colName, 'Edited'], [mockColumns[1].colName, 21]]);
+        expect(await table.editElementById(id as number, updateMap, DB)).toBe(true);
+
+        expect(await table.searchElementById<TestDbType>(1, DB)).toEqual({ID: id, name: 'Edited', age: 21});
+    });
+
+    test('editElementById with non-existent ID should return false', async () => {
+        await table.createTable(DB);
+        expect(await table.editElementById(0, new Map<string, string | number>([[mockColumns[0].colName, 'Nope']]), DB)).toEqual(false);
+    });
+
+    test('editElementById with partial update should only update specified fields', async () => {
+        await table.createTable(DB);
+        const id = await table.insertElement<TestDbType>({name: 'Partial', age: 30}, DB);
+
+        const result = await table.editElementById(id as number, new Map<string, number | string>([[mockColumns[1].colName, 31]]), DB);
+        expect(result).toBe(true);
+
+        expect(await table.searchElementById<TestDbType>(1, DB)).toEqual({ID: id, name: 'Partial', age: 31});
+    });
+
+    test('editElementById with empty map should return false', async () => {
+        await table.createTable(DB);
+        const id = await table.insertElement<TestDbType>({name: 'EmptyMap', age: 40}, DB);
+        expect(await table.editElementById(id as number, new Map<string, number | string>(), DB)).toBe(false);
+    });
+    
     // searchElement
     // deleteElement
 });

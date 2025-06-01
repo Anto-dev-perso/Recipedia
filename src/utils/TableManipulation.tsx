@@ -97,7 +97,7 @@ export default class TableManipulation {
         }
     }
 
-    public async insertElement<TElement>(element: TElement, db: SQLiteDatabase): Promise<string | number | undefined> {
+    public async insertElement<TElement>(element: TElement, db: SQLiteDatabase): Promise<number | undefined> {
         const [insertQuery, params] = this.prepareInsertQuery(element);
         if (insertQuery.length == 0) {
             console.warn("Invalid insert query");
@@ -144,8 +144,8 @@ export default class TableManipulation {
 
         updateQuery += queryFromMap + ` WHERE ID = ${id};`;
         try {
-            await db.runAsync(updateQuery);
-            return true;
+            const result = await db.runAsync(updateQuery);
+            return result.changes > 0;
         } catch (error: any) {
             console.warn('editElement: \nQuery: \"', updateQuery, '\"\nReceived error : ', error);
             return false;

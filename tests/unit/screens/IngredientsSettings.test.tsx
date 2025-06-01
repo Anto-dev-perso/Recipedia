@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import IngredientsSettings from '@screens/IngredientsSettings';
-import {ingredientTableElement} from '@customTypes/DatabaseElementTypes';
+import {ingredientTableElement, ingredientType, isIngredientEqual} from '@customTypes/DatabaseElementTypes';
 import {mockNavigationFunctions} from "@mocks/deps/react-navigation-mock";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {ingredientsDataset} from "@test-data/ingredientsDataset";
@@ -62,7 +62,11 @@ describe('IngredientsSettings Screen', () => {
         await db.addMultipleRecipes(recipesDataset);
         await db.addMultipleShopping(recipesDataset);
 
-        sortedDataset = db.get_ingredients().sort((a, b) => a.name.localeCompare(b.name));
+        sortedDataset = [...db.get_ingredients()].sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    afterEach(async () => {
+        await db.reset();
     });
 
     test('renders correctly with initial tags', () => {
@@ -93,7 +97,13 @@ describe('IngredientsSettings Screen', () => {
 
         fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
 
-        // TODO check that database has been updated
+        await waitFor(() => {
+            expect(db.get_ingredients().length).toEqual(sortedDataset.length + 1);
+        });
+        const expectedIngredient: ingredientTableElement = {
+            id: 38, name: "New Value", season: ["5", "6", "7", "8", "9", "10"], type: ingredientType.fruit, unit: "g"
+        };
+        expect(db.get_ingredients()[db.get_ingredients().length - 1]).toEqual(expectedIngredient);
     });
 
     test('opens edit dialog when edit button is pressed and save value', async () => {
@@ -110,7 +120,11 @@ describe('IngredientsSettings Screen', () => {
 
         fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
 
-        // TODO check that database has been updated
+        await waitFor(() => {
+            expect(db.get_ingredients().find(ingredient => isIngredientEqual(ingredient, sortedDataset[0]))).toBeUndefined()
+        });
+        const newIngredient = db.get_ingredients().find(ingredient => ingredient.id === sortedDataset[0].id);
+        expect(newIngredient?.name).toEqual("New Value");
     });
 
     test('opens delete dialog when delete button is pressed and save value', async () => {
@@ -127,7 +141,10 @@ describe('IngredientsSettings Screen', () => {
 
         fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
 
-        // TODO check that database has been updated
+        await waitFor(() => {
+            expect(db.get_ingredients().length).toEqual(sortedDataset.length - 1);
+        });
+        expect(db.get_ingredients().find(ingredient => isIngredientEqual(ingredient, sortedDataset[0]))).toBeUndefined();
     });
 
 });

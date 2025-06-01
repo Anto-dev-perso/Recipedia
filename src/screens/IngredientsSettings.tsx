@@ -9,7 +9,7 @@ import RecipeDatabase from "@utils/RecipeDatabase";
 export default function IngredientsSettings({}: IngredientsSettingProp) {
     const database = RecipeDatabase.getInstance();
 
-    const [ingredients, setIngredients] = useState(database.get_ingredients().sort((a, b) => a.name.localeCompare(b.name)));
+    const [ingredients, setIngredients] = useState([...database.get_ingredients()].sort((a, b) => a.name.localeCompare(b.name)));
     // TODO database could return a sorted array directly
 
 
@@ -30,12 +30,20 @@ export default function IngredientsSettings({}: IngredientsSettingProp) {
         }
     };
 
-    const handleEditIngredient = async (ingredient: ingredientTableElement) => {
-        // TODO edit ingredient in the database
-        setIngredients(ingredients.map(ing =>
-            ing.id === ingredient.id ? ingredient : ing
-        ));
+    const handleEditIngredient = async (newIngredient: ingredientTableElement) => {
+        const success = await database.editIngredient(newIngredient);
+        if (success) {
+            const idx = ingredients.findIndex(ing => ing.id === newIngredient.id);
+            if (idx !== -1) {
+                const updatedIngredients = [...ingredients];
+                updatedIngredients[idx] = newIngredient;
+                setIngredients(updatedIngredients);
+            }
+        } else {
+            console.warn('Failed to update ingredient in database');
+        }
     };
+
 
     const handleDeleteIngredient = async (ingredient: ingredientTableElement) => {
         if (await database.deleteIngredient(ingredient)) {

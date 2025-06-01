@@ -11,7 +11,6 @@ import {
     ingredientTableElement,
     ingredientType,
     isIngredientEqual,
-    isRecipeEqual,
     isRecipePartiallyEqual,
     isShoppingEqual,
     isTagEqual,
@@ -128,17 +127,11 @@ export default class RecipeDatabase {
             SEASON: ingredient.season.join(EncodingSeparator)
         };
         const dbRes = await this._ingredientsTable.insertElement(ingToAdd, this._dbConnection);
-        if (dbRes === undefined || dbRes == 'Invalid insert query' || dbRes == 'Empty values') {
+        if (dbRes === undefined) {
             console.warn("Can't add the ingredient because insertion in the database didn't worked");
             return undefined;
         }
-        let dbIngredient: encodedIngredientElement | undefined;
-
-        if (typeof dbRes === "number" && !Number.isNaN(dbRes)) {
-            dbIngredient = await this._ingredientsTable.searchElementById<encodedIngredientElement>(dbRes, this._dbConnection);
-        } else {
-            dbIngredient = await this._ingredientsTable.searchElement<encodedIngredientElement>(this._dbConnection, this.constructSearchIngredientStructure(ingredient)) as encodedIngredientElement;
-        }
+        const dbIngredient = await this._ingredientsTable.searchElementById<encodedIngredientElement>(dbRes, this._dbConnection);
 
         if (dbIngredient === undefined) {
             console.warn("addIngredient: Searching for ingredient  ", ingredient.name, " didn't worked");
@@ -152,17 +145,12 @@ export default class RecipeDatabase {
     public async addTag(newTag: tagTableElement) {
         const tagToAdd: encodedTagElement = {ID: newTag.id ? newTag.id : 0, NAME: newTag.name};
         const dbRes = await this._tagsTable.insertElement(tagToAdd, this._dbConnection);
-        if (dbRes === undefined || dbRes == 'Invalid insert query' || dbRes == 'Empty values') {
+        if (dbRes === undefined) {
             console.warn("addTag: Can't add the tag because insertion in the database didn't worked");
             return
         }
-        let dbTag: encodedTagElement | undefined;
 
-        if (typeof dbRes === "number" && !Number.isNaN(dbRes)) {
-            dbTag = await this._tagsTable.searchElementById<encodedTagElement>(dbRes, this._dbConnection);
-        } else {
-            dbTag = await this._tagsTable.searchElement<encodedTagElement>(this._dbConnection, this.constructSearchTagStructure(newTag)) as encodedTagElement;
-        }
+        const dbTag = await this._tagsTable.searchElementById<encodedTagElement>(dbRes, this._dbConnection);
         if (dbTag === undefined) {
             console.warn("addTag: Searching for tag ", newTag.name, " didn't worked")
         } else {
@@ -194,17 +182,11 @@ export default class RecipeDatabase {
         const recipeConverted = this.encodeRecipe(recipe);
 
         const dbRes = await this._recipesTable.insertElement(recipeConverted, this._dbConnection);
-        if (dbRes === undefined || dbRes == 'Invalid insert query' || dbRes == 'Empty values') {
+        if (dbRes === undefined) {
             console.warn("addRecipe: Can't add the recipe because insertion in the database didn't worked");
             return
         }
-        let dbRecipe: encodedRecipeElement | undefined;
-
-        if (typeof dbRes === "number" && !Number.isNaN(dbRes)) {
-            dbRecipe = await this._recipesTable.searchElementById<encodedRecipeElement>(dbRes, this._dbConnection)
-        } else {
-            dbRecipe = await this._recipesTable.searchElement<encodedRecipeElement>(this._dbConnection, this.constructSearchRecipeStructure(rec)) as encodedRecipeElement;
-        }
+        const dbRecipe = await this._recipesTable.searchElementById<encodedRecipeElement>(dbRes, this._dbConnection)
         if (dbRecipe === undefined) {
             console.warn("addRecipe: Searching for recipe  ", recipeConverted.TITLE, " didn't worked")
         } else {
@@ -220,7 +202,42 @@ export default class RecipeDatabase {
     }
 
     public async editRecipe(rec: recipeTableElement) {
-        // TODO implement edit recipe
+        if (rec.id === undefined) {
+            console.warn("editRecipe: Recipe must have an id");
+            return false;
+        }
+        const updateMap = this.constructUpdateRecipeStructure(this.encodeRecipe(rec));
+        const success = await this._recipesTable.editElementById(rec.id, updateMap, this._dbConnection);
+        if (success) {
+            this.update_recipe(rec);
+        }
+        return success;
+    }
+
+    public async editIngredient(ingredient: ingredientTableElement) {
+        if (ingredient.id === undefined) {
+            console.warn("editIngredient: Ingredient must have an id");
+            return false;
+        }
+        const updateMap = this.constructUpdateIngredientStructure(ingredient);
+        const success = await this._ingredientsTable.editElementById(ingredient.id, updateMap, this._dbConnection);
+        if (success) {
+            this.update_ingredient(ingredient);
+        }
+        return success;
+    }
+
+    public async editTag(tag: tagTableElement) {
+        if (tag.id === undefined) {
+            console.warn("editTag: Tag must have an id");
+            return false;
+        }
+        const updateMap = this.constructUpdateTagStructure(tag);
+        const success = await this._tagsTable.editElementById(tag.id, updateMap, this._dbConnection);
+        if (success) {
+            this.update_tag(tag);
+        }
+        return success;
     }
 
     public async addRecipeToShopping(recipe: recipeTableElement) {
@@ -369,7 +386,6 @@ export default class RecipeDatabase {
         return tagDeleted;
     }
 
-
     public get_recipes(): Array<recipeTableElement> {
         return this._recipes;
     }
@@ -442,22 +458,22 @@ export default class RecipeDatabase {
         }
     }
 
-    public update_recipes(oldRecipe: recipeTableElement, newRecipe: recipeTableElement) {
-        const foundRecipe = this._recipes.findIndex(element => isRecipeEqual(element, oldRecipe));
+    public update_recipe(newRecipe: recipeTableElement) {
+        const foundRecipe = this._recipes.findIndex(recipe => recipe.id === newRecipe.id);
         if (foundRecipe !== -1) {
             this._recipes[foundRecipe] = newRecipe;
         }
     }
 
-    public update_ingredients(oldIngredient: ingredientTableElement, newIngredient: ingredientTableElement) {
-        const foundIngredient = this._ingredients.findIndex(element => isIngredientEqual(element, oldIngredient));
+    public update_ingredient(newIngredient: ingredientTableElement) {
+        const foundIngredient = this._ingredients.findIndex(ingredient => ingredient.id === newIngredient.id);
         if (foundIngredient !== -1) {
             this._ingredients[foundIngredient] = newIngredient;
         }
     }
 
-    public update_tags(oldTag: tagTableElement, newTag: tagTableElement) {
-        const foundTag = this._tags.findIndex(element => isTagEqual(element, oldTag));
+    public update_tag(newTag: tagTableElement) {
+        const foundTag = this._tags.findIndex(tag => tag.id === newTag.id);
         if (foundTag !== -1) {
             this._tags[foundTag] = newTag;
         }
@@ -503,9 +519,6 @@ export default class RecipeDatabase {
         return this._shopping.find(element => findFunc(element));
     }
 
-
-    // TODO nutrition
-
     // TODO to test
     public setPurchasedOfShopping(ingredientId: number, newPurchasedValue: boolean) {
         if (ingredientId > 0 && ingredientId <= this._shopping.length) {
@@ -515,9 +528,6 @@ export default class RecipeDatabase {
             console.error("setPurchasedOfShopping:: Element of shopping with id ", ingredientId, " is out of bound");
         }
     }
-
-
-    // TODO nutrition
 
     // TODO to test
     public update_shopping(shop: shoppingListTableElement) {
@@ -538,6 +548,20 @@ export default class RecipeDatabase {
         this._shopping.length = 0;
         await this._shoppingListTable.deleteTable(this._dbConnection);
         await this._shoppingListTable.createTable(this._dbConnection);
+    }
+
+
+    protected constructUpdateRecipeStructure(encodedRecipe: encodedRecipeElement): Map<string, string | number> {
+        return new Map<string, string | number>([[recipeColumnsNames.image, encodedRecipe.IMAGE_SOURCE], [recipeColumnsNames.title, encodedRecipe.TITLE], [recipeColumnsNames.description, encodedRecipe.DESCRIPTION], [recipeColumnsNames.tags, encodedRecipe.TAGS], [recipeColumnsNames.persons, encodedRecipe.PERSONS], [recipeColumnsNames.ingredients, encodedRecipe.INGREDIENTS], [recipeColumnsNames.preparation, encodedRecipe.PREPARATION], [recipeColumnsNames.time, encodedRecipe.TIME],]);
+    }
+
+
+    protected constructUpdateIngredientStructure(ingredient: ingredientTableElement): Map<string, string | number> {
+        return new Map<string, string | number>([[ingredientsColumnsNames.ingredient, ingredient.name], [ingredientsColumnsNames.unit, ingredient.unit], [ingredientsColumnsNames.type, ingredient.type], [ingredientsColumnsNames.season, ingredient.season.join(EncodingSeparator)]]);
+    }
+
+    protected constructUpdateTagStructure(tag: tagTableElement): Map<string, string | number> {
+        return new Map<string, string | number>([[tagsColumnsNames.name, tag.name]]);
     }
 
     /* PROTECTED METHODS */
@@ -864,18 +888,11 @@ export default class RecipeDatabase {
     protected async addShoppingList(shop: shoppingListTableElement) {
 
         const dbRes = await this._shoppingListTable.insertElement(this.encodeShopping(shop), this._dbConnection);
-        if (dbRes === undefined || dbRes == 'Invalid insert query' || dbRes == 'Empty values') {
+        if (dbRes === undefined) {
             console.warn("addShoppingList: Can't add the shopping because insertion in the database didn't worked")
             return;
         }
-        let dbShopping: encodedShoppingListElement | undefined;
-
-        if (typeof dbRes === "number" && !Number.isNaN(dbRes)) {
-            dbShopping = await this._shoppingListTable.searchElementById<encodedShoppingListElement>(dbRes, this._dbConnection)
-        } else {
-            const searchedShopping = new Map<string, string>([[shoppingListColumnsNames.type, shop.type], [shoppingListColumnsNames.ingredient, shop.name], [shoppingListColumnsNames.quantity, shop.quantity.toString()], [shoppingListColumnsNames.unit, shop.unit]]);
-            dbShopping = await this._shoppingListTable.searchElement<encodedShoppingListElement>(this._dbConnection, searchedShopping) as encodedShoppingListElement;
-        }
+        const dbShopping = await this._shoppingListTable.searchElementById<encodedShoppingListElement>(dbRes, this._dbConnection)
         if (dbShopping === undefined) {
             console.warn("addRecipe: Searching for recipe  ", shop.recipesTitle, " didn't worked")
         } else {

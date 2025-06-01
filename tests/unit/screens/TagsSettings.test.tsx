@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import TagsSettings from '@screens/TagsSettings';
-import {tagTableElement} from '@customTypes/DatabaseElementTypes';
+import {isTagEqual, tagTableElement} from '@customTypes/DatabaseElementTypes';
 import {mockNavigationFunctions} from "@mocks/deps/react-navigation-mock";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {ingredientsDataset} from "@test-data/ingredientsDataset";
@@ -22,7 +22,7 @@ jest.mock('@components/dialogs/ItemDialog', () => require('@mocks/components/dia
 const mockRoute = {
     key: 'TagsSettings',
     name: 'TagsSettings',
-    params: {}
+    params: {tag: tagsDataset[0]},
 };
 
 const defaultProps = {
@@ -62,7 +62,11 @@ describe('TagsSettings Screen', () => {
         await db.addMultipleRecipes(recipesDataset);
         await db.addMultipleShopping(recipesDataset);
 
-        sortedDataset = db.get_tags().sort((a, b) => a.name.localeCompare(b.name));
+        sortedDataset = [...db.get_tags()].sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    afterEach(async () => {
+        await db.reset();
     });
 
     test('renders correctly with initial tags', () => {
@@ -93,7 +97,11 @@ describe('TagsSettings Screen', () => {
 
         fireEvent.press(getByTestId('TagsSettings::ItemDialog::Item::OnConfirm'));
 
-        // TODO check that database has been updated
+        await waitFor(() => {
+            expect(db.get_tags().length).toEqual(sortedDataset.length + 1);
+        });
+        const expectedTag: tagTableElement = {id: 17, name: "New Value"};
+        expect(db.get_tags()[db.get_tags().length - 1]).toEqual(expectedTag);
     });
 
     test('opens edit dialog when edit button is pressed and save value', async () => {
@@ -110,7 +118,11 @@ describe('TagsSettings Screen', () => {
 
         fireEvent.press(getByTestId('TagsSettings::ItemDialog::Item::OnConfirm'));
 
-        // TODO check that database has been updated
+        await waitFor(() => {
+            expect(db.get_tags().find(tag => isTagEqual(tag, sortedDataset[0]))).toBeUndefined()
+        });
+        const newTag = db.get_tags().find(tag => tag.id === sortedDataset[0].id);
+        expect(newTag?.name).toEqual("New Value");
     });
 
     test('opens delete dialog when delete button is pressed and save value', async () => {
@@ -127,7 +139,10 @@ describe('TagsSettings Screen', () => {
 
         fireEvent.press(getByTestId('TagsSettings::ItemDialog::Item::OnConfirm'));
 
-        // TODO check that database has been updated
+        await waitFor(() => {
+            expect(db.get_tags().length).toEqual(sortedDataset.length - 1);
+        });
+        expect(db.get_tags().find(tag => isTagEqual(tag, sortedDataset[0]))).toBeUndefined();
     });
 
 });

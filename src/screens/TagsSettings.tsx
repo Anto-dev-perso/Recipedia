@@ -10,7 +10,7 @@ export default function TagsSettings({}: TagsSettingsProp) {
     const database = RecipeDatabase.getInstance();
 
     // State for managing tags
-    const [tags, setTags] = useState(database.get_tags().sort((a, b) => a.name.localeCompare(b.name)));
+    const [tags, setTags] = useState([...database.get_tags()].sort((a, b) => a.name.localeCompare(b.name)));
     // TODO database could return a sorted array directly
 
     // Dialog states
@@ -20,14 +20,20 @@ export default function TagsSettings({}: TagsSettingsProp) {
 
     const testId = "TagsSettings";
 
-    const handleEditTag = (newTag: tagTableElement) => {
-        setTags(tags.map(t =>
-            t.id === newTag.id
-                ? {...t, name: newTag.name.trim()}
-                : t
-        ));
-        // TODO edit the database
+    const handleEditTag = async (newTag: tagTableElement) => {
+        const success = await database.editTag(newTag);
+        if (success) {
+            const idx = tags.findIndex(t => t.id === newTag.id);
+            if (idx !== -1) {
+                const updatedTags = [...tags];
+                updatedTags[idx] = newTag;
+                setTags(updatedTags);
+            }
+        } else {
+            console.warn('Failed to update tag in database');
+        }
     };
+
 
     const handleDeleteTag = async (tag: tagTableElement) => {
         if (await database.deleteTag(tag)) {

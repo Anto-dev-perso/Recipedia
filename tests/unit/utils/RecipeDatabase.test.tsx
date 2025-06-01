@@ -430,6 +430,59 @@ describe('RecipeDatabase', () => {
             expect(db.get_ingredients()).not.toContainEqual(ingredientsDataset[32]);
         });
 
+        test('editTag should update tag', async () => {
+            const tagToEdit = {...tagsDataset[0], name: 'UpdatedTag'};
+            expect(await db.editTag(tagToEdit)).toBe(true);
+
+            const updated = db.get_tags().find(t => t.id === tagToEdit.id);
+            expect(updated).toEqual(tagToEdit);
+        });
+
+        test('editTag with missing ID should return false and not update', async () => {
+            const tagToEdit = {...tagsDataset[0], id: undefined, name: 'ShouldNotUpdate'};
+
+            expect(await db.editTag(tagToEdit)).toBe(false);
+
+            const notUpdated = db.get_tags().find(t => t.name === 'ShouldNotUpdate');
+            expect(notUpdated).toBeUndefined();
+        });
+
+        test('editIngredient should update ingredient', async () => {
+            const ingredientToEdit = {...ingredientsDataset[0], name: 'UpdatedIngredient'};
+
+            expect(await db.editIngredient(ingredientToEdit)).toBe(true);
+
+            const updated = db.get_ingredients().find(i => i.id === ingredientToEdit.id);
+            expect(updated).toEqual(ingredientToEdit);
+        });
+
+        test('editIngredient with missing ID should return false and not update', async () => {
+            const ingredientToEdit = {...ingredientsDataset[0], id: undefined, name: 'ShouldNotUpdate'};
+
+            expect(await db.editIngredient(ingredientToEdit)).toBe(false);
+
+            const notUpdated = db.get_ingredients().find(i => i.name === 'ShouldNotUpdate');
+            expect(notUpdated).toBeUndefined();
+        });
+
+        test('editRecipe should update recipe', async () => {
+            const recipeToEdit = {...recipesDataset[0], title: 'UpdatedRecipe'};
+
+            expect(await db.editRecipe(recipeToEdit)).toBe(true);
+
+            const updated = db.get_recipes().find(r => r.id === recipeToEdit.id);
+            expect(updated).toEqual(recipeToEdit);
+        });
+
+        test('editRecipe with missing ID should return false and not update', async () => {
+            const recipeToEdit = {...recipesDataset[0], id: undefined, title: 'ShouldNotUpdate'};
+
+            expect(await db.editRecipe(recipeToEdit)).toBe(false);
+
+            const notUpdated = db.get_recipes().find(r => r.title === 'ShouldNotUpdate');
+            expect(notUpdated).toBeUndefined();
+        });
+
         // TODO found a test where the insertion fails
         // TODO found a test where the insertion worked but don't return a number
         // TODO found a test where the encodeShopping is call without an id
