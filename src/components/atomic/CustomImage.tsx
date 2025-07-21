@@ -23,7 +23,7 @@ export default function CustomImage({
     return (
         <View style={{flex: 1}}>
             <Image
-                style={[{flex: 1, backgroundColor: colors.tertiary}]}
+                style={{flex: 1, backgroundColor: colors.tertiary}}
                 testID={testID + "::Image"}
                 source={uri}
                 contentFit={contentFit}

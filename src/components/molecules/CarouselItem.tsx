@@ -1,48 +1,62 @@
-import SquareButton from "@components/atomic/SquareButton";
-import {mediumCardWidth, viewButtonStyles} from "@styles/buttons";
-import {carouselStyle} from "@styles/typography";
 import React from "react";
-import {FlatList, ListRenderItemInfo, Text, View} from "react-native";
+import {FlatList, ListRenderItemInfo, View} from "react-native";
+import {Card, useTheme} from "react-native-paper";
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import {StackScreenNavigation} from "@customTypes/ScreenTypes";
 import {useNavigation} from "@react-navigation/native";
+import {padding, screenWidth} from "@styles/spacing";
 
-type CarouselItemProps = {
+export type CarouselItemProps = {
     items: Array<recipeTableElement>,
     testID: string,
-}
-
-let titleLength = mediumCardWidth / 5.5;
+};
 
 export default function CarouselItem(props: CarouselItemProps) {
-
+    const {colors} = useTheme();
     const {navigate} = useNavigation<StackScreenNavigation>();
 
     function renderMyItem({item, index}: ListRenderItemInfo<recipeTableElement>) {
 
+        const itemSize = 0.35 * screenWidth;
 
         const goToRecipe = () => {
             navigate('Recipe', {mode: 'readOnly', recipe: item});
         };
 
         return (
-            <View>
-                <SquareButton testID={props.testID + `CarouselItem::${index}`} side={mediumCardWidth} type={'recipe'}
-                              recipe={item}
-                              onPressFunction={goToRecipe}/>
-                <Text style={carouselStyle(titleLength).carouselTitle} onPress={goToRecipe}>
-                    {((item.title).length > titleLength) ?
-                        (((item.title).substring(0, titleLength - 3)) + '...') :
-                        item.title}
-                </Text>
-            </View>
-        )
+            <Card mode={"outlined"}
+                  style={{
+                      margin: padding.small,
+                      width: itemSize,
+                      justifyContent: 'flex-start',
+                      backgroundColor: colors.surface,
+                  }}
+                  onPress={goToRecipe}
+                  key={props.testID + `CarouselItem::${index}`}
+                  testID={props.testID + `CarouselItem::${index}`}
+            >
+                <Card.Cover source={{uri: item.image_Source}}
+                            style={{height: itemSize, width: itemSize, backgroundColor: colors.tertiary}}/>
+
+                <Card.Title
+                    title={item.title}
+                    titleNumberOfLines={2}
+                    titleVariant={"labelLarge"}
+                />
+            </Card>
+        );
     }
 
     return (
-        <View style={viewButtonStyles.viewContainingButton}>
-            <FlatList data={props.items} renderItem={renderMyItem} horizontal={true}
-                      showsHorizontalScrollIndicator={false}/>
+        <View>
+            <FlatList
+                data={props.items}
+                renderItem={renderMyItem}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item, idx) => item.title + idx}
+                contentContainerStyle={{paddingHorizontal: 8}}
+            />
         </View>
-    )
-} 
+    );
+}

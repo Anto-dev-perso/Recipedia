@@ -2,22 +2,22 @@ import RecipeRecommendation from "@components/organisms/RecipeRecommendation";
 
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import React, {useCallback, useEffect, useState} from "react";
-import {RefreshControl, SafeAreaView, ScrollView, View} from "react-native";
-import {padding, screenViews} from "@styles/spacing";
-import BottomTopButton from "@components/molecules/BottomTopButton";
-import RoundButton from "@components/atomic/RoundButton";
-import {bottomTopPosition} from "@styles/buttons";
-import {palette} from "@styles/colors";
+import {RefreshControl, SafeAreaView, ScrollView} from "react-native";
+import {useTheme} from "react-native-paper";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {HomeScreenProp, StackScreenNavigation} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {Icons} from "@assets/Icons";
 import {useI18n} from "@utils/i18n";
+import BottomTopButton from "@components/molecules/BottomTopButton";
+import RoundButton from "@components/atomic/RoundButton";
+import {bottomTopPosition} from "@styles/buttons";
 
 
 export default function Home({}: HomeScreenProp) {
     const {t} = useI18n();
+    const {colors} = useTheme();
 
     const {navigate} = useNavigation<StackScreenNavigation>();
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -78,12 +78,12 @@ export default function Home({}: HomeScreenProp) {
     });
 
     return (
-        <SafeAreaView style={screenViews.screenView}>
-            {/* TODO for now, add padding to avoid some buggy tests*/}
-            <View style={{marginVertical: padding.large}}/>
-            <ScrollView testID={'HomeScrollView'}
-                        refreshControl={<RefreshControl colors={[palette.primary]} refreshing={refreshing}
-                                                        onRefresh={onRefresh}/>}>
+        <SafeAreaView style={{backgroundColor: colors.background}}>
+            <ScrollView
+                testID={'HomeScrollView'}
+                refreshControl={<RefreshControl colors={[colors.primary]} refreshing={refreshing}
+                                                onRefresh={onRefresh}/>}
+            >
                 <RecipeRecommendation carouselProps={elementsForRecommendation1}
                                       titleRecommendation={`${t('recommendation')} 1`}/>
                 <RecipeRecommendation carouselProps={elementsForRecommendation2}
