@@ -18,5 +18,5 @@ appId: "com.recipesmanager"
     text: "OK"
     label: Alert validation is rendered
 - tapOn:
-    text: "OK"
+    text: "UNDERSTOOD"
     label: Close the Alert

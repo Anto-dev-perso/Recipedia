@@ -1,5 +1,4 @@
 appId: "com.recipesmanager"
-name: "Recipe Adding test suite"
 ---
 
 # TODO add the capability to take pictures
@@ -12,8 +11,8 @@ name: "Recipe Adding test suite"
     label: Add the new recipe
 - runFlow: ../../../asserts/Recipe/addedRecipeAlert.yaml
 - tapOn:
-    text: "OK"
-    label: Close the alert
+    text: "UNDERSTOOD"
+    label: Close the Alert
 - tapOn:
     text: "󰍉"
     label: Open Search screen

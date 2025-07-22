@@ -8,12 +8,12 @@ appId: "com.recipesmanager"
     label: Alert title is rendered
 - assertVisible:
     id: "android:id/message"
-    text: "Recipe \"Classic Pancakes\" has been successfully added to the shopping list"
+    text: "Recipe titled \"Classic Pancakes\" has been successfully added to the shopping list"
     label: Alert message, is rendered
 - assertVisible:
     id: "android:id/button1"
     text: "OK"
     label: Alert validation is rendered
 - tapOn:
-    text: "OK"
+    text: "UNDERSTOOD"
     label: Close the Alert

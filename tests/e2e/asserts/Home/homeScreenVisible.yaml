@@ -1,32 +1,6 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
-    text: "󰐕"
-    label: Plus button is displayed
-- assertVisible:
-    text: "󰍉"
-    label: Search button is displayed
-- assertVisible:
-    text: "RECOMMENDATION 1"
-    label: Recommendation1 is displayed
-- assertVisible:
-    text: "RECOMMENDATION 2"
-    label: Recommendation 2 is displayed
-- assertVisible:
-    text: "RECOMMENDATION 3"
-    label: Recommendation 3 is displayed
-- swipe:
-    start: "50%,60%"
-    end: "50%,20%"
-    label: Swipe down to see other items
-- assertVisible:
-    text: "RECOMMENDATION 4"
-    label: Recommendation 4 is displayed
-- swipe:
-    start: "50%,20%"
-    end: "50%,60%"
-    label: Swipe Up to reset the initial position
-- assertVisible:
     text: "󰋜"
     label: Home icon is displayed
 - assertVisible:
@@ -44,3 +18,76 @@ appId: "com.recipesmanager"
 - assertVisible:
     text: "Parameters"
     label: Parameters text is displayed
+
+- assertVisible:
+    id: "SearchButton::RoundButton"
+    label: Search button is displayed
+- assertVisible:
+    text: "󰍉"
+    label: Search button is displayed
+- assertVisible:
+    id: "ExpandButton::RoundButton"
+    label: Expand button is displayed
+- assertVisible:
+    text: "󰐕"
+    label: Plus button is displayed
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::1::SubHeader"
+    text: Recommendation 1
+    label: First Recommendation is displayed
+- assertVisible:
+    id: "Home::RecipeRecommendation::1::Carousel::Card::0"
+    label: First Recommendation has its first card
+- assertVisible:
+    id: "Home::RecipeRecommendation::1::Carousel::Card::1"
+    label: First Recommendation has its second card
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::2::SubHeader"
+    text: "Recommendation 2"
+    label: Second Recommendation is displayed
+- assertVisible:
+    id: "Home::RecipeRecommendation::2::Carousel::Card::0"
+    label: Second Recommendation has its first card
+- assertVisible:
+    id: "Home::RecipeRecommendation::2::Carousel::Card::1"
+    label: Second Recommendation has its second card
+
+
+
+- scrollUntilVisible:
+    element:
+      id: "Home::RecipeRecommendation::4::SubHeader"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::3::SubHeader"
+    text: "Recommendation 3"
+    label: Third Recommendation is displayed
+- assertVisible:
+    id: "Home::RecipeRecommendation::3::Carousel::Card::0"
+    label: Third Recommendation has its first card
+- assertVisible:
+    id: "Home::RecipeRecommendation::3::Carousel::Card::1"
+    label: Third Recommendation has its second card
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::4::SubHeader"
+    text: "Recommendation 4"
+    label: Fourth Recommendation is displayed
+- assertVisible:
+    id: "Home::RecipeRecommendation::4::Carousel::Card::0"
+    label: Fourth Recommendation has its first card
+- assertVisible:
+    id: "Home::RecipeRecommendation::4::Carousel::Card::1"
+    label: Fourth Recommendation has its second card
+
+
+- scrollUntilVisible:
+    element:
+      id: "Home::RecipeRecommendation::1::SubHeader"
+    direction: UP
+    speed: 60

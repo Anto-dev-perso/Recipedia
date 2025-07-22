@@ -11,9 +11,11 @@ export type CarouselItemProps = {
     testID: string,
 };
 
-export default function CarouselItem(props: CarouselItemProps) {
+export default function Carousel(props: CarouselItemProps) {
     const {colors} = useTheme();
     const {navigate} = useNavigation<StackScreenNavigation>();
+
+    const cardId = props.testID + "::Card";
 
     function renderMyItem({item, index}: ListRenderItemInfo<recipeTableElement>) {
 
@@ -32,8 +34,7 @@ export default function CarouselItem(props: CarouselItemProps) {
                       backgroundColor: colors.surface,
                   }}
                   onPress={goToRecipe}
-                  key={props.testID + `CarouselItem::${index}`}
-                  testID={props.testID + `CarouselItem::${index}`}
+                  testID={cardId + `::${index}`}
             >
                 <Card.Cover source={{uri: item.image_Source}}
                             style={{height: itemSize, width: itemSize, backgroundColor: colors.tertiary}}/>
@@ -55,7 +56,7 @@ export default function CarouselItem(props: CarouselItemProps) {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, idx) => item.title + idx}
-                contentContainerStyle={{paddingHorizontal: 8}}
+                contentContainerStyle={{paddingHorizontal: padding.small}}
             />
         </View>
     );

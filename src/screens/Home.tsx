@@ -2,7 +2,7 @@ import RecipeRecommendation from "@components/organisms/RecipeRecommendation";
 
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import React, {useCallback, useEffect, useState} from "react";
-import {RefreshControl, SafeAreaView, ScrollView} from "react-native";
+import {RefreshControl, SafeAreaView, ScrollView, View} from "react-native";
 import {useTheme} from "react-native-paper";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {HomeScreenProp, StackScreenNavigation} from "@customTypes/ScreenTypes";
@@ -13,6 +13,7 @@ import {useI18n} from "@utils/i18n";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import RoundButton from "@components/atomic/RoundButton";
 import {bottomTopPosition} from "@styles/buttons";
+import {screenWidth} from "@styles/spacing";
 
 
 export default function Home({}: HomeScreenProp) {
@@ -21,6 +22,9 @@ export default function Home({}: HomeScreenProp) {
 
     const {navigate} = useNavigation<StackScreenNavigation>();
     const [refreshing, setRefreshing] = useState<boolean>(false);
+
+    const homeId = "Home";
+    const recommandationId = homeId + "::RecipeRecommendation";
 
     const howManyItemInCarousel = 4;
     // TODO name these recommendation (and maybe add more ?)
@@ -84,14 +88,16 @@ export default function Home({}: HomeScreenProp) {
                 refreshControl={<RefreshControl colors={[colors.primary]} refreshing={refreshing}
                                                 onRefresh={onRefresh}/>}
             >
-                <RecipeRecommendation carouselProps={elementsForRecommendation1}
+                <RecipeRecommendation testId={recommandationId + "::1"} carouselProps={elementsForRecommendation1}
                                       titleRecommendation={`${t('recommendation')} 1`}/>
-                <RecipeRecommendation carouselProps={elementsForRecommendation2}
+                <RecipeRecommendation testId={recommandationId + "::2"} carouselProps={elementsForRecommendation2}
                                       titleRecommendation={`${t('recommendation')} 2`}/>
-                <RecipeRecommendation carouselProps={elementsForRecommendation3}
+                <RecipeRecommendation testId={recommandationId + "::3"} carouselProps={elementsForRecommendation3}
                                       titleRecommendation={`${t('recommendation')} 3`}/>
-                <RecipeRecommendation carouselProps={elementsForRecommendation4}
+                <RecipeRecommendation testId={recommandationId + "::4"} carouselProps={elementsForRecommendation4}
                                       titleRecommendation={`${t('recommendation')} 4`}/>
+                {/* Add padding to avoid having the last carousel item on buttons */}
+                <View style={{paddingBottom: screenWidth / 6}}/>
             </ScrollView>
             <BottomTopButton testID={'SearchButton'} as={RoundButton} position={bottomTopPosition.bottom_left}
                              size={"medium"} icon={Icons.searchIcon} onPressFunction={() => navigate('Search')}/>

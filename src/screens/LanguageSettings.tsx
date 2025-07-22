@@ -31,6 +31,7 @@ export default function LanguageSettings({navigation}: LanguageSettingsProp) {
     };
 
     const languageTestId = "LanguageSettings";
+    // TODO in dark mode, view is not covering the whole screen
     return (
         <View style={{backgroundColor: colors.background}}>
             <Text testID={languageTestId + "::Title"} variant={BottomScreenTitle}
