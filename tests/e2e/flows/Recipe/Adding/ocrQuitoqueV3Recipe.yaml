@@ -20,7 +20,7 @@ appId: "com.recipesmanager"
     id: "ReduceButton::RoundButton"
     label: Reduce the bottom right buttons
 - tapOn:
-    id: "SearchButton::RoundButton"
+    id: "Home::SearchButton::RoundButton"
     label: Open Search screen
 - tapOn:
     id: "SearchBar"

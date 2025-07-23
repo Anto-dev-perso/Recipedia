@@ -99,7 +99,8 @@ export default function Home({}: HomeScreenProp) {
                 {/* Add padding to avoid having the last carousel item on buttons */}
                 <View style={{paddingBottom: screenWidth / 6}}/>
             </ScrollView>
-            <BottomTopButton testID={'SearchButton'} as={RoundButton} position={bottomTopPosition.bottom_left}
+            <BottomTopButton testID={homeId + '::SearchButton'} as={RoundButton}
+                             position={bottomTopPosition.bottom_left}
                              size={"medium"} icon={Icons.searchIcon} onPressFunction={() => navigate('Search')}/>
             <VerticalBottomButtons/>
         </SafeAreaView>

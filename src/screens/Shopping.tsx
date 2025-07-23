@@ -1,19 +1,22 @@
-import SectionClickableList from "@components/molecules/SectionClickableList";
 import {shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
 import {useFocusEffect} from "@react-navigation/native";
-import {screenViews, scrollView} from "@styles/spacing";
-import {typoStyles} from "@styles/typography";
-import React, {useEffect, useState} from "react";
-import {ScrollView, Text} from "react-native";
+import React, {useState} from "react";
+import {SectionList, StyleProp, TextStyle, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ShoppingScreenProp} from '@customTypes/ScreenTypes';
 import RecipeDatabase from "@utils/RecipeDatabase";
-import {Button} from "react-native-paper";
-import { useI18n } from "@utils/i18n";
-
+import {Checkbox, Divider, List, Text, useTheme} from "react-native-paper";
+import {useI18n} from "@utils/i18n";
+import {shoppingCategories} from "@customTypes/RecipeFiltersTypes";
+import BottomTopButton from "@components/molecules/BottomTopButton";
+import RoundButton from "@components/atomic/RoundButton";
+import {bottomTopPosition} from "@styles/buttons";
+import {Icons} from "@assets/Icons";
+import {AsyncAlert} from "@utils/AsyncAlert";
 
 export default function Shopping({navigation, route}: ShoppingScreenProp) {
-    const { t } = useI18n();
+    const {t} = useI18n();
+    const {colors, fonts} = useTheme();
 
     const [shoppingList, setShoppingList] = useState(new Array<shoppingListTableElement>());
 
@@ -23,9 +26,18 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
         });
     });
 
-    useEffect(() => {
-        setShoppingList([...RecipeDatabase.getInstance().get_shopping()]);
-    }, [route.params?.refresh]);
+    // Transform shopping list items into sections for SectionList
+    const sections = shoppingCategories
+        .map(category => {
+            return {
+                title: category,
+                data: shoppingList.filter(item => item.type === category)
+            };
+        })
+        .filter(section => section.data.length > 0);
+
+    const screenId = "ShoppingScreen";
+    const sectionId = screenId + "::SectionList";
 
     function updateShoppingList(ingredientName: string) {
         const newShoppingList = shoppingList.map(item => item);
@@ -43,19 +55,77 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
         }
     }
 
+    async function clearShoppingList() {
+        await RecipeDatabase.getInstance().resetShoppingList();
+        setShoppingList([]);
+    }
+
+    function renderSectionHeader({section: {title}}: { section: { title: string } }) {
+        const headerId = sectionId + "::" + title;
+        return (
+            <View>
+                <List.Subheader testID={headerId + "::SubHeader"} style={{...fonts.titleMedium, color: colors.primary}}
+                >{t(title)}</List.Subheader>
+                <Divider testID={headerId + "::Divider"}/>
+            </View>
+        )
+    }
+
+    function renderItem({item}: { item: shoppingListTableElement }) {
+
+        const recipesCount = item.recipesTitle.length;
+        const recipesText = recipesCount > 1
+            ? `${recipesCount} ${t('recipes')}`
+            : recipesCount === 1
+                ? `1 ${t('recipe')}`
+                : '';
+
+        const textStyle: StyleProp<TextStyle> = [{...fonts.bodyMedium}, item.purchased && {textDecorationLine: 'line-through'}];
+        const itemTestId = sectionId + "::" + item.name;
+        return (
+            <List.Item testID={itemTestId}
+                       title={item.name}
+                       titleStyle={textStyle}
+                       descriptionStyle={textStyle}
+                       description={recipesText}
+                       left={props => (<Checkbox status={item.purchased ? 'checked' : 'unchecked'}/>)}
+                       onPress={() => updateShoppingList(item.name)}
+                       onLongPress={() => {
+                           if (item.recipesTitle.length > 0) {
+                               const recipesList = item.recipesTitle.map(title => `\n\t- ${title}`).join('');
+
+                               const alertTitle = t('recipeUsingTitle') + ' ' + item.name.toLocaleLowerCase();
+                               const alertMessage = t('recipeUsingMessage') + ' :' + recipesList;
+                               // TODO to replace by a Dialog from react-native-paper
+                               AsyncAlert(alertTitle, alertMessage, t('recipeUsingValidation'));
+                           }
+                       }}
+            />
+        );
+    }
+
     return (
-        <SafeAreaView style={screenViews.screenView}>
-            <ScrollView style={scrollView(0).view} showsVerticalScrollIndicator={false}>
-                <Text testID={'ShoppingScreenTitle'} style={typoStyles.title}>{t('shoppingList')}</Text>
-                <Button onPress={async () => {
-                    await RecipeDatabase.getInstance().resetShoppingList();
-                    navigation.setParams({refresh: Date.now()});
-                }}>{t('delete')}</Button>
-                <SectionClickableList
-                    screen={"shopping"} ingList={shoppingList} updateIngredientFromShopping={updateShoppingList}/>
-                {/* TODO to implement */}
-                {/* <BottomTopButton as={RoundButton} position={bottomPosition.right} diameter={BottomButtonDiameter} icon={{type: enumIconTypes.entypo, name: exportIcon, size: iconsSize.medium, color: "#414a4c"}} onPressFunction={() => null}/> */}
-            </ScrollView>
+        <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
+            {shoppingList.length === 0 ? (
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
+                    <Text variant="titleMedium">{t('noItemsInShoppingList')}</Text>
+                </View>
+            ) : (
+                <SectionList testID={sectionId}
+                             sections={sections}
+                             keyExtractor={(item) => item.id?.toString() || item.name}
+                             renderItem={renderItem}
+                             renderSectionHeader={renderSectionHeader}
+                             stickySectionHeadersEnabled={false}
+                />
+            )}
+            <BottomTopButton testID={screenId + "::ClearShoppingListButton"}
+                             as={RoundButton}
+                             position={bottomTopPosition.top_right}
+                             size={"medium"}
+                             icon={Icons.trashIcon}
+                             onPressFunction={clearShoppingList}
+            />
         </SafeAreaView>
-    )
+    );
 }

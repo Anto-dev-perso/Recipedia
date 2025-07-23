@@ -16,7 +16,7 @@ appId: "com.recipesmanager"
 - runFlow: OCR/Gallery/openOCRGallery.yaml
 - runFlow: OCR/Gallery/addRecipeFromGallery.yaml
 - tapOn:
-    id: "SearchButton::RoundButton"
+    id: "Home::SearchButton::RoundButton"
     label: Open Search screen
 - tapOn:
     id: "SearchBar"

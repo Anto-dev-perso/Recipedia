@@ -20,7 +20,7 @@ appId: "com.recipesmanager"
     label: Parameters text is displayed
 
 - assertVisible:
-    id: "SearchButton::RoundButton"
+    id: "Home::SearchButton::RoundButton"
     label: Search button is displayed
 - assertVisible:
     text: "󰍉"

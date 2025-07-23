@@ -31,9 +31,8 @@ export default function DefaultPersonsSettings({navigation}: DefaultPersonsSetti
     };
 
     const screenTestId = "DefaultPersonSettings";
-    // TODO in dark mode, view is not covering the whole screen
     return (
-        <View style={{backgroundColor: colors.background, height: "100%"}}>
+        <View style={{flex: 1, backgroundColor: colors.background, height: "100%"}}>
             <Text testID={screenTestId + "::Title"} variant={BottomScreenTitle}
                   style={{padding: padding.small}}>{t('default_persons')}</Text>
 
