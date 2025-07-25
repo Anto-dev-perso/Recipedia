@@ -10,6 +10,7 @@ export default {
     success: 'SUCCESSFULLY ADDED RECIPE TO SHOPPING LIST',
     addedToShoppingList: 'has been successfully added to the shopping list',
     addFilter: 'Add a filter',
+    seeFilterResult: 'See filtered recipes',
 
     // Loading states
     loading: 'Loading...',

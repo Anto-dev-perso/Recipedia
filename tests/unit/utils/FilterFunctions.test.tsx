@@ -7,7 +7,7 @@ import {
     removeTitleInMultimap,
     removeValueToMultimap,
     retrieveAllFilters,
-    selectFilterValuesToDisplay,
+    selectFilterCategoriesValuesToDisplay,
 } from '@utils/FilterFunctions';
 import {listFilter, prepTimeValues, TListFilter} from '@customTypes/RecipeFiltersTypes';
 import {recipesDataset} from "@test-data/recipesDataset";
@@ -25,35 +25,35 @@ describe('FilterFunctions', () => {
         const tagListGiven = recipesDataset[3].tags.map(tag => tag.name);
         const ingredientListGiven = recipesDataset[3].ingredients;
 
-        expect(selectFilterValuesToDisplay(listFilter.inSeason, tagListGiven, ingredientListGiven, t)).toEqual(["filterTypes.inSeason"]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.inSeason, tagListGiven, ingredientListGiven, t)).toEqual(["filterTypes.inSeason"]);
 
-        expect(selectFilterValuesToDisplay(listFilter.tags, tagListGiven, ingredientListGiven, t)).toEqual(tagListGiven);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.tags, tagListGiven, ingredientListGiven, t)).toEqual(tagListGiven);
 
-        expect(selectFilterValuesToDisplay(listFilter.prepTime, tagListGiven, ingredientListGiven, t)).toEqual(prepTimeValues.map(toTranslate => t(toTranslate)));
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.prepTime, tagListGiven, ingredientListGiven, t)).toEqual(prepTimeValues.map(toTranslate => t(toTranslate)));
 
-        expect(selectFilterValuesToDisplay(listFilter.purchased, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.purchased, tagListGiven, ingredientListGiven, t)).toEqual([]);
 
-        expect(selectFilterValuesToDisplay(listFilter.recipeTitleInclude, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.recipeTitleInclude, tagListGiven, ingredientListGiven, t)).toEqual([]);
 
-        expect(selectFilterValuesToDisplay(listFilter.grainOrCereal, tagListGiven, ingredientListGiven, t)).toEqual(['Croutons']);
-        expect(selectFilterValuesToDisplay(listFilter.legumes, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.vegetable, tagListGiven, ingredientListGiven, t)).toEqual(['Romaine Lettuce']);
-        expect(selectFilterValuesToDisplay(listFilter.plantProtein, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.condiment, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.sauce, tagListGiven, ingredientListGiven, t)).toEqual(['Caesar Dressing']);
-        expect(selectFilterValuesToDisplay(listFilter.meat, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.poultry, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.fish, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.seafood, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.dairy, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.cheese, tagListGiven, ingredientListGiven, t)).toEqual(['Parmesan']);
-        expect(selectFilterValuesToDisplay(listFilter.sugar, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.spice, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.fruit, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.oilAndFat, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.nutsAndSeeds, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.sweetener, tagListGiven, ingredientListGiven, t)).toEqual([]);
-        expect(selectFilterValuesToDisplay(listFilter.undefined, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.grainOrCereal, tagListGiven, ingredientListGiven, t)).toEqual(['Croutons']);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.legumes, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.vegetable, tagListGiven, ingredientListGiven, t)).toEqual(['Romaine Lettuce']);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.plantProtein, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.condiment, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.sauce, tagListGiven, ingredientListGiven, t)).toEqual(['Caesar Dressing']);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.meat, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.poultry, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.fish, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.seafood, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.dairy, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.cheese, tagListGiven, ingredientListGiven, t)).toEqual(['Parmesan']);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.sugar, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.spice, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.fruit, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.oilAndFat, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.nutsAndSeeds, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.sweetener, tagListGiven, ingredientListGiven, t)).toEqual([]);
+        expect(selectFilterCategoriesValuesToDisplay(listFilter.undefined, tagListGiven, ingredientListGiven, t)).toEqual([]);
     });
 
 

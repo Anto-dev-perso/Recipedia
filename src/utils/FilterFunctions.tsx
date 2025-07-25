@@ -1,42 +1,61 @@
 import {arrayOfType, ingredientTableElement, recipeTableElement} from "@customTypes/DatabaseElementTypes";
-import {listFilter, prepTimeValues, TListFilter} from "@customTypes/RecipeFiltersTypes";
+import {
+    FiltersAppliedToDatabase,
+    filtersCategories,
+    listFilter,
+    prepTimeValues,
+    TListFilter
+} from "@customTypes/RecipeFiltersTypes";
 import {TFunction} from "i18next";
 
 
-export function selectFilterValuesToDisplay(filter: TListFilter, tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>, t: TFunction<"translation", undefined>,): Array<string> {
-    switch (filter) {
-        case listFilter.inSeason:
-            return new Array<string>(t(listFilter.inSeason));
-        case listFilter.tags:
-            return tagsList;
-        case listFilter.prepTime:
-            return prepTimeValues.map(time => t(time));
-        case listFilter.recipeTitleInclude:
-        case listFilter.purchased:
-        case listFilter.grainOrCereal:
-        case listFilter.legumes:
-        case listFilter.vegetable:
-        case listFilter.plantProtein:
-        case listFilter.condiment:
-        case listFilter.sauce:
-        case listFilter.meat:
-        case listFilter.poultry:
-        case listFilter.fish:
-        case listFilter.seafood:
-        case listFilter.dairy:
-        case listFilter.cheese:
-        case listFilter.sugar:
-        case listFilter.spice:
-        case listFilter.fruit:
-        case listFilter.oilAndFat:
-        case listFilter.nutsAndSeeds:
-        case listFilter.sweetener:
-        case listFilter.undefined:
-            return arrayOfType(ingredientsList, filter).map(ing => ing.name);
-        default:
-            console.warn("selectFilterValuesToDisplay:: default shall not be reach");
-            return new Array<string>();
-    }
+export function selectFilterCategoriesValuesToDisplay(tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>, t: TFunction<"translation", undefined>): Array<FiltersAppliedToDatabase> {
+    return filtersCategories
+        .map(category => {
+            const filterApplyToDatabase: FiltersAppliedToDatabase = {
+                title: category as TListFilter,
+                data: []
+            };
+            switch (category) {
+                case listFilter.inSeason:
+                    filterApplyToDatabase.data = new Array<string>(t(listFilter.inSeason));
+                    break;
+                case listFilter.tags:
+                    filterApplyToDatabase.data = tagsList;
+                    break;
+                case listFilter.prepTime:
+                    filterApplyToDatabase.data = prepTimeValues.map(time => t(time));
+                    break;
+                case listFilter.recipeTitleInclude:
+                case listFilter.purchased:
+                case listFilter.grainOrCereal:
+                case listFilter.legumes:
+                case listFilter.vegetable:
+                case listFilter.plantProtein:
+                case listFilter.condiment:
+                case listFilter.sauce:
+                case listFilter.meat:
+                case listFilter.poultry:
+                case listFilter.fish:
+                case listFilter.seafood:
+                case listFilter.dairy:
+                case listFilter.cheese:
+                case listFilter.sugar:
+                case listFilter.spice:
+                case listFilter.fruit:
+                case listFilter.oilAndFat:
+                case listFilter.nutsAndSeeds:
+                case listFilter.sweetener:
+                case listFilter.undefined:
+                    filterApplyToDatabase.data = arrayOfType(ingredientsList, category).map(ing => ing.name);
+                    break;
+                default:
+                    console.warn("selectFilterValuesToDisplay:: default shall not be reach");
+                    filterApplyToDatabase.data = new Array<string>();
+            }
+
+            return filterApplyToDatabase;
+        });
 }
 
 

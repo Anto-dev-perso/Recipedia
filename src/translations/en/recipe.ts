@@ -3,6 +3,7 @@ export default {
   description: "Description",
   tags: 'Tags',
   tagExplanation: 'Tags are a way to identify a recipe and make easier its search.\nHere are some examples of tags you can have : ',
+  noRecipesFound: 'No recipes found matching your filters',
 
   ingredients: 'Ingredients',
   ingredientReadOnlyBeforePerson: 'Ingredients (',

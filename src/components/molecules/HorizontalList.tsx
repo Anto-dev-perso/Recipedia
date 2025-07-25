@@ -20,7 +20,7 @@ export type HorizontalListProps =
     { propType: "Tag" | "Image", onPress?: (elem: string) => void, testID: string, }
     & (TagProp | ImageProp);
 
-// TODO to test
+// TODO to refactor so that it is directly a flatlist or react-native-paper
 export default function HorizontalList(props: HorizontalListProps) {
 
     function renderItem(item: string, index: number) {

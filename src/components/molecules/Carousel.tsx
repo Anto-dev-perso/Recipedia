@@ -1,10 +1,8 @@
 import React from "react";
 import {FlatList, ListRenderItemInfo, View} from "react-native";
-import {Card, useTheme} from "react-native-paper";
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
-import {StackScreenNavigation} from "@customTypes/ScreenTypes";
-import {useNavigation} from "@react-navigation/native";
-import {padding, screenWidth} from "@styles/spacing";
+import {padding} from "@styles/spacing";
+import RecipeCard from "@components/molecules/RecipeCard";
 
 export type CarouselItemProps = {
     items: Array<recipeTableElement>,
@@ -12,51 +10,16 @@ export type CarouselItemProps = {
 };
 
 export default function Carousel(props: CarouselItemProps) {
-    const {colors} = useTheme();
-    const {navigate} = useNavigation<StackScreenNavigation>();
-
-    const cardId = props.testID + "::Card";
-
-    function renderMyItem({item, index}: ListRenderItemInfo<recipeTableElement>) {
-
-        const itemSize = 0.35 * screenWidth;
-
-        const goToRecipe = () => {
-            navigate('Recipe', {mode: 'readOnly', recipe: item});
-        };
-
-        return (
-            <Card mode={"outlined"}
-                  style={{
-                      margin: padding.small,
-                      width: itemSize,
-                      justifyContent: 'flex-start',
-                      backgroundColor: colors.surface,
-                  }}
-                  onPress={goToRecipe}
-                  testID={cardId + `::${index}`}
-            >
-                <Card.Cover source={{uri: item.image_Source}}
-                            style={{height: itemSize, width: itemSize, backgroundColor: colors.tertiary}}/>
-
-                <Card.Title
-                    title={item.title}
-                    titleNumberOfLines={2}
-                    titleVariant={"labelLarge"}
-                />
-            </Card>
-        );
-    }
-
     return (
         <View>
             <FlatList
                 data={props.items}
-                renderItem={renderMyItem}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, idx) => item.title + idx}
                 contentContainerStyle={{paddingHorizontal: padding.small}}
+                renderItem={({item, index}: ListRenderItemInfo<recipeTableElement>) => <RecipeCard
+                    testId={props.testID + `::Card::${index}`} size={"small"} recipe={item}/>}
             />
         </View>
     );

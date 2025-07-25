@@ -13,21 +13,32 @@ export type filtersAccessAndModifiers = {
  */
 export enum nonIngredientFilters {
     recipeTitleInclude = 'filterTypes.recipeTitleInclude',
-    prepTime = 'filterTypes.prepTime',
     inSeason = 'filterTypes.inSeason',
+    prepTime = 'filterTypes.prepTime',
     tags = 'filterTypes.tags',
     purchased = 'filterTypes.purchased',
     // calories: "filterTypes.calories",
 }
 
 // Combine all filters into a single object
-export const listFilter = {...ingredientType, ...nonIngredientFilters} as const;
+export const listFilter = {...nonIngredientFilters, ...ingredientType} as const;
 
 // Type for all filter values
 export type TListFilter = typeof listFilter[keyof typeof listFilter];
 
 // Array of all filter values for use in UI components
 export const filtersCategories: Array<TListFilter> = Object.values(listFilter);
+
+
+export type ShoppingAppliedToDatabase = {
+    title: TListFilter,
+    data: Array<shoppingListTableElement>,
+};
+
+export type FiltersAppliedToDatabase = {
+    title: TListFilter,
+    data: Array<string>,
+};
 
 // Props for shopping-related components
 export type propsForShopping = {

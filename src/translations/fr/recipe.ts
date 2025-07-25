@@ -3,6 +3,7 @@ export default {
   description: "Description",
   tags: 'Étiquettes',
   tagExplanation: "Les étiquettes représentent une façon d'identifier une recette afin d'en faciliter la recherche.\nVoici certains exemples d'étiquettes que vous pouvez utiliser : ",
+  noRecipesFound: 'Aucune recette trouvée correspondant à vos filtres',
 
   ingredients: 'Ingrédients ',
   ingredientReadOnlyBeforePerson: 'Ingrédients (',

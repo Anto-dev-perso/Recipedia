@@ -7,7 +7,7 @@ import {ShoppingScreenProp} from '@customTypes/ScreenTypes';
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {Checkbox, Divider, List, Text, useTheme} from "react-native-paper";
 import {useI18n} from "@utils/i18n";
-import {shoppingCategories} from "@customTypes/RecipeFiltersTypes";
+import {ShoppingAppliedToDatabase, shoppingCategories, TListFilter} from "@customTypes/RecipeFiltersTypes";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import RoundButton from "@components/atomic/RoundButton";
 import {bottomTopPosition} from "@styles/buttons";
@@ -26,13 +26,12 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
         });
     });
 
-    // Transform shopping list items into sections for SectionList
     const sections = shoppingCategories
         .map(category => {
             return {
                 title: category,
                 data: shoppingList.filter(item => item.type === category)
-            };
+            } as ShoppingAppliedToDatabase;
         })
         .filter(section => section.data.length > 0);
 
@@ -60,7 +59,7 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
         setShoppingList([]);
     }
 
-    function renderSectionHeader({section: {title}}: { section: { title: string } }) {
+    function renderSectionHeader({section: {title}}: { section: { title: TListFilter } }) {
         const headerId = sectionId + "::" + title;
         return (
             <View>

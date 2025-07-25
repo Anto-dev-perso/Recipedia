@@ -695,6 +695,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                 </>
                 : null}
 
+            {/* TODO to refactor for react-native-paper  */}
             <BottomTopButton testID={'RecipeValidate'} as={RectangleButton} position={bottomTopPosition.bottom_full}
                              text={validationButtonText} centered={true} border={false}
                              onPressFunction={async () => await validationFunction()}/>

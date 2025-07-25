@@ -1,6 +1,7 @@
 import React from "react"
 import {IconName} from '@assets/Icons';
 import {Chip, Icon, MD3Theme, useTheme} from "react-native-paper";
+import {padding} from "@styles/spacing";
 
 
 export type TagButtonProps = {
@@ -23,7 +24,8 @@ export default function TagButton(props: TagButtonProps) {
         undefined;
 
     return (
-        <Chip testID={props.testID + "::Chip"} style={{backgroundColor: colors.secondaryContainer, borderRadius: 20}}
+        <Chip testID={props.testID + "::Chip"}
+              style={{backgroundColor: colors.secondaryContainer, borderRadius: 20, margin: padding.verySmall}}
               textStyle={[fonts.bodySmall, {color: colors.onSecondaryContainer}]}
               mode={'outlined'}
               selectedColor={colors.secondary}
