@@ -1,0 +1,72 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "Titre:"
+    label: "Intro text for the recipe title is displayed in French"
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: "Description:"
+    label: "Intro text for the recipe description is displayed in French"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: DOWN
+    speed: 70
+
+- assertVisible:
+    id: "RecipeTags::HeaderText"
+    text: "Étiquettes:"
+    label: "Intro text for the recipe tags is displayed in French"
+- assertVisible:
+    id: "RecipeTags::ElementText"
+    text: "Les étiquettes représentent une façon d'identifier une recette afin d'en faciliter la recherche.\nVoici certains exemples d'étiquettes que vous pouvez utiliser : .*, .*, .*"
+    label: "Explanation text for the recipe tags is displayed in French"
+- assertVisible:
+    id: "RecipePersons::PrefixText"
+    text: "Cette recette est pour : "
+    label: "Intro text for the recipe persons is displayed in French"
+- assertVisible:
+    id: "RecipePersons::SuffixText"
+    text: " personnes"
+    label: "Outro text for the recipe persons is displayed in French"
+- assertVisible:
+    id: "RecipeIngredients::PrefixText"
+    text: "Ingrédients : "
+    label: "Intro text for the recipe ingredients is displayed in French"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Content"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeTime::PrefixText"
+    text: "Temps de préparation :"
+    label: "Intro text for the recipe time is displayed in French"
+- assertVisible:
+    id: "RecipeTime::SuffixText"
+    text: "min"
+    label: "Outro text for the recipe time is displayed in French"
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::Step"
+    text: "Préparation: étape 1"
+    label: "Recipe preparation section is displayed in French"
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::Title"
+    text: "Titre de l'étape 1 : "
+    label: "Intro text for the recipe title of the first step is displayed in French"
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::Content"
+    text: "Contenu de l'étape 1 : "
+    label: "Intro text for recipe content of the first step is displayed in French"
+- assertVisible:
+    id: "RecipeValidate-text"
+    text: "Valider les modifications"
+    label: "Edit validate button is displayed in French"
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Quit the recipe screen"
+- pressKey: "BACK"

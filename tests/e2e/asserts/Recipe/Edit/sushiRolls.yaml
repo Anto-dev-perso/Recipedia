@@ -52,7 +52,7 @@ appId: "com.recipesmanager"
     label: Intro text for the tags is rendered
 - assertVisible:
     id: "RecipeTags::ElementText"
-    text: "Tags are a way to identify a recipe and make easier its search.\n\
+    text: "Tags are a way to identify a recipe and make easier its search.\n
     Here are some examples of tags you can have : .*, .*, .*"
     label: Explanation text for the tags is rendered
 - assertVisible:

@@ -90,22 +90,25 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             case recipeStateType.readOnly:
             case recipeStateType.edit:
                 const choice = await AsyncAlert(t('deleteRecipe'), `${t('confirmDelete')} ${recipeTitle}?`, t('save'), t('cancel'));
-                if (choice === alertUserChoice.ok) {
-                    let msg: string;
-                    //@ts-ignore params.recipe exist because we already checked with switch
-                    if (!await RecipeDatabase.getInstance().deleteRecipe(this.props.route.params.recipe)) {
-                        msg = `${t('errorOccurred')} ${t('deleteRecipe')} ${recipeTitle}`;
-                    } else {
-                        msg = `${t('recipe')} ${recipeTitle} ${t('delete')} ${t('success')}`;
-                    }
-                    const promiseReturn = AsyncAlert(t('deleteRecipe'), msg, t('ok'));
-
+                switch (choice) {
+                    case alertUserChoice.cancel:
+                        return;
+                    case alertUserChoice.ok:
+                    case alertUserChoice.neutral:
+                        let msg: string;
+                        //@ts-ignore params.recipe exist because we already checked with switch
+                        if (!await RecipeDatabase.getInstance().deleteRecipe(this.props.route.params.recipe)) {
+                            msg = `${t('errorOccurred')} ${t('deleteRecipe')} ${recipeTitle}`;
+                        } else {
+                            msg = `${t('recipe')} ${recipeTitle} ${t('delete')} ${t('success')}`;
+                        }
+                        const promiseReturn = AsyncAlert(t('deleteRecipe'), msg, t('ok'));
+                        break;
                 }
                 break;
             case recipeStateType.addManual:
             case recipeStateType.addOCR:
-                const message = "Call onDelete on mode " + stackMode + " which is not possible";
-                const promiseReturn = AsyncAlert(t('deleteRecipe'), message, t('ok'));
+                console.warn(`Call onDelete on mode ${stackMode} which is not possible`);
                 break;
         }
         navigation.goBack();
@@ -197,7 +200,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     async function readOnlyValidation() {
         await RecipeDatabase.getInstance().addRecipeToShopping(createRecipeFromStates());
         navigation.goBack();
-        await AsyncAlert(t('success'), `${t('recipe')} "${recipeTitle}" ${t('addedToShoppingList')}`, t('ok'));
+        await AsyncAlert(t('success'), `${t('Recipe')} "${recipeTitle}" ${t('addedToShoppingList')}`, t('ok'));
     }
 
     async function editValidation() {
@@ -215,22 +218,23 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     // TODO ingredient quantity shouldn't be null
     async function addValidation() {
         const missingElem = new Array<string>();
+        const translatedMissingElemPrefix = 'alerts.missingElements.';
 
         // TODO image not implemented
         // if (this.state.recipeImage.length == 0) {
         //     missingElem.push("an image");
         // }
         if (recipeTitle.length == 0) {
-            missingElem.push("a title");
+            missingElem.push(t(translatedMissingElemPrefix + 'titleRecipe'));
         }
         if (recipeIngredients.length == 0) {
-            missingElem.push("some ingredients");
+            missingElem.push(t(translatedMissingElemPrefix + 'titleIngredients'));
         }
         if (recipePreparation.length == 0) {
-            missingElem.push("some instructions for the preparation");
+            missingElem.push(t(translatedMissingElemPrefix + 'titlePreparation'));
         }
         if (recipePersons == defaultValueNumber) {
-            missingElem.push("for how many persons this recipe is");
+            missingElem.push(t(translatedMissingElemPrefix + 'titlePersons'));
         }
 
         // No mandatory elements missing
@@ -249,7 +253,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
                 await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
                 navigation.goBack();
-                await AsyncAlert("SUCCESSFULLY ADDED RECIPE TO DATABASE", `Recipe titled "${recipeToAdd.title}" has been successfully added to the database`, "Understood");
+                await AsyncAlert(t('success'), t('Recipe') + ' "' + recipeToAdd.title + '" ' + t('addedToDatabase'), t('understood'));
             } catch (error) {
                 console.warn("addValidation: Something went wrong when validating new recipe : ", error)
             }
@@ -258,23 +262,22 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         }
         // TODO the AsyncAlert dialog preparation should be a dedicated function for readiness
         else if (missingElem.length == 5) {
-            await AsyncAlert("All elements missing", "You haven't add any of the elements to your recipe. Please enter before validate at least: \
-            \n\t- an image\n\t- a title\n\t- some ingredients\n\t- for how many persons this recipe is\n\t- some instructions for the preparation");
+            await AsyncAlert(t(translatedMissingElemPrefix + 'titleAll'), t('messageAll'));
         } else {
             let alertTitle: string;
             let alertMsg: string;
             if (missingElem.length == 1) {
-                alertTitle = t('alerts.missingElements.titleSingular');
-                alertMsg = "You're missing " + missingElem[0] + " to your recipe. Please add this before validate.";
-                alertMsg = t('alerts.missingElements.messageSingularBeginning') + missingElem[0] + t('alerts.missingElements.messageSingularEnding');
+                alertTitle = t(translatedMissingElemPrefix + 'titleSingular');
+                alertMsg = t(translatedMissingElemPrefix + 'messageSingularBeginning') + +missingElem[0] + t(translatedMissingElemPrefix + 'messageSingularEnding');
+                alertMsg = t(translatedMissingElemPrefix + 'messageSingularBeginning') + missingElem[0] + t(translatedMissingElemPrefix + 'messageSingularEnding');
             } else {
-                alertTitle = t('alerts.missingElements.titlePlural');
-                alertMsg = t('alerts.missingElements.messagePlural');
+                alertTitle = t(translatedMissingElemPrefix + 'titlePlural');
+                alertMsg = t(translatedMissingElemPrefix + 'messagePlural');
                 for (const elem of missingElem) {
                     alertMsg += `\n\t- ${elem}`;
                 }
             }
-            await AsyncAlert(alertTitle, alertMsg, "Understood")
+            await AsyncAlert(alertTitle, alertMsg, t('understood'))
         }
     }
 
@@ -498,7 +501,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                         testID: personTestID,
                         numberProps: {
                             editType: 'add',
-                            prefixText: t('personPrefixOCR'),
+                            prefixText: t('timePrefixOCR'),
                             openModal: () => openModalForField(recipeColumnsNames.time),
                             manuallyFill: () => setRecipeTimeManuallyEdited(true),
                         }

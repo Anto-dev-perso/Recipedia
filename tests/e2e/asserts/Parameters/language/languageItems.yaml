@@ -1,0 +1,10 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "LanguageSettings::Item::0"
+    text: "English"
+    label: "English language option is visible"
+- assertVisible:
+    id: "LanguageSettings::Item::1"
+    text: "Français"
+    label: "French language option is visible"

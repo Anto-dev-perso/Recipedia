@@ -1,0 +1,20 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    text: "󰚡"
+    label: "Home icon is displayed"
+- assertVisible:
+    text: "Home"
+    label: "Home text is displayed"
+- assertVisible:
+    text: "󰄑"
+    label: "Shopping icon is displayed"
+- assertVisible:
+    text: "Shopping"
+    label: "Shopping text is displayed"
+- assertVisible:
+    text: "󰒓"
+    label: "Parameters icon is displayed"
+- assertVisible:
+    text: "Parameters"
+    label: "Parameters text is displayed"

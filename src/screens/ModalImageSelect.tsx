@@ -7,6 +7,7 @@ import {Icons} from "@assets/Icons";
 import {Modal, Portal, Text, useTheme} from "react-native-paper";
 import {padding, viewsSplitScreen} from "@styles/spacing";
 import {VariantProp} from "react-native-paper/lib/typescript/components/Typography/types";
+import {useI18n} from "@utils/i18n";
 
 export type ModalImageSelectProps = {
     arrImg: Array<string>,
@@ -23,7 +24,8 @@ export default function ModalImageSelect({
                                              onImagesUpdated
                                          }: ModalImageSelectProps) {
 
-    const modalTestID = "Modal";
+    const {t} = useI18n();
+
 
     const {colors} = useTheme();
     const textVariant: VariantProp<never> = "titleMedium";
@@ -43,6 +45,9 @@ export default function ModalImageSelect({
         }
     }
 
+    const ocrTranslationsPrefix = 'alerts.ocrRecipe.';
+
+    const modalTestID = "Modal";
     const testID = "ModalImageSelect";
 
     return (
@@ -54,8 +59,7 @@ export default function ModalImageSelect({
                 marginHorizontal: padding.veryLarge
             }} onDismiss={onDismissFunction}>
                 <Text testID={testID + "::ExplanationText"} variant={textVariant}
-                      style={{marginVertical: padding.medium}}>Choose a picture among one of
-                    these:</Text>
+                      style={{marginVertical: padding.medium}}>{t(ocrTranslationsPrefix + 'explanationText')}</Text>
                 <HorizontalList testID={modalTestID} propType={'Image'} item={arrImg}
                                 onPress={(imgPressed) => {
                                     onSelectFunction(imgPressed);
@@ -64,12 +68,14 @@ export default function ModalImageSelect({
                     <View style={[viewsSplitScreen.splitIn2View, {marginVertical: padding.medium}]}>
                         <RoundButton testID={modalTestID + "::Camera"} onPressFunction={takePhotoInModal}
                                      size={"medium"} icon={Icons.cameraIcon}/>
-                        <Text testID={modalTestID + "::Camera::Text"} variant={textVariant}>Take a new photo</Text>
+                        <Text testID={modalTestID + "::Camera::Text"}
+                              variant={textVariant}>{t(ocrTranslationsPrefix + 'photo')}</Text>
                     </View>
                     <View style={[viewsSplitScreen.splitIn2View, {marginVertical: padding.medium}]}>
                         <RoundButton testID={modalTestID + "::Gallery"} onPressFunction={pickImageInModal}
                                      size={"medium"} icon={Icons.galleryIcon}/>
-                        <Text testID={modalTestID + "::Gallery::Text"} variant={textVariant}>Choose from gallery</Text>
+                        <Text testID={modalTestID + "::Gallery::Text"}
+                              variant={textVariant}>{t(ocrTranslationsPrefix + 'gallery')}</Text>
                     </View>
                 </View>
             </Modal>

@@ -1,0 +1,21 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: "Accueil"
+    label: "Go to Home screen"
+- tapOn:
+    id: "Home::SearchButton::RoundButton"
+    label: "Open Search screen"
+- tapOn:
+    id: "SearchScreen::RecipeCards::1"
+    label: "Open a recipe"
+- tapOn:
+    id: "RecipeValidate"
+    label: "Add the recipe to the shopping list"
+- runFlow:
+    file: "../../../asserts/Alerts/addingRecipeTacosTranslatedInFrench.yaml"
+    label: "Check alert is translated"
+- pressKey: "BACK"
+- tapOn:
+    text: "Courses"
+    label: "Go back to Shopping screen"

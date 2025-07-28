@@ -1,6 +1,7 @@
 appId: "com.recipesmanager"
 ---
 - assertVisible:
+    id: "com.recipesmanager:id/alertTitle"
     text: "Missing elements"
     label: Alert title is displayed
 - assertVisible:
@@ -9,8 +10,9 @@ appId: "com.recipesmanager"
     \ for the preparation\n\t- for how many persons this recipe is"
     label: Alert message containing all missing elements is displayed
 - assertVisible:
-    text: "OK"
+    id: "android:id/button1"
+    text: "Understood"
     label: Alert validation button is displayed
 - tapOn:
-    text: "OK"
+    text: "Understood"
     label: Tap on the validation button

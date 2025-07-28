@@ -1,0 +1,13 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "Parameters::Section::About::SubHeader"
+    text: "À propos"
+    label: "About section is displayed with the right text in French"
+- assertVisible:
+    text: "󰋼"
+    label: "Version icon is displayed"
+- assertVisible:
+    id: "Parameters::Section::About::Version::Item"
+    text: "Version, .*\\d+\\.\\d+\\.\\d+"
+    label: "Version number format is displayed correctly in French"

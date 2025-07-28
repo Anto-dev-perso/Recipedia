@@ -7,7 +7,10 @@ export default {
     add: 'Add',
     remove: 'Remove',
     ok: 'OK',
-    success: 'SUCCESSFULLY ADDED RECIPE TO SHOPPING LIST',
+    understood: "Understood",
+
+    success: 'Success',
+    addedToDatabase: 'has been successfully added to the database',
     addedToShoppingList: 'has been successfully added to the shopping list',
     addFilter: 'Add a filter',
     seeFilterResult: 'See filtered recipes',

@@ -45,3 +45,4 @@ maestro_logs
 android/*
 ios/*
 .idea
+.windsurf/

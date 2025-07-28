@@ -8,4 +8,5 @@ export default {
     recipeUsingValidation: 'OK',
     recipes: 'recettes',
     recipe: 'recette',
+    Recipe: 'Recette',
 };

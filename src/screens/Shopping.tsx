@@ -107,7 +107,7 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
         <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
             {shoppingList.length === 0 ? (
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
-                    <Text variant="titleMedium">{t('noItemsInShoppingList')}</Text>
+                    <Text testID={screenId + "::TextNoItem"} variant="titleMedium">{t('noItemsInShoppingList')}</Text>
                 </View>
             ) : (
                 <SectionList testID={sectionId}

@@ -1,0 +1,16 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "ShoppingScreen::SectionList::ingredientTypes.grainOrCereal::SubHeader"
+    text: "Céréales et Grains"
+    label: "Grain or Cereales subheader is displayed in French"
+- assertVisible:
+    id: "ShoppingScreen::SectionList::Taco Shells"
+    text: "Taco Shells, 1 recette"
+    label: "Ingredient is not translated but counter does"
+- longPressOn:
+    id: "ShoppingScreen::SectionList::Taco Shells"
+    label: "Open alert telling which recipes are for this ingredient"
+- runFlow:
+    file: "../Alerts/longPressOnTacoShellIsTranslatedToFrench.yaml"
+    label: "Check that alert telling which recipes are for this ingredient is translated"

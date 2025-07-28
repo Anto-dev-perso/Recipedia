@@ -1,0 +1,84 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    id: "RecipeTitle::TextInput"
+    label: "Tap on recipe title text input"
+- inputText:
+    text: "Titre"
+    label: "Write a title in the input text"
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::PrefixText"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+
+- tapOn:
+    id: "RecipePersons::CustomTextInput"
+    label: "Tap on recipe person text input"
+- inputText:
+    text: "5"
+    label: "Write a number of persons in the input text"
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Tap on recipe ingredients button to add ingredient"
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::QuantityInput::CustomTextInput"
+    label: "Tap on recipe ingredients quantity text input"
+- inputText:
+    text: "200"
+    label: "Write an ingredient quantity in the input text"
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    label: "Tap on recipe ingredient name text input"
+- inputText:
+    text: "Avocado"
+    label: "Write an ingredient name in the input text"
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+
+- tapOn:
+    id: "RecipePreparation::AddButton::RoundButton"
+    label: "Tap on recipe preparation adding button"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Content"
+    direction: DOWN
+    speed: 60
+
+- tapOn:
+    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+    label: "Tap on recipe preparation title text input"
+- inputText:
+    text: "Titre de preparation"
+    label: "Write a preparation title in the input text"
+- hideKeyboard:
+    label: "Close the keyboard"
+- tapOn:
+    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    label: "Tap on recipe preparation content text input"
+- inputText:
+    text: "Etape de la preparation"
+    label: "Write a preparation content in the input text"
+- hideKeyboard:
+    label: "Close the keyboard"

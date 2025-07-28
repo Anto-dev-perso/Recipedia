@@ -1,0 +1,9 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "LanguageSettings::Title"
+    text: "Langue"
+    label: "Language settings screen title is visible in French"
+- runFlow:
+    file: "../language/languageItems.yaml"
+    label: "Check that all languages are displayed"

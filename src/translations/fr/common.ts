@@ -6,9 +6,12 @@ export default {
     edit: 'Modifier',
     add: 'Ajouter',
     remove: 'Retirer',
-    ok: 'RECETTE AJOUTÉE AU MENU',
+    ok: 'Ok',
+    understood: "Compris",
+
     success: 'Succès',
-    addedToShoppingList: 'a été ajouté avec succès à la liste de courses',
+    addedToDatabase: 'ajoutée avec succès à la base de donnée',
+    addedToShoppingList: 'ajoutée avec succès à la liste de courses',
     addFilter: 'Ajouter un filtre',
     seeFilterResult: 'Voir les recettes filtrées',
 

@@ -1,0 +1,9 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    text: "Accueil"
+    label: "Go to the Home screen"
+- assertVisible:
+    id: "Home::RecipeRecommendation::1::SubHeader"
+    text: "Recommandation 1"
+    label: "Check recommendation text is displayed in French"

@@ -39,7 +39,8 @@ export default function FiltersSelection({
                                      rightIcon={Icons.crossIcon}
                                      onPressFunction={() => onRemoveFilter(item)}/>)}/>
 
-            <Button mode={"contained"} onPress={() => setAddingAFilter(!addingFilterMode)}
+            <Button testID={testId + "::FiltersToggleButtons"} mode={"contained"}
+                    onPress={() => setAddingAFilter(!addingFilterMode)}
                     icon={addingFilterMode ? Icons.removeFilterIcon : Icons.addFilterIcon}
                     style={{margin: padding.medium, alignSelf: 'flex-start', borderRadius: 20}}>
                 {t(addingFilterMode ? 'seeFilterResult' : 'addFilter')}

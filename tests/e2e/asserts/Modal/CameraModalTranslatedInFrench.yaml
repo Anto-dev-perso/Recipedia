@@ -1,0 +1,14 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "ModalImageSelect::ExplanationText"
+    text: "Choisissez une image:"
+    label: "Explanation text of the modal is displayed in French"
+- assertVisible:
+    id: "Modal::Camera::Text"
+    text: "Prendre une nouvelle photo"
+    label: "Camera helper text is displayed in French"
+- assertVisible:
+    id: "Modal::Gallery::Text"
+    text: "Choisir depuis la galerie"
+    label: "Gallery helper text is displayed in French"

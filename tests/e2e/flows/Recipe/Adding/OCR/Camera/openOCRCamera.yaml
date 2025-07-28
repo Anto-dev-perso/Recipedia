@@ -2,7 +2,7 @@ appId: "com.recipesmanager"
 ---
 - tapOn:
     text: "󰐕"
-    label: Press the Plus bottom button
+    label: "Expand the add recipe buttons"
 - tapOn:
     id: "CameraButton::RoundButton"
     label: Press the Camera bottom button

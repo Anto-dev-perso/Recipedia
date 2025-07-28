@@ -1,0 +1,15 @@
+appId: "com.recipesmanager"
+---
+
+- tapOn:
+    text: "Courses"
+    label: "Go to the shopping list screen"
+- runFlow:
+    file: "../../../asserts/Shopping/shoppingEmptyTranslatedInFrench.yaml"
+    label: "Check that empty shopping list is translated in French"
+- runFlow:
+    file: "./addRecipeToShopping.yaml"
+    label: "Add a recipe to check shopping is translated"
+- runFlow:
+    file: "../../../asserts/Shopping/shoppingTacosTranslatedInFrench.yaml"
+    label: "Check that non empty shopping list is translated in French"

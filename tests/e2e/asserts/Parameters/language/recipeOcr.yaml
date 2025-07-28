@@ -1,0 +1,61 @@
+appId: "com.recipesmanager"
+---
+# TODO Add alerts
+
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "Titre:"
+    label: "Intro text for the recipe title is displayed in French"
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: "Description:"
+    label: "Intro text for the recipe description is displayed in French"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeTags::HeaderText"
+    text: "Étiquettes:"
+    label: "Intro text for the recipe tags is displayed in French"
+- assertVisible:
+    id: "RecipeTags::ElementText"
+    text: "Les étiquettes représentent une façon d'identifier une recette afin d'en faciliter la recherche.\nVoici certains exemples d'étiquettes que vous pouvez utiliser : .*, .*, .*"
+    label: "Explanation text for the recipe tags is displayed in French"
+- assertVisible:
+    id: "RecipePersons::PrefixText"
+    text: "Pour combien de personnes ?"
+    label: "Intro text for the recipe persons is displayed in French"
+- assertVisible:
+    id: "RecipeIngredients::PrefixText"
+    text: "Ingrédients : "
+    label: "Intro text for the recipe ingredients is displayed in French"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::PrefixText"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeTime::PrefixText"
+    text: "Temps de préparation (minutes) :"
+    label: "Intro text for the recipe time is displayed in French"
+- assertVisible:
+    id: "RecipePreparation::PrefixText"
+    text: "Préparation : "
+    label: "Recipe preparation section is displayed in French"
+- tapOn:
+    id: "RecipePreparation::OpenModal::RoundButton"
+    label: "Tap on preparation modal"
+- runFlow:
+    file: "../../Modal/CameraModalTranslatedInFrench.yaml"
+    label: "Check that modal is translated in French"
+- pressKey: "BACK"
+- assertVisible:
+    id: "RecipeValidate-text"
+    text: "Ajouter cette nouvelle recette"
+    label: "Add validate button is displayed in French"

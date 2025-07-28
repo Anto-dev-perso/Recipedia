@@ -1,0 +1,20 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Go to adding manually a recipe screen"
+- tapOn:
+    id: "RecipeValidate"
+    label: "Try to validate the adding when empty"
+- runFlow:
+    file: "../../../asserts/Alerts/addRecipeEmptyTranslatedInFrench.yaml"
+    label: "Check that alert for empty recipe is translated in French"
+- runFlow:
+    file: "./fillRecipe.yaml"
+    label: "Fill the mandatory fields of the recipe adding screen"
+- tapOn:
+    id: "RecipeValidate"
+    label: "Validate the recipe adding"
+- runFlow:
+    file: "../../../asserts/Alerts/recipeAddFullTranslatedInFrench.yaml"
+    label: "Check that alert for added recipe is translated in French"

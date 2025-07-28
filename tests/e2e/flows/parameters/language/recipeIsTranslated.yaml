@@ -1,0 +1,34 @@
+appId: "com.recipesmanager"
+---
+- tapOn:
+    id: "Home::SearchButton::RoundButton"
+    label: "Open Search screen"
+- tapOn:
+    id: "SearchScreen::RecipeCards::1"
+    label: "Open a recipe"
+- runFlow:
+    file: "../../../asserts/parameters/language/recipeReadOnly.yaml"
+    label: "Check that the fixed text of a read only recipe screen are displayed in French"
+
+- tapOn:
+    id: "RecipeEdit::RoundButton"
+    label: "Enter edit mode for the recipe"
+- runFlow:
+    file: "../../../asserts/parameters/language/recipeEdit.yaml"
+    label: "Check that the fixed text of a edit recipe screen are displayed in French"
+
+- runFlow:
+    file: "../../Recipe/Adding/OCR/Camera/openOCRCamera.yaml"
+    label: "Open camera"
+- runFlow:
+    file: "../../../asserts/parameters/language/recipeOcr.yaml"
+    label: "Check that the fixed text of a add by image recipe screen are displayed in French"
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Quit the recipe screen"
+- runFlow:
+    file: './recipeAlerts.yaml'
+    label: "Check that recipe adding alerts are translated"
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Reduce add recipe buttons"

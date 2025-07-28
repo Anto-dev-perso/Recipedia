@@ -21,7 +21,7 @@ export default function RecipeCard({testId, size, recipe}: RecipeCardProps) {
     const radius = cardWidth / 12;
 
     return (
-        <Card mode={"outlined"}
+        <Card testID={testId} mode={"outlined"}
               style={{
                   flex: 1,
                   margin: padding.small,

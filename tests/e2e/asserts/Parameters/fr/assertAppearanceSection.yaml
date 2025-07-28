@@ -1,0 +1,20 @@
+appId: "com.recipesmanager"
+---
+- assertVisible:
+    id: "Parameters::Section::Appearance::SubHeader"
+    text: "Apparence"
+    label: "Appearance section is displayed with the right text in French"
+- assertVisible:
+    text: "󰔎"
+    label: "Dark mode left icon is displayed"
+- assertVisible:
+    id: "Parameters::Section::Appearance::DarkMode::Item"
+    text: "Mode Sombre"
+    label: "Dark mode item is displayed with the right text in French"
+- assertVisible:
+    id: "Parameters::Section::Appearance::DarkMode::Switch"
+    label: "Dark mode switch is visible"
+- assertVisible:
+    id: "Parameters::Section::Appearance::Language::Item"
+    text: "Langue, Français"
+    label: "Language item is displayed and is set to French"
