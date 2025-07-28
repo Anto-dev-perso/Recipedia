@@ -23,6 +23,7 @@ export type ItemTagType = {
 export type ItemDialogProps =
     {
         testId: string,
+        isVisible: boolean,
         mode: DialogMode,
         onClose: () => void,
         item: ItemIngredientType | ItemTagType,
@@ -31,8 +32,9 @@ export type ItemDialogProps =
 /**
  * A unified dialog component that can be used for adding, editing, or deleting items
  */
-export default function ItemDialog({onClose, testId, mode, item}: ItemDialogProps) {
-    const [visible, setVisible] = useState(true);
+export default function ItemDialog({onClose, isVisible, testId, mode, item}: ItemDialogProps) {
+    const {t} = useI18n();
+
     const [typeMenuVisible, setTypeMenuVisible] = useState(false);
 
     const [itemName, setItemName] = useState(item.value.name);
@@ -41,15 +43,11 @@ export default function ItemDialog({onClose, testId, mode, item}: ItemDialogProp
     const [ingUnit, setIngUnit] = useState(item.type === 'ingredient' ? item.value.unit : '');
     const [ingSeason, setIngSeason] = useState(item.type === 'ingredient' ? item.value.season : []);
 
-    // Handle dialog dismissal
     const handleDismiss = () => {
-        setVisible(false);
         onClose();
     };
 
-    // Handle confirmation action
     const handleConfirm = () => {
-        setVisible(false);
         callOnConfirmWithNewItem();
     };
 
@@ -71,8 +69,6 @@ export default function ItemDialog({onClose, testId, mode, item}: ItemDialogProp
                 console.warn("Unreachable code.");
         }
     };
-
-    const {t} = useI18n();
 
 
     // Get dialog properties based on the current mode
@@ -119,7 +115,7 @@ export default function ItemDialog({onClose, testId, mode, item}: ItemDialogProp
 
     return (
         <Portal>
-            <Dialog visible={visible} onDismiss={handleDismiss}>
+            <Dialog visible={isVisible} onDismiss={handleDismiss}>
                 <Dialog.Title testID={modalTestId + "::Title"}>{dialogTitle}</Dialog.Title>
                 <Dialog.Content>
                     {mode === 'delete' ?
@@ -163,9 +159,17 @@ export default function ItemDialog({onClose, testId, mode, item}: ItemDialogProp
                     }
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button testID={modalTestId + "::CancelButton"} onPress={handleDismiss}>{t('cancel')}</Button>
-                    <Button testID={modalTestId + "::ConfirmButton"}
-                            onPress={handleConfirm}>{confirmButtonText}</Button>
+                    <View style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        justifyContent: "space-between"
+                    }}>
+                        <Button testID={modalTestId + "::CancelButton"} mode={"outlined"}
+                                onPress={handleDismiss}>{t('cancel')}</Button>
+                        <Button testID={modalTestId + "::ConfirmButton"} mode={"contained"}
+                                onPress={handleConfirm}>{confirmButtonText}</Button>
+                    </View>
                 </Dialog.Actions>
             </Dialog>
         </Portal>

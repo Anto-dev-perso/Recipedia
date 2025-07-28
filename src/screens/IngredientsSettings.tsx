@@ -105,14 +105,12 @@ export default function IngredientsSettings({}: IngredientsSettingProp) {
                               onDelete={openDeleteDialog} type="ingredient"/>
 
             {/* Dialog for add/edit/delete operations */}
-            {isDialogOpen ?
-                <ItemDialog onClose={closeDialog} testId={testId} mode={dialogMode}
-                            item={{
-                                type: "ingredient",
-                                value: selectedIngredient,
-                                onConfirmIngredient: handleDialogConfirm
-                            }}/>
-                : null}
+            <ItemDialog isVisible={isDialogOpen} onClose={closeDialog} testId={testId} mode={dialogMode}
+                        item={{
+                            type: "ingredient",
+                            value: selectedIngredient,
+                            onConfirmIngredient: handleDialogConfirm
+                        }}/>
         </View>
     );
 }

@@ -12,13 +12,21 @@ import BottomTopButton from "@components/molecules/BottomTopButton";
 import RoundButton from "@components/atomic/RoundButton";
 import {bottomTopPosition} from "@styles/buttons";
 import {Icons} from "@assets/Icons";
-import {AsyncAlert} from "@utils/AsyncAlert";
+import Alert from "@components/dialogs/Alert";
+
+type ingredientDataForDialog = Pick<shoppingListTableElement, "name" | "recipesTitle">;
 
 export default function Shopping({navigation, route}: ShoppingScreenProp) {
     const {t} = useI18n();
     const {colors, fonts} = useTheme();
 
     const [shoppingList, setShoppingList] = useState(new Array<shoppingListTableElement>());
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [ingredientDataForDialog, setIngredientDataForDialog] = useState<ingredientDataForDialog>({
+        recipesTitle: [],
+        name: ""
+    });
 
     useFocusEffect(() => {
         navigation.addListener('focus', () => {
@@ -37,6 +45,14 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
 
     const screenId = "ShoppingScreen";
     const sectionId = screenId + "::SectionList";
+
+    function createDialogTitle() {
+        return t('recipeUsingTitle') + ' ' + ingredientDataForDialog.name.toLowerCase();
+    }
+
+    function createDialogContent() {
+        return t('recipeUsingMessage') + ' :' + ingredientDataForDialog.recipesTitle.map(title => `\n\t- ${title}`).join('');
+    }
 
     function updateShoppingList(ingredientName: string) {
         const newShoppingList = shoppingList.map(item => item);
@@ -90,17 +106,9 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
                        left={props => (<Checkbox status={item.purchased ? 'checked' : 'unchecked'}/>)}
                        onPress={() => updateShoppingList(item.name)}
                        onLongPress={() => {
-                           if (item.recipesTitle.length > 0) {
-                               const recipesList = item.recipesTitle.map(title => `\n\t- ${title}`).join('');
-
-                               const alertTitle = t('recipeUsingTitle') + ' ' + item.name.toLocaleLowerCase();
-                               const alertMessage = t('recipeUsingMessage') + ' :' + recipesList;
-                               // TODO to replace by a Dialog from react-native-paper
-                               AsyncAlert(alertTitle, alertMessage, t('recipeUsingValidation'));
-                           }
-                       }}
-            />
-        );
+                           setIngredientDataForDialog(item);
+                           setIsDialogOpen(true)
+                       }}/>);
     }
 
     return (
@@ -118,6 +126,13 @@ export default function Shopping({navigation, route}: ShoppingScreenProp) {
                              stickySectionHeadersEnabled={false}
                 />
             )}
+
+            <Alert isVisible={isDialogOpen} confirmText={t('recipeUsingValidation')} content={createDialogContent()}
+                   testId={screenId}
+                   title={createDialogTitle()} onClose={() => {
+                setIsDialogOpen(false);
+                setIngredientDataForDialog({name: "", recipesTitle: []})
+            }}/>
             <BottomTopButton testID={screenId + "::ClearShoppingListButton"}
                              as={RoundButton}
                              position={bottomTopPosition.top_right}

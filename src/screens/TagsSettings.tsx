@@ -98,10 +98,9 @@ export default function TagsSettings({}: TagsSettingsProp) {
                               onEdit={openEditDialog} onDelete={openDeleteDialog} type="tag"/>
 
             {/* Dialog for add/edit/delete operations */}
-            {isDialogOpen ?
-                <ItemDialog onClose={closeDialog} testId={testId} mode={dialogMode}
-                            item={{type: "tag", value: selectedTag, onConfirmTag: handleDialogConfirm}}/>
-                : null}
+            <ItemDialog isVisible={isDialogOpen} onClose={closeDialog} testId={testId} mode={dialogMode}
+                        item={{type: "tag", value: selectedTag, onConfirmTag: handleDialogConfirm}}/>
+
         </View>
     );
 }

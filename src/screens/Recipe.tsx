@@ -20,7 +20,6 @@ import RecipeText, {RecipeTextProps, TextProp} from "@components/organisms/Recip
 import {textSeparator, typoRender, unitySeparator} from "@styles/typography";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import RecipeTags, {RecipeTagProps} from "@components/organisms/RecipeTags";
-import {alertUserChoice, AsyncAlert} from "@utils/AsyncAlert";
 import FileGestion from "@utils/FileGestion";
 import RectangleButton from "@components/atomic/RectangleButton";
 import RoundButton from "@components/atomic/RoundButton";
@@ -31,6 +30,7 @@ import {useTheme} from "react-native-paper";
 import ModalImageSelect from "@screens/ModalImageSelect";
 import {cropImage} from "@utils/ImagePicker";
 import {useI18n} from "@utils/i18n";
+import Alert, {AlertProps} from "@components/dialogs/Alert";
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -45,6 +45,9 @@ export type addRecipeFromPicture = { mode: "addFromPic", imgUri: string }
 
 export type RecipePropType = readRecipe | editRecipeManually | addRecipeManually | addRecipeFromPicture
 
+type DialogProps = Pick<AlertProps, "title" | "content" | "confirmText" | "cancelText" | "onConfirm">;
+const defaultDialogProp: DialogProps = {title: "", content: "", confirmText: ""};
+
 
 export default function Recipe({route, navigation}: RecipeScreenProp) {
     const {t} = useI18n();
@@ -53,7 +56,28 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     const props: RecipePropType = route.params;
     const initStateFromProp = (props.mode === "readOnly" || (props.mode === "edit"));
-    const tags = RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.name);
+
+    const [stackMode, setStackMode] = useState(convertModeFromProps());
+    const [recipeImage, setRecipeImage] = useState(initStateFromProp ? props.recipe.image_Source : "");
+    const [recipeTitle, setRecipeTitle] = useState(initStateFromProp ? props.recipe.title : "");
+    const [recipeDescription, setRecipeDescription] = useState(initStateFromProp ? props.recipe.description : "");
+    const [recipeTags, setRecipeTags] = useState(initStateFromProp ? props.recipe.tags : new Array<tagTableElement>());
+    const [recipePersons, setRecipePersons] = useState(initStateFromProp ? props.recipe.persons : defaultValueNumber);
+    const [recipeIngredients, setRecipeIngredients] = useState(initStateFromProp ? props.recipe.ingredients : new Array<ingredientTableElement>());
+    const [recipePreparation, setRecipePreparation] = useState(initStateFromProp ? props.recipe.preparation : new Array<string>());
+    const [recipeTime, setRecipeTime] = useState(initStateFromProp ? props.recipe.time : defaultValueNumber);
+    const [imgForOCR, setImgForOCR] = useState(props.mode === "addFromPic" ? new Array<string>(props.imgUri) : new Array<string>());
+    const [randomTags, setRandomTags] = useState(RecipeDatabase.getInstance().searchRandomlyTags(3).map(element => element.name));
+
+    const [validationButtonText, validationFunction] = recipeValidationButtonProps();
+
+    const [modalField, setModalField] = useState<recipeColumnsNames | undefined>(undefined);
+    const [recipePersonsManuallyEdited, setRecipePersonsManuallyEdited] = useState(false);
+    const [recipeTimeManuallyEdited, setRecipeTimeManuallyEdited] = useState(false);
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [dialogProp, setDialogProp] = useState(defaultDialogProp);
+
 
     function convertModeFromProps() {
         switch (props.mode) {
@@ -68,50 +92,42 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         }
     }
 
-    const [stackMode, setStackMode] = useState(convertModeFromProps());
-    const [recipeImage, setRecipeImage] = useState(initStateFromProp ? props.recipe.image_Source : "");
-    const [recipeTitle, setRecipeTitle] = useState(initStateFromProp ? props.recipe.title : "");
-    const [recipeDescription, setRecipeDescription] = useState(initStateFromProp ? props.recipe.description : "");
-    const [recipeTags, setRecipeTags] = useState(initStateFromProp ? props.recipe.tags : new Array<tagTableElement>());
-    const [recipePersons, setRecipePersons] = useState(initStateFromProp ? props.recipe.persons : defaultValueNumber);
-    const [recipeIngredients, setRecipeIngredients] = useState(initStateFromProp ? props.recipe.ingredients : new Array<ingredientTableElement>());
-    const [recipePreparation, setRecipePreparation] = useState(initStateFromProp ? props.recipe.preparation : new Array<string>());
-    const [recipeTime, setRecipeTime] = useState(initStateFromProp ? props.recipe.time : defaultValueNumber);
-    const [imgForOCR, setImgForOCR] = useState(props.mode === "addFromPic" ? new Array<string>(props.imgUri) : new Array<string>());
-    const [randomTags, setRandomTags] = useState(tags);
-
-    const [modalField, setModalField] = useState<recipeColumnsNames | undefined>(undefined);
-    const [recipePersonsManuallyEdited, setRecipePersonsManuallyEdited] = useState(false);
-    const [recipeTimeManuallyEdited, setRecipeTimeManuallyEdited] = useState(false);
-
-
     async function onDelete() {
         switch (stackMode) {
             case recipeStateType.readOnly:
             case recipeStateType.edit:
-                const choice = await AsyncAlert(t('deleteRecipe'), `${t('confirmDelete')} ${recipeTitle}?`, t('save'), t('cancel'));
-                switch (choice) {
-                    case alertUserChoice.cancel:
-                        return;
-                    case alertUserChoice.ok:
-                    case alertUserChoice.neutral:
-                        let msg: string;
+                setDialogProp({
+                    title: t('deleteRecipe'),
+                    content: t('confirmDelete'),
+                    confirmText: t('save'),
+                    cancelText: t('cancel'),
+                    onConfirm: async () => {
+                        console.log(`On confirm delete ${isDialogOpen}`);
+                        let dialogProps: DialogProps = {
+                            title: t('deleteRecipe'),
+                            confirmText: t('ok'),
+                            onConfirm: () => {
+                                navigation.goBack()
+                            },
+                            content: ""
+                        };
                         //@ts-ignore params.recipe exist because we already checked with switch
-                        if (!await RecipeDatabase.getInstance().deleteRecipe(this.props.route.params.recipe)) {
-                            msg = `${t('errorOccurred')} ${t('deleteRecipe')} ${recipeTitle}`;
+                        if (!await RecipeDatabase.getInstance().deleteRecipe(props.recipe)) {
+                            dialogProps.content = `${t('errorOccurred')} ${t('deleteRecipe')} ${recipeTitle}`;
                         } else {
-                            msg = `${t('recipe')} ${recipeTitle} ${t('delete')} ${t('success')}`;
+                            dialogProps.content = `${t('recipe')} ${recipeTitle} ${t('delete')} ${t('success')}`;
                         }
-                        const promiseReturn = AsyncAlert(t('deleteRecipe'), msg, t('ok'));
-                        break;
-                }
+                        setDialogProp(dialogProps);
+                        setIsDialogOpen(true);
+                    }
+                });
+                setIsDialogOpen(true);
                 break;
             case recipeStateType.addManual:
             case recipeStateType.addOCR:
                 console.warn(`Call onDelete on mode ${stackMode} which is not possible`);
                 break;
         }
-        navigation.goBack();
     }
 
     // TODO let the possibility to add manually the field
@@ -199,8 +215,14 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     async function readOnlyValidation() {
         await RecipeDatabase.getInstance().addRecipeToShopping(createRecipeFromStates());
-        navigation.goBack();
-        await AsyncAlert(t('success'), `${t('Recipe')} "${recipeTitle}" ${t('addedToShoppingList')}`, t('ok'));
+        setDialogProp({
+            title: t('success'),
+            content: `${t('Recipe')} "${recipeTitle}" ${t('addedToShoppingList')}`,
+            confirmText: t('ok'),
+            onConfirm: () => navigation.goBack(),
+
+        });
+        setIsDialogOpen(true);
     }
 
     async function editValidation() {
@@ -217,6 +239,8 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     //  TODO checking if persons, time or ingredients aren't null
     // TODO ingredient quantity shouldn't be null
     async function addValidation() {
+        let dialogProp = defaultDialogProp;
+
         const missingElem = new Array<string>();
         const translatedMissingElemPrefix = 'alerts.missingElements.';
 
@@ -252,33 +276,35 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                 FileGestion.getInstance().clearCache();
 
                 await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
-                navigation.goBack();
-                await AsyncAlert(t('success'), t('Recipe') + ' "' + recipeToAdd.title + '" ' + t('addedToDatabase'), t('understood'));
+                dialogProp.title = t('success');
+                dialogProp.content = t('Recipe') + ' "' + recipeToAdd.title + '" ' + t('addedToDatabase');
+                dialogProp.confirmText = t('understood');
+                dialogProp.onConfirm = () => navigation.goBack();
             } catch (error) {
                 console.warn("addValidation: Something went wrong when validating new recipe : ", error)
             }
-
-
         }
-        // TODO the AsyncAlert dialog preparation should be a dedicated function for readiness
+        // TODO the dialog preparation should be a dedicated function for readiness
         else if (missingElem.length == 5) {
-            await AsyncAlert(t(translatedMissingElemPrefix + 'titleAll'), t('messageAll'));
+            dialogProp.title = t(translatedMissingElemPrefix + 'titleAll');
+            dialogProp.content = t('messageAll');
         } else {
-            let alertTitle: string;
-            let alertMsg: string;
+            dialogProp.confirmText = t('understood');
             if (missingElem.length == 1) {
-                alertTitle = t(translatedMissingElemPrefix + 'titleSingular');
-                alertMsg = t(translatedMissingElemPrefix + 'messageSingularBeginning') + +missingElem[0] + t(translatedMissingElemPrefix + 'messageSingularEnding');
-                alertMsg = t(translatedMissingElemPrefix + 'messageSingularBeginning') + missingElem[0] + t(translatedMissingElemPrefix + 'messageSingularEnding');
+                console.log(`One missing with ${missingElem}`);
+
+                dialogProp.title = t(translatedMissingElemPrefix + 'titleSingular');
+                dialogProp.content = t(translatedMissingElemPrefix + 'messageSingularBeginning') + missingElem[0] + t(translatedMissingElemPrefix + 'messageSingularEnding');
             } else {
-                alertTitle = t(translatedMissingElemPrefix + 'titlePlural');
-                alertMsg = t(translatedMissingElemPrefix + 'messagePlural');
+                dialogProp.title = t(translatedMissingElemPrefix + 'titlePlural');
+                dialogProp.content = t(translatedMissingElemPrefix + 'messagePlural');
                 for (const elem of missingElem) {
-                    alertMsg += `\n\t- ${elem}`;
+                    dialogProp.content += `\n\t- ${elem}`;
                 }
             }
-            await AsyncAlert(alertTitle, alertMsg, t('understood'))
         }
+        setDialogProp(dialogProp);
+        setIsDialogOpen(true);
     }
 
     async function fillOneField(uri: string, field: recipeColumnsNames) {
@@ -640,7 +666,6 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         }
     }
 
-    const [validationButtonText, validationFunction] = recipeValidationButtonProps();
 
     return (
         <SafeAreaView style={{backgroundColor: colors.background}}>
@@ -678,6 +703,10 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
                 {/* TODO add nutrition */}
             </ScrollView>
+            <Alert {...dialogProp} isVisible={isDialogOpen} testId={"Recipe"} onClose={() => {
+                setIsDialogOpen(false);
+                setDialogProp(defaultDialogProp);
+            }}/>
             {/*TODO add a generic component to tell which bottom button we want*/}
             <BottomTopButton testID={'BackButton'} as={RoundButton} position={bottomTopPosition.top_left}
                              buttonOffset={0} size={"medium"}
