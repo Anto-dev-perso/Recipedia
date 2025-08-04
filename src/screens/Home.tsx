@@ -5,22 +5,17 @@ import React, {useCallback, useEffect, useState} from "react";
 import {RefreshControl, SafeAreaView, ScrollView, View} from "react-native";
 import {useTheme} from "react-native-paper";
 import RecipeDatabase from "@utils/RecipeDatabase";
-import {HomeScreenProp, StackScreenNavigation} from "@customTypes/ScreenTypes";
 import VerticalBottomButtons from "@components/organisms/VerticalBottomButtons";
-import {useFocusEffect, useNavigation} from "@react-navigation/native";
-import {Icons} from "@assets/Icons";
+import {useFocusEffect} from "@react-navigation/native";
 import {useI18n} from "@utils/i18n";
-import BottomTopButton from "@components/molecules/BottomTopButton";
-import RoundButton from "@components/atomic/RoundButton";
-import {bottomTopPosition} from "@styles/buttons";
 import {screenWidth} from "@styles/spacing";
+import {HomeScreenProp} from "@customTypes/ScreenTypes";
 
 
-export default function Home({}: HomeScreenProp) {
+export default function Home({navigation}: HomeScreenProp) {
     const {t} = useI18n();
     const {colors} = useTheme();
 
-    const {navigate} = useNavigation<StackScreenNavigation>();
     const [refreshing, setRefreshing] = useState<boolean>(false);
 
     const homeId = "Home";
@@ -99,9 +94,6 @@ export default function Home({}: HomeScreenProp) {
                 {/* Add padding to avoid having the last carousel item on buttons */}
                 <View style={{paddingBottom: screenWidth / 6}}/>
             </ScrollView>
-            <BottomTopButton testID={homeId + '::SearchButton'} as={RoundButton}
-                             position={bottomTopPosition.bottom_left}
-                             size={"medium"} icon={Icons.searchIcon} onPressFunction={() => navigate('Search')}/>
             <VerticalBottomButtons/>
         </SafeAreaView>
     )

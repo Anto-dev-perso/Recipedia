@@ -6,7 +6,8 @@ import {getDefaultPersons, getSeasonFilter, toggleSeasonFilter} from "@utils/set
 import {ParametersScreenProp, StackScreenNavigation} from "@customTypes/ScreenTypes";
 import {useNavigation} from "@react-navigation/native";
 import {Icons} from "@assets/Icons";
-import {ThemeContext} from "../../App";
+import {ThemeContext} from "@context/ThemeContext"
+
 
 export default function Parameters({}: ParametersScreenProp) {
     const {t, getLocale, getLocaleName} = useI18n();

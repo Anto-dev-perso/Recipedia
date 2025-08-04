@@ -15,6 +15,9 @@
       "@components/*": [
         "components/*"
       ],
+      "@context/*": [
+        "context/*"
+      ],
       "@navigation/*": [
         "navigation/*"
       ],

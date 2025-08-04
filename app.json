@@ -5,11 +5,15 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/app/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/app/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#006D38",
+      "dark": {
+        "image": "./src/assets/app/splash.png",
+        "backgroundColor": "#79DB95"
+      }
     },
     "ios": {
       "supportsTablet": true,
@@ -20,8 +24,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/app/adaptive_icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/assets/app/adaptive_icon.png"
       },
       "package": "com.recipesmanager",
       "permissions": [

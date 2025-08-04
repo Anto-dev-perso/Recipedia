@@ -6,9 +6,8 @@ import {BottomTabScreenProps, createBottomTabNavigator} from "@react-navigation/
 
 
 export type StackScreenParamList = {
-    Root: React.JSX.Element;
+    Tabs: React.JSX.Element;
     Recipe: RecipePropType;
-    Search: undefined;
     LanguageSettings: undefined;
     DefaultPersonsSettings: undefined;
     IngredientsSettings: undefined;
@@ -17,8 +16,8 @@ export type StackScreenParamList = {
 
 export type TabScreenParamList = {
     Home: undefined;
+    Search: undefined;
     Shopping: undefined;
-    Plannification: undefined;
     Parameters: undefined;
 };
 
@@ -27,23 +26,15 @@ export const Tab = createBottomTabNavigator<TabScreenParamList>();
 
 
 export type StackScreenNavigation = NavigationProp<StackScreenParamList>;
-export type TabNavigation = NavigationProp<TabScreenParamList>;
 
 export type HomeScreenProp = BottomTabScreenProps<TabScreenParamList, 'Home'>;
+export type SearchScreenProp = BottomTabScreenProps<TabScreenParamList, 'Search'>;
 export type ShoppingScreenProp = BottomTabScreenProps<TabScreenParamList, 'Shopping'>;
-export type PlannificationScreenProp = BottomTabScreenProps<TabScreenParamList, 'Plannification'>;
-
 export type ParametersScreenProp = BottomTabScreenProps<TabScreenParamList, 'Parameters'>;
 
 
 export type RecipeScreenProp = NativeStackScreenProps<StackScreenParamList, 'Recipe'>;
-export type SearchScreenProp = NativeStackScreenProps<StackScreenParamList, 'Search'>;
 export type LanguageSettingsProp = NativeStackScreenProps<StackScreenParamList, 'LanguageSettings'>;
 export type DefaultPersonsSettingsProp = NativeStackScreenProps<StackScreenParamList, 'DefaultPersonsSettings'>;
 export type IngredientsSettingProp = NativeStackScreenProps<StackScreenParamList, 'IngredientsSettings'>;
 export type TagsSettingsProp = NativeStackScreenProps<StackScreenParamList, 'TagsSettings'>;
-
-export type toggleActivationFunctions = {
-    onActivation: () => void;
-    onDeActivation: () => void;
-}

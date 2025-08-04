@@ -16,7 +16,7 @@ import Alert from "@components/dialogs/Alert";
 
 type ingredientDataForDialog = Pick<shoppingListTableElement, "name" | "recipesTitle">;
 
-export default function Shopping({navigation, route}: ShoppingScreenProp) {
+export default function Shopping({navigation}: ShoppingScreenProp) {
     const {t} = useI18n();
     const {colors, fonts} = useTheme();
 
