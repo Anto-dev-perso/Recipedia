@@ -11,7 +11,8 @@ import RootNavigator from "@navigation/RootNavigator";
 import {getDarkMode, initSettings, setDarkMode as setDarkModeSetting} from "@utils/settings";
 import * as SplashScreen from 'expo-splash-screen';
 import {fetchFonts} from "@styles/typography";
-import {ThemeContext} from '@context/ThemeContext';
+import {DarkModeContext} from '@context/DarkModeContext';
+import {SeasonFilterProvider} from '@context/SeasonFilterContext';
 
 // TODO manage horizontal mode
 
@@ -35,13 +36,11 @@ export default function App() {
     const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
-        console.log("Entered useEffect");
         const initialize = async () => {
 
             // Initialize settings first
             await initSettings();
 
-            // Get dark mode setting
             const isDarkMode = await getDarkMode();
             setDarkMode(isDarkMode);
 
@@ -79,10 +78,6 @@ export default function App() {
     };
 
     const theme = darkMode ? darkTheme : lightTheme;
-    const themeContextValue = {
-        isDarkMode: darkMode,
-        toggleDarkMode
-    };
 
 
     const onLayoutRootView = useCallback(async () => {
@@ -96,12 +91,17 @@ export default function App() {
     }
 
     return (
-        <ThemeContext.Provider value={themeContextValue}>
-            <PaperProvider theme={theme}>
-                <NavigationContainer onReady={onLayoutRootView}>
-                    <RootNavigator/>
-                </NavigationContainer>
-            </PaperProvider>
-        </ThemeContext.Provider>
+        <SeasonFilterProvider>
+            <DarkModeContext.Provider value={{
+                isDarkMode: darkMode,
+                toggleDarkMode
+            }}>
+                <PaperProvider theme={theme}>
+                    <NavigationContainer onReady={onLayoutRootView}>
+                        <RootNavigator/>
+                    </NavigationContainer>
+                </PaperProvider>
+            </DarkModeContext.Provider>
+        </SeasonFilterProvider>
     );
 }

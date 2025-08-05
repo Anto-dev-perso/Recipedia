@@ -2,32 +2,25 @@ import React, {useContext, useEffect, useState} from "react";
 import {ScrollView, View} from "react-native";
 import {Divider, List, Switch, useTheme} from "react-native-paper";
 import {useI18n} from "@utils/i18n";
-import {getDefaultPersons, getSeasonFilter, toggleSeasonFilter} from "@utils/settings";
+import {getDefaultPersons} from "@utils/settings";
+import {useSeasonFilter} from "@context/SeasonFilterContext";
 import {ParametersScreenProp, StackScreenNavigation} from "@customTypes/ScreenTypes";
 import {useNavigation} from "@react-navigation/native";
 import {Icons} from "@assets/Icons";
-import {ThemeContext} from "@context/ThemeContext"
+import {DarkModeContext} from "@context/DarkModeContext"
 
 
 export default function Parameters({}: ParametersScreenProp) {
     const {t, getLocale, getLocaleName} = useI18n();
-    const {isDarkMode, toggleDarkMode} = useContext(ThemeContext);
+    const {isDarkMode, toggleDarkMode} = useContext(DarkModeContext);
     const [defaultPersons, setDefaultPersons] = useState(4);
-    const [seasonFilter, setSeasonFilter] = useState(true);
+    const {seasonFilter, setSeasonFilter} = useSeasonFilter();
     const {colors} = useTheme();
     const currentLocale = getLocale();
 
     // Load settings on component mount
     useEffect(() => {
-        const loadSettings = async () => {
-            const persons = await getDefaultPersons();
-            setDefaultPersons(persons);
-
-            const filter = await getSeasonFilter();
-            setSeasonFilter(filter);
-        };
-
-        loadSettings();
+        getDefaultPersons().then(value => setDefaultPersons(value));
     }, []);
 
     const {navigate} = useNavigation<StackScreenNavigation>();
@@ -69,6 +62,7 @@ export default function Parameters({}: ParametersScreenProp) {
     const aboutId = sectionId + "::About";
     const versionId = aboutId + "::Version";
 
+
     return (
         <View style={{backgroundColor: colors.background}}>
             <ScrollView>
@@ -106,10 +100,7 @@ export default function Parameters({}: ParametersScreenProp) {
                                title={t('default_season_filter')}
                                left={props => <List.Icon {...props} icon={Icons.plannerUnselectedIcon}/>}
                                right={props => <Switch testID={seasonId + "::Switch"} value={seasonFilter}
-                                                       onValueChange={async () => {
-                                                           const newValue = await toggleSeasonFilter();
-                                                           setSeasonFilter(newValue);
-                                                       }}/>}
+                                                       onValueChange={setSeasonFilter}/>}
                     />
                 </List.Section>
 

@@ -102,7 +102,6 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     confirmText: t('save'),
                     cancelText: t('cancel'),
                     onConfirm: async () => {
-                        console.log(`On confirm delete ${isDialogOpen}`);
                         let dialogProps: DialogProps = {
                             title: t('deleteRecipe'),
                             confirmText: t('ok'),

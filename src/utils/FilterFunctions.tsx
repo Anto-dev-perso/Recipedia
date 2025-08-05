@@ -7,6 +7,7 @@ import {
     TListFilter
 } from "@customTypes/RecipeFiltersTypes";
 import {TFunction} from "i18next";
+import RecipeDatabase from "@utils/RecipeDatabase";
 
 
 export function selectFilterCategoriesValuesToDisplay(tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>, t: TFunction<"translation", undefined>): Array<FiltersAppliedToDatabase> {
@@ -83,7 +84,7 @@ export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement
 // TODO find a better type for the multimap (maybe https://github.com/teppeis/multimaps
 export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter: Map<TListFilter, Array<string>>, t: TFunction<"translation", undefined>): Array<recipeTableElement> {
     if (filter.size == 0) {
-        return new Array<recipeTableElement>(...recipeArray);
+        return RecipeDatabase.getInstance().get_recipes();
     }
     return new Array<recipeTableElement>(...recipeArray.filter(recipe => {
         let elementToKeep = true;

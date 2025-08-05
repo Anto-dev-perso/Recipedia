@@ -22,12 +22,14 @@ import FiltersSelection from "@components/organisms/FiltersSelection";
 import {padding} from "@styles/spacing";
 import RecipeCard from "@components/molecules/RecipeCard";
 import FilterAccordion from "@components/organisms/FilterAccordion";
+import {useSeasonFilter} from "@context/SeasonFilterContext";
 
 export default function Search({}: SearchScreenProp) {
     const {t} = useI18n();
     const {colors} = useTheme();
 
-    // State management
+    const {seasonFilter} = useSeasonFilter();
+
     const [filtersState, setFiltersState] = useState(new Map<TListFilter, Array<string>>());
     const [filteredRecipes, setFilteredRecipes] = useState<Array<recipeTableElement>>(RecipeDatabase.getInstance().get_recipes());
     const [filteredIngredients, setFilteredIngredients] = useState(new Array<ingredientTableElement>());
@@ -37,14 +39,12 @@ export default function Search({}: SearchScreenProp) {
     const [searchBarClicked, setSearchBarClicked] = useState(false);
     const [addingFilterMode, setAddingFilterMode] = useState(false);
 
-    // Update filtered recipes when filters change
     function updateFilteredRecipes(recipeArray: Array<recipeTableElement>) {
         const recipesFiltered = filterFromRecipe(recipeArray, filtersState, t);
         setFilteredRecipes([...recipesFiltered]);
         extractTitleTagsAndIngredients(recipesFiltered);
     }
 
-    // Extract titles, tags, and ingredients from filtered recipes
     function extractTitleTagsAndIngredients(recipeArray: Array<recipeTableElement>) {
         const [titles, ingredients, tags] = extractFilteredRecipeDatas(recipeArray);
         setFilteredTitles(titles);
@@ -53,16 +53,35 @@ export default function Search({}: SearchScreenProp) {
         // TODO maybe call the database with the filter in it so that we benefit of the SQL optimizations and we don't take too much RAM
     }
 
-    // Update filtered recipes when filters change
+    function checkIfUpdateOfSeasonFilterIsPossible() {
+        const seasonFilterKey = listFilter.inSeason;
+        const seasonFilterValue = t(listFilter.inSeason);
+
+        // Add the filter if there is already no filter set
+        if (seasonFilter && filtersState.size === 0) {
+            addAFilterToTheState(seasonFilterKey, seasonFilterValue);
+        }
+        // Remove the filter if it is the only one left
+        else if (!seasonFilter && filtersState.size === 1 && filtersState.has(seasonFilterKey)) {
+            removeAFilterToTheState(seasonFilterKey, seasonFilterValue);
+        }
+    }
+
+    useEffect(() => {
+        checkIfUpdateOfSeasonFilterIsPossible();
+        extractTitleTagsAndIngredients(filteredRecipes);
+    }, []);
+
+    // TODO Double rendering can occur when filter update
     useEffect(() => {
         updateFilteredRecipes(filteredRecipes);
     }, [filtersState]);
 
-    // Initialize filtered data
     useEffect(() => {
-        extractTitleTagsAndIngredients(filteredRecipes);
-    }, []);
+        checkIfUpdateOfSeasonFilterIsPossible();
+    }, [seasonFilter]);
 
+    // TODO use a context instead
     // Update filtered recipes when a recipe is deleted
     useFocusEffect(() => {
         if (filteredRecipes.length === RecipeDatabase.getInstance().get_recipes().length) {
@@ -96,23 +115,22 @@ export default function Search({}: SearchScreenProp) {
         setSearchPhrase(newSearchString);
     }
 
-    // Add a filter to the filter state
     function addAFilterToTheState(filterTitle: TListFilter, value: string) {
         addValueToMultimap(filtersState, filterTitle, value);
         setFiltersState(new Map(filtersState));
     }
 
-    // Remove a filter from the filter state
     function removeAFilterToTheState(filterTitle: TListFilter, value: string) {
+
         removeValueToMultimap(filtersState, filterTitle, value);
         setFilteredRecipes(RecipeDatabase.getInstance().get_recipes());
         setFiltersState(new Map(filtersState));
+
         if (filterTitle == listFilter.recipeTitleInclude) {
             setSearchPhrase("");
         }
     }
 
-    // Find and remove a filter by its value
     function findFilterStringAndRemove(item: string) {
         for (const [key, value] of filtersState) {
             if (value.includes(item)) {
