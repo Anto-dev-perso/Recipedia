@@ -9,7 +9,6 @@ export const nutritionTableName = "NutritionnalValueTable";
 
 export const shoppingListTableName = "ShoppingListTable";
 
-export const regExp = /["{}\\]+/g;
 
 export enum encodedType {
     INTEGER = "INTEGER",
@@ -79,6 +78,11 @@ export type ingredientTableElement = {
     type: ingredientType,
     season: Array<string>,
 }
+
+export type coreIngredientElement = Pick<ingredientTableElement, 'name'> & {
+    quantityPerPerson: number | undefined;
+};
+
 export type encodedIngredientElement = {
     ID: number,
     INGREDIENT: string,

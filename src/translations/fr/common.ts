@@ -1,6 +1,7 @@
 export default {
     // Common actions
     save: 'Enregistrer',
+    confirm: 'Confirmer',
     cancel: 'Annuler',
     delete: 'Supprimer',
     edit: 'Modifier',
@@ -8,7 +9,6 @@ export default {
     remove: 'Retirer',
     ok: 'Ok',
     understood: "Compris",
-
     success: 'Succès',
     addedToDatabase: 'ajoutée avec succès à la base de donnée',
     addedToShoppingList: 'ajoutée avec succès à la liste de courses',

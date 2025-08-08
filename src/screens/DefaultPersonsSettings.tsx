@@ -9,7 +9,7 @@ import {DefaultPersonsSettingsProp} from "@customTypes/ScreenTypes";
 import {BottomScreenTitle} from "@styles/typography";
 
 // TODO missing a back button on screen
-
+// TODO on validation of the new number, update the whole database with the new number
 export default function DefaultPersonsSettings({navigation}: DefaultPersonsSettingsProp) {
     const {t} = useI18n();
     const {colors} = useTheme();

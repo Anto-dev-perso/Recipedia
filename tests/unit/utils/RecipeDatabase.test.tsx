@@ -2,7 +2,12 @@ import RecipeDatabase from '@utils/RecipeDatabase';
 import {recipesDataset} from '@test-data/recipesDataset';
 import {tagsDataset} from "@test-data/tagsDataset";
 import {ingredientsDataset} from "@test-data/ingredientsDataset";
-import {ingredientType, recipeTableElement, shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
+import {
+    ingredientTableElement,
+    ingredientType,
+    recipeTableElement,
+    shoppingListTableElement
+} from "@customTypes/DatabaseElementTypes";
 import {shoppingAddedMultipleTimes, shoppingDataset} from "@test-data/shoppingListsDataset";
 import {listFilter} from "@customTypes/RecipeFiltersTypes";
 
@@ -198,7 +203,6 @@ describe('RecipeDatabase', () => {
 
             console.log(`Insert Duration multi query: ${monoInsertDuration}ms\nInsert Duration mono query: ${multiInsertDuration}ms\n\nSearch one element Duration : ${monoSearchDuration}ms\nSearch all elements Duration : ${allSearchDuration}ms`);
         });
-
     });
 
     describe('RecipeDatabase tests with all recipes already in the database', () => {
@@ -493,6 +497,155 @@ describe('RecipeDatabase', () => {
 
         // TODO test function purchaseIngredientOfShoppingList
         // TODO test function setPurchasedOfShopping
+
+        describe('RecipeDatabase findSimilarRecipes tests', () => {
+
+            // Change the id just like we would add a recipe in a new id
+            const datasetRecipe = recipesDataset[0];
+            const baseRecipe: recipeTableElement = {
+                ...datasetRecipe, id: recipesDataset.length + 2
+            } as const;
+
+            function createCopyOfBaseRecipe() {
+                const copyIngredients = new Array<ingredientTableElement>();
+                for (const ing of datasetRecipe.ingredients) {
+                    copyIngredients.push({...ing});
+                }
+                return {...baseRecipe, ingredients: copyIngredients};
+            }
+
+            test('should find an exact duplicate recipe', () => {
+                const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                const similar = db.findSimilarRecipes(recipeToTest);
+                expect(similar.length).toEqual(1);
+                expect(similar[0]).toEqual(datasetRecipe);
+            });
+
+            test('should find a recipe with a very similar title and ingredients', () => {
+                const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                recipeToTest.title = "Spageti Carbonara";// Typo in title
+                recipeToTest.ingredients[1].quantity = (Number(recipeToTest.ingredients[1].quantity) - 1).toString(); // Slightly less
+
+                const similar = db.findSimilarRecipes(recipeToTest);
+                expect(similar.length).toEqual(1);
+                expect(similar[0]).toEqual(datasetRecipe);
+            });
+
+            test('should not find a recipe with a different title', () => {
+                const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                recipeToTest.title = recipesDataset[1].title;
+
+                const similar = db.findSimilarRecipes(recipeToTest);
+                expect(similar.length).toBe(0);
+            });
+
+            test('should not find a recipe with different ingredients', () => {
+                const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                recipeToTest.ingredients = recipesDataset[6].ingredients;
+
+                const similar = db.findSimilarRecipes(recipeToTest);
+                expect(similar.length).toBe(0);
+            });
+
+            test('should find a similar recipe regardless of serving size (persons)', () => {
+                const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                recipeToTest.persons = 2 * baseRecipe.persons;
+
+                for (const ing of recipeToTest.ingredients) {
+                    ing.quantity = (Number(ing.quantity) * 2).toString();
+                }
+
+                const similar = db.findSimilarRecipes(recipeToTest);
+                expect(similar.length).toEqual(1);
+                expect(similar[0]).toEqual(recipesDataset[0]);
+            });
+
+            test('should not return the same recipe instance when comparing', () => {
+                const similar = db.findSimilarRecipes(recipesDataset[0]);
+                expect(similar.length).toBe(0);
+            });
+
+            test('should ignore condiments and fats in comparison', () => {
+                const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                recipeToTest.ingredients.push({
+                    id: 5,
+                    name: "Condiment ingredient",
+                    type: ingredientType.condiment,
+                    quantity: "",
+                    unit: "",
+                    season: []
+                });
+                recipeToTest.ingredients.push({
+                    id: 5,
+                    name: "Oil and Fat ingredient",
+                    type: ingredientType.oilAndFat,
+                    quantity: "",
+                    unit: "",
+                    season: []
+                });
+                const similar = db.findSimilarRecipes(recipeToTest);
+                expect(similar.length).toEqual(1);
+                expect(similar[0]).toEqual(recipesDataset[0]);
+            });
+
+            test('should not find a recipe with ingredient quantities outside the tolerance', () => {
+                {
+                    const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                    const quantityPerPerson = Number(recipeToTest.ingredients[0].quantity) / recipeToTest.persons;
+                    recipeToTest.ingredients[0].quantity = (recipeToTest.persons * (quantityPerPerson * 1.2 + 1)).toString();
+
+                    const similar = db.findSimilarRecipes(recipeToTest);
+                    expect(similar.length).toEqual(0);
+                }
+                {
+                    const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                    const quantityPerPerson = Number(recipeToTest.ingredients[0].quantity) / recipeToTest.persons;
+                    recipeToTest.ingredients[0].quantity = (recipeToTest.persons * (Math.round(quantityPerPerson / 1.2) - 1)).toString();
+
+                    const similar = db.findSimilarRecipes(recipeToTest);
+                    expect(similar.length).toEqual(0);
+                }
+            });
+
+            test('should not find a recipe with ingredient quantities at the tolerance', () => {
+                {
+                    const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                    const quantityPerPerson = Number(recipeToTest.ingredients[0].quantity) / recipeToTest.persons;
+                    recipeToTest.ingredients[0].quantity = (recipeToTest.persons * (quantityPerPerson * 1.2 - 1)).toString();
+
+                    const similar = db.findSimilarRecipes(recipeToTest);
+                    expect(similar.length).toEqual(1);
+                    expect(similar[0]).toEqual(datasetRecipe);
+                }
+                {
+                    const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                    const quantityPerPerson = Number(recipeToTest.ingredients[0].quantity) / recipeToTest.persons;
+                    recipeToTest.ingredients[0].quantity = (recipeToTest.persons * quantityPerPerson * 1.2).toString();
+
+                    const similar = db.findSimilarRecipes(recipeToTest);
+                    expect(similar.length).toEqual(1);
+                    expect(similar[0]).toEqual(datasetRecipe);
+                }
+                {
+                    const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                    const quantityPerPerson = Number(recipeToTest.ingredients[0].quantity) / recipeToTest.persons;
+                    recipeToTest.ingredients[0].quantity = (recipeToTest.persons * Math.round(quantityPerPerson / 1.2)).toString();
+
+                    const similar = db.findSimilarRecipes(recipeToTest);
+                    expect(similar.length).toEqual(1);
+                    expect(similar[0]).toEqual(datasetRecipe);
+                }
+                {
+                    const recipeToTest: recipeTableElement = createCopyOfBaseRecipe();
+                    const quantityPerPerson = Number(recipeToTest.ingredients[0].quantity) / recipeToTest.persons;
+                    recipeToTest.ingredients[0].quantity = (recipeToTest.persons * (Math.round(quantityPerPerson / 1.2) + 1)).toString();
+
+                    const similar = db.findSimilarRecipes(recipeToTest);
+                    expect(similar.length).toEqual(1);
+                    expect(similar[0]).toEqual(datasetRecipe);
+                }
+            });
+        });
 
     });
 

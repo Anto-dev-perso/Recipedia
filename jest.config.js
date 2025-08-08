@@ -12,4 +12,7 @@ module.exports = {
         '!src/**/*.d.ts',
         '!src/**/index.{js,ts}',
     ],
+    moduleNameMapper: {
+        '^fuse.js/dist/fuse.js$': '<rootDir>/node_modules/fuse.js/dist/fuse.js'
+    },
 };

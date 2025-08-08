@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import {
+    coreIngredientElement,
     encodedIngredientElement,
     encodedRecipeElement,
     encodedShoppingListElement,
@@ -32,6 +33,7 @@ import {EncodingSeparator, textSeparator} from '@styles/typography';
 import {TListFilter} from '@customTypes/RecipeFiltersTypes';
 import FileGestion from '@utils/FileGestion'
 import {isNumber, subtractNumberInString, sumNumberInString} from "@utils/TypeCheckingFunctions";
+import Fuse from 'fuse.js/dist/fuse.js';
 
 export default class RecipeDatabase {
     static #instance: RecipeDatabase;
@@ -549,11 +551,53 @@ export default class RecipeDatabase {
         await this._shoppingListTable.createTable(this._dbConnection);
     }
 
+    public findSimilarRecipes(recipeToCompare: recipeTableElement): recipeTableElement[] {
+        const ingredientTypesToIgnore: ingredientType[] = [ingredientType.condiment, ingredientType.oilAndFat];
+
+        const processIngredients = (recipe: recipeTableElement) => {
+            if (recipe.persons === undefined || recipe.persons === 0) {
+                return [];
+            }
+            const persons = recipe.persons as number;
+            return recipe.ingredients
+                .filter(ing => !ingredientTypesToIgnore.includes(ing.type))
+                .map(ing => {
+                    return {
+                        name: ing.name.toLowerCase(),
+                        quantityPerPerson: (ing.quantity && !isNaN(parseFloat(ing.quantity))) ? parseFloat(ing.quantity) / persons : undefined
+                    } as coreIngredientElement
+                }).filter(ing => ing.quantityPerPerson !== undefined)
+                .sort((a, b) => a.name.localeCompare(b.name));
+        };
+
+        const processedRecipeToCompareIngredients = processIngredients(recipeToCompare);
+
+        if (processedRecipeToCompareIngredients.length === 0) {
+            return [];
+        }
+
+        const recipesWithSimilarIngredients = this._recipes.filter(existingRecipe => {
+            if (existingRecipe.id !== undefined && existingRecipe.id === recipeToCompare.id) {
+                return false;
+            }
+            const processedExistingRecipeIngredients = processIngredients(existingRecipe);
+            return this.areIngredientsSimilar(processedRecipeToCompareIngredients, processedExistingRecipeIngredients);
+        });
+
+        if (recipesWithSimilarIngredients.length === 0) {
+            return [];
+        }
+
+        const fuse = new Fuse(recipesWithSimilarIngredients, {
+            keys: ['title'],
+            threshold: 0.6,
+        });
+        return fuse.search(recipeToCompare.title).map(fuseResult => fuseResult.item);
+    }
 
     protected constructUpdateRecipeStructure(encodedRecipe: encodedRecipeElement): Map<string, string | number> {
         return new Map<string, string | number>([[recipeColumnsNames.image, encodedRecipe.IMAGE_SOURCE], [recipeColumnsNames.title, encodedRecipe.TITLE], [recipeColumnsNames.description, encodedRecipe.DESCRIPTION], [recipeColumnsNames.tags, encodedRecipe.TAGS], [recipeColumnsNames.persons, encodedRecipe.PERSONS], [recipeColumnsNames.ingredients, encodedRecipe.INGREDIENTS], [recipeColumnsNames.preparation, encodedRecipe.PREPARATION], [recipeColumnsNames.time, encodedRecipe.TIME],]);
     }
-
 
     protected constructUpdateIngredientStructure(ingredient: ingredientTableElement): Map<string, string | number> {
         return new Map<string, string | number>([[ingredientsColumnsNames.ingredient, ingredient.name], [ingredientsColumnsNames.unit, ingredient.unit], [ingredientsColumnsNames.type, ingredient.type], [ingredientsColumnsNames.season, ingredient.season.join(EncodingSeparator)]]);
@@ -668,11 +712,9 @@ export default class RecipeDatabase {
         return new Map<string, string | number>([[recipeColumnsNames.title, recipe.title], [recipeColumnsNames.description, recipe.description], [recipeColumnsNames.image, recipe.image_Source]]);
     }
 
-
     protected constructSearchIngredientStructure(ingredient: ingredientTableElement): Map<string, string | number> {
         return new Map<string, string>([[ingredientsColumnsNames.ingredient, ingredient.name], [ingredientsColumnsNames.unit, ingredient.unit], [ingredientsColumnsNames.type, ingredient.type]]);
     }
-
 
     protected constructSearchTagStructure(tag: tagTableElement): Map<string, string | number> {
         return new Map<string, string | number>([[tagsColumnsNames.name, tag.name]]);
@@ -946,6 +988,38 @@ export default class RecipeDatabase {
             }
             this._shopping.splice(this._shopping.findIndex(shop => shop.name === nameToDelete), 1);
         }
+    }
+
+    private areIngredientsSimilar(ingredients1: coreIngredientElement[], ingredients2: coreIngredientElement[]): boolean {
+        if (ingredients1.length !== ingredients2.length) {
+            return false;
+        }
+
+        for (let i = 0; i < ingredients1.length; i++) {
+            const ing1 = ingredients1[i];
+            const ing2 = ingredients2[i];
+
+            if (ing1.name !== ing2.name) {
+                return false;
+            }
+
+            const quantity1 = ing1.quantityPerPerson as number;
+            const quantity2 = ing2.quantityPerPerson as number;
+
+            if (quantity1 === quantity2) {
+                continue;
+            }
+
+            const max = Math.max(quantity1, quantity2);
+            const min = Math.min(quantity1, quantity2);
+
+            // Threshold of 20%
+            if (max > min * 1.2) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

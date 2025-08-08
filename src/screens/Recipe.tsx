@@ -235,7 +235,6 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     // TODO checking if tags aren't in doublons
     // TODO checking if ingredients aren't in doublons
-    //  TODO checking if persons, time or ingredients aren't null
     // TODO ingredient quantity shouldn't be null
     async function addValidation() {
         let dialogProp = defaultDialogProp;
@@ -254,6 +253,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             missingElem.push(t(translatedMissingElemPrefix + 'titleIngredients'));
         }
         if (recipePreparation.length == 0) {
+            console.log(recipePreparation);
             missingElem.push(t(translatedMissingElemPrefix + 'titlePreparation'));
         }
         if (recipePersons == defaultValueNumber) {
@@ -262,25 +262,41 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
         // No mandatory elements missing
         if (missingElem.length == 0) {
-            // TODO avoid try/catch here
-            try {
-                // TODO deal case where 2 recipes share the same title. Is it allowed ?
-                const newUri = await FileGestion.getInstance().saveRecipeImage(recipeImage, recipeTitle);
-                let recipeToAdd = createRecipeFromStates();
-                // TODO can't we get rid of this local variable and directly use the states ?
-                const uriSplit = (newUri as string).split("/");
-                recipeToAdd.image_Source = uriSplit[uriSplit.length - 1];
+            const recipeToAdd = createRecipeFromStates();
+            const similarRecipes = RecipeDatabase.getInstance().findSimilarRecipes(recipeToAdd);
 
-                // @ts-ignore No need to wait
-                FileGestion.getInstance().clearCache();
+            const addRecipeToDatabase = async () => {
+                try {
+                    const newUri = await FileGestion.getInstance().saveRecipeImage(recipeImage, recipeTitle);
+                    const uriSplit = (newUri as string).split("/");
+                    recipeToAdd.image_Source = uriSplit[uriSplit.length - 1];
 
-                await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
-                dialogProp.title = t('success');
-                dialogProp.content = t('Recipe') + ' "' + recipeToAdd.title + '" ' + t('addedToDatabase');
-                dialogProp.confirmText = t('understood');
-                dialogProp.onConfirm = () => navigation.goBack();
-            } catch (error) {
-                console.warn("addValidation: Something went wrong when validating new recipe : ", error)
+                    // @ts-ignore No need to wait
+                    FileGestion.getInstance().clearCache();
+
+                    await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
+                    dialogProp.title = t('addAnyway');
+                    dialogProp.content = t('Recipe') + ' "' + recipeToAdd.title + '" ' + t('addedToDatabase');
+                    dialogProp.confirmText = t('understood');
+                    dialogProp.onConfirm = () => {
+                        navigation.goBack();
+                    };
+                } catch (error) {
+                    console.warn("addValidation::addRecipeToDatabase: Something went wrong when validating new recipe : ", error)
+                }
+            };
+
+            if (similarRecipes.length === 0) {
+                await addRecipeToDatabase();
+            } else {
+                // TODO to test
+                dialogProp.title = t('similarRecipeFound');
+                dialogProp.content = t('similarRecipeFoundContent') + similarRecipes.map((r: recipeTableElement) => r.title).join('\n\t- ');
+                dialogProp.confirmText = t('addAnyway');
+                dialogProp.cancelText = t('cancel');
+                dialogProp.onConfirm = async () => {
+                    await addRecipeToDatabase();
+                };
             }
         }
         // TODO the dialog preparation should be a dedicated function for readiness
