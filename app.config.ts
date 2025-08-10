@@ -1,0 +1,79 @@
+import type {ConfigContext, ExpoConfig} from "expo/config";
+import pkg from "./package.json";
+
+function getAndroidVersionCode(version: string): number {
+    // Map SemVer X.Y.Z -> versionCode = X*1_000_000 + Y*1_000 + Z
+    // Supports up to 999 minors/patches and keeps monotonic increase across major bumps.
+    const [major, minor, patch] = version.split("-")[0].split(".").map((n) => parseInt(n, 10) || 0);
+    return major * 1_000_000 + minor * 1_000 + patch;
+}
+
+function nameFromSlug(slug: string): string {
+    // Turn e.g. "recipes-manager" into "RecipesManager" (PascalCase, no spaces)
+    return slug
+        .split(/[^a-z0-9]+/i)
+        .filter(Boolean)
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+        .join("");
+}
+
+function toIdentifierSegment(slug: string): string {
+    // Convert slug to a valid identifier segment: lowercase, remove non-alphanumerics, start with a letter
+    const compact = slug.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    return compact.replace(/^[^a-z]+/, "");
+}
+
+const version = pkg.version;
+const configuredName = nameFromSlug(pkg.name);
+const appId = `com.${toIdentifierSegment(pkg.name)}`;
+
+export default ({config}: ConfigContext): ExpoConfig => ({
+    ...config,
+    name: configuredName,
+    slug: "RecipesManager",
+    version: pkg.version,
+    orientation: "portrait",
+    icon: "./src/assets/app/icon.png",
+    userInterfaceStyle: "automatic",
+    splash: {
+        image: './src/assets/app/splash.png',
+        resizeMode: 'contain',
+        backgroundColor: "#006D38",
+        dark: {
+            image: './src/assets/app/splash.png',
+            backgroundColor: "#79DB95",
+        },
+    },
+    ios: {
+        supportsTablet: true,
+        bundleIdentifier: appId,
+        infoPlist: {
+            "ITSAppUsesNonExemptEncryption": false
+        }
+    },
+    android: {
+        adaptiveIcon: {
+            foregroundImage: './src/assets/app/adaptive_icon.png',
+        },
+        package: appId,
+        permissions: ['android.permission.CAMERA'],
+        versionCode: getAndroidVersionCode(version)
+    },
+    plugins: [
+        'expo-localization',
+        'expo-sqlite',
+        [
+            'expo-asset',
+            {
+                assets: ['./src/assets/app', './src/assets/images'],
+            },
+        ],
+        'expo-font',
+    ],
+    extra: {
+        eas: {
+            projectId: '7958883d-ab87-4da5-bccc-fe0c7ff40b6e',
+        },
+    },
+    owner: 'antoc',
+});

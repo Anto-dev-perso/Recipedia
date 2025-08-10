@@ -1,7 +1,7 @@
-appId: "com.recipesmanager"
+appId: "com.recipes-manager"
 ---
 - assertVisible:
-    id: "com.recipesmanager:id/alertTitle"
+    id: "com.recipes-manager:id/alertTitle"
     text: "Élements manquants"
     label: "Alert title is displayed in French"
 - assertVisible:

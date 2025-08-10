@@ -1,4 +1,4 @@
-appId: "com.recipesmanager"
+appId: "com.recipes-manager"
 name: "Search bar can search for recipes by names"
 ---
 - launchApp

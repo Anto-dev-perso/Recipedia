@@ -34,6 +34,7 @@ module.exports = function (api) {
                         '.tsx',
                         '.android.tsx',
                         '.ios.tsx',
+                        '.json',
                     ],
                     alias: getAliases(),
                 },

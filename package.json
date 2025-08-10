@@ -1,5 +1,5 @@
 {
-  "name": "recipesmanager",
+  "name": "recipes-manager",
   "version": "0.0.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -20,7 +20,8 @@
     "test:e2e:ios": " maestro test tests/e2e/*   TODO",
     "build-install-and-test:e2e:android": "npm run build:android && npm run install:android && npm run test:e2e:android",
     "test:all:android": "npm run test:unit && npm run build-and-test:android",
-    "test:all:ios": "TODO"
+    "test:all:ios": "TODO",
+    "release": "semantic-release"
   },
   "dependencies": {
     "@babel/core": "~7.26.9",
@@ -65,15 +66,23 @@
     "@babel/preset-env": "~7.26.9",
     "@babel/preset-typescript": "~7.26.0",
     "@expo/vector-icons": "~14.0.4",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.0.5",
+    "@semantic-release/npm": "^11.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.1",
     "@testing-library/react-native": "~13.0.1",
     "@types/jest": "~29.5.14",
     "@types/react": "~18.3.12",
     "@types/sqlite3": "~3.1.11",
     "babel-jest": "~29.7.0",
     "babel-plugin-module-resolver": "~5.0.2",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "jest": "~29.7.0",
     "jest-expo": "~52.0.5",
     "metro-react-native-babel-preset": "~0.77.0",
+    "semantic-release": "^24.0.0",
     "typescript": "~5.3.3"
   }
 }

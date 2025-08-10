@@ -1,4 +1,4 @@
-appId: "com.recipesmanager"
+appId: "com.recipes-manager"
 name: "Check that home right buttons are expanding"
 ---
 - launchApp

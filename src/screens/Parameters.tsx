@@ -8,6 +8,7 @@ import {ParametersScreenProp, StackScreenNavigation} from "@customTypes/ScreenTy
 import {useNavigation} from "@react-navigation/native";
 import {Icons} from "@assets/Icons";
 import {DarkModeContext} from "@context/DarkModeContext"
+import Constants from "expo-constants";
 
 
 export default function Parameters({}: ParametersScreenProp) {
@@ -17,6 +18,7 @@ export default function Parameters({}: ParametersScreenProp) {
     const {seasonFilter, setSeasonFilter} = useSeasonFilter();
     const {colors} = useTheme();
     const currentLocale = getLocale();
+    const AppVersion = Constants.expoConfig?.version ?? "N/A";
 
     // Load settings on component mount
     useEffect(() => {
@@ -129,8 +131,7 @@ export default function Parameters({}: ParametersScreenProp) {
                     <List.Subheader testID={aboutId + "::SubHeader"}>{t('about')}</List.Subheader>
                     <List.Item testID={versionId + "::Item"}
                                title={t('version')}
-                        // TODO can't we use the version in package.json ?
-                               description="1.0.0"
+                               description={AppVersion}
                                left={props => <List.Icon {...props} icon={Icons.information}/>}
                     />
                 </List.Section>

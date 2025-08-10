@@ -1,4 +1,4 @@
-appId: "com.recipesmanager"
+appId: "com.recipes-manager"
 ---
 # TODO common part to mutualize to avoid copy/paste hell
 - assertVisible:

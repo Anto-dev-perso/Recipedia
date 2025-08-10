@@ -1,9 +1,9 @@
-appId: "com.recipesmanager"
+appId: "com.recipes-manager"
 
 ---
 
 - assertVisible:
-    id: "com.recipesmanager:id/alertTitle"
+    id: "com.recipes-manager:id/alertTitle"
     text: "SUCCESSFULLY ADDED RECIPE TO SHOPPING LIST"
     label: Alert title is rendered
 - assertVisible:

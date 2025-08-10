@@ -1,4 +1,4 @@
-appId: "com.recipesmanager"
+appId: "com.recipes-manager"
 name: "Search screen can search recipes with filters"
 ---
 - launchApp

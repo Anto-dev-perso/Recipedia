@@ -1,4 +1,4 @@
-appId: "com.recipesmanager"
+appId: "com.recipes-manager"
 ---
 - tapOn:
     text: "Accueil"

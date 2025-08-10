@@ -1,7 +1,7 @@
-appId: "com.recipesmanager"
+appId: "com.recipes-manager"
 name: "Check that the parameters screen is displayed and working as intended."
 ---
-#- launchApp
+- launchApp
 
 - runFlow: "flows/parameters/darkMode.yaml"
 - runFlow: "flows/parameters/language/checkLanguageChange.yaml"

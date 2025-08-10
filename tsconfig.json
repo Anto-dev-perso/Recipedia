@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "jsx": "react",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "baseUrl": "./src/",
     "paths": {
       "@assets/*": [
@@ -41,6 +42,9 @@
       ],
       "@translations/*": [
         "translations/*"
+      ],
+      "@app/*": [
+        "../*"
       ]
     }
   }
