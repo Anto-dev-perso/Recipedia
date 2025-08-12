@@ -1,8 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import {Asset} from "expo-asset";
-// import { Asset } from 'expo-asset';
+import {initialRecipesImages} from "@utils/Constants";
 //  TODO is new version changing stuff for image manipulator ?
-// TODO asset could be loaded at compile time ?
 //  TODO is expo-file-system/next better ?
 
 // TODO to test
@@ -76,10 +75,11 @@ export default class FileGestion {
     public async saveRecipeImage(cacheFileUri: string, recName: string): Promise<string> {
 
         const extension = cacheFileUri.split('.');
-        const imgUri: string = this._directoryUri + recName.replace(/ /g, "_").toLowerCase() + '.' + extension[extension.length - 1];
+        const imgName = recName.replace(/ /g, "_").toLowerCase() + '.' + extension[extension.length - 1]
+        const imgUri: string = this._directoryUri + imgName;
         try {
             await this.copyFile(cacheFileUri, imgUri);
-            return imgUri;
+            return imgName;
         } catch (error) {
             console.warn("saveRecipeImage:", error);
             return "";
@@ -104,49 +104,40 @@ export default class FileGestion {
 
     public async init() {
         try {
-            const dirFiles = await FileSystem.readDirectoryAsync(this._directoryUri);
-            dirFiles.forEach(file => {
-                //     TODO temporary for tests
-                FileSystem.deleteAsync(this._directoryUri + file);
-            });
+            await this.ensureDirExists(this._directoryUri);
+            await this.ensureDirExists(this._cacheUri);
+
+            const assetModules = await Asset.loadAsync(initialRecipesImages);
+            if (assetModules.length !== initialRecipesImages.length) {
+                throw new Error("Some assets could not be loaded, please check the list of assets in Constants.tsx and make sure they are all listed in the AppAssets object. Missing assets: ",);
+            }
+
+            for (const asset of assetModules) {
+                const destinationUri = this._directoryUri + asset.name + '.' + asset.type;
+                const fileInfo = await FileSystem.getInfoAsync(destinationUri);
+
+                if (fileInfo.exists) {
+                    console.debug(`File ${asset.name} already exists, skipping...`);
+                    continue;
+                }
+                await FileSystem.copyAsync({from: asset.localUri as string, to: destinationUri});
+                console.debug(`File ${asset.name} successfully copied to ${destinationUri}`);
+            }
         } catch (error) {
             console.warn("init: ", error);
-            await FileSystem.makeDirectoryAsync(this._directoryUri);
         }
-        // TODO temporary for tests
-        const assetLoaded = await Asset.loadAsync([
-            require("../assets/images/architecture.jpg"),
-            require("../assets/images/bike.jpg"),
-            require("../assets/images/cat.jpg"),
-            require("../assets/images/child.jpg"),
-            require("../assets/images/church.jpg"),
-            require("../assets/images/coffee.jpg"),
-            require("../assets/images/crimson.jpg"),
-            require("../assets/images/dog.jpg"),
-            require("../assets/images/monastery.jpg"),
-            require("../assets/images/motocross.jpg"),
-            require("../assets/images/mushrooms.jpg"),
-            require("../assets/images/scooter.jpg"),
-            require("../assets/images/strawberries.jpg"),
-            require("../assets/images/tree.jpg"),
-            require("../assets/images/waves.jpg"),
-        ]);
-        for (let i = 0; i < assetLoaded.length; i++) {
-            const newUri = this._directoryUri + '/' + assetLoaded[i].name + '.' + assetLoaded[i].type;
-            //     console.log("localUri : ", assetLoaded[i].localUri, ", newUri : ", newUri);
-            await FileSystem.copyAsync({from: assetLoaded[i].localUri as string, to: newUri})
-        }
+    }
 
-        try {
-            const cacheFiles = await FileSystem.readDirectoryAsync(this._cacheUri);
+    private async ensureDirExists(dirUri: string) {
+        const dirInfo = await FileSystem.getInfoAsync(dirUri);
 
-            cacheFiles.forEach(file => {
-                FileSystem.deleteAsync(this._cacheUri + file);
-
-            });
-        } catch (error) {
-            console.warn("init: ", error);
-            await FileSystem.makeDirectoryAsync(this._cacheUri);
+        if (!dirInfo.exists) {
+            await FileSystem.makeDirectoryAsync(dirUri, {intermediates: true});
+            console.log(`Created directory: ${dirUri}`);
+        } else if (!dirInfo.isDirectory) {
+            throw new Error(`${dirUri} exists but is not a directory`);
+        } else {
+            console.debug(`Directory already exists: ${dirUri}`);
         }
     }
 

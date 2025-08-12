@@ -267,9 +267,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
             const addRecipeToDatabase = async () => {
                 try {
-                    const newUri = await FileGestion.getInstance().saveRecipeImage(recipeImage, recipeTitle);
-                    const uriSplit = (newUri as string).split("/");
-                    recipeToAdd.image_Source = uriSplit[uriSplit.length - 1];
+                    recipeToAdd.image_Source = await FileGestion.getInstance().saveRecipeImage(recipeImage, recipeTitle);
 
                     // @ts-ignore No need to wait
                     FileGestion.getInstance().clearCache();

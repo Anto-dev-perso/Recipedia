@@ -3,7 +3,7 @@ import {ingredientType, recipeTableElement} from "@customTypes/DatabaseElementTy
 export const recipesDataset: Array<recipeTableElement> = [
     {
         id: 1,
-        image_Source: 'spaghetti.jpg',
+        image_Source: 'spaghetti_bolognese.png',
         title: 'Spaghetti Bolognese',
         description: 'A classic Italian pasta dish.',
         tags: [{id: 1, name: 'Italian'}, {id: 2, name: 'Dinner'}],
@@ -53,7 +53,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 2,
-        image_Source: 'tacos.jpg',
+        image_Source: 'taco_shell.png',
         title: 'Chicken Tacos',
         description: 'Mexican-style tacos with chicken.',
         tags: [{id: 3, name: 'Mexican'}, {id: 4, name: 'Lunch'}],
@@ -102,7 +102,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 3,
-        image_Source: 'pancakes.jpg',
+        image_Source: 'classic_pancakes.png',
         title: 'Classic Pancakes',
         description: 'Fluffy and golden pancakes.',
         tags: [{id: 5, name: 'Breakfast'}, {id: 6, name: 'Dessert'}],
@@ -151,7 +151,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 4,
-        image_Source: 'caesar_salad.jpg',
+        image_Source: 'caesar_salad.png',
         title: 'Caesar Salad',
         description: 'Crisp lettuce with creamy Caesar dressing.',
         tags: [{id: 14, name: 'Salad'}, {id: 7, name: 'Healthy'}],
@@ -200,7 +200,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 5,
-        image_Source: 'pizza.jpg',
+        image_Source: 'margherita_pizza.png',
         title: 'Margherita Pizza',
         description: 'Classic pizza with tomato and mozzarella.',
         tags: [{id: 1, name: 'Italian'}, {id: 4, name: 'Lunch'}],
@@ -249,7 +249,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 6,
-        image_Source: 'vegetable_soup.jpg',
+        image_Source: 'vegetable_soup.png',
         title: 'Vegetable Soup',
         description: 'A warm and hearty vegetable soup.',
         tags: [{id: 7, name: 'Healthy'}, {id: 8, name: 'Soup'}],
@@ -298,7 +298,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 7,
-        image_Source: 'chocolate_cake.jpg',
+        image_Source: 'chocolate_cake.png',
         title: 'Chocolate Cake',
         description: 'Rich and moist chocolate cake.',
         tags: [{id: 6, name: 'Dessert'}, {id: 13, name: 'Chocolate'}],
@@ -346,7 +346,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 8,
-        image_Source: 'pesto_pasta.jpg',
+        image_Source: 'pesto_pasta.png',
         title: 'Pesto Pasta',
         description: 'Pasta tossed with fresh basil pesto.',
         tags: [{id: 1, name: 'Italian'}, {id: 9, name: 'Quick Meal'}],
@@ -403,7 +403,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 9,
-        image_Source: 'sushi_rolls.jpg',
+        image_Source: 'sushi_rolls.png',
         title: 'Sushi Rolls',
         description: 'Classic sushi rolls with nori, rice, and fillings.',
         tags: [{id: 11, name: 'Japanese'}, {id: 10, name: 'Seafood'}],
@@ -461,7 +461,7 @@ export const recipesDataset: Array<recipeTableElement> = [
     },
     {
         id: 10,
-        image_Source: 'lentil_curry.jpg',
+        image_Source: 'lentil_curry.png',
         title: 'Lentil Curry',
         description: 'A spicy and flavorful lentil curry.',
         tags: [{id: 15, name: 'Indian'}, {id: 12, name: 'Vegetarian'}],
