@@ -3,9 +3,6 @@ import {remValue} from "@styles/spacing";
 
 export type dictionaryIcons = keyof typeof MaterialCommunityIcons.glyphMap;
 
-// TODO clean up these variables and use the record instead
-export const plusIcon: dictionaryIcons = "plus";
-
 export const iconsSize = {
     verySmall: 9 * remValue,
     small: 22 * remValue,
@@ -13,6 +10,7 @@ export const iconsSize = {
     large: 40 * remValue,
 };
 
+// TODO nice but linter doesn't yell if we use a value that doesn't exist
 export const Icons: Record<string, dictionaryIcons> = {
     checkboxBlankIcon: "checkbox-blank-outline",
     checkboxFillIcon: "checkbox-marked",

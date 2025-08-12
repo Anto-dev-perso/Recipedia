@@ -1,7 +1,7 @@
 import {View} from "react-native"
 import React from "react";
 import RoundButton from "@components/atomic/RoundButton";
-import {Icons, plusIcon} from "@assets/Icons";
+import {Icons} from "@assets/Icons";
 import TextRender, {TextRenderProps} from "@components/molecules/TextRender";
 import {RecipeTextAddProps} from "@components/organisms/RecipeText";
 import {typoRender} from "@styles/typography";
@@ -69,7 +69,7 @@ export default function RecipeTextRender(textRenderProps: RecipeTextRenderProps)
                                         }}/>
 
                             <RoundButton testID={`${textRenderProps.testID}::AddButton`}
-                                         size={"medium"} icon={plusIcon}
+                                         size={"medium"} icon={Icons.plusIcon}
                                          onPressFunction={textRenderProps.addNewText}
                                          style={recipeTextRenderStyles.roundButtonPadding}/>
                         </View>
