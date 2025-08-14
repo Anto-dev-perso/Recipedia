@@ -2,11 +2,11 @@ import {View} from "react-native"
 import React from "react";
 import RoundButton from "@components/atomic/RoundButton";
 import {Icons} from "@assets/Icons";
-import {defaultValueNumber} from "@utils/Constants";
 import {recipeNumberStyles, recipeTextStyles} from "@styles/recipeComponents";
 import {Text} from 'react-native-paper'
 import {VariantProp} from "react-native-paper/lib/typescript/components/Typography/types";
 import CustomTextInput from "@components/atomic/CustomTextInput";
+import {defaultValueNumber} from "@utils/Constants";
 
 export type RecipeNumberAddProps = {
     editType: 'add',
@@ -59,7 +59,7 @@ function RecipeNumberEditablePart(addOrEditProps: RecipeNumberAddOrEditProps) {
                   variant={prefixVariant}>{addOrEditProps.prefixText}</Text>
             {addOrEditProps.editType === 'editable' ?
                 <CustomTextInput testID={addOrEditProps.testID}
-                                 value={addOrEditProps.textEditable == defaultValueNumber ? "" : addOrEditProps.textEditable.toString()}
+                                 value={addOrEditProps.textEditable !== defaultValueNumber ? addOrEditProps.textEditable.toString() : ""}
                                  onChangeText={newNumber => addOrEditProps.setTextToEdit(Number(newNumber))}
                                  keyboardType={'numeric'}
                 />

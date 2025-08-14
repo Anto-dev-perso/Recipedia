@@ -18,6 +18,9 @@ import {CommonQueryOptions} from "@testing-library/react-native/build/queries/op
 import {textSeparator, unitySeparator} from "@styles/typography";
 import {defaultValueNumber} from '@utils/Constants';
 import {listFilter} from "@customTypes/RecipeFiltersTypes";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+jest.mock('@react-native-async-storage/async-storage', () => require('@mocks/deps/async-storage-mock').asyncStorageMock());
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
@@ -457,6 +460,8 @@ describe('Recipe Component tests', () => {
         await dbInstance.addMultipleIngredients(ingredientsDataset);
         await dbInstance.addMultipleTags(tagsDataset);
         await dbInstance.addMultipleRecipes(recipesDataset);
+
+        (AsyncStorage.getItem as jest.Mock).mockResolvedValue('4');
     });
     afterEach(async () => {
         await dbInstance.reset();

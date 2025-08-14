@@ -14,7 +14,9 @@ import {
 } from '@styles/typography';
 
 import TextRecognition, {TextBlock, TextRecognitionResult} from "@react-native-ml-kit/text-recognition";
+import {scaleQuantityForPersons} from "@utils/Quantity";
 import {isArrayOfNumber, isArrayOfString, isArrayOfType, isNumber, isString} from "@utils/TypeCheckingFunctions";
+import {defaultValueNumber} from "@utils/Constants";
 
 export type personAndTimeObject = { person: number, time: number };
 export const keysPersonsAndTimeObject = Object.keys({
@@ -131,8 +133,8 @@ function tranformOCRInOneNumber(ocr: TextRecognitionResult): number | Array<numb
         return extractingNumberOrArray(timeArray);
     }
 
-    console.error("tranformOCRInOneNumber: Don't know how to convert: ", elementsToConvert);
-    return -1;
+    console.error("transformOCRInOneNumber: Don't know how to convert: ", elementsToConvert);
+    return defaultValueNumber;
 }
 
 function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<string> {
@@ -427,20 +429,28 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
         case recipeColumnsNames.ingredients:
             if (Array.isArray(ocrResult) && ocrResult.length > 0 && isArrayOfType(ocrResult, keysIngredientObject)) {
                 let idQuantityToSearch: number;
+                let ocrPersonsCount: number;
+                let targetPersonsCount = currentState.recipePersons;
+
                 if (currentState.recipePersons > 0) {
                     const foundPersonIndex = (ocrResult[0] as ingredientObject).quantityPerPersons.findIndex(p => (Number(p.persons) === currentState.recipePersons));
                     if (foundPersonIndex !== -1) {
                         idQuantityToSearch = foundPersonIndex;
+                        ocrPersonsCount = currentState.recipePersons;
                     } else {
-                        warn(`Couldn't find exact match for persons (${currentState.recipePersons}) in ingredient. Using first available.`);
                         idQuantityToSearch = 0;
+                        ocrPersonsCount = (ocrResult[idQuantityToSearch] as ingredientObject).quantityPerPersons[idQuantityToSearch].persons;
+                        warn(`Couldn't find exact match for persons (${currentState.recipePersons}) in ingredient. Using ${ocrPersonsCount} and scaling to ${targetPersonsCount}.`);
                     }
                 } else {
                     idQuantityToSearch = 0;
+                    ocrPersonsCount = (ocrResult[idQuantityToSearch] as ingredientObject).quantityPerPersons[idQuantityToSearch].persons;
+                    targetPersonsCount = ocrPersonsCount;
                     warn(
-                        `Couldn't find exact match for persons in ingredient. Using first available : ${(ocrResult[0] as ingredientObject).quantityPerPersons[0].persons}.`
+                        `Couldn't find exact match for persons in ingredient. Using first available : ${ocrPersonsCount}.`
                     );
                 }
+
 
                 return {
                     recipeIngredients: [
@@ -451,7 +461,7 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
                                 season: [],
                                 type: ingredientType.undefined,
                                 unit: ingredient.unit,
-                                quantity: ingredient.quantityPerPersons[idQuantityToSearch].quantity
+                                quantity: scaleQuantityForPersons(ingredient.quantityPerPersons[idQuantityToSearch].quantity, ocrPersonsCount, targetPersonsCount)
                             } as ingredientTableElement
                         }),
                     ],

@@ -13,17 +13,7 @@ import {
     toggleSeasonFilter
 } from '@utils/settings';
 
-// Mock AsyncStorage here to have functions (thus it is the only place where we use it)
-jest.mock('@react-native-async-storage/async-storage', () => ({
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-    clear: jest.fn(),
-    getAllKeys: jest.fn(),
-    multiGet: jest.fn(),
-    multiSet: jest.fn(),
-    multiRemove: jest.fn(),
-}));
+jest.mock('@react-native-async-storage/async-storage', () => require('@mocks/deps/async-storage-mock').asyncStorageMock());
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
 

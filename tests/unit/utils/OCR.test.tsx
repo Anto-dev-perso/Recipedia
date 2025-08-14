@@ -2563,6 +2563,144 @@ describe('OCR Utility Functions', () => {
                         })
                 });
             });
+
+            test('parse ingredients with scaling up from 2 persons to 6 persons', async () => {
+                mockRecognize.mockResolvedValue(mockResultIngredientHeaderIsP);
+
+                const result = await extractFieldFromImage('uri', recipeColumnsNames.ingredients, {
+                    ...baseState,
+                    recipePersons: 6
+                }, mockWarn);
+
+                expect(mockWarn).toHaveBeenCalledWith(expect.stringContaining("Using 2 and scaling to 6"));
+
+                expect(result).toEqual({
+                    recipeIngredients: new Array<ingredientTableElement>({
+                            name: "cacahuètes grillées",
+                            unit: "g",
+                            season: [],
+                            type: ingredientType.undefined,
+                            quantity: "300",
+                        },
+                        {
+                            name: "concentré de tomates",
+                            unit: "g", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "105",
+                        },
+                        {
+                            name: "filet de poulet",
+                            unit: "", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "6"
+                        },
+                        {
+                            name: "gingembre",
+                            unit: "cm", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "1à3",
+                        },
+                        {
+                            name: "goussed'ail",
+                            unit: "", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "3",
+                        },
+                        {
+                            name: "lait de coco",
+                            unit: "mL", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "600",
+                        },
+                        {
+                            name: "oignon jaune",
+                            unit: "", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "3",
+                        },
+                        {
+                            name: "oignon nouveau",
+                            unit: "", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "1,5",
+                        },
+                        {
+                            name: "riz basmati  Bio",
+                            unit: "g", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "450",
+                        })
+                });
+            });
+
+            test('parse ingredients with scaling down from 2 persons to 1 person', async () => {
+                mockRecognize.mockResolvedValue(mockResultIngredientHeaderIsP);
+
+                const result = await extractFieldFromImage('uri', recipeColumnsNames.ingredients, {
+                    ...baseState,
+                    recipePersons: 1
+                }, mockWarn);
+
+                expect(mockWarn).toHaveBeenCalledWith(expect.stringContaining("Using 2 and scaling to 1"));
+
+                expect(result).toEqual({
+                    recipeIngredients: new Array<ingredientTableElement>({
+                            name: "cacahuètes grillées",
+                            unit: "g",
+                            season: [],
+                            type: ingredientType.undefined,
+                            quantity: "50",
+                        },
+                        {
+                            name: "concentré de tomates",
+                            unit: "g", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "17,5",
+                        },
+                        {
+                            name: "filet de poulet",
+                            unit: "", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "1"
+                        },
+                        {
+                            name: "gingembre",
+                            unit: "cm", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "1à3",
+                        },
+                        {
+                            name: "goussed'ail",
+                            unit: "", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "0,5",
+                        },
+                        {
+                            name: "lait de coco",
+                            unit: "mL", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "100",
+                        },
+                        {
+                            name: "oignon jaune",
+                            unit: "", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "0,5",
+                        },
+                        {
+                            name: "oignon nouveau",
+                            unit: "", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "0,25",
+                        },
+                        {
+                            name: "riz basmati  Bio",
+                            unit: "g", season: [],
+                            type: ingredientType.undefined,
+                            quantity: "75",
+                        })
+                });
+            });
         });
 
 

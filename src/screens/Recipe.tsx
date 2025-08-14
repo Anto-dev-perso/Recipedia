@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {RecipeScreenProp} from '@customTypes/ScreenTypes';
 import {
     extractIngredientsNameWithQuantity,
@@ -31,6 +31,8 @@ import ModalImageSelect from "@screens/ModalImageSelect";
 import {cropImage} from "@utils/ImagePicker";
 import {useI18n} from "@utils/i18n";
 import Alert, {AlertProps} from "@components/dialogs/Alert";
+import {getDefaultPersons} from "@utils/settings";
+import {scaleQuantityForPersons} from "@utils/Quantity";
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -72,11 +74,33 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     const [validationButtonText, validationFunction] = recipeValidationButtonProps();
 
     const [modalField, setModalField] = useState<recipeColumnsNames | undefined>(undefined);
-    const [recipePersonsManuallyEdited, setRecipePersonsManuallyEdited] = useState(false);
-    const [recipeTimeManuallyEdited, setRecipeTimeManuallyEdited] = useState(false);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [dialogProp, setDialogProp] = useState(defaultDialogProp);
+    const previousPersonsRef = useRef<number>(recipePersons);
+
+    useEffect(() => {
+        const loadDefaultPersons = async () => {
+            if (!initStateFromProp) {
+                const defaultPersons = await getDefaultPersons();
+                setRecipePersons(defaultPersons);
+            }
+        };
+
+        loadDefaultPersons();
+    }, [initStateFromProp]);
+
+    useEffect(() => {
+        const previousPersons = previousPersonsRef.current;
+        const nextPersons = recipePersons;
+        if (previousPersons > 0 && nextPersons > 0 && previousPersons !== nextPersons) {
+            setRecipeIngredients(prevIngredients => prevIngredients.map(ing => ({
+                ...ing,
+                quantity: ing.quantity ? scaleQuantityForPersons(ing.quantity, previousPersons, nextPersons) : undefined,
+            })));
+        }
+        previousPersonsRef.current = nextPersons;
+    }, [recipePersons]);
 
 
     function convertModeFromProps() {
@@ -256,7 +280,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             console.log(recipePreparation);
             missingElem.push(t(translatedMissingElemPrefix + 'titlePreparation'));
         }
-        if (recipePersons == defaultValueNumber) {
+        if (recipePersons === defaultValueNumber) {
             missingElem.push(t(translatedMissingElemPrefix + 'titlePersons'));
         }
 
@@ -490,18 +514,6 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     }
                 };
             case recipeStateType.addOCR:
-                if (!recipePersonsManuallyEdited && recipePersons === defaultValueNumber) {
-                    return {
-                        testID: personTestID,
-                        numberProps: {
-                            editType: 'add',
-                            prefixText: t('personPrefixOCR'),
-                            openModal: () => openModalForField(recipeColumnsNames.persons),
-                            manuallyFill: () => setRecipePersonsManuallyEdited(true),
-                        }
-                    };
-                }
-            // Else return the same props as edit or addManual
             case recipeStateType.edit:
             case recipeStateType.addManual:
                 return {
@@ -535,18 +547,19 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     }
                 };
             case recipeStateType.addOCR:
-                if (!recipeTimeManuallyEdited && recipeTime === defaultValueNumber) {
+                if (recipeTime === defaultValueNumber) {
                     return {
                         testID: personTestID,
                         numberProps: {
                             editType: 'add',
                             prefixText: t('timePrefixOCR'),
                             openModal: () => openModalForField(recipeColumnsNames.time),
-                            manuallyFill: () => setRecipeTimeManuallyEdited(true),
+                            manuallyFill: () => {
+                                setRecipeTime(0);
+                            },
                         }
                     };
                 }
-            // Else return the same props as edit or addManual
             case recipeStateType.edit:
             case recipeStateType.addManual:
                 return {
