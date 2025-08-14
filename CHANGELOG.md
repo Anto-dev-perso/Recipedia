@@ -1,3 +1,9 @@
+## [0.2.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.1.0...v0.2.0) (2025-08-14)
+
+### Features
+
+* **recipe:** create dataset images and use them ([64156e2](https://github.com/Anto-dev-perso/RecipesManager/commit/64156e260e97ab734a73ca5573bb9a86bf8b1964))
+
 ## [0.1.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.0.1...v0.1.0) (2025-08-12)
 
 ### Features
