@@ -1,3 +1,9 @@
+## [0.3.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.2.0...v0.3.0) (2025-08-15)
+
+### Features
+
+* **recipe:** implement scaling of ingredient quantities for new default persons count ([77c6282](https://github.com/Anto-dev-perso/RecipesManager/commit/77c62829dd609df65bfad2240481b62315d7a932))
+
 ## [0.2.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.1.0...v0.2.0) (2025-08-14)
 
 ### Features
