@@ -1,3 +1,9 @@
+## [0.5.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.4.0...v0.5.0) (2025-08-15)
+
+### Features
+
+* **Recipe:** add a dialog in case user try to use a tag that doesn't exist while adding a recipe ([f10e06b](https://github.com/Anto-dev-perso/RecipesManager/commit/f10e06b3dfcc343ab068b2fa1065ea057e57eb66))
+
 ## [0.4.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.3.0...v0.4.0) (2025-08-15)
 
 ### Features
