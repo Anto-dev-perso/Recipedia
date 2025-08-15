@@ -53,6 +53,13 @@ export function expoSqliteMock() {
                         throw new Error(`getFirstAsync error: ${err.message}`);
                     }
                 }),
+                withTransactionAsync: jest.fn(async <T>(func: () => Promise<T>): Promise<T> => {
+                    try {
+                        return await func();
+                    } catch (err: any) {
+                        throw new Error(`withTransactionAsync error: ${err.message}`);
+                    }
+                }),
             } as unknown as SQLiteDatabase;
         }),
     };

@@ -34,6 +34,7 @@ import {TListFilter} from '@customTypes/RecipeFiltersTypes';
 import FileGestion from '@utils/FileGestion'
 import {isNumber, subtractNumberInString, sumNumberInString} from "@utils/TypeCheckingFunctions";
 import Fuse from 'fuse.js/dist/fuse.js';
+import {scaleQuantityForPersons} from '@utils/Quantity';
 
 export default class RecipeDatabase {
     static #instance: RecipeDatabase;
@@ -466,6 +467,19 @@ export default class RecipeDatabase {
         }
     }
 
+    public update_multiple_recipes(updatedRecipes: Array<recipeTableElement>) {
+        const recipeMap = new Map(this._recipes.map((recipe, index) => [recipe.id, index]));
+
+        for (const updatedRecipe of updatedRecipes) {
+            const idOfRecipeToUpdate = recipeMap.get(updatedRecipe.id);
+            if (idOfRecipeToUpdate !== undefined) {
+                this._recipes[idOfRecipeToUpdate] = updatedRecipe;
+            } else {
+                console.warn("Can't find recipe with id ", updatedRecipe.id, " in the recipe table. Object is ", updatedRecipe);
+            }
+        }
+    }
+
     public update_ingredient(newIngredient: ingredientTableElement) {
         const foundIngredient = this._ingredients.findIndex(ingredient => ingredient.id === newIngredient.id);
         if (foundIngredient !== -1) {
@@ -549,6 +563,58 @@ export default class RecipeDatabase {
         this._shopping.length = 0;
         await this._shoppingListTable.deleteTable(this._dbConnection);
         await this._shoppingListTable.createTable(this._dbConnection);
+    }
+
+    /**
+     * Updates all recipes in the database to use a new default persons count,
+     * scaling ingredient quantities proportionally.
+     * This operation runs asynchronously and does not block the caller.
+     */
+    public async scaleAllRecipesForNewDefaultPersons(newDefaultPersons: number): Promise<void> {
+        try {
+            const updatedRecipes: Array<recipeTableElement> = [];
+
+            for (const recipe of this.get_recipes()) {
+                if (recipe.persons && recipe.persons > 0 && recipe.id !== undefined) {
+                    // Skip recipes that already have the target persons count
+                    if (recipe.persons === newDefaultPersons) {
+                        continue;
+                    }
+                    
+                    const oldPersons = recipe.persons;
+
+                    const updatedIngredients = recipe.ingredients.map(ingredient => ({
+                        ...ingredient,
+                        quantity: ingredient.quantity
+                            ? scaleQuantityForPersons(ingredient.quantity, oldPersons, newDefaultPersons)
+                            : ingredient.quantity
+                    }));
+
+                    updatedRecipes.push({
+                        ...recipe,
+                        persons: newDefaultPersons,
+                        ingredients: updatedIngredients
+                    });
+                } else {
+                    console.error(`Recipe with id ${recipe.id} and persons ${recipe.persons}, is invalid. Can't scale it.`);
+                }
+            }
+
+            if (updatedRecipes.length > 0) {
+                const batchUpdates = updatedRecipes.map(recipe => ({
+                    id: recipe.id!,
+                    elementToUpdate: this.constructUpdateRecipeStructure(this.encodeRecipe(recipe))
+                }));
+
+                const success = await this._recipesTable.batchUpdateElementsById(batchUpdates, this._dbConnection);
+
+                if (success) {
+                    this.update_multiple_recipes(updatedRecipes);
+                }
+            }
+        } catch (error) {
+            console.error('Error updating recipes for new default persons count:', error);
+        }
     }
 
     public findSimilarRecipes(recipeToCompare: recipeTableElement): recipeTableElement[] {

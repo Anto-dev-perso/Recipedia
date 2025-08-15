@@ -487,6 +487,186 @@ describe('RecipeDatabase', () => {
             expect(notUpdated).toBeUndefined();
         });
 
+        describe('update_multiple_recipes', () => {
+            test('should update multiple recipes in internal state', () => {
+                const originalRecipes = [...db.get_recipes()];
+
+                const updatedRecipes = [
+                    {...recipesDataset[0], title: 'Updated Spaghetti Bolognese'},
+                    {...recipesDataset[1], title: 'Updated Chicken Tacos'},
+                    {...recipesDataset[2], title: 'Updated Classic Pancakes'}
+                ];
+
+                db.update_multiple_recipes(updatedRecipes);
+
+                const currentRecipes = db.get_recipes();
+
+                expect(currentRecipes[0].title).toEqual('Updated Spaghetti Bolognese');
+                expect(currentRecipes[1].title).toEqual('Updated Chicken Tacos');
+                expect(currentRecipes[2].title).toEqual('Updated Classic Pancakes');
+
+                for (let i = 3; i < currentRecipes.length; i++) {
+                    expect(currentRecipes[i]).toEqual(originalRecipes[i]);
+                }
+            });
+
+            test('should handle non-existent recipe IDs gracefully', () => {
+                const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
+                });
+
+                const updatedRecipes = [
+                    {...recipesDataset[0], title: 'Updated Existing Recipe'},
+                    {...recipesDataset[0], id: 999, title: 'Non-existent Recipe'}
+                ];
+
+                db.update_multiple_recipes(updatedRecipes);
+
+                expect(db.get_recipes()[0].title).toBe('Updated Existing Recipe');
+                expect(consoleWarnSpy).toHaveBeenCalledWith(
+                    "Can't find recipe with id ", 999, " in the recipe table. Object is ", updatedRecipes[1]
+                );
+                consoleWarnSpy.mockRestore();
+            });
+
+            test('with empty array should do nothing', () => {
+                const originalRecipes = [...db.get_recipes()];
+
+                db.update_multiple_recipes([]);
+
+                expect(db.get_recipes()).toEqual(originalRecipes);
+            });
+        });
+
+        describe('scaleAllRecipesForNewDefaultPersons', () => {
+            test('should scale all recipe quantities and update persons count', async () => {
+                const originalRecipes = [...db.get_recipes()];
+                const newPersonsCount = 6;
+
+                await db.scaleAllRecipesForNewDefaultPersons(newPersonsCount);
+
+                const scaledRecipes = db.get_recipes();
+
+                expect(scaledRecipes.length).toBe(originalRecipes.length);
+
+                for (let i = 0; i < scaledRecipes.length; i++) {
+                    const original = originalRecipes[i];
+                    const scaled = scaledRecipes[i];
+
+                    expect(scaled.persons).toEqual(newPersonsCount);
+                    expect(scaled.ingredients.length).toEqual(original.ingredients.length);
+
+                    for (let j = 0; j < scaled.ingredients.length; j++) {
+                        const originalIng = original.ingredients[j];
+                        const scaledIng = scaled.ingredients[j];
+
+                        expect(scaledIng.id).toEqual(originalIng.id);
+                        expect(scaledIng.name).toEqual(originalIng.name);
+                        expect(scaledIng.unit).toEqual(originalIng.unit);
+                        expect(scaledIng.type).toEqual(originalIng.type);
+
+                        const scaleFactor = newPersonsCount / original.persons;
+                        const expectedQuantity = (parseFloat(originalIng.quantity as string) * scaleFactor).toString().replace('.', ',');
+                        expect(scaledIng.quantity).toBe(expectedQuantity);
+                    }
+
+                    expect(scaled.id).toBe(original.id);
+                    expect(scaled.title).toBe(original.title);
+                    expect(scaled.description).toBe(original.description);
+                    expect(scaled.tags).toEqual(original.tags);
+                    expect(scaled.season).toEqual(original.season);
+                    expect(scaled.preparation).toEqual(original.preparation);
+                    expect(scaled.time).toBe(original.time);
+                }
+            });
+
+            test(' should skip recipes with invalid persons count', async () => {
+                const invalidRecipe = {
+                    ...recipesDataset[0],
+                    id: 100,
+                    persons: 0,
+                    title: 'Invalid Recipe'
+                };
+
+                db.add_recipes(invalidRecipe);
+                const originalCount = db.get_recipes().length;
+
+                await db.scaleAllRecipesForNewDefaultPersons(4);
+
+                const recipes = db.get_recipes();
+                expect(recipes.length).toBe(originalCount);
+
+                const invalidRecipeAfter = recipes.find(r => r.id === 100);
+                expect(invalidRecipeAfter).toEqual(invalidRecipe);
+            });
+
+            test(' should handle recipes without ingredients', async () => {
+                const noIngredientsRecipe = {
+                    ...recipesDataset[0],
+                    id: 101,
+                    persons: 2,
+                    ingredients: [],
+                    title: 'No Ingredients Recipe'
+                };
+
+                db.add_recipes(noIngredientsRecipe);
+
+                await db.scaleAllRecipesForNewDefaultPersons(4);
+
+                const updatedRecipe = db.get_recipes().find(r => r.id === 101);
+                expect(updatedRecipe?.persons).toBe(4);
+                expect(updatedRecipe?.ingredients).toEqual([]);
+            });
+
+            test('should handle non-numeric quantities', async () => {
+                const nonNumericRecipe = {
+                    ...recipesDataset[0],
+                    id: 102,
+                    persons: 2,
+                    ingredients: [{
+                        ...recipesDataset[0].ingredients[0],
+                        quantity: 'a pinch'
+                    }],
+                    title: 'Non-numeric Quantity Recipe'
+                };
+
+                db.add_recipes(nonNumericRecipe);
+
+                await db.scaleAllRecipesForNewDefaultPersons(4);
+
+                const updatedRecipe = db.get_recipes().find(r => r.id === 102);
+                expect(updatedRecipe?.persons).toBe(4);
+                expect(updatedRecipe?.ingredients[0].quantity).toBe('a pinch');
+            });
+
+            test('should skip recipes that already have the target persons count', async () => {
+                const targetPersons = 4;
+
+                const alreadyCorrectRecipe = {
+                    ...recipesDataset[0],
+                    id: 103,
+                    persons: targetPersons,
+                    title: 'Already Correct Recipe'
+                };
+
+                db.add_recipes(alreadyCorrectRecipe);
+                const originalRecipe = {...alreadyCorrectRecipe};
+
+                await db.scaleAllRecipesForNewDefaultPersons(targetPersons);
+
+                const unchangedRecipe = db.get_recipes().find(r => r.id === 103);
+                expect(unchangedRecipe).toEqual(originalRecipe);
+            });
+
+            test('scaleAllRecipesForNewDefaultPersons should handle empty database gracefully', async () => {
+                await db.reset();
+                await db.init();
+
+                await db.scaleAllRecipesForNewDefaultPersons(4);
+
+                expect(db.get_recipes()).toEqual([]);
+            });
+        });
+
         // TODO found a test where the insertion fails
         // TODO found a test where the insertion worked but don't return a number
         // TODO found a test where the encodeShopping is call without an id

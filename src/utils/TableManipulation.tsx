@@ -152,6 +152,30 @@ export default class TableManipulation {
         }
     };
 
+    public async batchUpdateElementsById(updates: Array<{id: number, elementToUpdate: Map<string, number | string>}>, db: SQLiteDatabase): Promise<boolean> {
+        if (updates.length === 0) {
+            return true;
+        }
+
+        try {
+            await db.withTransactionAsync(async () => {
+                for (const update of updates) {
+                    const queryFromMap = this.prepareQueryFromMap(update.elementToUpdate, ",");
+                    if (queryFromMap.length === 0) {
+                        continue;
+                    }
+                    
+                    const updateQuery = `UPDATE "${this.m_tableName}" SET ${queryFromMap} WHERE ID = ${update.id};`;
+                    await db.runAsync(updateQuery);
+                }
+            });
+            return true;
+        } catch (error: any) {
+            console.warn('batchUpdateElementsById: \nReceived error : ', error);
+            return false;
+        }
+    }
+
 
     public async searchElementById<T>(elementId: number, db: SQLiteDatabase): Promise<T | undefined> {
         if (isNaN(elementId)) {

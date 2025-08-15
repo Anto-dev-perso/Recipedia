@@ -296,6 +296,18 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     // @ts-ignore No need to wait
                     FileGestion.getInstance().clearCache();
 
+                    // Scale recipe to default persons count before saving to database
+                    const defaultPersons = await getDefaultPersons();
+                    if (recipeToAdd.persons !== defaultPersons && recipeToAdd.persons > 0) {
+                        recipeToAdd.ingredients = recipeToAdd.ingredients.map(ingredient => ({
+                            ...ingredient,
+                            quantity: ingredient.quantity 
+                                ? scaleQuantityForPersons(ingredient.quantity, recipeToAdd.persons, defaultPersons)
+                                : ingredient.quantity
+                        }));
+                        recipeToAdd.persons = defaultPersons;
+                    }
+
                     await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
                     dialogProp.title = t('addAnyway');
                     dialogProp.content = t('Recipe') + ' "' + recipeToAdd.title + '" ' + t('addedToDatabase');

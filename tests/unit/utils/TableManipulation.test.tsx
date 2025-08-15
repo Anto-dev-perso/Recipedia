@@ -298,7 +298,107 @@ describe('TableManipulation', () => {
         const id = await table.insertElement<TestDbType>({name: 'EmptyMap', age: 40}, DB);
         expect(await table.editElementById(id as number, new Map<string, number | string>(), DB)).toBe(false);
     });
-    
+
+    describe('batchUpdateElementsById', () => {
+        test('should update multiple elements successfully', async () => {
+            await table.createTable(DB);
+
+            const id1 = await table.insertElement<TestDbType>({name: 'Batch1', age: 25}, DB);
+            const id2 = await table.insertElement<TestDbType>({name: 'Batch2', age: 30}, DB);
+            const id3 = await table.insertElement<TestDbType>({name: 'Batch3', age: 35}, DB);
+
+            const batchUpdates = [
+                {
+                    id: id1 as number,
+                    elementToUpdate: new Map<string, number | string>([['name', 'UpdatedBatch1'], ['age', 26]])
+                },
+                {
+                    id: id2 as number,
+                    elementToUpdate: new Map<string, number | string>([['name', 'UpdatedBatch2']])
+                },
+                {
+                    id: id3 as number,
+                    elementToUpdate: new Map<string, number | string>([['age', 36]])
+                }
+            ];
+
+            expect(await table.batchUpdateElementsById(batchUpdates, DB)).toBe(true);
+
+            expect(await table.searchElementById<TestDbType>(id1 as number, DB)).toEqual({
+                ID: id1, name: 'UpdatedBatch1', age: 26
+            });
+            expect(await table.searchElementById<TestDbType>(id2 as number, DB)).toEqual({
+                ID: id2, name: 'UpdatedBatch2', age: 30
+            });
+            expect(await table.searchElementById<TestDbType>(id3 as number, DB)).toEqual({
+                ID: id3, name: 'Batch3', age: 36
+            });
+        });
+
+        test('with empty array should return true', async () => {
+            await table.createTable(DB);
+            expect(await table.batchUpdateElementsById([], DB)).toBe(true);
+        });
+
+        test('should skip updates with empty maps', async () => {
+            await table.createTable(DB);
+
+            const id1 = await table.insertElement<TestDbType>({name: 'Skip1', age: 20}, DB);
+            const id2 = await table.insertElement<TestDbType>({name: 'Skip2', age: 25}, DB);
+
+            const batchUpdates = [
+                {
+                    id: id1 as number,
+                    elementToUpdate: new Map<string, number | string>()
+                },
+                {
+                    id: id2 as number,
+                    elementToUpdate: new Map<string, number | string>([['name', 'UpdatedSkip2']])
+                }
+            ];
+
+            expect(await table.batchUpdateElementsById(batchUpdates, DB)).toBe(true);
+
+            // First element should be unchanged, second should be updated
+            expect(await table.searchElementById<TestDbType>(id1 as number, DB)).toEqual({
+                ID: id1, name: 'Skip1', age: 20
+            });
+            expect(await table.searchElementById<TestDbType>(id2 as number, DB)).toEqual({
+                ID: id2, name: 'UpdatedSkip2', age: 25
+            });
+        });
+
+        test('should handle non-existent IDs gracefully', async () => {
+            await table.createTable(DB);
+
+            const id1 = await table.insertElement<TestDbType>({name: 'Exists', age: 30}, DB);
+
+            const batchUpdates = [
+                {
+                    id: id1 as number,
+                    elementToUpdate: new Map<string, number | string>([['name', 'UpdatedExists']])
+                },
+                {
+                    id: 999,
+                    elementToUpdate: new Map<string, number | string>([['name', 'ShouldNotExist']])
+                }
+            ];
+
+            // In our mock, transactions don't rollback, so valid updates still succeed
+            // In a real database with proper transactions, this would return false and rollback
+            expect(await table.batchUpdateElementsById(batchUpdates, DB)).toBe(true);
+
+            // Verify that the valid update was applied
+            expect(await table.searchElementById<TestDbType>(id1 as number, DB)).toEqual({
+                ID: id1, name: 'UpdatedExists', age: 30
+            });
+
+            // Verify that the non-existent ID wasn't created
+            expect(await table.searchElementById<TestDbType>(999, DB)).toBeUndefined();
+        });
+    });
+
+
     // searchElement
     // deleteElement
 });

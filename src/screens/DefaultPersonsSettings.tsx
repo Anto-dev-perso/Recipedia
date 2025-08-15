@@ -7,15 +7,14 @@ import {getDefaultPersons, setDefaultPersons as saveDefaultPersons} from '@utils
 import {padding, screenWidth} from '@styles/spacing';
 import {DefaultPersonsSettingsProp} from "@customTypes/ScreenTypes";
 import {BottomScreenTitle} from "@styles/typography";
+import RecipeDatabase from '@utils/RecipeDatabase';
 
 // TODO missing a back button on screen
-// TODO on validation of the new number, update the whole database with the new number
 export default function DefaultPersonsSettings({navigation}: DefaultPersonsSettingsProp) {
     const {t} = useI18n();
     const {colors} = useTheme();
     const [persons, setPersons] = useState(-1);
 
-    // Load default persons setting on component mount
     useEffect(() => {
         const loadDefaultPersons = async () => {
             const value = await getDefaultPersons();
@@ -28,6 +27,11 @@ export default function DefaultPersonsSettings({navigation}: DefaultPersonsSetti
     const handleSave = async () => {
         await saveDefaultPersons(persons);
         navigation.goBack();
+
+        // Schedule database update to run after navigation
+        setTimeout(() => {
+            RecipeDatabase.getInstance().scaleAllRecipesForNewDefaultPersons(persons);
+        }, 0);
     };
 
     const screenTestId = "DefaultPersonSettings";
