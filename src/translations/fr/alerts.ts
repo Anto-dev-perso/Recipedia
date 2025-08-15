@@ -10,7 +10,9 @@ export default {
         titleRecipe: "un titre",
         titleIngredients: "des ingrédients",
         titlePreparation: "des instructions pour la préparation",
-        titlePersons: "le nombre de personnes"
+        titlePersons: "le nombre de personnes",
+        ingredientQuantities: "des quantités pour tous les ingrédients",
+        ingredientNames: "des noms pour tous les ingrédients"
     },
     ocrRecipe: {
         explanationText: "Choisissez une image:",

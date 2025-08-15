@@ -34,3 +34,5 @@ appId: "com.recipes-manager"
 - tapOn:
     text: "Home"
     label: "Navigate back to the home screen"
+
+# TODO check that ingredients quantities translation works

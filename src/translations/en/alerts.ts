@@ -12,7 +12,9 @@ export default {
         titleRecipe: "a title",
         titleIngredients: "some ingredients",
         titlePreparation: "some instructions for the preparation",
-        titlePersons: "for how many persons this recipe is"
+        titlePersons: "for how many persons this recipe is",
+        ingredientQuantities: "quantities for all ingredients",
+        ingredientNames: "names for all ingredients"
 
     },
     ocrRecipe: {

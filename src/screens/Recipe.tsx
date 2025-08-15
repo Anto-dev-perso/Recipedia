@@ -275,6 +275,19 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         }
         if (recipeIngredients.length == 0) {
             missingElem.push(t(translatedMissingElemPrefix + 'titleIngredients'));
+        } else {
+            const allIngredientsHaveNames = recipeIngredients.every(ingredient =>
+                ingredient.name && ingredient.name.trim().length > 0
+            );
+            if (!allIngredientsHaveNames) {
+                missingElem.push(t(translatedMissingElemPrefix + 'ingredientNames'));
+            }
+            const allIngredientsHaveQuantities = recipeIngredients.every(ingredient =>
+                ingredient.quantity && ingredient.quantity.trim().length > 0
+            );
+            if (!allIngredientsHaveQuantities) {
+                missingElem.push(t(translatedMissingElemPrefix + 'ingredientQuantities'));
+            }
         }
         if (recipePreparation.length == 0) {
             console.log(recipePreparation);
@@ -301,7 +314,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     if (recipeToAdd.persons !== defaultPersons && recipeToAdd.persons > 0) {
                         recipeToAdd.ingredients = recipeToAdd.ingredients.map(ingredient => ({
                             ...ingredient,
-                            quantity: ingredient.quantity 
+                            quantity: ingredient.quantity
                                 ? scaleQuantityForPersons(ingredient.quantity, recipeToAdd.persons, defaultPersons)
                                 : ingredient.quantity
                         }));
