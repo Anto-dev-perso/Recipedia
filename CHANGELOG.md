@@ -1,3 +1,9 @@
+## [0.4.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.3.0...v0.4.0) (2025-08-15)
+
+### Features
+
+* **recipe:** validate ingredient names and quantities ([6c57e15](https://github.com/Anto-dev-perso/RecipesManager/commit/6c57e158873a7636ed1cc2583fc76769861f9624))
+
 ## [0.3.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.2.0...v0.3.0) (2025-08-15)
 
 ### Features
