@@ -19,4 +19,13 @@ export default {
         photo: "Prendre une nouvelle photo",
         gallery: "Choisir depuis la galerie",
     },
+    tagSimilarity: {
+        similarTagFound: "Tag similaire trouvé",
+        similarTagFoundContent: "Un tag similaire existe déjà : \"{{existingTag}}\". Vous pouvez l'utiliser ou modifier le nom ci-dessous pour en créer un nouveau.",
+        newTagTitle: "Tag introuvable",
+        newTagContent: "Le tag \"{{tagName}}\" n'existe pas. Vous pouvez le modifier ci-dessous avant de l'ajouter.",
+        add: "Ajouter",
+        use: "Utiliser",
+        cancel: "Annuler"
+    },
 };

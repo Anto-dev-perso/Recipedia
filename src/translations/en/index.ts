@@ -22,5 +22,6 @@ export default {
     alerts: {
         missingElements: alerts.missingElements,
         ocrRecipe: alerts.ocrRecipe,
+        tagSimilarity: alerts.tagSimilarity,
     },
 };

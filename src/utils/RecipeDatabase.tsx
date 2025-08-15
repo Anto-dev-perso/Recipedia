@@ -661,6 +661,29 @@ export default class RecipeDatabase {
         return fuse.search(recipeToCompare.title).map(fuseResult => fuseResult.item);
     }
 
+    public findSimilarTags(tagName: string): tagTableElement[] {
+        if (!tagName || tagName.trim().length === 0) {
+            return [];
+        }
+
+        const exactMatch = this._tags.find(tag => 
+            tag.name.toLowerCase() === tagName.toLowerCase()
+        );
+        if (exactMatch) {
+            return [exactMatch];
+        }
+
+        const fuse = new Fuse(this._tags, {
+            keys: ['name'],
+            threshold: 0.4,
+            includeScore: true,
+        });
+        
+        return fuse.search(tagName)
+            .sort((a, b) => (a.score || 0) - (b.score || 0))
+            .map(result => result.item);
+    }
+
     protected constructUpdateRecipeStructure(encodedRecipe: encodedRecipeElement): Map<string, string | number> {
         return new Map<string, string | number>([[recipeColumnsNames.image, encodedRecipe.IMAGE_SOURCE], [recipeColumnsNames.title, encodedRecipe.TITLE], [recipeColumnsNames.description, encodedRecipe.DESCRIPTION], [recipeColumnsNames.tags, encodedRecipe.TAGS], [recipeColumnsNames.persons, encodedRecipe.PERSONS], [recipeColumnsNames.ingredients, encodedRecipe.INGREDIENTS], [recipeColumnsNames.preparation, encodedRecipe.PREPARATION], [recipeColumnsNames.time, encodedRecipe.TIME],]);
     }

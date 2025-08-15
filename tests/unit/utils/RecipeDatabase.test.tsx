@@ -6,7 +6,8 @@ import {
     ingredientTableElement,
     ingredientType,
     recipeTableElement,
-    shoppingListTableElement
+    shoppingListTableElement,
+    tagTableElement
 } from "@customTypes/DatabaseElementTypes";
 import {shoppingAddedMultipleTimes, shoppingDataset} from "@test-data/shoppingListsDataset";
 import {listFilter} from "@customTypes/RecipeFiltersTypes";
@@ -1013,5 +1014,140 @@ describe('RecipeDatabase', () => {
 
         });
 
+        describe('findSimilarTags', () => {
+
+            test('should return empty array for empty or null input', () => {
+                expect(db.findSimilarTags('')).toEqual([]);
+                expect(db.findSimilarTags('   ')).toEqual([]);
+            });
+
+            test('should return exact match first when tag name matches exactly', () => {
+                const expected = tagsDataset[0];
+                const result = db.findSimilarTags(expected.name);
+                expect(result).toHaveLength(1);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should return exact match case-insensitively', () => {
+                {
+                    const expected = tagsDataset[1];
+
+                    const result = db.findSimilarTags(expected.name.toLowerCase());
+                    expect(result).toHaveLength(1);
+                    expect(result[0]).toEqual(expected);
+                }
+
+                {
+                    const expected = tagsDataset[2];
+                    const result = db.findSimilarTags(expected.name.toUpperCase());
+                    expect(result).toHaveLength(1);
+                    expect(result[0]).toEqual(expected);
+                }
+            });
+
+            test('should return exact match even with extra whitespace', () => {
+                const expected = tagsDataset[3];
+
+                const result = db.findSimilarTags(` ${expected.name} `);
+                expect(result).toHaveLength(1);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should find similar tags using fuzzy search when no exact match', () => {
+                const expected = tagsDataset[0];
+
+                const result = db.findSimilarTags('Italien');
+                expect(result.length).toEqual(1);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should find similar tags for partial matches', () => {
+                const expected = tagsDataset[4];
+
+                const result = db.findSimilarTags(expected.name.slice(0, -2));
+                expect(result.length).toBe(1);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should handle typos in tag names', () => {
+                const expected = tagsDataset[5];
+
+                const result = db.findSimilarTags(expected.name.slice(0, -1));
+                expect(result.length).toBe(1);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should handle multiple word tags correctly', () => {
+                const expected = tagsDataset[8];
+
+                const result = db.findSimilarTags(expected.name.split(' ')[0]);
+                expect(result.length).toBe(1);
+                expect(result[0]).toEqual(expected);
+
+                const result2 = db.findSimilarTags(expected.name.split(' ')[0]);
+                expect(result2.length).toBe(1);
+                expect(result2[0]).toEqual(expected);
+            });
+
+            test('should handle tags with spaces', () => {
+                const expected = tagsDataset[15];
+
+                const result = db.findSimilarTags(expected.name);
+                expect(result.length).toBe(1);
+                expect(result[0]).toEqual(expected);
+
+                const result2 = db.findSimilarTags('space');
+                expect(result2.length).toBe(1);
+                expect(result2[0]).toEqual(expected);
+            });
+
+            test('should return results sorted by relevance score', () => {
+                const expected = tagsDataset[0];
+
+                const result = db.findSimilarTags(expected.name.slice(0, 2));
+                expect(result.length).toBeGreaterThan(0);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should return empty array when no similar tags found', () => {
+                const result = db.findSimilarTags('NonExistentCuisineType');
+                expect(result).toEqual([]);
+            });
+
+            test('should find similar tags with different similarity thresholds', () => {
+                const expected = tagsDataset[0];
+
+                // Close match should return results
+                const closeMatch = db.findSimilarTags(expected.name.slice(0, -2));
+                expect(closeMatch.length).toBeGreaterThan(0);
+
+                // Very different string should return empty
+                const noMatch = db.findSimilarTags('xyz123');
+                expect(noMatch).toEqual([]);
+            });
+
+            test('should work with database containing single tag', async () => {
+                const tag: tagTableElement = {id: 1, name: 'SingleTag'};
+                await db.reset();
+                await db.init();
+                await db.addTag(tag);
+
+                const exactMatch = db.findSimilarTags(tag.name);
+                expect(exactMatch).toHaveLength(1);
+                expect(exactMatch[0]).toEqual(tag);
+
+                const similarMatch = db.findSimilarTags(tag.name.slice(0, -3));
+                expect(similarMatch.length).toBeGreaterThan(0);
+                expect(similarMatch[0]).toEqual(tag);
+            });
+
+            test('should handle empty database gracefully', async () => {
+                await db.reset();
+                await db.init();
+
+                const result = db.findSimilarTags('AnyTag');
+                expect(result).toEqual([]);
+            });
+        });
     });
 });

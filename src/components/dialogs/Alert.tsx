@@ -13,6 +13,7 @@ export type AlertProps =
         cancelText?: string,
         onClose: () => void,
         onConfirm?: () => void,
+        onCancel?: () => void,
     };
 
 export default function Alert({
@@ -23,7 +24,8 @@ export default function Alert({
                                   confirmText,
                                   cancelText,
                                   onClose,
-                                  onConfirm
+                                  onConfirm,
+                                  onCancel
                               }: AlertProps) {
 
     const handleDismiss = () => {
@@ -35,6 +37,11 @@ export default function Alert({
         onConfirm?.();
     };
 
+    const handleCancel = () => {
+        handleDismiss();
+        onCancel?.();
+    };
+
     const dialogTestId = testId + "::Dialog";
 
     // Let style by default if cancel not there. Otherwise, put cancel on the left and confirm on the right
@@ -42,7 +49,7 @@ export default function Alert({
         flex: 1,
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
     } : {};
 
     return (
@@ -56,7 +63,7 @@ export default function Alert({
                     <View style={actionStyle}>
                         {cancelText &&
                             <Button testID={dialogTestId + "::Cancel"} mode={"outlined"}
-                                    onPress={handleDismiss}>{cancelText}</Button>}
+                                    onPress={handleCancel}>{cancelText}</Button>}
                         <Button testID={dialogTestId + "::Confirm"} mode={"contained"}
                                 onPress={handleConfirm}>{confirmText}</Button>
                     </View>

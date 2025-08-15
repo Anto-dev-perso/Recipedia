@@ -22,4 +22,13 @@ export default {
         photo: "Take a new photo",
         gallery: "Choose from gallery",
     },
+    tagSimilarity: {
+        similarTagFound: "Similar tag found",
+        similarTagFoundContent: "A similar tag already exists: \"{{existingTag}}\". You can use it or modify the name below to create a new one.",
+        newTagTitle: "Tag not found",
+        newTagContent: "The tag \"{{tagName}}\" doesn't exist. You can modify it below before adding.",
+        add: "Add",
+        use: "Use",
+        cancel: "Cancel"
+    },
 };

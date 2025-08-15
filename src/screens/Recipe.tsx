@@ -33,6 +33,7 @@ import {useI18n} from "@utils/i18n";
 import Alert, {AlertProps} from "@components/dialogs/Alert";
 import {getDefaultPersons} from "@utils/settings";
 import {scaleQuantityForPersons} from "@utils/Quantity";
+import TagDialog, {TagDialogData, TagDialogMode} from "@components/dialogs/TagDialog";
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -47,7 +48,7 @@ export type addRecipeFromPicture = { mode: "addFromPic", imgUri: string }
 
 export type RecipePropType = readRecipe | editRecipeManually | addRecipeManually | addRecipeFromPicture
 
-type DialogProps = Pick<AlertProps, "title" | "content" | "confirmText" | "cancelText" | "onConfirm">;
+type DialogProps = Pick<AlertProps, "title" | "content" | "confirmText" | "cancelText" | "onConfirm" | "onCancel">;
 const defaultDialogProp: DialogProps = {title: "", content: "", confirmText: ""};
 
 
@@ -77,6 +78,9 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [dialogProp, setDialogProp] = useState(defaultDialogProp);
+    const [tagDialogState, setTagDialogState] = useState<TagDialogData>({
+        isOpen: false, tag: {name: ""}, mode: 'add',
+    });
     const previousPersonsRef = useRef<number>(recipePersons);
 
     useEffect(() => {
@@ -159,9 +163,43 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         setRecipeTags(recipeTags.filter(tagElement => tagElement.name !== tag));
     }
 
-    function addTag(newTag: string) {
-        setRecipeTags([...recipeTags, {name: newTag}]);
+    async function addTag(newTag: string) {
+        if (!newTag || newTag.trim().length === 0) {
+            return;
+        }
+
+        if (recipeTags.some(tag => tag.name.toLowerCase() === newTag.toLowerCase())) {
+            return;
+        }
+
+        const similarTags = RecipeDatabase.getInstance().findSimilarTags(newTag);
+
+        // Check for exact match in database - if found, add it directly without showing dialog
+        const exactMatch = similarTags.find(tag => tag.name.toLowerCase() === newTag.toLowerCase());
+        if (exactMatch) {
+            setRecipeTags([...recipeTags, exactMatch]);
+            return;
+        }
+
+        // Show validation dialog for new tags or similar matches
+        setTagDialogState({
+            isOpen: true,
+            tag: {name: newTag},
+            mode: 'validate',
+            similarTag: similarTags.length > 0 ? similarTags[0] : undefined
+        });
     }
+
+    const handleUseExistingTag = (tag: tagTableElement) => {
+        setRecipeTags([...recipeTags, tag]);
+    };
+
+    const handleTagDialogConfirm = async (mode: TagDialogMode, newTag: tagTableElement) => {
+        if (mode === 'add' || mode === 'validate') {
+            await RecipeDatabase.getInstance().addTag(newTag);
+            setRecipeTags([...recipeTags, newTag]);
+        }
+    };
 
     // TODO to rework
     function editIngredients(oldIngredientId: number, newIngredient: string) {
@@ -791,6 +829,15 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     }
                 }} onDismissFunction={() => setModalField(undefined)}
                                   onImagesUpdated={(imageUri: string) => setImgForOCR([...imgForOCR, imageUri])}/> : null}
+
+            {/* TagDialog for tag operations (add, validate) */}
+            <TagDialog
+                data={tagDialogState}
+                onClose={() => setTagDialogState(prev => ({...prev, isOpen: false}))}
+                testId="RecipeTag"
+                onConfirmTag={handleTagDialogConfirm}
+                onUseExistingTag={handleUseExistingTag}
+            />
         </SafeAreaView>
     )
 }

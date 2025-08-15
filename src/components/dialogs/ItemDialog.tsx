@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {Button, Dialog, Menu, Portal, Text} from 'react-native-paper';
 import {useI18n} from '@utils/i18n';
@@ -39,6 +39,12 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
 
     const [itemName, setItemName] = useState(item.value.name);
 
+    useEffect(() => {
+        if (isVisible) {
+            setItemName(item.value.name);
+        }
+    }, [item.value.name, isVisible]);
+
     const [ingType, setIngType] = useState<ingredientType>(item.type === 'ingredient' ? item.value.type : ingredientType.undefined);
     const [ingUnit, setIngUnit] = useState(item.type === 'ingredient' ? item.value.unit : '');
     const [ingSeason, setIngSeason] = useState(item.type === 'ingredient' ? item.value.season : []);
@@ -50,6 +56,7 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
     const handleConfirm = () => {
         callOnConfirmWithNewItem();
     };
+
 
     const callOnConfirmWithNewItem = () => {
         switch (item.type) {
@@ -124,7 +131,7 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
                         :
                         <View>
                             <CustomTextInput
-                                label={t('tag_name')}
+                                label={item.type === 'ingredient' ? t('ingredient_name') : t('tag_name')}
                                 value={itemName}
                                 onChangeText={setItemName}
                                 testID={modalTestId + "::Name"}
@@ -168,7 +175,8 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
                         <Button testID={modalTestId + "::CancelButton"} mode={"outlined"}
                                 onPress={handleDismiss}>{t('cancel')}</Button>
                         <Button testID={modalTestId + "::ConfirmButton"} mode={"contained"}
-                                onPress={handleConfirm}>{confirmButtonText}</Button>
+                                onPress={handleConfirm}
+                                disabled={!itemName.trim()}>{confirmButtonText}</Button>
                     </View>
                 </Dialog.Actions>
             </Dialog>

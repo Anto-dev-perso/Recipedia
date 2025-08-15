@@ -36,3 +36,5 @@ appId: "com.recipes-manager"
     label: "Navigate back to the home screen"
 
 # TODO check that ingredients quantities translation works
+# TODO check database management pop ups too
+# TODO check tag and ingredient name found/missing (while adding)
