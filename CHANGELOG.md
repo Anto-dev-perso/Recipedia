@@ -1,3 +1,9 @@
+## [0.7.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.6.0...v0.7.0) (2025-08-16)
+
+### Features
+
+* **Log:** add logging system in project ([0b09b66](https://github.com/Anto-dev-perso/RecipesManager/commit/0b09b667d19e5a93492f45f5a5d5d732967b9a65))
+
 ## [0.6.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.5.0...v0.6.0) (2025-08-16)
 
 ### Features
