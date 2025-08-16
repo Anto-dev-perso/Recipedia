@@ -1,4 +1,5 @@
 import {Asset} from "expo-asset";
+import {filesystemLogger} from '@utils/logger';
 
 export type AssetsType = {
     placeholder: number;
@@ -34,7 +35,7 @@ export async function getAssetUri(assetValue: AssetValue): Promise<string> {
             return "";
         }
     } catch (error) {
-        console.error(`Error loading asset [${assetValue}]:`, error);
+        filesystemLogger.error('Failed to load asset', { assetValue, error });
         return "";
     }
 }

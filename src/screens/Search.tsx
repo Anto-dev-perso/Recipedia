@@ -23,6 +23,7 @@ import {padding} from "@styles/spacing";
 import RecipeCard from "@components/molecules/RecipeCard";
 import FilterAccordion from "@components/organisms/FilterAccordion";
 import {useSeasonFilter} from "@context/SeasonFilterContext";
+import {searchLogger} from '@utils/logger';
 
 export default function Search({}: SearchScreenProp) {
     const {t} = useI18n();
@@ -40,9 +41,18 @@ export default function Search({}: SearchScreenProp) {
     const [addingFilterMode, setAddingFilterMode] = useState(false);
 
     function updateFilteredRecipes(recipeArray: Array<recipeTableElement>) {
+        searchLogger.debug('Filtering recipes', { 
+            totalRecipes: recipeArray.length, 
+            activeFilters: Array.from(filtersState.entries()).map(([key, values]) => ({ filter: key, values })),
+            searchPhrase: searchPhrase || 'none'
+        });
         const recipesFiltered = filterFromRecipe(recipeArray, filtersState, t);
         setFilteredRecipes([...recipesFiltered]);
         extractTitleTagsAndIngredients(recipesFiltered);
+        searchLogger.debug('Recipe filtering completed', { 
+            resultCount: recipesFiltered.length,
+            filteredPercentage: Math.round((recipesFiltered.length / recipeArray.length) * 100)
+        });
     }
 
     function extractTitleTagsAndIngredients(recipeArray: Array<recipeTableElement>) {

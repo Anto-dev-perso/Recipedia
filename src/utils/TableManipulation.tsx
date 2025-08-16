@@ -1,5 +1,6 @@
 import {SQLiteDatabase, SQLiteRunResult} from 'expo-sqlite';
 import {databaseColumnType} from '@customTypes/DatabaseElementTypes';
+import {databaseLogger} from '@utils/logger';
 
 export default class TableManipulation {
 
@@ -9,13 +10,13 @@ export default class TableManipulation {
 
     constructor(tabName: string, colNames: Array<databaseColumnType>) {
         if (tabName.length <= 0) {
-            console.warn("ERROR: Table name cannot be empty");
+            databaseLogger.error("ERROR: Table name cannot be empty");
             this.m_tableName = "";
         } else {
             this.m_tableName = tabName;
         }
         if (colNames.length <= 0) {
-            console.error("ERROR: No column names specified");
+            databaseLogger.error("ERROR: No column names specified");
             this.m_columnsTable = new Array<databaseColumnType>();
         } else {
             this.m_columnsTable = colNames;
@@ -28,7 +29,7 @@ export default class TableManipulation {
             await db.execAsync(dropQuery);
             return true;
         } catch (error: any) {
-            console.warn('deleteTable: \nQuery: \"', dropQuery, '\"\nReceived error : ', error);
+            databaseLogger.error('deleteTable: \nQuery: \"', dropQuery, '\"\nReceived error : ', error);
             return false;
         }
     }
@@ -51,7 +52,7 @@ export default class TableManipulation {
             await db.execAsync(createQuery);
             return true;
         } catch (error: any) {
-            console.warn('createTable: \nQuery: \"', createQuery, '\"\nReceived error : ', error);
+            databaseLogger.error('createTable: \nQuery: \"', createQuery, '\"\nReceived error : ', error);
             return false;
         }
     }
@@ -63,13 +64,13 @@ export default class TableManipulation {
         try {
             const runRes = await db.runAsync(deleteQuery, [id]);
             if (runRes.changes == 0) {
-                console.warn("deleteElementById: Can't delete element with id ", id);
+                databaseLogger.error("deleteElementById: Can't delete element with id ", id);
                 return false;
             } else {
                 return true;
             }
         } catch (error: any) {
-            console.warn('deleteElementById: \nQuery: \"', deleteQuery, '\"\nReceived error : ', error);
+            databaseLogger.error('deleteElementById: \nQuery: \"', deleteQuery, '\"\nReceived error : ', error);
             return false;
         }
     }
@@ -86,13 +87,13 @@ export default class TableManipulation {
         try {
             const runRes = await db.runAsync(deleteQuery);
             if (runRes.changes == 0) {
-                console.warn("deleteElement: Can't delete element with search: ", elementToSearch);
+                databaseLogger.error("deleteElement: Can't delete element with search: ", elementToSearch);
                 return false;
             } else {
                 return true;
             }
         } catch (error: any) {
-            console.warn('deleteElement: \nQuery: \"', deleteQuery, '\"\nReceived error : ', error);
+            databaseLogger.error('deleteElement: \nQuery: \"', deleteQuery, '\"\nReceived error : ', error);
             return false;
         }
     }
@@ -100,11 +101,11 @@ export default class TableManipulation {
     public async insertElement<TElement>(element: TElement, db: SQLiteDatabase): Promise<number | undefined> {
         const [insertQuery, params] = this.prepareInsertQuery(element);
         if (insertQuery.length == 0) {
-            console.warn("Invalid insert query");
+            databaseLogger.error("Invalid insert query");
             return undefined;
         }
         if (params.length == 0) {
-            console.warn("Empty values");
+            databaseLogger.error("Empty values");
             return undefined;
         }
 
@@ -112,7 +113,7 @@ export default class TableManipulation {
             const result: SQLiteRunResult = await db.runAsync(insertQuery, params);
             return result.lastInsertRowId;
         } catch (error: any) {
-            console.warn('insertElement: \nQuery: \"', insertQuery, '\"\nReceived error : ', error);
+            databaseLogger.error('insertElement: \nQuery: \"', insertQuery, '\"\nReceived error : ', error);
             return undefined;
         }
     }
@@ -120,14 +121,14 @@ export default class TableManipulation {
     public async insertArrayOfElement<TElement>(arrayElements: Array<TElement>, db: SQLiteDatabase): Promise<boolean> {
         const [insertQuery, params] = this.prepareInsertQuery(arrayElements);
         if (insertQuery.length == 0) {
-            console.warn('insertArrayOfElement<', typeof arrayElements[0], '>: query is empty due to an issue');
+            databaseLogger.error('insertArrayOfElement<', typeof arrayElements[0], '>: query is empty due to an issue');
             return false;
         }
         try {
             await db.runAsync(insertQuery, params);
             return true;
         } catch (error: any) {
-            console.warn('insertArrayOfElement<', typeof arrayElements[0], '>: \nQuery: \"', insertQuery, '\"\nReceived error : ', error);
+            databaseLogger.error('insertArrayOfElement<', typeof arrayElements[0], '>: \nQuery: \"', insertQuery, '\"\nReceived error : ', error);
             return false;
         }
     }
@@ -147,12 +148,15 @@ export default class TableManipulation {
             const result = await db.runAsync(updateQuery);
             return result.changes > 0;
         } catch (error: any) {
-            console.warn('editElement: \nQuery: \"', updateQuery, '\"\nReceived error : ', error);
+            databaseLogger.error('editElement: \nQuery: \"', updateQuery, '\"\nReceived error : ', error);
             return false;
         }
     };
 
-    public async batchUpdateElementsById(updates: Array<{id: number, elementToUpdate: Map<string, number | string>}>, db: SQLiteDatabase): Promise<boolean> {
+    public async batchUpdateElementsById(updates: Array<{
+        id: number,
+        elementToUpdate: Map<string, number | string>
+    }>, db: SQLiteDatabase): Promise<boolean> {
         if (updates.length === 0) {
             return true;
         }
@@ -164,14 +168,16 @@ export default class TableManipulation {
                     if (queryFromMap.length === 0) {
                         continue;
                     }
-                    
-                    const updateQuery = `UPDATE "${this.m_tableName}" SET ${queryFromMap} WHERE ID = ${update.id};`;
+
+                    const updateQuery = `UPDATE "${this.m_tableName}"
+                                         SET ${queryFromMap}
+                                         WHERE ID = ${update.id};`;
                     await db.runAsync(updateQuery);
                 }
             });
             return true;
         } catch (error: any) {
-            console.warn('batchUpdateElementsById: \nReceived error : ', error);
+            databaseLogger.warn('batchUpdateElementsById: \nReceived error : ', error);
             return false;
         }
     }
@@ -179,7 +185,7 @@ export default class TableManipulation {
 
     public async searchElementById<T>(elementId: number, db: SQLiteDatabase): Promise<T | undefined> {
         if (isNaN(elementId)) {
-            console.error('searchElementById: Id use for search is null');
+            databaseLogger.error('searchElementById: Id use for search is null');
             return undefined;
         }
         const searchQuery = `SELECT *
@@ -193,7 +199,7 @@ export default class TableManipulation {
             }
             return result;
         } catch (error: any) {
-            console.warn('searchElementById: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
+            databaseLogger.warn('searchElementById: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
             return undefined;
         }
     }
@@ -215,7 +221,7 @@ export default class TableManipulation {
             return await db.getAllAsync<T>(searchQuery, [numOfElements]);
 
         } catch (error: any) {
-            console.warn('searchRandomlyElement: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
+            databaseLogger.warn('searchRandomlyElement: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
             return undefined;
         }
     }
@@ -233,7 +239,7 @@ export default class TableManipulation {
         try {
             return await db.getAllAsync<T>(searchQuery);
         } catch (error: any) {
-            console.warn('searchElement: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
+            databaseLogger.warn('searchElement: \nQuery: \"', searchQuery, '\"\nReceived error : ', error);
             return undefined;
         }
     }
@@ -262,7 +268,7 @@ export default class TableManipulation {
                 result = result.slice(0, -2 - sepLen); // Remove the separator of last element
             }
         } else {
-            console.warn("ERROR: you try to update too much columns for this table. Size of column table to update is ", this.m_columnsTable.length, " and size of columns to update for this element is ", map.size)
+            databaseLogger.warn("ERROR: you try to update too much columns for this table. Size of column table to update is ", this.m_columnsTable.length, " and size of columns to update for this element is ", map.size)
         }
 
         return result;
@@ -271,7 +277,7 @@ export default class TableManipulation {
     protected verifyLengthOfElement<TElement extends string>(element: Array<TElement>) {
         let isCheck: boolean = true;
         if (element.length > this.m_columnsTable.length + 1) {
-            console.warn("ERROR: you try to add an element in a table that is not mapping. Impossible to add this. Size of column table is ", this.m_columnsTable.length, " and size of element is ", element.length, "\n\nelement : ", element);
+            databaseLogger.warn("ERROR: you try to add an element in a table that is not mapping. Impossible to add this. Size of column table is ", this.m_columnsTable.length, " and size of element is ", element.length, "\n\nelement : ", element);
             isCheck = false;
         }
         return isCheck;

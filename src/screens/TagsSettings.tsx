@@ -5,6 +5,7 @@ import RecipeDatabase from "@utils/RecipeDatabase";
 import {tagTableElement} from "@customTypes/DatabaseElementTypes";
 import SettingsItemList from "@components/organisms/SettingsItemList";
 import ItemDialog, {DialogMode} from "@components/dialogs/ItemDialog";
+import {tagsSettingsLogger} from '@utils/logger';
 
 export default function TagsSettings({}: TagsSettingsProp) {
     const database = RecipeDatabase.getInstance();
@@ -29,7 +30,7 @@ export default function TagsSettings({}: TagsSettingsProp) {
                 setTags(updatedTags);
             }
         } else {
-            console.warn('Failed to update tag in database');
+            tagsSettingsLogger.warn('Failed to update tag in database', { tagName: newTag.name, tagId: newTag.id });
         }
     };
 

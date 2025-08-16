@@ -10,6 +10,7 @@ import {useFocusEffect} from "@react-navigation/native";
 import {useI18n} from "@utils/i18n";
 import {screenWidth} from "@styles/spacing";
 import {HomeScreenProp} from "@customTypes/ScreenTypes";
+import {homeLogger} from '@utils/logger';
 
 
 export default function Home({navigation}: HomeScreenProp) {
@@ -30,13 +31,16 @@ export default function Home({navigation}: HomeScreenProp) {
     const [elementsForRecommendation4, setElementsForRecommendation4] = useState(new Array<recipeTableElement>());
 
     function randomlySearchElements(databaseInstance: RecipeDatabase) {
+        homeLogger.debug('Loading random recipe recommendations', { carouselSize: howManyItemInCarousel });
         setElementsForRecommendation1(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
         setElementsForRecommendation2(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
         setElementsForRecommendation3(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
         setElementsForRecommendation4(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
+        homeLogger.debug('Random recipe recommendations loaded successfully');
     }
 
     const onRefresh = useCallback(() => {
+        homeLogger.info('User refreshing home screen recommendations');
         setRefreshing(true);
         randomlySearchElements(RecipeDatabase.getInstance());
         setRefreshing(false);

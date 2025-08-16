@@ -8,6 +8,7 @@ import {padding, screenWidth} from '@styles/spacing';
 import {DefaultPersonsSettingsProp} from "@customTypes/ScreenTypes";
 import {BottomScreenTitle} from "@styles/typography";
 import RecipeDatabase from '@utils/RecipeDatabase';
+import {defaultPersonsSettingsLogger} from '@utils/logger';
 
 // TODO missing a back button on screen
 export default function DefaultPersonsSettings({navigation}: DefaultPersonsSettingsProp) {
@@ -18,6 +19,7 @@ export default function DefaultPersonsSettings({navigation}: DefaultPersonsSetti
     useEffect(() => {
         const loadDefaultPersons = async () => {
             const value = await getDefaultPersons();
+            defaultPersonsSettingsLogger.debug('Loaded default persons setting', { persons: value });
             setPersons(value);
         };
 
@@ -25,11 +27,17 @@ export default function DefaultPersonsSettings({navigation}: DefaultPersonsSetti
     }, []);
 
     const handleSave = async () => {
+        defaultPersonsSettingsLogger.info('Saving new default persons setting', { 
+            oldPersons: await getDefaultPersons(), 
+            newPersons: persons 
+        });
+        
         await saveDefaultPersons(persons);
         navigation.goBack();
 
         // Schedule database update to run after navigation
         setTimeout(() => {
+            defaultPersonsSettingsLogger.info('Starting recipe scaling for new default persons', { persons });
             RecipeDatabase.getInstance().scaleAllRecipesForNewDefaultPersons(persons);
         }, 0);
     };

@@ -34,6 +34,7 @@ import Alert, {AlertProps} from "@components/dialogs/Alert";
 import {getDefaultPersons} from "@utils/settings";
 import {scaleQuantityForPersons} from "@utils/Quantity";
 import SimilarityDialog, {SimilarityDialogProps} from "@components/dialogs/SimilarityDialog";
+import {recipeLogger, validationLogger, ocrLogger} from '@utils/logger';
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -162,7 +163,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                 break;
             case recipeStateType.addManual:
             case recipeStateType.addOCR:
-                console.warn(`Call onDelete on mode ${stackMode} which is not possible`);
+                recipeLogger.warn('Delete operation not allowed in current mode', { stackMode });
                 break;
         }
     }
@@ -211,7 +212,10 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     function editIngredients(oldIngredientId: number, newIngredient: string) {
         if (oldIngredientId < 0 || oldIngredientId >= recipeIngredients.length) {
-            console.warn("Can't find ingredient at index ", oldIngredientId, " for edit");
+            recipeLogger.warn('Cannot edit ingredient - invalid index', { 
+                oldIngredientId, 
+                ingredientsCount: recipeIngredients.length 
+            });
             return;
         }
 
@@ -258,12 +262,15 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             }
 
             const dismissCallback = () => {
-                console.log('Validation was cancelled, removing ingredient');
+                validationLogger.debug('Ingredient validation cancelled - removing ingredient');
                 setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
             };
 
             const onCloseCallback = (chosenIngredient: ingredientTableElement) => {
-                console.log('Updating ingredient with validated data:', chosenIngredient);
+                validationLogger.debug('Updating ingredient with validated data', { 
+                    ingredientName: chosenIngredient.name,
+                    ingredientType: chosenIngredient.type
+                });
                 updateIngredient(chosenIngredient);
             };
 
@@ -303,7 +310,10 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     function editPreparation(oldPreparationId: number, newPreparation: string) {
 
         if (oldPreparationId < 0 || oldPreparationId > recipePreparation.length) {
-            console.warn(`editPreparation:: Can't find old preparation at index: ${oldPreparationId}`);
+            recipeLogger.warn('Cannot edit preparation step - invalid index', { 
+                oldPreparationId, 
+                preparationCount: recipePreparation.length 
+            });
             return;
         }
         const newPreparationArray = new Array(...recipePreparation);
@@ -384,7 +394,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             }
         }
         if (recipePreparation.length == 0) {
-            console.log(recipePreparation);
+            validationLogger.debug('Recipe preparation is empty', { recipeTitle });
             missingElem.push(t(translatedMissingElemPrefix + 'titlePreparation'));
         }
         if (recipePersons === defaultValueNumber) {
@@ -423,7 +433,10 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                         navigation.goBack();
                     };
                 } catch (error) {
-                    console.warn("addValidation::addRecipeToDatabase: Something went wrong when validating new recipe : ", error)
+                    validationLogger.error('Failed to validate and add recipe to database', { 
+                        recipeTitle, 
+                        error 
+                    });
                 }
             };
 
@@ -447,7 +460,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         } else {
             dialogProp.confirmText = t('understood');
             if (missingElem.length == 1) {
-                console.log(`One missing with ${missingElem}`);
+                validationLogger.debug('Single validation element missing', { missingElement: missingElem[0] });
 
                 dialogProp.title = t(translatedMissingElemPrefix + 'titleSingular');
                 dialogProp.content = t(translatedMissingElemPrefix + 'messageSingularBeginning') + missingElem[0] + t(translatedMissingElemPrefix + 'messageSingularEnding');
@@ -470,7 +483,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             recipeIngredients: recipeIngredients,
             recipeTags: recipeTags,
         }, (msg) => {
-            console.warn("OCR warning:", msg);
+            ocrLogger.warn('OCR processing warning', { message: msg });
         });
         if (newFieldData.recipeImage) {
             setRecipeImage(newFieldData.recipeImage);
@@ -513,10 +526,10 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             case recipeStateType.addOCR:
                 return {...defaultReturn, buttonIcon: Icons.scanImageIcon};
             default:
-                console.warn("recipeImageProp: Unknown stackMode");
+                recipeLogger.warn('Unknown stack mode in recipeImageProp', { stackMode });
                 return {
                     imgUri: "", openModal: () => {
-                        console.warn("recipeImageProp: Unknown stackMode")
+                        recipeLogger.warn('Unknown stack mode in recipeImageProp callback', { stackMode });
                     }
                 };
         }
@@ -555,7 +568,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     }
                 };
             default:
-                console.warn("recipeTitleProp: Unknown stackMode");
+                recipeLogger.warn('Unknown stack mode in recipeTitleProp', { stackMode });
                 return {rootText: {style: 'paragraph', value: ''}};
         }
     }
@@ -592,7 +605,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                 };
 
             default:
-                console.warn("recipeDescriptionProp: Unknown stackMode");
+                recipeLogger.warn('Unknown stack mode in recipeDescriptionProp', { stackMode });
                 return {rootText: {style: 'paragraph', value: ''}};
         }
     }
@@ -616,7 +629,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             case recipeStateType.addManual:
                 return editProps;
             default:
-                console.warn("recipeTagsProp: Unknown stackMode");
+                recipeLogger.warn('Unknown stack mode in recipeTagsProp', { stackMode });
                 return {tagsList: [], type: 'readOnly'}
         }
     }
@@ -646,7 +659,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     }
                 };
             default:
-                console.warn("recipePersonsProp: Unknown stackMode");
+                recipeLogger.warn('Unknown stack mode in recipePersonsProp', { stackMode });
                 return {
                     testID: personTestID,
                     numberProps: {editType: 'read', text: ''}
@@ -692,7 +705,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     }
                 };
             default:
-                console.warn("recipePersonsProp: Unknown stackMode");
+                recipeLogger.warn('Unknown stack mode in recipePersonsProp', { stackMode });
                 return {
                     testID: personTestID,
                     numberProps: {editType: 'read', text: ''}
@@ -742,7 +755,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     addNewText: addNewIngredient,
                 };
             default:
-                console.warn("recipeIngredientsProp: Unknown stackMode");
+                recipeLogger.warn('Unknown stack mode in recipeIngredientsProp', { stackMode });
                 return {
                     testID: ingredientTestID,
                     type: 'readOnly',
@@ -786,7 +799,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                     addNewText: addNewPreparationStep,
                 };
             default:
-                console.warn("recipePreparationProp: Unknown stackMode");
+                recipeLogger.warn('Unknown stack mode in recipePreparationProp', { stackMode });
                 return {
                     testID: preparationTestID,
                     type: 'readOnly',
@@ -806,8 +819,8 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             case recipeStateType.addOCR:
                 return [t('validateAdd'), addValidation];
             default:
-                console.warn("recipeValidationButtonProps: Unknown stackMode");
-                return ["", async () => console.warn("Error: Unknown stackMode")];
+                recipeLogger.warn('Unknown stack mode in recipeValidationButtonProps', { stackMode });
+                return ["", async () => recipeLogger.error('Validation button clicked with unknown stack mode', { stackMode })];
         }
     }
 

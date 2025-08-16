@@ -1,5 +1,6 @@
 import {openCamera, openCropper, openPicker} from "react-native-image-crop-picker";
 import {MD3Colors} from "react-native-paper/lib/typescript/types";
+import {uiLogger} from '@utils/logger';
 
 
 function createImageOptionsWithTheme(themeColors: MD3Colors) {
@@ -34,7 +35,7 @@ export async function pickImage(themeColors: MD3Colors): Promise<string> {
         const pickResult = await openPicker({...createImageOptionsWithTheme(themeColors), mediaType: 'photo'});
         return pickResult.path;
     } catch (error) {
-        console.warn(`pickImage: user cancelled ${error}`);
+        uiLogger.debug(`pickImage: user cancelled ${error}`);
         return '';
     }
 }
@@ -47,7 +48,7 @@ export async function cropImage(uri: string, themeColors: MD3Colors): Promise<st
         });
         return cropResult.path;
     } catch (error) {
-        console.warn(`cropImage: user cancelled ${error}`);
+        uiLogger.debug(`cropImage: user cancelled ${error}`);
         return '';
     }
 }
@@ -57,7 +58,7 @@ export async function takePhoto(themeColors: MD3Colors): Promise<string> {
         const cameraResult = await openCamera({...createImageOptionsWithTheme(themeColors), mediaType: 'photo'});
         return cameraResult.path;
     } catch (error) {
-        console.warn(`takePhoto: user cancelled ${error}`);
+        uiLogger.debug(`takePhoto: user cancelled ${error}`);
         return '';
     }
 }

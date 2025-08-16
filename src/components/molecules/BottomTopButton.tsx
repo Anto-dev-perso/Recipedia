@@ -11,6 +11,7 @@ import {
     topLeftButton,
     topRightButton
 } from "@styles/buttons"
+import {uiLogger} from '@utils/logger';
 
 export type BottomTopButtonProps<T extends React.ElementType> = {
         as: T,
@@ -59,7 +60,7 @@ export default function BottomTopButton<T extends React.ElementType>({
             buttonStyle = bottomFullButton(offset);
             break;
         default:
-            console.warn("BottonTopButtons : Unreachable code");
+            uiLogger.error('Unreachable code in BottomTopButton', { position });
             break;
     }
 

@@ -17,6 +17,7 @@ import TextRecognition, {TextBlock, TextRecognitionResult} from "@react-native-m
 import {scaleQuantityForPersons} from "@utils/Quantity";
 import {isArrayOfNumber, isArrayOfString, isArrayOfType, isNumber, isString} from "@utils/TypeCheckingFunctions";
 import {defaultValueNumber} from "@utils/Constants";
+import {ocrLogger} from '@utils/logger';
 
 export type personAndTimeObject = { person: number, time: number };
 export const keysPersonsAndTimeObject = Object.keys({
@@ -61,14 +62,14 @@ export async function recognizeText(imageUri: string, fieldName: recipeColumnsNa
             case recipeColumnsNames.tags:
                 return tranformOCRInTags(ocr);
             case recipeColumnsNames.image:
-                console.error("recognizeText: Image field shouldn't go through OCR");
+                ocrLogger.error('Image field should not be processed through OCR', { fieldName });
                 return "";
             default:
-                console.error("recognizeText: Unrecognized type");
+                ocrLogger.error('Unrecognized field type for OCR processing', { fieldName });
                 return "";
         }
     } catch (e) {
-        console.error("recognizeText: Error while OCR", e);
+        ocrLogger.error('OCR text recognition failed', { imageUri, fieldName, error: e });
         return "";
     }
 }
@@ -133,7 +134,7 @@ function tranformOCRInOneNumber(ocr: TextRecognitionResult): number | Array<numb
         return extractingNumberOrArray(timeArray);
     }
 
-    console.error("transformOCRInOneNumber: Don't know how to convert: ", elementsToConvert);
+    ocrLogger.error('Unable to convert OCR text to number', { elementsToConvert });
     return defaultValueNumber;
 }
 
@@ -202,7 +203,7 @@ function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientO
 
     const headerBoundary = lines.findIndex(line => line.endsWith("p"));
     if (headerBoundary === -1) {
-        console.log("tranformOCRInIngredients: No ingredient header found in OCR data.");
+        ocrLogger.debug('No ingredient header found in OCR data');
         return parseIngredientsNoHeader(lines);
     }
     let ingredientsNames = lines.slice(0, headerBoundary);
@@ -247,7 +248,10 @@ function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientO
                     break;
                 }
             } else {
-                console.warn("Can't merge two ingredients. Break loop as I don't know what to do");
+                ocrLogger.warn('Cannot merge ingredients - breaking loop', { 
+                    ingredient1: currentIngredient.name, 
+                    ingredient2: previousIngredient.name 
+                });
                 break;
             }
             indexFirstSuspicious = isSuspiciousGroup(firstGroup, ingredientsOCR);
@@ -362,7 +366,7 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
                                                 recipePersons: number;
                                                 recipeTags: tagTableElement[];
                                                 recipeIngredients: any[];
-                                            }, onWarn: WarningHandler = console.warn
+                                            }, onWarn: WarningHandler = (msg) => ocrLogger.warn('OCR extraction warning', { message: msg })
 ): Promise<Partial<{
     recipeImage: string;
     recipeTitle: string;
@@ -479,7 +483,7 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
                 return {};
             }
         default:
-            console.error("Unrecognized field", field);
+            ocrLogger.error('Unrecognized field in extractFieldFromImage', { field });
             return {};
     }
 }

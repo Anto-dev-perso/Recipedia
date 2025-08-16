@@ -8,6 +8,7 @@ import RecipeDatabase from "@utils/RecipeDatabase";
 import {recipeTextRenderStyles} from "@styles/recipeComponents";
 import CustomTextInput from "@components/atomic/CustomTextInput";
 import {useI18n} from "@utils/i18n";
+import {uiLogger} from '@utils/logger';
 
 
 // TODO use variant for Text
@@ -38,7 +39,7 @@ export default function TextRender(props: TextRenderProps) {
             case typoRender.CLICK_LIST:
                 return (props.text.map((item, index) => renderAsClickableList(item, index)))
             default:
-                console.warn("TextRender::selectRender : renderChoice not recognized: ", renderChoice);
+                uiLogger.warn('Unrecognized render choice in TextRender', { renderChoice });
         }
     }
 
@@ -137,7 +138,7 @@ export default function TextRender(props: TextRenderProps) {
 
         return (
             <TouchableOpacity key={index} style={screenViews.clickableListView} onPress={() => {
-                props.onClick ? props.onClick(item) : console.warn("renderAsClickableList: onClick doesn't exist !");
+                props.onClick ? props.onClick(item) : uiLogger.warn('Missing onClick handler in renderAsClickableList');
             }}>
                 <Text style={typoStyles.paragraph}>{item}</Text>
             </TouchableOpacity>

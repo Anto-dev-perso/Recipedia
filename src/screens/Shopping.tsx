@@ -13,6 +13,7 @@ import RoundButton from "@components/atomic/RoundButton";
 import {bottomTopPosition} from "@styles/buttons";
 import {Icons} from "@assets/Icons";
 import Alert from "@components/dialogs/Alert";
+import {shoppingLogger} from '@utils/logger';
 
 type ingredientDataForDialog = Pick<shoppingListTableElement, "name" | "recipesTitle">;
 
@@ -63,10 +64,10 @@ export default function Shopping({navigation}: ShoppingScreenProp) {
             if (ingToEdit.id !== undefined) {
                 RecipeDatabase.getInstance().purchaseIngredientOfShoppingList(ingToEdit.id, ingToEdit.purchased).then(() => setShoppingList(newShoppingList));
             } else {
-                console.warn(`updateShoppingList:: Shopping list ingredient named ${ingredientName} doesn't have an id`);
+                shoppingLogger.warn('Shopping list ingredient missing ID', { ingredientName });
             }
         } else {
-            console.warn(`updateShoppingList::Shopping list not found for ${ingredientName}`);
+            shoppingLogger.warn('Shopping list ingredient not found', { ingredientName });
         }
     }
 

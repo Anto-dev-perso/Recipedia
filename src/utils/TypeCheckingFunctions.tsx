@@ -1,4 +1,5 @@
 import {separateNumbersFromStr} from "@styles/typography";
+import {validationLogger} from '@utils/logger';
 
 export function isString(val: unknown): boolean {
     return typeof val === 'string';
@@ -71,7 +72,7 @@ function operatorNumberInString(lhs: string, rhs: string, operator: '+' | '-') {
             return token + other;
         }).join('');
     } else {
-        console.error("Can't have one which can be a number and other which cannot be: ", lhs, " ", rhs);
+        validationLogger.error("Can't have one which can be a number and other which cannot be: ", lhs, " ", rhs);
         return lhs + rhs;
     }
 }

@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import {Asset} from "expo-asset";
 import {initialRecipesImages} from "@utils/Constants";
+import {filesystemLogger} from '@utils/logger';
 //  TODO is new version changing stuff for image manipulator ?
 //  TODO is expo-file-system/next better ?
 
@@ -40,17 +41,18 @@ export default class FileGestion {
     }
 
     public async clearCache() {
+        filesystemLogger.info('Clearing cache directories');
         try {
             await FileSystem.deleteAsync(this._imageManipulatorCacheUri);
             await FileSystem.makeDirectoryAsync(this._imageManipulatorCacheUri);
         } catch (error) {
-            console.warn("Directory error : ", error);
+            filesystemLogger.warn("Failed to clear image manipulator cache", { cacheUri: this._imageManipulatorCacheUri, error });
         }
         try {
             await FileSystem.deleteAsync(this._cameraCacheUri);
             await FileSystem.makeDirectoryAsync(this._cameraCacheUri);
         } catch (error) {
-            console.warn("Cache error : ", error);
+            filesystemLogger.warn("Failed to clear camera cache", { cacheUri: this._cameraCacheUri, error });
         }
     }
 
@@ -60,7 +62,7 @@ export default class FileGestion {
             await FileSystem.deleteAsync(newUri, {idempotent: true});
             await FileSystem.moveAsync({from: oldUri, to: newUri});
         } catch (error) {
-            console.warn("moveFile:", error);
+            filesystemLogger.warn("Failed to move file", { from: oldUri, to: newUri, error });
         }
     }
 
@@ -68,20 +70,22 @@ export default class FileGestion {
         try {
             await FileSystem.copyAsync({from: oldUri, to: newUri});
         } catch (error) {
-            console.warn("copyFile: ", error);
+            filesystemLogger.warn("Failed to copy file", { from: oldUri, to: newUri, error });
         }
     }
 
     public async saveRecipeImage(cacheFileUri: string, recName: string): Promise<string> {
+        filesystemLogger.debug('Saving recipe image', { cacheFileUri, recipeName: recName });
 
         const extension = cacheFileUri.split('.');
         const imgName = recName.replace(/ /g, "_").toLowerCase() + '.' + extension[extension.length - 1]
         const imgUri: string = this._directoryUri + imgName;
         try {
             await this.copyFile(cacheFileUri, imgUri);
+            filesystemLogger.debug('Recipe image saved successfully', { imageName: imgName, imageUri: imgUri });
             return imgName;
         } catch (error) {
-            console.warn("saveRecipeImage:", error);
+            filesystemLogger.warn("Failed to save recipe image", { cacheFileUri, recipeName: recName, error });
             return "";
         }
     }
@@ -103,6 +107,10 @@ export default class FileGestion {
     }
 
     public async init() {
+        filesystemLogger.info('Initializing file system', {
+            directoryUri: this._directoryUri,
+            cacheUri: this._cacheUri
+        });
         try {
             await this.ensureDirExists(this._directoryUri);
             await this.ensureDirExists(this._cacheUri);
@@ -117,14 +125,14 @@ export default class FileGestion {
                 const fileInfo = await FileSystem.getInfoAsync(destinationUri);
 
                 if (fileInfo.exists) {
-                    console.debug(`File ${asset.name} already exists, skipping...`);
+                    filesystemLogger.debug('Asset file already exists, skipping', { assetName: asset.name });
                     continue;
                 }
                 await FileSystem.copyAsync({from: asset.localUri as string, to: destinationUri});
-                console.debug(`File ${asset.name} successfully copied to ${destinationUri}`);
+                filesystemLogger.debug('Asset file copied successfully', { assetName: asset.name, destinationUri });
             }
         } catch (error) {
-            console.warn("init: ", error);
+            filesystemLogger.error("FileGestion initialization failed", { error });
         }
     }
 
@@ -133,11 +141,11 @@ export default class FileGestion {
 
         if (!dirInfo.exists) {
             await FileSystem.makeDirectoryAsync(dirUri, {intermediates: true});
-            console.log(`Created directory: ${dirUri}`);
+            filesystemLogger.info('Directory created', { directory: dirUri });
         } else if (!dirInfo.isDirectory) {
             throw new Error(`${dirUri} exists but is not a directory`);
         } else {
-            console.debug(`Directory already exists: ${dirUri}`);
+            filesystemLogger.debug('Directory already exists', { directory: dirUri });
         }
     }
 

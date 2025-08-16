@@ -13,6 +13,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import {fetchFonts} from "@styles/typography";
 import {DarkModeContext} from '@context/DarkModeContext';
 import {SeasonFilterProvider} from '@context/SeasonFilterContext';
+import {appLogger} from '@utils/logger';
 
 // TODO manage horizontal mode
 
@@ -37,31 +38,47 @@ export default function App() {
 
     useEffect(() => {
         const initialize = async () => {
+            try {
+                appLogger.info('Starting app initialization');
 
-            // Initialize settings first
-            await initSettings();
+                // Initialize settings first
+                appLogger.debug('Initializing settings');
+                await initSettings();
 
-            const isDarkMode = await getDarkMode();
-            setDarkMode(isDarkMode);
+                const isDarkMode = await getDarkMode();
+                setDarkMode(isDarkMode);
+                appLogger.debug('Dark mode setting loaded', { isDarkMode });
 
-            // Initialize file system and database
-            await FileGestion.getInstance().init();
+                // Initialize file system and database
+                appLogger.debug('Initializing file system');
+                await FileGestion.getInstance().init();
 
-            const recipeDb = RecipeDatabase.getInstance();
-            await recipeDb.reset();
-            await recipeDb.init();
+                appLogger.debug('Initializing database');
+                const recipeDb = RecipeDatabase.getInstance();
+                await recipeDb.reset();
+                await recipeDb.init();
 
-            if (recipeDb.get_ingredients().length === 0) {
-                await recipeDb.addMultipleIngredients(ingredientsDataset);
+                // Load initial data if needed
+                if (recipeDb.get_ingredients().length === 0) {
+                    appLogger.info('Loading initial ingredients dataset');
+                    await recipeDb.addMultipleIngredients(ingredientsDataset);
+                }
+                if (recipeDb.get_tags().length === 0) {
+                    appLogger.info('Loading initial tags dataset');
+                    await recipeDb.addMultipleTags(tagsDataset);
+                }
+                if (recipeDb.get_recipes().length === 0) {
+                    appLogger.info('Loading initial recipes dataset');
+                    await recipeDb.addMultipleRecipes(recipesDataset);
+                }
+
+                appLogger.info('App initialization completed successfully');
+                setIsInitialized(true);
+            } catch (error) {
+                appLogger.error('App initialization failed', { error });
+                // Still set as initialized to prevent infinite loading
+                setIsInitialized(true);
             }
-            if (recipeDb.get_tags().length === 0) {
-                await recipeDb.addMultipleTags(tagsDataset);
-            }
-            if (recipeDb.get_recipes().length === 0) {
-                await recipeDb.addMultipleRecipes(recipesDataset);
-            }
-
-            setIsInitialized(true);
         };
         initialize();
     }, []);
@@ -73,7 +90,7 @@ export default function App() {
             await setDarkModeSetting(newValue);
             setDarkMode(newValue);
         } catch (error) {
-            console.error('Failed to toggle dark mode:', error);
+            appLogger.error('Failed to toggle dark mode', { error });
         }
     };
 
@@ -82,6 +99,7 @@ export default function App() {
 
     const onLayoutRootView = useCallback(async () => {
         if (isInitialized) {
+            appLogger.debug('Hiding splash screen - app ready');
             await SplashScreen.hideAsync();
         }
     }, [isInitialized]);

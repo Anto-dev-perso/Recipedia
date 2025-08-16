@@ -35,6 +35,7 @@ import FileGestion from '@utils/FileGestion'
 import {isNumber, subtractNumberInString, sumNumberInString} from "@utils/TypeCheckingFunctions";
 import Fuse from 'fuse.js/dist/fuse.js';
 import {scaleQuantityForPersons} from '@utils/Quantity';
+import {databaseLogger} from '@utils/logger';
 
 export default class RecipeDatabase {
     static #instance: RecipeDatabase;
@@ -89,6 +90,7 @@ export default class RecipeDatabase {
     }
 
     public async reset() {
+        databaseLogger.info('Resetting database - deleting all tables and data');
 
         await this.openDatabase();
         await this._recipesTable.deleteTable(this._dbConnection);
@@ -101,10 +103,12 @@ export default class RecipeDatabase {
         this._ingredients = new Array<ingredientTableElement>();
         this._tags = new Array<tagTableElement>();
         this._shopping = new Array<shoppingListTableElement>();
+
+        databaseLogger.info('Database reset completed');
     }
 
     public async init() {
-
+        databaseLogger.info('Initializing database', {databaseName: this._databaseName});
 
         await this.openDatabase();
 
@@ -119,6 +123,13 @@ export default class RecipeDatabase {
         this._tags = await this.getAllTags();
         this._recipes = await this.getAllRecipes();
         this._shopping = await this.getAllShopping();
+
+        databaseLogger.info('Database initialization completed', {
+            recipesCount: this._recipes.length,
+            ingredientsCount: this._ingredients.length,
+            tagsCount: this._tags.length,
+            shoppingItemsCount: this._shopping.length
+        });
     }
 
     public async addIngredient(ingredient: ingredientTableElement): Promise<ingredientTableElement | undefined> {
@@ -128,15 +139,19 @@ export default class RecipeDatabase {
             TYPE: ingredient.type,
             SEASON: ingredient.season.join(EncodingSeparator)
         };
+        databaseLogger.debug('Adding ingredient to database', {ingredientName: ingredient.name, type: ingredient.type});
         const dbRes = await this._ingredientsTable.insertElement(ingToAdd, this._dbConnection);
         if (dbRes === undefined) {
-            console.warn("Can't add the ingredient because insertion in the database didn't worked");
+            databaseLogger.warn("Failed to add ingredient - database insertion failed", {ingredientName: ingredient.name});
             return undefined;
         }
         const dbIngredient = await this._ingredientsTable.searchElementById<encodedIngredientElement>(dbRes, this._dbConnection);
 
         if (dbIngredient === undefined) {
-            console.warn("addIngredient: Searching for ingredient  ", ingredient.name, " didn't worked");
+            databaseLogger.error("Failed to find ingredient after insertion", {
+                ingredientName: ingredient.name,
+                dbResult: dbRes
+            });
             return undefined;
         }
         const decodedIng = this.decodeIngredient(dbIngredient);
@@ -146,15 +161,16 @@ export default class RecipeDatabase {
 
     public async addTag(newTag: tagTableElement) {
         const tagToAdd: encodedTagElement = {ID: newTag.id ? newTag.id : 0, NAME: newTag.name};
+        databaseLogger.debug('Adding tag to database', {tagName: newTag.name});
         const dbRes = await this._tagsTable.insertElement(tagToAdd, this._dbConnection);
         if (dbRes === undefined) {
-            console.warn("addTag: Can't add the tag because insertion in the database didn't worked");
+            databaseLogger.error("Failed to add tag - database insertion failed", {tagName: newTag.name});
             return
         }
 
         const dbTag = await this._tagsTable.searchElementById<encodedTagElement>(dbRes, this._dbConnection);
         if (dbTag === undefined) {
-            console.warn("addTag: Searching for tag ", newTag.name, " didn't worked")
+            databaseLogger.error("Failed to find tag after insertion", {tagName: newTag.name, dbResult: dbRes});
         } else {
             this.add_tags(this.decodeTag(dbTag));
         }
@@ -183,14 +199,22 @@ export default class RecipeDatabase {
 
         const recipeConverted = this.encodeRecipe(recipe);
 
+        databaseLogger.debug('Adding recipe to database', {
+            recipeTitle: recipe.title,
+            ingredientsCount: recipe.ingredients.length,
+            tagsCount: recipe.tags.length
+        });
         const dbRes = await this._recipesTable.insertElement(recipeConverted, this._dbConnection);
         if (dbRes === undefined) {
-            console.warn("addRecipe: Can't add the recipe because insertion in the database didn't worked");
+            databaseLogger.error("Failed to add recipe - database insertion failed", {recipeTitle: recipe.title});
             return
         }
         const dbRecipe = await this._recipesTable.searchElementById<encodedRecipeElement>(dbRes, this._dbConnection)
         if (dbRecipe === undefined) {
-            console.warn("addRecipe: Searching for recipe  ", recipeConverted.TITLE, " didn't worked")
+            databaseLogger.error("Failed to find recipe after insertion", {
+                recipeTitle: recipeConverted.TITLE,
+                dbResult: dbRes
+            });
         } else {
             this.add_recipes(await this.decodeRecipe(dbRecipe));
         }
@@ -205,20 +229,24 @@ export default class RecipeDatabase {
 
     public async editRecipe(rec: recipeTableElement) {
         if (rec.id === undefined) {
-            console.warn("editRecipe: Recipe must have an id");
+            databaseLogger.warn("Cannot edit recipe - missing ID", {recipeTitle: rec.title});
             return false;
         }
         const updateMap = this.constructUpdateRecipeStructure(this.encodeRecipe(rec));
+        databaseLogger.debug('Editing recipe', {recipeId: rec.id, recipeTitle: rec.title});
         const success = await this._recipesTable.editElementById(rec.id, updateMap, this._dbConnection);
         if (success) {
             this.update_recipe(rec);
+            databaseLogger.debug('Recipe edited successfully', {recipeId: rec.id});
+        } else {
+            databaseLogger.warn('Failed to edit recipe', {recipeId: rec.id, recipeTitle: rec.title});
         }
         return success;
     }
 
     public async editIngredient(ingredient: ingredientTableElement) {
         if (ingredient.id === undefined) {
-            console.warn("editIngredient: Ingredient must have an id");
+            databaseLogger.warn("Cannot edit ingredient - missing ID", {ingredientName: ingredient.name});
             return false;
         }
         const updateMap = this.constructUpdateIngredientStructure(ingredient);
@@ -231,7 +259,7 @@ export default class RecipeDatabase {
 
     public async editTag(tag: tagTableElement) {
         if (tag.id === undefined) {
-            console.warn("editTag: Tag must have an id");
+            databaseLogger.warn("Cannot edit tag - missing ID", {tagName: tag.name});
             return false;
         }
         const updateMap = this.constructUpdateTagStructure(tag);
@@ -268,7 +296,7 @@ export default class RecipeDatabase {
     public async updateIngredientInShoppingList(shopToAdd: shoppingListTableElement, previousShop: shoppingListTableElement) {
 
         if (previousShop.id === undefined) {
-            console.error("CAN'T UPDATE A SHOPPING ELEMENT WITHOUT AN ID");
+            databaseLogger.error("Cannot update shopping element - missing ID", {ingredient: shopToAdd.name});
             return false;
         }
 
@@ -280,7 +308,11 @@ export default class RecipeDatabase {
             previousShop.quantity = sumNumberInString(shopToAdd.quantity, previousShop.quantity);
         } else {
             // TODO to test
-            console.error("Can't have one which can be a number and other which cannot be: ", shopToAdd, " ", previousShop);
+            databaseLogger.error("Quantity type mismatch in shopping list", {
+                newQuantity: shopToAdd.quantity,
+                existingQuantity: previousShop.quantity,
+                ingredient: shopToAdd.name
+            });
             return false;
         }
 
@@ -311,7 +343,7 @@ export default class RecipeDatabase {
 
     public searchRandomlyRecipes(numOfElements: number): Array<recipeTableElement> {
         if (this._recipes.length == 0) {
-            console.error("RECIPE TABLE IS EMPTY, IMPOSSIBLE TO EXTRACT A NUMBER FROM IT");
+            databaseLogger.error("Cannot get random recipes - recipe table is empty");
             return new Array<recipeTableElement>();
         } else {
             return fisherYatesShuffle(this._recipes, numOfElements);
@@ -320,11 +352,14 @@ export default class RecipeDatabase {
 
     public searchRandomlyTags(numOfElements: number): Array<tagTableElement> {
         if (this._tags.length == 0) {
-            console.error("NO TAGS PROVIDED, IMPOSSIBLE TO EXTRACT A NUMBER FROM IT");
+            databaseLogger.error("Cannot get random tags - tag table is empty");
             return new Array<tagTableElement>();
         } else {
             if (this._tags.length <= numOfElements) {
-                console.log("Return directly the table because we want the same size");
+                databaseLogger.debug("Returning all tags - requested count equals available tags", {
+                    requestedCount: numOfElements,
+                    availableCount: this._tags.length
+                });
                 return this._tags;
             } else {
                 // TODO can find a better random function
@@ -429,7 +464,7 @@ export default class RecipeDatabase {
         if (foundRecipe !== undefined) {
             this._recipes.splice(this._recipes.indexOf(foundRecipe), 1);
         } else {
-            console.warn("remove_recipe: can't find recipe");
+            databaseLogger.warn("Cannot remove recipe - not found in local cache", {recipeTitle: recipe.title});
         }
     }
 
@@ -438,7 +473,7 @@ export default class RecipeDatabase {
         if (foundIngredient !== undefined) {
             this._ingredients.splice(this._ingredients.indexOf(foundIngredient), 1);
         } else {
-            console.warn("remove_ingredient: can't find ingredient");
+            databaseLogger.warn("Cannot remove ingredient - not found in local cache", {ingredientName: ingredient.name});
         }
     }
 
@@ -447,7 +482,7 @@ export default class RecipeDatabase {
         if (foundTag !== undefined) {
             this._tags.splice(this._tags.indexOf(foundTag), 1);
         } else {
-            console.warn("remove_tag: can't find tag");
+            databaseLogger.warn("Cannot remove tag - not found in local cache", {tagName: tag.name});
         }
     }
 
@@ -456,7 +491,7 @@ export default class RecipeDatabase {
         if (foundShopping !== undefined) {
             this._shopping.splice(this._shopping.indexOf(foundShopping), 1);
         } else {
-            console.warn("remove_shopping: can't find tag");
+            databaseLogger.warn("Cannot remove shopping item - not found in local cache", {itemName: shop.name});
         }
     }
 
@@ -475,7 +510,10 @@ export default class RecipeDatabase {
             if (idOfRecipeToUpdate !== undefined) {
                 this._recipes[idOfRecipeToUpdate] = updatedRecipe;
             } else {
-                console.warn("Can't find recipe with id ", updatedRecipe.id, " in the recipe table. Object is ", updatedRecipe);
+                databaseLogger.warn("Cannot find recipe to update", {
+                    recipeId: updatedRecipe.id,
+                    title: updatedRecipe.title
+                });
             }
         }
     }
@@ -540,7 +578,10 @@ export default class RecipeDatabase {
             this._shopping[ingredientId - 1].purchased = newPurchasedValue;
             return;
         } else {
-            console.error("setPurchasedOfShopping:: Element of shopping with id ", ingredientId, " is out of bound");
+            databaseLogger.error("Shopping item ID out of bounds", {
+                ingredientId,
+                maxId: this._shopping.length
+            });
         }
     }
 
@@ -555,7 +596,7 @@ export default class RecipeDatabase {
             this._shopping[foundShopping] = shop;
             return;
         }
-        console.error("update_shopping Element of shopping named ", shop.name, " doesn't exist already");
+        databaseLogger.error("Cannot update shopping item - not found", {itemName: shop.name, itemId: shop.id});
     }
 
     public async resetShoppingList() {
@@ -572,6 +613,10 @@ export default class RecipeDatabase {
      */
     public async scaleAllRecipesForNewDefaultPersons(newDefaultPersons: number): Promise<void> {
         try {
+            databaseLogger.info('Starting to scale all recipes for new default persons', {
+                newDefaultPersons,
+                totalRecipes: this.get_recipes().length
+            });
             const updatedRecipes: Array<recipeTableElement> = [];
 
             for (const recipe of this.get_recipes()) {
@@ -596,11 +641,19 @@ export default class RecipeDatabase {
                         ingredients: updatedIngredients
                     });
                 } else {
-                    console.error(`Recipe with id ${recipe.id} and persons ${recipe.persons}, is invalid. Can't scale it.`);
+                    databaseLogger.error("Cannot scale recipe - invalid data", {
+                        recipeId: recipe.id,
+                        persons: recipe.persons,
+                        title: recipe.title
+                    });
                 }
             }
 
             if (updatedRecipes.length > 0) {
+                databaseLogger.info('Batch updating scaled recipes', {
+                    recipesToUpdate: updatedRecipes.length,
+                    newDefaultPersons
+                });
                 const batchUpdates = updatedRecipes.map(recipe => ({
                     id: recipe.id!,
                     elementToUpdate: this.constructUpdateRecipeStructure(this.encodeRecipe(recipe))
@@ -610,10 +663,21 @@ export default class RecipeDatabase {
 
                 if (success) {
                     this.update_multiple_recipes(updatedRecipes);
+                    databaseLogger.info('Recipe scaling completed successfully', {
+                        updatedCount: updatedRecipes.length,
+                        newDefaultPersons
+                    });
+                } else {
+                    databaseLogger.error('Failed to update scaled recipes', {
+                        recipesToUpdate: updatedRecipes.length,
+                        newDefaultPersons
+                    });
                 }
+            } else {
+                databaseLogger.info('No recipes needed scaling', {newDefaultPersons});
             }
         } catch (error) {
-            console.error('Error updating recipes for new default persons count:', error);
+            databaseLogger.error('Failed to update recipes for new default persons count', {error});
         }
     }
 
@@ -728,9 +792,11 @@ export default class RecipeDatabase {
     /* PROTECTED METHODS */
     protected async openDatabase() {
         try {
+            databaseLogger.debug('Opening database connection', {databaseName: this._databaseName});
             this._dbConnection = await SQLite.openDatabaseAsync(this._databaseName);
+            databaseLogger.debug('Database connection opened successfully');
         } catch (error) {
-            console.warn("ERROR during openDatabase : ", error);
+            databaseLogger.error("Failed to open database connection", {databaseName: this._databaseName, error});
         }
     };
 
@@ -740,7 +806,7 @@ export default class RecipeDatabase {
             await SQLite.deleteDatabaseAsync(this._databaseName);
             await this.reset();
         } catch (error: any) {
-            console.warn('deleteDatabase : received error ', error);
+            databaseLogger.error('Failed to delete database', {databaseName: this._databaseName, error});
         }
     }
 
@@ -813,7 +879,7 @@ export default class RecipeDatabase {
                     break;
                 case alertUserChoice.cancel:
                 default:
-                    console.log("User canceled adding ingredient");
+                    databaseLogger.debug("User canceled adding ingredient");
                     break;
             }
         }
@@ -884,7 +950,7 @@ export default class RecipeDatabase {
         if (ingredientToEncode.id === undefined) {
             const foundIngredient = this.find_ingredient(ingredientToEncode);
             if (foundIngredient == undefined || foundIngredient.id == undefined) {
-                console.warn('ERROR : ingredient not found');
+                databaseLogger.warn('Cannot encode ingredient - not found in database', {ingredientName: ingredientToEncode.name});
                 return "";
             } else {
                 idForEncoding = foundIngredient.id;
@@ -909,7 +975,7 @@ export default class RecipeDatabase {
 
             const tableIngredient = await this._ingredientsTable.searchElementById<encodedIngredientElement>(id, this._dbConnection);
             if (tableIngredient === undefined) {
-                console.warn("decodeIngredientFromRecipe: Searching for ingredient at id ", id, " didn't worked");
+                databaseLogger.warn("Failed to find ingredient during recipe decoding", {ingredientId: id});
             } else {
                 let decodedIngredient = this.decodeIngredient(tableIngredient);
                 decodedIngredient.quantity = ingQuantity;
@@ -977,7 +1043,7 @@ export default class RecipeDatabase {
             if (tableTag !== undefined) {
                 arrDecoded.push(this.decodeTag(tableTag));
             } else {
-                console.warn("decodeTagFromRecipe: Searching for tag ", +tag, " didn't worked")
+                databaseLogger.warn("Failed to find tag during recipe decoding", {tagId: +tag});
             }
         }
 
@@ -1047,12 +1113,15 @@ export default class RecipeDatabase {
 
         const dbRes = await this._shoppingListTable.insertElement(this.encodeShopping(shop), this._dbConnection);
         if (dbRes === undefined) {
-            console.warn("addShoppingList: Can't add the shopping because insertion in the database didn't worked")
+            databaseLogger.warn("Failed to add shopping item - database insertion failed", {itemName: shop.name});
             return;
         }
         const dbShopping = await this._shoppingListTable.searchElementById<encodedShoppingListElement>(dbRes, this._dbConnection)
         if (dbShopping === undefined) {
-            console.warn("addRecipe: Searching for recipe  ", shop.recipesTitle, " didn't worked")
+            databaseLogger.warn("Failed to find shopping item after insertion", {
+                recipeTitles: shop.recipesTitle,
+                dbResult: dbRes
+            });
         } else {
             this.add_shopping(this.decodeShopping(dbShopping));
         }
@@ -1067,9 +1136,15 @@ export default class RecipeDatabase {
             if (shop.recipesTitle.includes(recipe.title)) {
                 const recipeIng = recipe.ingredients.find((ingredient) => ingredient.name === shop.name);
                 if (recipeIng === undefined) {
-                    console.warn("removeRecipeFromShopping: Error can't find ingredient in recipe");
+                    databaseLogger.warn("Cannot find ingredient in recipe for shopping removal", {
+                        ingredient: shop.name,
+                        recipeTitle: recipe.title
+                    });
                 } else if (recipeIng.quantity === undefined) {
-                    console.warn("removeRecipeFromShopping: Error can't find quantity in ingredient");
+                    databaseLogger.warn("Missing quantity for ingredient during shopping removal", {
+                        ingredient: recipeIng.name,
+                        recipeTitle: recipe.title
+                    });
                 } else {
                     shop.quantity = subtractNumberInString(recipeIng.quantity, shop.quantity);
 

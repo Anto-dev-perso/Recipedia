@@ -5,6 +5,7 @@ import {ingredientTableElement} from "@customTypes/DatabaseElementTypes";
 import SettingsItemList from "@components/organisms/SettingsItemList";
 import ItemDialog, {DialogMode} from "@components/dialogs/ItemDialog";
 import RecipeDatabase from "@utils/RecipeDatabase";
+import {ingredientsSettingsLogger} from '@utils/logger';
 
 export default function IngredientsSettings({}: IngredientsSettingProp) {
     const database = RecipeDatabase.getInstance();
@@ -26,7 +27,7 @@ export default function IngredientsSettings({}: IngredientsSettingProp) {
         if (insertedIngredient) {
             setIngredients([...ingredients, newIngredient]);
         } else {
-            console.warn("Something went wrong while adding ingredient");
+            ingredientsSettingsLogger.warn('Failed to add ingredient to database', { ingredientName: newIngredient.name });
         }
     };
 
@@ -40,7 +41,10 @@ export default function IngredientsSettings({}: IngredientsSettingProp) {
                 setIngredients(updatedIngredients);
             }
         } else {
-            console.warn('Failed to update ingredient in database');
+            ingredientsSettingsLogger.warn('Failed to update ingredient in database', { 
+                ingredientName: newIngredient.name, 
+                ingredientId: newIngredient.id 
+            });
         }
     };
 
@@ -49,7 +53,7 @@ export default function IngredientsSettings({}: IngredientsSettingProp) {
         if (await database.deleteIngredient(ingredient)) {
             setIngredients(ingredients.filter(ing => ing.id !== ingredient.id));
         } else {
-            console.log(`Ingredient ${ingredient} not found`);
+            ingredientsSettingsLogger.warn('Ingredient not found for deletion', { ingredient });
         }
     };
 

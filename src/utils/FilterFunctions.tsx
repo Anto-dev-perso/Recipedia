@@ -8,6 +8,7 @@ import {
 } from "@customTypes/RecipeFiltersTypes";
 import {TFunction} from "i18next";
 import RecipeDatabase from "@utils/RecipeDatabase";
+import {searchLogger} from '@utils/logger';
 
 
 export function selectFilterCategoriesValuesToDisplay(tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>, t: TFunction<"translation", undefined>): Array<FiltersAppliedToDatabase> {
@@ -51,7 +52,7 @@ export function selectFilterCategoriesValuesToDisplay(tagsList: Array<string>, i
                     filterApplyToDatabase.data = arrayOfType(ingredientsList, category).map(ing => ing.name);
                     break;
                 default:
-                    console.warn("selectFilterValuesToDisplay:: default shall not be reach");
+                    searchLogger.warn("selectFilterValuesToDisplay:: default shall not be reach");
                     filterApplyToDatabase.data = new Array<string>();
             }
 
@@ -127,7 +128,7 @@ export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter:
                     break;
                 case listFilter.undefined:
                 default:
-                    console.error("filterFromRecipe:: Impossible to reach");
+                    searchLogger.error("filterFromRecipe:: Impossible to reach");
                     break;
             }
         }
@@ -160,10 +161,10 @@ export function removeValueToMultimap<TKey, TValue>(multimap: Map<TKey, Array<TV
                 multimap.delete(key);
             }
         } else {
-            console.warn(`removeValueFromMultimap: Trying to remove value ${value} at key ${key} from multimap but value finding fails`);
+            searchLogger.warn(`removeValueFromMultimap: Trying to remove value ${value} at key ${key} from multimap but value finding fails`);
         }
     } else {
-        console.warn(`removeValueFromMultimap: Trying to remove value ${value} at key ${key} from multimap but key finding fails`);
+        searchLogger.warn(`removeValueFromMultimap: Trying to remove value ${value} at key ${key} from multimap but key finding fails`);
     }
 }
 
@@ -176,7 +177,7 @@ export function editTitleInMultimap(multimap: Map<TListFilter, Array<string>>, n
         multimap.set(listFilter.recipeTitleInclude, new Array<string>(newSearchString))
     } else {
         if (value.length > 1) {
-            console.warn("updateSearchString:: Not possible")
+            searchLogger.warn("updateSearchString:: Not possible")
         } else {
             value[0] = newSearchString;
         }
@@ -229,7 +230,7 @@ export function removeTitleInMultimap(multimap: Map<TListFilter, Array<string>>)
                     break;
                 case listFilter.undefined:
                 default:
-                    console.error(`filterFromRecipe:: Unknown type `, filter.title);
+                    searchLogger.error(`filterFromRecipe:: Unknown type `, filter.title);
             }
         }
         */

@@ -7,6 +7,7 @@ import {ingredientTableElement, ingredientType, tagTableElement} from '@customTy
 import {shoppingCategories} from '@customTypes/RecipeFiltersTypes';
 import {padding} from '@styles/spacing';
 import SeasonalityCalendar from "@components/molecules/SeasonalityCalendar";
+import {uiLogger} from '@utils/logger';
 
 export type DialogMode = 'add' | 'edit' | 'delete';
 
@@ -75,7 +76,7 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
                 item.onConfirmTag(mode, {id: item.value.id, name: itemName});
                 break;
             default:
-                console.warn("Unreachable code.");
+                uiLogger.error('Unreachable code in ItemDialog');
         }
     };
 
@@ -90,7 +91,7 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
             case 'delete':
                 return t('delete');
             default:
-                console.warn("Unreachable code.");
+                uiLogger.error('Unreachable code in ItemDialog');
                 return '';
         }
     })();
@@ -104,7 +105,7 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
             case 'delete':
                 return t('delete');
             default:
-                console.warn("Unreachable code.");
+                uiLogger.error('Unreachable code in ItemDialog');
                 return "";
         }
     })();
@@ -117,7 +118,7 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
             case 'delete':
                 return testId + "::DeleteModal";
             default:
-                console.warn("Unreachable code.");
+                uiLogger.error('Unreachable code in ItemDialog');
                 return '';
         }
     })();
