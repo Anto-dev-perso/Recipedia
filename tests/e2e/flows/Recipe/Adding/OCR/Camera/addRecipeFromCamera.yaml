@@ -1,4 +1,4 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 ---
 #TODO replace swipe by scrollUntilVisible
 - runFlow: ocrImage.yaml

@@ -1,8 +1,8 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 
 ---
 - assertVisible:
-    id: "com.recipes-manager:id/alertTitle"
+    id: "com.recipedia:id/alertTitle"
     text: "Recipes that use Butter"
     label: Alert title is rendered
 - assertVisible:

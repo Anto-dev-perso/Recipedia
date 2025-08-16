@@ -1,4 +1,4 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 name: "Recipe Adding test suite"
 ---
 - launchApp
@@ -32,6 +32,6 @@ name: "Recipe Adding test suite"
 #- tapOn:
 #    id: "com.android.providers.media.module:id/icon_thumbnail"
 #- tapOn:
-#    id: "com.recipes-manager:id/menu_crop"
+#    id: "com.recipedia:id/menu_crop"
 #- tapOn:
 #    id: "SearchBar"

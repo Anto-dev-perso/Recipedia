@@ -1,4 +1,4 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 ---
 - tapOn:
     id: "Home::SearchButton::RoundButton"

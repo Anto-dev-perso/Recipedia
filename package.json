@@ -1,5 +1,5 @@
 {
-  "name": "recipes-manager",
+  "name": "recipedia",
   "version": "0.7.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {

@@ -1,4 +1,4 @@
-# RecipesManager
+# Recipedia
 
 [//]: # (TODO to rewrite)
 

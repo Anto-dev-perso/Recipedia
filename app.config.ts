@@ -8,29 +8,24 @@ function getAndroidVersionCode(version: string): number {
     return major * 1_000_000 + minor * 1_000 + patch;
 }
 
-function nameFromSlug(slug: string): string {
-    // Turn e.g. "recipes-manager" into "RecipesManager" (PascalCase, no spaces)
-    return slug
-        .split(/[^a-z0-9]+/i)
-        .filter(Boolean)
-        .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-        .join("");
-}
-
 function toIdentifierSegment(slug: string): string {
     // Convert slug to a valid identifier segment: lowercase, remove non-alphanumerics, start with a letter
     const compact = slug.toLowerCase().replace(/[^a-z0-9]+/g, "");
     return compact.replace(/^[^a-z]+/, "");
 }
 
+function toSlug(name: string): string {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
 const version = pkg.version;
-const configuredName = nameFromSlug(pkg.name);
+const configuredName = toSlug(pkg.name);
 const appId = `com.${toIdentifierSegment(pkg.name)}`;
 
 export default ({config}: ConfigContext): ExpoConfig => ({
     ...config,
     name: configuredName,
-    slug: "RecipesManager",
+    slug: configuredName,
     version: pkg.version,
     orientation: "portrait",
     icon: "./src/assets/app/icon.png",
@@ -72,7 +67,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
     ],
     extra: {
         eas: {
-            projectId: '7958883d-ab87-4da5-bccc-fe0c7ff40b6e',
+            projectId: '247331ab-7746-4b0a-bb72-353045160518',
         },
     },
     owner: 'antoc',

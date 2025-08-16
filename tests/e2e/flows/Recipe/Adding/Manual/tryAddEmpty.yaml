@@ -1,4 +1,4 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 ---
 - tapOn:
     text: "Add this new recipe"

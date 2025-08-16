@@ -1,4 +1,4 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 ---
 - assertVisible: "SUCCESSFULLY ADDED RECIPE TO DATABASE"
 - assertVisible: "Recipe titled \"Aiguillettes de poulet a la sauce satay\" has been successfully added to the database"

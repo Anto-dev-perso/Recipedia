@@ -1,4 +1,4 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 name: "Check that the parameters screen is displayed and working as intended."
 ---
 - launchApp

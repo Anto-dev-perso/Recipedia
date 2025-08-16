@@ -1,9 +1,9 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 
 ---
 
 - assertVisible:
-    id: "com.recipes-manager:id/alertTitle"
+    id: "com.recipedia:id/alertTitle"
     text: "SUCCESSFULLY ADDED RECIPE TO SHOPPING LIST"
     label: Alert title is rendered
 - assertVisible:

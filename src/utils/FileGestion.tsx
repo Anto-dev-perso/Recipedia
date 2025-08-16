@@ -1,5 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import {Asset} from "expo-asset";
+import Constants from 'expo-constants';
+import pkg from '@app/package.json';
 import {initialRecipesImages} from "@utils/Constants";
 import {filesystemLogger} from '@utils/logger';
 //  TODO is new version changing stuff for image manipulator ?
@@ -17,7 +19,7 @@ export default class FileGestion {
     protected _cameraCacheUri: string;
 
     public constructor() {
-        this._directoryName = "RecipesManager";
+        this._directoryName = Constants.expoConfig?.name || pkg.name;
         this._directoryUri = FileSystem.documentDirectory + this._directoryName + "/";
         this._cacheUri = FileSystem.cacheDirectory + this._directoryName + "/";
         this._imageManipulatorCacheUri = FileSystem.cacheDirectory + "ImageManipulator/";
@@ -46,13 +48,16 @@ export default class FileGestion {
             await FileSystem.deleteAsync(this._imageManipulatorCacheUri);
             await FileSystem.makeDirectoryAsync(this._imageManipulatorCacheUri);
         } catch (error) {
-            filesystemLogger.warn("Failed to clear image manipulator cache", { cacheUri: this._imageManipulatorCacheUri, error });
+            filesystemLogger.warn("Failed to clear image manipulator cache", {
+                cacheUri: this._imageManipulatorCacheUri,
+                error
+            });
         }
         try {
             await FileSystem.deleteAsync(this._cameraCacheUri);
             await FileSystem.makeDirectoryAsync(this._cameraCacheUri);
         } catch (error) {
-            filesystemLogger.warn("Failed to clear camera cache", { cacheUri: this._cameraCacheUri, error });
+            filesystemLogger.warn("Failed to clear camera cache", {cacheUri: this._cameraCacheUri, error});
         }
     }
 
@@ -62,7 +67,7 @@ export default class FileGestion {
             await FileSystem.deleteAsync(newUri, {idempotent: true});
             await FileSystem.moveAsync({from: oldUri, to: newUri});
         } catch (error) {
-            filesystemLogger.warn("Failed to move file", { from: oldUri, to: newUri, error });
+            filesystemLogger.warn("Failed to move file", {from: oldUri, to: newUri, error});
         }
     }
 
@@ -70,22 +75,22 @@ export default class FileGestion {
         try {
             await FileSystem.copyAsync({from: oldUri, to: newUri});
         } catch (error) {
-            filesystemLogger.warn("Failed to copy file", { from: oldUri, to: newUri, error });
+            filesystemLogger.warn("Failed to copy file", {from: oldUri, to: newUri, error});
         }
     }
 
     public async saveRecipeImage(cacheFileUri: string, recName: string): Promise<string> {
-        filesystemLogger.debug('Saving recipe image', { cacheFileUri, recipeName: recName });
+        filesystemLogger.debug('Saving recipe image', {cacheFileUri, recipeName: recName});
 
         const extension = cacheFileUri.split('.');
         const imgName = recName.replace(/ /g, "_").toLowerCase() + '.' + extension[extension.length - 1]
         const imgUri: string = this._directoryUri + imgName;
         try {
             await this.copyFile(cacheFileUri, imgUri);
-            filesystemLogger.debug('Recipe image saved successfully', { imageName: imgName, imageUri: imgUri });
+            filesystemLogger.debug('Recipe image saved successfully', {imageName: imgName, imageUri: imgUri});
             return imgName;
         } catch (error) {
-            filesystemLogger.warn("Failed to save recipe image", { cacheFileUri, recipeName: recName, error });
+            filesystemLogger.warn("Failed to save recipe image", {cacheFileUri, recipeName: recName, error});
             return "";
         }
     }
@@ -125,14 +130,14 @@ export default class FileGestion {
                 const fileInfo = await FileSystem.getInfoAsync(destinationUri);
 
                 if (fileInfo.exists) {
-                    filesystemLogger.debug('Asset file already exists, skipping', { assetName: asset.name });
+                    filesystemLogger.debug('Asset file already exists, skipping', {assetName: asset.name});
                     continue;
                 }
                 await FileSystem.copyAsync({from: asset.localUri as string, to: destinationUri});
-                filesystemLogger.debug('Asset file copied successfully', { assetName: asset.name, destinationUri });
+                filesystemLogger.debug('Asset file copied successfully', {assetName: asset.name, destinationUri});
             }
         } catch (error) {
-            filesystemLogger.error("FileGestion initialization failed", { error });
+            filesystemLogger.error("FileGestion initialization failed", {error});
         }
     }
 
@@ -141,11 +146,11 @@ export default class FileGestion {
 
         if (!dirInfo.exists) {
             await FileSystem.makeDirectoryAsync(dirUri, {intermediates: true});
-            filesystemLogger.info('Directory created', { directory: dirUri });
+            filesystemLogger.info('Directory created', {directory: dirUri});
         } else if (!dirInfo.isDirectory) {
             throw new Error(`${dirUri} exists but is not a directory`);
         } else {
-            filesystemLogger.debug('Directory already exists', { directory: dirUri });
+            filesystemLogger.debug('Directory already exists', {directory: dirUri});
         }
     }
 

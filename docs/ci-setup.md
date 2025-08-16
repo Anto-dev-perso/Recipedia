@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document explains the CI (Continuous Integration) setup for the RecipesManager app. The CI pipeline is implemented using GitHub Actions and is designed to run unit tests and E2E (End-to-End) tests on Android.
+This document explains the CI (Continuous Integration) setup for the Recipedia app. The CI pipeline is implemented using
+GitHub Actions and is designed to run unit tests and E2E (End-to-End) tests on Android.
 
 ## CI Workflow
 
@@ -14,12 +15,14 @@ The CI workflow is defined in `.github/workflows/android-ci.yml` and consists of
 4. **E2E Tests Part 3**: Runs the third set of E2E tests using Maestro
 
 The workflow is triggered on:
+
 - Push to the `main` branch
 - Pull requests to the `main` branch
 
 ## E2E Testing with Maestro
 
-The E2E tests use [Maestro](https://maestro.mobile.dev/), a UI testing framework for mobile apps. The tests are defined in YAML files in the `tests/e2e/` directory.
+The E2E tests use [Maestro](https://maestro.mobile.dev/), a UI testing framework for mobile apps. The tests are defined
+in YAML files in the `tests/e2e/` directory.
 
 ### How it Works
 
@@ -28,7 +31,8 @@ For each E2E test job:
 1. The environment is set up with Node.js, Java, and the Android SDK
 2. The Maestro CLI is installed
 3. An Android APK is built using Expo's prebuild and Gradle
-4. An Android emulator is started using the [ReactiveCircus/android-emulator-runner](https://github.com/ReactiveCircus/android-emulator-runner) action
+4. An Android emulator is started using
+   the [ReactiveCircus/android-emulator-runner](https://github.com/ReactiveCircus/android-emulator-runner) action
 5. The APK is installed on the emulator
 6. Maestro tests are run on the emulator
 7. Test results and artifacts (including logs and screenshots) are uploaded
@@ -36,6 +40,7 @@ For each E2E test job:
 ### Test Results and Artifacts
 
 After the tests run, the following artifacts are available:
+
 - JUnit XML test results
 - Maestro logs and screenshots (in the `maestro/` directory)
 
@@ -67,9 +72,11 @@ To run E2E tests locally:
 
 ### Common Issues
 
-1. **Emulator fails to start**: Make sure you have enough disk space and memory. The emulator requires at least 2GB of RAM.
+1. **Emulator fails to start**: Make sure you have enough disk space and memory. The emulator requires at least 2GB of
+   RAM.
 
-2. **Tests fail with timeout**: Some tests might take longer to run. You can increase the timeout in the Maestro test files.
+2. **Tests fail with timeout**: Some tests might take longer to run. You can increase the timeout in the Maestro test
+   files.
 
 3. **APK installation fails**: Make sure the APK is built correctly and the emulator is running.
 

@@ -1,4 +1,4 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 name: "Shopping screen test suite"
 ---
 - launchApp

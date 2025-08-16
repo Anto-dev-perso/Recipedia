@@ -2,7 +2,8 @@
 
 ## Overview
 
-The RecipesManager app uses a modular translation system based on i18n-js and expo-localization. The system is organized to make translations more maintainable by grouping related translations into separate files.
+The Recipedia app uses a modular translation system based on i18n-js and expo-localization. The system is organized to
+make translations more maintainable by grouping related translations into separate files.
 
 ## Structure
 
@@ -34,14 +35,17 @@ src/translations/
 To use translations in your components, import the `useI18n` hook from `@utils/i18n`:
 
 ```typescript
-import { useI18n } from '@utils/i18n';
+import {useI18n} from '@utils/i18n';
 
 const MyComponent = () => {
-  const { t } = useI18n();
-  
-  return (
-    <Text>{t('home')}</Text>
-  );
+    const {t} = useI18n();
+
+    return (
+        <Text>{t('home')
+}
+    </Text>
+)
+    ;
 };
 ```
 
@@ -50,7 +54,7 @@ const MyComponent = () => {
 To change the current language:
 
 ```typescript
-const { setLocale } = useI18n();
+const {setLocale} = useI18n();
 setLocale('fr'); // Change to French
 ```
 
@@ -59,7 +63,7 @@ setLocale('fr'); // Change to French
 To get the current language:
 
 ```typescript
-const { getLocale } = useI18n();
+const {getLocale} = useI18n();
 const currentLanguage = getLocale();
 ```
 

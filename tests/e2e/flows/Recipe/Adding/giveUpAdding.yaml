@@ -1,4 +1,4 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 ---
 - runFlow: ./Manual/openAddManually.yaml
 #- runFlow: ./Manual/tryAddOnlyImage.yaml

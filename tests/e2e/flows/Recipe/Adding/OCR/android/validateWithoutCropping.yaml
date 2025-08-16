@@ -1,5 +1,5 @@
-appId: "com.recipes-manager"
+appId: "com.recipedia"
 ---
 - tapOn:
-    id: "com.recipes-manager:id/menu_crop"
+    id: "com.recipedia:id/menu_crop"
     label: Validate the picture without crop
