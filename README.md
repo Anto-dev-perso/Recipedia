@@ -1,193 +1,245 @@
-# Recipedia
+# 🍳 Recipedia
 
-[//]: # (TODO to rewrite)
+A React Native recipe management app built with Expo that allows users to add, search, and manage recipes with OCR
+capabilities for extracting recipe information from images.
 
-- Open _node_modules/react-native-sqlite-storage/react-native.config.js_
-- Remove ios part
+<div align="center">
 
-## Run
+[![Version](https://img.shields.io/badge/version-0.7.0-blue.svg)](package.json)
+[![React Native](https://img.shields.io/badge/React%20Native-0.76.9-blue.svg)](https://reactnative.dev/)
+[![Expo](https://img.shields.io/badge/Expo-~52.0.42-black.svg)](https://expo.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-How to run :
+</div>
 
-- In a terminal, run 'npx react-native start' (--reset-cache in case of trouble) to have Metro to start
-- Open another terminal and run 'npx react-native run-android --active-arch-only'
-- Go back to metro and select 'run on Android' (with a)
+## ✨ Features
 
-To reload the app, tap 2 times R
+- 📱 **Cross-platform**: Built with React Native and Expo for iOS and Android
+- 🔍 **Smart Search**: Fuzzy search for recipes and ingredients using Fuse.js
+- 📸 **OCR Integration**: Extract recipe information from images using ML Kit text recognition
+- 🌍 **Multi-language**: Full internationalization support (English & French)
+- 🌙 **Dark Mode**: Complete dark/light theme support
+- 🗃️ **Local Storage**: SQLite database for offline functionality
+- 🛒 **Shopping Lists**: Convert recipe ingredients to shopping lists
+- 🏷️ **Smart Filtering**: Filter recipes by ingredients, tags, time, and seasonality
+- 📅 **Seasonal Awareness**: Track ingredient seasonality for better meal planning
 
-## Testing
+## 📷 Screenshots
 
-### CI Pipeline
+| Home Screen   | Recipe View   | Search & Filters | Shopping List |
+|---------------|---------------|------------------|---------------|
+| *Coming soon* | *Coming soon* | *Coming soon*    | *Coming soon* |
 
-This project uses GitHub Actions for continuous integration. The CI pipeline runs:
-- Unit tests
-- E2E tests with Maestro (split into three parts)
+## 🚀 Quick Start
 
-For more details on the CI setup, see the [CI Setup Documentation](docs/ci-setup.md).
+### Prerequisites
 
-### Unit and integration testing
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+- For Android: [Android Studio](https://developer.android.com/studio) with Android SDK
+- For iOS: [Xcode](https://developer.apple.com/xcode/) (macOS only)
 
-To launch unit tests, run 'npx jest'; If you want (and you should) run the test while edtiting code, run 'npx jest
---watch'
+### Installation
 
-### E2E testing
-
-For End-to-End tests, we use Maestro:
-
-1. Install Maestro:
+1. **Clone the repository**
    ```bash
-   curl -Ls "https://get.maestro.mobile.dev" | bash
+   git clone https://github.com/Anto-dev-perso/Recipedia.git
+   cd Recipedia
    ```
 
-2. Build and install the app:
+2. **Install dependencies**
    ```bash
-   npm run build:android
-   npm run install:android
+   npm install
    ```
 
-3. Run the tests:
+3. **Start the development server**
    ```bash
-   npm run test:e2e:android
+   npm start
    ```
 
-For more details on E2E testing, see the [CI Setup Documentation](docs/ci-setup.md).
+4. **Run on your platform**
+    - **Android**: `npm run android`
+    - **iOS**: `npm run ios`
 
-# Install from scratch
+## 🏗️ Project Architecture
 
-## Node and npm
-
-- _sudo apt install npm_
-- _sudo npm cache clean -f_
-- _sudo npm install -g n_
-- _sudo n stable_
-
-## Java development kit
-
-- _sudo apt-get install openjdk-11-jdk_
-
-## Android development environment
-
-### Android Studio
-
-- Download last version from https://developer.android.com/studio/index.html
-- _sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386_
-- Unzip the tar of Android Studio in your /usr/local (for you only) or /opt (for all users)
-- Go to android-studio/bin and launch _studio.sh_
-- Follow the instructions. Make sure to to check following items :
-    - Android Sdk
-    - Android Sdk Platform
-    - Android Virtual Device
-- (Optional) It is recommanded to have Android Studio in the list of Applications. To do so, Select __Tools -> Create
-  Desktop Entry__
-
-### Sdk
-
-Android Studio install the latest Android Sdk by default. You need _Android 13 (Tiramisu)_ Sdk in particular. You can
-install it in Android Studio by doing :
-
-- __Appearance & Behavior → System Settings → Android SDK__
-- Select _Sdk Platforms tab_
-- Check the box next _Show Package Details_
-- Look for and expand _Android 13 (Tiramisu)_
-- Make sure the following are checked :
-    - _Android Sdk Platform 33_
-    - _Intel x86 Atom_64 System Image_ or _Google APIs Intel x86 Atom System Image_
-- Select the _SDK Tools Tab_
-- Check the box next _Show Package Details_ here too
-- Expand _Android SDK Build-Tools_
-- Make sure _33.0.0_ is checked
-
-### ANDROID_HOME
-
-Add the following lines to your _$HOME/.bash_profile_ or _$HOME/.bashrc_
+Recipedia follows a well-structured architecture with clear separation of concerns:
 
 ```
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/platform-tools
+src/
+├── components/          # Reusable UI components (Atomic Design)
+│   ├── atomic/         # Basic components (buttons, inputs)
+│   ├── molecules/      # Composite components
+│   └── organisms/      # Complex components
+├── screens/            # App screens
+├── navigation/         # Navigation configuration
+├── context/           # React Context providers
+├── utils/             # Utility functions and database
+├── styles/            # Theme and styling
+├── translations/      # i18n translations
+└── customTypes/       # TypeScript type definitions
 ```
 
-## Watchman
+### Key Technologies
 
-- Download and extract the release for your system from the latest
-  release: https://github.com/facebook/watchman/releases
-- Run the following :
+- **Framework**: React Native with Expo
+- **Database**: SQLite with expo-sqlite
+- **Navigation**: React Navigation v6
+- **State Management**: React Context + Hooks
+- **UI Library**: React Native Paper for design system
+- **Internationalization**: i18next
+- **Search**: Fuse.js for fuzzy search
+- **OCR**: @react-native-ml-kit/text-recognition
+- **Testing**: Jest + React Native Testing Library + Maestro (E2E)
 
+## 📖 Documentation
+
+### For Users
+
+- [Installation Guide](docs/installation.md)
+- [User Manual](docs/user-guide.md)
+- [FAQ](docs/faq.md)
+
+### For Developers
+
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Testing Guide](docs/testing.md)
+- [CI/CD Setup](docs/ci-setup.md)
+
+## 🧪 Testing
+
+Recipedia includes comprehensive testing at multiple levels:
+
+### Unit Tests
+
+```bash
+npm run test:unit           # Run all unit tests
+npm run test:unit-watch     # Run tests in watch mode
+npm run test:unit-coverage  # Run with coverage report
 ```
-$ unzip watchman-*-linux.zip
-$ cd watchman-vYYYY.MM.DD.00-linux
-$ sudo mkdir -p /usr/local/{bin,lib} /usr/local/var/run/watchman
-$ sudo cp bin/* /usr/local/bin
-$ sudo cp lib/* /usr/local/lib
-$ sudo chmod 755 /usr/local/bin/watchman
-$ sudo chmod 2777 /usr/local/var/run/watchman
-``` 
 
-## KVM
+### End-to-End Tests
 
-- _sudo apt-get install cpu-checker_
-- _egrep -c '(vmx|svm)' /proc/cpuinfo_
-- If result is 0, stop here. You can't use KVM
-- _kvm-ok_, check for _KVM acceleration can be used_
-- _sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils_
+```bash
+npm run test:e2e:android    # Run E2E tests on Android
+npm run build-install-and-test:e2e:android  # Full cycle
+```
 
-## Android device
+### Test Coverage
 
-### Virtual device
+- **Unit Tests**: Components, utilities, and business logic
+- **E2E Tests**: Complete user workflows using Maestro
 
-On Android Studio :
+## 🔧 Development
 
-- Open the _Device Manager_
-- Click on _Create Device_
-- Configure the device you want
+### Available Scripts
 
-### Expo
+| Command                    | Description                    |
+|----------------------------|--------------------------------|
+| `npm start`                | Start Expo development server  |
+| `npm run android`          | Run on Android device/emulator |
+| `npm run ios`              | Run on iOS device/simulator    |
+| `npm run build:android`    | Build Android APK              |
+| `npm run build:ios`        | Build iOS app                  |
+| `npm run test:unit`        | Run unit tests                 |
+| `npm run test:e2e:android` | Run E2E tests                  |
+| `npm run release`          | Create semantic release        |
 
-- npx expo + Commands (run npx expo --help) :
-    - start
-    - export
-    - export:web
-    - run:ios
-    - run:android:
-    - prebuild
-    - install
-    - customize
-    - confir
+### Code Style
 
-# Notes
+The project follows strict TypeScript and React Native best practices:
 
-- Developer mode permet de faire du debug ou d'afficher les perfs de l'appli
-- RN-Tutorial-Main pour avoir toutes les sources des tutos (github)
-- Bien vérifier les props des composants pour les style
-- Les StyleSheet ont des méthodes comme compose qui peut fusionner plusieurs styles
-- flex et flexDirection permet de placer dynamiquement les composants
-- Pour les cards, utiliser ScrollView avec la props horizontal (pb de perfo au refresh) ou une FlatList avec horizontal
-  prop
-- SectionList peut être intéressant pour la fiche recette
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **TypeScript** for type safety
+- **Atomic Design** for component architecture
+- **Feature-first** folder structure
 
-- Alert peut être très utile. Modal intéressant pour la peronnalisation
+## 🤝 Contributing
 
-- Pour utiliser une image des sources, faire source={require('path')}
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-- Considére des images en fond avec ImageBackground
-- React Navigation pour naviguer entre des pages ? Rien de plus moderne ? Tab Navigator ok mais material bottom tab
-  navigator a des animations
-- react-native-vector-icons conseilée pour des icones
-- font awesome utile aussi
-- route.params peut permettre de passer des éléments entre les pages
+### How to Contribute
 
-- Pour ajouter des fonts, les mettre dans les dossier fonts et faire npx react-native link. Dans stylesheet, utiliser
-  l'argument fontFamily et mettre le nom de la font
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/123-amazing-feature`)
+3. Make your changes
+4. Run tests (`npm run test:unit`)
+5. Commit your changes (`git commit -m 'feat(#123): add amazing feature'`)
+6. Push to the branch (`git push origin feature/123-amazing-feature`)
+7. Open a Pull Request
 
-- AsyncStorage pour faire passer des données ? A considérer mais peu probable. Sert surtout à conserver des données
-  locales (paramètres ?)
+### Development Guidelines
 
-- DB browser peut servir à créer et éditer les SQL database. A creuser
+- Follow the existing code style and patterns
+- Add unit tests for new functionality
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
+- Use semantic commit messages with issue numbers
 
-- Redux sert à garder des States en global
-- jest -u pour mettre à jour les snapshot
-- App icon generator pour générer les icones
-- Android studios pour les assets
-- Nom de l'application android dans android/app/src/main/values/strings.xml + Ne pas oublier de changer le nom affiché
-  dans AndroidManifest (FInd & replace car présent plusieurs fois dans le dossier android)
-- Prévoir des tests sur tablette
+## 🐛 Bug Reports & Feature Requests
+
+Please use [GitHub Issues](https://github.com/Anto-dev-perso/Recipedia/issues) to:
+
+- Report bugs
+- Request new features
+- Ask questions about usage
+
+### Bug Report Template
+
+When reporting bugs, please include:
+
+- Device and OS version
+- App version
+- Steps to reproduce
+- Expected vs actual behavior
+- Screenshots if applicable
+
+## 📱 Device Support
+
+### Minimum Requirements
+
+- **iOS**: iOS 13.0+
+- **Android**: Android 6.0+ (API level 23+)
+
+### Tested Devices
+
+- iOS: Not yet, to come
+- Android: Various devices with Android 14.0+
+
+## 🔐 Privacy & Security
+
+- **Local Data**: All recipes are stored locally on your device
+- **No Cloud Sync**: Your data stays on your device
+- **Camera Permissions**: Only used for OCR recipe scanning
+- **No Analytics**: No user tracking or data collection
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Expo](https://expo.dev/) for the amazing development platform
+- [React Native](https://reactnative.dev/) team for the framework
+- [React Native Paper](https://reactnativepaper.com/) for the UI components
+- [ML Kit](https://developers.google.com/ml-kit) for OCR capabilities
+- All contributors who help make this project better
+
+## 📞 Support
+
+- **Documentation**: Check our [docs folder](docs/)
+- **Issues**: [GitHub Issues](https://github.com/Anto-dev-perso/Recipedia/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Anto-dev-perso/Recipedia/discussions)
+
+---
+
+<div align="center">
+
+**Made with ❤️ by the Recipedia team**
+
+[⭐ Star this repo](https://github.com/Anto-dev-perso/Recipedia) • [🐛 Report bug](https://github.com/Anto-dev-perso/Recipedia/issues) • [✨ Request feature](https://github.com/Anto-dev-perso/Recipedia/issues)
+
+</div>
