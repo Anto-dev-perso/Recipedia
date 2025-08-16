@@ -16,7 +16,7 @@ name: "Launch and check screens are displayed correctly"
 - tapOn:
     text: "Parameters"
     label: Go to Parameters screen
-- runFlow: asserts/Parameters/parameters.yaml
+- runFlow: asserts/Parameters/Parameters.yaml
 - tapOn:
     text: "Home"
     label: Return to Home screen

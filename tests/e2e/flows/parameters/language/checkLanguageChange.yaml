@@ -4,14 +4,14 @@ appId: "com.recipedia"
     text: "Parameters"
     label: "Tap on Parameters button in the bottom bar"
 - runFlow:
-    file: "../../../asserts/parameters/en/assertParametersScreen.yaml"
-    label: "Check that the parameters screen is displayed correctly in English"
+    file: "../../../asserts/Parameters/en/assertParametersScreen.yaml"
+    label: "Check that the Parameters screen is displayed correctly in English"
 - runFlow:
     file: "./switchToFrench.yaml"
     label: "Switch language to French"
 - runFlow:
-    file: "../../../asserts/parameters/fr/assertParametersScreen.yaml"
-    label: "Check that the parameters screen is displayed correctly in French"
+    file: "../../../asserts/Parameters/fr/assertParametersScreen.yaml"
+    label: "Check that the Parameters screen is displayed correctly in French"
 - runFlow:
     file: "./shoppingIsTranslated.yaml"
     label: "Check that the shopping list screen has been translated to French"
@@ -27,7 +27,7 @@ appId: "com.recipedia"
 
 - tapOn:
     text: "Paramètres"
-    label: "Navigate back to the parameters screen"
+    label: "Navigate back to the Parameters screen"
 - runFlow:
     file: "./switchToEnglish.yaml"
     label: "Switch language back to English"
