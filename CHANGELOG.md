@@ -1,3 +1,9 @@
+## [0.6.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.5.0...v0.6.0) (2025-08-16)
+
+### Features
+
+* **Recipe:** add dialogs related to user typing an ingredient name unknownw ([00c0a9c](https://github.com/Anto-dev-perso/RecipesManager/commit/00c0a9c8d3496abd1ea9fc30a21d9453e0a5de6a))
+
 ## [0.5.0](https://github.com/Anto-dev-perso/RecipesManager/compare/v0.4.0...v0.5.0) (2025-08-15)
 
 ### Features
