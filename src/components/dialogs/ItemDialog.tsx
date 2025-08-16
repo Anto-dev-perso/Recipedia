@@ -9,13 +9,15 @@ import {padding} from '@styles/spacing';
 import SeasonalityCalendar from "@components/molecules/SeasonalityCalendar";
 
 export type DialogMode = 'add' | 'edit' | 'delete';
+
 export type ItemIngredientType = {
-    type: 'ingredient',
+    type: 'Ingredient',
     value: ingredientTableElement,
     onConfirmIngredient: (mode: DialogMode, newItem: ingredientTableElement) => void,
 };
+
 export type ItemTagType = {
-    type: 'tag',
+    type: 'Tag',
     value: tagTableElement,
     onConfirmTag: (mode: DialogMode, newItem: tagTableElement) => void,
 };
@@ -45,9 +47,9 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
         }
     }, [item.value.name, isVisible]);
 
-    const [ingType, setIngType] = useState<ingredientType>(item.type === 'ingredient' ? item.value.type : ingredientType.undefined);
-    const [ingUnit, setIngUnit] = useState(item.type === 'ingredient' ? item.value.unit : '');
-    const [ingSeason, setIngSeason] = useState(item.type === 'ingredient' ? item.value.season : []);
+    const [ingType, setIngType] = useState<ingredientType>(item.type === 'Ingredient' ? item.value.type : ingredientType.undefined);
+    const [ingUnit, setIngUnit] = useState(item.type === 'Ingredient' ? item.value.unit : '');
+    const [ingSeason, setIngSeason] = useState(item.type === 'Ingredient' ? item.value.season : []);
 
     const handleDismiss = () => {
         onClose();
@@ -55,12 +57,12 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
 
     const handleConfirm = () => {
         callOnConfirmWithNewItem();
+        onClose();
     };
-
 
     const callOnConfirmWithNewItem = () => {
         switch (item.type) {
-            case 'ingredient':
+            case 'Ingredient':
                 item.onConfirmIngredient(mode, {
                     id: item.value.id,
                     name: itemName,
@@ -69,7 +71,7 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
                     season: ingSeason
                 });
                 break;
-            case 'tag':
+            case 'Tag':
                 item.onConfirmTag(mode, {id: item.value.id, name: itemName});
                 break;
             default:
@@ -82,9 +84,9 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
     const dialogTitle = (() => {
         switch (mode) {
             case 'add':
-                return item.type === 'ingredient' ? t('add_ingredient') : t('add_tag');
+                return item.type === 'Ingredient' ? t('add_ingredient') : t('add_tag');
             case 'edit':
-                return item.type === 'ingredient' ? t('edit_ingredient') : t('edit_tag');
+                return item.type === 'Ingredient' ? t('edit_ingredient') : t('edit_tag');
             case 'delete':
                 return t('delete');
             default:
@@ -131,12 +133,12 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
                         :
                         <View>
                             <CustomTextInput
-                                label={item.type === 'ingredient' ? t('ingredient_name') : t('tag_name')}
+                                label={item.type === 'Ingredient' ? t('ingredient_name') : t('tag_name')}
                                 value={itemName}
                                 onChangeText={setItemName}
                                 testID={modalTestId + "::Name"}
                             />
-                            {item.type === 'ingredient' ?
+                            {item.type === 'Ingredient' ?
                                 <View>
                                     <View style={styles.inputRow}>
                                         <Text testID={modalTestId + "::Type"} variant="bodyMedium"
@@ -146,9 +148,9 @@ export default function ItemDialog({onClose, isVisible, testId, mode, item}: Ite
                                             visible={typeMenuVisible}
                                             onDismiss={() => setTypeMenuVisible(false)}
                                             anchor={<Button testID={modalTestId + "::Menu::Button"}
-                                                            onPress={() => setTypeMenuVisible(true)}>{t(item.type)}</Button>}>
+                                                            onPress={() => setTypeMenuVisible(true)}>{t(ingType)}</Button>}>
                                             <FlatList data={shoppingCategories} renderItem={({item, index}) => (
-                                                <Menu.Item key={index} title={t(ingType)} onPress={() => {
+                                                <Menu.Item key={index} title={t(item)} onPress={() => {
                                                     setIngType(item);
                                                     setTypeMenuVisible(false);
                                                 }}/>)}/>

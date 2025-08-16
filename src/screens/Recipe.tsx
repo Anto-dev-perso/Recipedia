@@ -33,7 +33,7 @@ import {useI18n} from "@utils/i18n";
 import Alert, {AlertProps} from "@components/dialogs/Alert";
 import {getDefaultPersons} from "@utils/settings";
 import {scaleQuantityForPersons} from "@utils/Quantity";
-import TagDialog, {TagDialogData, TagDialogMode} from "@components/dialogs/TagDialog";
+import SimilarityDialog, {SimilarityDialogProps} from "@components/dialogs/SimilarityDialog";
 
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
@@ -48,8 +48,18 @@ export type addRecipeFromPicture = { mode: "addFromPic", imgUri: string }
 
 export type RecipePropType = readRecipe | editRecipeManually | addRecipeManually | addRecipeFromPicture
 
-type DialogProps = Pick<AlertProps, "title" | "content" | "confirmText" | "cancelText" | "onConfirm" | "onCancel">;
-const defaultDialogProp: DialogProps = {title: "", content: "", confirmText: ""};
+type SimilarityDialogPropsPicked = Pick<SimilarityDialogProps, "isVisible" | "item">;
+const defaultSimilarityDialogPropsPicked: SimilarityDialogPropsPicked = {
+    isVisible: false,
+    item: {
+        type: "Tag", newItemName: "", onConfirm: (tag => {
+            throw new Error("onConfirm callback calls on default prop. This should not be possible")
+        })
+    }
+};
+
+type ValidationDialogProps = Pick<AlertProps, "title" | "content" | "confirmText" | "cancelText" | "onConfirm" | "onCancel">;
+const defaultValidationDialogProp: ValidationDialogProps = {title: "", content: "", confirmText: ""};
 
 
 export default function Recipe({route, navigation}: RecipeScreenProp) {
@@ -76,11 +86,11 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     const [modalField, setModalField] = useState<recipeColumnsNames | undefined>(undefined);
 
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [dialogProp, setDialogProp] = useState(defaultDialogProp);
-    const [tagDialogState, setTagDialogState] = useState<TagDialogData>({
-        isOpen: false, tag: {name: ""}, mode: 'add',
-    });
+    const [isValidationDialogOpen, setIsValidationDialogOpen] = useState(false);
+    const [validationDialogProp, setValidationDialogProp] = useState(defaultValidationDialogProp);
+
+    const [similarityDialog, setSimilarityDialog] = useState<SimilarityDialogPropsPicked>(defaultSimilarityDialogPropsPicked);
+
     const previousPersonsRef = useRef<number>(recipePersons);
 
     useEffect(() => {
@@ -124,13 +134,13 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         switch (stackMode) {
             case recipeStateType.readOnly:
             case recipeStateType.edit:
-                setDialogProp({
+                setValidationDialogProp({
                     title: t('deleteRecipe'),
                     content: t('confirmDelete'),
                     confirmText: t('save'),
                     cancelText: t('cancel'),
                     onConfirm: async () => {
-                        let dialogProps: DialogProps = {
+                        let dialogProps: ValidationDialogProps = {
                             title: t('deleteRecipe'),
                             confirmText: t('ok'),
                             onConfirm: () => {
@@ -144,11 +154,11 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                         } else {
                             dialogProps.content = `${t('recipe')} ${recipeTitle} ${t('delete')} ${t('success')}`;
                         }
-                        setDialogProp(dialogProps);
-                        setIsDialogOpen(true);
+                        setValidationDialogProp(dialogProps);
+                        setIsValidationDialogOpen(true);
                     }
                 });
-                setIsDialogOpen(true);
+                setIsValidationDialogOpen(true);
                 break;
             case recipeStateType.addManual:
             case recipeStateType.addOCR:
@@ -181,30 +191,26 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
             return;
         }
 
-        // Show validation dialog for new tags or similar matches
-        setTagDialogState({
-            isOpen: true,
-            tag: {name: newTag},
-            mode: 'validate',
-            similarTag: similarTags.length > 0 ? similarTags[0] : undefined
+        // Show similarity dialog for new tags or similar matches
+        setSimilarityDialog({
+            isVisible: true,
+            item: {
+                type: 'Tag',
+                newItemName: newTag,
+                similarItem: similarTags.length > 0 ? similarTags[0] : undefined,
+                onConfirm: (tag: tagTableElement) => {
+                    setRecipeTags([...recipeTags, tag]);
+                },
+                onUseExisting: (tag: tagTableElement) => {
+                    setRecipeTags([...recipeTags, tag]);
+                }
+            }
         });
     }
 
-    const handleUseExistingTag = (tag: tagTableElement) => {
-        setRecipeTags([...recipeTags, tag]);
-    };
 
-    const handleTagDialogConfirm = async (mode: TagDialogMode, newTag: tagTableElement) => {
-        if (mode === 'add' || mode === 'validate') {
-            await RecipeDatabase.getInstance().addTag(newTag);
-            setRecipeTags([...recipeTags, newTag]);
-        }
-    };
-
-    // TODO to rework
     function editIngredients(oldIngredientId: number, newIngredient: string) {
-        const ingredientCopy: Array<ingredientTableElement> = recipeIngredients.map(ingredient => ({...ingredient}));
-        if (oldIngredientId < 0 || oldIngredientId > ingredientCopy.length) {
+        if (oldIngredientId < 0 || oldIngredientId >= recipeIngredients.length) {
             console.warn("Can't find ingredient at index ", oldIngredientId, " for edit");
             return;
         }
@@ -213,26 +219,76 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         const [unitAndQuantity, newName] = newIngredient.split(textSeparator);
         const [newQuantity, newUnit] = unitAndQuantity.split(unitySeparator);
 
-        // Copy to avoid editing the original array (needed anyway for useState)
-        const foundIngredient = ingredientCopy[oldIngredientId];
-        if (foundIngredient.name !== newName) {
-            foundIngredient.name = newName;
-        }
-        if (foundIngredient.quantity !== newQuantity) {
-            foundIngredient.quantity = newQuantity;
-        }
-        if (foundIngredient.unit !== newUnit) {
-            foundIngredient.unit = newUnit;
+        if (!newName || newName.trim().length === 0) {
+            return;
         }
 
-        if (foundIngredient.unit === "") {
-            const ingredientExist = RecipeDatabase.getInstance().get_ingredients().find(ingredient => ingredient.name.toLowerCase() === newName.toLowerCase());
-            if (ingredientExist) {
-                foundIngredient.unit = ingredientExist.unit;
+        const updateIngredient = (ingredient: ingredientTableElement) => {
+            const ingredientCopy: Array<ingredientTableElement> = recipeIngredients.map(ingredient => ({...ingredient}));
+            const foundIngredient = ingredientCopy[oldIngredientId];
+            if (ingredient.id && foundIngredient.id !== ingredient.id) {
+                foundIngredient.id = ingredient.id;
             }
+            if (ingredient.name && foundIngredient.name !== ingredient.name) {
+                foundIngredient.name = ingredient.name;
+            }
+            if (ingredient.unit && foundIngredient.unit !== ingredient.unit) {
+                foundIngredient.unit = ingredient.unit;
+            }
+            if (ingredient.season.length > 0 && foundIngredient.season !== ingredient.season) {
+                foundIngredient.season = ingredient.season;
+            }
+            if (ingredient.type !== ingredientType.undefined && foundIngredient.type !== ingredient.type) {
+                foundIngredient.type = ingredient.type;
+            }
+
+            setRecipeIngredients(ingredientCopy);
+        };
+
+        // Check if ingredient name changed and validate it
+        if (newName.trim().length > 0 && recipeIngredients[oldIngredientId].name !== newName) {
+            const similarIngredients = RecipeDatabase.getInstance().findSimilarIngredients(newName);
+
+            const exactMatch = similarIngredients.find(ing =>
+                ing.name.toLowerCase() === newName.toLowerCase()
+            );
+            if (exactMatch) {
+                updateIngredient(exactMatch);
+                return;
+            }
+
+            const dismissCallback = () => {
+                console.log('Validation was cancelled, removing ingredient');
+                setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
+            };
+
+            const onCloseCallback = (chosenIngredient: ingredientTableElement) => {
+                console.log('Updating ingredient with validated data:', chosenIngredient);
+                updateIngredient(chosenIngredient);
+            };
+
+            setSimilarityDialog({
+                isVisible: true,
+                item: {
+                    type: 'Ingredient',
+                    newItemName: newName,
+                    similarItem: similarIngredients.length > 0 ? similarIngredients[0] : undefined,
+                    onConfirm: onCloseCallback,
+                    onUseExisting: onCloseCallback,
+                    onDismiss: dismissCallback
+                }
+            });
+        } else {
+            updateIngredient({
+                name: newName,
+                unit: newUnit,
+                quantity: newQuantity,
+                season: [],
+                type: ingredientType.undefined
+            });
         }
-        setRecipeIngredients(ingredientCopy);
     }
+
 
     function addNewIngredient() {
         setRecipeIngredients([...recipeIngredients, {
@@ -276,14 +332,14 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
     async function readOnlyValidation() {
         await RecipeDatabase.getInstance().addRecipeToShopping(createRecipeFromStates());
-        setDialogProp({
+        setValidationDialogProp({
             title: t('success'),
             content: `${t('Recipe')} "${recipeTitle}" ${t('addedToShoppingList')}`,
             confirmText: t('ok'),
             onConfirm: () => navigation.goBack(),
 
         });
-        setIsDialogOpen(true);
+        setIsValidationDialogOpen(true);
     }
 
     async function editValidation() {
@@ -299,7 +355,7 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     // TODO checking if ingredients aren't in doublons
     // TODO ingredient quantity shouldn't be null
     async function addValidation() {
-        let dialogProp = defaultDialogProp;
+        let dialogProp = defaultValidationDialogProp;
 
         const missingElem = new Array<string>();
         const translatedMissingElemPrefix = 'alerts.missingElements.';
@@ -403,8 +459,8 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                 }
             }
         }
-        setDialogProp(dialogProp);
-        setIsDialogOpen(true);
+        setValidationDialogProp(dialogProp);
+        setIsValidationDialogOpen(true);
     }
 
     async function fillOneField(uri: string, field: recipeColumnsNames) {
@@ -792,9 +848,9 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
 
                 {/* TODO add nutrition */}
             </ScrollView>
-            <Alert {...dialogProp} isVisible={isDialogOpen} testId={"Recipe"} onClose={() => {
-                setIsDialogOpen(false);
-                setDialogProp(defaultDialogProp);
+            <Alert {...validationDialogProp} isVisible={isValidationDialogOpen} testId={"Recipe"} onClose={() => {
+                setIsValidationDialogOpen(false);
+                setValidationDialogProp(defaultValidationDialogProp);
             }}/>
             {/*TODO add a generic component to tell which bottom button we want*/}
             <BottomTopButton testID={'BackButton'} as={RoundButton} position={bottomTopPosition.top_left}
@@ -830,14 +886,15 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
                 }} onDismissFunction={() => setModalField(undefined)}
                                   onImagesUpdated={(imageUri: string) => setImgForOCR([...imgForOCR, imageUri])}/> : null}
 
-            {/* TagDialog for tag operations (add, validate) */}
-            <TagDialog
-                data={tagDialogState}
-                onClose={() => setTagDialogState(prev => ({...prev, isOpen: false}))}
-                testId="RecipeTag"
-                onConfirmTag={handleTagDialogConfirm}
-                onUseExistingTag={handleUseExistingTag}
-            />
+            {/* SimilarityDialog for both tags and ingredients */}
+            {similarityDialog.item && (
+                <SimilarityDialog
+                    testId={`Recipe${similarityDialog.item.type}Similarity`}
+                    isVisible={similarityDialog.isVisible}
+                    onClose={() => setSimilarityDialog(defaultSimilarityDialogPropsPicked)}
+                    item={similarityDialog.item}
+                />
+            )}
         </SafeAreaView>
     )
 }

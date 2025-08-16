@@ -140,7 +140,7 @@ export default class RecipeDatabase {
             return undefined;
         }
         const decodedIng = this.decodeIngredient(dbIngredient);
-        this.add_ingredients(decodedIng);
+        this.add_ingredient(decodedIng);
         return decodedIng;
     }
 
@@ -412,7 +412,7 @@ export default class RecipeDatabase {
         this._recipes.push(recipe);
     }
 
-    public add_ingredients(ingredient: ingredientTableElement) {
+    public add_ingredient(ingredient: ingredientTableElement) {
         this._ingredients.push(ingredient);
     }
 
@@ -580,7 +580,7 @@ export default class RecipeDatabase {
                     if (recipe.persons === newDefaultPersons) {
                         continue;
                     }
-                    
+
                     const oldPersons = recipe.persons;
 
                     const updatedIngredients = recipe.ingredients.map(ingredient => ({
@@ -666,7 +666,7 @@ export default class RecipeDatabase {
             return [];
         }
 
-        const exactMatch = this._tags.find(tag => 
+        const exactMatch = this._tags.find(tag =>
             tag.name.toLowerCase() === tagName.toLowerCase()
         );
         if (exactMatch) {
@@ -678,8 +678,37 @@ export default class RecipeDatabase {
             threshold: 0.4,
             includeScore: true,
         });
-        
+
         return fuse.search(tagName)
+            .sort((a, b) => (a.score || 0) - (b.score || 0))
+            .map(result => result.item);
+    }
+
+    public findSimilarIngredients(ingredientName: string): ingredientTableElement[] {
+        if (!ingredientName || ingredientName.trim().length === 0) {
+            return [];
+        }
+
+        const exactMatch = this._ingredients.find(ingredient =>
+            ingredient.name.toLowerCase() === ingredientName.toLowerCase()
+        );
+        if (exactMatch) {
+            return [exactMatch];
+        }
+
+        const cleanedName = this.cleanIngredientName(ingredientName);
+
+
+        const fuse = new Fuse(this._ingredients, {
+            keys: [{
+                name: 'name',
+                getFn: (ingredient) => this.cleanIngredientName(ingredient.name)
+            }],
+            threshold: 0.6,
+            includeScore: true,
+        });
+
+        return fuse.search(cleanedName)
             .sort((a, b) => (a.score || 0) - (b.score || 0))
             .map(result => result.item);
     }
@@ -744,8 +773,7 @@ export default class RecipeDatabase {
         for (const ing of ingredients) {
             const elemFound = this.find_ingredient(ing);
             if (elemFound !== undefined) {
-                elemFound.quantity = ing.quantity;
-                result.push(elemFound)
+                result.push({...elemFound, quantity: ing.quantity})
             } else {
                 // TODO Check for similar names ?
                 newIngredients.push(ing);
@@ -1077,6 +1105,20 @@ export default class RecipeDatabase {
             }
             this._shopping.splice(this._shopping.findIndex(shop => shop.name === nameToDelete), 1);
         }
+    }
+
+    private cleanIngredientName(name: string): string {
+        if (!name) {
+            return '';
+        }
+
+        // Remove content in parentheses
+        let cleaned = name.replace(/\([^)]*\)/g, '').trim();
+
+        // Remove extra whitespace
+        cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+        return cleaned;
     }
 
     private areIngredientsSimilar(ingredients1: coreIngredientElement[], ingredients2: coreIngredientElement[]): boolean {

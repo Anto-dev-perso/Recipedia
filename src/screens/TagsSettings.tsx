@@ -4,7 +4,7 @@ import {TagsSettingsProp} from "@customTypes/ScreenTypes";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {tagTableElement} from "@customTypes/DatabaseElementTypes";
 import SettingsItemList from "@components/organisms/SettingsItemList";
-import TagDialog, {TagDialogData, TagDialogMode} from "@components/dialogs/TagDialog";
+import ItemDialog, {DialogMode} from "@components/dialogs/ItemDialog";
 
 export default function TagsSettings({}: TagsSettingsProp) {
     const database = RecipeDatabase.getInstance();
@@ -13,11 +13,9 @@ export default function TagsSettings({}: TagsSettingsProp) {
     const [tags, setTags] = useState([...database.get_tags()].sort((a, b) => a.name.localeCompare(b.name)));
     // TODO database could return a sorted array directly
 
-    const [tagDialogData, setTagDialogData] = useState<TagDialogData>({
-        isOpen: false,
-        tag: {name: ""},
-        mode: 'add',
-    });
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [dialogMode, setDialogMode] = useState<DialogMode>('add');
+    const [currentTag, setCurrentTag] = useState<tagTableElement>({name: ""});
 
     const testId = "TagsSettings";
 
@@ -52,36 +50,30 @@ export default function TagsSettings({}: TagsSettingsProp) {
 
     // Open dialog handlers
     const openAddDialog = () => {
-        setTagDialogData({
-            isOpen: true,
-            tag: {name: ""},
-            mode: 'add',
-        });
+        setCurrentTag({name: ""});
+        setDialogMode('add');
+        setDialogVisible(true);
     };
 
     const openEditDialog = (tag: tagTableElement) => {
-        setTagDialogData({
-            isOpen: true,
-            tag: tag,
-            mode: 'edit',
-        });
+        setCurrentTag(tag);
+        setDialogMode('edit');
+        setDialogVisible(true);
     };
 
     const openDeleteDialog = (tag: tagTableElement) => {
-        setTagDialogData({
-            isOpen: true,
-            tag: tag,
-            mode: 'delete',
-        });
+        setCurrentTag(tag);
+        setDialogMode('delete');
+        setDialogVisible(true);
     };
 
     // Close dialog handler
     const closeDialog = () => {
-        setTagDialogData(prev => ({...prev, isOpen: false}));
+        setDialogVisible(false);
     };
 
     // Dialog action handlers
-    const handleDialogConfirm = async (mode: TagDialogMode, newTag: tagTableElement) => {
+    const handleDialogConfirm = async (mode: DialogMode, newTag: tagTableElement) => {
         switch (mode) {
             case 'add':
                 await handleAddtag(newTag);
@@ -93,7 +85,7 @@ export default function TagsSettings({}: TagsSettingsProp) {
                 await handleDeleteTag(newTag);
                 break;
         }
-        setTagDialogData(prev => ({...prev, isOpen: false}));
+        closeDialog();
     };
 
     // TODO add a counter of how many recipes use this element before deleting it
@@ -102,9 +94,18 @@ export default function TagsSettings({}: TagsSettingsProp) {
             <SettingsItemList items={tags} testIdPrefix={testId} onAddPress={openAddDialog}
                               onEdit={openEditDialog} onDelete={openDeleteDialog} type="tag"/>
 
-            {/* TagDialog for add/edit/delete operations */}
-            <TagDialog data={tagDialogData} onClose={closeDialog} testId={testId}
-                       onConfirmTag={handleDialogConfirm}/>
+            {/* ItemDialog for add/edit/delete operations */}
+            <ItemDialog
+                testId={testId}
+                isVisible={dialogVisible}
+                mode={dialogMode}
+                onClose={closeDialog}
+                item={{
+                    type: 'Tag',
+                    value: currentTag,
+                    onConfirmTag: handleDialogConfirm
+                }}
+            />
 
         </View>
     );

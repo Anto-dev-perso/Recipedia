@@ -1149,5 +1149,76 @@ describe('RecipeDatabase', () => {
                 expect(result).toEqual([]);
             });
         });
+
+        describe('findSimilarIngredients', () => {
+            test('should return empty array for empty input', () => {
+                const resultEmpty = db.findSimilarIngredients('');
+                expect(resultEmpty).toEqual([]);
+
+                const resultWhitespaces = db.findSimilarIngredients('   ');
+                expect(resultWhitespaces).toEqual([]);
+            });
+
+            test('should return exact match when ingredient exists', () => {
+                const expected = ingredientsDataset[0];
+
+                const result = db.findSimilarIngredients(expected.name);
+                expect(result.length).toBe(1);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should return exact match case insensitive', () => {
+                const expected = ingredientsDataset[1];
+
+                const result = db.findSimilarIngredients(expected.name.toUpperCase());
+                expect(result.length).toBe(1);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should find similar ingredients with typos', () => {
+                const expected = ingredientsDataset[2];
+
+                const result = db.findSimilarIngredients(expected.name.slice(0, -3));
+                expect(result.length).toBeGreaterThan(0);
+                expect(result[0]).toEqual(expected);
+            });
+
+            test('should clean ingredient names by removing parentheses', () => {
+                const expected = ingredientsDataset[3];
+
+                const result = db.findSimilarIngredients(expected.name + " (fresh)");
+                expect(result.length).toBeGreaterThan(0);
+                expect(result[0]).toEqual(expected);
+            });
+
+
+            test('should return multiple similar ingredients sorted by relevance', () => {
+                const expected = ingredientsDataset[36];
+
+                const result = db.findSimilarIngredients(expected.name.slice(0, 3));
+                expect(result.length).toBeGreaterThan(0);
+                expect(result[0].name).toMatch(/tom/i);
+            });
+
+            test('should return empty array for completely unmatched ingredient', () => {
+                const result = db.findSimilarIngredients('XYZNonExistentIngredient123');
+                expect(result).toEqual([]);
+            });
+
+            test('should handle special characters and spaces in ingredient names', () => {
+                // Test with special characters if any exist in test data
+                const result = db.findSimilarIngredients('Pâte');
+                // Should not crash and return appropriate results
+                expect(Array.isArray(result)).toBe(true);
+            });
+
+            test('should handle empty database gracefully', async () => {
+                await db.reset();
+                await db.init();
+
+                const result = db.findSimilarIngredients('AnyIngredient');
+                expect(result).toEqual([]);
+            });
+        });
     });
 });

@@ -23,5 +23,6 @@ export default {
         missingElements: alerts.missingElements,
         ocrRecipe: alerts.ocrRecipe,
         tagSimilarity: alerts.tagSimilarity,
+        ingredientSimilarity: alerts.ingredientSimilarity,
     },
 };

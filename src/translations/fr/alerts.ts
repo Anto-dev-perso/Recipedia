@@ -28,4 +28,13 @@ export default {
         use: "Utiliser",
         cancel: "Annuler"
     },
+    ingredientSimilarity: {
+        similarIngredientFound: "Ingrédient similaire trouvé",
+        similarIngredientFoundContent: "Un ingrédient similaire existe déjà : \"{{existingIngredient}}\".",
+        newIngredientTitle: "Ingrédient introuvable",
+        newIngredientContent: "L'ingrédient \"{{ingredientName}}\" n'existe pas. Vous pouvez le modifier avant de l'ajouter.",
+        add: "Ajouter",
+        use: "Utiliser", 
+        cancel: "Annuler"
+    },
 };

@@ -45,6 +45,14 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
         }
     }, []);
 
+    // Update internal state when props.value changes
+    useEffect(() => {
+        if (props.value !== undefined && props.value !== textInput) {
+            setTextInput(props.value);
+            setFilteredTextArray(props.value ? filterArray(props.value) : props.referenceTextArray);
+        }
+    }, [props.value]);
+
     useEffect(() => {
         const keyboardListener = Keyboard.addListener("keyboardDidHide", () => {
             if (inputRef.current && inputRef.current.isFocused()) {

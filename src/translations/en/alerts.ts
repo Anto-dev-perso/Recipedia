@@ -31,4 +31,13 @@ export default {
         use: "Use",
         cancel: "Cancel"
     },
+    ingredientSimilarity: {
+        similarIngredientFound: "Similar ingredient found",
+        similarIngredientFoundContent: "A similar ingredient already exists: \"{{existingIngredient}}\".",
+        newIngredientTitle: "Ingredient not found", 
+        newIngredientContent: "The ingredient \"{{ingredientName}}\" doesn't exist. You can modify it before adding.",
+        add: "Add",
+        use: "Use",
+        cancel: "Cancel"
+    },
 };
