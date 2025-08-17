@@ -1,10 +1,16 @@
-name: Android CI
+name: Build & Test Pipeline
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: write
 
 jobs:
   install:
@@ -17,11 +23,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --include=dev
+        run: npm ci
 
       - name: Cache node modules
         uses: actions/cache@v4
@@ -31,7 +37,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+
   unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
     needs: install
     steps:
@@ -41,7 +49,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Restore node modules
@@ -51,19 +59,12 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Run unit tests
-        continue-on-error: true
-        run: npm run test:unit-coverage
+        run: npm run test:unit
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-results
-          path: jest-results.json
-
-  build-apk:
-    name: Build Android APK
-    needs: install
+  coverage:
+    name: Test Coverage
     runs-on: ubuntu-latest
+    needs: unit-tests
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -71,7 +72,56 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Restore node modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Run tests with coverage
+        run: npm run test:unit-coverage
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: jest-results.json
+          retention-days: 7
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: coverage/
+          retention-days: 30
+
+      - name: Coverage check
+        uses: 5monkeys/cobertura-action@master
+        with:
+          path: coverage/cobertura-coverage.xml
+          minimum_coverage: 80
+          fail_below_threshold: false
+          show_missing: false
+          show_line: false
+          show_branch: false
+          show_class_names: false
+          only_changed_files: true
+
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
           cache: 'npm'
 
       - name: Restore node modules
@@ -104,11 +154,12 @@ jobs:
         with:
           name: build-apk
           path: build*.apk
+          retention-days: 7
 
   e2e-tests:
     name: E2E Tests
-    needs: build-apk
     runs-on: ubuntu-latest
+    needs: build-android
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -116,7 +167,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Restore node modules
@@ -124,7 +175,7 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -161,7 +212,7 @@ jobs:
 
       - name: Upload Maestro test results
         uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: maestro-test-results
           path: maestro_logs/.maestro/tests/
+          retention-days: 7

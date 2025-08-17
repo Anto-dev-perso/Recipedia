@@ -11,7 +11,12 @@ module.exports = {
         'src/**/*.{js,jsx,ts,tsx}',
         '!src/**/*.d.ts',
         '!src/**/index.{js,ts}',
+        '!src/translations/**/*',
+        '!src/assets/**/*',
+        '!src/navigation/**/*',
+        '!App.tsx',
     ],
+    coverageReporters: ['json', 'lcov', 'cobertura', 'text'],
     moduleNameMapper: {
         '^fuse.js/dist/fuse.js$': '<rootDir>/node_modules/fuse.js/dist/fuse.js'
     },
