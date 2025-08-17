@@ -120,13 +120,10 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
 
-      - name: Run security audit
-        run: npm run audit:security
-
-      - name: Upload audit results
-        uses: actions/upload-artifact@v4
-        if: always()
+      - name: Security audit
+        uses: oke-py/npm-audit-action@v2
         with:
-          name: security-audit-results
-          path: npm-audit.json
-          retention-days: 30
+          audit_level: moderate
+          create_issues: false
+          create_pr_comments: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
