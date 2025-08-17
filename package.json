@@ -28,7 +28,17 @@
     "typecheck": "tsc --noEmit",
     "audit:security": "npm audit --audit-level=moderate",
     "quality:check": "npm run lint && npm run format:check && npm run typecheck",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "src/**/*.{json,md}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@babel/core": "~7.26.9",
@@ -98,8 +108,10 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-native": "^5.0.0",
+    "husky": "9.1.7",
     "jest": "~29.7.0",
     "jest-expo": "~52.0.5",
+    "lint-staged": "16.1.5",
     "metro-react-native-babel-preset": "~0.77.0",
     "prettier": "^3.6.2",
     "semantic-release": "^24.0.0",
