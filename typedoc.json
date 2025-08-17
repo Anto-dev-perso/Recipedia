@@ -1,0 +1,81 @@
+{
+  "entryPoints": [
+    "src/components/atomic/*.tsx",
+    "src/components/dialogs/*.tsx",
+    "src/components/molecules/*.tsx",
+    "src/components/organisms/*.tsx",
+    "src/context/*.tsx",
+    "src/navigation/*.tsx",
+    "src/screens/*.tsx",
+    "src/utils/*.tsx",
+    "src/utils/*.ts",
+    "src/customTypes/*.tsx",
+    "src/assets/Icons.tsx",
+    "src/assets/Assets.tsx",
+    "src/styles/*.tsx"
+  ],
+  "out": "docs",
+  "plugin": [
+    "varvara-typedoc-theme"
+  ],
+  "theme": "varvara-css",
+  "readme": "none",
+  "excludePrivate": false,
+  "excludeProtected": false,
+  "excludeInternal": false,
+  "hideGenerator": true,
+  "treatWarningsAsErrors": true,
+  "treatValidationWarningsAsErrors": true,
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "noEmitOnError": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react-native"
+  },
+  "skipErrorChecking": true,
+  "sort": [
+    "source-order"
+  ],
+  "kindSortOrder": [
+    "Project",
+    "Module",
+    "Namespace",
+    "Enum",
+    "Class",
+    "Interface",
+    "TypeAlias",
+    "Constructor",
+    "Property",
+    "Method",
+    "Function",
+    "Accessor",
+    "Variable"
+  ],
+  "categorizeByGroup": true,
+  "defaultCategory": "Other",
+  "categoryOrder": [
+    "Components",
+    "Types",
+    "Functions",
+    "*",
+    "Other"
+  ],
+  "disableSources": false,
+  "sourceLinkTemplate": "https://github.com/Anto-dev-perso/Recipedia/blob/{gitRevision}/{path}#L{line}",
+  "gitRevision": "main",
+  "name": "Recipedia API Documentation",
+  "includeVersion": true,
+  "searchInComments": true,
+  "searchInDocuments": true,
+  "excludeNotDocumented": false,
+  "excludeReferences": true,
+  "navigationLinks": {
+    "GitHub": "https://github.com/Anto-dev-perso/Recipedia"
+  },
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": false
+  }
+}
