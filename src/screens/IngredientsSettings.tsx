@@ -1,10 +1,10 @@
 /**
  * IngredientsSettings - Comprehensive ingredient database management screen
- * 
+ *
  * A dedicated screen for managing the app's ingredient database with full CRUD
  * operations, seasonality management, and categorization. Features dialog-based
  * editing with comprehensive validation and real-time synchronization.
- * 
+ *
  * Key Features:
  * - Complete ingredient CRUD operations (Create, Read, Update, Delete)
  * - Seasonality calendar for ingredient availability
@@ -14,7 +14,7 @@
  * - Real-time database synchronization
  * - Usage tracking for deletion warnings
  * - Comprehensive error handling and logging
- * 
+ *
  * @example
  * ```typescript
  * // Navigation from Parameters screen
@@ -25,129 +25,141 @@
  * ```
  */
 
-import React, {useState} from 'react';
-import {View} from 'react-native';
-import {IngredientsSettingProp} from "@customTypes/ScreenTypes";
-import {ingredientTableElement} from "@customTypes/DatabaseElementTypes";
-import SettingsItemList from "@components/organisms/SettingsItemList";
-import ItemDialog, {DialogMode} from "@components/dialogs/ItemDialog";
-import RecipeDatabase from "@utils/RecipeDatabase";
-import {ingredientsSettingsLogger} from '@utils/logger';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { IngredientsSettingProp } from '@customTypes/ScreenTypes';
+import { ingredientTableElement } from '@customTypes/DatabaseElementTypes';
+import SettingsItemList from '@components/organisms/SettingsItemList';
+import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
+import RecipeDatabase from '@utils/RecipeDatabase';
+import { ingredientsSettingsLogger } from '@utils/logger';
 
 /**
  * IngredientsSettings screen component - Ingredient database management
- * 
+ *
  * @param props - Navigation props for the IngredientsSettings screen
  * @returns JSX element representing the ingredient management interface
  */
 export default function IngredientsSettings({}: IngredientsSettingProp) {
-    const database = RecipeDatabase.getInstance();
+  const database = RecipeDatabase.getInstance();
 
-    const [ingredients, setIngredients] = useState([...database.get_ingredients()].sort((a, b) => a.name.localeCompare(b.name)));
-    // TODO database could return a sorted array directly
+  const [ingredients, setIngredients] = useState(
+    [...database.get_ingredients()].sort((a, b) => a.name.localeCompare(b.name))
+  );
+  // TODO database could return a sorted array directly
 
+  // Dialog states
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<'add' | 'edit' | 'delete'>('add');
+  const [selectedIngredient, setSelectedIngredient] = useState<ingredientTableElement>(
+    ingredients[0]
+  );
 
-    // Dialog states
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [dialogMode, setDialogMode] = useState<'add' | 'edit' | 'delete'>('add');
-    const [selectedIngredient, setSelectedIngredient] = useState<ingredientTableElement>(ingredients[0]);
+  const testId = 'IngredientsSettings';
 
-    const testId = "IngredientsSettings";
+  const handleAddIngredient = async (newIngredient: ingredientTableElement) => {
+    const insertedIngredient = await database.addIngredient(newIngredient);
+    if (insertedIngredient) {
+      setIngredients([...ingredients, newIngredient]);
+    } else {
+      ingredientsSettingsLogger.warn('Failed to add ingredient to database', {
+        ingredientName: newIngredient.name,
+      });
+    }
+  };
 
+  const handleEditIngredient = async (newIngredient: ingredientTableElement) => {
+    const success = await database.editIngredient(newIngredient);
+    if (success) {
+      const idx = ingredients.findIndex(ing => ing.id === newIngredient.id);
+      if (idx !== -1) {
+        const updatedIngredients = [...ingredients];
+        updatedIngredients[idx] = newIngredient;
+        setIngredients(updatedIngredients);
+      }
+    } else {
+      ingredientsSettingsLogger.warn('Failed to update ingredient in database', {
+        ingredientName: newIngredient.name,
+        ingredientId: newIngredient.id,
+      });
+    }
+  };
 
-    const handleAddIngredient = async (newIngredient: ingredientTableElement) => {
-        const insertedIngredient = await database.addIngredient(newIngredient);
-        if (insertedIngredient) {
-            setIngredients([...ingredients, newIngredient]);
-        } else {
-            ingredientsSettingsLogger.warn('Failed to add ingredient to database', { ingredientName: newIngredient.name });
+  const handleDeleteIngredient = async (ingredient: ingredientTableElement) => {
+    if (await database.deleteIngredient(ingredient)) {
+      setIngredients(ingredients.filter(ing => ing.id !== ingredient.id));
+    } else {
+      ingredientsSettingsLogger.warn('Ingredient not found for deletion', { ingredient });
+    }
+  };
+
+  // Open dialog handlers
+  const openAddDialog = () => {
+    setDialogMode('add');
+    setIsDialogOpen(true);
+  };
+
+  const openEditDialog = (ingredient: ingredientTableElement) => {
+    setSelectedIngredient(ingredient);
+    setDialogMode('edit');
+    setIsDialogOpen(true);
+  };
+
+  const openDeleteDialog = (ingredient: ingredientTableElement) => {
+    setSelectedIngredient(ingredient);
+    setDialogMode('delete');
+    setIsDialogOpen(true);
+  };
+
+  // Close dialog handler
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  // Dialog action handlers
+  const handleDialogConfirm = async (mode: DialogMode, newIngredient: ingredientTableElement) => {
+    switch (mode) {
+      case 'add':
+        await handleAddIngredient(newIngredient);
+        break;
+      case 'edit':
+        if (selectedIngredient) {
+          await handleEditIngredient(newIngredient);
         }
-    };
-
-    const handleEditIngredient = async (newIngredient: ingredientTableElement) => {
-        const success = await database.editIngredient(newIngredient);
-        if (success) {
-            const idx = ingredients.findIndex(ing => ing.id === newIngredient.id);
-            if (idx !== -1) {
-                const updatedIngredients = [...ingredients];
-                updatedIngredients[idx] = newIngredient;
-                setIngredients(updatedIngredients);
-            }
-        } else {
-            ingredientsSettingsLogger.warn('Failed to update ingredient in database', { 
-                ingredientName: newIngredient.name, 
-                ingredientId: newIngredient.id 
-            });
+        break;
+      case 'delete':
+        if (selectedIngredient) {
+          await handleDeleteIngredient(newIngredient);
         }
-    };
+        break;
+    }
+    setIsDialogOpen(false);
+  };
 
+  // TODO add a counter of how many recipes use this element before deleting it
+  return (
+    <View>
+      <SettingsItemList
+        items={ingredients}
+        testIdPrefix={testId}
+        onAddPress={openAddDialog}
+        onEdit={openEditDialog}
+        onDelete={openDeleteDialog}
+        type='ingredient'
+      />
 
-    const handleDeleteIngredient = async (ingredient: ingredientTableElement) => {
-        if (await database.deleteIngredient(ingredient)) {
-            setIngredients(ingredients.filter(ing => ing.id !== ingredient.id));
-        } else {
-            ingredientsSettingsLogger.warn('Ingredient not found for deletion', { ingredient });
-        }
-    };
-
-    // Open dialog handlers
-    const openAddDialog = () => {
-        setDialogMode('add');
-        setIsDialogOpen(true);
-    };
-
-    const openEditDialog = (ingredient: ingredientTableElement) => {
-        setSelectedIngredient(ingredient);
-        setDialogMode('edit');
-        setIsDialogOpen(true);
-    };
-
-    const openDeleteDialog = (ingredient: ingredientTableElement) => {
-        setSelectedIngredient(ingredient);
-        setDialogMode('delete');
-        setIsDialogOpen(true);
-    };
-
-    // Close dialog handler
-    const closeDialog = () => {
-        setIsDialogOpen(false);
-    };
-
-    // Dialog action handlers
-    const handleDialogConfirm = async (mode: DialogMode, newIngredient: ingredientTableElement) => {
-        switch (mode) {
-            case 'add':
-                await handleAddIngredient(newIngredient);
-                break;
-            case 'edit':
-                if (selectedIngredient) {
-                    await handleEditIngredient(newIngredient);
-                }
-                break;
-            case 'delete':
-                if (selectedIngredient) {
-                    await handleDeleteIngredient(newIngredient);
-
-                }
-                break;
-        }
-        setIsDialogOpen(false);
-    };
-
-    // TODO add a counter of how many recipes use this element before deleting it
-    return (
-        <View>
-            <SettingsItemList items={ingredients} testIdPrefix={testId}
-                              onAddPress={openAddDialog} onEdit={openEditDialog}
-                              onDelete={openDeleteDialog} type="ingredient"/>
-
-            {/* Dialog for add/edit/delete operations */}
-            <ItemDialog isVisible={isDialogOpen} onClose={closeDialog} testId={testId} mode={dialogMode}
-                        item={{
-                            type: "Ingredient",
-                            value: selectedIngredient,
-                            onConfirmIngredient: handleDialogConfirm
-                        }}/>
-        </View>
-    );
+      {/* Dialog for add/edit/delete operations */}
+      <ItemDialog
+        isVisible={isDialogOpen}
+        onClose={closeDialog}
+        testId={testId}
+        mode={dialogMode}
+        item={{
+          type: 'Ingredient',
+          value: selectedIngredient,
+          onConfirmIngredient: handleDialogConfirm,
+        }}
+      />
+    </View>
+  );
 }

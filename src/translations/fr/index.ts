@@ -10,19 +10,19 @@ import alerts from './alerts';
 import months from './months';
 
 export default {
-    ...navigation,
-    ...common,
-    ...recipe,
-    ...shopping,
-    ...parameters,
-    ...seasons,
-    ...months,
-    ingredientTypes,
-    filterTypes: filters.filterTypes,
-    alerts: {
-        missingElements: alerts.missingElements,
-        ocrRecipe: alerts.ocrRecipe,
-        tagSimilarity: alerts.tagSimilarity,
-        ingredientSimilarity: alerts.ingredientSimilarity,
-    },
+  ...navigation,
+  ...common,
+  ...recipe,
+  ...shopping,
+  ...parameters,
+  ...seasons,
+  ...months,
+  ingredientTypes,
+  filterTypes: filters.filterTypes,
+  alerts: {
+    missingElements: alerts.missingElements,
+    ocrRecipe: alerts.ocrRecipe,
+    tagSimilarity: alerts.tagSimilarity,
+    ingredientSimilarity: alerts.ingredientSimilarity,
+  },
 };
