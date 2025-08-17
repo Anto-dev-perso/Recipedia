@@ -1,3 +1,32 @@
+/**
+ * VerticalBottomButtons - Expandable floating action button menu
+ * 
+ * A sophisticated FAB menu component that provides quick access to recipe creation
+ * actions. Features an expandable design that reveals multiple action buttons when
+ * activated, including camera capture, gallery selection, and manual entry options.
+ * 
+ * Key Features:
+ * - Expandable/collapsible FAB menu design
+ * - Four distinct recipe creation methods
+ * - Integrated image capture and selection
+ * - Automatic navigation to recipe creation screens
+ * - Vertical stacking with calculated offsets
+ * - Theme-aware styling and theming
+ * - Smooth state transitions between collapsed/expanded
+ * 
+ * @example
+ * ```typescript
+ * // Usage in main screens (typically Home screen)
+ * <VerticalBottomButtons />
+ * 
+ * // The component automatically handles:
+ * // - Camera photo capture → Recipe creation from image
+ * // - Gallery image selection → Recipe creation from image  
+ * // - Manual recipe creation → Empty recipe form
+ * // - Menu expansion/collapse state management
+ * ```
+ */
+
 import React, {useState} from "react";
 import BottomTopButton from "@components/molecules/BottomTopButton";
 import {BottomTopButtonOffset, bottomTopPosition} from "@styles/buttons";
@@ -9,7 +38,11 @@ import {useNavigation} from "@react-navigation/native";
 import RoundButton from "@components/atomic/RoundButton";
 import {useTheme} from "react-native-paper";
 
-
+/**
+ * VerticalBottomButtons component for expandable recipe creation menu
+ * 
+ * @returns JSX element representing an expandable FAB menu for recipe creation actions
+ */
 export default function VerticalBottomButtons() {
     const {navigate} = useNavigation<StackScreenNavigation>();
     const {colors} = useTheme();

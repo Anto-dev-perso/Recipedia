@@ -1,3 +1,35 @@
+/**
+ * TagsSettings - Recipe tag management and organization screen
+ * 
+ * A dedicated screen for managing the app's tag system with full CRUD operations
+ * and organizational capabilities. Features dialog-based editing, alphabetical
+ * organization, and real-time synchronization with recipe data.
+ * 
+ * Key Features:
+ * - Complete tag CRUD operations (Create, Read, Update, Delete)
+ * - Alphabetical sorting for organized navigation
+ * - Dialog-based editing with validation
+ * - Real-time database synchronization
+ * - Usage tracking for deletion warnings
+ * - Batch operations for tag management
+ * - Comprehensive error handling and logging
+ * 
+ * Tag Management:
+ * - Create new tags for recipe categorization
+ * - Edit existing tag names and properties
+ * - Delete unused tags with safety checks
+ * - View tag usage across recipes
+ * 
+ * @example
+ * ```typescript
+ * // Navigation from Parameters screen
+ * <List.Item
+ *   title="Tags"
+ *   onPress={() => navigation.navigate('TagsSettings')}
+ * />
+ * ```
+ */
+
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {TagsSettingsProp} from "@customTypes/ScreenTypes";
@@ -7,6 +39,12 @@ import SettingsItemList from "@components/organisms/SettingsItemList";
 import ItemDialog, {DialogMode} from "@components/dialogs/ItemDialog";
 import {tagsSettingsLogger} from '@utils/logger';
 
+/**
+ * TagsSettings screen component - Recipe tag management
+ * 
+ * @param props - Navigation props for the TagsSettings screen
+ * @returns JSX element representing the tag management interface
+ */
 export default function TagsSettings({}: TagsSettingsProp) {
     const database = RecipeDatabase.getInstance();
 

@@ -1,3 +1,49 @@
+/**
+ * Home - Main dashboard screen with recipe recommendations and FAB menu
+ * 
+ * The primary landing screen of the Recipedia app featuring multiple recommendation
+ * carousels with random recipes and an expandable FAB menu for recipe creation.
+ * Includes pull-to-refresh functionality and automatic cleanup of deleted recipes.
+ * 
+ * Key Features:
+ * - Four dynamic recommendation carousels with random recipes
+ * - Pull-to-refresh functionality for fresh recommendations
+ * - Automatic cleanup of deleted/missing recipes on focus
+ * - Expandable FAB menu for recipe creation (camera, gallery, manual)
+ * - Responsive layout with proper bottom padding
+ * - Theme-aware styling and colors
+ * - Comprehensive logging for debugging and analytics
+ * - Real-time recipe existence validation
+ * 
+ * Navigation Integration:
+ * - Serves as the main entry point from bottom tab navigation
+ * - Integrates with recipe creation flows via VerticalBottomButtons
+ * - Handles navigation to individual recipe screens via RecipeCard interactions
+ * 
+ * Performance Optimizations:
+ * - Efficient random recipe loading with controlled batch sizes
+ * - Focus-based cleanup prevents stale data display
+ * - Smooth scroll performance with proper view sizing
+ * 
+ * @example
+ * ```typescript
+ * // Navigation integration (typically in tab navigator)
+ * <Tab.Screen 
+ *   name="Home" 
+ *   component={Home}
+ *   options={{
+ *     tabBarIcon: ({ color }) => <Icon name="home" color={color} />
+ *   }}
+ * />
+ * 
+ * // The Home screen automatically handles:
+ * // - Loading random recipe recommendations
+ * // - Providing recipe creation entry points
+ * // - Managing recipe data freshness
+ * // - Responsive layout for different screen sizes
+ * ```
+ */
+
 import RecipeRecommendation from "@components/organisms/RecipeRecommendation";
 
 import {recipeTableElement} from "@customTypes/DatabaseElementTypes";
@@ -12,7 +58,12 @@ import {screenWidth} from "@styles/spacing";
 import {HomeScreenProp} from "@customTypes/ScreenTypes";
 import {homeLogger} from '@utils/logger';
 
-
+/**
+ * Home screen component - Main dashboard with recipe recommendations
+ * 
+ * @param props - Navigation props for the Home screen
+ * @returns JSX element representing the main home dashboard
+ */
 export default function Home({navigation}: HomeScreenProp) {
     const {t} = useI18n();
     const {colors} = useTheme();

@@ -1,3 +1,12 @@
+/**
+ * FilterFunctions - Utility functions for recipe filtering and search operations
+ * 
+ * This module provides comprehensive filtering capabilities for recipes based on various criteria
+ * such as ingredients, tags, preparation time, and seasonal availability. It includes functions
+ * for building filter categories, applying filters to recipe collections, and managing
+ * filter state using Maps and multimaps.
+ */
+
 import {arrayOfType, ingredientTableElement, recipeTableElement} from "@customTypes/DatabaseElementTypes";
 import {
     FiltersAppliedToDatabase,
@@ -10,7 +19,26 @@ import {TFunction} from "i18next";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {searchLogger} from '@utils/logger';
 
-
+/**
+ * Creates filter categories with available values for UI display
+ * 
+ * Processes different filter types (tags, ingredients by type, prep time, seasonal)
+ * and returns structured data for filter UI components.
+ * 
+ * @param tagsList - Array of available tag names
+ * @param ingredientsList - Array of available ingredients
+ * @param t - Translation function for internationalization
+ * @returns Array of filter categories with their available values
+ * 
+ * @example
+ * ```typescript
+ * const filters = selectFilterCategoriesValuesToDisplay(
+ *   ["Dessert", "Main Course"],
+ *   ingredients,
+ *   t
+ * );
+ * ```
+ */
 export function selectFilterCategoriesValuesToDisplay(tagsList: Array<string>, ingredientsList: Array<ingredientTableElement>, t: TFunction<"translation", undefined>): Array<FiltersAppliedToDatabase> {
     return filtersCategories
         .map(category => {
@@ -60,7 +88,21 @@ export function selectFilterCategoriesValuesToDisplay(tagsList: Array<string>, i
         });
 }
 
-
+/**
+ * Extracts unique ingredients, tags, and titles from a recipe collection
+ * 
+ * Processes an array of recipes to extract all unique ingredients, tags, and titles
+ * for use in filter dropdowns and search suggestions.
+ * 
+ * @param recipeArray - Array of recipes to process
+ * @returns Tuple containing [sorted titles, unique ingredients, sorted tags]
+ * 
+ * @example
+ * ```typescript
+ * const [titles, ingredients, tags] = extractFilteredRecipeDatas(recipes);
+ * console.log(`Found ${ingredients.length} unique ingredients`);
+ * ```
+ */
 export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement>): [Array<string>, Array<ingredientTableElement>, Array<string>] {
     // TODO is set really faster in this case ? To profile
     const ingredientsUniqueCollection = new Array<ingredientTableElement>();
@@ -82,7 +124,26 @@ export function extractFilteredRecipeDatas(recipeArray: Array<recipeTableElement
     return [titleSortedArray, ingredientsUniqueCollection.sort(), Array.from(tagsUniqueCollection).sort()]
 }
 
-// TODO find a better type for the multimap (maybe https://github.com/teppeis/multimaps
+/**
+ * Filters recipes based on multiple criteria using a multimap structure
+ * 
+ * Applies various filters to a recipe collection including preparation time,
+ * title search, seasonal availability, tags, and ingredient types.
+ * 
+ * @param recipeArray - Array of recipes to filter
+ * @param filter - Map of filter criteria (multimap: filter type -> array of values)
+ * @param t - Translation function for internationalization
+ * @returns Filtered array of recipes that match ALL specified criteria
+ * 
+ * @example
+ * ```typescript
+ * const filters = new Map();
+ * filters.set(listFilter.tags, ["Dessert", "Quick"]);
+ * filters.set(listFilter.prepTime, ["15-30"]);
+ * 
+ * const filtered = filterFromRecipe(allRecipes, filters, t);
+ * ```
+ */
 export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter: Map<TListFilter, Array<string>>, t: TFunction<"translation", undefined>): Array<recipeTableElement> {
     if (filter.size == 0) {
         return RecipeDatabase.getInstance().get_recipes();
@@ -136,8 +197,23 @@ export function filterFromRecipe(recipeArray: Array<recipeTableElement>, filter:
     }));
 }
 
-// TODO return a boolean to say that we modify or not
-// It will help not re-triggering rendering if no modification happens
+/**
+ * Adds a value to a multimap (Map with Array values)
+ * 
+ * Creates a new array for the key if it doesn't exist, or adds the value
+ * to the existing array if the value isn't already present.
+ * 
+ * @param multimap - The multimap to modify
+ * @param key - The key to add the value under
+ * @param value - The value to add
+ * 
+ * @example
+ * ```typescript
+ * const filters = new Map();
+ * addValueToMultimap(filters, listFilter.tags, "Dessert");
+ * addValueToMultimap(filters, listFilter.tags, "Quick");
+ * ```
+ */
 export function addValueToMultimap<TKey, TValue>(multimap: Map<TKey, Array<TValue>>, key: TKey, value: TValue) {
     const values = multimap.get(key);
     if (values === undefined) {
@@ -149,8 +225,21 @@ export function addValueToMultimap<TKey, TValue>(multimap: Map<TKey, Array<TValu
     }
 }
 
-// TODO return a boolean to say that we modify or not
-// It will help not re-triggering rendering if no modification happens
+/**
+ * Removes a value from a multimap (Map with Array values)
+ * 
+ * Removes the specified value from the array associated with the key.
+ * If the array becomes empty, removes the key entirely.
+ * 
+ * @param multimap - The multimap to modify
+ * @param key - The key containing the value to remove
+ * @param value - The value to remove
+ * 
+ * @example
+ * ```typescript
+ * removeValueToMultimap(filters, listFilter.tags, "Dessert");
+ * ```
+ */
 export function removeValueToMultimap<TKey, TValue>(multimap: Map<TKey, Array<TValue>>, key: TKey, value: TValue) {
     const values = multimap.get(key);
     if (values !== undefined) {
@@ -168,8 +257,20 @@ export function removeValueToMultimap<TKey, TValue>(multimap: Map<TKey, Array<TV
     }
 }
 
-// TODO return a boolean to say that we modify or not
-// It will help not re-triggering rendering if no modification happens
+/**
+ * Updates the recipe title search filter in a multimap
+ * 
+ * Sets or updates the title search string in the filter multimap.
+ * Used for real-time search as the user types.
+ * 
+ * @param multimap - The filter multimap to modify
+ * @param newSearchString - The new search string for recipe titles
+ * 
+ * @example
+ * ```typescript
+ * editTitleInMultimap(filters, "chocolate cake");
+ * ```
+ */
 export function editTitleInMultimap(multimap: Map<TListFilter, Array<string>>, newSearchString: string) {
     // TODO to refactor to a direct modification of the Multimap
     const value = multimap.get(listFilter.recipeTitleInclude);
@@ -184,11 +285,19 @@ export function editTitleInMultimap(multimap: Map<TListFilter, Array<string>>, n
     }
 }
 
-// TODO test me
+/**
+ * Removes the recipe title search filter from a multimap
+ * 
+ * @param multimap - The filter multimap to modify
+ * 
+ * @example
+ * ```typescript
+ * removeTitleInMultimap(filters); // Clear search text
+ * ```
+ */
 export function removeTitleInMultimap(multimap: Map<TListFilter, Array<string>>) {
     multimap.delete(listFilter.recipeTitleInclude);
 }
-
 
 // TODO in case of creating a multimap
 /*
@@ -235,6 +344,21 @@ export function removeTitleInMultimap(multimap: Map<TListFilter, Array<string>>)
         }
         */
 
+/**
+ * Retrieves all filter values from a multimap as a flat array
+ * 
+ * Extracts all values from all filter categories and combines them
+ * into a single array for display or processing.
+ * 
+ * @param filters - The filter multimap
+ * @returns Flat array of all filter values
+ * 
+ * @example
+ * ```typescript
+ * const allValues = retrieveAllFilters(filters);
+ * console.log(`Total active filters: ${allValues.length}`);
+ * ```
+ */
 export function retrieveAllFilters(filters: Map<TListFilter, Array<string>>): Array<string> {
     const allFilters = new Array<string>();
     for (const [_, value] of filters) {
@@ -244,6 +368,17 @@ export function retrieveAllFilters(filters: Map<TListFilter, Array<string>>): Ar
 }
 
 
+/**
+ * Checks if an element (string or array) contains any of the specified filter values
+ * 
+ * Handles both string and array inputs with different matching logic:
+ * - For arrays: Uses strict equality for element matching
+ * - For strings: Uses substring matching (includes)
+ * 
+ * @param elementToTest - The element to test (recipe title, tags array, etc.)
+ * @param filters - The filter values to search for
+ * @returns True if any filter value is found in the element
+ */
 function isTheElementContainsTheFilter(elementToTest: string | Array<string>, filters: Array<string> | string): boolean {
     if (filters instanceof Array) {
         for (const filterValue of filters) {
@@ -264,6 +399,17 @@ function isTheElementContainsTheFilter(elementToTest: string | Array<string>, fi
     return false;
 }
 
+/**
+ * Applies preparation time filters to a recipe
+ * 
+ * Checks if a recipe's preparation time falls within any of the specified time intervals.
+ * Handles both range intervals (e.g., "15-30") and open-ended intervals (e.g., "60+").
+ * 
+ * @param recipe - The recipe to test
+ * @param filterTimeIntervals - Array of time interval strings to check against
+ * @param t - Translation function for internationalization
+ * @returns True if recipe time matches any of the filter intervals
+ */
 function applyToRecipeFilterPrepTime(recipe: recipeTableElement, filterTimeIntervals: Array<string>, t: TFunction<"translation", undefined>): boolean {
     for (const curFilter of filterTimeIntervals) {
         const translatedTimeFilter = t(curFilter);

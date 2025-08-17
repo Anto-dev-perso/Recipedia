@@ -1,6 +1,67 @@
+/**
+ * Theme Configuration - Material Design 3 theme setup for Recipedia
+ * 
+ * This module defines the complete theming system for the Recipedia app using Material Design 3
+ * principles. Provides light and dark theme configurations with custom color palettes and
+ * typography optimized for the recipe management interface.
+ * 
+ * Key Features:
+ * - Material Design 3 color system with semantic color tokens
+ * - Custom green-based primary palette reflecting culinary themes
+ * - Comprehensive elevation and surface color system
+ * - Custom typography using Lora variable font family
+ * - Theme switching support for light and dark modes
+ * - Accessibility-compliant contrast ratios
+ * - Consistent color semantics across all components
+ * 
+ * Color System:
+ * - **Primary**: Green palette (#006D38) representing fresh ingredients
+ * - **Secondary**: Orange palette (#99461D) for accent elements
+ * - **Tertiary**: Blue palette (#365CA8) for informational elements
+ * - **Surface**: Elevation-based surface colors for depth
+ * - **Error**: Standard Material Design error colors
+ * 
+ * Typography:
+ * - **Font Family**: Lora variable font with weight variations
+ * - **Hierarchy**: Display, headline, title, body, and label styles
+ * - **Weights**: 400 (regular) and 700 (bold) for clear hierarchy
+ * - **Responsive**: Consistent sizing across different screen densities
+ * 
+ * @example
+ * ```typescript
+ * import { lightTheme, darkTheme } from '@styles/theme';
+ * 
+ * // Using in React Native Paper provider
+ * <PaperProvider theme={isDarkMode ? darkTheme : lightTheme}>
+ *   <App />
+ * </PaperProvider>
+ * 
+ * // Accessing theme colors in components
+ * const styles = StyleSheet.create({
+ *   container: {
+ *     backgroundColor: theme.colors.surface,
+ *     color: theme.colors.onSurface,
+ *   },
+ *   primaryButton: {
+ *     backgroundColor: theme.colors.primary,
+ *     color: theme.colors.onPrimary,
+ *   }
+ * });
+ * 
+ * // Using typography variants
+ * <Text variant="titleLarge">Recipe Title</Text>
+ * <Text variant="bodyMedium">Recipe description</Text>
+ * ```
+ */
+
 import {configureFonts, MD3LightTheme} from 'react-native-paper';
 import {ThemeProp} from "react-native-paper/lib/typescript/types";
 
+/**
+ * Light theme configuration following Material Design 3 specifications
+ * Uses a green-based color palette optimized for culinary content
+ * with high contrast ratios for accessibility compliance.
+ */
 export const lightTheme: ThemeProp = {
     ...MD3LightTheme,
     version: 3,
@@ -69,6 +130,11 @@ export const lightTheme: ThemeProp = {
 
 };
 
+/**
+ * Dark theme configuration extending the light theme base
+ * Provides appropriate contrast and readability for low-light environments
+ * while maintaining brand consistency and accessibility standards.
+ */
 export const darkTheme: ThemeProp = {
     ...lightTheme,
     colors: {

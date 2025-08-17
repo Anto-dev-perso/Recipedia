@@ -1,3 +1,29 @@
+/**
+ * TableManipulation - Generic SQLite database table operations utility
+ * 
+ * This class provides a generic interface for performing CRUD operations on SQLite tables.
+ * It handles table creation, data insertion, querying, updating, and deletion with proper
+ * error handling and logging. Designed to work with any table structure through generic types.
+ * 
+ * Key Features:
+ * - Generic CRUD operations
+ * - Batch operations for better performance
+ * - Transaction support for data consistency
+ * - Parameterized queries for SQL injection prevention
+ * - Comprehensive error handling and logging
+ * 
+ * @example
+ * ```typescript
+ * const tableManipulation = new TableManipulation("recipes", [
+ *   { colName: "title", type: "TEXT" },
+ *   { colName: "description", type: "TEXT" }
+ * ]);
+ * 
+ * await tableManipulation.createTable(db);
+ * const id = await tableManipulation.insertElement(recipe, db);
+ * ```
+ */
+
 import {SQLiteDatabase, SQLiteRunResult} from 'expo-sqlite';
 import {databaseColumnType} from '@customTypes/DatabaseElementTypes';
 import {databaseLogger} from '@utils/logger';
@@ -8,6 +34,21 @@ export default class TableManipulation {
     protected m_columnsTable: Array<databaseColumnType>; // define all columns (except ID). All are not null
     protected m_idColumn = "ID";
 
+    /**
+     * Creates a new TableManipulation instance
+     * 
+     * @param tabName - Name of the database table
+     * @param colNames - Array of column definitions (excluding the auto-increment ID column)
+     * 
+     * @example
+     * ```typescript
+     * const table = new TableManipulation("users", [
+     *   { colName: "name", type: "TEXT" },
+     *   { colName: "email", type: "TEXT" },
+     *   { colName: "age", type: "INTEGER" }
+     * ]);
+     * ```
+     */
     constructor(tabName: string, colNames: Array<databaseColumnType>) {
         if (tabName.length <= 0) {
             databaseLogger.error("ERROR: Table name cannot be empty");
@@ -23,6 +64,20 @@ export default class TableManipulation {
         }
     }
 
+    /**
+     * Deletes the entire table from the database
+     * 
+     * @param db - SQLite database connection
+     * @returns Promise resolving to true if successful, false otherwise
+     * 
+     * @example
+     * ```typescript
+     * const success = await table.deleteTable(db);
+     * if (success) {
+     *   console.log("Table deleted successfully");
+     * }
+     * ```
+     */
     public async deleteTable(db: SQLiteDatabase): Promise<boolean> {
         const dropQuery = `DROP TABLE IF EXISTS ${this.m_tableName}`;
         try {
@@ -34,7 +89,23 @@ export default class TableManipulation {
         }
     }
 
-    // TODO for multiple queries with different parameters, we can use prepareAsync
+    /**
+     * Creates the table in the database if it doesn't exist
+     * 
+     * Creates a table with an auto-increment ID column plus all specified columns.
+     * All columns are marked as NOT NULL.
+     * 
+     * @param db - SQLite database connection
+     * @returns Promise resolving to true if successful, false otherwise
+     * 
+     * @example
+     * ```typescript
+     * const success = await table.createTable(db);
+     * if (success) {
+     *   console.log("Table created successfully");
+     * }
+     * ```
+     */
     public async createTable(db: SQLiteDatabase): Promise<boolean> {
         let createQuery = `CREATE TABLE IF NOT EXISTS "${this.m_tableName}"
                            (
@@ -57,6 +128,21 @@ export default class TableManipulation {
         }
     }
 
+    /**
+     * Deletes a single element from the table by its ID
+     * 
+     * @param id - The ID of the element to delete
+     * @param db - SQLite database connection
+     * @returns Promise resolving to true if successful, false otherwise
+     * 
+     * @example
+     * ```typescript
+     * const success = await table.deleteElementById(123, db);
+     * if (success) {
+     *   console.log("Element deleted successfully");
+     * }
+     * ```
+     */
     public async deleteElementById(id: number, db: SQLiteDatabase): Promise<boolean> {
         const deleteQuery = `DELETE
                              FROM "${this.m_tableName}"
@@ -98,6 +184,22 @@ export default class TableManipulation {
         }
     }
 
+    /**
+     * Inserts a single element into the table
+     * 
+     * @param element - The element to insert (object with properties matching table columns)
+     * @param db - SQLite database connection
+     * @returns Promise resolving to the inserted element's ID, or undefined if failed
+     * 
+     * @example
+     * ```typescript
+     * const user = { name: "John", email: "john@example.com", age: 30 };
+     * const id = await table.insertElement(user, db);
+     * if (id) {
+     *   console.log(`User inserted with ID: ${id}`);
+     * }
+     * ```
+     */
     public async insertElement<TElement>(element: TElement, db: SQLiteDatabase): Promise<number | undefined> {
         const [insertQuery, params] = this.prepareInsertQuery(element);
         if (insertQuery.length == 0) {
@@ -153,6 +255,25 @@ export default class TableManipulation {
         }
     };
 
+    /**
+     * Performs batch updates on multiple elements using a database transaction
+     * 
+     * Updates multiple elements efficiently using a single transaction.
+     * If any update fails, the entire transaction is rolled back.
+     * 
+     * @param updates - Array of update objects containing ID and fields to update
+     * @param db - SQLite database connection
+     * @returns Promise resolving to true if all updates successful, false otherwise
+     * 
+     * @example
+     * ```typescript
+     * const updates = [
+     *   { id: 1, elementToUpdate: new Map([["name", "John Updated"]]) },
+     *   { id: 2, elementToUpdate: new Map([["age", 31]]) }
+     * ];
+     * const success = await table.batchUpdateElementsById(updates, db);
+     * ```
+     */
     public async batchUpdateElementsById(updates: Array<{
         id: number,
         elementToUpdate: Map<string, number | string>
@@ -183,6 +304,21 @@ export default class TableManipulation {
     }
 
 
+    /**
+     * Searches for a single element by its ID
+     * 
+     * @param elementId - The ID of the element to find
+     * @param db - SQLite database connection
+     * @returns Promise resolving to the found element or undefined if not found
+     * 
+     * @example
+     * ```typescript
+     * const user = await table.searchElementById<User>(123, db);
+     * if (user) {
+     *   console.log(`Found user: ${user.name}`);
+     * }
+     * ```
+     */
     public async searchElementById<T>(elementId: number, db: SQLiteDatabase): Promise<T | undefined> {
         if (isNaN(elementId)) {
             databaseLogger.error('searchElementById: Id use for search is null');
@@ -204,6 +340,20 @@ export default class TableManipulation {
         }
     }
 
+    /**
+     * Retrieves random elements from the table
+     * 
+     * @param numOfElements - Number of random elements to retrieve
+     * @param db - SQLite database connection
+     * @param columns - Optional array of specific columns to select
+     * @returns Promise resolving to array of random elements or undefined if failed
+     * 
+     * @example
+     * ```typescript
+     * const randomUsers = await table.searchRandomlyElement<User>(5, db, ["name", "email"]);
+     * console.log(`Got ${randomUsers?.length} random users`);
+     * ```
+     */
     public async searchRandomlyElement<T>(numOfElements: number, db: SQLiteDatabase, columns?: Array<string>): Promise<Array<T> | undefined> {
         if (numOfElements <= 0) {
             return undefined;
@@ -226,7 +376,23 @@ export default class TableManipulation {
         }
     }
 
-    // TODO replace Map by an Array
+    /**
+     * Searches for elements matching specified criteria
+     * 
+     * @param db - SQLite database connection
+     * @param elementToSearch - Optional map of column-value pairs for filtering
+     * @returns Promise resolving to matching element(s) or undefined if failed
+     * 
+     * @example
+     * ```typescript
+     * // Get all elements
+     * const allUsers = await table.searchElement<User>(db);
+     * 
+     * // Search with criteria
+     * const searchCriteria = new Map([["age", 25], ["city", "New York"]]);
+     * const filteredUsers = await table.searchElement<User>(db, searchCriteria);
+     * ```
+     */
     public async searchElement<T>(db: SQLiteDatabase, elementToSearch?: Map<string, number | string>): Promise<T | Array<T> | undefined> {
 
         let searchQuery = `SELECT *

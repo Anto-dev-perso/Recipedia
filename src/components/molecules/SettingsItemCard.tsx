@@ -1,3 +1,43 @@
+/**
+ * SettingsItemCard - Generic card component for managing app settings data
+ * 
+ * A highly reusable card component designed for displaying and managing different types
+ * of settings data including ingredients and tags. Features type-safe generic implementation
+ * with specialized rendering logic for each item type and integrated CRUD operations.
+ * 
+ * Key Features:
+ * - Generic type system supporting multiple item types (ingredients, tags)
+ * - Type-specific rendering with appropriate information display
+ * - Integrated seasonality calendar for ingredients
+ * - Built-in edit and delete actions with callbacks
+ * - Internationalization support for all text content
+ * - Consistent Material Design card styling
+ * - Comprehensive test ID structure for automation
+ * 
+ * @example
+ * ```typescript
+ * // Ingredient management card
+ * <SettingsItemCard<ingredientTableElement>
+ *   type="ingredient"
+ *   item={tomatoIngredient}
+ *   index={0}
+ *   testIdPrefix="ingredients-list"
+ *   onEdit={(ingredient) => openEditModal(ingredient)}
+ *   onDelete={(ingredient) => confirmDelete(ingredient)}
+ * />
+ * 
+ * // Tag management card
+ * <SettingsItemCard<tagTableElement>
+ *   type="tag"
+ *   item={vegetarianTag}
+ *   index={1}
+ *   testIdPrefix="tags-list"
+ *   onEdit={(tag) => editTag(tag)}
+ *   onDelete={(tag) => removeTag(tag)}
+ * />
+ * ```
+ */
+
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Card, Text} from 'react-native-paper';
@@ -6,22 +46,31 @@ import {useI18n} from '@utils/i18n';
 import {ingredientTableElement, tagTableElement} from "@customTypes/DatabaseElementTypes";
 import SeasonalityCalendar from "@components/molecules/SeasonalityCalendar";
 
-// Type constraint for items that can be used in SettingsItemCard
+/** Type constraint for items that can be used in SettingsItemCard */
 export type SettingsItem = ingredientTableElement | tagTableElement;
 
-// Generic props for SettingsItemCard
+/**
+ * Generic props for SettingsItemCard component
+ */
 export type SettingsItemCardProps<T extends SettingsItem> = {
+    /** Type of item being displayed (affects rendering logic) */
     type: 'ingredient' | 'tag',
+    /** Index of the item in the list (used for test ID generation) */
     index: number,
+    /** Prefix for test ID construction */
     testIdPrefix: string,
+    /** The data item to display */
     item: T,
+    /** Callback fired when edit button is pressed */
     onEdit: (item: T) => void,
+    /** Callback fired when delete button is pressed */
     onDelete: (item: T) => void,
 };
-
 /**
- * A reusable card component for displaying settings items
- * Generic component that can work with different item types
+ * SettingsItemCard component for generic settings data management
+ * 
+ * @param props - The component props with generic type constraint
+ * @returns JSX element representing a settings management card with type-specific rendering
  */
 export default function SettingsItemCard<T extends SettingsItem>({
                                                                      item,

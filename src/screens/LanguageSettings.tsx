@@ -1,3 +1,35 @@
+/**
+ * LanguageSettings - Language selection and localization screen
+ * 
+ * A clean interface for selecting the app's display language with immediate
+ * effect and persistent storage. Features radio button selection with native
+ * language names and automatic navigation back to settings.
+ * 
+ * Key Features:
+ * - Radio button selection for clear choice indication
+ * - Native language names for better accessibility
+ * - Immediate language switching with instant UI updates
+ * - Persistent storage of language preference
+ * - Automatic navigation back after selection
+ * - Support for all configured app languages
+ * - Clean, accessible design following Material guidelines
+ * 
+ * Supported Languages:
+ * - English (en)
+ * - French (fr)
+ * - Additional languages can be configured in i18n setup
+ * 
+ * @example
+ * ```typescript
+ * // Navigation from Parameters screen
+ * <List.Item
+ *   title="Language"
+ *   description={currentLanguageName}
+ *   onPress={() => navigation.navigate('LanguageSettings')}
+ * />
+ * ```
+ */
+
 import React, {useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {Divider, List, RadioButton, Text, useTheme} from 'react-native-paper';
@@ -7,6 +39,12 @@ import {BottomScreenTitle} from '@styles/typography';
 import {LanguageSettingsProp} from "@customTypes/ScreenTypes";
 import {padding} from "@styles/spacing";
 
+/**
+ * LanguageSettings screen component - Language selection interface
+ * 
+ * @param props - Navigation props for the LanguageSettings screen
+ * @returns JSX element representing the language selection interface
+ */
 export default function LanguageSettings({navigation}: LanguageSettingsProp) {
     const {t, getLocale, getAvailableLocales, getLocaleName} = useI18n();
     const [currentLocale, setCurrentLocale] = useState<string>(getLocale());

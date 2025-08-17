@@ -1,3 +1,75 @@
+/**
+ * ItemDialog - Comprehensive CRUD dialog for ingredients and tags
+ * 
+ * A unified, multi-purpose dialog component that handles all CRUD operations
+ * (Create, Read, Update, Delete) for both ingredients and tags. Features dynamic
+ * form fields, validation, and specialized inputs for different item types.
+ * 
+ * Key Features:
+ * - Unified interface for both ingredients and tags
+ * - Three operation modes: add, edit, delete
+ * - Dynamic form adaptation based on item type and mode
+ * - Comprehensive ingredient management (name, type, unit, seasonality)
+ * - Simple tag management (name-based)
+ * - Real-time validation and user feedback
+ * - Seasonality calendar integration for ingredients
+ * - Type categorization with dropdown selection
+ * - Internationalization support throughout
+ * 
+ * Form Fields by Type:
+ * 
+ * **Ingredients:**
+ * - Name (required text input)
+ * - Type (dropdown: vegetables, proteins, dairy, etc.)
+ * - Unit (text input: cups, grams, pieces, etc.)
+ * - Seasonality (interactive month calendar)
+ * 
+ * **Tags:**
+ * - Name (required text input)
+ * 
+ * @example
+ * ```typescript
+ * // Add new ingredient
+ * <ItemDialog
+ *   testId="add-ingredient"
+ *   isVisible={showAddDialog}
+ *   mode="add"
+ *   onClose={() => setShowAddDialog(false)}
+ *   item={{
+ *     type: 'Ingredient',
+ *     value: newIngredientTemplate,
+ *     onConfirmIngredient: (mode, ingredient) => handleAddIngredient(ingredient)
+ *   }}
+ * />
+ * 
+ * // Edit existing tag
+ * <ItemDialog
+ *   testId="edit-tag"
+ *   isVisible={showEditDialog}
+ *   mode="edit"
+ *   onClose={() => setShowEditDialog(false)}
+ *   item={{
+ *     type: 'Tag',
+ *     value: selectedTag,
+ *     onConfirmTag: (mode, tag) => handleUpdateTag(tag)
+ *   }}
+ * />
+ * 
+ * // Delete confirmation
+ * <ItemDialog
+ *   testId="delete-ingredient"
+ *   isVisible={showDeleteDialog}
+ *   mode="delete"
+ *   onClose={() => setShowDeleteDialog(false)}
+ *   item={{
+ *     type: 'Ingredient',
+ *     value: ingredientToDelete,
+ *     onConfirmIngredient: (mode, ingredient) => handleDeleteIngredient(ingredient)
+ *   }}
+ * />
+ * ```
+ */
+
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {Button, Dialog, Menu, Portal, Text} from 'react-native-paper';
@@ -9,31 +81,48 @@ import {padding} from '@styles/spacing';
 import SeasonalityCalendar from "@components/molecules/SeasonalityCalendar";
 import {uiLogger} from '@utils/logger';
 
+/** Available dialog operation modes */
 export type DialogMode = 'add' | 'edit' | 'delete';
 
+/** Configuration for ingredient dialogs */
 export type ItemIngredientType = {
     type: 'Ingredient',
+    /** Current ingredient data */
     value: ingredientTableElement,
+    /** Callback fired when ingredient operation is confirmed */
     onConfirmIngredient: (mode: DialogMode, newItem: ingredientTableElement) => void,
 };
 
+/** Configuration for tag dialogs */
 export type ItemTagType = {
     type: 'Tag',
+    /** Current tag data */
     value: tagTableElement,
+    /** Callback fired when tag operation is confirmed */
     onConfirmTag: (mode: DialogMode, newItem: tagTableElement) => void,
 };
 
+/**
+ * Props for the ItemDialog component
+ */
 export type ItemDialogProps =
     {
+        /** Unique identifier for testing and accessibility */
         testId: string,
+        /** Whether the dialog is currently visible */
         isVisible: boolean,
+        /** Current operation mode (add, edit, delete) */
         mode: DialogMode,
+        /** Callback fired when dialog is closed */
         onClose: () => void,
+        /** Item configuration with type-specific properties */
         item: ItemIngredientType | ItemTagType,
     };
-
 /**
- * A unified dialog component that can be used for adding, editing, or deleting items
+ * ItemDialog component for comprehensive item CRUD operations
+ * 
+ * @param props - The component props with operation configuration
+ * @returns JSX element representing a multi-purpose item management dialog
  */
 export default function ItemDialog({onClose, isVisible, testId, mode, item}: ItemDialogProps) {
     const {t} = useI18n();

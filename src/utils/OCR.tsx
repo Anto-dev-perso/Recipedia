@@ -1,3 +1,30 @@
+/**
+ * OCR (Optical Character Recognition) - Advanced text extraction from recipe images
+ * 
+ * This module provides sophisticated OCR capabilities specifically designed for recipe recognition.
+ * It uses ML Kit text recognition to extract and parse various recipe components from images,
+ * including ingredients with quantities, preparation steps, cooking times, and serving sizes.
+ * 
+ * Key Features:
+ * - Structured ingredient parsing with automatic quantity scaling
+ * - Multi-person serving detection and conversion
+ * - Step-by-step preparation instruction extraction
+ * - Smart text parsing with error correction
+ * - Support for various recipe formats and layouts
+ * 
+ * @example
+ * ```typescript
+ * // Extract recipe title from image
+ * const title = await recognizeText(imageUri, recipeColumnsNames.title);
+ * 
+ * // Extract structured ingredients
+ * const ingredients = await recognizeText(imageUri, recipeColumnsNames.ingredients);
+ * 
+ * // Extract complete field data
+ * const result = await extractFieldFromImage(uri, recipeColumnsNames.ingredients, currentState);
+ * ```
+ */
+
 import {
     ingredientTableElement,
     ingredientType,
@@ -19,21 +46,26 @@ import {isArrayOfNumber, isArrayOfString, isArrayOfType, isNumber, isString} fro
 import {defaultValueNumber} from "@utils/Constants";
 import {ocrLogger} from '@utils/logger';
 
+/** Type representing person count and cooking time extracted from OCR */
 export type personAndTimeObject = { person: number, time: number };
 export const keysPersonsAndTimeObject = Object.keys({
     person: 0,
     time: 0,
 } as personAndTimeObject) as (keyof personAndTimeObject)[];
 
+/** Type representing a tag extracted from OCR */
 export type tagObject = { id?: string, name: string };
 export const keysTagObject = Object.keys({
     name: "",
 } as tagObject) as (keyof tagObject)[];
 
+/** Type representing ingredient quantity for a specific number of persons */
 export type ingredientQuantityPerPersons = {
     persons: number,
     quantity: string,
 }
+
+/** Type representing an ingredient with multiple quantity specifications */
 export type ingredientObject = { name: string, unit: string, quantityPerPersons: Array<ingredientQuantityPerPersons> };
 export const keysIngredientObject = Object.keys({
     name: "",
@@ -41,8 +73,31 @@ export const keysIngredientObject = Object.keys({
     quantityPerPersons: []
 } as ingredientObject) as (keyof ingredientObject)[];
 
+/** Function type for handling OCR warnings */
 export type WarningHandler = (message: string) => void;
 
+/**
+ * Recognizes and extracts text from an image based on the specified recipe field type
+ * 
+ * Uses ML Kit text recognition to extract text from images and processes it according
+ * to the expected field type (title, ingredients, preparation steps, etc.).
+ * 
+ * @param imageUri - URI path to the image to process
+ * @param fieldName - Type of recipe field to extract (title, ingredients, etc.)
+ * @returns Promise resolving to extracted and processed data specific to field type
+ * 
+ * @example
+ * ```typescript
+ * // Extract title as string
+ * const title = await recognizeText(imageUri, recipeColumnsNames.title);
+ * 
+ * // Extract ingredients as structured objects
+ * const ingredients = await recognizeText(imageUri, recipeColumnsNames.ingredients);
+ * 
+ * // Extract preparation steps as array
+ * const steps = await recognizeText(imageUri, recipeColumnsNames.preparation);
+ * ```
+ */
 export async function recognizeText(imageUri: string, fieldName: recipeColumnsNames) {
     try {
         const ocr = await TextRecognition.recognize(imageUri);
@@ -180,11 +235,34 @@ function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<string> {
 type groupType = { person: string, quantity: Array<string> };
 
 /**
- * Parses an OCR result that includes structured blocks into an array of ingredientObject.
- * The function assumes that the header (ingredient names with units) is given first, followed by data rows.
- * Each data row starts with a token like "2p" (indicating the number of persons) and is followed by one quantity per ingredient.
- * This function tries to detect if OCR moved some elements around.
- * Also, it do its best to detect and correct when ingredients are on multiple line so that it merge these.
+ * Transforms OCR results into structured ingredient objects
+ * 
+ * Parses complex ingredient tables that include headers (ingredient names with units)
+ * followed by data rows with person counts and quantities. Handles OCR inconsistencies
+ * by detecting and correcting misplaced elements and merging multi-line ingredients.
+ * 
+ * Expected format:
+ * - Header: ingredient names with units in parentheses
+ * - Data rows: person count (e.g., "2p") followed by quantities
+ * 
+ * @param ocr - ML Kit text recognition result
+ * @returns Array of structured ingredient objects with quantities per person count
+ * 
+ * @example
+ * ```typescript
+ * // OCR text like:
+ * // "Flour (cups)  Sugar (tsp)  Salt (pinch)"
+ * // "2p"
+ * // "2 1 1"
+ * // "4p" 
+ * // "4 2 2"
+ * // 
+ * // Returns:
+ * // [
+ * //   { name: "Flour", unit: "cups", quantityPerPersons: [{persons: 2, quantity: "2"}, {persons: 4, quantity: "4"}] },
+ * //   { name: "Sugar", unit: "tsp", quantityPerPersons: [{persons: 2, quantity: "1"}, {persons: 4, quantity: "2"}] }
+ * // ]
+ * ```
  */
 function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientObject> {
     let lines: string[] = [];
@@ -361,6 +439,40 @@ function retrieveNumberInStr(str: string) {
     return -1;
 }
 
+/**
+ * Extracts and processes a specific recipe field from an image
+ * 
+ * High-level function that combines OCR text recognition with field-specific processing
+ * and validation. Handles automatic quantity scaling, state merging, and error reporting.
+ * 
+ * @param uri - URI path to the image to process
+ * @param field - Specific recipe field to extract
+ * @param currentState - Current recipe state for merging and scaling
+ * @param onWarn - Optional warning handler for processing issues
+ * @returns Promise resolving to partial recipe object with extracted field
+ * 
+ * @example
+ * ```typescript
+ * const currentState = {
+ *   recipePreparation: [],
+ *   recipePersons: 4,
+ *   recipeTags: [],
+ *   recipeIngredients: []
+ * };
+ * 
+ * const result = await extractFieldFromImage(
+ *   imageUri, 
+ *   recipeColumnsNames.ingredients, 
+ *   currentState,
+ *   (warning) => console.warn(warning)
+ * );
+ * 
+ * if (result.recipeIngredients) {
+ *   // Ingredients extracted and scaled to current serving size
+ *   console.log(`Extracted ${result.recipeIngredients.length} ingredients`);
+ * }
+ * ```
+ */
 export async function extractFieldFromImage(uri: string, field: recipeColumnsNames, currentState: {
                                                 recipePreparation: string[];
                                                 recipePersons: number;
@@ -489,9 +601,29 @@ export async function extractFieldFromImage(uri: string, field: recipeColumnsNam
 }
 
 /**
- * Parses ingredients from OCR lines when there is no header/person count.
- * Splits the lines array in half: first part is names, second part is quantities.
- * Assumes all ingredients belong to a single group/serving, with persons = -1 (unknown).
+ * Parses ingredients from OCR lines when no structured header is detected
+ * 
+ * Fallback parsing method for simpler ingredient formats. Splits the input lines
+ * assuming the first half contains ingredient names and the second half contains
+ * corresponding quantities with units.
+ * 
+ * @param lines - Array of OCR text lines to parse
+ * @returns Array of ingredient objects with person count set to -1 (unknown)
+ * 
+ * @example
+ * ```typescript
+ * const lines = [
+ *   "Flour", "Sugar", "Salt",      // First half: names
+ *   "2 cups", "1 tsp", "1 pinch"   // Second half: quantities
+ * ];
+ * 
+ * const ingredients = parseIngredientsNoHeader(lines);
+ * // Returns:
+ * // [
+ * //   { name: "Flour", unit: "cups", quantityPerPersons: [{persons: -1, quantity: "2"}] },
+ * //   { name: "Sugar", unit: "tsp", quantityPerPersons: [{persons: -1, quantity: "1"}] }
+ * // ]
+ * ```
  */
 export function parseIngredientsNoHeader(lines: Array<string>): Array<ingredientObject> {
     if (!lines.length) {

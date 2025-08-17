@@ -1,3 +1,52 @@
+/**
+ * Shopping - Smart shopping list with categorized ingredients and recipe tracking
+ * 
+ * A comprehensive shopping list screen that automatically organizes ingredients by category,
+ * tracks purchase status, and provides detailed recipe information for each ingredient.
+ * Features intuitive checkbox interactions and complete list management capabilities.
+ * 
+ * Key Features:
+ * - Automatic ingredient categorization (vegetables, proteins, dairy, etc.)
+ * - Purchase status tracking with visual feedback (strikethrough)
+ * - Recipe origin tracking - see which recipes use each ingredient
+ * - Long-press for detailed recipe information dialog
+ * - One-tap shopping list clearing functionality
+ * - Focus-based data synchronization with recipe changes
+ * - Empty state handling with user-friendly messaging
+ * - Comprehensive logging for shopping analytics
+ * 
+ * UI/UX Features:
+ * - Sectioned list organization by ingredient type
+ * - Visual purchase indicators (checkboxes + strikethrough)
+ * - Recipe count badges for multi-recipe ingredients
+ * - Smooth interactions with immediate visual feedback
+ * - Accessible design with proper contrast and sizing
+ * 
+ * Data Management:
+ * - Real-time synchronization with recipe database
+ * - Persistent purchase state across app sessions
+ * - Automatic cleanup when recipes are removed
+ * - Efficient category-based organization
+ * 
+ * @example
+ * ```typescript
+ * // Navigation integration (typically in tab navigator)
+ * <Tab.Screen
+ *   name="Shopping"
+ *   component={Shopping}
+ *   options={{
+ *     tabBarIcon: ({ color }) => <Icon name="shopping-cart" color={color} />
+ *   }}
+ * />
+ * 
+ * // The Shopping screen automatically handles:
+ * // - Loading shopping list from added recipes
+ * // - Organizing ingredients by category
+ * // - Managing purchase status
+ * // - Providing recipe context for ingredients
+ * ```
+ */
+
 import {shoppingListTableElement} from "@customTypes/DatabaseElementTypes";
 import {useFocusEffect} from "@react-navigation/native";
 import React, {useState} from "react";
@@ -15,8 +64,15 @@ import {Icons} from "@assets/Icons";
 import Alert from "@components/dialogs/Alert";
 import {shoppingLogger} from '@utils/logger';
 
+/** Type for dialog data containing ingredient and recipe information */
 type ingredientDataForDialog = Pick<shoppingListTableElement, "name" | "recipesTitle">;
 
+/**
+ * Shopping screen component - Categorized shopping list with recipe tracking
+ * 
+ * @param props - Navigation props for the Shopping screen
+ * @returns JSX element representing the shopping list interface
+ */
 export default function Shopping({navigation}: ShoppingScreenProp) {
     const {t} = useI18n();
     const {colors, fonts} = useTheme();
@@ -47,14 +103,68 @@ export default function Shopping({navigation}: ShoppingScreenProp) {
     const screenId = "ShoppingScreen";
     const sectionId = screenId + "::SectionList";
 
+    /**
+     * Creates formatted dialog title for ingredient recipe usage
+     * 
+     * Generates a localized title showing which ingredient is being queried
+     * and indicates that recipe usage information will be displayed.
+     * 
+     * @returns string - Formatted dialog title with ingredient name and context
+     */
     function createDialogTitle() {
         return t('recipeUsingTitle') + ' ' + ingredientDataForDialog.name.toLowerCase();
     }
 
+    /**
+     * Creates formatted dialog content listing recipes using the ingredient
+     * 
+     * Builds a multi-line message showing all recipes that use the selected
+     * ingredient. Formats the list with proper indentation and bullets for readability.
+     * 
+     * @returns string - Formatted message with bullet-pointed recipe list
+     * 
+     * Content Format:
+     * - Starts with localized explanation message
+     * - Lists each recipe title on new line with tab indentation
+     * - Uses bullet points (- ) for visual clarity
+     * - Joins all recipe titles into single formatted string
+     */
     function createDialogContent() {
         return t('recipeUsingMessage') + ' :' + ingredientDataForDialog.recipesTitle.map(title => `\n\t- ${title}`).join('');
     }
 
+    /**
+     * Updates shopping list item purchase status with database synchronization
+     * 
+     * This function manages the complex process of toggling ingredient purchase status
+     * while maintaining consistency between local state and database storage.
+     * It handles both UI updates and persistent data storage.
+     * 
+     * @param ingredientName - Name of the ingredient to update
+     * 
+     * Update Process:
+     * 1. Creates shallow copy of shopping list for state management
+     * 2. Finds the specific ingredient by name
+     * 3. Toggles the purchased status (true ↔ false)
+     * 4. Persists change to database asynchronously
+     * 5. Updates local state to reflect change
+     * 
+     * Error Handling:
+     * - Validates ingredient exists in current list
+     * - Ensures ingredient has valid ID for database operations
+     * - Logs warnings for invalid operations
+     * - Gracefully handles database failures
+     * 
+     * State Management:
+     * - Maintains state consistency during async operations
+     * - Updates UI immediately for responsive experience
+     * - Synchronizes with database in background
+     * 
+     * Side Effects:
+     * - Updates shoppingList state
+     * - Modifies database purchase status
+     * - Triggers UI re-render with new purchase state
+     */
     function updateShoppingList(ingredientName: string) {
         const newShoppingList = shoppingList.map(item => item);
 

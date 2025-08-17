@@ -1,3 +1,43 @@
+/**
+ * SettingsItemList - Generic list component for settings data management
+ * 
+ * A comprehensive list component that displays and manages collections of settings items
+ * with integrated CRUD operations. Features generic type support, automatic item rendering,
+ * and a prominent add button for creating new items.
+ * 
+ * Key Features:
+ * - Generic type system supporting multiple settings item types
+ * - Automatic list rendering with proper spacing and styling
+ * - Integrated add functionality with contextual button text
+ * - Theme-aware styling and typography
+ * - Internationalization support for titles and buttons
+ * - Full-height scrollable layout
+ * - Type-safe prop forwarding to individual cards
+ * 
+ * @example
+ * ```typescript
+ * // Ingredient management list
+ * <SettingsItemList<ingredientTableElement>
+ *   type="ingredient"
+ *   items={ingredients}
+ *   testIdPrefix="ingredients-list"
+ *   onEdit={(ingredient) => editIngredient(ingredient)}
+ *   onDelete={(ingredient) => deleteIngredient(ingredient)}
+ *   onAddPress={() => openAddIngredientModal()}
+ * />
+ * 
+ * // Tag management list
+ * <SettingsItemList<tagTableElement>
+ *   type="tag"
+ *   items={tags}
+ *   testIdPrefix="tags-list"
+ *   onEdit={(tag) => editTag(tag)}
+ *   onDelete={(tag) => deleteTag(tag)}
+ *   onAddPress={() => openAddTagModal()}
+ * />
+ * ```
+ */
+
 import React from 'react';
 import {FlatList, View} from 'react-native';
 import {Button, Text, useTheme} from 'react-native-paper';
@@ -7,15 +47,21 @@ import {BottomScreenTitle} from '@styles/typography';
 import SettingsItemCard, {SettingsItem, SettingsItemCardProps} from '../molecules/SettingsItemCard';
 import {useI18n} from "@utils/i18n";
 
-
+/**
+ * Props for the SettingsItemList component
+ * Extends SettingsItemCardProps while omitting individual item props
+ */
 export type SettingsItemListProps<T extends SettingsItem> = Omit<SettingsItemCardProps<T>, 'index' | 'item'> & {
+    /** Array of items to display in the list */
     items: Array<T>,
+    /** Callback fired when the add button is pressed */
     onAddPress: () => void,
 };
-
 /**
- * A reusable component for displaying a list of settings items
- * Generic component that can work with different item types
+ * SettingsItemList component for generic settings data management
+ * 
+ * @param props - The component props with generic type constraint
+ * @returns JSX element representing a scrollable list of settings items with add functionality
  */
 export default function SettingsItemList<T extends SettingsItem>({
                                                                      testIdPrefix,

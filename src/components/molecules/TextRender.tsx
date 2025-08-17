@@ -1,3 +1,59 @@
+/**
+ * TextRender - Multi-format text display and editing component
+ * 
+ * A highly versatile component that renders arrays of text data in multiple formats
+ * including tables, sections, lists, and clickable lists. Features both read-only
+ * display and interactive editing modes with specialized layouts for different
+ * content types like ingredients, recipe steps, and general text lists.
+ * 
+ * Key Features:
+ * - Four distinct rendering modes: ARRAY (table), SECTION, LIST, CLICK_LIST
+ * - Dual mode operation: read-only display and interactive editing
+ * - Specialized ingredient table with quantity/unit/name columns
+ * - Recipe step editing with title and content sections
+ * - Autocomplete integration for ingredient names
+ * - Internationalization support for all UI text
+ * - Flexible styling per render mode
+ * - Type-safe render mode enumeration
+ * 
+ * @example
+ * ```typescript
+ * // Ingredient list with editing
+ * <TextRender
+ *   testID="ingredient-list"
+ *   title="Ingredients"
+ *   text={['2 cups|flour', '1 tsp|salt', '3 tbsp|sugar']}
+ *   render={typoRender.ARRAY}
+ *   editText={{
+ *     onChangeFunction: (index, newValue) => updateIngredient(index, newValue)
+ *   }}
+ * />
+ * 
+ * // Recipe steps display
+ * <TextRender
+ *   testID="recipe-steps"
+ *   title="Preparation"
+ *   text={['Mix ingredients|Combine flour and salt in bowl', 'Bake|Place in oven for 25 minutes']}
+ *   render={typoRender.SECTION}
+ * />
+ * 
+ * // Simple tag list
+ * <TextRender
+ *   testID="recipe-tags"
+ *   text={['vegetarian', 'gluten-free', 'quick']}
+ *   render={typoRender.LIST}
+ * />
+ * 
+ * // Clickable category list
+ * <TextRender
+ *   testID="categories"
+ *   text={['Breakfast', 'Lunch', 'Dinner', 'Dessert']}
+ *   render={typoRender.CLICK_LIST}
+ *   onClick={(category) => filterByCategory(category)}
+ * />
+ * ```
+ */
+
 import {screenViews} from "@styles/spacing"
 import {editableText, textSeparator, typoRender, typoStyles, unitySeparator} from "@styles/typography"
 import React from "react"
@@ -10,20 +66,29 @@ import CustomTextInput from "@components/atomic/CustomTextInput";
 import {useI18n} from "@utils/i18n";
 import {uiLogger} from '@utils/logger';
 
-
-// TODO use variant for Text
-
+/**
+ * Props for the TextRender component
+ */
 export type TextRenderProps = {
+    /** Unique identifier for testing and accessibility */
     testID?: string,
+    /** Optional title displayed above the content */
     title?: string
+    /** Array of text strings to render */
     text: Array<string>
+    /** Rendering mode determining layout and interaction */
     render: typoRender,
+    /** Callback fired when clickable list items are pressed */
     onClick?(param: string): void,
+    /** Configuration for edit mode functionality */
     editText?: editableText,
 }
-
-// TODO to test
-// TODO can't we do better ? Maybe split in 3 atomic ?
+/**
+ * TextRender component for multi-format text display and editing
+ * 
+ * @param props - The component props
+ * @returns JSX element representing formatted text content with optional editing capabilities
+ */
 export default function TextRender(props: TextRenderProps) {
 
     const {t} = useI18n();

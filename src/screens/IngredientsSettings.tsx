@@ -1,3 +1,30 @@
+/**
+ * IngredientsSettings - Comprehensive ingredient database management screen
+ * 
+ * A dedicated screen for managing the app's ingredient database with full CRUD
+ * operations, seasonality management, and categorization. Features dialog-based
+ * editing with comprehensive validation and real-time synchronization.
+ * 
+ * Key Features:
+ * - Complete ingredient CRUD operations (Create, Read, Update, Delete)
+ * - Seasonality calendar for ingredient availability
+ * - Type categorization (vegetables, proteins, dairy, etc.)
+ * - Alphabetical sorting for easy navigation
+ * - Dialog-based editing with comprehensive forms
+ * - Real-time database synchronization
+ * - Usage tracking for deletion warnings
+ * - Comprehensive error handling and logging
+ * 
+ * @example
+ * ```typescript
+ * // Navigation from Parameters screen
+ * <List.Item
+ *   title="Ingredients"
+ *   onPress={() => navigation.navigate('IngredientsSettings')}
+ * />
+ * ```
+ */
+
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {IngredientsSettingProp} from "@customTypes/ScreenTypes";
@@ -7,6 +34,12 @@ import ItemDialog, {DialogMode} from "@components/dialogs/ItemDialog";
 import RecipeDatabase from "@utils/RecipeDatabase";
 import {ingredientsSettingsLogger} from '@utils/logger';
 
+/**
+ * IngredientsSettings screen component - Ingredient database management
+ * 
+ * @param props - Navigation props for the IngredientsSettings screen
+ * @returns JSX element representing the ingredient management interface
+ */
 export default function IngredientsSettings({}: IngredientsSettingProp) {
     const database = RecipeDatabase.getInstance();
 

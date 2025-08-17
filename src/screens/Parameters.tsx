@@ -1,3 +1,61 @@
+/**
+ * Parameters - Comprehensive app settings and configuration screen
+ * 
+ * The main settings hub providing access to all app configuration options including
+ * appearance settings, recipe defaults, data management, and app information.
+ * Features organized sections with intuitive navigation and real-time setting updates.
+ * 
+ * Key Features:
+ * - Appearance settings (dark mode, language selection)
+ * - Recipe defaults (serving count, seasonal filtering)
+ * - Data management (ingredients, tags administration)
+ * - App information (version, about details)
+ * - Real-time setting synchronization
+ * - Context integration for global state management
+ * - Hierarchical navigation to detailed setting screens
+ * 
+ * Settings Categories:
+ * 
+ * **Appearance:**
+ * - Dark/Light mode toggle with instant theme switching
+ * - Language selection with localized interface
+ * 
+ * **Recipe Defaults:**
+ * - Default serving count for new recipes
+ * - Seasonal filtering toggle for search results
+ * 
+ * **Data Management:**
+ * - Ingredient database administration
+ * - Tag system management and organization
+ * 
+ * **About:**
+ * - App version information
+ * - Build and configuration details
+ * 
+ * Navigation Integration:
+ * - Seamless navigation to specialized setting screens
+ * - Proper back navigation with state preservation
+ * - Context-aware navigation based on current settings
+ * 
+ * @example
+ * ```typescript
+ * // Navigation integration (typically in tab navigator)
+ * <Tab.Screen
+ *   name="Parameters"
+ *   component={Parameters}
+ *   options={{
+ *     tabBarIcon: ({ color }) => <Icon name="settings" color={color} />
+ *   }}
+ * />
+ * 
+ * // The Parameters screen automatically handles:
+ * // - Loading current settings from storage/context
+ * // - Providing navigation to detailed setting screens
+ * // - Real-time updates to global app state
+ * // - Organized presentation of all configuration options
+ * ```
+ */
+
 import React, {useContext, useEffect, useState} from "react";
 import {ScrollView, View} from "react-native";
 import {Divider, List, Switch, useTheme} from "react-native-paper";
@@ -11,6 +69,12 @@ import {DarkModeContext} from "@context/DarkModeContext"
 import Constants from "expo-constants";
 
 
+/**
+ * Parameters screen component - Main app settings and configuration hub
+ * 
+ * @param props - Navigation props for the Parameters screen
+ * @returns JSX element representing the comprehensive settings interface
+ */
 export default function Parameters({}: ParametersScreenProp) {
     const {t, getLocale, getLocaleName} = useI18n();
     const {isDarkMode, toggleDarkMode} = useContext(DarkModeContext);

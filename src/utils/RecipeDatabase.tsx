@@ -37,6 +37,33 @@ import Fuse from 'fuse.js/dist/fuse.js';
 import {scaleQuantityForPersons} from '@utils/Quantity';
 import {databaseLogger} from '@utils/logger';
 
+/**
+ * RecipeDatabase - Singleton class for managing recipe data storage and operations
+ * 
+ * This class provides a comprehensive interface for managing recipes, ingredients, tags,
+ * and shopping lists using SQLite database. It implements the singleton pattern to ensure
+ * a single database instance throughout the application lifecycle.
+ * 
+ * Key Features:
+ * - Recipe CRUD operations with ingredient and tag relationships
+ * - Fuzzy search capabilities using Fuse.js
+ * - Shopping list generation from recipes
+ * - Quantity scaling for different serving sizes
+ * - Similar recipe detection
+ * - Local caching for improved performance
+ * 
+ * @example
+ * ```typescript
+ * const db = RecipeDatabase.getInstance();
+ * await db.init();
+ * 
+ * const recipe = await db.addRecipe({
+ *   title: "Chocolate Cake",
+ *   ingredients: [...],
+ *   tags: [...]
+ * });
+ * ```
+ */
 export default class RecipeDatabase {
     static #instance: RecipeDatabase;
 
@@ -81,6 +108,16 @@ export default class RecipeDatabase {
 
     /* PUBLIC METHODS */
 
+    /**
+     * Gets the singleton instance of RecipeDatabase
+     * 
+     * @returns The singleton RecipeDatabase instance
+     * 
+     * @example
+     * ```typescript
+     * const db = RecipeDatabase.getInstance();
+     * ```
+     */
     public static getInstance(): RecipeDatabase {
         if (!RecipeDatabase.#instance) {
             RecipeDatabase.#instance = new RecipeDatabase();
@@ -89,6 +126,14 @@ export default class RecipeDatabase {
         return RecipeDatabase.#instance;
     }
 
+    /**
+     * Resets the database by deleting all tables and clearing local cache
+     * 
+     * This operation completely removes all data and recreates empty tables.
+     * Use with caution as this action is irreversible.
+     * 
+     * @returns Promise that resolves when reset is complete
+     */
     public async reset() {
         databaseLogger.info('Resetting database - deleting all tables and data');
 
@@ -107,6 +152,22 @@ export default class RecipeDatabase {
         databaseLogger.info('Database reset completed');
     }
 
+    /**
+     * Initializes the database by creating tables and loading data into local cache
+     * 
+     * This method must be called before using any other database operations.
+     * It creates the necessary tables if they don't exist and loads all data
+     * into memory for faster access.
+     * 
+     * @returns Promise that resolves when initialization is complete
+     * 
+     * @example
+     * ```typescript
+     * const db = RecipeDatabase.getInstance();
+     * await db.init();
+     * console.log('Database ready for use');
+     * ```
+     */
     public async init() {
         databaseLogger.info('Initializing database', {databaseName: this._databaseName});
 
@@ -132,6 +193,22 @@ export default class RecipeDatabase {
         });
     }
 
+    /**
+     * Adds a new ingredient to the database
+     * 
+     * @param ingredient - The ingredient object to add
+     * @returns Promise resolving to the added ingredient with database ID, or undefined if failed
+     * 
+     * @example
+     * ```typescript
+     * const ingredient = await db.addIngredient({
+     *   name: "Flour",
+     *   unit: "cups",
+     *   type: ingredientType.grain,
+     *   season: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+     * });
+     * ```
+     */
     public async addIngredient(ingredient: ingredientTableElement): Promise<ingredientTableElement | undefined> {
         const ingToAdd: encodedIngredientElement = {
             ID: ingredient.id ? ingredient.id : 0, INGREDIENT: ingredient.name,
@@ -159,6 +236,19 @@ export default class RecipeDatabase {
         return decodedIng;
     }
 
+    /**
+     * Adds a new tag to the database
+     * 
+     * @param newTag - The tag object to add
+     * @returns Promise that resolves when the tag is added
+     * 
+     * @example
+     * ```typescript
+     * await db.addTag({
+     *   name: "Dessert"
+     * });
+     * ```
+     */
     public async addTag(newTag: tagTableElement) {
         const tagToAdd: encodedTagElement = {ID: newTag.id ? newTag.id : 0, NAME: newTag.name};
         databaseLogger.debug('Adding tag to database', {tagName: newTag.name});
@@ -190,6 +280,30 @@ export default class RecipeDatabase {
         }
     }
 
+    /**
+     * Adds a new recipe to the database
+     * 
+     * This method verifies that all ingredients and tags exist in the database,
+     * adding them automatically if they don't exist.
+     * 
+     * @param rec - The recipe object to add
+     * @returns Promise that resolves when the recipe is added
+     * 
+     * @example
+     * ```typescript
+     * await db.addRecipe({
+     *   title: "Chocolate Cake",
+     *   description: "Delicious chocolate cake",
+     *   ingredients: [
+     *     { name: "Flour", quantity: "2 cups", unit: "cups", type: "grain" }
+     *   ],
+     *   tags: [{ name: "Dessert" }],
+     *   persons: 8,
+     *   time: 45,
+     *   preparation: ["Mix ingredients", "Bake for 30 minutes"]
+     * });
+     * ```
+     */
     public async addRecipe(rec: recipeTableElement) {
 
         let recipe = {...rec};
@@ -341,6 +455,18 @@ export default class RecipeDatabase {
         }
     }
 
+    /**
+     * Retrieves a random selection of recipes from the database
+     * 
+     * @param numOfElements - Number of random recipes to return
+     * @returns Array of random recipes
+     * 
+     * @example
+     * ```typescript
+     * const randomRecipes = db.searchRandomlyRecipes(5);
+     * console.log(`Got ${randomRecipes.length} random recipes`);
+     * ```
+     */
     public searchRandomlyRecipes(numOfElements: number): Array<recipeTableElement> {
         if (this._recipes.length == 0) {
             databaseLogger.error("Cannot get random recipes - recipe table is empty");
@@ -423,22 +549,48 @@ export default class RecipeDatabase {
         return tagDeleted;
     }
 
+    /**
+     * Gets all recipes from the local cache
+     * 
+     * @returns Array of all recipes
+     */
     public get_recipes(): Array<recipeTableElement> {
         return this._recipes;
     }
 
+    /**
+     * Checks if a recipe exists in the database
+     * 
+     * @param recipeToSearch - Recipe to search for
+     * @returns True if recipe exists, false otherwise
+     */
     public isRecipeExist(recipeToSearch: recipeTableElement): boolean {
         return this.find_recipe(recipeToSearch) !== undefined;
     }
 
+    /**
+     * Gets all ingredients from the local cache
+     * 
+     * @returns Array of all ingredients
+     */
     public get_ingredients() {
         return this._ingredients;
     }
 
+    /**
+     * Gets all tags from the local cache
+     * 
+     * @returns Array of all tags
+     */
     public get_tags(): Array<tagTableElement> {
         return this._tags;
     }
 
+    /**
+     * Gets all shopping list items from the local cache
+     * 
+     * @returns Array of all shopping list items
+     */
     public get_shopping(): Array<shoppingListTableElement> {
         return this._shopping;
     }
@@ -681,6 +833,21 @@ export default class RecipeDatabase {
         }
     }
 
+    /**
+     * Finds recipes with similar ingredients and quantities
+     * 
+     * Uses ingredient comparison and fuzzy text matching to find recipes
+     * that share similar ingredients and cooking methods.
+     * 
+     * @param recipeToCompare - The recipe to find similarities for
+     * @returns Array of similar recipes
+     * 
+     * @example
+     * ```typescript
+     * const similar = db.findSimilarRecipes(myRecipe);
+     * console.log(`Found ${similar.length} similar recipes`);
+     * ```
+     */
     public findSimilarRecipes(recipeToCompare: recipeTableElement): recipeTableElement[] {
         const ingredientTypesToIgnore: ingredientType[] = [ingredientType.condiment, ingredientType.oilAndFat];
 
@@ -725,6 +892,17 @@ export default class RecipeDatabase {
         return fuse.search(recipeToCompare.title).map(fuseResult => fuseResult.item);
     }
 
+    /**
+     * Finds tags with similar names using fuzzy matching
+     * 
+     * @param tagName - The tag name to search for
+     * @returns Array of similar tags, sorted by relevance
+     * 
+     * @example
+     * ```typescript
+     * const similarTags = db.findSimilarTags("dessrt"); // Finds "Dessert"
+     * ```
+     */
     public findSimilarTags(tagName: string): tagTableElement[] {
         if (!tagName || tagName.trim().length === 0) {
             return [];
@@ -748,6 +926,20 @@ export default class RecipeDatabase {
             .map(result => result.item);
     }
 
+    /**
+     * Finds ingredients with similar names using fuzzy matching
+     * 
+     * Cleans ingredient names by removing parenthetical content and
+     * uses fuzzy search to find similar ingredients.
+     * 
+     * @param ingredientName - The ingredient name to search for
+     * @returns Array of similar ingredients, sorted by relevance
+     * 
+     * @example
+     * ```typescript
+     * const similar = db.findSimilarIngredients("tomatoe"); // Finds "Tomato"
+     * ```
+     */
     public findSimilarIngredients(ingredientName: string): ingredientTableElement[] {
         if (!ingredientName || ingredientName.trim().length === 0) {
             return [];
@@ -1231,11 +1423,21 @@ export default class RecipeDatabase {
 }
 
 /**
- * Shuffles the data array using the Fisher-Yates algorithm.
- * @param arrayToShuffle
- * @param numberOfElementsWanted
+ * Shuffles an array using the Fisher-Yates algorithm and optionally returns a subset
+ * 
+ * This function creates a shuffled copy of the input array without modifying the original.
+ * Optionally returns only the first N elements from the shuffled array.
+ * 
+ * @param arrayToShuffle - The array to shuffle
+ * @param numberOfElementsWanted - Optional number of elements to return from shuffled array
+ * @returns Shuffled array or subset of shuffled array
+ * 
+ * @example
+ * ```typescript
+ * const recipes = [recipe1, recipe2, recipe3, recipe4, recipe5];
+ * const shuffled = fisherYatesShuffle(recipes, 3); // Returns 3 random recipes
+ * ```
  */
-// TODO to be placed at a better place ?
 export function fisherYatesShuffle<T>(arrayToShuffle: Array<T>, numberOfElementsWanted?: number): Array<T> {
     const shuffled = [...arrayToShuffle]; // Create a copy to avoid mutating the original array
     for (let i = shuffled.length - 1; i > 0; i--) {

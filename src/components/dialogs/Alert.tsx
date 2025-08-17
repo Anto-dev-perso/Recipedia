@@ -1,21 +1,81 @@
+/**
+ * Alert - Customizable confirmation dialog with flexible actions
+ * 
+ * A versatile alert dialog component built on React Native Paper's Dialog with
+ * support for both single-action confirmations and dual-action (confirm/cancel)
+ * interactions. Features automatic layout adjustment and comprehensive callback handling.
+ * 
+ * Key Features:
+ * - Single or dual action button layouts
+ * - Automatic layout adjustment based on button configuration
+ * - Portal integration for proper overlay rendering
+ * - Comprehensive callback system (confirm, cancel, close)
+ * - Material Design styling and theming
+ * - Accessibility support with proper test IDs
+ * - Flexible content display with proper typography
+ * 
+ * @example
+ * ```typescript
+ * // Simple confirmation dialog
+ * <Alert
+ *   testId="delete-recipe"
+ *   isVisible={showDeleteDialog}
+ *   title="Delete Recipe"
+ *   content="Are you sure you want to delete this recipe?"
+ *   confirmText="Delete"
+ *   cancelText="Cancel"
+ *   onClose={() => setShowDeleteDialog(false)}
+ *   onConfirm={() => deleteRecipe()}
+ *   onCancel={() => setShowDeleteDialog(false)}
+ * />
+ * 
+ * // Information dialog (single action)
+ * <Alert
+ *   testId="recipe-saved"
+ *   isVisible={showSuccessDialog}
+ *   title="Success"
+ *   content="Recipe has been saved successfully!"
+ *   confirmText="OK"
+ *   onClose={() => setShowSuccessDialog(false)}
+ * />
+ * ```
+ */
+
 import React from 'react';
 import {Button, Dialog, Portal, Text} from 'react-native-paper';
 import {StyleProp, View, ViewStyle} from "react-native";
 
-
+/**
+ * Props for the Alert component
+ */
 export type AlertProps =
     {
+        /** Unique identifier for testing and accessibility */
         testId: string,
+        /** Whether the dialog is currently visible */
         isVisible: boolean,
+        /** Title text displayed at the top of the dialog */
         title: string,
+        /** Main content text of the dialog */
         content: string,
+        /** Text for the primary confirm button */
         confirmText: string,
+        /** Optional text for the cancel button (enables dual-action layout) */
         cancelText?: string,
+        /** Callback fired when dialog is dismissed */
         onClose: () => void,
+        /** Optional callback fired when confirm button is pressed */
         onConfirm?: () => void,
+        /** Optional callback fired when cancel button is pressed */
         onCancel?: () => void,
     };
 
+/**
+ * Alert component for customizable confirmation dialogs
+ * 
+ * @param props - The component props
+ * @returns JSX element representing a flexible alert dialog
+ */
 export default function Alert({
                                   testId,
                                   isVisible,

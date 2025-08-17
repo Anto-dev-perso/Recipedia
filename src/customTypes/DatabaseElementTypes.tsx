@@ -1,15 +1,75 @@
+/**
+ * DatabaseElementTypes - Comprehensive type definitions for Recipedia database schema
+ * 
+ * This module defines all TypeScript types, interfaces, and utility functions for
+ * interacting with the SQLite database. Includes table schemas, encoding/decoding
+ * functions, and type-safe database operations.
+ * 
+ * Key Features:
+ * - Complete type safety for database operations
+ * - Bi-directional encoding/decoding between TypeScript and SQLite
+ * - Utility functions for data transformation and comparison
+ * - Comprehensive schema definitions for all tables
+ * - Type-safe ingredient categorization system
+ * - Shopping list integration with recipe data
+ * - Seasonal filtering type support
+ * 
+ * Database Schema:
+ * - **Recipes**: Complete recipe data with relationships
+ * - **Ingredients**: Ingredient master data with seasonality
+ * - **Tags**: Recipe categorization system
+ * - **Shopping List**: Dynamic shopping list with recipe tracking
+ * - **Nutrition**: Nutritional information (future implementation)
+ * 
+ * Type Safety Patterns:
+ * - Discriminated unions for ingredient types
+ * - Optional ID fields for new vs existing records
+ * - Encoded vs decoded types for database serialization
+ * - Utility functions for type checking and comparison
+ * 
+ * @example
+ * ```typescript
+ * // Creating a new recipe
+ * const newRecipe: recipeTableElement = {
+ *   title: "Chocolate Chip Cookies",
+ *   description: "Classic homemade cookies",
+ *   image_Source: "/path/to/image.jpg",
+ *   ingredients: [
+ *     {
+ *       name: "flour",
+ *       quantity: "2",
+ *       unit: "cups",
+ *       type: ingredientType.grainOrCereal,
+ *       season: []
+ *     }
+ *   ],
+ *   tags: [{ name: "dessert" }],
+ *   persons: 4,
+ *   time: 30,
+ *   preparation: ["Mix ingredients", "Bake for 12 minutes"],
+ *   season: []
+ * };
+ * 
+ * // Type-safe ingredient filtering
+ * const vegetables = arrayOfType(ingredients, ingredientType.vegetable);
+ * 
+ * // Recipe comparison
+ * const areEqual = isRecipeEqual(recipe1, recipe2);
+ * ```
+ */
+
 import {textSeparator, unitySeparator} from "@styles/typography";
 import {TListFilter} from "./RecipeFiltersTypes";
 
+/** Database and table name constants */
 export const recipeDatabaseName = "RecipesDatabase";
 export const recipeTableName = "RecipesTable";
 export const ingredientsTableName = "IngredientsTable";
 export const tagTableName = "TagsTable";
 export const nutritionTableName = "NutritionnalValueTable";
-
 export const shoppingListTableName = "ShoppingListTable";
 
-
+/** SQLite data type enumeration */
 export enum encodedType {
     INTEGER = "INTEGER",
     FLOAT = "FLOAT",
@@ -17,11 +77,15 @@ export enum encodedType {
     TEXT = "TEXT",
 }
 
+/** Database column definition type */
 export type databaseColumnType = {
+    /** Column name in the database */
     colName: string,
+    /** SQLite data type for the column */
     type: encodedType,
 };
 
+/** Recipe table column names for database operations */
 export enum recipeColumnsNames {
     image = "IMAGE_SOURCE",
     title = "TITLE",
@@ -33,16 +97,30 @@ export enum recipeColumnsNames {
     time = "TIME",
 }
 
+/** 
+ * Complete recipe data structure for application use
+ * Represents a fully decoded recipe with all related data
+ */
 export type recipeTableElement = {
+    /** Optional database ID (undefined for new recipes) */
     id?: number;
+    /** Path or URI to recipe image */
     image_Source: string;
+    /** Recipe title/name */
     title: string;
+    /** Recipe description */
     description: string;
+    /** Array of associated tags */
     tags: Array<tagTableElement>;
+    /** Number of servings */
     persons: number;
+    /** Array of recipe ingredients with quantities */
     ingredients: Array<ingredientTableElement>;
+    /** Seasonal availability data */
     season: Array<string>;
+    /** Step-by-step preparation instructions */
     preparation: Array<string>;
+    /** Total preparation time in minutes */
     time: number,
 }
 
@@ -70,12 +148,22 @@ export const recipeColumnsEncoding: Array<databaseColumnType> = [
 ];
 
 
+/** 
+ * Ingredient data structure with complete metadata
+ * Supports both database storage and recipe usage
+ */
 export type ingredientTableElement = {
+    /** Optional database ID (undefined for new ingredients) */
     id?: number,
+    /** Ingredient name */
     name: string,
+    /** Unit of measurement (cups, grams, pieces, etc.) */
     unit: string,
-    quantity?: string,// Force to use string because some ingredients (like gingembre) can have strings instead of numbers
+    /** Quantity as string to support fractional and textual amounts */
+    quantity?: string,
+    /** Categorization type for organization and shopping */
     type: ingredientType,
+    /** Array of month numbers when ingredient is in season */
     season: Array<string>,
 }
 
@@ -118,8 +206,13 @@ export const nutritionColumnsNames: Array<databaseColumnType> = [
     {colName: "UNIT", type: encodedType.TEXT}
 ];
 
+/** 
+ * Simple tag data structure for recipe categorization
+ */
 export type tagTableElement = {
+    /** Optional database ID (undefined for new tags) */
     id?: number,
+    /** Tag name/label */
     name: string,
 }
 
@@ -137,13 +230,23 @@ export type encodedTagElement = {
 };
 
 
+/** 
+ * Shopping list item with recipe tracking and purchase status
+ */
 export type shoppingListTableElement = {
+    /** Optional database ID (undefined for new items) */
     id?: number,
+    /** Ingredient category for organization */
     type: TListFilter,
+    /** Ingredient name */
     name: string,
+    /** Combined quantity from all recipes using this ingredient */
     quantity: string,
+    /** Unit of measurement */
     unit: string,
-    recipesTitle: Array<string>, // TODO how to encode when we add multiple times the same recipe ?
+    /** Array of recipe titles that use this ingredient */
+    recipesTitle: Array<string>,
+    /** Whether the item has been purchased */
     purchased: boolean,
 }
 
@@ -230,24 +333,47 @@ export function isShoppingEqual(shop1: shoppingListTableElement, shop2: shopping
     return ((shop1.type == shop2.type) && (shop1.name == shop2.name) && (shop1.unit == shop2.unit))
 }
 
+/** 
+ * Comprehensive ingredient categorization system
+ * Values map to translation keys for internationalization
+ */
 export enum ingredientType {
+    /** Grains, cereals, rice, pasta, bread */
     grainOrCereal = 'ingredientTypes.grainOrCereal',
+    /** Beans, lentils, chickpeas, peas */
     legumes = 'ingredientTypes.legumes',
+    /** Fresh and preserved vegetables */
     vegetable = 'ingredientTypes.vegetable',
+    /** Tofu, tempeh, plant-based proteins */
     plantProtein = 'ingredientTypes.plantProtein',
+    /** Herbs, spices, seasonings, vinegars */
     condiment = 'ingredientTypes.condiment',
+    /** Prepared sauces, dressings, marinades */
     sauce = 'ingredientTypes.sauce',
+    /** Beef, pork, lamb, game meat */
     meat = 'ingredientTypes.meat',
+    /** Chicken, turkey, duck, poultry */
     poultry = 'ingredientTypes.poultry',
+    /** Fresh and preserved fish */
     fish = 'ingredientTypes.fish',
+    /** Shellfish, mollusks, seafood */
     seafood = 'ingredientTypes.seafood',
+    /** Milk, yogurt, cream, butter */
     dairy = 'ingredientTypes.dairy',
+    /** All varieties of cheese */
     cheese = 'ingredientTypes.cheese',
+    /** Granulated and powdered sugars */
     sugar = 'ingredientTypes.sugar',
+    /** Individual spices and spice blends */
     spice = 'ingredientTypes.spice',
+    /** Fresh, dried, and preserved fruits */
     fruit = 'ingredientTypes.fruit',
+    /** Cooking oils, fats, shortening */
     oilAndFat = 'ingredientTypes.oilAndFat',
+    /** Nuts, seeds, nut butters */
     nutsAndSeeds = 'ingredientTypes.nutsAndSeeds',
+    /** Honey, maple syrup, artificial sweeteners */
     sweetener = 'ingredientTypes.sweetener',
-    undefined = 'ingredientTypes.undefined', // TODO get rid of this undefined value
+    /** Fallback category for uncategorized ingredients */
+    undefined = 'ingredientTypes.undefined',
 }

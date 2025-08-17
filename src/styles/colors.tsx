@@ -1,3 +1,74 @@
+/**
+ * Color System - Comprehensive color palette and design tokens
+ * 
+ * This module defines the complete color system for the Recipedia app.
+ * Provides semantic color tokens, categorized color palettes, and specialized
+ * color schemes for different UI contexts and features.
+ * 
+ * Key Features:
+ * - Comprehensive color palette with semantic naming
+ * - UI design palette with role-based color assignments
+ * - Camera interface specific color scheme
+ * - Accessibility-compliant color combinations
+ * - Brand-consistent color hierarchy
+ * - Cross-platform color compatibility
+ * 
+ * Color Categories:
+ * - **Base Colors**: White, grey, and black variations
+ * - **Brand Colors**: Primary brand identity colors
+ * - **Semantic Colors**: Success, warning, error states
+ * - **UI Palette**: Application-specific design tokens
+ * - **Camera Palette**: Specialized colors for camera interface
+ * 
+ * Design Principles:
+ * - High contrast ratios for accessibility
+ * - Consistent color semantics across components
+ * - Brand identity alignment with culinary themes
+ * - Material Design color system compatibility
+ * 
+ * @example
+ * ```typescript
+ * import { colors, palette, cameraPalette } from '@styles/colors';
+ * 
+ * // Using base colors
+ * const styles = StyleSheet.create({
+ *   background: {
+ *     backgroundColor: colors.white,
+ *   },
+ *   text: {
+ *     color: colors.darkGrey,
+ *   }
+ * });
+ * 
+ * // Using semantic UI palette
+ * const uiStyles = StyleSheet.create({
+ *   primaryButton: {
+ *     backgroundColor: palette.primary,
+ *   },
+ *   textPrimary: {
+ *     color: palette.textPrimary,
+ *   },
+ *   borderColor: {
+ *     borderColor: palette.borderColor,
+ *   }
+ * });
+ * 
+ * // Using camera interface colors
+ * const cameraStyles = StyleSheet.create({
+ *   overlay: {
+ *     backgroundColor: cameraPalette.overlayColor,
+ *   },
+ *   button: {
+ *     color: cameraPalette.buttonsColor,
+ *   }
+ * });
+ * ```
+ */
+
+/**
+ * Base color palette with descriptive names and hex values
+ * Organized by color families for easy selection and maintenance
+ */
 export const colors = {
     // White and grey color palette 
     white: '#FFFFFF',
@@ -45,6 +116,11 @@ export const colors = {
     redPantone: '#EF233C',
 };
 
+/**
+ * UI design palette with semantic color assignments
+ * Maps base colors to specific UI roles and component states
+ * for consistent application design and theming
+ */
 export const palette = {
     // Colors of the UI design
     primary: colors.emerald,
@@ -67,6 +143,11 @@ export const palette = {
     progressGrey: '#C1C1C1',
 };
 
+/**
+ * Camera interface color palette for OCR and image capture features
+ * Provides optimized colors for camera overlay, controls, and selection elements
+ * with high contrast for visibility in various lighting conditions
+ */
 export const cameraPalette = {
     statusBarColor: '#000000ff',
     overlayColor: '#212121ff',

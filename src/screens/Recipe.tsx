@@ -1,3 +1,69 @@
+/**
+ * Recipe - Comprehensive recipe management screen with multi-modal interactions
+ * 
+ * The central recipe screen supporting four distinct modes: read-only viewing, editing,
+ * manual creation, and OCR-assisted creation from images. Features dynamic UI adaptation,
+ * intelligent ingredient/tag validation, automatic scaling, and comprehensive CRUD operations.
+ * 
+ * Key Features:
+ * - Four interaction modes: read-only, edit, manual add, OCR add
+ * - Dynamic UI adaptation based on current mode and data state
+ * - OCR integration for extracting recipe data from images
+ * - Intelligent ingredient and tag similarity matching
+ * - Automatic quantity scaling based on serving count changes
+ * - Comprehensive validation with user-friendly error messages
+ * - File management integration for image handling
+ * - Shopping list integration for recipe ingredients
+ * - Real-time data synchronization with database
+ * 
+ * Architecture:
+ * - State-driven component rendering with mode-specific props
+ * - Modular prop generation functions for clean separation
+ * - Comprehensive error handling and user feedback
+ * - Performance optimization with efficient re-renders
+ * - Type-safe discriminated unions for different modes
+ * 
+ * OCR Integration:
+ * - Field-specific OCR extraction (title, ingredients, steps, etc.)
+ * - Image cropping and preprocessing
+ * - Intelligent data parsing and validation
+ * - Fallback to manual input when OCR fails
+ * 
+ * Data Management:
+ * - Real-time ingredient quantity scaling
+ * - Duplicate detection and prevention
+ * - Similarity matching for tags and ingredients
+ * - Comprehensive validation before database operations
+ * 
+ * @example
+ * ```typescript
+ * // Navigation to different recipe modes
+ * 
+ * // Read-only mode for viewing existing recipes
+ * navigation.navigate('Recipe', {
+ *   mode: 'readOnly',
+ *   recipe: existingRecipe
+ * });
+ * 
+ * // Edit mode for modifying existing recipes
+ * navigation.navigate('Recipe', {
+ *   mode: 'edit', 
+ *   recipe: recipeToEdit
+ * });
+ * 
+ * // Manual creation mode
+ * navigation.navigate('Recipe', {
+ *   mode: 'addManually'
+ * });
+ * 
+ * // OCR-assisted creation from image
+ * navigation.navigate('Recipe', {
+ *   mode: 'addFromPic',
+ *   imgUri: capturedImageUri
+ * });
+ * ```
+ */
+
 import React, {useEffect, useRef, useState} from "react";
 import {RecipeScreenProp} from '@customTypes/ScreenTypes';
 import {
@@ -36,17 +102,22 @@ import {scaleQuantityForPersons} from "@utils/Quantity";
 import SimilarityDialog, {SimilarityDialogProps} from "@components/dialogs/SimilarityDialog";
 import {recipeLogger, validationLogger, ocrLogger} from '@utils/logger';
 
+/** Enum defining the four possible recipe interaction modes */
 export enum recipeStateType {readOnly, edit, addManual, addOCR}
 
+/** Props for read-only recipe viewing */
 export type readRecipe = { mode: "readOnly", recipe: recipeTableElement }
 
+/** Props for editing existing recipes */
 export type editRecipeManually = { mode: "edit", recipe: recipeTableElement }
 
+/** Props for manual recipe creation */
 export type addRecipeManually = { mode: "addManually" }
 
+/** Props for OCR-assisted recipe creation from image */
 export type addRecipeFromPicture = { mode: "addFromPic", imgUri: string }
 
-
+/** Union type for all possible recipe screen configurations */
 export type RecipePropType = readRecipe | editRecipeManually | addRecipeManually | addRecipeFromPicture
 
 type SimilarityDialogPropsPicked = Pick<SimilarityDialogProps, "isVisible" | "item">;
@@ -63,6 +134,12 @@ type ValidationDialogProps = Pick<AlertProps, "title" | "content" | "confirmText
 const defaultValidationDialogProp: ValidationDialogProps = {title: "", content: "", confirmText: ""};
 
 
+/**
+ * Recipe screen component - Comprehensive recipe management with multi-modal support
+ * 
+ * @param props - Navigation props containing route parameters and navigation functions
+ * @returns JSX element representing the recipe management screen
+ */
 export default function Recipe({route, navigation}: RecipeScreenProp) {
     const {t} = useI18n();
 
@@ -174,6 +251,42 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         setRecipeTags(recipeTags.filter(tagElement => tagElement.name !== tag));
     }
 
+    /**
+     * Adds a new tag to the recipe with intelligent similarity matching and validation
+     * 
+     * This function implements sophisticated tag management including duplicate prevention,
+     * case-insensitive matching, database similarity searching, and user confirmation
+     * for similar matches. It provides a seamless experience for both existing and new tags.
+     * 
+     * @param newTag - The tag name to add to the recipe
+     * 
+     * Validation Logic:
+     * 1. Rejects empty or whitespace-only tags
+     * 2. Prevents duplicate tags in the recipe (case-insensitive)
+     * 3. Searches database for similar existing tags
+     * 4. Handles exact matches automatically
+     * 5. Shows similarity dialog for potential matches
+     * 
+     * Similarity Matching:
+     * - Performs fuzzy matching against existing database tags
+     * - Exact matches (case-insensitive) are added immediately
+     * - Similar matches trigger SimilarityDialog for user choice
+     * - Completely new tags can be created through the dialog
+     * 
+     * Side Effects:
+     * - Updates recipeTags state array when exact match found
+     * - Triggers SimilarityDialog display for similar matches
+     * - May add new tags to database through similarity dialog
+     * 
+     * User Experience:
+     * - Silent addition for exact matches (no interruption)
+     * - Interactive dialog for similar matches (prevents typos)
+     * - Option to create completely new tags
+     * 
+     * Performance:
+     * - Async operation to prevent UI blocking
+     * - Efficient database similarity search
+     */
     async function addTag(newTag: string) {
         if (!newTag || newTag.trim().length === 0) {
             return;
@@ -210,6 +323,43 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     }
 
 
+    /**
+     * Edits an existing ingredient with complex parsing and similarity validation
+     * 
+     * This function handles the complex process of updating an ingredient in the recipe.
+     * It parses ingredient strings that contain quantity, unit, and name information,
+     * validates the input, checks for similar ingredients in the database, and either
+     * updates the ingredient directly or shows a similarity dialog for user confirmation.
+     * 
+     * @param oldIngredientId - Index of the ingredient to edit in the recipeIngredients array
+     * @param newIngredient - Formatted string containing: "${quantity}${unitySeparator}${unit}${textSeparator}${name}"
+     * 
+     * Input Format:
+     * The newIngredient string follows this structure:
+     * - Quantity and unit separated by unitySeparator ("@@")
+     * - Name separated from quantity/unit by textSeparator ("--")
+     * - Example: "2@@cups--flour" represents "2 cups of flour"
+     * 
+     * Business Logic:
+     * 1. Validates ingredient index bounds
+     * 2. Parses ingredient string into components (quantity, unit, name)
+     * 3. Validates that ingredient name is not empty
+     * 4. Searches database for similar ingredients (fuzzy matching)
+     * 5. If exact match found: updates ingredient directly
+     * 6. If similar matches found: shows SimilarityDialog for user choice
+     * 7. If no matches: creates new ingredient entry
+     * 
+     * Side Effects:
+     * - Updates recipeIngredients state array
+     * - May trigger SimilarityDialog display
+     * - Logs warnings for invalid operations
+     * - May add new ingredients to database through similarity dialog
+     * 
+     * Error Handling:
+     * - Validates array bounds and logs warnings for invalid indices
+     * - Handles empty or malformed ingredient strings gracefully
+     * - Prevents duplicate ingredients in the recipe
+     */
     function editIngredients(oldIngredientId: number, newIngredient: string) {
         if (oldIngredientId < 0 || oldIngredientId >= recipeIngredients.length) {
             recipeLogger.warn('Cannot edit ingredient - invalid index', { 
@@ -325,6 +475,35 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         setRecipePreparation([...recipePreparation, '']);
     }
 
+    /**
+     * Creates a complete recipe object from current component state
+     * 
+     * This function transforms the component's state variables into a properly
+     * formatted recipeTableElement that can be saved to the database. It handles
+     * different recipe modes and preserves existing data when appropriate.
+     * 
+     * @returns recipeTableElement - Complete recipe object ready for database operations
+     * 
+     * State Transformation:
+     * - Combines all state variables into single recipe object
+     * - Preserves existing ID for read-only/edit modes
+     * - Generates undefined ID for new recipes (auto-generated by database)
+     * - Maintains season data for existing recipes or creates empty array for new ones
+     * 
+     * Mode-Specific Behavior:
+     * - Read-only mode: Preserves original recipe ID and season data
+     * - Edit mode: Preserves original recipe ID and season data
+     * - Add modes: Creates new recipe with undefined ID and empty season array
+     * 
+     * Data Integrity:
+     * - Ensures all required fields are populated from current state
+     * - Maintains type safety with recipeTableElement interface
+     * - Preserves complex objects (tags, ingredients) without mutation
+     * 
+     * Usage:
+     * This function is called before any database operation (add, edit, save)
+     * to ensure the recipe data is in the correct format for persistence.
+     */
     function createRecipeFromStates(): recipeTableElement {
         return {
             id: (props.mode === 'readOnly' ? props.recipe.id : undefined),
@@ -362,8 +541,48 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
     }
 
     // TODO checking if tags aren't in doublons
-    // TODO checking if ingredients aren't in doublons
-    // TODO ingredient quantity shouldn't be null
+    /**
+     * Comprehensive recipe validation before saving to database
+     * 
+     * This function implements extensive validation logic for recipe creation and editing.
+     * It checks for required fields, validates data integrity, handles similar recipe
+     * detection, manages file operations, and provides detailed user feedback.
+     * 
+     * Validation Steps:
+     * 1. **Required Field Validation**: Checks title, ingredients, preparation, persons
+     * 2. **Data Integrity Checks**: Validates ingredient names and quantities
+     * 3. **Similarity Detection**: Searches for existing similar recipes
+     * 4. **File Operations**: Saves recipe image with proper naming
+     * 5. **Quantity Scaling**: Normalizes ingredients to default person count
+     * 6. **Database Operations**: Saves recipe with proper error handling
+     * 
+     * Error Handling:
+     * - Displays detailed validation errors to user
+     * - Handles file operation failures gracefully
+     * - Provides specific error messages for missing fields
+     * - Logs validation attempts and failures
+     * 
+     * Side Effects:
+     * - Shows validation dialog with error details or success message
+     * - Saves recipe image to file system
+     * - Adds recipe to database
+     * - Clears file cache (async, non-blocking)
+     * - Scales ingredient quantities to default person count
+     * - Navigates back to previous screen on success
+     * 
+     * User Experience:
+     * - Shows similarity dialog for potential duplicate recipes
+     * - Provides clear feedback on validation failures
+     * - Handles success and error states with appropriate messages
+     * 
+     * Performance Considerations:
+     * - Async operations prevent UI blocking
+     * - File operations handled efficiently
+     * - Database queries optimized for similarity detection
+     * 
+     * @async
+     * @returns Promise<void> - Resolves when validation and save operations complete
+     */
     async function addValidation() {
         let dialogProp = defaultValidationDialogProp;
 
@@ -535,6 +754,29 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         }
     }
 
+    /**
+     * Generates props for recipe title component based on current mode
+     * 
+     * This function creates mode-specific props for the RecipeText component that handles
+     * the recipe title. It adapts the component behavior, styling, and functionality
+     * based on whether the recipe is being viewed, edited, or created.
+     * 
+     * @returns RecipeTextProps - Props configured for the current recipe mode
+     * 
+     * Mode-Specific Behavior:
+     * - **Read-only**: Displays title as headline text, no editing capability
+     * - **Edit/Manual Add**: Shows title input with label, editing enabled
+     * - **OCR Add**: Includes OCR button for automatic title extraction
+     * 
+     * Text Styling:
+     * - Read-only: Uses 'headline' style for prominent display
+     * - Edit/Add modes: Uses 'title' style with descriptive label
+     * 
+     * Interaction Features:
+     * - Edit modes: Provides text input with change handlers
+     * - OCR mode: Adds scanning button for automatic text extraction
+     * - Read-only: No interaction, just display
+     */
     function recipeTitleProp(): RecipeTextProps {
         const titleTestID = 'RecipeTitle';
         const titleRootText: TextProp = {
@@ -610,6 +852,35 @@ export default function Recipe({route, navigation}: RecipeScreenProp) {
         }
     }
 
+    /**
+     * Generates props for recipe tags component with mode-specific functionality
+     * 
+     * This function creates complex props for the RecipeTags component, handling
+     * different interaction modes, tag management operations, and OCR integration.
+     * It provides the most sophisticated prop generation with multiple callback functions.
+     * 
+     * @returns RecipeTagProps - Props configured for the current recipe mode
+     * 
+     * Component Behavior:
+     * - **Read-only**: Simple tag display without interaction
+     * - **Edit/Manual Add**: Full tag management with add/remove capabilities
+     * - **OCR Add**: Enhanced with OCR modal for automatic tag extraction
+     * 
+     * Tag Management Features:
+     * - Random tag suggestions for inspiration
+     * - Add/remove tag callbacks with validation
+     * - Similarity matching for tag consistency
+     * - Extract existing tags for display
+     * 
+     * OCR Integration:
+     * - Provides modal trigger for OCR-based tag extraction
+     * - Combines manual and automated tag input methods
+     * 
+     * State Management:
+     * - Uses extracted tag names from complex tag objects
+     * - Integrates with addTag() function for similarity checking
+     * - Connects to removeTag() for tag removal operations
+     */
     function recipeTagsProp(): RecipeTagProps {
         const tagsExtracted = extractTagsName(recipeTags);
         const editProps: RecipeTagProps = {
