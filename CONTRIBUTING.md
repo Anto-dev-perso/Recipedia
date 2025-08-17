@@ -85,8 +85,17 @@ The app uses SQLite for local storage. The database is managed through the `Reci
 ```bash
 # Development
 npm start                    # Start Expo dev server
-npm run:android             # Run on Android
-npm run:ios                 # Run on iOS
+npm run android             # Run on Android
+npm run ios                 # Run on iOS
+
+# Code Quality
+npm run quality:check       # Check all quality gates
+npm run quality:fix         # Auto-fix formatting and linting
+npm run lint                # ESLint check
+npm run lint:fix            # ESLint auto-fix
+npm run format              # Format with Prettier
+npm run format:check        # Check formatting
+npm run typecheck           # TypeScript check
 
 # Testing
 npm run test:unit           # Run unit tests
@@ -176,11 +185,13 @@ refactor/321-database-optimization
 ### Before Submitting
 
 - [ ] Code follows project style guidelines
+- [ ] All quality checks pass (`npm run quality:check`)
 - [ ] All tests pass (`npm run test:unit`)
 - [ ] New functionality includes tests
 - [ ] Documentation is updated
 - [ ] Commit messages follow semantic conventions
 - [ ] No merge conflicts with main branch
+- [ ] Pre-commit hooks are set up and working
 
 ### PR Template
 
@@ -258,12 +269,30 @@ E2E tests use Maestro and test complete user workflows.
 
 ## 🎨 Code Style and Standards
 
+### Automated Code Quality
+
+The project enforces code quality through:
+
+- **Pre-commit hooks**: Automatic formatting and linting on commit
+- **ESLint**: Code linting with React Native and TypeScript rules
+- **Prettier**: Consistent code formatting
+- **TypeScript**: Strict type checking
+- **Conventional commits**: Enforced commit message format
+
 ### TypeScript
 
 - Use strict TypeScript configuration
 - Define proper types for all functions and components
 - Avoid `any` type usage
 - Use path aliases from `tsconfig.json`
+- All code must pass `npm run typecheck`
+
+### Code Formatting
+
+- **Automatic**: Pre-commit hooks format code automatically
+- **Manual**: Run `npm run format` to format all files
+- **Validation**: `npm run format:check` validates formatting
+- **Configuration**: See `.prettierrc.js` for settings
 
 ### React Native / React
 

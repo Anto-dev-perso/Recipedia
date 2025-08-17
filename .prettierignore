@@ -1,0 +1,37 @@
+# Prettier ignore patterns for Recipedia
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+build/
+dist/
+coverage/
+*.apk
+*.ipa
+
+# Generated files
+jest-results.json
+maestro_logs/
+
+# OS and IDE files
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# React Native
+android/
+ios/
+.expo/
+.expo-shared/
+
+# Documentation build
+docs/
+jsdoc-output/
+
+# Temporary files
+*.tmp
+*.temp

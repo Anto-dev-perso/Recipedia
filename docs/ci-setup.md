@@ -1,21 +1,35 @@
-# CI Setup Documentation
+# CI/CD Pipeline Documentation
 
 ## Overview
 
-This document explains the CI (Continuous Integration) setup for the Recipedia app. The CI pipeline is implemented using
-GitHub Actions and is designed to run unit tests and E2E (End-to-End) tests on Android.
+This document explains the CI/CD (Continuous Integration/Continuous Deployment) setup for the Recipedia app. The pipeline is implemented using GitHub Actions and consists of separate workflows for code quality, build & test, and releases.
 
-## CI Workflow
+## Workflow Structure
 
-The CI workflow is defined in `.github/workflows/android-ci.yml` and consists of the following jobs:
+Our CI/CD pipeline is split into three main workflows:
 
-1. **Install and Unit Tests**: Installs dependencies and runs unit tests
-2. **E2E Tests Part 1**: Runs the first set of E2E tests using Maestro
-3. **E2E Tests Part 2**: Runs the second set of E2E tests using Maestro
-4. **E2E Tests Part 3**: Runs the third set of E2E tests using Maestro
+### 1. Code Quality (`.github/workflows/quality.yml`)
+Focuses on code quality and standards:
+- **Commit Validation**: Validates conventional commit messages on PRs
+- **ESLint**: Code linting and style checking
+- **Prettier**: Code formatting validation
+- **TypeScript**: Type checking and compilation validation
+- **Security Audit**: NPM vulnerability scanning with GitHub Security integration
 
-The workflow is triggered on:
+### 2. Build & Test Pipeline (`.github/workflows/build-test.yml`)
+Handles building and testing:
+- **Unit Tests**: Jest-based unit testing
+- **Coverage**: Test coverage reporting with GitHub integration
+- **Android Build**: APK building using EAS local builds
+- **E2E Tests**: End-to-end testing using Maestro on Android emulator
 
+### 3. Release (`.github/workflows/release.yml`)
+Automated versioning and releases:
+- **Semantic Release**: Automated versioning based on conventional commits
+- **Changelog Generation**: Automatic changelog updates
+- **GitHub Releases**: Creates GitHub releases with release notes
+
+All workflows are triggered on:
 - Push to the `main` branch
 - Pull requests to the `main` branch
 
@@ -47,6 +61,48 @@ After the tests run, the following artifacts are available:
 These artifacts can be downloaded from the GitHub Actions workflow run page.
 
 ## Local Development
+
+### Code Quality Checks
+
+Run quality checks locally before committing:
+
+```bash
+# Check all quality gates
+npm run quality:check
+
+# Auto-fix formatting and linting
+npm run quality:fix
+
+# Individual checks
+npm run lint              # ESLint
+npm run format:check      # Prettier
+npm run typecheck         # TypeScript
+npm audit                 # Security audit
+```
+
+### Pre-commit Hooks
+
+The project uses Husky and lint-staged for automatic code quality:
+
+- **Automatic formatting**: Prettier runs on staged files
+- **Automatic linting**: ESLint fixes are applied to staged files
+- **Pre-commit validation**: Prevents commits with quality issues
+
+Setup is automatic after `npm install`.
+
+### Running Tests Locally
+
+```bash
+# Unit tests
+npm run test:unit              # Run all unit tests
+npm run test:unit-watch        # Watch mode
+npm run test:unit-coverage     # With coverage
+
+# E2E tests (requires Android setup)
+npm run build:android          # Build APK
+npm run install:android        # Install on device/emulator
+npm run test:e2e:android       # Run E2E tests
+```
 
 ### Running E2E Tests Locally
 

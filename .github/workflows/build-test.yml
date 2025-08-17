@@ -17,25 +17,18 @@ jobs:
     name: Install Dependencies
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
+      - run: npm ci
       - name: Cache node modules
-        uses: actions/cache@v4
+        uses: actions/cache/save@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+
 
 
   unit-tests:
@@ -46,17 +39,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-
       - name: Restore node modules
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
 
       - name: Run unit tests
         run: npm run test:unit
@@ -69,17 +59,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-
       - name: Restore node modules
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
 
       - name: Run tests with coverage
         run: npm run test:unit-coverage
@@ -118,17 +105,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-
-      - name: Restore node modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -164,17 +144,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-
-      - name: Restore node modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Setup Java
         uses: actions/setup-java@v4
