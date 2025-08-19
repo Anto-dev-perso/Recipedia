@@ -78,13 +78,14 @@ export type HorizontalListProps = {
   /** Unique identifier for testing and accessibility */
   testID: string;
 } & (TagProp | ImageProp);
+
 /**
  * HorizontalList component for flexible content display
  *
  * @param props - The component props with discriminated union for type safety
  * @returns JSX element representing a multi-line wrapping list of tags or images
  */
-export default function HorizontalList(props: HorizontalListProps) {
+export function HorizontalList(props: HorizontalListProps) {
   /**
    * Renders individual list items based on the content type
    * @param item - The item data to render
@@ -121,3 +122,5 @@ export default function HorizontalList(props: HorizontalListProps) {
     </View>
   );
 }
+
+export default HorizontalList;

@@ -45,7 +45,7 @@ import { padding } from '@styles/spacing';
  * @param props - Navigation props for the LanguageSettings screen
  * @returns JSX element representing the language selection interface
  */
-export default function LanguageSettings({ navigation }: LanguageSettingsProp) {
+export function LanguageSettings({ navigation }: LanguageSettingsProp) {
   const { t, getLocale, getAvailableLocales, getLocaleName } = useI18n();
   const [currentLocale, setCurrentLocale] = useState<string>(getLocale());
   const { colors } = useTheme();
@@ -101,3 +101,5 @@ export default function LanguageSettings({ navigation }: LanguageSettingsProp) {
     </View>
   );
 }
+
+export default LanguageSettings;

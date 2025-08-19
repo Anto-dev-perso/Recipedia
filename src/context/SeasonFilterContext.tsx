@@ -56,7 +56,7 @@ import { getSeasonFilter, setSeasonFilter } from '@utils/settings';
 /**
  * Type definition for the seasonal filter context
  */
-interface SeasonFilterContextType {
+export interface SeasonFilterContextType {
   /** Current seasonal filter state */
   seasonFilter: boolean;
   /** Function to toggle the seasonal filter */

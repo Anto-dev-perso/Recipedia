@@ -104,9 +104,30 @@ src/
 
 ### For Developers
 
+- **[API Documentation](https://anto-dev-perso.github.io/Recipedia/)** - Complete TypeScript API reference
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Testing Guide](docs/testing.md)
 - [CI/CD Setup](docs/ci-setup.md)
+
+### API Documentation
+
+The project maintains comprehensive API documentation generated with TypeDoc, covering all components, utilities, and types. The documentation is automatically published to GitHub Pages and includes:
+
+- **Component Documentation**: All atomic, molecular, and organism components
+- **Utility Functions**: Database operations, file management, and helper functions
+- **Type Definitions**: Complete TypeScript interfaces and types
+- **Source Code**: Direct links to GitHub source files
+- **Examples**: Usage examples and code snippets
+
+**Documentation Commands:**
+```bash
+npm run docs:build    # Generate documentation
+npm run docs:clean    # Clean documentation build
+```
+
+**Viewing Documentation:**
+- **Online**: [https://anto-dev-perso.github.io/Recipedia/](https://anto-dev-perso.github.io/Recipedia/)
+- **Local**: Run `npm run docs:build` then open `docs/index.html`
 
 ## 🧪 Testing
 

@@ -27,7 +27,6 @@
 
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { IngredientsSettingProp } from '@customTypes/ScreenTypes';
 import { ingredientTableElement } from '@customTypes/DatabaseElementTypes';
 import SettingsItemList from '@components/organisms/SettingsItemList';
 import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
@@ -37,10 +36,9 @@ import { ingredientsSettingsLogger } from '@utils/logger';
 /**
  * IngredientsSettings screen component - Ingredient database management
  *
- * @param props - Navigation props for the IngredientsSettings screen
  * @returns JSX element representing the ingredient management interface
  */
-export default function IngredientsSettings({}: IngredientsSettingProp) {
+export function IngredientsSettings() {
   const database = RecipeDatabase.getInstance();
 
   const [ingredients, setIngredients] = useState(
@@ -163,3 +161,5 @@ export default function IngredientsSettings({}: IngredientsSettingProp) {
     </View>
   );
 }
+
+export default IngredientsSettings;

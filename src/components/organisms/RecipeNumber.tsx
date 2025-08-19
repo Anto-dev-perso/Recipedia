@@ -111,7 +111,7 @@ export type RecipeNumberProps = {
  * @param props - The component props with mode-specific configuration
  * @returns JSX element representing a numeric input with multiple interaction modes
  */
-export default function RecipeNumber({ testID, numberProps }: RecipeNumberProps) {
+export function RecipeNumber({ testID, numberProps }: RecipeNumberProps) {
   return (
     <View style={recipeTextStyles.containerSection}>
       {numberProps.editType === 'read' ? (
@@ -180,3 +180,5 @@ function RecipeNumberEditablePart(addOrEditProps: RecipeNumberAddOrEditProps) {
     </View>
   );
 }
+
+export default RecipeNumber;

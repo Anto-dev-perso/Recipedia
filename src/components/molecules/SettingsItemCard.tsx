@@ -66,13 +66,14 @@ export type SettingsItemCardProps<T extends SettingsItem> = {
   /** Callback fired when delete button is pressed */
   onDelete: (item: T) => void;
 };
+
 /**
  * SettingsItemCard component for generic settings data management
  *
  * @param props - The component props with generic type constraint
  * @returns JSX element representing a settings management card with type-specific rendering
  */
-export default function SettingsItemCard<T extends SettingsItem>({
+export function SettingsItemCard<T extends SettingsItem>({
   item,
   index,
   testIdPrefix,
@@ -149,3 +150,4 @@ const styles = StyleSheet.create({
     marginRight: padding.small,
   },
 });
+export default SettingsItemCard;

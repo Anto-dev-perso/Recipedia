@@ -57,7 +57,7 @@ export type RecipeCardProps = {
  * @param props - The component props
  * @returns JSX element representing an interactive recipe card
  */
-export default function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
+export function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
 
@@ -126,3 +126,5 @@ export default function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
     </Card>
   );
 }
+
+export default RecipeCard;

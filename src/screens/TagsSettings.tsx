@@ -32,7 +32,6 @@
 
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { TagsSettingsProp } from '@customTypes/ScreenTypes';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { tagTableElement } from '@customTypes/DatabaseElementTypes';
 import SettingsItemList from '@components/organisms/SettingsItemList';
@@ -42,10 +41,9 @@ import { tagsSettingsLogger } from '@utils/logger';
 /**
  * TagsSettings screen component - Recipe tag management
  *
- * @param props - Navigation props for the TagsSettings screen
  * @returns JSX element representing the tag management interface
  */
-export default function TagsSettings({}: TagsSettingsProp) {
+export function TagsSettings() {
   const database = RecipeDatabase.getInstance();
 
   // State for managing tags
@@ -157,3 +155,5 @@ export default function TagsSettings({}: TagsSettingsProp) {
     </View>
   );
 }
+
+export default TagsSettings;

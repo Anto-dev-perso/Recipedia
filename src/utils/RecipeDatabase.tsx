@@ -64,7 +64,7 @@ import { databaseLogger } from '@utils/logger';
  * });
  * ```
  */
-export default class RecipeDatabase {
+export class RecipeDatabase {
   static #instance: RecipeDatabase;
 
   protected _databaseName: string;
@@ -1641,6 +1641,8 @@ export default class RecipeDatabase {
     return true;
   }
 }
+
+export default RecipeDatabase;
 
 /**
  * Shuffles an array using the Fisher-Yates algorithm and optionally returns a subset

@@ -105,7 +105,7 @@ export type RecipeTextProps = {
  * @param props - The component props with discriminated union for editing modes
  * @returns JSX element representing formatted text with optional editing capabilities
  */
-export default function RecipeText({ rootText, testID, addOrEditProps }: RecipeTextProps) {
+export function RecipeText({ rootText, testID, addOrEditProps }: RecipeTextProps) {
   const containerStyle =
     addOrEditProps?.editType === 'add'
       ? recipeTextStyles.containerTab
@@ -162,3 +162,5 @@ function RecipeTextEditablePart(addOrEditProps: RecipeTextAddOrEditProps) {
     </View>
   );
 }
+
+export default RecipeText;

@@ -90,7 +90,7 @@ export type BottomTopButtonProps<T extends React.ElementType> = {
  * @param props - The component props with polymorphic button type
  * @returns JSX element representing a positioned button wrapper
  */
-export default function BottomTopButton<T extends React.ElementType>({
+export function BottomTopButton<T extends React.ElementType>({
   as,
   position,
   buttonOffset,
@@ -137,3 +137,5 @@ export default function BottomTopButton<T extends React.ElementType>({
     </View>
   );
 }
+
+export default BottomTopButton;

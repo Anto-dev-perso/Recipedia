@@ -69,7 +69,7 @@ export type SearchBarProps = {
  * @param props - The component props with search state management
  * @returns JSX element representing an interactive search bar with clear functionality
  */
-export default function SearchBar({
+export function SearchBar({
   testId,
   searchPhrase,
   setSearchBarClicked,
@@ -108,3 +108,5 @@ export default function SearchBar({
     />
   );
 }
+
+export default SearchBar;

@@ -42,10 +42,10 @@ import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import CustomImage from '@components/atomic/CustomImage';
 
 /** Props for recipe type button */
-type propIsRecipe = { type: 'recipe'; recipe: recipeTableElement };
+export type propIsRecipe = { type: 'recipe'; recipe: recipeTableElement };
 
 /** Props for custom image type button */
-type propIsImg = { type: 'image'; imgSrc: string };
+export type propIsImg = { type: 'image'; imgSrc: string };
 
 /**
  * Props for the SquareButton component
@@ -66,7 +66,7 @@ export type SquareButtonProps = {
  * @param buttonProps - The component props with discriminated union for type safety
  * @returns JSX element representing a square image button
  */
-export default function SquareButton(buttonProps: SquareButtonProps) {
+export function SquareButton(buttonProps: SquareButtonProps) {
   let img: string;
   switch (buttonProps.type) {
     case 'recipe':
@@ -88,3 +88,4 @@ export default function SquareButton(buttonProps: SquareButtonProps) {
     </Pressable>
   );
 }
+export default SquareButton;

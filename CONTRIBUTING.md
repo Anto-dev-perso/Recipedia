@@ -103,6 +103,10 @@ npm run test:unit-watch     # Run tests in watch mode
 npm run test:unit-coverage  # Run with coverage
 npm run test:e2e:android    # Run E2E tests
 
+# Documentation
+npm run docs:build          # Generate API documentation
+npm run docs:clean          # Clean documentation build
+
 # Building
 npm run build:android       # Build Android APK
 npm run build:ios          # Build iOS app
@@ -188,7 +192,8 @@ refactor/321-database-optimization
 - [ ] All quality checks pass (`npm run quality:check`)
 - [ ] All tests pass (`npm run test:unit`)
 - [ ] New functionality includes tests
-- [ ] Documentation is updated
+- [ ] Documentation is updated (JSDoc comments and examples)
+- [ ] API documentation builds without warnings (`npm run docs:build`)
 - [ ] Commit messages follow semantic conventions
 - [ ] No merge conflicts with main branch
 - [ ] Pre-commit hooks are set up and working
@@ -449,6 +454,109 @@ We use labels to categorize issues:
 - Implement proper error handling
 - Log all database operations
 - Test database migrations thoroughly
+
+## 📚 Documentation Maintenance
+
+### API Documentation
+
+The project uses **TypeDoc** to generate comprehensive API documentation that is automatically published to GitHub Pages. All contributors must maintain documentation quality.
+
+#### Documentation Requirements
+
+**For New Components/Functions:**
+- [ ] Add comprehensive JSDoc comments to all exported functions, classes, and components
+- [ ] Include `@param` descriptions for all parameters
+- [ ] Include `@returns` description for return values
+- [ ] Add `@example` usage examples for complex components
+- [ ] Document all TypeScript interfaces and types
+
+**For Existing Code Changes:**
+- [ ] Update JSDoc comments when modifying function signatures
+- [ ] Update examples when changing component APIs
+- [ ] Ensure TypeScript types are properly exported
+- [ ] Test documentation generation locally
+
+#### Documentation Commands
+
+```bash
+# Generate and test documentation
+npm run docs:build          # Build API documentation
+npm run docs:clean          # Clean documentation files
+open docs/index.html         # View local documentation
+```
+
+#### Documentation Standards
+
+1. **Component Documentation Example:**
+```typescript
+/**
+ * CustomButton - Reusable button component with theme integration
+ *
+ * A themed button component that provides consistent styling and behavior
+ * across the application. Supports multiple variants and icon integration.
+ *
+ * @example
+ * ```typescript
+ * <CustomButton
+ *   title="Save Recipe"
+ *   variant="primary"
+ *   icon="save"
+ *   onPress={() => saveRecipe()}
+ *   testID="save-button"
+ * />
+ * ```
+ */
+export function CustomButton({
+  title,
+  variant = 'primary',
+  icon,
+  onPress,
+  testID
+}: CustomButtonProps) {
+  // Implementation
+}
+```
+
+2. **Function Documentation Example:**
+```typescript
+/**
+ * Calculates scaled ingredient quantities for different serving sizes
+ *
+ * Takes a base recipe quantity and scales it proportionally to match
+ * the target number of servings while maintaining proper ratios.
+ *
+ * @param originalQuantity - The original recipe quantity
+ * @param originalServings - Number of servings in original recipe
+ * @param targetServings - Desired number of servings
+ * @returns Scaled quantity for the target serving size
+ * 
+ * @example
+ * ```typescript
+ * const scaled = scaleQuantity("2 cups", 4, 6); // Returns "3 cups"
+ * ```
+ */
+export function scaleQuantity(
+  originalQuantity: string,
+  originalServings: number,
+  targetServings: number
+): string {
+  // Implementation
+}
+```
+
+#### Quality Assurance
+
+- **Zero Warnings Policy**: Documentation builds must complete without warnings
+- **TypeScript Integration**: All types must be properly exported and documented
+- **Source Links**: Documentation includes direct links to GitHub source files
+- **Examples Required**: Complex components and utilities must include usage examples
+
+#### Documentation Publishing
+
+The documentation is automatically published to GitHub Pages at:
+- **Live Documentation**: [https://anto-dev-perso.github.io/Recipedia/](https://anto-dev-perso.github.io/Recipedia/)
+
+Updates are published automatically when changes are merged to the main branch.
 
 ## 🌍 Internationalization
 

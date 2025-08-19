@@ -1,6 +1,6 @@
 /**
  * ESLint configuration for Recipedia React Native project
- * 
+ *
  * Provides comprehensive linting rules for TypeScript, React, and React Native
  * development with focus on code quality and consistency.
  */
@@ -10,7 +10,7 @@ const js = require('@eslint/js');
 module.exports = [
   // Base JavaScript config
   js.configs.recommended,
-  
+
   // Main configuration for TypeScript and React Native files
   {
     files: ['src/**/*.{ts,tsx,js,jsx}'],
@@ -40,34 +40,34 @@ module.exports = [
     },
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
-      'react': require('eslint-plugin-react'),
+      react: require('eslint-plugin-react'),
       'react-native': require('eslint-plugin-react-native'),
       'react-hooks': require('eslint-plugin-react-hooks'),
-      'prettier': require('eslint-plugin-prettier'),
+      prettier: require('eslint-plugin-prettier'),
     },
     rules: {
+      'no-unused-vars': 'off',
       // TypeScript specific rules
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['error'],
       '@typescript-eslint/no-explicit-any': 'warn',
-      
+
       // React specific rules
       'react/prop-types': 'off', // TypeScript handles this
       'react/react-in-jsx-scope': 'off', // Not needed in React Native
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      
+
       // React Native specific rules
       'react-native/no-unused-styles': 'error',
       'react-native/split-platform-components': 'error',
-      'react-native/no-inline-styles': 'warn',
       'react-native/no-color-literals': 'warn',
-      
+
       // General code quality rules
       'no-console': 'warn',
       'no-debugger': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
-      
+
       // Prettier integration
       'prettier/prettier': 'error',
     },
@@ -77,7 +77,7 @@ module.exports = [
       },
     },
   },
-  
+
   // Test files configuration - follow same rules as main code with minimal exceptions
   {
     files: ['tests/**/*.{ts,tsx,js,jsx}', '**/*.test.{ts,tsx,js,jsx}'],
@@ -104,7 +104,7 @@ module.exports = [
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
   },
-  
+
   // Ignore patterns
   {
     ignores: [

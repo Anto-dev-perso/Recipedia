@@ -80,7 +80,7 @@ export type FilterAccordionProps = {
  * @param props - The component props with filter data and state management
  * @returns JSX element representing an accordion-based filter selection interface
  */
-export default function FilterAccordion({
+export function FilterAccordion({
   testId,
   tagsList,
   ingredientsList,
@@ -210,3 +210,5 @@ export default function FilterAccordion({
     </List.AccordionGroup>
   );
 }
+
+export default FilterAccordion;

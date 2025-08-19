@@ -41,6 +41,9 @@ jest-results.json
 # Maestro
 maestro_logs
 
+# Documentation build
+docs/
+
 .vscode
 android/*
 ios/*

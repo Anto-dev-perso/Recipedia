@@ -67,7 +67,7 @@ export type TagButtonProps = {
  * @param props - The component props
  * @returns JSX element representing an interactive chip-style tag button
  */
-export default function TagButton(props: TagButtonProps) {
+export function TagButton(props: TagButtonProps) {
   const { colors, fonts }: MD3Theme = useTheme();
 
   // Create custom icon functions with specific color
@@ -99,3 +99,4 @@ export default function TagButton(props: TagButtonProps) {
     </Chip>
   );
 }
+export default TagButton;

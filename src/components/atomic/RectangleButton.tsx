@@ -64,7 +64,7 @@ export type RectangleButtonProps = {
  * @param props - The component props
  * @returns JSX element representing a customizable rectangular button
  */
-export default function RectangleButton(props: RectangleButtonProps) {
+export function RectangleButton(props: RectangleButtonProps) {
   const { colors, fonts } = useTheme();
 
   const borderStyle: StyleProp<ViewStyle> = props.border
@@ -93,3 +93,5 @@ export default function RectangleButton(props: RectangleButtonProps) {
     </Button>
   );
 }
+
+export default RectangleButton;

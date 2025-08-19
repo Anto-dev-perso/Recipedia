@@ -61,7 +61,7 @@ import { Tab } from '@customTypes/ScreenTypes';
  *
  * @returns JSX element representing the main app tab navigation
  */
-export default function BottomTabs() {
+export function BottomTabs() {
   const { colors, fonts } = useTheme();
   const { t } = useI18n();
 
@@ -169,3 +169,4 @@ export default function BottomTabs() {
     </>
   );
 }
+export default BottomTabs;

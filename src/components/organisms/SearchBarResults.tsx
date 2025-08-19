@@ -68,7 +68,7 @@ export type SearchBarResultsProps = {
  * @param props - The component props with search results and state management
  * @returns JSX element representing a dropdown list of selectable search suggestions
  */
-export default function SearchBarResults({
+export function SearchBarResults({
   testId,
   filteredTitles,
   setSearchBarClicked,
@@ -101,3 +101,5 @@ export default function SearchBarResults({
     </List.Section>
   );
 }
+
+export default SearchBarResults;

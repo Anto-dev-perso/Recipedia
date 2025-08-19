@@ -109,18 +109,22 @@ export type SimilarityDialogProps = {
   item: SimilarityTagType | SimilarityIngredientType;
 };
 
+const styles = StyleSheet.create({
+  actionButton: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+});
+
 /**
  * SimilarityDialog component for smart duplicate detection and resolution
  *
  * @param props - The component props with similarity detection configuration
  * @returns JSX element representing an intelligent similarity resolution dialog
  */
-export default function SimilarityDialog({
-  testId,
-  isVisible,
-  onClose,
-  item,
-}: SimilarityDialogProps) {
+export function SimilarityDialog({ testId, isVisible, onClose, item }: SimilarityDialogProps) {
   const { t } = useI18n();
   const [showItemDialog, setShowItemDialog] = useState(false);
 
@@ -310,11 +314,4 @@ export default function SimilarityDialog({
   );
 }
 
-const styles = StyleSheet.create({
-  actionButton: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-});
+export default SimilarityDialog;

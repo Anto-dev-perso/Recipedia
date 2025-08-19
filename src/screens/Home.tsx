@@ -55,7 +55,6 @@ import VerticalBottomButtons from '@components/organisms/VerticalBottomButtons';
 import { useFocusEffect } from '@react-navigation/native';
 import { useI18n } from '@utils/i18n';
 import { screenWidth } from '@styles/spacing';
-import { HomeScreenProp } from '@customTypes/ScreenTypes';
 import { homeLogger } from '@utils/logger';
 
 /**
@@ -64,7 +63,10 @@ import { homeLogger } from '@utils/logger';
  * @param props - Navigation props for the Home screen
  * @returns JSX element representing the main home dashboard
  */
-export default function Home({ navigation }: HomeScreenProp) {
+/**
+ * Home screen component - Main dashboard with recipe recommendations
+ */
+export function Home() {
   const { t } = useI18n();
   const { colors } = useTheme();
 
@@ -180,3 +182,5 @@ export default function Home({ navigation }: HomeScreenProp) {
     </SafeAreaView>
   );
 }
+
+export default Home;

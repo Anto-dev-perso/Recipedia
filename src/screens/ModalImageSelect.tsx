@@ -88,13 +88,14 @@ export type ModalImageSelectProps = {
  * Renders a modal interface that allows users to select images from multiple sources.
  * Provides a horizontal gallery of existing images and buttons for camera/gallery access.
  *
- * @param arrImg - Array of available image URIs for selection
- * @param onSelectFunction - Callback when user selects an existing image
- * @param onDismissFunction - Callback when modal is dismissed
- * @param onImagesUpdated - Callback when new image is captured/imported
+ * @param props - The modal image select properties
+ * @param props.arrImg - Array of available image URIs for selection
+ * @param props.onSelectFunction - Callback when user selects an existing image
+ * @param props.onDismissFunction - Callback when modal is dismissed
+ * @param props.onImagesUpdated - Callback when new image is captured/imported
  * @returns JSX.Element - Modal component with image selection interface
  */
-export default function ModalImageSelect({
+export function ModalImageSelect({
   arrImg,
   onSelectFunction,
   onDismissFunction,
@@ -193,3 +194,5 @@ export default function ModalImageSelect({
     </Portal>
   );
 }
+
+export default ModalImageSelect;
