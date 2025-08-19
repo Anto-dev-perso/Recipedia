@@ -57,13 +57,14 @@ export type SeasonalityCalendarProps = {
   /** Whether the calendar should be read-only (default: false) */
   readOnly?: boolean;
 };
+
 /**
  * SeasonalityCalendar component for ingredient month selection
  *
  * @param props - The component props
  * @returns JSX element representing an interactive or read-only month selection calendar
  */
-export default function SeasonalityCalendar({
+export function SeasonalityCalendar({
   testID,
   selectedMonths,
   onMonthsChange,
@@ -178,3 +179,5 @@ export default function SeasonalityCalendar({
     </View>
   );
 }
+
+export default SeasonalityCalendar;

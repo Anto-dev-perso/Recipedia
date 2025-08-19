@@ -88,7 +88,7 @@ export type CustomTextInputProps = {
  * @param props - The component props
  * @returns JSX element representing the enhanced text input
  */
-export default function CustomTextInput({
+export function CustomTextInput({
   testID,
   editable = true,
   label,
@@ -106,7 +106,7 @@ export default function CustomTextInput({
   const [isEditing, setIsEditing] = useState(false);
   const [inputHeight, setInputHeight] = React.useState(screenHeight * 0.08);
 
-  const inputRef = useRef<any>(null);
+  const inputRef = useRef<TextInput>(null);
 
   function handlePress() {
     if (editable && !isEditing) {
@@ -189,3 +189,5 @@ export default function CustomTextInput({
     </View>
   );
 }
+
+export default CustomTextInput;

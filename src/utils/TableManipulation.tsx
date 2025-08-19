@@ -28,7 +28,7 @@ import { SQLiteDatabase, SQLiteRunResult } from 'expo-sqlite';
 import { databaseColumnType } from '@customTypes/DatabaseElementTypes';
 import { databaseLogger } from '@utils/logger';
 
-export default class TableManipulation {
+export class TableManipulation {
   protected m_tableName: string;
   protected m_columnsTable: Array<databaseColumnType>; // define all columns (except ID). All are not null
   protected m_idColumn = 'ID';
@@ -83,7 +83,7 @@ export default class TableManipulation {
       await db.execAsync(dropQuery);
       return true;
     } catch (error: any) {
-      databaseLogger.error('deleteTable: \nQuery: \"', dropQuery, '\"\nReceived error : ', error);
+      databaseLogger.error('deleteTable: \nQuery: "', dropQuery, '"\nReceived error : ', error);
       return false;
     }
   }
@@ -115,14 +115,14 @@ export default class TableManipulation {
                                AUTOINCREMENT, `;
     // TODO find all forEach and refactor it
     this.m_columnsTable.forEach(element => {
-      createQuery += `\"${element.colName}\" ${element.type} NOT NULL, `;
+      createQuery += `"${element.colName}" ${element.type} NOT NULL, `;
     });
     createQuery = createQuery.slice(0, -2) + `);`;
     try {
       await db.execAsync(createQuery);
       return true;
     } catch (error: any) {
-      databaseLogger.error('createTable: \nQuery: \"', createQuery, '\"\nReceived error : ', error);
+      databaseLogger.error('createTable: \nQuery: "', createQuery, '"\nReceived error : ', error);
       return false;
     }
   }
@@ -156,9 +156,9 @@ export default class TableManipulation {
       }
     } catch (error: any) {
       databaseLogger.error(
-        'deleteElementById: \nQuery: \"',
+        'deleteElementById: \nQuery: "',
         deleteQuery,
-        '\"\nReceived error : ',
+        '"\nReceived error : ',
         error
       );
       return false;
@@ -185,12 +185,7 @@ export default class TableManipulation {
         return true;
       }
     } catch (error: any) {
-      databaseLogger.error(
-        'deleteElement: \nQuery: \"',
-        deleteQuery,
-        '\"\nReceived error : ',
-        error
-      );
+      databaseLogger.error('deleteElement: \nQuery: "', deleteQuery, '"\nReceived error : ', error);
       return false;
     }
   }
@@ -229,12 +224,7 @@ export default class TableManipulation {
       const result: SQLiteRunResult = await db.runAsync(insertQuery, params);
       return result.lastInsertRowId;
     } catch (error: any) {
-      databaseLogger.error(
-        'insertElement: \nQuery: \"',
-        insertQuery,
-        '\"\nReceived error : ',
-        error
-      );
+      databaseLogger.error('insertElement: \nQuery: "', insertQuery, '"\nReceived error : ', error);
       return undefined;
     }
   }
@@ -259,9 +249,9 @@ export default class TableManipulation {
       databaseLogger.error(
         'insertArrayOfElement<',
         typeof arrayElements[0],
-        '>: \nQuery: \"',
+        '>: \nQuery: "',
         insertQuery,
-        '\"\nReceived error : ',
+        '"\nReceived error : ',
         error
       );
       return false;
@@ -287,7 +277,7 @@ export default class TableManipulation {
       const result = await db.runAsync(updateQuery);
       return result.changes > 0;
     } catch (error: any) {
-      databaseLogger.error('editElement: \nQuery: \"', updateQuery, '\"\nReceived error : ', error);
+      databaseLogger.error('editElement: \nQuery: "', updateQuery, '"\nReceived error : ', error);
       return false;
     }
   }
@@ -375,9 +365,9 @@ export default class TableManipulation {
       return result;
     } catch (error: any) {
       databaseLogger.warn(
-        'searchElementById: \nQuery: \"',
+        'searchElementById: \nQuery: "',
         searchQuery,
-        '\"\nReceived error : ',
+        '"\nReceived error : ',
         error
       );
       return undefined;
@@ -419,9 +409,9 @@ export default class TableManipulation {
       return await db.getAllAsync<T>(searchQuery, [numOfElements]);
     } catch (error: any) {
       databaseLogger.warn(
-        'searchRandomlyElement: \nQuery: \"',
+        'searchRandomlyElement: \nQuery: "',
         searchQuery,
-        '\"\nReceived error : ',
+        '"\nReceived error : ',
         error
       );
       return undefined;
@@ -459,12 +449,7 @@ export default class TableManipulation {
     try {
       return await db.getAllAsync<T>(searchQuery);
     } catch (error: any) {
-      databaseLogger.warn(
-        'searchElement: \nQuery: \"',
-        searchQuery,
-        '\"\nReceived error : ',
-        error
-      );
+      databaseLogger.warn('searchElement: \nQuery: "', searchQuery, '"\nReceived error : ', error);
       return undefined;
     }
   }
@@ -479,9 +464,9 @@ export default class TableManipulation {
     if (map.size <= this.m_columnsTable.length) {
       for (const [key, value] of map) {
         if (typeof value === 'string') {
-          result += `\"${key}\" = \'${value}\' `;
+          result += `"${key}" = '${value}' `;
         } else {
-          result += `\"${key}\" = ${value} `;
+          result += `"${key}" = ${value} `;
         }
         if (separator) {
           result += `${separator} `;
@@ -528,7 +513,7 @@ export default class TableManipulation {
     let insertQuery =
       `INSERT INTO "${this.m_tableName}" ("` +
       this.m_columnsTable.map(col => col.colName).join('","') +
-      '\") VALUES ';
+      '") VALUES ';
     const returnValues = new Array<string>();
 
     if (!(elementToInsert instanceof Array)) {
@@ -573,3 +558,4 @@ export default class TableManipulation {
     return [insertQuery, returnValues];
   }
 }
+export default TableManipulation;

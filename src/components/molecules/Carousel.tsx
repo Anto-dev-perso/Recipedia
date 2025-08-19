@@ -56,7 +56,7 @@ export type CarouselItemProps = {
  * @param props - The component props
  * @returns JSX element representing a horizontal scrolling recipe carousel
  */
-export default function Carousel(props: CarouselItemProps) {
+export function Carousel(props: CarouselItemProps) {
   return (
     <View>
       <FlatList
@@ -72,3 +72,5 @@ export default function Carousel(props: CarouselItemProps) {
     </View>
   );
 }
+
+export default Carousel;

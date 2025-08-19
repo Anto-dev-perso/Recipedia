@@ -43,7 +43,7 @@ import { useTheme } from 'react-native-paper';
  *
  * @returns JSX element representing an expandable FAB menu for recipe creation actions
  */
-export default function VerticalBottomButtons() {
+export function VerticalBottomButtons() {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
 
@@ -124,3 +124,5 @@ export default function VerticalBottomButtons() {
     </View>
   );
 }
+
+export default VerticalBottomButtons;

@@ -75,7 +75,7 @@ export type AlertProps = {
  * @param props - The component props
  * @returns JSX element representing a flexible alert dialog
  */
-export default function Alert({
+export function Alert({
   testId,
   isVisible,
   title,
@@ -137,3 +137,5 @@ export default function Alert({
     </Portal>
   );
 }
+
+export default Alert;

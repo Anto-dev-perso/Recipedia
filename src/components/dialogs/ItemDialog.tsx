@@ -121,13 +121,14 @@ export type ItemDialogProps = {
   /** Item configuration with type-specific properties */
   item: ItemIngredientType | ItemTagType;
 };
+
 /**
  * ItemDialog component for comprehensive item CRUD operations
  *
  * @param props - The component props with operation configuration
  * @returns JSX element representing a multi-purpose item management dialog
  */
-export default function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialogProps) {
+export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialogProps) {
   const { t } = useI18n();
 
   const [typeMenuVisible, setTypeMenuVisible] = useState(false);
@@ -330,8 +331,5 @@ const styles = StyleSheet.create({
   inputLabel: {
     marginRight: padding.small,
   },
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginTop: padding.small,
-  },
 });
+export default ItemDialog;

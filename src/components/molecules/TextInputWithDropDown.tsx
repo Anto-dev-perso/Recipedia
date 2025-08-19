@@ -64,7 +64,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { List, TextInput } from 'react-native-paper';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { palette } from '@styles/colors';
 import CustomTextInput from '@components/atomic/CustomTextInput';
 
@@ -98,7 +98,7 @@ export type TextInputWithDropDownType = {
  * @param props - The component props
  * @returns JSX element representing an autocomplete text input with dropdown suggestions
  */
-export default function TextInputWithDropDown(props: TextInputWithDropDownType) {
+export function TextInputWithDropDown(props: TextInputWithDropDownType) {
   const [textInput, setTextInput] = useState(props.value ?? '');
   const [filteredTextArray, setFilteredTextArray] = useState(
     props.value ? filterArray(props.value) : props.referenceTextArray
@@ -122,7 +122,7 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
       setTextInput(props.value);
       setFilteredTextArray(props.value ? filterArray(props.value) : props.referenceTextArray);
     }
-  }, [props.value]);
+  }, [props.value, filterArray, props.referenceTextArray, textInput]);
 
   useEffect(() => {
     const keyboardListener = Keyboard.addListener('keyboardDidHide', () => {
@@ -134,7 +134,7 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
     return () => {
       keyboardListener.remove();
     };
-  }, [textInput, showDropdown]);
+  }, [textInput, showDropdown, handleSubmitEditing]);
 
   /**
    * Filters the reference array based on user input with case-insensitive matching
@@ -161,11 +161,14 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
    * - Supports partial word matching for better UX
    * - Works with any string array reference data
    */
-  function filterArray(filterText: string): Array<string> {
-    return props.referenceTextArray.filter(element =>
-      element.toLowerCase().includes(filterText.toLowerCase())
-    );
-  }
+  const filterArray = useCallback(
+    (filterText: string): Array<string> => {
+      return props.referenceTextArray.filter(element =>
+        element.toLowerCase().includes(filterText.toLowerCase())
+      );
+    },
+    [props.referenceTextArray]
+  );
 
   function handleSelect(text: string) {
     setTextInput(text);
@@ -206,13 +209,13 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
    * - Enables quick submission when intent is clear
    * - Encourages selection from suggestions when multiple matches exist
    */
-  function handleSubmitEditing() {
+  const handleSubmitEditing = useCallback(() => {
     // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
     if (filteredTextArray.length <= 1) {
       setShowDropdown(false);
       props.onValidate?.(textInput);
     }
-  }
+  }, [filteredTextArray.length, props.onValidate, textInput]);
 
   function handleOnLayoutTextInput(event: LayoutChangeEvent) {
     setInputHeight(event.nativeEvent.layout.height);
@@ -286,3 +289,5 @@ export default function TextInputWithDropDown(props: TextInputWithDropDownType) 
     </View>
   );
 }
+
+export default TextInputWithDropDown;

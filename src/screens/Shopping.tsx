@@ -77,7 +77,7 @@ type ingredientDataForDialog = Pick<shoppingListTableElement, 'name' | 'recipesT
  * @param props - Navigation props for the Shopping screen
  * @returns JSX element representing the shopping list interface
  */
-export default function Shopping({ navigation }: ShoppingScreenProp) {
+export function Shopping({ navigation }: ShoppingScreenProp) {
   const { t } = useI18n();
   const { colors, fonts } = useTheme();
 
@@ -232,7 +232,7 @@ export default function Shopping({ navigation }: ShoppingScreenProp) {
         titleStyle={textStyle}
         descriptionStyle={textStyle}
         description={recipesText}
-        left={props => <Checkbox status={item.purchased ? 'checked' : 'unchecked'} />}
+        left={() => <Checkbox status={item.purchased ? 'checked' : 'unchecked'} />}
         onPress={() => updateShoppingList(item.name)}
         onLongPress={() => {
           setIngredientDataForDialog(item);
@@ -283,3 +283,5 @@ export default function Shopping({ navigation }: ShoppingScreenProp) {
     </SafeAreaView>
   );
 }
+
+export default Shopping;

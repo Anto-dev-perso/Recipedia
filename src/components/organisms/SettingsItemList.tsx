@@ -63,13 +63,14 @@ export type SettingsItemListProps<T extends SettingsItem> = Omit<
   /** Callback fired when the add button is pressed */
   onAddPress: () => void;
 };
+
 /**
  * SettingsItemList component for generic settings data management
  *
  * @param props - The component props with generic type constraint
  * @returns JSX element representing a scrollable list of settings items with add functionality
  */
-export default function SettingsItemList<T extends SettingsItem>({
+export function SettingsItemList<T extends SettingsItem>({
   testIdPrefix,
   onEdit,
   onDelete,
@@ -123,3 +124,5 @@ export default function SettingsItemList<T extends SettingsItem>({
     </View>
   );
 }
+
+export default SettingsItemList;

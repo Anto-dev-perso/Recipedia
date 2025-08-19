@@ -62,7 +62,7 @@ import { Divider, List, Switch, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { getDefaultPersons } from '@utils/settings';
 import { useSeasonFilter } from '@context/SeasonFilterContext';
-import { ParametersScreenProp, StackScreenNavigation } from '@customTypes/ScreenTypes';
+import { StackScreenNavigation } from '@customTypes/ScreenTypes';
 import { useNavigation } from '@react-navigation/native';
 import { Icons } from '@assets/Icons';
 import { DarkModeContext } from '@context/DarkModeContext';
@@ -71,10 +71,9 @@ import Constants from 'expo-constants';
 /**
  * Parameters screen component - Main app settings and configuration hub
  *
- * @param props - Navigation props for the Parameters screen
  * @returns JSX element representing the comprehensive settings interface
  */
-export default function Parameters({}: ParametersScreenProp) {
+export function Parameters() {
   const { t, getLocale, getLocaleName } = useI18n();
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [defaultPersons, setDefaultPersons] = useState(4);
@@ -137,7 +136,7 @@ export default function Parameters({}: ParametersScreenProp) {
             testID={darkModeId + '::Item'}
             title={t('dark_mode')}
             left={props => <List.Icon {...props} icon={Icons.lightDarkTheme} />}
-            right={props => (
+            right={() => (
               <Switch
                 testID={darkModeId + '::Switch'}
                 value={isDarkMode}
@@ -172,7 +171,7 @@ export default function Parameters({}: ParametersScreenProp) {
             testID={seasonId + '::Item'}
             title={t('default_season_filter')}
             left={props => <List.Icon {...props} icon={Icons.plannerUnselectedIcon} />}
-            right={props => (
+            right={() => (
               <Switch
                 testID={seasonId + '::Switch'}
                 value={seasonFilter}
@@ -218,3 +217,5 @@ export default function Parameters({}: ParametersScreenProp) {
     </View>
   );
 }
+
+export default Parameters;

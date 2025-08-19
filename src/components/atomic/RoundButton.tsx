@@ -43,7 +43,7 @@ export type RoundButtonProps = {
  * @param props - The component props
  * @returns JSX element representing a circular FAB button
  */
-export default function RoundButton({ icon, onPressFunction, testID, style }: RoundButtonProps) {
+export function RoundButton({ icon, onPressFunction, testID, style }: RoundButtonProps) {
   return (
     <View
       style={[
@@ -66,3 +66,4 @@ export default function RoundButton({ icon, onPressFunction, testID, style }: Ro
     </View>
   );
 }
+export default RoundButton;

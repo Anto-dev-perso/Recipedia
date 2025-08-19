@@ -70,15 +70,15 @@ import { navigationLogger } from '@utils/logger';
  *
  * @returns JSX element representing the complete app navigation structure
  */
-export default function RootNavigator() {
+export function RootNavigator() {
   const screenOptions = {
     headerShown: false,
     // Add navigation logging
     listeners: {
-      focus: (e: any) => {
+      focus: (e: { target?: string }) => {
         navigationLogger.debug('Screen focused', { screenName: e.target?.split('-')[0] });
       },
-      blur: (e: any) => {
+      blur: (e: { target?: string }) => {
         navigationLogger.debug('Screen blurred', { screenName: e.target?.split('-')[0] });
       },
     },
@@ -95,3 +95,4 @@ export default function RootNavigator() {
     </Stack.Navigator>
   );
 }
+export default RootNavigator;

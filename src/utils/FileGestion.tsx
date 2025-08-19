@@ -39,7 +39,7 @@ import pkg from '@app/package.json';
 import { initialRecipesImages } from '@utils/Constants';
 import { filesystemLogger } from '@utils/logger';
 
-export default class FileGestion {
+export class FileGestion {
   static #instance: FileGestion;
 
   protected _directoryName: string;
@@ -238,18 +238,11 @@ export default class FileGestion {
    * ```
    */
   public async backUpFile(uriToBackUp: string): Promise<string> {
-    // TODO remove return new Promise from codebase
-    return new Promise(async (resolve, reject) => {
-      const oldUriSplit = uriToBackUp.split('/');
-      const backUpUri = this.get_cacheUri() + oldUriSplit[oldUriSplit.length - 1];
+    const oldUriSplit = uriToBackUp.split('/');
+    const backUpUri = this.get_cacheUri() + oldUriSplit[oldUriSplit.length - 1];
 
-      try {
-        await this.copyFile(uriToBackUp, backUpUri);
-        resolve(backUpUri);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    await this.copyFile(uriToBackUp, backUpUri);
+    return backUpUri;
   }
 
   /**
@@ -327,3 +320,4 @@ export default class FileGestion {
 
   /* PROTECTED METHODS */
 }
+export default FileGestion;

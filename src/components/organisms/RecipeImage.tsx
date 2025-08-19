@@ -64,7 +64,7 @@ export type RecipeImageProps = {
  * @param props - The component props
  * @returns JSX element representing a recipe image with dynamic overlay button
  */
-export default function RecipeImage({ imgUri, openModal, buttonIcon }: RecipeImageProps) {
+export function RecipeImage({ imgUri, openModal, buttonIcon }: RecipeImageProps) {
   const [validUri, setValidUri] = React.useState(imgUri.length > 0);
 
   const imageTestID = 'RecipeImage';
@@ -109,3 +109,4 @@ const styles = StyleSheet.create({
     right: padding.small,
   },
 });
+export default RecipeImage;

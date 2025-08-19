@@ -46,9 +46,8 @@
  * ```
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, ListRenderItemInfo, SafeAreaView, ScrollView, View } from 'react-native';
-import { SearchScreenProp } from '@customTypes/ScreenTypes';
 import { ingredientTableElement, recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { listFilter, TListFilter } from '@customTypes/RecipeFiltersTypes';
 import {
@@ -76,10 +75,9 @@ import { searchLogger } from '@utils/logger';
 /**
  * Search screen component - Advanced recipe search with filtering
  *
- * @param props - Navigation props for the Search screen
  * @returns JSX element representing the comprehensive search interface
  */
-export default function Search({}: SearchScreenProp) {
+export function Search() {
   const { t } = useI18n();
   const { colors } = useTheme();
 
@@ -113,23 +111,26 @@ export default function Search({}: SearchScreenProp) {
    * - Logs performance metrics for search operations
    * - Triggers re-render of search results
    */
-  function updateFilteredRecipes(recipeArray: Array<recipeTableElement>) {
-    searchLogger.debug('Filtering recipes', {
-      totalRecipes: recipeArray.length,
-      activeFilters: Array.from(filtersState.entries()).map(([key, values]) => ({
-        filter: key,
-        values,
-      })),
-      searchPhrase: searchPhrase || 'none',
-    });
-    const recipesFiltered = filterFromRecipe(recipeArray, filtersState, t);
-    setFilteredRecipes([...recipesFiltered]);
-    extractTitleTagsAndIngredients(recipesFiltered);
-    searchLogger.debug('Recipe filtering completed', {
-      resultCount: recipesFiltered.length,
-      filteredPercentage: Math.round((recipesFiltered.length / recipeArray.length) * 100),
-    });
-  }
+  const updateFilteredRecipes = useCallback(
+    (recipeArray: Array<recipeTableElement>) => {
+      searchLogger.debug('Filtering recipes', {
+        totalRecipes: recipeArray.length,
+        activeFilters: Array.from(filtersState.entries()).map(([key, values]) => ({
+          filter: key,
+          values,
+        })),
+        searchPhrase: searchPhrase || 'none',
+      });
+      const recipesFiltered = filterFromRecipe(recipeArray, filtersState, t);
+      setFilteredRecipes([...recipesFiltered]);
+      extractTitleTagsAndIngredients(recipesFiltered);
+      searchLogger.debug('Recipe filtering completed', {
+        resultCount: recipesFiltered.length,
+        filteredPercentage: Math.round((recipesFiltered.length / recipeArray.length) * 100),
+      });
+    },
+    [filtersState, searchPhrase, t]
+  );
 
   /**
    * Extracts and updates searchable data from filtered recipes for UI suggestions
@@ -179,7 +180,7 @@ export default function Search({}: SearchScreenProp) {
    * This function bridges the global SeasonFilterContext with local filter state,
    * ensuring seasonal filtering works seamlessly with manual filter management.
    */
-  function checkIfUpdateOfSeasonFilterIsPossible() {
+  const checkIfUpdateOfSeasonFilterIsPossible = useCallback(() => {
     const seasonFilterKey = listFilter.inSeason;
     const seasonFilterValue = t(listFilter.inSeason);
 
@@ -191,21 +192,21 @@ export default function Search({}: SearchScreenProp) {
     else if (!seasonFilter && filtersState.size === 1 && filtersState.has(seasonFilterKey)) {
       removeAFilterToTheState(seasonFilterKey, seasonFilterValue);
     }
-  }
+  }, [seasonFilter, filtersState, t, addAFilterToTheState, removeAFilterToTheState]);
 
   useEffect(() => {
     checkIfUpdateOfSeasonFilterIsPossible();
     extractTitleTagsAndIngredients(filteredRecipes);
-  }, []);
+  }, [checkIfUpdateOfSeasonFilterIsPossible, filteredRecipes]);
 
   // TODO Double rendering can occur when filter update
   useEffect(() => {
     updateFilteredRecipes(filteredRecipes);
-  }, [filtersState]);
+  }, [filtersState, filteredRecipes, updateFilteredRecipes]);
 
   useEffect(() => {
     checkIfUpdateOfSeasonFilterIsPossible();
-  }, [seasonFilter]);
+  }, [seasonFilter, checkIfUpdateOfSeasonFilterIsPossible]);
 
   // TODO use a context instead
   // Update filtered recipes when a recipe is deleted
@@ -390,3 +391,5 @@ export default function Search({}: SearchScreenProp) {
     </SafeAreaView>
   );
 }
+
+export default Search;

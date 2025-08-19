@@ -58,7 +58,7 @@ export type CustomImageProps = {
  * @param props - The component props
  * @returns JSX element representing a themed image with loading handling
  */
-export default function CustomImage({
+export function CustomImage({
   uri,
   contentFit = 'cover',
   onLoadSuccess,
@@ -80,3 +80,5 @@ export default function CustomImage({
     </View>
   );
 }
+
+export default CustomImage;

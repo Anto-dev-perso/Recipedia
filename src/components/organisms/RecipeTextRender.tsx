@@ -104,13 +104,14 @@ export type RecipeTextRenderProps = {
   /** Unique identifier for testing and accessibility */
   testID: string;
 } & RecipeTextRenderReadOnlyOrAddOrEdit;
+
 /**
  * RecipeTextRender component for advanced recipe text rendering and editing
  *
  * @param textRenderProps - The component props with mode-specific configuration
  * @returns JSX element representing recipe text with optional editing capabilities
  */
-export default function RecipeTextRender(textRenderProps: RecipeTextRenderProps) {
+export function RecipeTextRender(textRenderProps: RecipeTextRenderProps) {
   return (
     <View style={recipeTextRenderStyles.containerSection}>
       {textRenderProps.type === 'readOnly' ? (
@@ -200,3 +201,5 @@ export default function RecipeTextRender(textRenderProps: RecipeTextRenderProps)
     </View>
   );
 }
+
+export default RecipeTextRender;

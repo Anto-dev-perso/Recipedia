@@ -89,13 +89,14 @@ export type TextRenderProps = {
   /** Configuration for edit mode functionality */
   editText?: editableText;
 };
+
 /**
  * TextRender component for multi-format text display and editing
  *
  * @param props - The component props
  * @returns JSX element representing formatted text content with optional editing capabilities
  */
-export default function TextRender(props: TextRenderProps) {
+export function TextRender(props: TextRenderProps) {
   const { t } = useI18n();
 
   function selectRender(renderChoice: typoRender) {
@@ -303,3 +304,5 @@ export default function TextRender(props: TextRenderProps) {
     </View>
   );
 }
+
+export default TextRender;

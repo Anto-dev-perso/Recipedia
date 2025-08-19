@@ -11,7 +11,7 @@ import RecipeDatabase from '@utils/RecipeDatabase';
 import { defaultPersonsSettingsLogger } from '@utils/logger';
 
 // TODO missing a back button on screen
-export default function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsProp) {
+export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsProp) {
   const { t } = useI18n();
   const { colors } = useTheme();
   const [persons, setPersons] = useState(-1);
@@ -132,3 +132,4 @@ const styles = StyleSheet.create({
     minWidth: screenWidth * 0.4,
   },
 });
+export default DefaultPersonsSettings;

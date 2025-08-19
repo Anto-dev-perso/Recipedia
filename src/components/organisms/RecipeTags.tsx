@@ -94,7 +94,7 @@ let tagsAddedCounter = 0;
  * @param tagsProps - The component props with mode-specific configuration
  * @returns JSX element representing a tag management interface
  */
-export default function RecipeTags(tagsProps: RecipeTagProps) {
+export function RecipeTags(tagsProps: RecipeTagProps) {
   const [newTags, setNewTags] = useState(new Array<number>());
   const [allTagsNamesSorted, setAllTagsNamesSorted] = useState(
     RecipeDatabase.getInstance()
@@ -195,3 +195,5 @@ export default function RecipeTags(tagsProps: RecipeTagProps) {
     </View>
   );
 }
+
+export default RecipeTags;

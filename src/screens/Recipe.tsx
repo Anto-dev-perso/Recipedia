@@ -105,7 +105,7 @@ import Alert, { AlertProps } from '@components/dialogs/Alert';
 import { getDefaultPersons } from '@utils/settings';
 import { scaleQuantityForPersons } from '@utils/Quantity';
 import SimilarityDialog, { SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
-import { recipeLogger, validationLogger, ocrLogger } from '@utils/logger';
+import { ocrLogger, recipeLogger, validationLogger } from '@utils/logger';
 
 /** Enum defining the four possible recipe interaction modes */
 export enum recipeStateType {
@@ -114,6 +114,14 @@ export enum recipeStateType {
   addManual,
   addOCR,
 }
+
+// Export enum values for external use - keeping for API compatibility
+export const recipeStates = {
+  readOnly: recipeStateType.readOnly,
+  edit: recipeStateType.edit,
+  addManual: recipeStateType.addManual,
+  addOCR: recipeStateType.addOCR,
+};
 
 /** Props for read-only recipe viewing */
 export type readRecipe = { mode: 'readOnly'; recipe: recipeTableElement };
@@ -140,8 +148,10 @@ const defaultSimilarityDialogPropsPicked: SimilarityDialogPropsPicked = {
   item: {
     type: 'Tag',
     newItemName: '',
-    onConfirm: tag => {
-      throw new Error('onConfirm callback calls on default prop. This should not be possible');
+    onConfirm: _tag => {
+      throw new Error(
+        `onConfirm callback calls on default prop (${_tag}). This should not be possible`
+      );
     },
   },
 };
@@ -162,7 +172,7 @@ const defaultValidationDialogProp: ValidationDialogProps = {
  * @param props - Navigation props containing route parameters and navigation functions
  * @returns JSX element representing the recipe management screen
  */
-export default function Recipe({ route, navigation }: RecipeScreenProp) {
+export function Recipe({ route, navigation }: RecipeScreenProp) {
   const { t } = useI18n();
 
   const { colors } = useTheme();
@@ -196,7 +206,7 @@ export default function Recipe({ route, navigation }: RecipeScreenProp) {
   const [imgForOCR, setImgForOCR] = useState(
     props.mode === 'addFromPic' ? new Array<string>(props.imgUri) : new Array<string>()
   );
-  const [randomTags, setRandomTags] = useState(
+  const [randomTags] = useState(
     RecipeDatabase.getInstance()
       .searchRandomlyTags(3)
       .map(element => element.name)
@@ -868,6 +878,7 @@ export default function Recipe({ route, navigation }: RecipeScreenProp) {
           };
         }
       // Else return the same props as edit or addManual
+      // falls through
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
@@ -906,6 +917,7 @@ export default function Recipe({ route, navigation }: RecipeScreenProp) {
           };
         }
       // Else return the same props as edit or addManual
+      // falls through
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
@@ -1042,6 +1054,7 @@ export default function Recipe({ route, navigation }: RecipeScreenProp) {
             },
           };
         }
+      // falls through
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
@@ -1087,6 +1100,7 @@ export default function Recipe({ route, navigation }: RecipeScreenProp) {
           };
         }
       // Else return the same props as edit or addManual
+      // falls through
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
@@ -1137,6 +1151,7 @@ export default function Recipe({ route, navigation }: RecipeScreenProp) {
           };
         }
       // Else return the same props as edit or addManual
+      // falls through
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
@@ -1297,3 +1312,5 @@ export default function Recipe({ route, navigation }: RecipeScreenProp) {
     </SafeAreaView>
   );
 }
+
+export default Recipe;

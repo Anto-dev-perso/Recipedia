@@ -51,7 +51,7 @@ import CustomImage from '@components/atomic/CustomImage';
 /**
  * Props for the RectangleCard component
  */
-type RectangleCardProps = {
+export type RectangleCardProps = {
   /** Recipe data to display in the card */
   recipe: recipeTableElement;
   /** Unique identifier for testing and accessibility */
@@ -64,7 +64,7 @@ type RectangleCardProps = {
  * @param props - The component props
  * @returns JSX element representing a large rectangular recipe card with detailed information
  */
-export default function RectangleCard(props: RectangleCardProps) {
+export function RectangleCard(props: RectangleCardProps) {
   const { navigate } = useNavigation<StackScreenNavigation>();
 
   return (
@@ -87,3 +87,5 @@ export default function RectangleCard(props: RectangleCardProps) {
     </Pressable>
   );
 }
+
+export default RectangleCard;

@@ -70,7 +70,7 @@ export type FiltersSelectionProps = {
  * @param props - The component props with filter state and management functions
  * @returns JSX element representing active filters with toggle functionality
  */
-export default function FiltersSelection({
+export function FiltersSelection({
   testId,
   filters,
   addingFilterMode,
@@ -117,3 +117,5 @@ export default function FiltersSelection({
     </>
   );
 }
+
+export default FiltersSelection;

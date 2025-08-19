@@ -60,7 +60,7 @@ export type RecipeRecommendationProps = {
  * @param props - The component props
  * @returns JSX element representing a titled section with recipe carousel
  */
-export default function RecipeRecommendation(props: RecipeRecommendationProps) {
+export function RecipeRecommendation(props: RecipeRecommendationProps) {
   const { fonts } = useTheme();
   return (
     <List.Section>
@@ -71,3 +71,5 @@ export default function RecipeRecommendation(props: RecipeRecommendationProps) {
     </List.Section>
   );
 }
+
+export default RecipeRecommendation;
