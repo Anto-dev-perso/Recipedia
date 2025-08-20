@@ -121,7 +121,7 @@ jobs:
           key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
 
       - name: Security audit
-        uses: oke-py/npm-audit-action@v2
+        uses: oke-py/npm-audit-action@v3
         with:
           audit_level: moderate
           create_issues: false
