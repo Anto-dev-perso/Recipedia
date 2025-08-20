@@ -159,7 +159,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Download APK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: build-apk
 
