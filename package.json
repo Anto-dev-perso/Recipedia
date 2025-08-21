@@ -34,11 +34,11 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx,js,jsx}": [
+    "{src,tests}/**/*.{ts,tsx,js,jsx}": [
       "prettier --write",
       "eslint --fix"
     ],
-    "src/**/*.{json,md}": [
+    "{src,tests}/**/*.{json,md}": [
       "prettier --write"
     ]
   },
