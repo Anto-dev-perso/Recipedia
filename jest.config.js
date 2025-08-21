@@ -18,6 +18,24 @@ module.exports = {
     ],
     coverageReporters: ['json', 'lcov', 'cobertura', 'text'],
     moduleNameMapper: {
-        '^fuse.js/dist/fuse.js$': '<rootDir>/node_modules/fuse.js/dist/fuse.js'
+        '^fuse.js/dist/fuse.js$': '<rootDir>/node_modules/fuse.js/dist/fuse.js',
+        '^@assets/(.*)$': '<rootDir>/src/assets/$1',
+        '^@components/(.*)$': '<rootDir>/src/components/$1',
+        '^@context/(.*)$': '<rootDir>/src/context/$1',
+        '^@navigation/(.*)$': '<rootDir>/src/navigation/$1',
+        '^@screens/(.*)$': '<rootDir>/src/screens/$1',
+        '^@styles/(.*)$': '<rootDir>/src/styles/$1',
+        '^@customTypes/(.*)$': '<rootDir>/src/customTypes/$1',
+        '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+        '^@test-data/(.*)$': '<rootDir>/tests/data/$1',
+        '^@mocks/(.*)$': '<rootDir>/tests/mocks/$1',
+        '^@translations/(.*)$': '<rootDir>/src/translations/$1',
+        '^@app/(.*)$': '<rootDir>/$1',
+        '^expo-font$': '<rootDir>/tests/mocks/deps/expo-font-mock',
+        '^react-native-paper$': '<rootDir>/tests/mocks/deps/react-native-paper-mock.tsx',
+        '^react-native-reanimated$': '<rootDir>/tests/mocks/deps/react-native-reanimated-mock.ts',
+        '^react-native-gesture-handler$': '<rootDir>/tests/mocks/deps/react-native-gesture-handler-mock',
+        '^@react-native-async-storage/async-storage$': '<rootDir>/tests/mocks/deps/async-storage-mock'
     },
+    setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
 };

@@ -260,9 +260,9 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
                     >
                       <FlatList
                         data={shoppingCategories}
-                        renderItem={({ item, index }) => (
+                        renderItem={({ item }) => (
                           <Menu.Item
-                            key={index}
+                            key={item}
                             title={t(item)}
                             onPress={() => {
                               setIngType(item);
@@ -292,24 +292,13 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
           )}
         </Dialog.Content>
         <Dialog.Actions>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Button
-              testID={modalTestId + '::CancelButton'}
-              mode={'outlined'}
-              onPress={handleDismiss}
-            >
+          <View style={styles.dialogActions}>
+            <Button testID={modalTestId + '::CancelButton'} mode='outlined' onPress={handleDismiss}>
               {t('cancel')}
             </Button>
             <Button
               testID={modalTestId + '::ConfirmButton'}
-              mode={'contained'}
+              mode='contained'
               onPress={handleConfirm}
               disabled={!itemName.trim()}
             >
@@ -330,6 +319,12 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     marginRight: padding.small,
+  },
+  dialogActions: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
 });
 export default ItemDialog;

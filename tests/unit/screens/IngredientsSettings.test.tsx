@@ -1,150 +1,174 @@
 import React from 'react';
-import {fireEvent, render, waitFor} from '@testing-library/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import IngredientsSettings from '@screens/IngredientsSettings';
-import {ingredientTableElement, ingredientType, isIngredientEqual} from '@customTypes/DatabaseElementTypes';
-import {mockNavigationFunctions} from "@mocks/deps/react-navigation-mock";
-import RecipeDatabase from "@utils/RecipeDatabase";
-import {ingredientsDataset} from "@test-data/ingredientsDataset";
-import {tagsDataset} from "@test-data/tagsDataset";
-import {recipesDataset} from "@test-data/recipesDataset";
-import {QueryByQuery} from "@testing-library/react-native/build/queries/make-queries";
-import {CommonQueryOptions, TextMatchOptions} from '@testing-library/react-native/build/queries/options';
-import {TextMatch} from "@testing-library/react-native/build/matches";
-import {DialogMode} from "@components/dialogs/ItemDialog";
-
+import {
+  ingredientTableElement,
+  ingredientType,
+  isIngredientEqual,
+} from '@customTypes/DatabaseElementTypes';
+import { mockNavigationFunctions } from '@mocks/deps/react-navigation-mock';
+import RecipeDatabase from '@utils/RecipeDatabase';
+import { ingredientsDataset } from '@test-data/ingredientsDataset';
+import { tagsDataset } from '@test-data/tagsDataset';
+import { recipesDataset } from '@test-data/recipesDataset';
+import { QueryByQuery } from '@testing-library/react-native/build/queries/make-queries';
+import {
+  CommonQueryOptions,
+  TextMatchOptions,
+} from '@testing-library/react-native/build/queries/options';
+import { TextMatch } from '@testing-library/react-native/build/matches';
+import { DialogMode } from '@components/dialogs/ItemDialog';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
-jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
+jest.mock('@utils/FileGestion', () =>
+  require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
+);
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
-jest.mock('@components/organisms/SettingsItemList', () => require('@mocks/components/organisms/SettingsItemList-mock').settingsItemListMock);
-jest.mock('@components/dialogs/ItemDialog', () => require('@mocks/components/dialogs/ItemDialog-mock').itemDialogMock);
+jest.mock(
+  '@components/organisms/SettingsItemList',
+  () => require('@mocks/components/organisms/SettingsItemList-mock').settingsItemListMock
+);
+jest.mock(
+  '@components/dialogs/ItemDialog',
+  () => require('@mocks/components/dialogs/ItemDialog-mock').itemDialogMock
+);
 
 const mockRoute = {
-    key: 'IngredientsSettings',
-    name: 'IngredientsSettings',
-    params: {}
+  key: 'IngredientsSettings',
+  name: 'IngredientsSettings',
+  params: {},
 };
 
 const defaultProps = {
-    navigation: mockNavigationFunctions,
-    route: mockRoute
+  navigation: mockNavigationFunctions,
+  route: mockRoute,
 } as any;
 
 type QueryByIdType = QueryByQuery<TextMatch, CommonQueryOptions & TextMatchOptions>;
 
-function dialogIsNotOpen(queryByTestId: QueryByIdType) {
-    expect(queryByTestId('IngredientsSettings::ItemDialog::Mode')).toBeNull();
-    expect(queryByTestId('IngredientsSettings::ItemDialog::OnClose')).toBeNull();
-    expect(queryByTestId('IngredientsSettings::ItemDialog::Item')).toBeNull();
+function dialogIsNotOpen(getByTestId: QueryByIdType) {
+  expect(getByTestId('IngredientsSettings::ItemDialog::IsVisible').props.children).toEqual(false);
+  expect(getByTestId('IngredientsSettings::ItemDialog::Mode')).toBeTruthy();
+  expect(getByTestId('IngredientsSettings::ItemDialog::OnClose')).toBeTruthy();
+  expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
 }
 
 function dialogIsOpen(item: ingredientTableElement, mode: DialogMode, getByTestId: QueryByIdType) {
-    expect(getByTestId('IngredientsSettings::ItemDialog::Mode').props.children).toEqual(["   ", mode, "        "]);
-    expect(getByTestId('IngredientsSettings::ItemDialog::OnClose')).toBeTruthy();
+  expect(getByTestId('IngredientsSettings::ItemDialog::IsVisible').props.children).toEqual(true);
+  expect(getByTestId('IngredientsSettings::ItemDialog::Mode').props.children).toEqual(mode);
+  expect(getByTestId('IngredientsSettings::ItemDialog::OnClose')).toBeTruthy();
 
-    expect(getByTestId('IngredientsSettings::ItemDialog::Item::Type').props.children).toEqual('ingredient');
-    expect(getByTestId('IngredientsSettings::ItemDialog::Item::Value').props.children).toEqual(JSON.stringify(item));
-    expect(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm')).toBeTruthy();
+  expect(getByTestId('IngredientsSettings::ItemDialog::Item::Type').props.children).toEqual(
+    'Ingredient'
+  );
+  expect(getByTestId('IngredientsSettings::ItemDialog::Item::Value').props.children).toEqual(
+    JSON.stringify(item)
+  );
+  expect(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm')).toBeTruthy();
 }
 
 describe('IngredientsSettings Screen', () => {
+  const db = RecipeDatabase.getInstance();
 
-    const db = RecipeDatabase.getInstance();
+  let sortedDataset = ingredientsDataset;
 
-    let sortedDataset = ingredientsDataset;
+  beforeEach(async () => {
+    jest.clearAllMocks();
 
-    beforeEach(async () => {
-        jest.clearAllMocks();
+    await db.init();
+    await db.addMultipleIngredients(ingredientsDataset);
+    await db.addMultipleTags(tagsDataset);
+    await db.addMultipleRecipes(recipesDataset);
+    await db.addMultipleShopping(recipesDataset);
 
-        await db.init();
-        await db.addMultipleIngredients(ingredientsDataset);
-        await db.addMultipleTags(tagsDataset);
-        await db.addMultipleRecipes(recipesDataset);
-        await db.addMultipleShopping(recipesDataset);
+    sortedDataset = [...db.get_ingredients()].sort((a, b) => a.name.localeCompare(b.name));
+  });
 
-        sortedDataset = [...db.get_ingredients()].sort((a, b) => a.name.localeCompare(b.name));
+  afterEach(async () => {
+    await db.reset();
+  });
+
+  test('renders correctly with initial tags', () => {
+    const { getByTestId, queryByTestId } = render(<IngredientsSettings {...defaultProps} />);
+
+    expect(getByTestId('IngredientsSettings::SettingsItemList::Type').props.children).toEqual(
+      'ingredient'
+    );
+    expect(getByTestId('IngredientsSettings::SettingsItemList::Items').props.children).toEqual(
+      JSON.stringify(sortedDataset)
+    );
+    expect(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress')).toBeTruthy();
+    expect(getByTestId('IngredientsSettings::SettingsItemList::OnEdit')).toBeTruthy();
+    expect(getByTestId('IngredientsSettings::SettingsItemList::OnDelete')).toBeTruthy();
+
+    dialogIsNotOpen(getByTestId);
+  });
+
+  test('opens add dialog when add button is pressed and save value', async () => {
+    const { getByTestId } = render(<IngredientsSettings {...defaultProps} />);
+    fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress'));
+
+    await waitFor(() => {
+      expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
     });
 
-    afterEach(async () => {
-        await db.reset();
+    dialogIsOpen(sortedDataset[0], 'add', getByTestId);
+
+    fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
+
+    await waitFor(() => {
+      expect(db.get_ingredients().length).toEqual(sortedDataset.length + 1);
+    });
+    const expectedIngredient: ingredientTableElement = {
+      id: 38,
+      name: 'New Value',
+      season: ['5', '6', '7', '8', '9', '10'],
+      type: ingredientType.fruit,
+      unit: 'g',
+    };
+    expect(db.get_ingredients()[db.get_ingredients().length - 1]).toEqual(expectedIngredient);
+  });
+
+  test('opens edit dialog when edit button is pressed and save value', async () => {
+    const { getByTestId } = render(<IngredientsSettings {...defaultProps} />);
+    fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnEdit'));
+
+    await waitFor(() => {
+      expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
     });
 
-    test('renders correctly with initial tags', () => {
-        const {getByTestId, queryByTestId} = render(
-            <IngredientsSettings {...defaultProps} />
-        );
+    dialogIsOpen(sortedDataset[0], 'edit', getByTestId);
 
-        expect(getByTestId('IngredientsSettings::SettingsItemList::Type').props.children).toEqual(["   ", "ingredient", "        "]);
-        expect(getByTestId('IngredientsSettings::SettingsItemList::Items').props.children).toEqual(JSON.stringify(sortedDataset));
-        expect(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress')).toBeTruthy();
-        expect(getByTestId('IngredientsSettings::SettingsItemList::OnEdit')).toBeTruthy();
-        expect(getByTestId('IngredientsSettings::SettingsItemList::OnDelete')).toBeTruthy();
+    fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
 
-        dialogIsNotOpen(queryByTestId);
+    await waitFor(() => {
+      expect(
+        db.get_ingredients().find(ingredient => isIngredientEqual(ingredient, sortedDataset[0]))
+      ).toBeUndefined();
+    });
+    const newIngredient = db
+      .get_ingredients()
+      .find(ingredient => ingredient.id === sortedDataset[0].id);
+    expect(newIngredient?.name).toEqual('New Value');
+  });
+
+  test('opens delete dialog when delete button is pressed and save value', async () => {
+    const { getByTestId } = render(<IngredientsSettings {...defaultProps} />);
+    fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnDelete'));
+
+    await waitFor(() => {
+      expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
     });
 
-    test('opens add dialog when add button is pressed and save value', async () => {
-        const {getByTestId} = render(
-            <IngredientsSettings {...defaultProps} />
-        );
-        fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress'));
+    dialogIsOpen(sortedDataset[0], 'delete', getByTestId);
 
-        await waitFor(() => {
-            expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
-        });
+    fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
 
-        dialogIsOpen(sortedDataset[0], 'add', getByTestId);
-
-        fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
-
-        await waitFor(() => {
-            expect(db.get_ingredients().length).toEqual(sortedDataset.length + 1);
-        });
-        const expectedIngredient: ingredientTableElement = {
-            id: 38, name: "New Value", season: ["5", "6", "7", "8", "9", "10"], type: ingredientType.fruit, unit: "g"
-        };
-        expect(db.get_ingredients()[db.get_ingredients().length - 1]).toEqual(expectedIngredient);
+    await waitFor(() => {
+      expect(db.get_ingredients().length).toEqual(sortedDataset.length - 1);
     });
-
-    test('opens edit dialog when edit button is pressed and save value', async () => {
-        const {getByTestId,} = render(
-            <IngredientsSettings {...defaultProps} />
-        );
-        fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnEdit'));
-
-        await waitFor(() => {
-            expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
-        });
-
-        dialogIsOpen(sortedDataset[0], 'edit', getByTestId,);
-
-        fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
-
-        await waitFor(() => {
-            expect(db.get_ingredients().find(ingredient => isIngredientEqual(ingredient, sortedDataset[0]))).toBeUndefined()
-        });
-        const newIngredient = db.get_ingredients().find(ingredient => ingredient.id === sortedDataset[0].id);
-        expect(newIngredient?.name).toEqual("New Value");
-    });
-
-    test('opens delete dialog when delete button is pressed and save value', async () => {
-        const {getByTestId} = render(
-            <IngredientsSettings {...defaultProps} />
-        );
-        fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnDelete'));
-
-        await waitFor(() => {
-            expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
-        });
-
-        dialogIsOpen(sortedDataset[0], 'delete', getByTestId);
-
-        fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
-
-        await waitFor(() => {
-            expect(db.get_ingredients().length).toEqual(sortedDataset.length - 1);
-        });
-        expect(db.get_ingredients().find(ingredient => isIngredientEqual(ingredient, sortedDataset[0]))).toBeUndefined();
-    });
-
+    expect(
+      db.get_ingredients().find(ingredient => isIngredientEqual(ingredient, sortedDataset[0]))
+    ).toBeUndefined();
+  });
 });

@@ -20,7 +20,6 @@ import {
   TListFilter,
 } from '@customTypes/RecipeFiltersTypes';
 import { TFunction } from 'i18next';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import { searchLogger } from '@utils/logger';
 
 /**
@@ -165,7 +164,7 @@ export function filterFromRecipe(
   t: TFunction<'translation', undefined>
 ): Array<recipeTableElement> {
   if (filter.size == 0) {
-    return RecipeDatabase.getInstance().get_recipes();
+    return recipeArray;
   }
   return new Array<recipeTableElement>(
     ...recipeArray.filter(recipe => {
@@ -407,7 +406,7 @@ export function removeTitleInMultimap(multimap: Map<TListFilter, Array<string>>)
  */
 export function retrieveAllFilters(filters: Map<TListFilter, Array<string>>): Array<string> {
   const allFilters = new Array<string>();
-  for (const [_, value] of filters) {
+  for (const value of filters.values()) {
     allFilters.push(...value);
   }
   return allFilters;

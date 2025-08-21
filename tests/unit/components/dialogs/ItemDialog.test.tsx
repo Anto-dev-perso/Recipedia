@@ -10,7 +10,6 @@ jest.mock('@components/atomic/CustomTextInput', () => require("@mocks/components
 
 jest.mock('@components/molecules/SeasonalityCalendar', () => require("@mocks/components/molecules/SeasonalityCalendar-mock").seasonalityCalendarMock);
 
-jest.mock('react-native-paper', () => require("@mocks/deps/react-native-paper-mock").reactNativePaperMock);
 
 describe('ItemDialog Component', () => {
     // Test data
@@ -35,14 +34,56 @@ describe('ItemDialog Component', () => {
         jest.clearAllMocks();
     });
 
+    test('does not render when isVisible is false', () => {
+        const props: ItemDialogProps = {
+            testId: 'IngredientDialog',
+            mode: 'add',
+            isVisible: false,
+            onClose: mockOnClose,
+            item: {
+                type: 'Ingredient',
+                value: mockIngredient,
+                onConfirmIngredient: mockOnConfirmIngredient
+            }
+        };
+
+        const { queryByTestId } = render(<ItemDialog {...props} />);
+
+        // When isVisible is false, dialog elements should not be present
+        expect(queryByTestId('IngredientDialog::AddModal::Title')).toBeNull();
+        expect(queryByTestId('IngredientDialog::AddModal::CancelButton')).toBeNull();
+        expect(queryByTestId('IngredientDialog::AddModal::ConfirmButton')).toBeNull();
+    });
+
+    test('renders when isVisible is true', () => {
+        const props: ItemDialogProps = {
+            testId: 'IngredientDialog',
+            mode: 'add',
+            isVisible: true,
+            onClose: mockOnClose,
+            item: {
+                type: 'Ingredient',
+                value: mockIngredient,
+                onConfirmIngredient: mockOnConfirmIngredient
+            }
+        };
+
+        const { getByTestId } = render(<ItemDialog {...props} />);
+
+        // When isVisible is true, dialog elements should be present
+        expect(getByTestId('IngredientDialog::AddModal::Title')).toBeTruthy();
+        expect(getByTestId('IngredientDialog::AddModal::CancelButton')).toBeTruthy();
+        expect(getByTestId('IngredientDialog::AddModal::ConfirmButton')).toBeTruthy();
+    });
 
     describe('ingredient dialog ', () => {
         const props: ItemDialogProps = {
             testId: 'IngredientDialog',
             mode: 'add',
+            isVisible: true,
             onClose: mockOnClose,
             item: {
-                type: 'ingredient',
+                type: 'Ingredient',
                 value: mockIngredient,
                 onConfirmIngredient: mockOnConfirmIngredient
             }
@@ -156,9 +197,10 @@ describe('ItemDialog Component', () => {
         const props: ItemDialogProps = {
             testId: 'TagDialog',
             mode: 'add',
+            isVisible: true,
             onClose: mockOnClose,
             item: {
-                type: 'tag',
+                type: 'Tag',
                 value: mockTag,
                 onConfirmTag: mockOnConfirmTag
             }
@@ -277,9 +319,10 @@ describe('ItemDialog Component', () => {
         const props: ItemDialogProps = {
             testId: 'IngredientDialog',
             mode: 'add',
+            isVisible: true,
             onClose: mockOnClose,
             item: {
-                type: 'ingredient',
+                type: 'Ingredient',
                 value: mockIngredient,
                 onConfirmIngredient: mockOnConfirmIngredient
             }
@@ -298,9 +341,10 @@ describe('ItemDialog Component', () => {
         const props: ItemDialogProps = {
             testId: 'IngredientDialog',
             mode: 'add',
+            isVisible: true,
             onClose: mockOnClose,
             item: {
-                type: 'ingredient',
+                type: 'Ingredient',
                 value: mockIngredient,
                 onConfirmIngredient: mockOnConfirmIngredient
             }
@@ -319,9 +363,10 @@ describe('ItemDialog Component', () => {
         const props: ItemDialogProps = {
             testId: 'IngredientDialog',
             mode: 'edit',
+            isVisible: true,
             onClose: mockOnClose,
             item: {
-                type: 'ingredient',
+                type: 'Ingredient',
                 value: mockIngredient,
                 onConfirmIngredient: mockOnConfirmIngredient
             }
@@ -339,9 +384,10 @@ describe('ItemDialog Component', () => {
         const props: ItemDialogProps = {
             testId: 'IngredientDialog',
             mode: 'delete',
+            isVisible: true,
             onClose: mockOnClose,
             item: {
-                type: 'ingredient',
+                type: 'Ingredient',
                 value: mockIngredient,
                 onConfirmIngredient: mockOnConfirmIngredient
             }

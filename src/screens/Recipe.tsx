@@ -1008,6 +1008,20 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           },
         };
       case recipeStateType.addOCR:
+        if (recipePersons === defaultValueNumber) {
+          return {
+            testID: personTestID,
+            numberProps: {
+              editType: 'add',
+              prefixText: t('personPrefixOCR'),
+              openModal: () => openModalForField(recipeColumnsNames.persons),
+              manuallyFill: () => {
+                setRecipePersons(0);
+              },
+            },
+          };
+        }
+      // falls through
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {

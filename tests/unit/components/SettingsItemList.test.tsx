@@ -11,7 +11,6 @@ jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 // Mock SettingsItemCard component
 jest.mock('@components/molecules/SettingsItemCard', () => require('@mocks/components/molecules/SettingsItemCard-mock').settingsItemCardMock);
 
-jest.mock('react-native-paper', () => require('@mocks/deps/react-native-paper-mock').reactNativePaperMock);
 
 describe('SettingsItemList Component', () => {
     const mockTags = [

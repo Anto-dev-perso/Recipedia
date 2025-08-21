@@ -44,6 +44,11 @@ export default {
 
   persons: 'persons',
 
+  recipeCard: {
+    prepTime: '{{time}} min',
+    persons: '{{count}} persons',
+  },
+
   preparationTimes: {
     noneToTen: '0-10 min',
     tenToFifteen: '10-15 min',

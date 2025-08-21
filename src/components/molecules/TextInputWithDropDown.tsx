@@ -99,6 +99,25 @@ export type TextInputWithDropDownType = {
  * @returns JSX element representing an autocomplete text input with dropdown suggestions
  */
 export function TextInputWithDropDown(props: TextInputWithDropDownType) {
+  /**
+   * Filters the reference array based on user input with case-insensitive matching
+   *
+   * This function implements the core autocomplete filtering logic, providing
+   * case-insensitive substring matching against the reference text array.
+   * It's the foundation of the dropdown suggestion system.
+   *
+   * @param filterText - The text input to filter against
+   * @returns Array<string> - Filtered array of matching suggestions
+   */
+  const filterArray = useCallback(
+    (filterText: string): Array<string> => {
+      return props.referenceTextArray.filter(element =>
+        element.toLowerCase().includes(filterText.toLowerCase())
+      );
+    },
+    [props.referenceTextArray]
+  );
+
   const [textInput, setTextInput] = useState(props.value ?? '');
   const [filteredTextArray, setFilteredTextArray] = useState(
     props.value ? filterArray(props.value) : props.referenceTextArray
@@ -135,40 +154,6 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
       keyboardListener.remove();
     };
   }, [textInput, showDropdown, handleSubmitEditing]);
-
-  /**
-   * Filters the reference array based on user input with case-insensitive matching
-   *
-   * This function implements the core autocomplete filtering logic, providing
-   * case-insensitive substring matching against the reference text array.
-   * It's the foundation of the dropdown suggestion system.
-   *
-   * @param filterText - The text input to filter against
-   * @returns Array<string> - Filtered array of matching suggestions
-   *
-   * Filtering Logic:
-   * - Converts both input and reference text to lowercase for comparison
-   * - Uses includes() for substring matching (not just prefix matching)
-   * - Returns all items that contain the filter text anywhere in the string
-   *
-   * Performance:
-   * - Efficient array filtering with single pass
-   * - Case conversion only when needed
-   * - Optimized for real-time filtering during typing
-   *
-   * Use Cases:
-   * - Real-time dropdown suggestion filtering
-   * - Supports partial word matching for better UX
-   * - Works with any string array reference data
-   */
-  const filterArray = useCallback(
-    (filterText: string): Array<string> => {
-      return props.referenceTextArray.filter(element =>
-        element.toLowerCase().includes(filterText.toLowerCase())
-      );
-    },
-    [props.referenceTextArray]
-  );
 
   function handleSelect(text: string) {
     setTextInput(text);

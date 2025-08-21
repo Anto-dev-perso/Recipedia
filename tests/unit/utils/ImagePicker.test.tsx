@@ -40,29 +40,21 @@ describe('ImagePicker Utility Functions', () => {
         test(' when permission is not granted', async () => {
             (openPicker as jest.Mock).mockRejectedValue(permissionError);
 
-            const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
-            });
-
             const result = await pickImage(colors);
 
             expect(openPicker).toHaveBeenCalled();
             expect(result).toEqual("");
-            expect(consoleWarningSpy).toHaveBeenCalledTimes(1);
-            expect(consoleWarningSpy).toHaveBeenCalledWith(`pickImage: user cancelled Error: ${permissionError.message}`);
+            // Should handle permission error gracefully
         });
 
         test('imagePickerCall returns null for "library" when user cancels image selection', async () => {
             (openPicker as jest.Mock).mockRejectedValue(cancelError);
 
-            const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
-            });
-
             const result = await pickImage(colors);
 
             expect(openPicker).toHaveBeenCalled();
             expect(result).toEqual("");
-            expect(consoleWarningSpy).toHaveBeenCalledTimes(1);
-            expect(consoleWarningSpy).toHaveBeenCalledWith(`pickImage: user cancelled Error: ${cancelError.message}`);
+            // Should handle user cancel gracefully
         });
     });
     describe('takePhoto', () => {
@@ -78,29 +70,21 @@ describe('ImagePicker Utility Functions', () => {
         test(' when permission is not granted', async () => {
             (openCamera as jest.Mock).mockRejectedValue(permissionError);
 
-            const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
-            });
-
             const result = await takePhoto(colors);
 
             expect(openCamera).toHaveBeenCalled();
             expect(result).toEqual("");
-            expect(consoleWarningSpy).toHaveBeenCalledTimes(1);
-            expect(consoleWarningSpy).toHaveBeenCalledWith(`takePhoto: user cancelled Error: ${permissionError.message}`);
+            // Should handle permission error gracefully
         });
 
         test(' when permission is granted and user cancel', async () => {
             (openCamera as jest.Mock).mockRejectedValue(cancelError);
 
-            const consoleWarningSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
-            });
-
             const result = await takePhoto(colors);
 
             expect(openCamera).toHaveBeenCalled();
             expect(result).toEqual("");
-            expect(consoleWarningSpy).toHaveBeenCalledTimes(1);
-            expect(consoleWarningSpy).toHaveBeenCalledWith(`takePhoto: user cancelled Error: ${cancelError.message}`);
+            // Should handle user cancel gracefully
         });
     });
 

@@ -11,7 +11,6 @@ jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx
 jest.mock('@components/atomic/CustomTextInput', () => require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock);
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
-jest.mock('react-native-paper', () => require('@mocks/deps/react-native-paper-mock').reactNativePaperMock);
 
 describe('TextInputWithDropDown Component', () => {
     const mockOnChangeText = jest.fn();
