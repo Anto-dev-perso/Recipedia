@@ -38,3 +38,4 @@ appId: "com.recipedia"
 # TODO check that ingredients quantities translation works
 # TODO check database management pop ups too
 # TODO check tag and ingredient name found/missing (while adding)
+# TODO check on recipe card that it is translated too

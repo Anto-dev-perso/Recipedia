@@ -38,6 +38,7 @@ import { View } from 'react-native';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
 import { useNavigation } from '@react-navigation/native';
+import { useI18n } from '@utils/i18n';
 
 /**
  * Props for the RecipeCard component
@@ -60,7 +61,7 @@ export type RecipeCardProps = {
 export function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
-
+  const { t } = useI18n();
   const cardWidth = screenWidth * (size == 'small' ? 0.35 : 0.45);
   const radius = cardWidth / 12;
 
@@ -98,8 +99,8 @@ export function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
       />
       {size == 'medium' && (
         <View>
-          <Card.Content testID={testId + '::Content'} style={{ padding: padding.medium }}>
-            <Text style={{ color: colors.primary }} numberOfLines={1}>
+          <Card.Content style={{ padding: padding.medium }}>
+            <Text style={{ color: colors.primary }} numberOfLines={1} testID={testId + '::Content'}>
               {recipe.tags.map(tag => tag.name).join(', ')}
             </Text>
           </Card.Content>
@@ -110,14 +111,14 @@ export function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
                 variant={'bodySmall'}
                 style={{ marginLeft: -padding.verySmall }}
               >
-                Prep. {recipe.time} min
+                {t('recipeCard.prepTime', { time: recipe.time })}
               </Text>
               <Text
-                testID={testId + '::PrepTime'}
+                testID={testId + '::Persons'}
                 variant={'bodySmall'}
                 style={{ marginRight: -padding.verySmall }}
               >
-                {recipe.persons} p.
+                {t('recipeCard.persons', { count: recipe.persons })}
               </Text>
             </View>
           </Card.Actions>

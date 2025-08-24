@@ -16,10 +16,30 @@ export function i18nMock() {
     timePrefixEdit: 'timePrefixEdit',
     preparationReadOnly: 'preparationReadOnly',
     timeSuffixEdit: 'min',
+    'recipeCard.prepTime': 'Prep. {{time}} min',
+    'recipeCard.persons': '{{count}} p.',
+    'filters.tags': 'filters.tags',
+    'filters.vegetables': 'filters.vegetables',
+    'filters.fruits': 'filters.fruits',
+    'filters.meat': 'filters.meat',
+    tags: 'filters.tags',
+    vegetables: 'filters.vegetables',
+    fruits: 'filters.fruits',
+    meat: 'filters.meat',
+    searchRecipeTitle: 'searchRecipeTitle',
   };
   return {
     useI18n: () => ({
-      t: (key: string) => translations[key] ?? key, // Return translation or key as fallback
+      t: (key: string, params?: Record<string, any>) => {
+        let translation = translations[key] ?? key;
+        if (params) {
+          // Replace {{param}} with actual values
+          Object.entries(params).forEach(([paramKey, value]) => {
+            translation = translation.replace(new RegExp(`{{${paramKey}}}`, 'g'), String(value));
+          });
+        }
+        return translation;
+      },
       getLocale: () => jest.fn().mockReturnValue('en'),
       setLocale: mockSetLocale,
       getAvailableLocales: jest.fn().mockReturnValue(['en', 'fr']),
