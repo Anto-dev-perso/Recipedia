@@ -160,23 +160,30 @@ export function FilterAccordion({
   const accordionId = testId + '::FilterAccordion';
 
   const renderAccordion = ({ item, index }: ListRenderItemInfo<FiltersAppliedToDatabase>) => {
-    const filterId = accordionId + `Accordion::${index}`;
+    const filterId = accordionId + `::Accordion::${index}`;
     const filter = item.title;
 
-    const renderItems = ({ item, index }: ListRenderItemInfo<string>) => (
-      <View key={item} style={{ width: '50%' }}>
-        <List.Item
-          testID={filterId + `::Item::${index}`}
-          title={item}
-          titleNumberOfLines={2}
-          style={{ paddingHorizontal: padding.verySmall }}
-          onPress={() => handlePress(filter, item)}
-          left={props => (
-            <Checkbox {...props} status={isSelected(filter, item) ? 'checked' : 'unchecked'} />
-          )}
-        />
-      </View>
-    );
+    const renderItems = ({ item, index }: ListRenderItemInfo<string>) => {
+      const testId = filterId + `::Item::${index}`;
+      return (
+        <View key={item} style={{ width: '50%' }}>
+          <List.Item
+            testID={testId}
+            title={item}
+            titleNumberOfLines={2}
+            style={{ paddingHorizontal: padding.verySmall }}
+            onPress={() => handlePress(filter, item)}
+            left={props => (
+              <Checkbox
+                testID={testId + '::CheckBox'}
+                {...props}
+                status={isSelected(filter, item) ? 'checked' : 'unchecked'}
+              />
+            )}
+          />
+        </View>
+      );
+    };
 
     return (
       <View key={item.title}>
