@@ -63,8 +63,24 @@ Menu.Item = props => (
 
 export const Portal: React.FC<any> = props => <View testID={props.testID}>{props.children}</View>;
 
+export const Modal: React.FC<any> = props => {
+  if (!props.visible) {
+    return null;
+  }
+  return (
+    <View testID={props.testID} style={props.contentContainerStyle}>
+      {props.children}
+    </View>
+  );
+};
+
 export const Text: React.FC<any> = props => (
-  <RNText testID={props.testID} style={props.style} numberOfLines={props.numberOfLines}>
+  <RNText
+    testID={props.testID}
+    style={props.style}
+    numberOfLines={props.numberOfLines}
+    {...{ variant: props.variant }}
+  >
     {props.children}
   </RNText>
 );

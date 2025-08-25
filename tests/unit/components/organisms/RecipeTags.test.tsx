@@ -35,11 +35,15 @@ describe('RecipeTags Component', () => {
     it('renders a HorizontalList showing the provided tags', () => {
       const { getByTestId } = render(<RecipeTags type='readOnly' tagsList={sampleTags} />);
 
-      expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
-      expect(getByTestId('HorizontalList::Item').props.children).toEqual(
-        JSON.stringify(sampleTags)
+      expect(getByTestId('RecipeTags::PropType').props.children).toEqual('Tag');
+      expect(getByTestId('RecipeTags::ItemCount').props.children).toEqual(
+        sampleTags.length.toString()
       );
-      expect(getByTestId('HorizontalList::Icon').props.children).toBeUndefined();
+
+      sampleTags.forEach((tag, index) => {
+        expect(getByTestId(`RecipeTags::Item::${index}::Uri`).props.children).toEqual(tag);
+      });
+      expect(getByTestId('RecipeTags::Icon').props.children).toBeUndefined();
       expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
     });
   });
@@ -83,11 +87,15 @@ describe('RecipeTags Component', () => {
         expect(getByTestId('RecipeTags::HeaderText')).toBeTruthy();
         expect(getByTestId('RecipeTags::ElementText').props.children).toContain(randomTags);
 
-        expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
-        expect(getByTestId('HorizontalList::Item').props.children).toEqual(
-          JSON.stringify(defaultProps.tagsList)
+        expect(getByTestId('RecipeTags::PropType').props.children).toEqual('Tag');
+        expect(getByTestId('RecipeTags::ItemCount').props.children).toEqual(
+          defaultProps.tagsList.length.toString()
         );
-        expect(getByTestId('HorizontalList::Icon').props.children).toEqual('close');
+
+        defaultProps.tagsList.forEach((tag, index) => {
+          expect(getByTestId(`RecipeTags::Item::${index}::Uri`).props.children).toEqual(tag);
+        });
+        expect(getByTestId('RecipeTags::Icon').props.children).toEqual('close');
         expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
 
         expect(getByTestId('RecipeTags::RoundButton::Icon').props.children).toEqual('plus');
@@ -210,11 +218,15 @@ describe('RecipeTags Component', () => {
         expect(getByTestId('RecipeTags::HeaderText')).toBeTruthy();
         expect(getByTestId('RecipeTags::ElementText').props.children).toContain(randomTags);
 
-        expect(getByTestId('HorizontalList::PropType').props.children).toEqual('Tag');
-        expect(getByTestId('HorizontalList::Item').props.children).toEqual(
-          JSON.stringify(defaultProps.tagsList)
+        expect(getByTestId('RecipeTags::PropType').props.children).toEqual('Tag');
+        expect(getByTestId('RecipeTags::ItemCount').props.children).toEqual(
+          defaultProps.tagsList.length.toString()
         );
-        expect(getByTestId('HorizontalList::Icon').props.children).toEqual('close');
+
+        defaultProps.tagsList.forEach((tag, index) => {
+          expect(getByTestId(`RecipeTags::Item::${index}::Uri`).props.children).toEqual(tag);
+        });
+        expect(getByTestId('RecipeTags::Icon').props.children).toEqual('close');
         expect(getByTestId('HorizontalList::OnPress')).toBeTruthy();
 
         expect(getByTestId('RecipeTags::RoundButton::Icon').props.children).toEqual('plus');
