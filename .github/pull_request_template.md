@@ -24,6 +24,7 @@ Closes #<!-- issue number -->
 ## 🧪 Testing
 
 ### Test Plan
+
 <!-- Describe how you tested these changes -->
 
 - [ ] Unit tests pass (`npm run test:unit`)
@@ -32,6 +33,7 @@ Closes #<!-- issue number -->
 - [ ] Manual testing completed
 
 ### Test Coverage
+
 <!-- If applicable, describe what testing was added -->
 
 - [ ] Added unit tests for new functionality
@@ -39,94 +41,29 @@ Closes #<!-- issue number -->
 - [ ] No tests needed for this change
 
 ### Manual Testing Checklist
+
 <!-- Check all that apply -->
 
-- [ ] Tested on Android
-- [ ] Tested on iOS
-- [ ] Tested in development mode
-- [ ] Tested recipe creation/editing
-- [ ] Tested search functionality
-- [ ] Tested shopping list features
-- [ ] Tested OCR functionality (if applicable)
-- [ ] Tested settings and navigation
-
-## 📱 Platform Testing
-
-### Android
 - [ ] Tested on Android emulator
 - [ ] Tested on physical Android device
-- [ ] N/A
-
-### iOS
-- [ ] Tested on iOS simulator
+- [ ] Tested on iOS
 - [ ] Tested on physical iOS device
-- [ ] N/A
 
 ## 📸 Screenshots/Videos
 
 <!-- If your changes affect the UI, please provide screenshots or videos -->
 
 ### Before
+
 <!-- Screenshots of the current behavior (if applicable) -->
 
 ### After
+
 <!-- Screenshots of the new behavior -->
-
-## 🔍 Code Quality Checklist
-
-- [ ] Code follows the project's coding standards
-- [ ] Self-review of the code completed
-- [ ] Code is properly commented (especially complex logic)
-- [ ] No console.log statements left in production code
-- [ ] Error handling is appropriate
-- [ ] Performance considerations addressed
-- [ ] Accessibility guidelines followed (if UI changes)
-
-## 📚 Documentation
-
-- [ ] Updated README.md (if needed)
-- [ ] Updated CLAUDE.md (if needed)
-- [ ] Updated JSDoc comments
-- [ ] Updated inline code comments
-- [ ] No documentation changes needed
-
-## 🚀 Deployment Considerations
-
-- [ ] Database migrations included (if needed)
-- [ ] Environment variables documented (if new ones added)
-- [ ] Breaking changes documented
-- [ ] Rollback plan considered
-- [ ] No special deployment considerations
-
-## 🔒 Security Considerations
-
-- [ ] No sensitive data exposed
-- [ ] Input validation implemented
-- [ ] Authentication/authorization considered
-- [ ] No security vulnerabilities introduced
-- [ ] Security review not needed
-
-## ⚡ Performance Impact
-
-- [ ] No performance impact expected
-- [ ] Performance improvements included
-- [ ] Potential performance impact documented
-- [ ] Performance testing completed
 
 ## 📝 Additional Notes
 
 <!-- Any additional information, context, or notes for reviewers -->
-
-## 🎯 Reviewer Focus Areas
-
-<!-- Guide reviewers on what to pay special attention to -->
-
-- [ ] Logic correctness
-- [ ] Error handling
-- [ ] Performance implications
-- [ ] Security considerations
-- [ ] UI/UX consistency
-- [ ] Code maintainability
 
 ## 🚦 Pre-merge Checklist
 
