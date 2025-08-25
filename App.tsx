@@ -10,7 +10,7 @@ import { recipesDataset } from '@test-data/recipesDataset';
 import RootNavigator from '@navigation/RootNavigator';
 import { getDarkMode, initSettings, setDarkMode as setDarkModeSetting } from '@utils/settings';
 import * as SplashScreen from 'expo-splash-screen';
-import { fetchFonts } from '@styles/typography';
+import { useFetchFonts } from '@styles/typography';
 import { DarkModeContext } from '@context/DarkModeContext';
 import { SeasonFilterProvider } from '@context/SeasonFilterContext';
 import { appLogger } from '@utils/logger';
@@ -30,7 +30,7 @@ import { appLogger } from '@utils/logger';
 SplashScreen.preventAutoHideAsync();
 
 export function App() {
-  fetchFonts();
+  useFetchFonts();
 
   const [isInitialized, setIsInitialized] = useState(false);
   const [darkMode, setDarkMode] = useState(false);

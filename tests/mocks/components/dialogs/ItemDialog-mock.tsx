@@ -3,20 +3,16 @@ import { Button, Text, View } from 'react-native';
 import { ItemDialogProps } from '@components/dialogs/ItemDialog';
 
 export function itemDialogMock({ item, mode, onClose, testId, isVisible }: ItemDialogProps) {
-  const dialogTestID = testId + '::ItemDialog';
-
   return (
     <View>
-      <Text testID={dialogTestID + '::IsVisible'}>{isVisible}</Text>
-      <Text testID={dialogTestID + '::Mode'}>{mode}</Text>
-      <Button testID={dialogTestID + '::OnClose'} onPress={() => onClose()} title='Close dialog' />
-      <Text testID={dialogTestID + '::Item'}>{item ? JSON.stringify(item) : 'null'}</Text>
-      <Text testID={dialogTestID + '::Item::Type'}>{item?.type || 'null'}</Text>
-      <Text testID={dialogTestID + '::Item::Value'}>
-        {item ? JSON.stringify(item.value) : 'null'}
-      </Text>
+      <Text testID={testId + '::IsVisible'}>{isVisible}</Text>
+      <Text testID={testId + '::Mode'}>{mode}</Text>
+      <Button testID={testId + '::OnClose'} onPress={() => onClose()} title='Close dialog' />
+      <Text testID={testId + '::Item'}>{item ? JSON.stringify(item) : 'null'}</Text>
+      <Text testID={testId + '::Item::Type'}>{item?.type || 'null'}</Text>
+      <Text testID={testId + '::Item::Value'}>{item ? JSON.stringify(item.value) : 'null'}</Text>
       <Button
-        testID={dialogTestID + '::Item::OnConfirm'}
+        testID={testId + '::Item::OnConfirm'}
         onPress={() => {
           if (item) {
             if (item.type === 'Tag') {

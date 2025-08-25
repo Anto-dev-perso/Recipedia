@@ -84,7 +84,7 @@ describe('SimilarityDialog', () => {
     expect(getByTestId('test-similarity::SimilarityDialog::UseButton')).toBeTruthy();
 
     expect(() => getByTestId('test-similarity::SimilarityDialog::CancelButton')).toThrow();
-    expect(() => getByTestId('test-similarity::ItemDialog::IsVisible')).toThrow();
+    expect(() => getByTestId('test-similarity::SimilarityDialog::ItemDialog::IsVisible')).toThrow();
   };
 
   const assertNewItemDialog = (getByTestId: any) => {
@@ -95,7 +95,7 @@ describe('SimilarityDialog', () => {
     expect(getByTestId('test-similarity::SimilarityDialog::CancelButton')).toBeTruthy();
 
     expect(() => getByTestId('test-similarity::SimilarityDialog::UseButton')).toThrow();
-    expect(() => getByTestId('test-similarity::ItemDialog::IsVisible')).toThrow();
+    expect(() => getByTestId('test-similarity::ItemDialog::ItemDialog::IsVisible')).toThrow();
   };
 
   beforeEach(async () => {

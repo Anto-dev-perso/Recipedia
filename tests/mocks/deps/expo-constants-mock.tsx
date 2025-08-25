@@ -1,5 +1,8 @@
 export function expoConstantsMock() {
   return {
-    expoConfig: { name: 'TestRecipedia' },
+    expoConfig: {
+      name: 'Test Recipedia',
+      version: '1.0.0',
+    },
   };
 }

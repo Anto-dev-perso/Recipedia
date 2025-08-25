@@ -35,7 +35,7 @@ export const Dialog: React.FC<any> & {
   if (!props.visible) {
     return null;
   }
-  
+
   return (
     <View testID={props.testID} {...{ visible: props.visible, onDismiss: props.onDismiss }}>
       {props.children}
@@ -64,7 +64,7 @@ Menu.Item = props => (
 export const Portal: React.FC<any> = props => <View testID={props.testID}>{props.children}</View>;
 
 export const Text: React.FC<any> = props => (
-  <RNText testID={props.testID} style={props.style}>
+  <RNText testID={props.testID} style={props.style} numberOfLines={props.numberOfLines}>
     {props.children}
   </RNText>
 );
@@ -107,13 +107,24 @@ export const Chip: React.FC<any> = props => (
 export const Card: React.FC<any> & {
   Content: React.FC<any>;
   Actions: React.FC<any>;
+  Cover: React.FC<any>;
+  Title: React.FC<any>;
 } = props => (
+  <TouchableOpacity
+    testID={props.testID}
+    style={props.style}
+    onPress={props.onPress}
+    accessible={true}
+  >
+    <View testID={props.testID + '::Container'}>{props.children}</View>
+  </TouchableOpacity>
+);
+
+Card.Content = props => (
   <View testID={props.testID} style={props.style}>
     {props.children}
   </View>
 );
-
-Card.Content = props => <View testID={props.testID}>{props.children}</View>;
 
 Card.Actions = props => (
   <View testID={props.testID} style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
@@ -121,7 +132,54 @@ Card.Actions = props => (
   </View>
 );
 
-export const Divider: React.FC<any> = props => <View testID={props.testID} />;
+Card.Cover = props => (
+  <View testID={props.testID} style={props.style}>
+    <RNText testID={props.testID + '::Source'}>{props.source?.uri || 'no-image'}</RNText>
+  </View>
+);
+
+Card.Title = props => (
+  <View testID={props.testID}>
+    <RNText testID={props.testID + '::TitleText'} numberOfLines={props.titleNumberOfLines}>
+      {props.title}
+    </RNText>
+    <RNText testID={props.testID + '::TitleVariant'}>{props.titleVariant}</RNText>
+  </View>
+);
+
+export const Divider: React.FC<any> = props => (
+  <View testID={props.testID || 'divider'} {...props} />
+);
+
+export const Checkbox: React.FC<any> = props => (
+  <TouchableOpacity testID={props.testID} onPress={props.onPress}>
+    <RNText testID={props.testID + '::Status'}>{props.status}</RNText>
+  </TouchableOpacity>
+);
+
+export const IconButton: React.FC<any> = props => (
+  <TouchableOpacity testID={props.testID} onPress={props.onPress} style={props.style}>
+    <RNText testID={props.testID + '::Icon'}>{props.icon}</RNText>
+  </TouchableOpacity>
+);
+
+export const Searchbar: React.FC<any> = props => (
+  <View testID={props.testID} style={props.style}>
+    <RNText testID={props.testID + '::Mode'}>{props.mode}</RNText>
+    <RNTextInput
+      testID={props.testID + '::TextInput'}
+      placeholder={props.placeholder}
+      onChangeText={props.onChangeText}
+      value={props.value}
+      onFocus={props.onFocus}
+      onSubmitEditing={props.onSubmitEditing}
+    />
+    <RNText testID={props.testID + '::Placeholder'}>{props.placeholder}</RNText>
+    <View testID={props.testID + '::RightContainer'}>
+      {props.right && props.right({ testID: props.testID + '::Right' })}
+    </View>
+  </View>
+);
 
 export const configureFonts = jest.fn((config?: any) => {
   return (
@@ -175,11 +233,54 @@ export const useTheme = jest.fn(() => ({
   },
 }));
 
+export const Switch: React.FC<any> = props => (
+  <TouchableOpacity
+    testID={props.testID}
+    onPress={() => props.onValueChange && props.onValueChange(!props.value)}
+    {...{ value: props.value, onValueChange: props.onValueChange }}
+  >
+    <RNText testID={props.testID + '::Value'}>{props.value ? 'ON' : 'OFF'}</RNText>
+  </TouchableOpacity>
+);
+
 export const List = {
-  Section: (props: any) => <View testID={props.testID}>{props.children}</View>,
+  Section: (props: any) => (
+    <View testID='list-section' {...props}>
+      <RNText testID='list-section-title'>{props.title}</RNText>
+      <View testID='list-section-content'>{props.children}</View>
+    </View>
+  ),
+  Subheader: (props: any) => <RNText testID={props.testID}>{props.children}</RNText>,
   Item: (props: any) => (
-    <TouchableOpacity testID={props.testID} onPress={props.onPress}>
-      <RNText testID={props.testID + '::Title'}>{props.title}</RNText>
+    <TouchableOpacity testID={props.testID} onPress={props.onPress} style={props.style}>
+      {props.left && (
+        <View testID={props.testID + '::Left'}>
+          {typeof props.left === 'function' ? props.left() : props.left}
+        </View>
+      )}
+      <View testID={props.testID + '::Content'}>
+        <RNText testID={props.testID + '::Title'} numberOfLines={props.titleNumberOfLines}>
+          {props.title}
+        </RNText>
+        {props.description && (
+          <RNText testID={props.testID + '::Description'}>{props.description}</RNText>
+        )}
+      </View>
+      {props.right && (
+        <View testID={props.testID + '::Right'}>
+          {typeof props.right === 'function' ? props.right() : props.right}
+        </View>
+      )}
     </TouchableOpacity>
   ),
+  Icon: (props: any) => <RNText testID='list-icon'>{props.icon}</RNText>,
+  Accordion: (props: any) => (
+    <View testID={props.testID} style={props.style}>
+      <TouchableOpacity testID={props.testID + '::Header'} onPress={() => {}}>
+        <RNText testID={props.testID + '::Title'}>{props.title}</RNText>
+      </TouchableOpacity>
+      <View testID={props.testID + '::Content'}>{props.children}</View>
+    </View>
+  ),
+  AccordionGroup: (props: any) => <View testID={props.testID}>{props.children}</View>,
 };

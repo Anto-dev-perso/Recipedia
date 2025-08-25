@@ -358,8 +358,8 @@ function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientO
         }
       } else {
         ocrLogger.warn('Cannot merge ingredients - breaking loop', {
-          ingredient1: currentIngredient.name,
-          ingredient2: previousIngredient.name,
+          ingredient1: ingredientsOCR[indexFirstSuspicious]?.name || 'unknown',
+          ingredient2: ingredientsOCR[indexFirstSuspicious + 1]?.name || 'unknown',
         });
         break;
       }

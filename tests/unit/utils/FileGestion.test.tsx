@@ -28,8 +28,8 @@ describe('FileGestion Utility', () => {
   const mockAssetFromModule = Asset.fromModule as jest.Mock;
   const mockAssetLoadAsync = Asset.loadAsync as jest.Mock;
 
-  const defaultDocumentsPath = '/documents/TestRecipedia/';
-  const defaultCachePath = '/cache/TestRecipedia/';
+  const defaultDocumentsPath = '/documents/Test Recipedia/';
+  const defaultCachePath = '/cache/Test Recipedia/';
 
   const mockDirectoryExists = (exists: boolean = false) => {
     mockGetInfoAsync.mockResolvedValue({ exists, isDirectory: exists });
@@ -268,10 +268,6 @@ describe('FileGestion Utility', () => {
 
     expect(instance.get_directoryUri()).toBe(defaultDocumentsPath);
     expect(instance.get_cacheUri()).toBe(defaultCachePath);
-    expect(instance.get_directoryUri()).toMatch(/\/TestRecipedia\/$/);
-    expect(instance.get_cacheUri()).toMatch(/\/TestRecipedia\/$/);
-    expect(instance.get_directoryUri()).toMatch(/^\/documents\//);
-    expect(instance.get_cacheUri()).toMatch(/^\/cache\//);
   });
 
   test('handles edge cases in recipe name sanitization', async () => {

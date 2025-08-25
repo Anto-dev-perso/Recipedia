@@ -143,6 +143,22 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
     }
   }, [props.value, filterArray, props.referenceTextArray, textInput]);
 
+  /**
+   * Handles the submission of text input when editing is complete
+   *
+   * Validates the current input and manages dropdown visibility based on filtered results:
+   * - Accepts input when only one or zero suggestions remain
+   * - Hides dropdown and triggers validation callback
+   * - Encourages selection from suggestions when multiple matches exist
+   */
+  const handleSubmitEditing = useCallback(() => {
+    // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
+    if (filteredTextArray.length <= 1) {
+      setShowDropdown(false);
+      props.onValidate?.(textInput);
+    }
+  }, [filteredTextArray.length, props.onValidate, textInput]);
+
   useEffect(() => {
     const keyboardListener = Keyboard.addListener('keyboardDidHide', () => {
       if (inputRef.current && inputRef.current.isFocused()) {
@@ -194,14 +210,6 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
    * - Enables quick submission when intent is clear
    * - Encourages selection from suggestions when multiple matches exist
    */
-  const handleSubmitEditing = useCallback(() => {
-    // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
-    if (filteredTextArray.length <= 1) {
-      setShowDropdown(false);
-      props.onValidate?.(textInput);
-    }
-  }, [filteredTextArray.length, props.onValidate, textInput]);
-
   function handleOnLayoutTextInput(event: LayoutChangeEvent) {
     setInputHeight(event.nativeEvent.layout.height);
   }

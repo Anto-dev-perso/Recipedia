@@ -142,7 +142,7 @@ export function TagsSettings() {
 
       {/* ItemDialog for add/edit/delete operations */}
       <ItemDialog
-        testId={testId}
+        testId={testId + '::ItemDialog'}
         isVisible={dialogVisible}
         mode={dialogMode}
         onClose={closeDialog}

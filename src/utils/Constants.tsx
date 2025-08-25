@@ -38,7 +38,7 @@
  */
 
 /** Default numeric value used for form inputs and data initialization */
-export const defaultValueNumber = 1;
+export const defaultValueNumber = -1;
 
 /**
  * Array of initial recipe images for app demonstration and onboarding

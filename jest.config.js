@@ -32,7 +32,9 @@ module.exports = {
         '^@translations/(.*)$': '<rootDir>/src/translations/$1',
         '^@app/(.*)$': '<rootDir>/$1',
         '^expo-font$': '<rootDir>/tests/mocks/deps/expo-font-mock',
+        '^@expo/vector-icons$': '<rootDir>/tests/mocks/deps/expo-vector-icons-mock.tsx',
         '^react-native-paper$': '<rootDir>/tests/mocks/deps/react-native-paper-mock.tsx',
+        '^react-native-image-crop-picker$': '<rootDir>/tests/mocks/deps/react-native-image-crop-picker-mock.tsx',
         '^react-native-reanimated$': '<rootDir>/tests/mocks/deps/react-native-reanimated-mock.ts',
         '^react-native-gesture-handler$': '<rootDir>/tests/mocks/deps/react-native-gesture-handler-mock',
         '^@react-native-async-storage/async-storage$': '<rootDir>/tests/mocks/deps/async-storage-mock'
