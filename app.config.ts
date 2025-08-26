@@ -1,5 +1,6 @@
 import type {ConfigContext, ExpoConfig} from "expo/config";
-import pkg from "./package.json";
+
+const pkg = require("./package.json");
 
 function getAndroidVersionCode(version: string): number {
     // Map SemVer X.Y.Z -> versionCode = X*1_000_000 + Y*1_000 + Z
@@ -22,53 +23,61 @@ const version = pkg.version;
 const configuredName = toSlug(pkg.name);
 const appId = `com.${toIdentifierSegment(pkg.name)}`;
 
-export default ({config}: ConfigContext): ExpoConfig => ({
-    ...config,
-    name: configuredName,
-    slug: configuredName,
-    version: pkg.version,
-    orientation: "portrait",
-    icon: "./src/assets/app/icon.png",
-    userInterfaceStyle: "automatic",
-    splash: {
-        image: './src/assets/app/splash.png',
-        resizeMode: 'contain',
-        backgroundColor: "#006D38",
-        dark: {
+export default ({config}: ConfigContext): ExpoConfig => {
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    return {
+        ...config,
+        name: configuredName,
+        slug: configuredName,
+        version: pkg.version,
+        orientation: "portrait",
+        icon: "./src/assets/app/icon.png",
+        userInterfaceStyle: "automatic",
+        splash: {
             image: './src/assets/app/splash.png',
-            backgroundColor: "#79DB95",
-        },
-    },
-    ios: {
-        supportsTablet: true,
-        bundleIdentifier: appId,
-        infoPlist: {
-            "ITSAppUsesNonExemptEncryption": false
-        }
-    },
-    android: {
-        adaptiveIcon: {
-            foregroundImage: './src/assets/app/adaptive_icon.png',
-        },
-        package: appId,
-        permissions: ['android.permission.CAMERA'],
-        versionCode: getAndroidVersionCode(version)
-    },
-    plugins: [
-        'expo-localization',
-        'expo-sqlite',
-        [
-            'expo-asset',
-            {
-                assets: ['./src/assets/app', './src/assets/images'],
+            resizeMode: 'contain',
+            backgroundColor: "#006D38",
+            dark: {
+                image: './src/assets/app/splash.png',
+                backgroundColor: "#79DB95",
             },
-        ],
-        'expo-font',
-    ],
-    extra: {
-        eas: {
-            projectId: '247331ab-7746-4b0a-bb72-353045160518',
         },
-    },
-    owner: 'antoc',
-});
+        ios: {
+            supportsTablet: true,
+            bundleIdentifier: appId,
+            infoPlist: {
+                "ITSAppUsesNonExemptEncryption": false
+            }
+        },
+        android: {
+            adaptiveIcon: {
+                foregroundImage: './src/assets/app/adaptive_icon.png',
+            },
+            package: appId,
+            permissions: ['android.permission.CAMERA'],
+            versionCode: getAndroidVersionCode(version)
+        },
+        plugins: [
+            'expo-localization',
+            'expo-sqlite',
+            [
+                'expo-asset',
+                {
+                    assets: ['./src/assets/app', './src/assets/images'],
+                },
+            ],
+            'expo-font',
+        ],
+        extra: {
+            eas: {
+                projectId: '247331ab-7746-4b0a-bb72-353045160518',
+            },
+        },
+        owner: 'antoc',
+        // Reduce build overhead for development
+        updates: isProduction ? {} : {
+            enabled: false
+        },
+    };
+};

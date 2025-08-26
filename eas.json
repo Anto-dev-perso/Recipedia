@@ -12,10 +12,27 @@
       "distribution": "internal",
       "developmentClient": false,
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease",
+        "withoutCredentials": true,
+        "image": "latest"
       },
       "ios": {
-        "simulator": true
+        "simulator": true,
+        "buildConfiguration": "Release",
+        "scheme": "Recipedia"
+      },
+      "cache": {
+        "disabled": false,
+        "cacheDefaultPaths": true,
+        "customPaths": [
+          "node_modules",
+          ".expo",
+          "android/.gradle"
+        ]
+      },
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=4096"
       }
     },
     "production": {
