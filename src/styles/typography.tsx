@@ -37,14 +37,14 @@
  * ```typescript
  * import {
  *   typoStyles,
- *   fetchFonts,
+ *   useFetchFonts,
  *   findAllNumbers,
  *   searchBarStyle,
  *   typoRender
  * } from '@styles/typography';
  *
  * // Loading fonts in app component
- * const [fontsLoaded] = fetchFonts();
+ * const [fontsLoaded] = useFetchFonts();
  * if (!fontsLoaded) return <LoadingScreen />;
  *
  * // Using typography styles
@@ -115,7 +115,7 @@ export const extractBetweenParenthesis = /\((.*?)\)/;
  *
  * @returns [boolean, Error] - Font loading status and any error
  */
-export function fetchFonts() {
+export function useFetchFonts() {
   return useFonts({
     'Lora-VariableFont_wght': require(`../assets/fonts/Lora/Lora-VariableFont_wght.ttf`),
     'Lora-Italic-VariableFont_wght': require(

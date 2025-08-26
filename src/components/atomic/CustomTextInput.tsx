@@ -106,7 +106,7 @@ export function CustomTextInput({
   const [isEditing, setIsEditing] = useState(false);
   const [inputHeight, setInputHeight] = React.useState(screenHeight * 0.08);
 
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<any>(null);
 
   function handlePress() {
     if (editable && !isEditing) {

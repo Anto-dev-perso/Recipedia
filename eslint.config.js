@@ -95,13 +95,29 @@ module.exports = [
         it: 'readonly',
       },
     },
+    plugins: {
+      '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
+      react: require('eslint-plugin-react'),
+      'react-native': require('eslint-plugin-react-native'),
+      'react-hooks': require('eslint-plugin-react-hooks'),
+      prettier: require('eslint-plugin-prettier'),
+    },
     rules: {
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
       // Allow any type in test files for mocking and test data
       '@typescript-eslint/no-explicit-any': 'off',
       // Allow console statements in tests for debugging
       'no-console': 'off',
       // Relax unused vars in tests (common for mock setups)
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      // Prettier integration
+      'prettier/prettier': 'error',
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
   },
 

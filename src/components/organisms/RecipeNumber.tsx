@@ -81,8 +81,8 @@ export type RecipeNumberEditProps = {
 
 /** Props for add/edit modes with discriminated union */
 export type RecipeNumberAddOrEditProps = {
-  /** Optional test ID for the editable component */
-  testID?: string;
+  /** Test ID for the editable component */
+  testID: string;
   /** Optional text to display before the number */
   prefixText?: string;
   /** Optional text to display after the number */
@@ -119,7 +119,7 @@ export function RecipeNumber({ testID, numberProps }: RecipeNumberProps) {
           {numberProps.text}
         </Text>
       ) : (
-        <RecipeNumberEditablePart testID={testID} {...numberProps} />
+        <RecipeNumberEditablePart {...numberProps} />
       )}
     </View>
   );
@@ -148,7 +148,7 @@ function RecipeNumberEditablePart(addOrEditProps: RecipeNumberAddOrEditProps) {
           testID={addOrEditProps.testID}
           value={
             addOrEditProps.textEditable !== defaultValueNumber
-              ? addOrEditProps.textEditable.toString()
+              ? (addOrEditProps.textEditable?.toString() ?? '')
               : ''
           }
           onChangeText={newNumber => addOrEditProps.setTextToEdit(Number(newNumber))}

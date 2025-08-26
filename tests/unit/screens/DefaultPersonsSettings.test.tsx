@@ -9,7 +9,6 @@ jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock('@utils/settings', () => require('@mocks/utils/settings-mock').settingsMock());
 jest.mock('@react-native-community/slider', () => require('@mocks/deps/slider-mock').default);
 
-jest.mock('react-native-paper', () => require('@mocks/deps/react-native-paper-mock').reactNativePaperMock);
 jest.mock('@react-navigation/native', () => require('@mocks/deps/react-navigation-mock').reactNavigationMock());
 
 

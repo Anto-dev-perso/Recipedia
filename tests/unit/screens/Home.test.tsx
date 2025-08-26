@@ -21,7 +21,7 @@ jest.mock('expo-font', () => ({
     loadAsync: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
     useFonts: jest.fn(() => Promise.resolve()),  // Mock as a resolved Promise
 }));
-jest.mock('react-native-gesture-handler', () => require('@mocks/deps/react-native-gesture-handler-mock').gestureHandlerMock());
+// react-native-gesture-handler is handled by moduleNameMapper in jest.config.js
 const Stack = createStackNavigator();
 
 describe('Home Screen', () => {

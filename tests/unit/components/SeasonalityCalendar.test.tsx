@@ -3,7 +3,6 @@ import {fireEvent, render} from '@testing-library/react-native';
 import SeasonalityCalendar, {SeasonalityCalendarProps} from "@components/molecules/SeasonalityCalendar";
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
-jest.mock('react-native-paper', () => require('@mocks/deps/react-native-paper-mock').reactNativePaperMock);
 
 describe('SeasonalityCalendar Component', () => {
     const mockOnMonthsChange = jest.fn();

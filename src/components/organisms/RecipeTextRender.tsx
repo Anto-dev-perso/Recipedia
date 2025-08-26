@@ -53,7 +53,7 @@
  * ```
  */
 
-import { View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import React from 'react';
 import RoundButton from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
@@ -139,30 +139,30 @@ export function RecipeTextRender(textRenderProps: RecipeTextRenderProps) {
                   <Text
                     testID={textRenderProps.testID + '::Column1'}
                     variant={'titleMedium'}
-                    style={{
-                      ...recipeTextRenderStyles.containerElement,
-                      ...recipeTextRenderStyles.firstColumn,
-                    }}
+                    style={[
+                      recipeTextRenderStyles.containerElement as StyleProp<TextStyle>,
+                      recipeTextRenderStyles.firstColumn as StyleProp<TextStyle>,
+                    ]}
                   >
                     {textRenderProps.columnTitles.column1}
                   </Text>
                   <Text
                     testID={textRenderProps.testID + '::Column2'}
                     variant={'titleMedium'}
-                    style={{
-                      ...recipeTextRenderStyles.containerElement,
-                      ...recipeTextRenderStyles.secondColumn,
-                    }}
+                    style={[
+                      recipeTextRenderStyles.containerElement as StyleProp<TextStyle>,
+                      recipeTextRenderStyles.secondColumn as StyleProp<TextStyle>,
+                    ]}
                   >
                     {textRenderProps.columnTitles.column2}
                   </Text>
                   <Text
                     testID={textRenderProps.testID + '::Column3'}
                     variant={'titleMedium'}
-                    style={{
-                      ...recipeTextRenderStyles.containerElement,
-                      ...recipeTextRenderStyles.thirdColumn,
-                    }}
+                    style={[
+                      recipeTextRenderStyles.containerElement as StyleProp<TextStyle>,
+                      recipeTextRenderStyles.thirdColumn as StyleProp<TextStyle>,
+                    ]}
                   >
                     {textRenderProps.columnTitles.column3}
                   </Text>

@@ -6,7 +6,6 @@ import {mockGetLanguage, mockSetLanguage} from "@mocks/utils/settings-mock";
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock('@utils/settings', () => require('@mocks/utils/settings-mock').settingsMock());
-jest.mock('react-native-paper', () => require('@mocks/deps/react-native-paper-mock').reactNativePaperMock);
 
 // Mock the route prop
 const mockRoute = {

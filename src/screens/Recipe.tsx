@@ -873,6 +873,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             rootText: titleRootText,
             addOrEditProps: {
               editType: 'add',
+              testID: titleTestID,
               openModal: () => openModalForField(recipeColumnsNames.title),
             },
           };
@@ -886,6 +887,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           rootText: titleRootText,
           addOrEditProps: {
             editType: 'editable',
+            testID: titleTestID,
             textEditable: recipeTitle,
             setTextToEdit: setRecipeTitle,
           },
@@ -912,6 +914,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             testID: descriptionTestID,
             addOrEditProps: {
               editType: 'add',
+              testID: descriptionTestID,
               openModal: () => openModalForField(recipeColumnsNames.description),
             },
           };
@@ -925,6 +928,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           testID: descriptionTestID,
           addOrEditProps: {
             editType: 'editable',
+            testID: descriptionTestID,
             textEditable: recipeDescription,
             setTextToEdit: setRecipeDescription,
           },
@@ -1008,12 +1012,28 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           },
         };
       case recipeStateType.addOCR:
+        if (recipePersons === defaultValueNumber) {
+          return {
+            testID: personTestID,
+            numberProps: {
+              editType: 'add',
+              testID: personTestID,
+              prefixText: t('personPrefixOCR'),
+              openModal: () => openModalForField(recipeColumnsNames.persons),
+              manuallyFill: () => {
+                setRecipePersons(0);
+              },
+            },
+          };
+        }
+      // falls through
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
           testID: personTestID,
           numberProps: {
             editType: 'editable',
+            testID: personTestID,
             textEditable: recipePersons,
             prefixText: t('personPrefixEdit'),
             suffixText: t('personSuffixEdit'),
@@ -1030,11 +1050,11 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function recipeTimeProp(state: recipeStateType = stackMode): RecipeNumberProps {
-    const personTestID = 'RecipeTime';
+    const timeTestID = 'RecipeTime';
     switch (state) {
       case recipeStateType.readOnly:
         return {
-          testID: personTestID,
+          testID: timeTestID,
           numberProps: {
             editType: 'read',
             text: t('timeReadOnlyBeforePerson') + recipeTime + t('timeReadOnlyAfterPerson'),
@@ -1043,9 +1063,10 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       case recipeStateType.addOCR:
         if (recipeTime === defaultValueNumber) {
           return {
-            testID: personTestID,
+            testID: timeTestID,
             numberProps: {
               editType: 'add',
+              testID: timeTestID,
               prefixText: t('timePrefixOCR'),
               openModal: () => openModalForField(recipeColumnsNames.time),
               manuallyFill: () => {
@@ -1058,9 +1079,10 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
-          testID: personTestID,
+          testID: timeTestID,
           numberProps: {
             editType: 'editable',
+            testID: timeTestID,
             textEditable: recipeTime,
             prefixText: t('timePrefixEdit'),
             suffixText: t('timeSuffixEdit'),
@@ -1068,9 +1090,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           },
         };
       default:
-        recipeLogger.warn('Unknown stack mode in recipePersonsProp', { stackMode });
+        recipeLogger.warn('Unknown stack mode in recipeTimeProp', { stackMode });
         return {
-          testID: personTestID,
+          testID: timeTestID,
           numberProps: { editType: 'read', text: '' },
         };
     }

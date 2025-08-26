@@ -99,6 +99,25 @@ export type TextInputWithDropDownType = {
  * @returns JSX element representing an autocomplete text input with dropdown suggestions
  */
 export function TextInputWithDropDown(props: TextInputWithDropDownType) {
+  /**
+   * Filters the reference array based on user input with case-insensitive matching
+   *
+   * This function implements the core autocomplete filtering logic, providing
+   * case-insensitive substring matching against the reference text array.
+   * It's the foundation of the dropdown suggestion system.
+   *
+   * @param filterText - The text input to filter against
+   * @returns Array<string> - Filtered array of matching suggestions
+   */
+  const filterArray = useCallback(
+    (filterText: string): Array<string> => {
+      return props.referenceTextArray.filter(element =>
+        element.toLowerCase().includes(filterText.toLowerCase())
+      );
+    },
+    [props.referenceTextArray]
+  );
+
   const [textInput, setTextInput] = useState(props.value ?? '');
   const [filteredTextArray, setFilteredTextArray] = useState(
     props.value ? filterArray(props.value) : props.referenceTextArray
@@ -124,6 +143,22 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
     }
   }, [props.value, filterArray, props.referenceTextArray, textInput]);
 
+  /**
+   * Handles the submission of text input when editing is complete
+   *
+   * Validates the current input and manages dropdown visibility based on filtered results:
+   * - Accepts input when only one or zero suggestions remain
+   * - Hides dropdown and triggers validation callback
+   * - Encourages selection from suggestions when multiple matches exist
+   */
+  const handleSubmitEditing = useCallback(() => {
+    // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
+    if (filteredTextArray.length <= 1) {
+      setShowDropdown(false);
+      props.onValidate?.(textInput);
+    }
+  }, [filteredTextArray.length, props.onValidate, textInput]);
+
   useEffect(() => {
     const keyboardListener = Keyboard.addListener('keyboardDidHide', () => {
       if (inputRef.current && inputRef.current.isFocused()) {
@@ -135,40 +170,6 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
       keyboardListener.remove();
     };
   }, [textInput, showDropdown, handleSubmitEditing]);
-
-  /**
-   * Filters the reference array based on user input with case-insensitive matching
-   *
-   * This function implements the core autocomplete filtering logic, providing
-   * case-insensitive substring matching against the reference text array.
-   * It's the foundation of the dropdown suggestion system.
-   *
-   * @param filterText - The text input to filter against
-   * @returns Array<string> - Filtered array of matching suggestions
-   *
-   * Filtering Logic:
-   * - Converts both input and reference text to lowercase for comparison
-   * - Uses includes() for substring matching (not just prefix matching)
-   * - Returns all items that contain the filter text anywhere in the string
-   *
-   * Performance:
-   * - Efficient array filtering with single pass
-   * - Case conversion only when needed
-   * - Optimized for real-time filtering during typing
-   *
-   * Use Cases:
-   * - Real-time dropdown suggestion filtering
-   * - Supports partial word matching for better UX
-   * - Works with any string array reference data
-   */
-  const filterArray = useCallback(
-    (filterText: string): Array<string> => {
-      return props.referenceTextArray.filter(element =>
-        element.toLowerCase().includes(filterText.toLowerCase())
-      );
-    },
-    [props.referenceTextArray]
-  );
 
   function handleSelect(text: string) {
     setTextInput(text);
@@ -209,14 +210,6 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
    * - Enables quick submission when intent is clear
    * - Encourages selection from suggestions when multiple matches exist
    */
-  const handleSubmitEditing = useCallback(() => {
-    // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
-    if (filteredTextArray.length <= 1) {
-      setShowDropdown(false);
-      props.onValidate?.(textInput);
-    }
-  }, [filteredTextArray.length, props.onValidate, textInput]);
-
   function handleOnLayoutTextInput(event: LayoutChangeEvent) {
     setInputHeight(event.nativeEvent.layout.height);
   }

@@ -12,7 +12,7 @@ const appDirectory = './app';
 const imagesDirectory = './images';
 
 export const Assets: AssetsType = {
-  placeholder: require(imagesDirectory + '/bike.jpg'),
+  placeholder: require(imagesDirectory + '/vegetable_soup.png'),
   icon: require(appDirectory + '/icon.png'),
   favicon: require(appDirectory + '/favicon.png'),
   splash: require(appDirectory + '/splash.png'),

@@ -1,63 +1,125 @@
-import {fireEvent, render, waitFor} from '@testing-library/react-native';
-import RecipeDatabase from "@utils/RecipeDatabase";
-import {ingredientsDataset} from "@test-data/ingredientsDataset";
-import {tagsDataset} from "@test-data/tagsDataset";
-import {recipesDataset} from "@test-data/recipesDataset";
-import Shopping from "@screens/Shopping";
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import RecipeDatabase from '@utils/RecipeDatabase';
+import { ingredientsDataset } from '@test-data/ingredientsDataset';
+import { tagsDataset } from '@test-data/tagsDataset';
+import { recipesDataset } from '@test-data/recipesDataset';
 import React from 'react';
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from "@react-navigation/stack";
-
+import { mockNavigationFunctions } from '@mocks/deps/react-navigation-mock';
+import Shopping from '@screens/Shopping';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
-jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock());
-jest.mock('@components/molecules/SectionClickableList', () => require('@mocks/components/molecules/SectionClickableList-mock').sectionClickableListMock);
-jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
-jest.mock('react-native-gesture-handler', () => require('@mocks/deps/react-native-gesture-handler-mock').gestureHandlerMock());
-const Stack = createStackNavigator();
+jest.mock('@utils/FileGestion', () =>
+  require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
+);
+jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
+jest.mock(
+  '@components/molecules/BottomTopButton',
+  () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock
+);
+jest.mock(
+  '@components/dialogs/Alert',
+  () => require('@mocks/components/dialogs/Alert-mock').alertMock
+);
+
+jest.mock('@react-navigation/native', () => ({
+  ...require('@mocks/deps/react-navigation-mock').reactNavigationMock(),
+  useFocusEffect: jest.fn(callback => {
+    const mockNavigation = {
+      addListener: jest.fn((event, handler) => {
+        if (event === 'focus') {
+          handler();
+        }
+        return jest.fn();
+      }),
+    };
+    callback(mockNavigation);
+  }),
+}));
+
+const mockRoute = {
+  key: 'Shopping',
+  name: 'Shopping',
+  params: {},
+};
+
+const defaultProps = {
+  navigation: mockNavigationFunctions,
+  route: mockRoute,
+} as any;
 
 describe('Shopping Screen', () => {
+  const database: RecipeDatabase = RecipeDatabase.getInstance();
 
-    const database: RecipeDatabase = RecipeDatabase.getInstance();
+  beforeEach(async () => {
+    jest.clearAllMocks();
 
+    await database.init();
+    await database.addMultipleIngredients(ingredientsDataset);
+    await database.addMultipleTags(tagsDataset);
+    await database.addMultipleRecipes(recipesDataset);
+    await database.addMultipleShopping([recipesDataset[8], recipesDataset[3]]);
+  });
 
-    beforeEach(async () => {
+  afterEach(async () => await database.reset());
 
-        await database.init();
-        await database.addMultipleIngredients(ingredientsDataset);
-        await database.addMultipleTags(tagsDataset);
-        await database.addMultipleRecipes(recipesDataset);
-        await database.addMultipleShopping([recipesDataset[8], recipesDataset[3]]);
+  test('renders Shopping screen with proper components structure', () => {
+    const { getByTestId, queryByTestId } = render(<Shopping {...defaultProps} />);
+
+    expect(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('ShoppingScreen::Alert::IsVisible')).toBeTruthy();
+
+    const hasEmptyState = queryByTestId('ShoppingScreen::TextNoItem');
+    const hasSectionList = queryByTestId('ShoppingScreen::SectionList');
+
+    // One of these should be present (not both, not neither)
+    expect(hasEmptyState || hasSectionList).toBeTruthy();
+    expect(!!(hasEmptyState && hasSectionList)).toBe(false);
+  });
+
+  test('renders empty state correctly when no shopping items', async () => {
+    await database.resetShoppingList();
+
+    const { getByTestId, queryByTestId } = render(<Shopping {...defaultProps} />);
+
+    expect(getByTestId('ShoppingScreen::TextNoItem')).toBeTruthy();
+    expect(getByTestId('ShoppingScreen::TextNoItem').props.children).toEqual(
+      'noItemsInShoppingList'
+    );
+    expect(queryByTestId('ShoppingScreen::SectionList')).toBeNull();
+  });
+
+  test('clear shopping list functionality works', async () => {
+    const { getByTestId } = render(<Shopping {...defaultProps} />);
+
+    expect(database.get_shopping().length).toBeGreaterThan(0);
+
+    fireEvent.press(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction'));
+
+    await waitFor(() => {
+      expect(database.get_shopping().length).toBe(0);
     });
-    afterEach(async () => await database.reset());
+  });
 
-    test('renders shopping list correctly', () => {
-        const {getByTestId} = render(<NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name={"Shopping"} component={Shopping}/>
-            </Stack.Navigator></NavigationContainer>);
+  test('Alert dialog has correct props structure and values', () => {
+    const { getByTestId } = render(<Shopping {...defaultProps} />);
 
-        expect(getByTestId('ShoppingScreenTitle').props.children).toEqual('shoppingList');
-        expect(getByTestId('SectionClickableList::IngList').props.children).toEqual('[{"id":1,"type":"ingredientTypes.grainOrCereal","name":"Sushi Rice","quantity":"250","unit":"g","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":2,"type":"ingredientTypes.condiment","name":"Nori Sheets","quantity":"5","unit":"pieces","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":3,"type":"ingredientTypes.fish","name":"Salmon","quantity":"200","unit":"g","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":4,"type":"ingredientTypes.fruit","name":"Avocado","quantity":"100","unit":"g","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":5,"type":"ingredientTypes.condiment","name":"Soy Sauce","quantity":"50","unit":"ml","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":6,"type":"ingredientTypes.vegetable","name":"Romaine Lettuce","quantity":"100","unit":"g","recipesTitle":["Caesar Salad"],"purchased":false},{"id":7,"type":"ingredientTypes.grainOrCereal","name":"Croutons","quantity":"50","unit":"g","recipesTitle":["Caesar Salad"],"purchased":false},{"id":8,"type":"ingredientTypes.sauce","name":"Caesar Dressing","quantity":"50","unit":"ml","recipesTitle":["Caesar Salad"],"purchased":false},{"id":9,"type":"ingredientTypes.cheese","name":"Parmesan","quantity":"30","unit":"g","recipesTitle":["Caesar Salad"],"purchased":false}]');
-        expect(getByTestId('SectionClickableList::SetterIngList').props.children).toBeTruthy();
-    });
-    test('section clickable shall update the purchased value', async () => {
-        const dbInstance = RecipeDatabase.getInstance();
-        const {getByTestId} = render(<NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name={"Shopping"} component={Shopping}/>
-            </Stack.Navigator></NavigationContainer>);
+    // Verify Alert dialog props exist and have correct values
+    expect(getByTestId('ShoppingScreen::Alert::IsVisible').props.children).toEqual(false);
+    expect(getByTestId('ShoppingScreen::Alert::TestId').props.children).toEqual('ShoppingScreen');
+    expect(getByTestId('ShoppingScreen::Alert::Title').props.children).toEqual('recipeUsingTitle ');
+    expect(getByTestId('ShoppingScreen::Alert::Content').props.children).toEqual(
+      'recipeUsingMessage :'
+    );
+    expect(getByTestId('ShoppingScreen::Alert::ConfirmText').props.children).toEqual(
+      'recipeUsingValidation'
+    );
 
-        const expected = JSON.parse('[{"id":1,"type":"ingredientTypes.grainOrCereal","name":"Sushi Rice","quantity":"250","unit":"g","recipesTitle":["Sushi Rolls"],"purchased":true},{"id":2,"type":"ingredientTypes.condiment","name":"Nori Sheets","quantity":"5","unit":"pieces","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":3,"type":"ingredientTypes.fish","name":"Salmon","quantity":"200","unit":"g","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":4,"type":"ingredientTypes.fruit","name":"Avocado","quantity":"100","unit":"g","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":5,"type":"ingredientTypes.condiment","name":"Soy Sauce","quantity":"50","unit":"ml","recipesTitle":["Sushi Rolls"],"purchased":false},{"id":6,"type":"ingredientTypes.vegetable","name":"Romaine Lettuce","quantity":"100","unit":"g","recipesTitle":["Caesar Salad"],"purchased":false},{"id":7,"type":"ingredientTypes.grainOrCereal","name":"Croutons","quantity":"50","unit":"g","recipesTitle":["Caesar Salad"],"purchased":false},{"id":8,"type":"ingredientTypes.sauce","name":"Caesar Dressing","quantity":"50","unit":"ml","recipesTitle":["Caesar Salad"],"purchased":false},{"id":9,"type":"ingredientTypes.cheese","name":"Parmesan","quantity":"30","unit":"g","recipesTitle":["Caesar Salad"],"purchased":false}]');
+    // Verify function buttons exist
+    expect(getByTestId('ShoppingScreen::Alert::OnClose')).toBeTruthy();
 
-        for (let i = 0; i < expected.length; i++) {
-            fireEvent.press(getByTestId('SectionClickableList::SetterIngList'));
-
-            expected[i].purchased = true;
-            await waitFor(() => expect(getByTestId('SectionClickableList::IngList').props.children).toEqual(JSON.stringify(expected)));
-            expect(expected).toEqual(dbInstance.get_shopping());
-        }
-    });
-
+    // Verify no cancel text in this dialog (it's a simple confirmation dialog)
+    expect(() => getByTestId('ShoppingScreen::Alert::CancelText')).toThrow();
+    expect(() => getByTestId('ShoppingScreen::Alert::OnCancel')).toThrow();
+  });
 });

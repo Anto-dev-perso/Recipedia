@@ -150,7 +150,7 @@ export function IngredientsSettings() {
       <ItemDialog
         isVisible={isDialogOpen}
         onClose={closeDialog}
-        testId={testId}
+        testId={testId + '::ItemDialog'}
         mode={dialogMode}
         item={{
           type: 'Ingredient',

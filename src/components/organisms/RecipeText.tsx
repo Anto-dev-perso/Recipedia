@@ -84,7 +84,7 @@ export type RecipeTextEditProps = {
  */
 export type RecipeTextAddOrEditProps = {
   /** Unique identifier for testing and accessibility */
-  testID?: string;
+  testID: string;
 } & (RecipeTextAddProps | RecipeTextEditProps);
 
 /**
@@ -129,7 +129,7 @@ export function RecipeText({ rootText, testID, addOrEditProps }: RecipeTextProps
       <Text testID={testID + '::Text'} variant={variant} style={recipeTextStyles.containerElement}>
         {rootText.value}
       </Text>
-      {addOrEditProps ? <RecipeTextEditablePart testID={testID} {...addOrEditProps} /> : null}
+      {addOrEditProps ? <RecipeTextEditablePart {...addOrEditProps} /> : null}
     </View>
   );
 }
@@ -147,7 +147,7 @@ function RecipeTextEditablePart(addOrEditProps: RecipeTextAddOrEditProps) {
         <CustomTextInput
           testID={addOrEditProps.testID}
           style={recipeTextStyles.containerElement}
-          value={addOrEditProps.textEditable}
+          value={addOrEditProps.textEditable ?? ''}
           multiline={true}
           onChangeText={newText => addOrEditProps.setTextToEdit(newText)}
         />

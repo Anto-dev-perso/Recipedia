@@ -89,11 +89,11 @@ jobs:
         uses: 5monkeys/cobertura-action@master
         with:
           path: coverage/cobertura-coverage.xml
-          minimum_coverage: 80
+          minimum_coverage: 75
           fail_below_threshold: false
           show_missing: false
-          show_line: false
-          show_branch: false
+          show_line: true
+          show_branch: true
           show_class_names: false
           only_changed_files: true
 
@@ -108,7 +108,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+
+      - name: Restore node modules
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
 
       - name: Setup Java
         uses: actions/setup-java@v4

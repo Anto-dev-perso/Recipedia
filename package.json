@@ -7,11 +7,13 @@
     "run:android": "expo run:android",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "build:android": "eas build --local --profile maestro --platform android",
+    "build:android": "NODE_OPTIONS=\"--max-old-space-size=4096\" eas build --local --profile maestro --platform android",
     "build:ios": "eas build --local --profile maestro --platform ios",
     "install:android": "adb install build*.apk && rm -f build*.apk",
     "install:ios": "TODO",
     "build-and-install:android": "npm run build:android && npm run install:android",
+    "clean:metro": "npx expo start --clear",
+    "clean:build": "rm -rf android/app/build ios/build .expo",
     "test:unit": "jest --verbose --config jest.config.js",
     "test:unit-fail-only": "jest ---silent --onlyFailures --config jest.config.js",
     "test:unit-watch": "jest --watchAll --silent --config jest.config.js",
@@ -34,11 +36,11 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx,js,jsx}": [
+    "{src,tests}/**/*.{ts,tsx,js,jsx}": [
       "prettier --write",
       "eslint --fix"
     ],
-    "src/**/*.{json,md}": [
+    "{src,tests}/**/*.{json,md}": [
       "prettier --write"
     ]
   },
@@ -66,6 +68,7 @@
     "fuse.js": "^7.1.0",
     "i18next": "^25.1.2",
     "i18next-resources-to-backend": "^1.2.1",
+    "react": "18.3.1",
     "react-i18next": "^15.5.1",
     "react-native": "0.76.9",
     "react-native-extended-stylesheet": "~0.12.0",

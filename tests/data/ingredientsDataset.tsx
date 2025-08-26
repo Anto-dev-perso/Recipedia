@@ -1,234 +1,264 @@
-import {ingredientTableElement, ingredientType} from "@customTypes/DatabaseElementTypes";
+import { ingredientTableElement, ingredientType } from '@customTypes/DatabaseElementTypes';
 
 export const ingredientsDataset: ingredientTableElement[] = [
-    {
-        id: 1,
-        name: 'Spaghetti',
-        unit: 'g',
-        type: ingredientType.grainOrCereal,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 2,
-        name: 'Ground Beef',
-        unit: 'g',
-        type: ingredientType.meat,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 3,
-        name: 'Tomato Sauce',
-        unit: 'ml',
-        type: ingredientType.sauce,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 4,
-        name: 'Parmesan',
-        unit: 'g',
-        type: ingredientType.cheese,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 5,
-        name: 'Taco Shells',
-        unit: 'pieces',
-        type: ingredientType.grainOrCereal,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 6,
-        name: 'Chicken Breast',
-        unit: 'g',
-        type: ingredientType.poultry,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {id: 7, name: 'Lettuce', unit: 'g', type: ingredientType.vegetable, season: ['5', '6', '7', '8', '9', '10']},
-    {
-        id: 8,
-        name: 'Cheddar',
-        unit: 'g',
-        type: ingredientType.cheese,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 9,
-        name: 'Flour',
-        unit: 'g',
-        type: ingredientType.grainOrCereal,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 10,
-        name: 'Milk',
-        unit: 'ml',
-        type: ingredientType.dairy,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 11,
-        name: 'Eggs',
-        unit: 'pieces',
-        type: ingredientType.plantProtein,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 12,
-        name: 'Butter',
-        unit: 'g',
-        type: ingredientType.oilAndFat,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 13,
-        name: 'Romaine Lettuce',
-        unit: 'g',
-        type: ingredientType.vegetable,
-        season: ['5', '6', '7', '8', '9', '10']
-    },
-    {
-        id: 14,
-        name: 'Croutons',
-        unit: 'g',
-        type: ingredientType.grainOrCereal,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {id: 15, name: 'Basil Leaves', unit: 'g', type: ingredientType.spice, season: ['5', '6', '7', '8', '9', '10']},
-    {
-        id: 16,
-        name: 'Mozzarella',
-        unit: 'g',
-        type: ingredientType.cheese,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 17,
-        name: 'Carrots',
-        unit: 'g',
-        type: ingredientType.vegetable,
-        season: ['10', '11', '12', '1', '2', '3', '4']
-    },
-    {id: 18, name: 'Celery', unit: 'g', type: ingredientType.vegetable, season: ['1', '2', '9', '10', '11', '12']},
-    {
-        id: 19,
-        name: 'Potatoes',
-        unit: 'g',
-        type: ingredientType.vegetable,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 20,
-        name: 'Vegetable Broth',
-        unit: 'ml',
-        type: ingredientType.sauce,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 21,
-        name: 'Cocoa Powder',
-        unit: 'g',
-        type: ingredientType.spice,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 22,
-        name: 'Sugar',
-        unit: 'g',
-        type: ingredientType.sugar,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 23,
-        name: 'Pine Nuts',
-        unit: 'g',
-        type: ingredientType.nutsAndSeeds,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 24,
-        name: 'Sushi Rice',
-        unit: 'g',
-        type: ingredientType.grainOrCereal,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 25,
-        name: 'Nori Sheets',
-        unit: 'pieces',
-        type: ingredientType.condiment,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {id: 26, name: 'Salmon', unit: 'g', type: ingredientType.fish, season: ['5', '6', '7', '8', '9', '10']},
-    // TODO avocado is in piece, not in g
-    {id: 27, name: 'Avocado', unit: 'g', type: ingredientType.fruit, season: ['5', '6', '7', '8', '9', '10']},
-    {
-        id: 28,
-        name: 'Red Lentils',
-        unit: 'g',
-        type: ingredientType.legumes,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 29,
-        name: 'Onions',
-        unit: 'g',
-        type: ingredientType.vegetable,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 30,
-        name: 'Coconut Milk',
-        unit: 'ml',
-        type: ingredientType.sauce,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 31,
-        name: 'Curry Powder',
-        unit: 'g',
-        type: ingredientType.spice,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 32,
-        name: 'Caesar Dressing',
-        unit: 'ml',
-        type: ingredientType.sauce,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 33,
-        name: 'Pizza Dough',
-        unit: 'g',
-        type: ingredientType.grainOrCereal,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 34,
-        name: 'Pasta',
-        unit: 'g',
-        type: ingredientType.grainOrCereal,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 35,
-        name: 'Olive Oil',
-        unit: 'ml',
-        type: ingredientType.oilAndFat,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 36,
-        name: 'Soy Sauce',
-        unit: 'ml',
-        type: ingredientType.condiment,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
-    {
-        id: 37,
-        name: 'Tomatoes',
-        unit: 'g',
-        type: ingredientType.vegetable,
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-    },
+  {
+    id: 1,
+    name: 'Spaghetti',
+    unit: 'g',
+    type: ingredientType.grainOrCereal,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 2,
+    name: 'Ground Beef',
+    unit: 'g',
+    type: ingredientType.meat,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 3,
+    name: 'Tomato Sauce',
+    unit: 'ml',
+    type: ingredientType.sauce,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 4,
+    name: 'Parmesan',
+    unit: 'g',
+    type: ingredientType.cheese,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 5,
+    name: 'Taco Shells',
+    unit: 'pieces',
+    type: ingredientType.grainOrCereal,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 6,
+    name: 'Chicken Breast',
+    unit: 'g',
+    type: ingredientType.poultry,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 7,
+    name: 'Lettuce',
+    unit: 'g',
+    type: ingredientType.vegetable,
+    season: ['5', '6', '7', '8', '9', '10'],
+  },
+  {
+    id: 8,
+    name: 'Cheddar',
+    unit: 'g',
+    type: ingredientType.cheese,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 9,
+    name: 'Flour',
+    unit: 'g',
+    type: ingredientType.grainOrCereal,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 10,
+    name: 'Milk',
+    unit: 'ml',
+    type: ingredientType.dairy,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 11,
+    name: 'Eggs',
+    unit: 'pieces',
+    type: ingredientType.plantProtein,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 12,
+    name: 'Butter',
+    unit: 'g',
+    type: ingredientType.oilAndFat,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 13,
+    name: 'Romaine Lettuce',
+    unit: 'g',
+    type: ingredientType.vegetable,
+    season: ['5', '6', '7', '8', '9', '10'],
+  },
+  {
+    id: 14,
+    name: 'Croutons',
+    unit: 'g',
+    type: ingredientType.grainOrCereal,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 15,
+    name: 'Basil Leaves',
+    unit: 'g',
+    type: ingredientType.spice,
+    season: ['5', '6', '7', '8', '9', '10'],
+  },
+  {
+    id: 16,
+    name: 'Mozzarella',
+    unit: 'g',
+    type: ingredientType.cheese,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 17,
+    name: 'Carrots',
+    unit: 'g',
+    type: ingredientType.vegetable,
+    season: ['10', '11', '12', '1', '2', '3', '4'],
+  },
+  {
+    id: 18,
+    name: 'Celery',
+    unit: 'g',
+    type: ingredientType.vegetable,
+    season: ['1', '2', '9', '10', '11', '12'],
+  },
+  {
+    id: 19,
+    name: 'Potatoes',
+    unit: 'g',
+    type: ingredientType.vegetable,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 20,
+    name: 'Vegetable Broth',
+    unit: 'ml',
+    type: ingredientType.sauce,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 21,
+    name: 'Cocoa Powder',
+    unit: 'g',
+    type: ingredientType.spice,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 22,
+    name: 'Sugar',
+    unit: 'g',
+    type: ingredientType.sugar,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 23,
+    name: 'Pine Nuts',
+    unit: 'g',
+    type: ingredientType.nutsAndSeeds,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 24,
+    name: 'Sushi Rice',
+    unit: 'g',
+    type: ingredientType.grainOrCereal,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 25,
+    name: 'Nori Sheets',
+    unit: 'pieces',
+    type: ingredientType.condiment,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 26,
+    name: 'Salmon',
+    unit: 'g',
+    type: ingredientType.fish,
+    season: ['5', '6', '7', '8', '9', '10'],
+  },
+  // TODO avocado is in piece, not in g
+  {
+    id: 27,
+    name: 'Avocado',
+    unit: 'g',
+    type: ingredientType.fruit,
+    season: ['5', '6', '7', '8', '9', '10'],
+  },
+  {
+    id: 28,
+    name: 'Red Lentils',
+    unit: 'g',
+    type: ingredientType.legumes,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 29,
+    name: 'Onions',
+    unit: 'g',
+    type: ingredientType.vegetable,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 30,
+    name: 'Coconut Milk',
+    unit: 'ml',
+    type: ingredientType.sauce,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 31,
+    name: 'Curry Powder',
+    unit: 'g',
+    type: ingredientType.spice,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 32,
+    name: 'Caesar Dressing',
+    unit: 'ml',
+    type: ingredientType.sauce,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 33,
+    name: 'Pizza Dough',
+    unit: 'g',
+    type: ingredientType.grainOrCereal,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 34,
+    name: 'Pasta',
+    unit: 'g',
+    type: ingredientType.grainOrCereal,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 35,
+    name: 'Olive Oil',
+    unit: 'ml',
+    type: ingredientType.oilAndFat,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 36,
+    name: 'Soy Sauce',
+    unit: 'ml',
+    type: ingredientType.condiment,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
+  {
+    id: 37,
+    name: 'Tomatoes',
+    unit: 'g',
+    type: ingredientType.vegetable,
+    season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  },
 ];

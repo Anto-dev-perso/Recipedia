@@ -20,7 +20,7 @@ export function recipeNumberMock(recipeNumberProp: RecipeNumberProps) {
                         </Text>
                         {recipeNumberProp.numberProps.editType === 'add' ?
                             <Button testID={recipeNumberProp.testID + "::OpenModal"} onPress={() => {
-                                // @ts-ignore always edit here
+                                // @ts-ignore always add here
                                 recipeNumberProp.numberProps.openModal()
                             }}
                                     title="Open Modal"/>
@@ -31,7 +31,7 @@ export function recipeNumberMock(recipeNumberProp: RecipeNumberProps) {
                                 </Text>
                                 <Button testID={recipeNumberProp.testID + "::SetTextToEdit"}
                                         onPress={(newNumber) => {
-                                            // @ts-ignore always edit here
+                                            // @ts-ignore always editable here
                                             recipeNumberProp.numberProps.setTextToEdit(Number(newNumber));
                                         }}
                                         title="Set Text to Edit"/>

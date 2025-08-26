@@ -67,14 +67,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 /** Border width for button shapes */
 const shapeWidth: number = 1;
 
-/** @deprecated Legacy opacity values - no longer used in current implementation */
-const opacityRound: number = 0.7;
-const opacitySquare: number = 0.9;
-const opacityRectangleRounded: number = 1;
-
-/** Responsive width for medium-sized card buttons */
-export const mediumCardWidth = 120 * remValue;
-
 /** Responsive width for small-sized card buttons */
 export const smallCardWidth = 85 * remValue;
 
@@ -93,37 +85,11 @@ export const enum bottomTopPosition {
   bottom_full = 7,
 }
 
-/** Responsive diameter for small round buttons */
-export const smallButtonDiameter = 40 * remValue;
-
-/** Responsive diameter for medium round buttons */
-export const mediumButtonDiameter = 50 * remValue;
-
 /** Responsive diameter for large round buttons */
 export const LargeButtonDiameter = 60 * remValue;
 
 /** Calculated offset for overlay button positioning */
 export const BottomTopButtonOffset = LargeButtonDiameter + 10 * remValue;
-
-/**
- * Creates responsive round button styles with specified diameter
- *
- * @param circleDiameter - Button diameter in pixels (will be scaled with remValue)
- * @returns EStyleSheet object with round button styling
- */
-export const roundButtonStyles = (circleDiameter: number) =>
-  EStyleSheet.create({
-    roundButton: {
-      backgroundColor: palette.primary,
-      overflow: 'hidden',
-      borderRadius: circleDiameter / 2,
-      width: circleDiameter,
-      height: circleDiameter,
-      borderWidth: shapeWidth,
-      padding: padding.medium,
-      borderColor: palette.bonusColor2,
-    },
-  });
 
 /**
  * Creates responsive square button styles with specified side length
@@ -140,22 +106,6 @@ export const squareButtonStyles = (side: number) =>
       width: side,
       height: side,
       marginHorizontal: padding.small,
-    },
-  });
-
-/**
- * Creates responsive rectangle button styles with specified height
- *
- * @param rectHeight - Button height in pixels (will be scaled with remValue)
- * @returns EStyleSheet object with rectangle button styling
- */
-export const rectangleButtonStyles = (rectHeight: number) =>
-  EStyleSheet.create({
-    rectangleButton: {
-      backgroundColor: palette.primary,
-      borderWidth: shapeWidth,
-      borderColor: palette.borderColor,
-      height: rectHeight * remValue,
     },
   });
 
@@ -270,14 +220,3 @@ export const topCenterButton = (offset: number) =>
   EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.centerButton]);
 export const topFullButton = (offset: number) =>
   EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.fullButton]);
-
-export const rectangleRoundedButtonStyles = (rectRoundHeight: number) =>
-  EStyleSheet.create({
-    rectangleRoundedButton: {
-      backgroundColor: palette.accent,
-      borderWidth: shapeWidth,
-      borderColor: palette.bonusColor2,
-      height: rectRoundHeight * remValue,
-      borderRadius: (rectRoundHeight / 2) * remValue,
-    },
-  });
