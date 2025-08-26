@@ -1,5 +1,5 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
-import RecipeTags, { RecipeTagProps, RecipeTagsAddProps } from '@components/organisms/RecipeTags';
+import RecipeTags, { RecipeTagProps } from '@components/organisms/RecipeTags';
 import React from 'react';
 import { tagsDataset } from '@test-data/tagsDataset';
 import { ingredientsDataset } from '@test-data/ingredientsDataset';
@@ -61,7 +61,7 @@ describe('RecipeTags Component', () => {
         sampleTags[sampleTags.length - 2],
         sampleTags[sampleTags.length - 3]
       ),
-      randomTags,
+      randomTags: randomTags,
       addNewTag: addNewTagMock,
       removeTag: removeTagMock,
     };
@@ -207,7 +207,7 @@ describe('RecipeTags Component', () => {
     });
     describe('add mode', () => {
       it('renders header and description texts with the add button', () => {
-        const props: RecipeTagsAddProps = {
+        const props: RecipeTagProps = {
           ...defaultProps,
           editType: 'add',
           openModal: jest.fn(),

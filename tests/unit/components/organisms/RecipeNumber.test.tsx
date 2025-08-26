@@ -125,7 +125,7 @@ describe('RecipeNumber Component', () => {
   });
 
   test('handles text input changes in editable mode correctly', () => {
-    let inputChange = { ...defaultEditProps };
+    const inputChange = { ...defaultEditProps };
     const { getByTestId, queryByTestId } = renderRecipeNumber(inputChange);
 
     assertComponent(getByTestId, queryByTestId, inputChange);
@@ -156,7 +156,7 @@ describe('RecipeNumber Component', () => {
   });
 
   test('handles default value correctly in editable mode', () => {
-    const props: RecipeNumberProps = {
+    const props = {
       ...defaultEditProps,
       numberProps: { ...defaultEditProps.numberProps, textEditable: defaultValueNumber },
     };
@@ -199,10 +199,12 @@ describe('RecipeNumber Component', () => {
       const props: RecipeNumberProps = {
         ...defaultProps,
         numberProps: {
-          ...defaultEditProps.numberProps,
+          editType: 'editable',
+          testID: defaultTestId,
           prefixText: prefix,
           suffixText: suffix,
           textEditable: 5,
+          setTextToEdit: mockSetTextToEdit,
         },
       };
       const { getByTestId, queryByTestId, unmount } = renderRecipeNumber(props);
@@ -218,9 +220,12 @@ describe('RecipeNumber Component', () => {
     assertComponent(getByTestId, queryByTestId, defaultEditProps);
 
     maintainStateProps.numberProps = {
-      ...defaultAddProps.numberProps,
+      editType: 'add',
+      testID: defaultTestId,
       prefixText: 'Cook for',
       suffixText: 'minutes',
+      openModal: mockOpenModal,
+      manuallyFill: mockManuallyFill,
     };
     rerender(<RecipeNumber {...maintainStateProps} />);
     assertComponent(getByTestId, queryByTestId, maintainStateProps);

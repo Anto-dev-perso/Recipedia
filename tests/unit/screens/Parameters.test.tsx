@@ -80,7 +80,7 @@ describe('Parameters Screen', () => {
 
     const icons = getAllByTestId('list-icon');
     expect(icons.length).toBeGreaterThanOrEqual(6);
-    const iconTexts = icons.map(icon => icon.props.children);
+    const iconTexts = icons.map((icon: any) => icon.props.children);
     const expectedIcons = [
       'theme-light-dark',
       'translate',

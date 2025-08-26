@@ -12,6 +12,7 @@ import {
 } from '@customTypes/DatabaseElementTypes';
 import { StackScreenParamList } from '@customTypes/ScreenTypes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 import { GetByQuery, QueryByQuery } from '@testing-library/react-native/build/queries/make-queries';
 import { TextMatch, TextMatchOptions } from '@testing-library/react-native/build/matches';
 import { CommonQueryOptions } from '@testing-library/react-native/build/queries/options';
@@ -527,7 +528,7 @@ function checkPreparation(
 }
 
 describe('Recipe Component tests', () => {
-  const mockNavigation: Partial<NativeStackNavigationProp<StackScreenParamList, 'Recipe'>> = {
+  const mockNavigation = {
     goBack: jest.fn(),
     navigate: jest.fn(),
     setOptions: jest.fn(),
@@ -536,7 +537,16 @@ describe('Recipe Component tests', () => {
     getId: jest.fn(),
     getParent: jest.fn(),
     isFocused: jest.fn(),
-  };
+    reset: jest.fn(),
+    setParams: jest.fn(),
+    replace: jest.fn(),
+    push: jest.fn(),
+    pop: jest.fn(),
+    popToTop: jest.fn(),
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    getState: jest.fn(),
+  } as NativeStackNavigationProp<StackScreenParamList, 'Recipe'>;
   const mockRouteReadOnly: RecipePropType = {
     mode: 'readOnly',
     recipe: recipesDataset[1],
@@ -549,6 +559,12 @@ describe('Recipe Component tests', () => {
 
   const mockRouteAddOCR: RecipePropType = { mode: 'addFromPic', imgUri: defaultUri };
   const mockRouteAddManually: RecipePropType = { mode: 'addManually' };
+
+  const createMockRoute = (params: RecipePropType): RouteProp<StackScreenParamList, 'Recipe'> => ({
+    key: 'Recipe-test',
+    name: 'Recipe',
+    params,
+  });
 
   const dbInstance = RecipeDatabase.getInstance();
   beforeEach(async () => {
@@ -568,9 +584,8 @@ describe('Recipe Component tests', () => {
 
   // -------- INIT CASES --------
   test('Initial state is correctly set in readOnly mode', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteReadOnly }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteReadOnly)} navigation={mockNavigation} />
     );
 
     checkBottomTopButtons(mockRouteReadOnly, getByTestId, queryByTestId);
@@ -586,9 +601,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('Initial state is correctly set in edit mode', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     checkBottomTopButtons(mockRouteEdit, getByTestId, queryByTestId);
@@ -604,9 +618,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('Initial state is correctly set in add manually mode', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteAddManually }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
     );
 
     checkBottomTopButtons(mockRouteAddManually, getByTestId, queryByTestId);
@@ -622,9 +635,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('Initial state is correctly set in add ocr mode', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteAddOCR }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddOCR)} navigation={mockNavigation} />
     );
 
     checkBottomTopButtons(mockRouteAddOCR, getByTestId, queryByTestId);
@@ -641,9 +653,8 @@ describe('Recipe Component tests', () => {
 
   // -------- CHANGE ON TITLE CASES --------
   test('updates recipeTitle and reflects in RecipeText only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     const newTitle = 'New Recipe Title';
@@ -662,9 +673,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('fill recipeTitle and reflects in RecipeText only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteAddManually }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
     );
 
     const newTitle = 'New Recipe Title';
@@ -682,9 +692,8 @@ describe('Recipe Component tests', () => {
 
   // -------- CHANGE ON DESCRIPTION CASES --------
   test('updates recipeDescription and reflects in RecipeDescription only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     const newDescription = 'New Recipe Description';
@@ -703,9 +712,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('fill recipeDescription and reflects in RecipeText only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteAddManually }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
     );
 
     const newDescription = 'New Recipe Description';
@@ -723,9 +731,8 @@ describe('Recipe Component tests', () => {
 
   // -------- CHANGE ON TAGS CASES --------
   test('remove recipeTags and reflects in RecipeTags only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     fireEvent.press(getByTestId('RecipeTags::RemoveTag'));
@@ -750,9 +757,8 @@ describe('Recipe Component tests', () => {
 
   // -------- CHANGE ON PERSONS CASES --------
   test('updates recipePersons and scales ingredients accordingly', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     const newPerson = '23';
@@ -783,9 +789,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('fill recipePersons and reflects in RecipeText only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteAddManually }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
     );
 
     const newPerson = 23;
@@ -803,9 +808,8 @@ describe('Recipe Component tests', () => {
 
   // -------- CHANGE ON INGREDIENTS CASES --------
   test('updates recipeIngredients and reflects in RecipeIngredients only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
@@ -826,9 +830,8 @@ describe('Recipe Component tests', () => {
 
   // -------- CHANGE ON TIME CASES --------
   test('updates recipeTime and reflects in RecipeTime only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     const newTime = '71';
@@ -847,9 +850,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('fill recipeTime and reflects in RecipeText only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteAddManually }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
     );
 
     const newTime = 71;
@@ -867,9 +869,8 @@ describe('Recipe Component tests', () => {
 
   // -------- CHANGE ON PREPARATION CASES --------
   test('updates recipePreparation and reflects in RecipePreparation only', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     fireEvent.press(getByTestId('RecipePreparation::TextEdited'));
@@ -887,9 +888,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('validates button on read only mode', async () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId } = render(
-      <Recipe route={{ params: mockRouteReadOnly }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteReadOnly)} navigation={mockNavigation} />
     );
 
     expect(RecipeDatabase.getInstance().get_shopping()).toEqual([]);
@@ -944,9 +944,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('validates button on edit mode', async () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteEdit }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
     );
 
     const newProp: RecipePropType = {
@@ -1008,9 +1007,8 @@ describe('Recipe Component tests', () => {
   // TODO  a validation that new recipe is well inserted in the database
 
   test('validates button on add manually mode', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteAddManually }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
     );
 
     const newTitle = 'New Recipe Title';
@@ -1037,9 +1035,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('shows validation error if recipe is incomplete', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId } = render(
-      <Recipe route={{ params: mockRouteAddOCR }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddOCR)} navigation={mockNavigation} />
     );
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
@@ -1047,9 +1044,8 @@ describe('Recipe Component tests', () => {
   });
 
   test('toggles stackMode between readOnly and edit', () => {
-    //@ts-ignore route and navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(
-      <Recipe route={{ params: mockRouteReadOnly }} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteReadOnly)} navigation={mockNavigation} />
     );
     const paramEdit: editRecipeManually = { ...mockRouteReadOnly, mode: 'edit' };
     fireEvent.press(getByTestId('RecipeEdit::OnPressFunction'));

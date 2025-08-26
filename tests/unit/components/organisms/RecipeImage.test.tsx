@@ -246,7 +246,7 @@ describe('RecipeImage Component', () => {
       assertContainerStructure(getByTestId, uri || '');
 
       if (sampleButtonIcon) {
-        assertButtonStructure(getByTestId, true, 'medium');
+        assertButtonStructure(getByTestId, true);
         fireEvent.press(getByTestId('RecipeImage::RoundButton::OnPressFunction'));
         expect(mockOpenModal).toHaveBeenCalledWith(recipeColumnsNames.image);
       }

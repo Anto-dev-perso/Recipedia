@@ -100,7 +100,7 @@ export function recipeTextRenderMock(recipeTextRenderProp: RecipeTextRenderProps
             onPress={() => {
               // @ts-ignore onCLick always define here
               recipeTextRenderProp.editText.onChangeFunction(
-                recipeTextRenderProp.text[0],
+                0,
                 recipeTextRenderProp.text[0] + ' edited'
               );
             }}
