@@ -24,8 +24,7 @@
       },
       "cache": {
         "disabled": false,
-        "cacheDefaultPaths": true,
-        "customPaths": [
+        "paths": [
           "node_modules",
           ".expo",
           "android/.gradle"
