@@ -71,6 +71,7 @@ import {
   extractTagsName,
   ingredientTableElement,
   ingredientType,
+  preparationStepElement,
   recipeColumnsNames,
   recipeTableElement,
   tagTableElement,
@@ -198,7 +199,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     initStateFromProp ? props.recipe.ingredients : new Array<ingredientTableElement>()
   );
   const [recipePreparation, setRecipePreparation] = useState(
-    initStateFromProp ? props.recipe.preparation : new Array<string>()
+    initStateFromProp ? props.recipe.preparation : new Array<preparationStepElement>()
   );
   const [recipeTime, setRecipeTime] = useState(
     initStateFromProp ? props.recipe.time : defaultValueNumber
@@ -520,21 +521,37 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     ]);
   }
 
-  function editPreparation(oldPreparationId: number, newPreparation: string) {
-    if (oldPreparationId < 0 || oldPreparationId > recipePreparation.length) {
-      recipeLogger.warn('Cannot edit preparation step - invalid index', {
-        oldPreparationId,
+  function editPreparationTitle(stepIndex: number, newTitle: string) {
+    if (stepIndex < 0 || stepIndex >= recipePreparation.length) {
+      recipeLogger.warn('Cannot edit preparation step title - invalid index', {
+        stepIndex,
         preparationCount: recipePreparation.length,
       });
       return;
     }
-    const newPreparationArray = new Array(...recipePreparation);
-    newPreparationArray[oldPreparationId] = newPreparation;
-    setRecipePreparation(newPreparationArray);
+    const updatedPreparation = [...recipePreparation];
+    updatedPreparation[stepIndex] = { ...updatedPreparation[stepIndex], title: newTitle };
+    setRecipePreparation(updatedPreparation);
+  }
+
+  function editPreparationDescription(stepIndex: number, newDescription: string) {
+    if (stepIndex < 0 || stepIndex >= recipePreparation.length) {
+      recipeLogger.warn('Cannot edit preparation step description - invalid index', {
+        stepIndex,
+        preparationCount: recipePreparation.length,
+      });
+      return;
+    }
+    const updatedPreparation = [...recipePreparation];
+    updatedPreparation[stepIndex] = {
+      ...updatedPreparation[stepIndex],
+      description: newDescription,
+    };
+    setRecipePreparation(updatedPreparation);
   }
 
   function addNewPreparationStep() {
-    setRecipePreparation([...recipePreparation, '']);
+    setRecipePreparation([...recipePreparation, { title: '', description: '' }]);
   }
 
   /**
@@ -1154,6 +1171,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   function recipePreparationProp(): RecipeTextRenderProps {
     const preparationRender: typoRender = typoRender.SECTION;
     const preparationTestID = 'RecipePreparation';
+
     switch (stackMode) {
       case recipeStateType.readOnly:
         return {
@@ -1182,8 +1200,16 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           editType: 'editable',
           renderType: preparationRender,
           textEditable: recipePreparation,
-          textEdited: editPreparation,
+          textEdited: (stepIndex: number, combinedText: string) => {
+            //   TODO refactor/remove RecipeTextRender so that we don't have this callback
+            // Fallback for legacy string-based editing (shouldn't be used with new callbacks)
+            const [title, description] = combinedText.split(textSeparator);
+            editPreparationTitle(stepIndex, title || '');
+            editPreparationDescription(stepIndex, description || '');
+          },
           addNewText: addNewPreparationStep,
+          onTitleEdit: editPreparationTitle,
+          onDescriptionEdit: editPreparationDescription,
         };
       default:
         recipeLogger.warn('Unknown stack mode in recipePreparationProp', { stackMode });

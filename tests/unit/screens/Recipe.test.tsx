@@ -874,8 +874,14 @@ describe('Recipe Component tests', () => {
     );
 
     fireEvent.press(getByTestId('RecipePreparation::TextEdited'));
-    const newEditProp: editRecipeManually = { ...mockRouteEdit };
-    newEditProp.recipe.preparation[0] += '.New part of a paragraph'; // Match mock behavior
+    const newEditProp: editRecipeManually = {
+      ...mockRouteEdit,
+      recipe: {
+        ...mockRouteEdit.recipe,
+        preparation: [...mockRouteEdit.recipe.preparation],
+      },
+    };
+    newEditProp.recipe.preparation[0].description += '.New part of a paragraph';
 
     checkImage(newEditProp, getByTestId);
     checkTitle(newEditProp, getByTestId, queryByTestId);
@@ -980,7 +986,6 @@ describe('Recipe Component tests', () => {
     }));
 
     const updatePreparationWith = '.New part of a paragraph';
-    newProp.recipe.preparation[0] = newProp.recipe.preparation[0].concat(updatePreparationWith);
 
     fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), newProp.recipe.title);
     fireEvent.press(getByTestId('RecipeDescription::SetTextToEdit'), newProp.recipe.description);
@@ -989,6 +994,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
     fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newProp.recipe.time);
     fireEvent.press(getByTestId('RecipePreparation::TextEdited'), updatePreparationWith);
+    newProp.recipe.preparation[0].description += updatePreparationWith;
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { RecipeTextRenderProps } from '@components/organisms/RecipeTextRender';
+import { textSeparator } from '@styles/typography';
 
 export function recipeTextRenderMock(recipeTextRenderProp: RecipeTextRenderProps) {
   return (
@@ -34,22 +35,34 @@ export function recipeTextRenderMock(recipeTextRenderProp: RecipeTextRenderProps
                 onPress={() => {
                   // For ingredients: change Flour to Milk
                   if (recipeTextRenderProp.testID.includes('Ingredients')) {
-                    const currentText = recipeTextRenderProp.textEditable[0];
+                    const currentText = recipeTextRenderProp.textEditable[0] as string;
                     const newText = currentText.replace('Flour', 'Milk').replace('g', 'ml');
                     recipeTextRenderProp.textEdited(0, newText);
                   }
                   // For preparation: append test text
                   else if (recipeTextRenderProp.testID.includes('Preparation')) {
-                    const currentText = recipeTextRenderProp.textEditable[0];
-                    const newText = currentText + '.New part of a paragraph';
-                    recipeTextRenderProp.textEdited(0, newText);
+                    const currentItem = recipeTextRenderProp.textEditable[0];
+                    if (typeof currentItem === 'string') {
+                      const newText = currentItem + '.New part of a paragraph';
+                      recipeTextRenderProp.textEdited(0, newText);
+                    } else {
+                      // preparationStepElement: use new callbacks if available, otherwise fallback to legacy
+                      if (recipeTextRenderProp.onDescriptionEdit) {
+                        recipeTextRenderProp.onDescriptionEdit(
+                          0,
+                          currentItem.description + '.New part of a paragraph'
+                        );
+                      } else {
+                        // Legacy fallback: edit using textSeparator format
+                        const newText = `${currentItem.title}${textSeparator}${currentItem.description}.New part of a paragraph`;
+                        recipeTextRenderProp.textEdited(0, newText);
+                      }
+                    }
                   }
                   // For other cases: append generic text
                   else {
-                    recipeTextRenderProp.textEdited(
-                      0,
-                      recipeTextRenderProp.textEditable[0] + '.edited'
-                    );
+                    const currentText = recipeTextRenderProp.textEditable[0] as string;
+                    recipeTextRenderProp.textEdited(0, currentText + '.edited');
                   }
                 }}
                 title='Set Text to Edit'
