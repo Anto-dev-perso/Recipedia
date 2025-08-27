@@ -47,10 +47,19 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
     preparation: [
-      'Cook the spaghetti according to the package instructions.',
-      'In a pan, brown the ground beef.',
-      'Add the tomato sauce to the beef and simmer for 10 minutes.',
-      'Serve the sauce over the spaghetti and top with grated Parmesan.',
+      {
+        title: 'Cook the pasta',
+        description: 'Cook the spaghetti according to the package instructions.',
+      },
+      { title: 'Prepare the meat', description: 'In a pan, brown the ground beef.' },
+      {
+        title: 'Add sauce',
+        description: 'Add the tomato sauce to the beef and simmer for 10 minutes.',
+      },
+      {
+        title: 'Serve',
+        description: 'Serve the sauce over the spaghetti and top with grated Parmesan.',
+      },
     ],
     time: 33,
   },
@@ -100,9 +109,15 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['5', '6', '7', '8', '9', '10'],
     preparation: [
-      'Cook the chicken breast and slice it into strips.',
-      'Fill each taco shell with chicken, lettuce, and cheddar.',
-      'Serve immediately.',
+      {
+        title: 'Prepare chicken',
+        description: 'Cook the chicken breast and slice it into strips.',
+      },
+      {
+        title: 'Assemble tacos',
+        description: 'Fill each taco shell with chicken, lettuce, and cheddar.',
+      },
+      { title: 'Serve', description: 'Serve immediately.' },
     ],
     time: 20,
   },
@@ -152,9 +167,15 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
     preparation: [
-      'Mix the flour, milk, and eggs in a bowl until smooth.',
-      'Heat a pan and add butter.',
-      'Pour the batter into the pan and cook until golden on each side.',
+      {
+        title: 'Mix batter',
+        description: 'Mix the flour, milk, and eggs in a bowl until smooth.',
+      },
+      { title: 'Prepare pan', description: 'Heat a pan and add butter.' },
+      {
+        title: 'Cook pancakes',
+        description: 'Pour the batter into the pan and cook until golden on each side.',
+      },
     ],
     time: 25,
   },
@@ -204,9 +225,9 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['5', '6', '7', '8', '9', '10'],
     preparation: [
-      'Wash and chop the lettuce.',
-      'Mix lettuce with Caesar dressing.',
-      'Top with croutons and Parmesan.',
+      { title: 'Prepare lettuce', description: 'Wash and chop the lettuce.' },
+      { title: 'Mix salad', description: 'Mix lettuce with Caesar dressing.' },
+      { title: 'Add toppings', description: 'Top with croutons and Parmesan.' },
     ],
     time: 15,
   },
@@ -256,9 +277,9 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['5', '6', '7', '8', '9', '10'],
     preparation: [
-      'Spread tomato sauce over the pizza dough.',
-      'Add mozzarella and basil leaves on top.',
-      'Bake in a preheated oven at 220°C for 10 minutes.',
+      { title: 'Add sauce', description: 'Spread tomato sauce over the pizza dough.' },
+      { title: 'Add toppings', description: 'Add mozzarella and basil leaves on top.' },
+      { title: 'Bake', description: 'Bake in a preheated oven at 220°C for 10 minutes.' },
     ],
     time: 20,
   },
@@ -308,9 +329,12 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['10', '11', '12', '1', '2'],
     preparation: [
-      'Chop the vegetables into small pieces.',
-      'Simmer the vegetables in vegetable broth until tender.',
-      'Serve hot.',
+      { title: 'Prepare vegetables', description: 'Chop the vegetables into small pieces.' },
+      {
+        title: 'Cook soup',
+        description: 'Simmer the vegetables in vegetable broth until tender.',
+      },
+      { title: 'Serve', description: 'Serve hot.' },
     ],
     time: 40,
   },
@@ -360,8 +384,14 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
     preparation: [
-      'Mix the flour, cocoa powder, sugar, and butter.',
-      'Bake the mixture in a preheated oven at 180°C for 30 minutes.',
+      {
+        title: 'Mix ingredients',
+        description: 'Mix the flour, cocoa powder, sugar, and butter.',
+      },
+      {
+        title: 'Bake',
+        description: 'Bake the mixture in a preheated oven at 180°C for 30 minutes.',
+      },
     ],
     time: 60,
   },
@@ -419,9 +449,18 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['5', '6', '7', '8', '9', '10'],
     preparation: [
-      'Cook the pasta according to the package instructions.',
-      'Blend basil leaves, Parmesan, olive oil, and pine nuts to make pesto.',
-      'Toss the pasta with the pesto sauce and serve warm.',
+      {
+        title: 'Cook pasta',
+        description: 'Cook the pasta according to the package instructions.',
+      },
+      {
+        title: 'Make pesto',
+        description: 'Blend basil leaves, Parmesan, olive oil, and pine nuts to make pesto.',
+      },
+      {
+        title: 'Combine and serve',
+        description: 'Toss the pasta with the pesto sauce and serve warm.',
+      },
     ],
     time: 20,
   },
@@ -479,10 +518,16 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['5', '6', '7', '8', '9', '10'],
     preparation: [
-      'Cook the sushi rice and let it cool.',
-      'Place a sheet of nori on a bamboo mat and spread rice evenly over it.',
-      'Add salmon and avocado as fillings and roll tightly.',
-      'Slice the roll into pieces and serve with soy sauce.',
+      { title: 'Prepare rice', description: 'Cook the sushi rice and let it cool.' },
+      {
+        title: 'Spread rice',
+        description: 'Place a sheet of nori on a bamboo mat and spread rice evenly over it.',
+      },
+      {
+        title: 'Add fillings and roll',
+        description: 'Add salmon and avocado as fillings and roll tightly.',
+      },
+      { title: 'Serve', description: 'Slice the roll into pieces and serve with soy sauce.' },
     ],
     time: 45,
   },
@@ -540,10 +585,16 @@ export const recipesDataset: Array<recipeTableElement> = [
     ],
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
     preparation: [
-      'Sauté onions in a pan until golden.',
-      'Add tomatoes, red lentils, curry powder, and coconut milk.',
-      'Simmer until the lentils are tender and the curry thickens.',
-      'Serve with rice or bread.',
+      { title: 'Prepare base', description: 'Sauté onions in a pan until golden.' },
+      {
+        title: 'Add ingredients',
+        description: 'Add tomatoes, red lentils, curry powder, and coconut milk.',
+      },
+      {
+        title: 'Cook curry',
+        description: 'Simmer until the lentils are tender and the curry thickens.',
+      },
+      { title: 'Serve', description: 'Serve with rice or bread.' },
     ],
     time: 35,
   },
