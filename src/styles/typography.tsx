@@ -180,6 +180,10 @@ export type editableText = {
   withBorder: boolean;
   /** Callback function for text changes */
   onChangeFunction(oldValueId: number, newParam: string): void;
+  /** Optional callback for preparation step title changes */
+  onTitleChangeFunction?(stepIndex: number, newTitle: string): void;
+  /** Optional callback for preparation step description changes */
+  onDescriptionChangeFunction?(stepIndex: number, newDescription: string): void;
 };
 
 /**

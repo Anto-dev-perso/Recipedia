@@ -28,6 +28,7 @@
 import {
   ingredientTableElement,
   ingredientType,
+  preparationStepElement,
   recipeColumnsNames,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
@@ -37,7 +38,6 @@ import {
   letterRegExp,
   numberAtFirstIndex as numberAtFirstIndex,
   replaceAllBackToLine,
-  textSeparator,
 } from '@styles/typography';
 
 import TextRecognition, {
@@ -45,13 +45,7 @@ import TextRecognition, {
   TextRecognitionResult,
 } from '@react-native-ml-kit/text-recognition';
 import { scaleQuantityForPersons } from '@utils/Quantity';
-import {
-  isArrayOfNumber,
-  isArrayOfString,
-  isArrayOfType,
-  isNumber,
-  isString,
-} from '@utils/TypeCheckingFunctions';
+import { isArrayOfNumber, isArrayOfType, isNumber, isString } from '@utils/TypeCheckingFunctions';
 import { defaultValueNumber } from '@utils/Constants';
 import { ocrLogger } from '@utils/logger';
 
@@ -212,45 +206,123 @@ function tranformOCRInOneNumber(
   return defaultValueNumber;
 }
 
-function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<string> {
-  const result = new Array<string>();
-  let cptPreparation = 0;
+function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<preparationStepElement> {
+  const steps: Array<{ step: preparationStepElement; order: number }> = [];
+  let currentStep: preparationStepElement | null = null;
+  let currentOrder = 0;
+  let waitingForTitle = false;
+
   for (const block of ocr.blocks) {
-    const blockText = block.text;
-    if (blockText.length === 0) {
+    const text = block.text.trim();
+    if (!text) {
       continue;
     }
-    // OCR returns steps (and other characters like bullet points) alone. This means that we must ignore everything that is not a number and retrieve the number in cpt for later
-    // Possible to have a back to line followed by a cooking time indication. Detect it and avoid pushing in this case
-    const strInNumber = retrieveNumberInStr(blockText) - 1;
-    const prepTooHigh =
-      cptPreparation == 0 ||
-      (cptPreparation <= 2 && strInNumber <= 4 * cptPreparation) ||
-      (cptPreparation > 2 && strInNumber <= 2 * cptPreparation);
 
-    if (numberAtFirstIndex.test(blockText) && prepTooHigh) {
-      cptPreparation = strInNumber;
-      // Don't push if it is only the id of the preparation
-      if (blockText.search(letterRegExp) != -1) {
-        result.push(convertToLowerCaseExceptFirstLetter(blockText).replace('\n', textSeparator));
+    const stepNumber = extractStepNumber(text);
+
+    if (stepNumber && isValidStepProgression(stepNumber, currentOrder)) {
+      // Save previous step before starting new one
+      if (currentStep) {
+        steps.push({ step: currentStep, order: currentOrder });
       }
-    } else {
-      if (result.length < cptPreparation + 1) {
-        for (let i = result.length; i < cptPreparation; i++) {
-          result.push('');
-        }
-        result.push(blockText);
+
+      currentOrder = stepNumber;
+
+      if (isNumberOnlyBlock(text)) {
+        // Number-only block - wait for title in next block
+        currentStep = { title: '', description: '' };
+        waitingForTitle = true;
       } else {
-        const separator = result[cptPreparation].includes(textSeparator) ? '\n' : textSeparator;
-        if (result[cptPreparation].length === 0) {
-          result[cptPreparation] += blockText;
-        } else {
-          result[cptPreparation] += separator + blockText;
-        }
+        // Number + title/content in same block
+        const { title, description } = parseStepContent(text);
+        currentStep = { title, description };
+        waitingForTitle = false;
       }
+    } else if (waitingForTitle && hasTextContent(text)) {
+      // This block contains the title for the current step
+      if (currentStep) {
+        currentStep.title = formatTitle(text);
+        waitingForTitle = false;
+      }
+    } else if (currentStep && hasTextContent(text)) {
+      // Add content to current step description
+      const separator = currentStep.description ? '\n' : '';
+      currentStep.description += separator + text;
     }
   }
-  return result;
+
+  // Save final step
+  if (currentStep) {
+    steps.push({ step: currentStep, order: currentOrder });
+  }
+
+  return steps.sort((a, b) => a.order - b.order).map(item => item.step);
+}
+
+function extractStepNumber(text: string): number | null {
+  if (!numberAtFirstIndex.test(text)) {
+    return null;
+  }
+  return retrieveNumberInStr(text);
+}
+
+function isValidStepProgression(stepNumber: number, currentOrder: number): boolean {
+  if (currentOrder === 0) {
+    return true;
+  }
+  if (currentOrder <= 2) {
+    return stepNumber <= 4 * currentOrder;
+  }
+  return stepNumber <= 2 * currentOrder;
+}
+
+function parseStepContent(text: string): { title: string; description: string } {
+  const lines = text.split('\n');
+  const firstLine = lines[0];
+  const remainingLines = lines.slice(1);
+
+  // Try to extract title from first line (pattern: "1. TITLE" or "1 TITLE")
+  const titleMatch = firstLine.match(/^\d+\.?\s*(.+)$/);
+
+  if (titleMatch && remainingLines.length === 0) {
+    // Only number + title, no description in this block
+    return {
+      title: formatTitle(titleMatch[1]),
+      description: '',
+    };
+  } else if (titleMatch && remainingLines.length > 0) {
+    // Number + title + description in same block
+    return {
+      title: formatTitle(titleMatch[1]),
+      description: formatDescription(remainingLines.join('\n')),
+    };
+  } else {
+    // Treat entire text as title (for cases like standalone numbers followed by title blocks)
+    return {
+      title: formatTitle(text),
+      description: '',
+    };
+  }
+}
+
+function formatTitle(title: string): string {
+  return convertToLowerCaseExceptFirstLetter(title.trim());
+}
+
+function formatDescription(description: string): string {
+  // Apply minimal formatting to preserve structure while normalizing case
+  return description.replace(
+    /^(\W*)([A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝ])/,
+    (match, prefix, firstLetter) => prefix + firstLetter.toLowerCase()
+  );
+}
+
+function hasTextContent(text: string): boolean {
+  return letterRegExp.test(text);
+}
+
+function isNumberOnlyBlock(text: string): boolean {
+  return numberAtFirstIndex.test(text) && !letterRegExp.test(text);
 }
 
 type groupType = { person: string; quantity: Array<string> };
@@ -507,7 +579,7 @@ export async function extractFieldFromImage(
   uri: string,
   field: recipeColumnsNames,
   currentState: {
-    recipePreparation: string[];
+    recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTags: tagTableElement[];
     recipeIngredients: any[];
@@ -519,7 +591,7 @@ export async function extractFieldFromImage(
     recipeTitle: string;
     recipeDescription: string;
     recipeTags: Array<tagTableElement>;
-    recipePreparation: string[];
+    recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTime: number;
     recipeIngredients: any[];
@@ -549,12 +621,15 @@ export async function extractFieldFromImage(
         return {};
       }
     case recipeColumnsNames.preparation:
-      if (Array.isArray(ocrResult) && ocrResult.length > 0 && isArrayOfString(ocrResult)) {
+      if (Array.isArray(ocrResult) && ocrResult.length > 0) {
         return {
-          recipePreparation: [...currentState.recipePreparation, ...(ocrResult as string[])],
+          recipePreparation: [
+            ...currentState.recipePreparation,
+            ...(ocrResult as preparationStepElement[]),
+          ],
         };
       } else {
-        warn('Expected non empty array of strings for preparation');
+        warn('Expected non empty array of preparation steps for preparation');
         return {};
       }
     case recipeColumnsNames.persons:

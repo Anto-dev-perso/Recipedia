@@ -14,6 +14,7 @@ import {
   isRecipePartiallyEqual,
   isShoppingEqual,
   isTagEqual,
+  preparationStepElement,
   recipeColumnsEncoding,
   recipeColumnsNames,
   recipeDatabaseName,
@@ -1156,42 +1157,42 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-        if (newIngredients.length > 0) {
-            let alertTitle: string;
-            let alertMessage = "Do you want to add or edit it before  ?";
-            const alertOk = "OK";
-            const alertCancel = "Cancel";
-            const alertEdit = "Edit before add";
-            if (newIngredients.length > 1) {
-                // Plural
-                alertTitle = "INGREDIENTS NOT FOUND";
-                alertMessage = `Following ingredients were not found in database :  \n`;
-                newIngredients.forEach(ing => {
-                    alertMessage += "\t- " + ing.ingName + "\n";
-                });
-                alertMessage += `Do you want to add these as is or edit them before adding ?`;
+                if (newIngredients.length > 0) {
+                    let alertTitle: string;
+                    let alertMessage = "Do you want to add or edit it before  ?";
+                    const alertOk = "OK";
+                    const alertCancel = "Cancel";
+                    const alertEdit = "Edit before add";
+                    if (newIngredients.length > 1) {
+                        // Plural
+                        alertTitle = "INGREDIENTS NOT FOUND";
+                        alertMessage = `Following ingredients were not found in database :  \n`;
+                        newIngredients.forEach(ing => {
+                            alertMessage += "\t- " + ing.ingName + "\n";
+                        });
+                        alertMessage += `Do you want to add these as is or edit them before adding ?`;
 
-            } else {
-                alertTitle = `INGREDIENT NOT FOUND`;
-                alertMessage = `Do you want to add this as is or edit it before adding ?`;
-            }
+                    } else {
+                        alertTitle = `INGREDIENT NOT FOUND`;
+                        alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                    }
 
 
-            switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                case alertUserChoice.neutral:
-                    // TODO edit before add
-                    break;
-                case alertUserChoice.ok:
-                    await this.addMultipleIngredients(newIngredients);
-                    result = result.concat(newIngredients);
-                    break;
-                case alertUserChoice.cancel:
-                default:
-                    databaseLogger.debug("User canceled adding ingredient");
-                    break;
-            }
-        }
-         */
+                    switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                        case alertUserChoice.neutral:
+                            // TODO edit before add
+                            break;
+                        case alertUserChoice.ok:
+                            await this.addMultipleIngredients(newIngredients);
+                            result = result.concat(newIngredients);
+                            break;
+                        case alertUserChoice.cancel:
+                        default:
+                            databaseLogger.debug("User canceled adding ingredient");
+                            break;
+                    }
+                }
+                 */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);
@@ -1233,7 +1234,9 @@ export class RecipeDatabase {
       INGREDIENTS: recToEncode.ingredients
         .map(ing => this.encodeIngredient(ing))
         .join(EncodingSeparator),
-      PREPARATION: recToEncode.preparation.join(EncodingSeparator),
+      PREPARATION: recToEncode.preparation
+        .map(step => step.title + textSeparator + step.description)
+        .join(EncodingSeparator),
       TIME: recToEncode.time,
     };
   }
@@ -1251,7 +1254,7 @@ export class RecipeDatabase {
       persons: encodedRecipe.PERSONS,
       ingredients: decodedIngredients,
       season: decodedSeason,
-      preparation: encodedRecipe.PREPARATION.split(EncodingSeparator),
+      preparation: this.decodePreparation(encodedRecipe.PREPARATION),
       time: encodedRecipe.TIME,
     };
   }
@@ -1419,6 +1422,25 @@ export class RecipeDatabase {
       return new Array<tagTableElement>();
     }
     return queryResult.map(tagFound => this.decodeTag(tagFound));
+  }
+
+  protected decodePreparation(encodedPreparation: string): Array<preparationStepElement> {
+    if (!encodedPreparation) {
+      return [];
+    }
+
+    const steps = encodedPreparation.includes(EncodingSeparator)
+      ? encodedPreparation.split(EncodingSeparator)
+      : [encodedPreparation];
+
+    return steps.map(step => {
+      if (step.includes(textSeparator)) {
+        const [title, description] = step.split(textSeparator);
+        return { title: title || '', description: description || '' };
+      } else {
+        return { title: '', description: step };
+      }
+    });
   }
 
   protected encodeShopping(shopToEncode: shoppingListTableElement): encodedShoppingListElement {

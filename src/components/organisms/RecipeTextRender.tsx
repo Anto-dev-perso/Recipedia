@@ -62,12 +62,13 @@ import { RecipeTextAddProps } from '@components/organisms/RecipeText';
 import { typoRender } from '@styles/typography';
 import { recipeTextRenderStyles } from '@styles/recipeComponents';
 import { Text } from 'react-native-paper';
+import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
 
 /** Props for editable text rendering mode */
 export type RecipeTextRenderEditProps = {
   editType: 'editable';
-  /** Array of editable text strings */
-  textEditable: Array<string>;
+  /** Array of editable text strings or preparations */
+  textEditable: Array<string | preparationStepElement>;
   /** Type of rendering to apply to the text */
   renderType: typoRender;
   /** Callback fired when text is edited */
@@ -80,6 +81,10 @@ export type RecipeTextRenderEditProps = {
     column2: string;
     column3: string;
   };
+  /** Optional callback for preparation step title changes */
+  onTitleEdit?: (stepIndex: number, newTitle: string) => void;
+  /** Optional callback for preparation step description changes */
+  onDescriptionEdit?: (stepIndex: number, newDescription: string) => void;
 };
 
 /** Props for add/edit modes with discriminated union */

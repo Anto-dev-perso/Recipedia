@@ -118,8 +118,8 @@ export type recipeTableElement = {
   ingredients: Array<ingredientTableElement>;
   /** Seasonal availability data */
   season: Array<string>;
-  /** Step-by-step preparation instructions */
-  preparation: Array<string>;
+  /** Step-by-step preparation instructions with structured data */
+  preparation: Array<preparationStepElement>;
   /** Total preparation time in minutes */
   time: number;
 };
@@ -202,6 +202,16 @@ export const nutritionColumnsNames: Array<databaseColumnType> = [
   { colName: 'INGREDIENT', type: encodedType.TEXT },
   { colName: 'UNIT', type: encodedType.TEXT },
 ];
+
+/**
+ * Individual preparation step with structured data
+ */
+export type preparationStepElement = {
+  /** Step title or heading (e.g., "1. Cook the rice") */
+  title: string;
+  /** Detailed step instructions */
+  description: string;
+};
 
 /**
  * Simple tag data structure for recipe categorization

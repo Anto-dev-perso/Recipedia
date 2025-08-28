@@ -71,6 +71,7 @@ import { recipeTextRenderStyles } from '@styles/recipeComponents';
 import CustomTextInput from '@components/atomic/CustomTextInput';
 import { useI18n } from '@utils/i18n';
 import { uiLogger } from '@utils/logger';
+import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
 
 /**
  * Props for the TextRender component
@@ -80,8 +81,8 @@ export type TextRenderProps = {
   testID?: string;
   /** Optional title displayed above the content */
   title?: string;
-  /** Array of text strings to render */
-  text: Array<string>;
+  /** Array of text strings or preparation to render */
+  text: Array<string | preparationStepElement>;
   /** Rendering mode determining layout and interaction */
   render: typoRender;
   /** Callback fired when clickable list items are pressed */
@@ -102,13 +103,15 @@ export function TextRender(props: TextRenderProps) {
   function selectRender(renderChoice: typoRender) {
     switch (renderChoice) {
       case typoRender.ARRAY:
-        return props.text.map((item, index) => renderAsTable(item, index));
+        return props.text.map((item, index) => renderAsTable(item as string, index));
       case typoRender.SECTION:
-        return props.text.map((item, index) => renderAsSection(item, index));
+        return props.text.map((item, index) =>
+          renderAsSection(item as preparationStepElement, index)
+        );
       case typoRender.LIST:
-        return props.text.map((item, index) => renderAsList(item, index));
+        return props.text.map((item, index) => renderAsList(item as string, index));
       case typoRender.CLICK_LIST:
-        return props.text.map((item, index) => renderAsClickableList(item, index));
+        return props.text.map((item, index) => renderAsClickableList(item as string, index));
       default:
         uiLogger.warn('Unrecognized render choice in TextRender', { renderChoice });
     }
@@ -186,9 +189,8 @@ export function TextRender(props: TextRenderProps) {
     );
   }
 
-  function renderAsSection(item: string, index: number) {
-    // For now, only 2 columns are render
-    const [sectionTitle, sectionParagraph] = item.length > 0 ? item.split(textSeparator) : ['', ''];
+  function renderAsSection(item: preparationStepElement, index: number) {
+    // Section rendering is only for preparationStepElement (recipe preparation steps)
 
     return (
       <View key={index}>
@@ -212,14 +214,18 @@ export function TextRender(props: TextRenderProps) {
               </Text>
               <CustomTextInput
                 testID={props.testID + `::${index}::TextInputTitle`}
-                value={sectionTitle}
+                value={item.title}
                 style={recipeTextRenderStyles.containerElement}
-                onChangeText={newTitle =>
-                  props.editText?.onChangeFunction(
-                    index,
-                    `${newTitle}${textSeparator}${sectionParagraph}`
-                  )
-                }
+                onChangeText={newTitle => {
+                  if (props.editText?.onTitleChangeFunction) {
+                    props.editText.onTitleChangeFunction(index, newTitle);
+                  } else {
+                    props.editText?.onChangeFunction(
+                      index,
+                      `${newTitle}${textSeparator}${item.description}`
+                    );
+                  }
+                }}
                 multiline={true}
               />
               <Text
@@ -232,13 +238,17 @@ export function TextRender(props: TextRenderProps) {
               <CustomTextInput
                 testID={props.testID + `::${index}::TextInputContent`}
                 style={recipeTextRenderStyles.containerElement}
-                value={sectionParagraph}
-                onChangeText={newParagraph =>
-                  props.editText?.onChangeFunction(
-                    index,
-                    `${sectionTitle}${textSeparator}${newParagraph}`
-                  )
-                }
+                value={item.description}
+                onChangeText={newParagraph => {
+                  if (props.editText?.onDescriptionChangeFunction) {
+                    props.editText.onDescriptionChangeFunction(index, newParagraph);
+                  } else {
+                    props.editText?.onChangeFunction(
+                      index,
+                      `${item.title}${textSeparator}${newParagraph}`
+                    );
+                  }
+                }}
                 multiline={true}
               />
             </View>
@@ -250,14 +260,14 @@ export function TextRender(props: TextRenderProps) {
               variant={'titleLarge'}
               style={recipeTextRenderStyles.headlineElement}
             >
-              {index + 1}) {sectionTitle}
+              {index + 1}) {item.title}
             </Text>
             <Text
               testID={props.testID + `::${index}::SectionParagraph`}
               variant={'titleMedium'}
               style={recipeTextRenderStyles.containerElement}
             >
-              {sectionParagraph}
+              {item.description}
             </Text>
           </View>
         )}
