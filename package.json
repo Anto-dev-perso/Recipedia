@@ -47,7 +47,7 @@
   "dependencies": {
     "@babel/core": "~7.26.9",
     "@react-native-async-storage/async-storage": "^2.1.2",
-    "@react-native-community/slider": "^4.5.6",
+    "@react-native-community/slider": "^5.0.1",
     "@react-native-ml-kit/text-recognition": "~1.5.2",
     "@react-navigation/bottom-tabs": "~6.5.8",
     "@react-navigation/native": "~6.1.7",
