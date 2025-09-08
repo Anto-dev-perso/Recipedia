@@ -1,3 +1,10 @@
+## [0.8.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.7.0...v0.8.0) (2025-09-08)
+
+### Features
+
+* **Shopping:** add dialog before clearing ([c7bac3b](https://github.com/Anto-dev-perso/Recipedia/commit/c7bac3b712cdea457a553546bba984ac3cad8483))
+* **Shopping:** hide clear button when empty list ([636485b](https://github.com/Anto-dev-perso/Recipedia/commit/636485bb7671cf7167ec990370a8bd46271163e4))
+
 ## [0.7.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.6.0...v0.7.0) (2025-08-16)
 
 ### Features
