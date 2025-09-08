@@ -293,14 +293,16 @@ export function Shopping({ navigation }: ShoppingScreenProp) {
         onConfirm={clearShoppingList}
         onClose={closeClearConfirmation}
       />
-      <BottomTopButton
-        testID={screenId + '::ClearShoppingListButton'}
-        as={RoundButton}
-        position={bottomTopPosition.top_right}
-        size={'medium'}
-        icon={Icons.trashIcon}
-        onPressFunction={showClearConfirmation}
-      />
+      {shoppingList.length > 0 && (
+        <BottomTopButton
+          testID={screenId + '::ClearShoppingListButton'}
+          as={RoundButton}
+          position={bottomTopPosition.top_right}
+          size={'medium'}
+          icon={Icons.trashIcon}
+          onPressFunction={showClearConfirmation}
+        />
+      )}
     </SafeAreaView>
   );
 }
