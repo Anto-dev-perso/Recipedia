@@ -22,22 +22,9 @@ jest.mock(
   () => require('@mocks/components/dialogs/Alert-mock').alertMock
 );
 
-jest.mock('@react-navigation/native', () => ({
-  ...require('@mocks/deps/react-navigation-mock').reactNavigationMock(),
-  useFocusEffect: jest.fn(callback => {
-    // Simulate the focus effect by calling the callback with a mock navigation object
-    const mockNav = {
-      addListener: jest.fn((event, handler) => {
-        if (event === 'focus') {
-          // Call the handler asynchronously to allow state updates to process
-          setTimeout(() => handler(), 10);
-        }
-        return jest.fn();
-      }),
-    };
-    callback(mockNav);
-  }),
-}));
+jest.mock('@react-navigation/native', () =>
+  require('@mocks/deps/react-navigation-mock').reactNavigationMock()
+);
 
 const mockRoute = {
   key: 'Shopping',
@@ -45,19 +32,8 @@ const mockRoute = {
   params: {},
 };
 
-const mockNavigation = {
-  ...mockNavigationFunctions,
-  addListener: jest.fn((event, handler) => {
-    if (event === 'focus') {
-      // Store the handler and call it immediately for test purposes
-      setTimeout(() => handler(), 0);
-    }
-    return jest.fn();
-  }),
-};
-
 const defaultProps = {
-  navigation: mockNavigation,
+  navigation: mockNavigationFunctions,
   route: mockRoute,
 } as any;
 
