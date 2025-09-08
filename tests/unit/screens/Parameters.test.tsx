@@ -213,7 +213,7 @@ describe('Parameters Screen', () => {
 
     await waitFor(
       () => {
-        assertParameters(getByTestId, getAllByTestId, '6 persons');
+        assertParameters(getByTestId, getAllByTestId, '4 persons');
       },
       { timeout: 200 }
     );

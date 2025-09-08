@@ -89,6 +89,8 @@ export function Shopping({ navigation }: ShoppingScreenProp) {
     name: '',
   });
 
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
+
   useFocusEffect(() => {
     navigation.addListener('focus', () => {
       setShoppingList([...RecipeDatabase.getInstance().get_shopping()]);
@@ -191,9 +193,18 @@ export function Shopping({ navigation }: ShoppingScreenProp) {
     }
   }
 
+  function showClearConfirmation() {
+    setIsConfirmationDialogOpen(true);
+  }
+
+  function closeClearConfirmation() {
+    setIsConfirmationDialogOpen(false);
+  }
+
   async function clearShoppingList() {
     await RecipeDatabase.getInstance().resetShoppingList();
     setShoppingList([]);
+    setIsConfirmationDialogOpen(false);
   }
 
   function renderSectionHeader({ section: { title } }: { section: { title: TListFilter } }) {
@@ -272,14 +283,26 @@ export function Shopping({ navigation }: ShoppingScreenProp) {
           setIngredientDataForDialog({ name: '', recipesTitle: [] });
         }}
       />
-      <BottomTopButton
-        testID={screenId + '::ClearShoppingListButton'}
-        as={RoundButton}
-        position={bottomTopPosition.top_right}
-        size={'medium'}
-        icon={Icons.trashIcon}
-        onPressFunction={clearShoppingList}
+      <Alert
+        isVisible={isConfirmationDialogOpen}
+        title={t('clearShoppingList')}
+        content={t('confirmClearShoppingList')}
+        confirmText={t('confirm')}
+        cancelText={t('cancel')}
+        testId={screenId + '::ClearConfirmation'}
+        onConfirm={clearShoppingList}
+        onClose={closeClearConfirmation}
       />
+      {shoppingList.length > 0 && (
+        <BottomTopButton
+          testID={screenId + '::ClearShoppingListButton'}
+          as={RoundButton}
+          position={bottomTopPosition.top_right}
+          size={'medium'}
+          icon={Icons.trashIcon}
+          onPressFunction={showClearConfirmation}
+        />
+      )}
     </SafeAreaView>
   );
 }
