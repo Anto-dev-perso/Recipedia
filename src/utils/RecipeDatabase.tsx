@@ -14,6 +14,7 @@ import {
   isRecipePartiallyEqual,
   isShoppingEqual,
   isTagEqual,
+  nutritionTableElement,
   preparationStepElement,
   recipeColumnsEncoding,
   recipeColumnsNames,
@@ -74,8 +75,6 @@ export class RecipeDatabase {
   protected _recipesTable: TableManipulation;
   protected _ingredientsTable: TableManipulation;
   protected _tagsTable: TableManipulation;
-  // TODO add nutrition
-  // protected _nutritionTable: TableManipulation;
 
   protected _shoppingListTable: TableManipulation;
 
@@ -93,7 +92,6 @@ export class RecipeDatabase {
     this._recipesTable = new TableManipulation(recipeTableName, recipeColumnsEncoding);
     this._ingredientsTable = new TableManipulation(ingredientsTableName, ingredientColumnsEncoding);
     this._tagsTable = new TableManipulation(tagTableName, tagColumnsEncoding);
-    // this._nutritionTable = new TableManipulation(nutritionTableName, nutritionColumnsNames);
 
     this._shoppingListTable = new TableManipulation(
       shoppingListTableName,
@@ -144,7 +142,6 @@ export class RecipeDatabase {
     await this._ingredientsTable.deleteTable(this._dbConnection);
     await this._tagsTable.deleteTable(this._dbConnection);
     await this._shoppingListTable.deleteTable(this._dbConnection);
-    // await this._nutritionTable.deleteTable(this._dbConnection);
 
     this._recipes = new Array<recipeTableElement>();
     this._ingredients = new Array<ingredientTableElement>();
@@ -180,7 +177,6 @@ export class RecipeDatabase {
     await this._ingredientsTable.createTable(this._dbConnection);
     await this._tagsTable.createTable(this._dbConnection);
     await this._shoppingListTable.createTable(this._dbConnection);
-    // await this._nutritionTable.createTable();
 
     this._ingredients = await this.getAllIngredients();
     this._tags = await this.getAllTags();
@@ -1073,6 +1069,7 @@ export class RecipeDatabase {
       [recipeColumnsNames.ingredients, encodedRecipe.INGREDIENTS],
       [recipeColumnsNames.preparation, encodedRecipe.PREPARATION],
       [recipeColumnsNames.time, encodedRecipe.TIME],
+      [recipeColumnsNames.nutrition, encodedRecipe.NUTRITION],
     ]);
   }
 
@@ -1157,42 +1154,42 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-                if (newIngredients.length > 0) {
-                    let alertTitle: string;
-                    let alertMessage = "Do you want to add or edit it before  ?";
-                    const alertOk = "OK";
-                    const alertCancel = "Cancel";
-                    const alertEdit = "Edit before add";
-                    if (newIngredients.length > 1) {
-                        // Plural
-                        alertTitle = "INGREDIENTS NOT FOUND";
-                        alertMessage = `Following ingredients were not found in database :  \n`;
-                        newIngredients.forEach(ing => {
-                            alertMessage += "\t- " + ing.ingName + "\n";
-                        });
-                        alertMessage += `Do you want to add these as is or edit them before adding ?`;
+                    if (newIngredients.length > 0) {
+                        let alertTitle: string;
+                        let alertMessage = "Do you want to add or edit it before  ?";
+                        const alertOk = "OK";
+                        const alertCancel = "Cancel";
+                        const alertEdit = "Edit before add";
+                        if (newIngredients.length > 1) {
+                            // Plural
+                            alertTitle = "INGREDIENTS NOT FOUND";
+                            alertMessage = `Following ingredients were not found in database :  \n`;
+                            newIngredients.forEach(ing => {
+                                alertMessage += "\t- " + ing.ingName + "\n";
+                            });
+                            alertMessage += `Do you want to add these as is or edit them before adding ?`;
 
-                    } else {
-                        alertTitle = `INGREDIENT NOT FOUND`;
-                        alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                        } else {
+                            alertTitle = `INGREDIENT NOT FOUND`;
+                            alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                        }
+
+
+                        switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                            case alertUserChoice.neutral:
+                                // TODO edit before add
+                                break;
+                            case alertUserChoice.ok:
+                                await this.addMultipleIngredients(newIngredients);
+                                result = result.concat(newIngredients);
+                                break;
+                            case alertUserChoice.cancel:
+                            default:
+                                databaseLogger.debug("User canceled adding ingredient");
+                                break;
+                        }
                     }
-
-
-                    switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                        case alertUserChoice.neutral:
-                            // TODO edit before add
-                            break;
-                        case alertUserChoice.ok:
-                            await this.addMultipleIngredients(newIngredients);
-                            result = result.concat(newIngredients);
-                            break;
-                        case alertUserChoice.cancel:
-                        default:
-                            databaseLogger.debug("User canceled adding ingredient");
-                            break;
-                    }
-                }
-                 */
+                     */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);
@@ -1238,6 +1235,7 @@ export class RecipeDatabase {
         .map(step => step.title + textSeparator + step.description)
         .join(EncodingSeparator),
       TIME: recToEncode.time,
+      NUTRITION: recToEncode.nutrition ? this.encodeNutrition(recToEncode.nutrition) : '',
     };
   }
 
@@ -1256,6 +1254,7 @@ export class RecipeDatabase {
       season: decodedSeason,
       preparation: this.decodePreparation(encodedRecipe.PREPARATION),
       time: encodedRecipe.TIME,
+      nutrition: this.decodeNutrition(encodedRecipe.NUTRITION),
     };
   }
 
@@ -1422,6 +1421,48 @@ export class RecipeDatabase {
       return new Array<tagTableElement>();
     }
     return queryResult.map(tagFound => this.decodeTag(tagFound));
+  }
+
+  protected encodeNutrition(nutrition: nutritionTableElement): string {
+    return [
+      nutrition.id || 0,
+      nutrition.energyKcal,
+      nutrition.energyKj,
+      nutrition.fat,
+      nutrition.saturatedFat,
+      nutrition.carbohydrates,
+      nutrition.sugars,
+      nutrition.fiber,
+      nutrition.protein,
+      nutrition.salt,
+      nutrition.portionWeight,
+    ].join(textSeparator);
+  }
+
+  protected decodeNutrition(encodedNutrition: string): nutritionTableElement | undefined {
+    if (!encodedNutrition || encodedNutrition.trim().length === 0) {
+      return undefined;
+    }
+
+    const parts = encodedNutrition.split(textSeparator);
+    if (parts.length !== 11) {
+      databaseLogger.warn('Invalid nutrition data format', { encodedNutrition });
+      return undefined;
+    }
+
+    return {
+      id: Number(parts[0]) || undefined,
+      energyKcal: Number(parts[1]),
+      energyKj: Number(parts[2]),
+      fat: Number(parts[3]),
+      saturatedFat: Number(parts[4]),
+      carbohydrates: Number(parts[5]),
+      sugars: Number(parts[6]),
+      fiber: Number(parts[7]),
+      protein: Number(parts[8]),
+      salt: Number(parts[9]),
+      portionWeight: Number(parts[10]),
+    };
   }
 
   protected decodePreparation(encodedPreparation: string): Array<preparationStepElement> {
