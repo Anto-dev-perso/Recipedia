@@ -106,6 +106,7 @@ import Alert, { AlertProps } from '@components/dialogs/Alert';
 import { getDefaultPersons } from '@utils/settings';
 import { scaleQuantityForPersons } from '@utils/Quantity';
 import SimilarityDialog, { SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
+import RecipeNutrition, { RecipeNutritionProps } from '@components/organisms/RecipeNutrition';
 import { ocrLogger, recipeLogger, validationLogger } from '@utils/logger';
 
 /** Enum defining the four possible recipe interaction modes */
@@ -178,6 +179,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
   const { colors } = useTheme();
 
+  const recipeTestId = 'Recipe';
+
   const props: RecipePropType = route.params;
   const initStateFromProp = props.mode === 'readOnly' || props.mode === 'edit';
 
@@ -203,6 +206,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   );
   const [recipeTime, setRecipeTime] = useState(
     initStateFromProp ? props.recipe.time : defaultValueNumber
+  );
+  const [recipeNutrition, setRecipeNutrition] = useState(
+    initStateFromProp ? props.recipe.nutrition : undefined
   );
   const [imgForOCR, setImgForOCR] = useState(
     props.mode === 'addFromPic' ? new Array<string>(props.imgUri) : new Array<string>()
@@ -595,6 +601,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       season: initStateFromProp ? props.recipe.season : new Array<string>(),
       preparation: recipePreparation,
       time: recipeTime,
+      nutrition: recipeNutrition,
     };
   }
 
@@ -1222,6 +1229,39 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     }
   }
 
+  function recipeNutritionProp(): RecipeNutritionProps {
+    switch (stackMode) {
+      case recipeStateType.readOnly:
+        return {
+          parentTestId: recipeTestId,
+          nutrition: recipeNutrition,
+          mode: 'readOnly' as const,
+        };
+      case recipeStateType.edit:
+        return {
+          parentTestId: recipeTestId,
+          nutrition: recipeNutrition,
+          mode: 'edit' as const,
+          onNutritionChange: setRecipeNutrition,
+        };
+      case recipeStateType.addManual:
+      case recipeStateType.addOCR:
+        return {
+          parentTestId: recipeTestId,
+          nutrition: recipeNutrition,
+          mode: 'add' as const,
+          onNutritionChange: setRecipeNutrition,
+        };
+      default:
+        recipeLogger.warn('Unknown stack mode in recipeNutritionProp', { stackMode });
+        return {
+          parentTestId: recipeTestId,
+          nutrition: undefined,
+          mode: 'readOnly' as const,
+        };
+    }
+  }
+
   function recipeValidationButtonProps(): [string, () => Promise<void>] {
     switch (stackMode) {
       case recipeStateType.readOnly:
@@ -1274,6 +1314,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
         {/*Preparation*/}
         <RecipeTextRender {...recipePreparationProp()} />
+
+        {/*Nutrition*/}
+        <RecipeNutrition {...recipeNutritionProp()} />
 
         {/* Add some space to avoid missing clicking */}
         <View style={{ paddingVertical: LargeButtonDiameter / 2 }} />

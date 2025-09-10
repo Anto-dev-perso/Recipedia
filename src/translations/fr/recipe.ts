@@ -59,4 +59,29 @@ export default {
     fourtyToFifty: '40-50 min',
     oneHourPlus: '+60 min',
   },
+
+  nutrition: {
+    title: 'Valeurs nutritionnelles',
+    titleSimple: 'Valeurs nutritionnelles:',
+    per100g: 'pour 100g',
+    perPortion: 'pour {{weight}}g',
+    perPortionTab: 'par portion',
+    addNutrition: 'Ajouter les valeurs nutritionnelles',
+    removeNutrition: 'Supprimer les informations nutritionnelles',
+    confirmDelete:
+      'Êtes-vous sûr de vouloir supprimer toutes les informations nutritionnelles ? Cette action ne peut pas être annulée.',
+    portionWeight: "Poids d'une portion (g) :",
+
+    // French nutrition facts labels
+    energy: 'Énergie',
+    energyKcal: 'Énergie (kcal)',
+    energyKj: 'Énergie (kJ)',
+    fat: 'Matières grasses',
+    saturatedFat: 'dont acides gras saturés',
+    carbohydrates: 'Glucides',
+    sugars: 'dont sucres',
+    fiber: 'Fibres',
+    protein: 'Protéines',
+    salt: 'Sel',
+  },
 };

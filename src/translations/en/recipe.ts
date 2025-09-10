@@ -59,4 +59,28 @@ export default {
     fourtyToFifty: '40-50 min',
     oneHourPlus: '+60 min',
   },
+
+  nutrition: {
+    title: 'Nutritional values',
+    titleSimple: 'Nutritional values:',
+    per100g: 'per 100g',
+    perPortion: 'per {{weight}}g',
+    perPortionTab: 'per portion',
+    addNutrition: 'Add nutritional values',
+    removeNutrition: 'Remove nutritional information',
+    confirmDelete:
+      'Are you sure you want to remove all nutritional information? This action cannot be undone.',
+    portionWeight: 'Weight of one portion (g):',
+
+    energy: 'Energy',
+    energyKcal: 'Energy (kcal)',
+    energyKj: 'Energy (kJ)',
+    fat: 'Fat',
+    saturatedFat: 'of which saturated fat',
+    carbohydrates: 'Carbohydrates',
+    sugars: 'of which sugars',
+    fiber: 'Fiber',
+    protein: 'Protein',
+    salt: 'Salt',
+  },
 };
