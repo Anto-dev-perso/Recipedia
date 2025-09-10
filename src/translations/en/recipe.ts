@@ -70,7 +70,7 @@ export default {
     removeNutrition: 'Remove nutritional information',
     confirmDelete:
       'Are you sure you want to remove all nutritional information? This action cannot be undone.',
-    portionWeight: 'Weight of one portion (g):',
+    portionWeight: 'Weight of one portion:',
 
     energy: 'Energy',
     energyKcal: 'Energy (kcal)',

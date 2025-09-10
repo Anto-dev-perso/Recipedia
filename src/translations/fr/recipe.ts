@@ -70,7 +70,7 @@ export default {
     removeNutrition: 'Supprimer les informations nutritionnelles',
     confirmDelete:
       'Êtes-vous sûr de vouloir supprimer toutes les informations nutritionnelles ? Cette action ne peut pas être annulée.',
-    portionWeight: "Poids d'une portion (g) :",
+    portionWeight: "Poids d'une portion :",
 
     // French nutrition facts labels
     energy: 'Énergie',

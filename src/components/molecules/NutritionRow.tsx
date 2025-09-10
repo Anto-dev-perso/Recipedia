@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
-import { recipeTextStyles } from '@styles/recipeComponents';
 import { padding } from '@styles/spacing';
 
 interface NutritionRowProps {
@@ -37,10 +36,10 @@ export function NutritionRow({
 
   return (
     <View>
-      <View style={[recipeTextStyles.containerSection, styles.container]}>
+      <View style={styles.container}>
         <Text
           variant='bodyMedium'
-          style={[{ width: '60%' }, isSubItem && styles.subLabel]}
+          style={[{ width: '50%' }, isSubItem && styles.subLabel]}
           testID={testId + '::Text'}
         >
           {isSubItem ? `${label}` : label}
@@ -54,7 +53,7 @@ export function NutritionRow({
             keyboardType='numeric'
             dense
             mode='outlined'
-            style={{ width: '40%' }}
+            style={{ width: '50%' }}
             right={<TextInput.Affix text={unit} />}
           />
         ) : (
@@ -73,6 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flex: 1,
+    paddingVertical: padding.small,
   },
   subLabel: {
     fontStyle: 'italic',

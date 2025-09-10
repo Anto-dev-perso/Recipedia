@@ -1,9 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Button, Divider, Text, TextInput, useTheme } from 'react-native-paper';
+import { Divider, Text, TextInput, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { recipeTextStyles } from '@styles/recipeComponents';
 import { padding } from '@styles/spacing';
+import WrappableButton from '@components/atomic/WrappableButton';
 
 interface NutritionEditFormProps {
   portionWeight: number;
@@ -52,16 +53,15 @@ export function NutritionEditForm({
           />
 
           {showRemoveButton && onRemoveNutrition && (
-            <Button
+            <WrappableButton
               testID={testId + '::RemoveButton'}
-              mode='contained'
               onPress={onRemoveNutrition}
               textColor={colors.onError}
               buttonColor={colors.error}
               style={{ marginTop: padding.large }}
             >
               {t('recipe.nutrition.removeNutrition')}
-            </Button>
+            </WrappableButton>
           )}
         </View>
       </View>
