@@ -41,6 +41,7 @@ export function WrappableButton({
       activeOpacity={0.8}
     >
       <Text
+        testID={testID + '::Text'}
         variant='labelLarge'
         style={{
           color: textColor || colors.onPrimary,
