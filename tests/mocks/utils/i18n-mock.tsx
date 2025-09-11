@@ -27,6 +27,25 @@ export function i18nMock() {
     fruits: 'filters.fruits',
     meat: 'filters.meat',
     searchRecipeTitle: 'searchRecipeTitle',
+
+    'recipe.nutrition.title': 'recipe.nutrition.title',
+    'recipe.nutrition.titleSimple': 'recipe.nutrition.titleSimple',
+    'recipe.nutrition.per100g': 'recipe.nutrition.per100g',
+    'recipe.nutrition.perPortionTab': 'recipe.nutrition.perPortionTab',
+    'recipe.nutrition.removeNutrition': 'recipe.nutrition.removeNutrition',
+    'recipe.nutrition.confirmDelete': 'recipe.nutrition.confirmDelete',
+    'recipe.nutrition.portionWeight': 'recipe.nutrition.portionWeight',
+    'recipe.nutrition.energyKcal': 'recipe.nutrition.energyKcal',
+    'recipe.nutrition.energyKj': 'recipe.nutrition.energyKj',
+    'recipe.nutrition.fat': 'recipe.nutrition.fat',
+    'recipe.nutrition.saturatedFat': 'recipe.nutrition.saturatedFat',
+    'recipe.nutrition.carbohydrates': 'recipe.nutrition.carbohydrates',
+    'recipe.nutrition.sugars': 'recipe.nutrition.sugars',
+    'recipe.nutrition.fiber': 'recipe.nutrition.fiber',
+    'recipe.nutrition.protein': 'recipe.nutrition.protein',
+    'recipe.nutrition.salt': 'recipe.nutrition.salt',
+    delete: 'delete',
+    cancel: 'cancel',
   };
   return {
     useI18n: () => ({
