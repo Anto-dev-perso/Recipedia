@@ -1,6 +1,20 @@
 export const mockSetLocale = jest.fn();
 
 export function i18nMock() {
+  const ocrTerms = {
+    energyKj: ['Energie', 'Énergie', 'Énergie (kJ)', 'Energie (kJ)'],
+    energyKcal: ['Energie', 'Énergie', 'Énergie (kCal)', 'Energie (kCal)'],
+    fat: ['matières grasses', 'matieres grasses', 'lipides'],
+    saturatedFat: ['dont acides gras saturés', 'dont saturés', 'dont satures'],
+    carbohydrates: ['glucides'],
+    sugars: ['dont sucres', 'dont sucre'],
+    fiber: ['fibres'],
+    protein: ['protéines', 'proteines'],
+    salt: ['sel'],
+    per100g: ['pour 100g'],
+    perPortion: ['Par portion', 'Pour ce plat'],
+  };
+
   const translations: Record<string, string> = {
     'preparationTimes.noneToTen': '0-10 min',
     'preparationTimes.tenToFifteen': '10-15 min',
@@ -44,6 +58,7 @@ export function i18nMock() {
     'recipe.nutrition.fiber': 'recipe.nutrition.fiber',
     'recipe.nutrition.protein': 'recipe.nutrition.protein',
     'recipe.nutrition.salt': 'recipe.nutrition.salt',
+
     delete: 'delete',
     cancel: 'cancel',
   };
@@ -64,5 +79,22 @@ export function i18nMock() {
       getAvailableLocales: jest.fn().mockReturnValue(['en', 'fr']),
       getLocaleName: jest.fn().mockImplementation(() => 'locale name'),
     }),
+    language: 'fr',
+    getResource: (language: string, namespace: string, key: string) => {
+      if (key === 'recipe.nutrition.ocr') {
+        return ocrTerms;
+      }
+      return undefined;
+    },
+    getFixedT:
+      (language: string, namespace: string, keyPrefix: string) => (key: string, options?: any) => {
+        if (keyPrefix === 'recipe.nutrition.ocr' && key === '') {
+          // Return the OCR nutrition terms object
+          return options?.returnObjects ? ocrTerms : ocrTerms;
+        }
+        // For other keys, return as normal
+        const fullKey = keyPrefix ? `${keyPrefix}.${key}` : key;
+        return translations[fullKey] ?? fullKey;
+      },
   };
 }
