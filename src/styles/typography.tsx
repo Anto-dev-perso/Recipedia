@@ -110,6 +110,18 @@ export const exceptLettersAndSpacesRegExp = /[^a-zA-ZÀ-ÖØ-öø-ÿ\s]/g;
 /** Regular expression to extract text between parentheses */
 export const extractBetweenParenthesis = /\((.*?)\)/;
 
+/** Regular expression to check if text starts with a letter */
+export const startsWithLetter = /^[a-zA-Z]/;
+
+/** Regular expression to check if text has letters in the middle (digit followed by letter followed by digit) */
+export const hasLettersInMiddle = /\d[a-zA-Z].*\d/;
+
+/** Regular expression to check if text ends with letters (units) */
+export const endsWithLetters = /[a-zA-Z]+$/;
+
+/** Regular expression to match only digits, dots, and whitespace */
+export const onlyDigitsDotsSpaces = /^[\d.\s]+$/;
+
 /**
  * Loads custom Lora font family for the application
  *

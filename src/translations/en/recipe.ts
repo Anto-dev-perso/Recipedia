@@ -82,5 +82,19 @@ export default {
     fiber: 'Fiber',
     protein: 'Protein',
     salt: 'Salt',
+
+    ocr: {
+      energyKj: ['Energy', 'Energy (kJ)'],
+      energyKcal: ['Energie', 'Energie (kCal)'],
+      fat: ['fat'],
+      saturatedFat: ['saturated fat', 'of which saturated'],
+      carbohydrates: ['carbohydrates', 'carbs'],
+      sugars: ['of which sugars', 'sugars'],
+      fiber: ['fiber'],
+      protein: ['protein'],
+      salt: ['salt'],
+      per100g: ['per 100 g'],
+      perPortion: ['Per portion'],
+    },
   },
 };

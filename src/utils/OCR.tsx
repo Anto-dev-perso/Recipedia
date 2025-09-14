@@ -33,11 +33,23 @@ import {
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 import {
+  FUSE_THRESHOLD,
+  nutritionObject,
+  NutritionTerms,
+  OcrKeys,
+  per100gKey,
+  perPortionKey,
+} from '@customTypes/OCRTypes';
+import {
   allNonDigitCharacter,
+  endsWithLetters,
   findAllNumbers,
+  hasLettersInMiddle,
   letterRegExp,
   numberAtFirstIndex as numberAtFirstIndex,
+  onlyDigitsDotsSpaces,
   replaceAllBackToLine,
+  startsWithLetter,
 } from '@styles/typography';
 
 import TextRecognition, {
@@ -48,6 +60,8 @@ import { scaleQuantityForPersons } from '@utils/Quantity';
 import { isArrayOfNumber, isArrayOfType, isNumber, isString } from '@utils/TypeCheckingFunctions';
 import { defaultValueNumber } from '@utils/Constants';
 import { ocrLogger } from '@utils/logger';
+import i18n from '@utils/i18n';
+import Fuse from 'fuse.js/dist/fuse.js';
 
 /** Type representing person count and cooking time extracted from OCR */
 export type personAndTimeObject = { person: number; time: number };
@@ -123,6 +137,8 @@ export async function recognizeText(imageUri: string, fieldName: recipeColumnsNa
         return tranformOCRInIngredients(ocr);
       case recipeColumnsNames.tags:
         return tranformOCRInTags(ocr);
+      case recipeColumnsNames.nutrition:
+        return transformOCRInNutrition(ocr);
       case recipeColumnsNames.image:
         ocrLogger.error('Image field should not be processed through OCR', { fieldName });
         return '';
@@ -582,7 +598,7 @@ export async function extractFieldFromImage(
     recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTags: tagTableElement[];
-    recipeIngredients: any[];
+    recipeIngredients: ingredientTableElement[];
   },
   onWarn: WarningHandler = msg => ocrLogger.warn('OCR extraction warning', { message: msg })
 ): Promise<
@@ -594,7 +610,8 @@ export async function extractFieldFromImage(
     recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTime: number;
-    recipeIngredients: any[];
+    recipeIngredients: ingredientTableElement[];
+    recipeNutrition: nutritionObject;
   }>
 > {
   if (field === recipeColumnsNames.image) {
@@ -724,37 +741,21 @@ export async function extractFieldFromImage(
         warn('Expected non empty array of strings for tags');
         return {};
       }
+    case recipeColumnsNames.nutrition:
+      if (ocrResult && typeof ocrResult === 'object' && !Array.isArray(ocrResult)) {
+        return {
+          recipeNutrition: ocrResult as nutritionObject,
+        };
+      } else {
+        warn('Expected nutrition object for nutrition field');
+        return {};
+      }
     default:
       ocrLogger.error('Unrecognized field in extractFieldFromImage', { field });
       return {};
   }
 }
 
-/**
- * Parses ingredients from OCR lines when no structured header is detected
- *
- * Fallback parsing method for simpler ingredient formats. Splits the input lines
- * assuming the first half contains ingredient names and the second half contains
- * corresponding quantities with units.
- *
- * @param lines - Array of OCR text lines to parse
- * @returns Array of ingredient objects with person count set to -1 (unknown)
- *
- * @example
- * ```typescript
- * const lines = [
- *   "Flour", "Sugar", "Salt",      // First half: names
- *   "2 cups", "1 tsp", "1 pinch"   // Second half: quantities
- * ];
- *
- * const ingredients = parseIngredientsNoHeader(lines);
- * // Returns:
- * // [
- * //   { name: "Flour", unit: "cups", quantityPerPersons: [{persons: -1, quantity: "2"}] },
- * //   { name: "Sugar", unit: "tsp", quantityPerPersons: [{persons: -1, quantity: "1"}] }
- * // ]
- * ```
- */
 export function parseIngredientsNoHeader(lines: Array<string>): Array<ingredientObject> {
   if (!lines.length) {
     return [];
@@ -782,4 +783,265 @@ export function parseIngredientsNoHeader(lines: Array<string>): Array<ingredient
   }
 
   return result;
+}
+
+function parseNutritionValue(ocrText: string): number | undefined {
+  const MAX_NUTRITION_VALUE = 10000;
+  const DECIMAL_PRECISION = 100;
+
+  let cleanedText = ocrText.trim();
+  cleanedText = cleanedText.replace(/\([^)]*\)/g, '');
+  cleanedText = cleanedText.replace(/\n/g, ' ');
+  cleanedText = cleanedText.replace(/\s+/g, ' ').trim();
+  cleanedText = cleanedText.replace(/^I(\d)/g, '1$1');
+
+  if (startsWithLetter.test(cleanedText) || hasLettersInMiddle.test(cleanedText)) {
+    return undefined;
+  }
+
+  let numericPart = cleanedText;
+  if (endsWithLetters.test(cleanedText)) {
+    numericPart = cleanedText.replace(endsWithLetters, '').trim();
+  } else if (cleanedText.length > 1) {
+    numericPart = cleanedText.substring(0, cleanedText.length - 1);
+  } else {
+    return undefined;
+  }
+
+  const normalizedDecimal = numericPart.replace(',', '.');
+
+  if (!onlyDigitsDotsSpaces.test(normalizedDecimal)) {
+    return undefined;
+  }
+
+  const parsedNumber = parseFloat(normalizedDecimal);
+  if (isNaN(parsedNumber) || parsedNumber < 0 || parsedNumber > MAX_NUTRITION_VALUE) {
+    return undefined;
+  }
+
+  return Math.round(parsedNumber * DECIMAL_PRECISION) / DECIMAL_PRECISION;
+}
+
+function getNutritionTermsForLanguage(language: string) {
+  try {
+    const t = i18n.getFixedT(language, 'translation', 'recipe.nutrition.ocr');
+
+    const result = t('', { returnObjects: true });
+    if (result && typeof result === 'object') {
+      return result;
+    }
+  } catch (error) {
+    ocrLogger.error('i18n nutrition terms failed', { error });
+    return undefined;
+  }
+}
+
+function findAndMergePer100gLines(lines: string[], nutritionTerms: NutritionTerms): number {
+  const per100gTerms = nutritionTerms[per100gKey];
+  const per100gFuse = new Fuse(per100gTerms, {
+    threshold: FUSE_THRESHOLD,
+  });
+
+  for (let i = 0; i < lines.length; i++) {
+    if (per100gFuse.search(lines[i].toLowerCase()).length > 0) {
+      // Found a match, now check for contiguous matches to merge
+      let endIndex = i;
+
+      // Look for consecutive lines that might be part of the same per100g term
+      while (endIndex + 1 < lines.length) {
+        const currentMerged = lines.slice(i, endIndex + 2).join(' ');
+        if (per100gFuse.search(currentMerged.toLowerCase()).length > 0) {
+          endIndex++;
+        } else {
+          break;
+        }
+      }
+
+      // If we found consecutive matches, merge them
+      if (endIndex > i) {
+        const mergedLine = lines.slice(i, endIndex + 1).join(' ');
+        lines.splice(i, endIndex - i + 1, mergedLine);
+      }
+
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+function createFuseObjects(nutritionTerms: NutritionTerms): Record<OcrKeys, Fuse<string>> {
+  const fuseOfNutritionTerms = {} as Record<OcrKeys, Fuse<string>>;
+
+  for (const [termKey, termValue] of Object.entries(nutritionTerms)) {
+    if (termKey !== per100gKey && termKey !== perPortionKey) {
+      fuseOfNutritionTerms[termKey as OcrKeys] = new Fuse(termValue, {
+        threshold: FUSE_THRESHOLD,
+      });
+    }
+  }
+
+  return fuseOfNutritionTerms;
+}
+
+function filterNutritionLabels(
+  lines: string[],
+  per100gIndex: number,
+  fuseOfNutritionTerms: Record<OcrKeys, Fuse<string>>
+): string[] {
+  const linesToSearch = lines.slice(0, per100gIndex + 1);
+
+  const filteredLines = linesToSearch.filter(item => {
+    for (const [key, fuse] of Object.entries(fuseOfNutritionTerms)) {
+      if (
+        key !== per100gKey &&
+        key !== perPortionKey &&
+        fuse.search(item.toLowerCase()).length > 0
+      ) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  return duplicateEnergyLabelIfNeeded(filteredLines, fuseOfNutritionTerms);
+}
+
+function extractNutritionValues(
+  lines: string[],
+  per100gIndex: number,
+  nutritionTerms: NutritionTerms
+): string[] {
+  const linesAfterPer100g = lines.slice(per100gIndex + 1);
+
+  // Look for "Per portion" separator to detect two-column format
+  const perPortionTerms = nutritionTerms['perPortion'];
+  const perPortionFuse = new Fuse(perPortionTerms, {
+    threshold: FUSE_THRESHOLD,
+  });
+
+  const perPortionIndex = linesAfterPer100g.findIndex(line => {
+    return perPortionFuse.search(line.toLowerCase()).length > 0;
+  });
+
+  if (perPortionIndex !== -1) {
+    return linesAfterPer100g.slice(0, perPortionIndex);
+  } else {
+    return linesAfterPer100g;
+  }
+}
+
+function duplicateEnergyLabelIfNeeded(
+  nutritionLabels: string[],
+  fuseOfNutritionTerms: Record<OcrKeys, Fuse<string>>
+): string[] {
+  const labelsWithPossibleDuplicate = [...nutritionLabels];
+  const energyFuse = fuseOfNutritionTerms['energyKcal'];
+
+  let energyLabelCount = 0;
+  let firstEnergyIndex = -1;
+
+  for (let i = 0; i < labelsWithPossibleDuplicate.length; i++) {
+    if (energyFuse.search(labelsWithPossibleDuplicate[i].toLowerCase()).length > 0) {
+      energyLabelCount++;
+      firstEnergyIndex = i;
+    }
+  }
+
+  if (energyLabelCount === 1) {
+    const duplicatedEnergyLabel = labelsWithPossibleDuplicate[firstEnergyIndex];
+    labelsWithPossibleDuplicate.splice(firstEnergyIndex + 1, 0, duplicatedEnergyLabel);
+  }
+
+  return labelsWithPossibleDuplicate;
+}
+
+function parseNutritionLabelsAndValues(
+  nutritionLabels: string[],
+  nutritionValues: string[],
+  fuseOfNutritionTerms: Record<OcrKeys, Fuse<string>>
+): nutritionObject {
+  const parsedNutritionObject: nutritionObject = {};
+
+  const energyCalKey: OcrKeys = 'energyKcal';
+  const energyJoulKey: OcrKeys = 'energyKj';
+
+  for (let i = 0; i < nutritionLabels.length; i++) {
+    const label = nutritionLabels[i].toLowerCase();
+    const value = nutritionValues[i]?.toLowerCase() || '';
+
+    let labelKey: OcrKeys | undefined;
+    // Normal label matching
+    for (const [key, fuse] of Object.entries(fuseOfNutritionTerms)) {
+      if (fuse.search(label).length > 0) {
+        labelKey = key as OcrKeys;
+        break;
+      }
+    }
+
+    if (!labelKey) {
+      ocrLogger.info(`Label ${label} not found in nutrition terms`);
+      continue;
+    }
+
+    const valueParsed = parseNutritionValue(value);
+    if (!valueParsed) {
+      ocrLogger.info(`Value ${value} could not be converted to number`);
+      continue;
+    }
+
+    if (labelKey !== energyCalKey && labelKey !== energyJoulKey) {
+      parsedNutritionObject[labelKey as keyof nutritionObject] = valueParsed;
+    } else {
+      if (parsedNutritionObject[energyCalKey]) {
+        if (valueParsed < parsedNutritionObject[energyCalKey]) {
+          parsedNutritionObject[energyJoulKey] = parsedNutritionObject[energyCalKey];
+          parsedNutritionObject[energyCalKey] = valueParsed;
+        } else {
+          parsedNutritionObject[energyJoulKey] = valueParsed;
+        }
+      } else if (parsedNutritionObject[energyJoulKey]) {
+        if (valueParsed > parsedNutritionObject[energyJoulKey]) {
+          parsedNutritionObject[energyCalKey] = parsedNutritionObject[energyJoulKey];
+          parsedNutritionObject[energyJoulKey] = valueParsed;
+        } else {
+          parsedNutritionObject[energyCalKey] = valueParsed;
+        }
+      } else {
+        parsedNutritionObject[valueParsed < 1000 ? energyCalKey : energyJoulKey] = valueParsed;
+      }
+    }
+  }
+
+  return parsedNutritionObject;
+}
+
+function transformOCRInNutrition(ocr: TextRecognitionResult): nutritionObject {
+  const originalLines = convertBlockOnArrayOfString(ocr.blocks);
+
+  const nutritionTerms = getNutritionTermsForLanguage(i18n.language);
+  if (!nutritionTerms) {
+    return {};
+  }
+
+  const nutritionSearches = createFuseObjects(nutritionTerms as NutritionTerms);
+  const per100gIndex = findAndMergePer100gLines(originalLines, nutritionTerms as NutritionTerms);
+
+  if (per100gIndex === -1) {
+    return {};
+  }
+
+  const extractedLabels = filterNutritionLabels(originalLines, per100gIndex, nutritionSearches);
+  const extractedValues = extractNutritionValues(
+    originalLines,
+    per100gIndex,
+    nutritionTerms as NutritionTerms
+  );
+
+  if (extractedValues.length < extractedLabels.length) {
+    return {};
+  }
+  const matchingValues = extractedValues.slice(0, extractedLabels.length);
+
+  return parseNutritionLabelsAndValues(extractedLabels, matchingValues, nutritionSearches);
 }
