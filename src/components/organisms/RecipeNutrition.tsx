@@ -8,8 +8,9 @@
  * - Tab-based navigation for different measurement units
  * - Modular component architecture
  * - Material Design using react-native-paper
- * - Read-only and edit modes support
+ * - Read-only, edit, add, and OCR modes support
  * - Empty state handling when no nutrition data available
+ * - OCR integration for scanning nutrition facts from images
  *
  * @example
  * ```typescript
@@ -17,6 +18,7 @@
  * <RecipeNutrition
  *   nutrition={recipe.nutrition}
  *   mode="readOnly"
+ *   parentTestId="recipe"
  * />
  *
  * // Edit mode
@@ -24,23 +26,35 @@
  *   nutrition={recipe.nutrition}
  *   mode="edit"
  *   onNutritionChange={(updatedNutrition) => setNutrition(updatedNutrition)}
+ *   parentTestId="recipe"
+ * />
+ *
+ * // OCR mode
+ * <RecipeNutrition
+ *   nutrition={recipe.nutrition}
+ *   mode="ocr"
+ *   openModal={() => openNutritionOCRModal()}
+ *   onNutritionChange={(updatedNutrition) => setNutrition(updatedNutrition)}
+ *   parentTestId="recipe"
  * />
  * ```
  */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
 import NutritionTable from '@components/molecules/NutritionTable';
 import NutritionEmptyState from '@components/molecules/NutritionEmptyState';
-
-export type RecipeNutritionMode = 'readOnly' | 'edit' | 'add';
+import { recipeStateType } from '@screens/Recipe';
+import { recipeLogger } from '@utils/logger';
 
 export interface RecipeNutritionProps {
   /** Current nutrition data (undefined when no nutrition available) */
   nutrition?: nutritionTableElement;
   /** Component mode for different interaction types */
-  mode: RecipeNutritionMode;
+  mode: recipeStateType;
   /** Callback fired when nutrition data changes in edit mode */
   onNutritionChange?: (nutrition: nutritionTableElement | undefined) => void;
+  /** Function to open the OCR scanning modal (required when mode is 'ocr') */
+  openModal?: () => void;
   /** Test ID of parent for component testing */
   parentTestId: string;
 }
@@ -49,6 +63,7 @@ export function RecipeNutrition({
   nutrition,
   mode,
   onNutritionChange,
+  openModal,
   parentTestId,
 }: RecipeNutritionProps) {
   const [editedNutrition, setEditedNutrition] = useState<nutritionTableElement | undefined>(
@@ -56,8 +71,14 @@ export function RecipeNutrition({
   );
 
   const testId = parentTestId + '::RecipeNutrition';
-  const isEditing = mode === 'edit' || mode === 'add';
+  const isEditing = mode !== recipeStateType.readOnly;
   const currentNutrition = isEditing ? editedNutrition : nutrition;
+
+  useEffect(() => {
+    if (isEditing) {
+      setEditedNutrition(nutrition);
+    }
+  }, [nutrition, isEditing]);
 
   const handleNutritionUpdate = (updates: Partial<nutritionTableElement>) => {
     if (!isEditing) return;
@@ -87,19 +108,35 @@ export function RecipeNutrition({
     onNutritionChange?.(undefined);
   };
 
+  const handleOCRModal = () => {
+    if (mode === recipeStateType.addOCR) {
+      openModal?.();
+    } else {
+      recipeLogger.warn('handleOCRModal called in wrong mode', mode);
+    }
+  };
+
   const handleAddNutrition = () => {
     handleNutritionUpdate({});
   };
 
-  if (!currentNutrition && mode === 'readOnly') {
+  if (!currentNutrition && mode === recipeStateType.readOnly) {
     return null;
   }
 
-  if (!currentNutrition && (mode === 'add' || mode === 'edit')) {
-    return <NutritionEmptyState onAddNutrition={handleAddNutrition} parentTestId={testId} />;
+  if (!currentNutrition && isEditing) {
+    return (
+      <NutritionEmptyState
+        mode={mode === recipeStateType.addOCR ? 'ocr' : 'add'}
+        onButtonPressed={mode === recipeStateType.addOCR ? handleOCRModal : handleAddNutrition}
+        parentTestId={testId}
+      />
+    );
   }
 
-  if (!currentNutrition) return null;
+  if (!currentNutrition) {
+    return null;
+  }
 
   return (
     <NutritionTable
@@ -107,7 +144,7 @@ export function RecipeNutrition({
       isEditable={isEditing}
       onNutritionChange={handleNutritionUpdate}
       onRemoveNutrition={handleRemoveNutrition}
-      showRemoveButton={mode === 'edit'}
+      showRemoveButton={isEditing}
       parentTestId={testId}
     />
   );

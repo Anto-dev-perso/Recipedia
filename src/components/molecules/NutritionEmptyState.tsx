@@ -6,15 +6,21 @@ import { recipeTextStyles } from '@styles/recipeComponents';
 import { Icons } from '@assets/Icons';
 import RoundButton from '@components/atomic/RoundButton';
 
-interface NutritionEmptyStateProps {
-  onAddNutrition: () => void;
+export type NutritionEmptyStateProps = {
+  onButtonPressed: () => void;
+  mode: 'add' | 'ocr';
   parentTestId?: string;
-}
+};
 
-export function NutritionEmptyState({ onAddNutrition, parentTestId }: NutritionEmptyStateProps) {
+export function NutritionEmptyState({
+  onButtonPressed,
+  mode,
+  parentTestId,
+}: NutritionEmptyStateProps) {
   const { t } = useI18n();
 
   const testId = parentTestId + '::NutritionEmptyState';
+  const isOCRMode = mode === 'ocr';
 
   return (
     <View style={recipeTextStyles.containerSection}>
@@ -26,10 +32,10 @@ export function NutritionEmptyState({ onAddNutrition, parentTestId }: NutritionE
         {t('recipe.nutrition.titleSimple')}
       </Text>
       <RoundButton
-        testID={testId + '::AddButton'}
+        testID={testId + (isOCRMode ? '::OCRButton' : '::AddButton')}
         size={'medium'}
-        icon={Icons.plusIcon}
-        onPressFunction={onAddNutrition}
+        icon={isOCRMode ? Icons.scanImageIcon : Icons.plusIcon}
+        onPressFunction={onButtonPressed}
         style={recipeTextStyles.button}
       />
     </View>

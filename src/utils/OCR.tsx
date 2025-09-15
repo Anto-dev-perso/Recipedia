@@ -1028,9 +1028,7 @@ function parseNutritionValue(ocrText: string): number | undefined {
  */
 function getNutritionTermsForLanguage(language: string) {
   try {
-    const t = i18n.getFixedT(language, 'translation', 'recipe.nutrition.ocr');
-
-    const result = t('', { returnObjects: true });
+    const result = i18n.getResource(language, 'translation', 'recipe.nutrition.ocr');
     if (result && typeof result === 'object') {
       return result;
     }

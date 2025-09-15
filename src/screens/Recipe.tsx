@@ -71,6 +71,7 @@ import {
   extractTagsName,
   ingredientTableElement,
   ingredientType,
+  nutritionTableElement,
   preparationStepElement,
   recipeColumnsNames,
   recipeTableElement,
@@ -828,6 +829,28 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     if (newFieldData.recipeIngredients) {
       setRecipeIngredients(newFieldData.recipeIngredients);
     }
+    if (newFieldData.recipeNutrition) {
+      const newNutrition: nutritionTableElement = {
+        energyKcal: 0,
+        energyKj: 0,
+        fat: 0,
+        saturatedFat: 0,
+        carbohydrates: 0,
+        sugars: 0,
+        fiber: 0,
+        protein: 0,
+        salt: 0,
+        portionWeight: 0,
+      };
+
+      for (const [key, value] of Object.entries(newFieldData.recipeNutrition)) {
+        if (value !== undefined) {
+          newNutrition[key as keyof nutritionTableElement] = value;
+        }
+      }
+
+      setRecipeNutrition(newNutrition);
+    }
   }
 
   function openModalForField(field: recipeColumnsNames) {
@@ -1235,29 +1258,36 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         return {
           parentTestId: recipeTestId,
           nutrition: recipeNutrition,
-          mode: 'readOnly' as const,
+          mode: recipeStateType.readOnly,
         };
       case recipeStateType.edit:
         return {
           parentTestId: recipeTestId,
           nutrition: recipeNutrition,
-          mode: 'edit' as const,
+          mode: recipeStateType.edit,
           onNutritionChange: setRecipeNutrition,
         };
       case recipeStateType.addManual:
+        return {
+          parentTestId: recipeTestId,
+          nutrition: recipeNutrition,
+          mode: recipeStateType.addManual,
+          onNutritionChange: setRecipeNutrition,
+        };
       case recipeStateType.addOCR:
         return {
           parentTestId: recipeTestId,
           nutrition: recipeNutrition,
-          mode: 'add' as const,
+          mode: recipeStateType.addOCR,
           onNutritionChange: setRecipeNutrition,
+          openModal: () => openModalForField(recipeColumnsNames.nutrition),
         };
       default:
         recipeLogger.warn('Unknown stack mode in recipeNutritionProp', { stackMode });
         return {
           parentTestId: recipeTestId,
           nutrition: undefined,
-          mode: 'readOnly' as const,
+          mode: recipeStateType.readOnly,
         };
     }
   }
