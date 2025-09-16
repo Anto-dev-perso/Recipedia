@@ -39,7 +39,7 @@ module.exports = {
     
     // Body requirements
     'body-leading-blank': [1, 'always'],
-    'body-max-line-length': [2, 'always', 100],
+    'body-max-line-length': [1, 'always', 100],
     
     // Footer requirements
     'footer-leading-blank': [1, 'always'],
