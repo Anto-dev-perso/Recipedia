@@ -7,14 +7,18 @@ export default {
       "Vous n'avez renseignés aucun des éléments de la recette. Avant de valider, veuillez renseigner : \n\t- une image\n\t- un titre\n\t- des ingrédients\n\t- des instructions pour la préparation\n\t- le nombre de personnes",
     messageSingularBeginning: 'Votre recette manque de ',
     messageSingularEnding: ". Veuillez l'ajouter avant de valider.",
+    messageSingularNutrition:
+      "Votre recette manque d'informations nutritionnelles complètes. Veuillez les ajouter avant de valider.",
     messagePlural:
       "Vous n'avez pas renseigné tous les éléments essentiels à une recette. Avant de valider, veuillez renseigner : ",
+    image: 'une image',
     titleRecipe: 'un titre',
     titleIngredients: 'des ingrédients',
     titlePreparation: 'des instructions pour la préparation',
     titlePersons: 'le nombre de personnes',
     ingredientQuantities: 'des quantités pour tous les ingrédients',
     ingredientNames: 'des noms pour tous les ingrédients',
+    nutrition: 'informations nutritionnelles complètes',
   },
   ocrRecipe: {
     explanationText: 'Choisissez une image:',

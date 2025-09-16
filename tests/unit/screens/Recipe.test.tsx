@@ -58,6 +58,10 @@ jest.mock(
   '@components/molecules/BottomTopButton',
   () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock
 );
+jest.mock(
+  '@components/dialogs/Alert',
+  () => require('@mocks/components/dialogs/Alert-mock').alertMock
+);
 
 const defaultUri = '';
 
@@ -1099,13 +1103,160 @@ describe('Recipe Component tests', () => {
     checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
-  test('shows validation error if recipe is incomplete', () => {
+  test('shows validation error when image is missing in add mode', () => {
     const { getByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddOCR)} navigation={mockNavigation} />
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+    );
+
+    // Add all required fields except image
+    fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'Test Recipe');
+    fireEvent.press(getByTestId('RecipeIngredients::AddNewText'));
+    fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
+    fireEvent.press(getByTestId('RecipePreparation::AddNewText'));
+
+    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+
+    expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
+    expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
+      'alerts.missingElements.titlePlural'
+    );
+    expect(getByTestId('Recipe::Alert::Content').props.children).toContain(
+      'alerts.missingElements.image'
+    );
+  });
+
+  test('shows validation error when nutrition has zero values in add mode', () => {
+    const mockRecipeWithNutrition = {
+      mode: 'edit' as const,
+      recipe: {
+        ...recipesDataset[1], // Start with complete recipe
+        nutrition: {
+          energyKcal: 0, // Zero value should trigger validation error
+          energyKj: 200,
+          fat: 5,
+          saturatedFat: 1,
+          carbohydrates: 20,
+          sugars: 5,
+          fiber: 3,
+          protein: 10,
+          salt: 1,
+          portionWeight: 100,
+        },
+      },
+    };
+
+    const { getByTestId } = render(
+      <Recipe route={createMockRoute(mockRecipeWithNutrition as any)} navigation={mockNavigation} />
     );
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
-    // TODO what to expect here ?
+
+    expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
+    expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
+      'alerts.missingElements.titleSingular'
+    );
+    expect(getByTestId('Recipe::Alert::Content').props.children).toContain(
+      'alerts.missingElements.messageSingularNutrition'
+    );
+  });
+
+  test('edit mode validates comprehensively like add mode', () => {
+    const mockRouteEditWithoutImage = {
+      mode: 'edit' as const,
+      recipe: {
+        ...recipesDataset[1],
+        image_Source: '',
+      },
+    };
+
+    const { getByTestId } = render(
+      <Recipe route={createMockRoute(mockRouteEditWithoutImage)} navigation={mockNavigation} />
+    );
+
+    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+
+    expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
+    expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
+      'alerts.missingElements.titleSingular'
+    );
+    expect(getByTestId('Recipe::Alert::Content').props.children).toContain(
+      'alerts.missingElements.image'
+    );
+  });
+
+  test('shows special nutrition message for single missing nutrition', () => {
+    const mockRecipeWithZeroNutrition = {
+      mode: 'edit' as const,
+      recipe: {
+        ...recipesDataset[1],
+        nutrition: {
+          energyKcal: 0,
+          energyKj: 0,
+          fat: 0,
+          saturatedFat: 0,
+          carbohydrates: 0,
+          sugars: 0,
+          fiber: 0,
+          protein: 0,
+          salt: 0,
+          portionWeight: 0,
+        },
+      },
+    };
+
+    const { getByTestId } = render(
+      <Recipe
+        route={createMockRoute(mockRecipeWithZeroNutrition as any)}
+        navigation={mockNavigation}
+      />
+    );
+
+    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+
+    expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
+    expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
+      'alerts.missingElements.titleSingular'
+    );
+    expect(getByTestId('Recipe::Alert::Content').props.children).toBe(
+      'alerts.missingElements.messageSingularNutrition'
+    );
+  });
+
+  test('shows plural validation errors when multiple elements are missing', () => {
+    const { getByTestId } = render(
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+    );
+
+    // Don't add anything - everything should be missing
+    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+
+    expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
+    expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
+      'alerts.missingElements.titlePlural'
+    );
+    expect(getByTestId('Recipe::Alert::Content').props.children).toContain(
+      'alerts.missingElements.messagePlural'
+    );
+  });
+
+  test('validation passes when all required fields are complete in edit mode', () => {
+    const mockCompleteRecipe = {
+      mode: 'edit' as const,
+      recipe: {
+        ...recipesDataset[1],
+        nutrition: undefined,
+      },
+    };
+
+    const { getByTestId } = render(
+      <Recipe route={createMockRoute(mockCompleteRecipe as any)} navigation={mockNavigation} />
+    );
+
+    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+
+    // Edit mode should switch to read-only mode when validation passes
+    // No validation dialog should be shown for successful edit
+    expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(false);
   });
 
   test('toggles stackMode between readOnly and edit', () => {
