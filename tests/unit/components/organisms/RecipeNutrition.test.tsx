@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { RecipeNutrition } from '@components/organisms/RecipeNutrition';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
+import { recipeStateType } from '@screens/Recipe';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock('@components/molecules/NutritionTable', () =>
@@ -39,7 +40,11 @@ describe('RecipeNutrition', () => {
   describe('Read-only mode', () => {
     test('renders nutrition table with basic structure', () => {
       const { getByTestId } = render(
-        <RecipeNutrition nutrition={mockNutrition} mode='readOnly' parentTestId={defaultTestId} />
+        <RecipeNutrition
+          nutrition={mockNutrition}
+          mode={recipeStateType.readOnly}
+          parentTestId={defaultTestId}
+        />
       );
 
       expect(getByTestId(nutritionTableTestId)).toBeTruthy();
@@ -54,7 +59,11 @@ describe('RecipeNutrition', () => {
 
     test('does not render when no nutrition data provided', () => {
       const { queryByTestId } = render(
-        <RecipeNutrition nutrition={undefined} mode='readOnly' parentTestId={defaultTestId} />
+        <RecipeNutrition
+          nutrition={undefined}
+          mode={recipeStateType.readOnly}
+          parentTestId={defaultTestId}
+        />
       );
 
       expect(queryByTestId(nutritionTableTestId)).toBeNull();
@@ -70,7 +79,7 @@ describe('RecipeNutrition', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={nutritionWithPortion}
-          mode='readOnly'
+          mode={recipeStateType.readOnly}
           parentTestId={defaultTestId}
         />
       );
@@ -93,7 +102,7 @@ describe('RecipeNutrition', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={nutritionWithDecimals}
-          mode='readOnly'
+          mode={recipeStateType.readOnly}
           parentTestId={defaultTestId}
         />
       );
@@ -107,12 +116,12 @@ describe('RecipeNutrition', () => {
     });
   });
 
-  describe('Add mode', () => {
+  describe('Add manual mode', () => {
     test('shows empty state when no nutrition data', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={undefined}
-          mode='add'
+          mode={recipeStateType.addManual}
           onNutritionChange={mockOnChange}
           parentTestId={defaultTestId}
         />
@@ -122,6 +131,7 @@ describe('RecipeNutrition', () => {
       expect(getByTestId(nutritionEmptyStateTestId + '::ParentTestId').props.children).toBe(
         defaultTestId + '::RecipeNutrition'
       );
+      expect(getByTestId(nutritionEmptyStateTestId + '::Mode').props.children).toBe('add');
       expect(getByTestId(nutritionEmptyStateTestId + '::OnAddNutrition')).toBeTruthy();
     });
 
@@ -129,7 +139,7 @@ describe('RecipeNutrition', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={undefined}
-          mode='add'
+          mode={recipeStateType.addManual}
           onNutritionChange={mockOnChange}
           parentTestId={defaultTestId}
         />
@@ -152,12 +162,73 @@ describe('RecipeNutrition', () => {
     });
   });
 
+  describe('Add OCR mode', () => {
+    const mockOpenModal = jest.fn();
+
+    beforeEach(() => {
+      mockOpenModal.mockClear();
+    });
+
+    test('shows empty state with OCR button when no nutrition data', () => {
+      const { getByTestId } = render(
+        <RecipeNutrition
+          nutrition={undefined}
+          mode={recipeStateType.addOCR}
+          onNutritionChange={mockOnChange}
+          openModal={mockOpenModal}
+          parentTestId={defaultTestId}
+        />
+      );
+
+      expect(getByTestId(nutritionEmptyStateTestId)).toBeTruthy();
+      expect(getByTestId(nutritionEmptyStateTestId + '::ParentTestId').props.children).toBe(
+        defaultTestId + '::RecipeNutrition'
+      );
+      expect(getByTestId(nutritionEmptyStateTestId + '::Mode').props.children).toBe('ocr');
+      expect(getByTestId(nutritionEmptyStateTestId + '::OnOCRNutrition')).toBeTruthy();
+    });
+
+    test('calls openModal when OCR button is pressed', () => {
+      const { getByTestId } = render(
+        <RecipeNutrition
+          nutrition={undefined}
+          mode={recipeStateType.addOCR}
+          onNutritionChange={mockOnChange}
+          openModal={mockOpenModal}
+          parentTestId={defaultTestId}
+        />
+      );
+
+      fireEvent.press(getByTestId(nutritionEmptyStateTestId + '::OnOCRNutrition'));
+
+      expect(mockOpenModal).toHaveBeenCalled();
+      expect(mockOnChange).not.toHaveBeenCalled();
+    });
+
+    test('shows nutrition table when nutrition data is available', () => {
+      const { getByTestId, queryByTestId } = render(
+        <RecipeNutrition
+          nutrition={mockNutrition}
+          mode={recipeStateType.addOCR}
+          onNutritionChange={mockOnChange}
+          openModal={mockOpenModal}
+          parentTestId={defaultTestId}
+        />
+      );
+
+      expect(getByTestId(nutritionTableTestId)).toBeTruthy();
+      expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
+      expect(getByTestId(nutritionTableTestId + '::IsEditable').props.children).toEqual(true);
+      expect(getByTestId(nutritionTableTestId + '::ShowRemoveButton').props.children).toEqual(true);
+    });
+  });
+
   describe('Edit mode', () => {
     test('renders editable table with remove button', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={mockNutrition}
-          mode='edit'
+          mode={recipeStateType.edit}
           onNutritionChange={mockOnChange}
           parentTestId={defaultTestId}
         />
@@ -176,7 +247,7 @@ describe('RecipeNutrition', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={mockNutrition}
-          mode='edit'
+          mode={recipeStateType.edit}
           onNutritionChange={mockOnChange}
           parentTestId={defaultTestId}
         />
@@ -194,7 +265,7 @@ describe('RecipeNutrition', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={mockNutrition}
-          mode='edit'
+          mode={recipeStateType.edit}
           onNutritionChange={mockOnChange}
           parentTestId={defaultTestId}
         />
@@ -209,7 +280,7 @@ describe('RecipeNutrition', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={mockNutrition}
-          mode='edit'
+          mode={recipeStateType.edit}
           onNutritionChange={mockOnChange}
           parentTestId={defaultTestId}
         />
@@ -241,12 +312,13 @@ describe('RecipeNutrition', () => {
 
     test('handles mode transitions correctly', () => {
       const mockOnChange = jest.fn();
+      const mockOpenModal = jest.fn();
 
-      // Test add mode with no data shows empty state
+      // Test addManual mode with no data shows empty state
       const { rerender, queryByTestId } = render(
         <RecipeNutrition
           nutrition={undefined}
-          mode='add'
+          mode={recipeStateType.addManual}
           onNutritionChange={mockOnChange}
           parentTestId={defaultTestId}
         />
@@ -255,6 +327,21 @@ describe('RecipeNutrition', () => {
       expect(queryByTestId(nutritionEmptyStateTestId)).toBeTruthy();
       expect(queryByTestId(nutritionTableTestId)).toBeNull();
 
+      // Test addOCR mode with no data shows empty state with OCR button
+      rerender(
+        <RecipeNutrition
+          nutrition={undefined}
+          mode={recipeStateType.addOCR}
+          onNutritionChange={mockOnChange}
+          openModal={mockOpenModal}
+          parentTestId={defaultTestId}
+        />
+      );
+
+      expect(queryByTestId(nutritionEmptyStateTestId)).toBeTruthy();
+      expect(queryByTestId(nutritionTableTestId)).toBeNull();
+      expect(queryByTestId(nutritionEmptyStateTestId + '::Mode')?.props.children).toBe('ocr');
+
       // Test readOnly mode with data shows table
       rerender(
         <RecipeNutrition nutrition={mockNutrition} mode='readOnly' parentTestId={defaultTestId} />
@@ -262,6 +349,20 @@ describe('RecipeNutrition', () => {
 
       expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
       expect(queryByTestId(nutritionTableTestId)).toBeTruthy();
+
+      // Test edit mode with data shows editable table
+      rerender(
+        <RecipeNutrition
+          nutrition={mockNutrition}
+          mode={recipeStateType.edit}
+          onNutritionChange={mockOnChange}
+          parentTestId={defaultTestId}
+        />
+      );
+
+      expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
+      expect(queryByTestId(nutritionTableTestId)).toBeTruthy();
+      expect(queryByTestId(nutritionTableTestId + '::IsEditable')?.props.children).toEqual(true);
     });
 
     test('handles nutrition data with various portion weights', () => {
@@ -273,7 +374,7 @@ describe('RecipeNutrition', () => {
       const { getByTestId } = render(
         <RecipeNutrition
           nutrition={nutritionWith150gPortion}
-          mode='readOnly'
+          mode={recipeStateType.readOnly}
           parentTestId={defaultTestId}
         />
       );

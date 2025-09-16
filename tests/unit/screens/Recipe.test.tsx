@@ -48,6 +48,12 @@ jest.mock(
   '@components/organisms/RecipeTextRender',
   () => require('@mocks/components/organisms/RecipeTextRender-mock').recipeTextRenderMock
 );
+jest.mock('@components/molecules/NutritionTable', () =>
+  require('@mocks/components/molecules/NutritionTable-mock')
+);
+jest.mock('@components/molecules/NutritionEmptyState', () =>
+  require('@mocks/components/molecules/NutritionEmptyState-mock')
+);
 jest.mock(
   '@components/molecules/BottomTopButton',
   () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock
@@ -527,6 +533,73 @@ function checkPreparation(
   }
 }
 
+function checkNutrition(
+  prop: RecipePropType,
+  getByTestId: GetByIdType,
+  queryByTestId: QueryByIdType
+) {
+  const nutritionTestId = 'Recipe::RecipeNutrition';
+  const nutritionTableTestId = nutritionTestId + '::NutritionTable';
+  const nutritionEmptyStateTestId = nutritionTestId + '::NutritionEmptyState';
+
+  switch (prop.mode) {
+    case 'readOnly':
+      if (prop.recipe.nutrition) {
+        expect(getByTestId(nutritionTableTestId)).toBeTruthy();
+        expect(getByTestId(nutritionTableTestId + '::IsEditable').props.children).toEqual(false);
+        expect(getByTestId(nutritionTableTestId + '::ShowRemoveButton').props.children).toEqual(
+          false
+        );
+        expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
+      } else {
+        expect(queryByTestId(nutritionTableTestId)).toBeNull();
+        expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
+      }
+      break;
+    case 'edit':
+      if (prop.recipe.nutrition) {
+        expect(getByTestId(nutritionTableTestId)).toBeTruthy();
+        expect(getByTestId(nutritionTableTestId + '::IsEditable').props.children).toEqual(true);
+        expect(getByTestId(nutritionTableTestId + '::ShowRemoveButton').props.children).toEqual(
+          true
+        );
+        expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
+      } else {
+        expect(queryByTestId(nutritionTableTestId)).toBeNull();
+        expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
+      }
+      break;
+    case 'addManually':
+      if (prop.recipe?.nutrition) {
+        expect(getByTestId(nutritionTableTestId)).toBeTruthy();
+        expect(getByTestId(nutritionTableTestId + '::IsEditable').props.children).toEqual(true);
+        expect(getByTestId(nutritionTableTestId + '::ShowRemoveButton').props.children).toEqual(
+          true
+        );
+        expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
+      } else {
+        expect(getByTestId(nutritionEmptyStateTestId)).toBeTruthy();
+        expect(getByTestId(nutritionEmptyStateTestId + '::Mode').props.children).toEqual('add');
+        expect(queryByTestId(nutritionTableTestId)).toBeNull();
+      }
+      break;
+    case 'addFromPic':
+      if (prop.recipe?.nutrition) {
+        expect(getByTestId(nutritionTableTestId)).toBeTruthy();
+        expect(getByTestId(nutritionTableTestId + '::IsEditable').props.children).toEqual(true);
+        expect(getByTestId(nutritionTableTestId + '::ShowRemoveButton').props.children).toEqual(
+          true
+        );
+        expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
+      } else {
+        expect(getByTestId(nutritionEmptyStateTestId)).toBeTruthy();
+        expect(getByTestId(nutritionEmptyStateTestId + '::Mode').props.children).toEqual('ocr');
+        expect(queryByTestId(nutritionTableTestId)).toBeNull();
+      }
+      break;
+  }
+}
+
 describe('Recipe Component tests', () => {
   const mockNavigation = {
     goBack: jest.fn(),
@@ -598,6 +671,7 @@ describe('Recipe Component tests', () => {
     checkPersons(mockRouteReadOnly, getByTestId, queryByTestId);
     checkTime(mockRouteReadOnly, getByTestId, queryByTestId);
     checkPreparation(mockRouteReadOnly, getByTestId, queryByTestId);
+    checkNutrition(mockRouteReadOnly, getByTestId, queryByTestId);
   });
 
   test('Initial state is correctly set in edit mode', () => {
@@ -615,6 +689,7 @@ describe('Recipe Component tests', () => {
     checkPersons(mockRouteEdit, getByTestId, queryByTestId);
     checkTime(mockRouteEdit, getByTestId, queryByTestId);
     checkPreparation(mockRouteEdit, getByTestId, queryByTestId);
+    checkNutrition(mockRouteEdit, getByTestId, queryByTestId);
   });
 
   test('Initial state is correctly set in add manually mode', () => {
@@ -632,6 +707,7 @@ describe('Recipe Component tests', () => {
     checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
     checkTime(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
     checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
+    checkNutrition(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
   test('Initial state is correctly set in add ocr mode', () => {
@@ -649,6 +725,7 @@ describe('Recipe Component tests', () => {
     checkPersons(mockRouteAddOCR, getByTestId, queryByTestId);
     checkTime(mockRouteAddOCR, getByTestId, queryByTestId);
     checkPreparation(mockRouteAddOCR, getByTestId, queryByTestId);
+    checkNutrition(mockRouteAddOCR, getByTestId, queryByTestId);
   });
 
   // -------- CHANGE ON TITLE CASES --------
@@ -1066,6 +1143,24 @@ describe('Recipe Component tests', () => {
     checkPersons(paramEdit, getByTestId, queryByTestId);
     checkTime(paramEdit, getByTestId, queryByTestId);
     checkPreparation(paramEdit, getByTestId, queryByTestId);
+    checkNutrition(paramEdit, getByTestId, queryByTestId);
+  });
+
+  // -------- NUTRITION OCR TESTS --------
+  test('shows OCR nutrition empty state in addOCR mode', () => {
+    const { getByTestId, queryByTestId } = render(
+      <Recipe route={createMockRoute(mockRouteAddOCR)} navigation={mockNavigation} />
+    );
+
+    checkNutrition(mockRouteAddOCR, getByTestId, queryByTestId);
+  });
+
+  test('shows manual nutrition empty state in addManual mode', () => {
+    const { getByTestId, queryByTestId } = render(
+      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+    );
+
+    checkNutrition(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
   // TODO add delete test
