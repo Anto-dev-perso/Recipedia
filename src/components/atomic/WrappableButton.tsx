@@ -3,14 +3,14 @@ import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { padding } from '@styles/spacing';
 
-interface WrappableButtonProps {
+export type WrappableButtonProps = {
   onPress: () => void;
   children: string;
   testID?: string;
   buttonColor?: string;
   textColor?: string;
   style?: StyleProp<ViewStyle>;
-}
+};
 
 export function WrappableButton({
   onPress,

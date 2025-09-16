@@ -4,7 +4,7 @@ import { Text, TextInput } from 'react-native-paper';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
 import { padding } from '@styles/spacing';
 
-interface NutritionRowProps {
+export type NutritionRowProps = {
   label: string;
   value: number;
   unit: string;
@@ -13,7 +13,7 @@ interface NutritionRowProps {
   field?: keyof nutritionTableElement;
   onValueChange?: (field: keyof nutritionTableElement, value: number) => void;
   testId: string;
-}
+};
 
 export function NutritionRow({
   label,

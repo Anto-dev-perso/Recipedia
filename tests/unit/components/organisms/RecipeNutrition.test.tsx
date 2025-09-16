@@ -299,7 +299,11 @@ describe('RecipeNutrition', () => {
     test('renders with custom testID structure', () => {
       const customTestId = 'CustomNutritionTest';
       const { getByTestId } = render(
-        <RecipeNutrition nutrition={mockNutrition} mode='readOnly' parentTestId={customTestId} />
+        <RecipeNutrition
+          nutrition={mockNutrition}
+          mode={recipeStateType.readOnly}
+          parentTestId={customTestId}
+        />
       );
 
       const expectedTestId = customTestId + '::RecipeNutrition::NutritionTable';
@@ -344,7 +348,11 @@ describe('RecipeNutrition', () => {
 
       // Test readOnly mode with data shows table
       rerender(
-        <RecipeNutrition nutrition={mockNutrition} mode='readOnly' parentTestId={defaultTestId} />
+        <RecipeNutrition
+          nutrition={mockNutrition}
+          mode={recipeStateType.readOnly}
+          parentTestId={defaultTestId}
+        />
       );
 
       expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();

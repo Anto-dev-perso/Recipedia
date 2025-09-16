@@ -6,13 +6,13 @@ import { recipeTextStyles } from '@styles/recipeComponents';
 import { padding } from '@styles/spacing';
 import WrappableButton from '@components/atomic/WrappableButton';
 
-interface NutritionEditFormProps {
+export type NutritionEditFormProps = {
   portionWeight: number;
   onPortionWeightChange: (weight: number) => void;
   onRemoveNutrition?: () => void;
   showRemoveButton?: boolean;
   testId: string;
-}
+};
 
 export function NutritionEditForm({
   portionWeight,

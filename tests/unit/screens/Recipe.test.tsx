@@ -570,32 +570,14 @@ function checkNutrition(
       }
       break;
     case 'addManually':
-      if (prop.recipe?.nutrition) {
-        expect(getByTestId(nutritionTableTestId)).toBeTruthy();
-        expect(getByTestId(nutritionTableTestId + '::IsEditable').props.children).toEqual(true);
-        expect(getByTestId(nutritionTableTestId + '::ShowRemoveButton').props.children).toEqual(
-          true
-        );
-        expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
-      } else {
-        expect(getByTestId(nutritionEmptyStateTestId)).toBeTruthy();
-        expect(getByTestId(nutritionEmptyStateTestId + '::Mode').props.children).toEqual('add');
-        expect(queryByTestId(nutritionTableTestId)).toBeNull();
-      }
+      expect(getByTestId(nutritionEmptyStateTestId)).toBeTruthy();
+      expect(getByTestId(nutritionEmptyStateTestId + '::Mode').props.children).toEqual('add');
+      expect(queryByTestId(nutritionTableTestId)).toBeNull();
       break;
     case 'addFromPic':
-      if (prop.recipe?.nutrition) {
-        expect(getByTestId(nutritionTableTestId)).toBeTruthy();
-        expect(getByTestId(nutritionTableTestId + '::IsEditable').props.children).toEqual(true);
-        expect(getByTestId(nutritionTableTestId + '::ShowRemoveButton').props.children).toEqual(
-          true
-        );
-        expect(queryByTestId(nutritionEmptyStateTestId)).toBeNull();
-      } else {
-        expect(getByTestId(nutritionEmptyStateTestId)).toBeTruthy();
-        expect(getByTestId(nutritionEmptyStateTestId + '::Mode').props.children).toEqual('ocr');
-        expect(queryByTestId(nutritionTableTestId)).toBeNull();
-      }
+      expect(getByTestId(nutritionEmptyStateTestId)).toBeTruthy();
+      expect(getByTestId(nutritionEmptyStateTestId + '::Mode').props.children).toEqual('ocr');
+      expect(queryByTestId(nutritionTableTestId)).toBeNull();
       break;
   }
 }

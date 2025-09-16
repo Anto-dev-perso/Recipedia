@@ -10,14 +10,14 @@ import Alert from '@components/dialogs/Alert';
 import { padding } from '@styles/spacing';
 import { recipeTextStyles } from '@styles/recipeComponents';
 
-interface NutritionTableProps {
+export type NutritionTableProps = {
   nutrition: nutritionTableElement;
   isEditable?: boolean;
   onNutritionChange?: (updates: Partial<nutritionTableElement>) => void;
   onRemoveNutrition?: () => void;
   showRemoveButton?: boolean;
   parentTestId: string;
-}
+};
 
 export function NutritionTable({
   nutrition,
