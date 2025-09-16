@@ -20,8 +20,8 @@ updates:
       - dependency-type: "direct"
       - dependency-type: "indirect"
     commit-message:
-      prefix: "deps"
-      prefix-development: "deps-dev"
+      prefix: "chore"
+      prefix-development: "chore"
       include: "scope"
     labels:
       - "dependencies"
