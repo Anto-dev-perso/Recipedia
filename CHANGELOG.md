@@ -1,3 +1,9 @@
+## [0.10.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.9.0...v0.10.0) (2025-09-16)
+
+### Features
+
+* **Recipe:** enhance validation with nutrition and image checks ([ff1140e](https://github.com/Anto-dev-perso/Recipedia/commit/ff1140ec24b895d2c92515ccc9bbc746cf3572e5))
+
 ## [0.9.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.8.0...v0.9.0) (2025-09-16)
 
 ### Features
