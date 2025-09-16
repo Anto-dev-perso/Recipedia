@@ -21,7 +21,6 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '20'
-          cache: 'npm'
       - run: npm ci
       - name: Cache node modules
         uses: actions/cache/save@v4
@@ -153,7 +152,6 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Setup Java
         uses: actions/setup-java@v4
