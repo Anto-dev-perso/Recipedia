@@ -47,8 +47,8 @@
   "dependencies": {
     "@babel/core": "~7.26.9",
     "@react-native-async-storage/async-storage": "^2.1.2",
-    "@react-native-community/slider": "^4.5.6",
-    "@react-native-ml-kit/text-recognition": "~1.5.2",
+    "@react-native-community/slider": "^5.0.1",
+    "@react-native-ml-kit/text-recognition": "~2.0.0",
     "@react-navigation/bottom-tabs": "~6.5.8",
     "@react-navigation/native": "~6.1.7",
     "@react-navigation/native-stack": "~6.9.13",
@@ -70,14 +70,14 @@
     "i18next-resources-to-backend": "^1.2.1",
     "react": "18.3.1",
     "react-i18next": "^15.5.1",
-    "react-native": "0.76.9",
+    "react-native": "0.81.4",
     "react-native-extended-stylesheet": "~0.12.0",
-    "react-native-gesture-handler": "~2.20.2",
-    "react-native-image-crop-picker": "~0.42.0",
-    "react-native-logs": "^5.3.0",
-    "react-native-paper": "~5.13.1",
-    "react-native-safe-area-context": "4.12.0",
-    "react-native-screens": "~4.4.0"
+    "react-native-gesture-handler": "~2.28.0",
+    "react-native-image-crop-picker": "~0.51.0",
+    "react-native-logs": "^5.5.0",
+    "react-native-paper": "~5.14.5",
+    "react-native-safe-area-context": "5.6.1",
+    "react-native-screens": "~4.16.0"
   },
   "resolutions": {
     "react": "18.3.1",
