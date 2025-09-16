@@ -617,13 +617,91 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     setIsValidationDialogOpen(true);
   }
 
-  async function editValidation() {
-    // @ts-ignore No need to wait for clearCache
-    FileGestion.getInstance().clearCache();
+  function validateRecipeData(): string[] {
+    const missingElem = new Array<string>();
+    const translatedMissingElemPrefix = 'alerts.missingElements.';
 
-    // TODO add safety to this (we won't let the user do anything)
-    await RecipeDatabase.getInstance().editRecipe(createRecipeFromStates());
-    setStackMode(recipeStateType.readOnly);
+    if (recipeImage.length == 0) {
+      missingElem.push(t(translatedMissingElemPrefix + 'image'));
+    }
+    if (recipeTitle.length == 0) {
+      missingElem.push(t(translatedMissingElemPrefix + 'titleRecipe'));
+    }
+    if (recipeIngredients.length == 0) {
+      missingElem.push(t(translatedMissingElemPrefix + 'titleIngredients'));
+    } else {
+      const allIngredientsHaveNames = recipeIngredients.every(
+        ingredient => ingredient.name && ingredient.name.trim().length > 0
+      );
+      if (!allIngredientsHaveNames) {
+        missingElem.push(t(translatedMissingElemPrefix + 'ingredientNames'));
+      }
+      const allIngredientsHaveQuantities = recipeIngredients.every(
+        ingredient => ingredient.quantity && ingredient.quantity.trim().length > 0
+      );
+      if (!allIngredientsHaveQuantities) {
+        missingElem.push(t(translatedMissingElemPrefix + 'ingredientQuantities'));
+      }
+    }
+    if (recipePreparation.length == 0) {
+      validationLogger.debug('Recipe preparation is empty', { recipeTitle });
+      missingElem.push(t(translatedMissingElemPrefix + 'titlePreparation'));
+    }
+    if (recipePersons === defaultValueNumber) {
+      missingElem.push(t(translatedMissingElemPrefix + 'titlePersons'));
+    }
+    if (recipeNutrition && Object.values(recipeNutrition).some(value => value === 0)) {
+      missingElem.push(t(translatedMissingElemPrefix + 'nutrition'));
+    }
+
+    return missingElem;
+  }
+
+  function showValidationErrorDialog(missingElem: string[]) {
+    const dialogProp = defaultValidationDialogProp;
+    const translatedMissingElemPrefix = 'alerts.missingElements.';
+
+    dialogProp.confirmText = t('understood');
+    if (missingElem.length == 1) {
+      validationLogger.debug('Single validation element missing', {
+        missingElement: missingElem[0],
+      });
+
+      dialogProp.title = t(translatedMissingElemPrefix + 'titleSingular');
+
+      // Special case for nutrition to handle proper grammar
+      const nutritionTranslation = t(translatedMissingElemPrefix + 'nutrition');
+      if (missingElem[0] === nutritionTranslation) {
+        dialogProp.content = t(translatedMissingElemPrefix + 'messageSingularNutrition');
+      } else {
+        dialogProp.content =
+          t(translatedMissingElemPrefix + 'messageSingularBeginning') +
+          missingElem[0] +
+          t(translatedMissingElemPrefix + 'messageSingularEnding');
+      }
+    } else {
+      dialogProp.title = t(translatedMissingElemPrefix + 'titlePlural');
+      dialogProp.content = t(translatedMissingElemPrefix + 'messagePlural');
+      for (const elem of missingElem) {
+        dialogProp.content += `\n\t- ${elem}`;
+      }
+    }
+    setValidationDialogProp(dialogProp);
+    setIsValidationDialogOpen(true);
+  }
+
+  async function editValidation() {
+    const missingElem = validateRecipeData();
+
+    if (missingElem.length == 0) {
+      // @ts-ignore No need to wait for clearCache
+      FileGestion.getInstance().clearCache();
+
+      await RecipeDatabase.getInstance().editRecipe(createRecipeFromStates());
+      setStackMode(recipeStateType.readOnly);
+    } else {
+      showValidationErrorDialog(missingElem);
+    }
   }
 
   // TODO checking if tags aren't in doublons
@@ -670,44 +748,11 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
    * @returns Promise<void> - Resolves when validation and save operations complete
    */
   async function addValidation() {
-    const dialogProp = defaultValidationDialogProp;
-
-    const missingElem = new Array<string>();
-    const translatedMissingElemPrefix = 'alerts.missingElements.';
-
-    // TODO image not implemented
-    // if (this.state.recipeImage.length == 0) {
-    //     missingElem.push("an image");
-    // }
-    if (recipeTitle.length == 0) {
-      missingElem.push(t(translatedMissingElemPrefix + 'titleRecipe'));
-    }
-    if (recipeIngredients.length == 0) {
-      missingElem.push(t(translatedMissingElemPrefix + 'titleIngredients'));
-    } else {
-      const allIngredientsHaveNames = recipeIngredients.every(
-        ingredient => ingredient.name && ingredient.name.trim().length > 0
-      );
-      if (!allIngredientsHaveNames) {
-        missingElem.push(t(translatedMissingElemPrefix + 'ingredientNames'));
-      }
-      const allIngredientsHaveQuantities = recipeIngredients.every(
-        ingredient => ingredient.quantity && ingredient.quantity.trim().length > 0
-      );
-      if (!allIngredientsHaveQuantities) {
-        missingElem.push(t(translatedMissingElemPrefix + 'ingredientQuantities'));
-      }
-    }
-    if (recipePreparation.length == 0) {
-      validationLogger.debug('Recipe preparation is empty', { recipeTitle });
-      missingElem.push(t(translatedMissingElemPrefix + 'titlePreparation'));
-    }
-    if (recipePersons === defaultValueNumber) {
-      missingElem.push(t(translatedMissingElemPrefix + 'titlePersons'));
-    }
+    const missingElem = validateRecipeData();
 
     // No mandatory elements missing
     if (missingElem.length == 0) {
+      const dialogProp = defaultValidationDialogProp;
       const recipeToAdd = createRecipeFromStates();
       const similarRecipes = RecipeDatabase.getInstance().findSimilarRecipes(recipeToAdd);
 
@@ -740,6 +785,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           dialogProp.onConfirm = () => {
             navigation.goBack();
           };
+          setValidationDialogProp(dialogProp);
+          setIsValidationDialogOpen(true);
         } catch (error) {
           validationLogger.error('Failed to validate and add recipe to database', {
             recipeTitle,
@@ -761,34 +808,12 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         dialogProp.onConfirm = async () => {
           await addRecipeToDatabase();
         };
+        setValidationDialogProp(dialogProp);
+        setIsValidationDialogOpen(true);
       }
-    }
-    // TODO the dialog preparation should be a dedicated function for readiness
-    else if (missingElem.length == 5) {
-      dialogProp.title = t(translatedMissingElemPrefix + 'titleAll');
-      dialogProp.content = t('messageAll');
     } else {
-      dialogProp.confirmText = t('understood');
-      if (missingElem.length == 1) {
-        validationLogger.debug('Single validation element missing', {
-          missingElement: missingElem[0],
-        });
-
-        dialogProp.title = t(translatedMissingElemPrefix + 'titleSingular');
-        dialogProp.content =
-          t(translatedMissingElemPrefix + 'messageSingularBeginning') +
-          missingElem[0] +
-          t(translatedMissingElemPrefix + 'messageSingularEnding');
-      } else {
-        dialogProp.title = t(translatedMissingElemPrefix + 'titlePlural');
-        dialogProp.content = t(translatedMissingElemPrefix + 'messagePlural');
-        for (const elem of missingElem) {
-          dialogProp.content += `\n\t- ${elem}`;
-        }
-      }
+      showValidationErrorDialog(missingElem);
     }
-    setValidationDialogProp(dialogProp);
-    setIsValidationDialogOpen(true);
   }
 
   async function fillOneField(uri: string, field: recipeColumnsNames) {
