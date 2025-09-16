@@ -23,15 +23,6 @@ Closes #<!-- issue number -->
 
 ## 🧪 Testing
 
-### Test Plan
-
-<!-- Describe how you tested these changes -->
-
-- [ ] Unit tests pass (`npm run test:unit`)
-- [ ] TypeScript compilation passes (`npm run typecheck`)
-- [ ] Linting passes (`npm run lint`)
-- [ ] Manual testing completed
-
 ### Test Coverage
 
 <!-- If applicable, describe what testing was added -->
@@ -64,13 +55,3 @@ Closes #<!-- issue number -->
 ## 📝 Additional Notes
 
 <!-- Any additional information, context, or notes for reviewers -->
-
-## 🚦 Pre-merge Checklist
-
-<!-- Final checks before merging -->
-
-- [ ] All CI checks pass
-- [ ] Code review completed
-- [ ] Documentation updated
-- [ ] Manual testing completed
-- [ ] Ready to merge
