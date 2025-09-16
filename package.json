@@ -46,7 +46,7 @@
     ]
   },
   "dependencies": {
-    "@babel/core": "~7.26.9",
+    "@babel/core": "~7.28.4",
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-native-community/slider": "^4.5.6",
     "@react-native-ml-kit/text-recognition": "~1.5.2",
@@ -86,8 +86,8 @@
   },
   "private": true,
   "devDependencies": {
-    "@babel/preset-env": "~7.26.9",
-    "@babel/preset-typescript": "~7.26.0",
+    "@babel/preset-env": "~7.28.3",
+    "@babel/preset-typescript": "~7.27.1",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@expo/vector-icons": "~14.0.4",
@@ -104,7 +104,7 @@
     "@types/sqlite3": "~3.1.11",
     "@typescript-eslint/eslint-plugin": "^8.43.0",
     "@typescript-eslint/parser": "^8.43.0",
-    "babel-jest": "~29.7.0",
+    "babel-jest": "~30.1.2",
     "babel-plugin-module-resolver": "~5.0.2",
     "conventional-changelog-conventionalcommits": "^9.1.0",
     "eslint": "^9.35.0",
@@ -121,7 +121,7 @@
     "prettier": "^3.6.2",
     "semantic-release": "^24.0.0",
     "typedoc": "0.28.13",
-    "typescript": "~5.3.3",
+    "typescript": "~5.9.2",
     "varvara-typedoc-theme": "0.3.8"
   }
 }
