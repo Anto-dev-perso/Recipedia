@@ -12,7 +12,7 @@ updates:
     reviewers:
       - "AntoC"
     assignees:
-      - "AntoC"
+      - "dependabot"
     # Pull request configuration
     pull-request-branch-name:
       separator: "/"
@@ -61,10 +61,14 @@ updates:
     ignore:
       # Expo SDK versions should be updated manually
       - dependency-name: "expo"
-        update-types: [ "version-update:semver-major" ]
       # React Native versions should be updated carefully
       - dependency-name: "react-native"
-        update-types: [ "version-update:semver-major" ]
+      # All React Native related packages should be updated manually
+      - dependency-name: "react-native*"
+      - dependency-name: "@react-native*"
+      # All Expo related packages should be updated manually
+      - dependency-name: "expo*"
+      - dependency-name: "@expo*"
       # Node.js types often have issues with automatic updates
       - dependency-name: "@types/node"
         update-types: [ "version-update:semver-major" ]
@@ -80,7 +84,7 @@ updates:
     reviewers:
       - "AntoC"
     assignees:
-      - "AntoC"
+      - "dependabot"
     # Pull request configuration
     pull-request-branch-name:
       separator: "/"

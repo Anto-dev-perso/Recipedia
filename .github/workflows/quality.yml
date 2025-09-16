@@ -17,10 +17,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '20'
-          cache: 'npm'
       - run: npm ci
       - name: Validate commit messages
         run: npx commitlint --from=${{ github.event.pull_request.base.sha }} --to=${{ github.event.pull_request.head.sha }} --verbose
@@ -34,10 +33,9 @@ jobs:
       cache-key: ${{ steps.cache.outputs.cache-primary-key }}
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
-          cache: 'npm'
       - run: npm ci
       - name: Cache node modules
         id: cache
@@ -52,7 +50,7 @@ jobs:
     needs: install
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
       - name: Restore node modules
@@ -75,7 +73,7 @@ jobs:
     needs: install
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
       - name: Restore node modules
@@ -93,7 +91,7 @@ jobs:
     needs: install
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
       - name: Restore node modules
@@ -111,7 +109,7 @@ jobs:
     needs: install
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
       - name: Restore node modules
@@ -134,7 +132,7 @@ jobs:
     needs: install
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
       - name: Restore node modules
