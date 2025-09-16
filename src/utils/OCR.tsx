@@ -33,11 +33,23 @@ import {
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 import {
+  FUSE_THRESHOLD,
+  nutritionObject,
+  NutritionTerms,
+  OcrKeys,
+  per100gKey,
+  perPortionKey,
+} from '@customTypes/OCRTypes';
+import {
   allNonDigitCharacter,
+  endsWithLetters,
   findAllNumbers,
+  hasLettersInMiddle,
   letterRegExp,
   numberAtFirstIndex as numberAtFirstIndex,
+  onlyDigitsDotsSpaces,
   replaceAllBackToLine,
+  startsWithLetter,
 } from '@styles/typography';
 
 import TextRecognition, {
@@ -48,6 +60,8 @@ import { scaleQuantityForPersons } from '@utils/Quantity';
 import { isArrayOfNumber, isArrayOfType, isNumber, isString } from '@utils/TypeCheckingFunctions';
 import { defaultValueNumber } from '@utils/Constants';
 import { ocrLogger } from '@utils/logger';
+import i18n from '@utils/i18n';
+import Fuse from 'fuse.js/dist/fuse.js';
 
 /** Type representing person count and cooking time extracted from OCR */
 export type personAndTimeObject = { person: number; time: number };
@@ -123,6 +137,8 @@ export async function recognizeText(imageUri: string, fieldName: recipeColumnsNa
         return tranformOCRInIngredients(ocr);
       case recipeColumnsNames.tags:
         return tranformOCRInTags(ocr);
+      case recipeColumnsNames.nutrition:
+        return transformOCRInNutrition(ocr);
       case recipeColumnsNames.image:
         ocrLogger.error('Image field should not be processed through OCR', { fieldName });
         return '';
@@ -136,16 +152,39 @@ export async function recognizeText(imageUri: string, fieldName: recipeColumnsNa
   }
 }
 
+/**
+ * Converts OCR text blocks into a flat array of strings
+ *
+ * Takes an array of text blocks from ML Kit and extracts all line texts,
+ * flattening the nested structure into a single array of strings.
+ *
+ * @param ocrBloc - Array of text blocks from ML Kit OCR result
+ * @returns Flat array containing all text lines from the blocks
+ */
 function convertBlockOnArrayOfString(ocrBloc: Array<TextBlock>): Array<string> {
   return ocrBloc.map(block => block.lines.map(line => line.text)).flat();
 }
 
-// TODO add an option to convert to uppercase ?
+/**
+ * Transforms OCR result into a single string by replacing newlines with spaces
+ *
+ * @param ocr - Text recognition result from ML Kit
+ * @returns Single string with newlines replaced by spaces
+ * @todo Add option to convert to uppercase
+ */
 function tranformOCRInOneString(ocr: TextRecognitionResult): string {
-  // Replace all \n by spaces
   return ocr.text.replace(replaceAllBackToLine, ' ');
 }
 
+/**
+ * Transforms OCR result into an array of tag objects
+ *
+ * Extracts individual words from OCR text and converts them into tag objects.
+ * Filters out empty strings and creates tag elements with names.
+ *
+ * @param ocr - Text recognition result from ML Kit
+ * @returns Array of tag table elements
+ */
 function tranformOCRInTags(ocr: TextRecognitionResult): Array<tagTableElement> {
   return ocr.blocks
     .map(block => block.lines.map(line => line.text).join(' '))
@@ -159,19 +198,49 @@ function tranformOCRInTags(ocr: TextRecognitionResult): Array<tagTableElement> {
     });
 }
 
+/**
+ * Extracts numbers from an array of strings
+ *
+ * @param str - Array of strings to parse
+ * @returns Array of numbers extracted from the strings
+ */
 function retrieveNumbersFromArrayOfStrings(str: Array<string>): Array<number> {
   return str.map(element => retrieveNumberFromString(element));
 }
 
+/**
+ * Extracts the first number from a string
+ *
+ * Takes the first word of the string and removes all non-digit characters,
+ * then converts the result to a number.
+ *
+ * @param str - String to extract number from
+ * @returns Extracted number or NaN if no valid number found
+ */
 function retrieveNumberFromString(str: string): number {
   return Number(str.split(' ')[0].replace(allNonDigitCharacter, ''));
 }
 
+/**
+ * Extracts numbers from string array, returning single number or array based on count
+ *
+ * @param ocr - Array of strings to extract numbers from
+ * @returns Single number if only one found, otherwise array of numbers
+ */
 function extractingNumberOrArray(ocr: Array<string>) {
   const result = retrieveNumbersFromArrayOfStrings(ocr);
   return result.length > 1 ? result : result[0];
 }
 
+/**
+ * Transforms OCR result into numbers, handling person count and time data
+ *
+ * Analyzes OCR text to extract person counts (marked with 'p') and cooking times (marked with 'm').
+ * Can return a single number, array of numbers, or array of person-time objects depending on the data found.
+ *
+ * @param ocr - Text recognition result from ML Kit
+ * @returns Number, array of numbers, or array of person-time objects based on detected patterns
+ */
 function tranformOCRInOneNumber(
   ocr: TextRecognitionResult
 ): number | Array<number> | Array<personAndTimeObject> {
@@ -206,6 +275,17 @@ function tranformOCRInOneNumber(
   return defaultValueNumber;
 }
 
+/**
+ * Transforms OCR result into structured preparation steps
+ *
+ * Parses recipe preparation instructions from OCR text, handling various formats:
+ * - Numbered steps with titles and descriptions
+ * - Multi-block steps where numbers and content are separate
+ * - Steps with titles in one block and descriptions in following blocks
+ *
+ * @param ocr - Text recognition result from ML Kit
+ * @returns Array of preparation step elements sorted by step order
+ */
 function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<preparationStepElement> {
   const steps: Array<{ step: preparationStepElement; order: number }> = [];
   let currentStep: preparationStepElement | null = null;
@@ -221,7 +301,6 @@ function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<preparation
     const stepNumber = extractStepNumber(text);
 
     if (stepNumber && isValidStepProgression(stepNumber, currentOrder)) {
-      // Save previous step before starting new one
       if (currentStep) {
         steps.push({ step: currentStep, order: currentOrder });
       }
@@ -229,29 +308,24 @@ function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<preparation
       currentOrder = stepNumber;
 
       if (isNumberOnlyBlock(text)) {
-        // Number-only block - wait for title in next block
         currentStep = { title: '', description: '' };
         waitingForTitle = true;
       } else {
-        // Number + title/content in same block
         const { title, description } = parseStepContent(text);
         currentStep = { title, description };
         waitingForTitle = false;
       }
     } else if (waitingForTitle && hasTextContent(text)) {
-      // This block contains the title for the current step
       if (currentStep) {
         currentStep.title = formatTitle(text);
         waitingForTitle = false;
       }
     } else if (currentStep && hasTextContent(text)) {
-      // Add content to current step description
       const separator = currentStep.description ? '\n' : '';
       currentStep.description += separator + text;
     }
   }
 
-  // Save final step
   if (currentStep) {
     steps.push({ step: currentStep, order: currentOrder });
   }
@@ -259,6 +333,12 @@ function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<preparation
   return steps.sort((a, b) => a.order - b.order).map(item => item.step);
 }
 
+/**
+ * Extracts step number from text if it starts with a number
+ *
+ * @param text - Text to extract step number from
+ * @returns Step number if found, null otherwise
+ */
 function extractStepNumber(text: string): number | null {
   if (!numberAtFirstIndex.test(text)) {
     return null;
@@ -266,6 +346,18 @@ function extractStepNumber(text: string): number | null {
   return retrieveNumberInStr(text);
 }
 
+/**
+ * Validates if a step number represents a valid progression from the current step
+ *
+ * Uses heuristics to determine if a detected step number is likely correct:
+ * - For early steps (1-2): allows up to 4x jump
+ * - For later steps: allows up to 2x jump
+ * - Always allows the first step
+ *
+ * @param stepNumber - Detected step number
+ * @param currentOrder - Current step order
+ * @returns True if the progression seems valid
+ */
 function isValidStepProgression(stepNumber: number, currentOrder: number): boolean {
   if (currentOrder === 0) {
     return true;
@@ -276,28 +368,35 @@ function isValidStepProgression(stepNumber: number, currentOrder: number): boole
   return stepNumber <= 2 * currentOrder;
 }
 
+/**
+ * Parses step content to extract title and description from text
+ *
+ * Handles various formats:
+ * - "1. Title" - number with title only
+ * - "1. Title\nDescription" - number with title and description
+ * - "Title" - standalone title text
+ *
+ * @param text - Raw text content of the step
+ * @returns Object containing formatted title and description
+ */
 function parseStepContent(text: string): { title: string; description: string } {
   const lines = text.split('\n');
   const firstLine = lines[0];
   const remainingLines = lines.slice(1);
 
-  // Try to extract title from first line (pattern: "1. TITLE" or "1 TITLE")
   const titleMatch = firstLine.match(/^\d+\.?\s*(.+)$/);
 
   if (titleMatch && remainingLines.length === 0) {
-    // Only number + title, no description in this block
     return {
       title: formatTitle(titleMatch[1]),
       description: '',
     };
   } else if (titleMatch && remainingLines.length > 0) {
-    // Number + title + description in same block
     return {
       title: formatTitle(titleMatch[1]),
       description: formatDescription(remainingLines.join('\n')),
     };
   } else {
-    // Treat entire text as title (for cases like standalone numbers followed by title blocks)
     return {
       title: formatTitle(text),
       description: '',
@@ -305,22 +404,48 @@ function parseStepContent(text: string): { title: string; description: string } 
   }
 }
 
+/**
+ * Formats a title by capitalizing only the first letter
+ *
+ * @param title - Raw title text
+ * @returns Formatted title with proper capitalization
+ */
 function formatTitle(title: string): string {
   return convertToLowerCaseExceptFirstLetter(title.trim());
 }
 
+/**
+ * Formats a description by normalizing the first letter to lowercase
+ *
+ * Preserves structure while ensuring consistent capitalization.
+ * Handles accented characters and maintains non-word prefixes.
+ *
+ * @param description - Raw description text
+ * @returns Formatted description with normalized first letter
+ */
 function formatDescription(description: string): string {
-  // Apply minimal formatting to preserve structure while normalizing case
   return description.replace(
     /^(\W*)([A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝ])/,
     (match, prefix, firstLetter) => prefix + firstLetter.toLowerCase()
   );
 }
 
+/**
+ * Checks if text contains any alphabetic characters
+ *
+ * @param text - Text to check
+ * @returns True if text contains letters
+ */
 function hasTextContent(text: string): boolean {
   return letterRegExp.test(text);
 }
 
+/**
+ * Checks if text block contains only numbers (no letters)
+ *
+ * @param text - Text to check
+ * @returns True if text starts with number and contains no letters
+ */
 function isNumberOnlyBlock(text: string): boolean {
   return numberAtFirstIndex.test(text) && !letterRegExp.test(text);
 }
@@ -461,6 +586,15 @@ function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientO
   return ingredientsOCR;
 }
 
+/**
+ * Parses ingredient names and units from header strings
+ *
+ * Extracts ingredient names and units from header format like "Flour (cups)".
+ * Units are expected to be in parentheses.
+ *
+ * @param namesAndUnits - Array of header strings containing names and units
+ * @returns Array of ingredient objects with parsed names and units
+ */
 function parseIngredientsNamesAndUnits(namesAndUnits: Array<string>): Array<ingredientObject> {
   return namesAndUnits.map(nameAndUnit => {
     const unitMatch = nameAndUnit.match(/\((.*?)\)/);
@@ -472,6 +606,17 @@ function parseIngredientsNamesAndUnits(namesAndUnits: Array<string>): Array<ingr
   });
 }
 
+/**
+ * Groups ingredient tokens by person count and quantities
+ *
+ * Parses tokens from ingredient table data, grouping them by person markers (e.g., "2p")
+ * and collecting associated quantity values. Ensures each group has the expected number
+ * of quantities by padding with empty strings.
+ *
+ * @param tokens - Array of string tokens from ingredient data
+ * @param nIngredients - Expected number of ingredients per group
+ * @returns Array of grouped ingredient data
+ */
 function getIngredientsGroups(tokens: Array<string>, nIngredients: number): Array<groupType> {
   const groups = new Array<groupType>();
   let group: groupType = { person: '', quantity: new Array<string>() };
@@ -499,6 +644,17 @@ function getIngredientsGroups(tokens: Array<string>, nIngredients: number): Arra
   return groups;
 }
 
+/**
+ * Checks if an ingredient quantity seems suspicious or incorrectly parsed
+ *
+ * Identifies potentially problematic ingredient data:
+ * - Empty quantities
+ * - Large numbers (>10) without units, which might indicate parsing errors
+ *
+ * @param quantity - Quantity string to check
+ * @param unit - Unit string associated with the quantity
+ * @returns True if the ingredient data seems suspicious
+ */
 function isIngredientSuspicious(quantity: string, unit: string): boolean {
   if (quantity.length === 0) {
     return true;
@@ -507,6 +663,16 @@ function isIngredientSuspicious(quantity: string, unit: string): boolean {
   return unit === '' && num > 10;
 }
 
+/**
+ * Finds the first suspicious ingredient in a group
+ *
+ * Scans through a group's quantities to find the first ingredient that appears
+ * to have suspicious or incorrectly parsed data.
+ *
+ * @param group - Group containing person count and quantities
+ * @param ingredients - Array of ingredient objects with units
+ * @returns Index of first suspicious ingredient, or -1 if none found
+ */
 function isSuspiciousGroup(group: groupType, ingredients: Array<ingredientObject>): number {
   for (let i = 0; i < ingredients.length; i++) {
     const quantityStr = group.quantity[i] || '';
@@ -517,11 +683,29 @@ function isSuspiciousGroup(group: groupType, ingredients: Array<ingredientObject
   return -1;
 }
 
+/**
+ * Converts string to lowercase except for the first letter
+ *
+ * Finds the first alphabetic character and capitalizes it while converting
+ * the rest of the string to lowercase.
+ *
+ * @param str - String to convert
+ * @returns String with first letter capitalized and rest lowercase
+ */
 function convertToLowerCaseExceptFirstLetter(str: string) {
   const firstLetterIndex = str.search(letterRegExp);
   return str.charAt(firstLetterIndex).toUpperCase() + str.slice(firstLetterIndex + 1).toLowerCase();
 }
 
+/**
+ * Retrieves the first number from a string, handling decimals
+ *
+ * Extracts numeric value from the beginning of a string, stopping at the first letter.
+ * Handles decimal numbers with both dot and comma separators.
+ *
+ * @param str - String to extract number from
+ * @returns Extracted number or -1 if no valid number found
+ */
 function retrieveNumberInStr(str: string) {
   const firstLetterIndex = str.search(letterRegExp);
   const workingStr = firstLetterIndex != -1 ? str.slice(0, firstLetterIndex) : str;
@@ -582,7 +766,7 @@ export async function extractFieldFromImage(
     recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTags: tagTableElement[];
-    recipeIngredients: any[];
+    recipeIngredients: ingredientTableElement[];
   },
   onWarn: WarningHandler = msg => ocrLogger.warn('OCR extraction warning', { message: msg })
 ): Promise<
@@ -594,7 +778,8 @@ export async function extractFieldFromImage(
     recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTime: number;
-    recipeIngredients: any[];
+    recipeIngredients: ingredientTableElement[];
+    recipeNutrition: nutritionObject;
   }>
 > {
   if (field === recipeColumnsNames.image) {
@@ -724,6 +909,15 @@ export async function extractFieldFromImage(
         warn('Expected non empty array of strings for tags');
         return {};
       }
+    case recipeColumnsNames.nutrition:
+      if (ocrResult && typeof ocrResult === 'object' && !Array.isArray(ocrResult)) {
+        return {
+          recipeNutrition: ocrResult as nutritionObject,
+        };
+      } else {
+        warn('Expected nutrition object for nutrition field');
+        return {};
+      }
     default:
       ocrLogger.error('Unrecognized field in extractFieldFromImage', { field });
       return {};
@@ -731,27 +925,21 @@ export async function extractFieldFromImage(
 }
 
 /**
- * Parses ingredients from OCR lines when no structured header is detected
+ * Parses ingredients from OCR text when no clear header structure is detected
  *
- * Fallback parsing method for simpler ingredient formats. Splits the input lines
- * assuming the first half contains ingredient names and the second half contains
- * corresponding quantities with units.
+ * Fallback parsing method that assumes ingredients are organized in two sections:
+ * the first half contains ingredient names, the second half contains quantities with units.
+ * This handles cases where ingredient tables don't have clear headers or person markers.
  *
- * @param lines - Array of OCR text lines to parse
- * @returns Array of ingredient objects with person count set to -1 (unknown)
+ * @param lines - Array of text lines from ingredient OCR
+ * @returns Array of ingredient objects with names, quantities, and units
  *
  * @example
  * ```typescript
- * const lines = [
- *   "Flour", "Sugar", "Salt",      // First half: names
- *   "2 cups", "1 tsp", "1 pinch"   // Second half: quantities
- * ];
- *
- * const ingredients = parseIngredientsNoHeader(lines);
- * // Returns:
- * // [
- * //   { name: "Flour", unit: "cups", quantityPerPersons: [{persons: -1, quantity: "2"}] },
- * //   { name: "Sugar", unit: "tsp", quantityPerPersons: [{persons: -1, quantity: "1"}] }
+ * // Input lines: ["Flour", "Sugar", "Salt", "2 cups", "1 tsp", "1 pinch"]
+ * // Returns: [
+ * //   { name: "Flour", unit: "cups", quantityPerPersons: [{ persons: -1, quantity: "2" }] },
+ * //   { name: "Sugar", unit: "tsp", quantityPerPersons: [{ persons: -1, quantity: "1" }] }
  * // ]
  * ```
  */
@@ -767,7 +955,6 @@ export function parseIngredientsNoHeader(lines: Array<string>): Array<ingredient
   const result: ingredientObject[] = [];
 
   for (let i = 0; i < Math.min(nameLines.length, quantityLines.length); i++) {
-    // Unit here is inside the quantity with a space as separator generally
     const [quantity, unit] = quantityLines[i].split(' ');
     const quantityPerPersons = new Array<ingredientQuantityPerPersons>({
       persons: -1,
@@ -782,4 +969,349 @@ export function parseIngredientsNoHeader(lines: Array<string>): Array<ingredient
   }
 
   return result;
+}
+
+/**
+ * Parses and validates nutrition values from OCR text
+ *
+ * Cleans OCR text and extracts numeric nutrition values with validation:
+ * - Removes parentheses and normalizes whitespace
+ * - Corrects common OCR errors (like 'I' instead of '1')
+ * - Validates numeric ranges and format
+ * - Rounds to 2 decimal places
+ *
+ * @param ocrText - Raw OCR text containing nutrition value
+ * @returns Parsed nutrition value or undefined if invalid
+ */
+function parseNutritionValue(ocrText: string): number | undefined {
+  const MAX_NUTRITION_VALUE = 10000;
+  const DECIMAL_PRECISION = 100;
+
+  let cleanedText = ocrText.trim();
+  cleanedText = cleanedText.replace(/\([^)]*\)/g, '');
+  cleanedText = cleanedText.replace(/\n/g, ' ');
+  cleanedText = cleanedText.replace(/\s+/g, ' ').trim();
+  cleanedText = cleanedText.replace(/^I(\d)/g, '1$1');
+
+  if (startsWithLetter.test(cleanedText) || hasLettersInMiddle.test(cleanedText)) {
+    return undefined;
+  }
+
+  let numericPart = cleanedText;
+  if (endsWithLetters.test(cleanedText)) {
+    numericPart = cleanedText.replace(endsWithLetters, '').trim();
+  } else if (cleanedText.length > 1) {
+    numericPart = cleanedText.substring(0, cleanedText.length - 1);
+  } else {
+    return undefined;
+  }
+
+  const normalizedDecimal = numericPart.replace(',', '.');
+
+  if (!onlyDigitsDotsSpaces.test(normalizedDecimal)) {
+    return undefined;
+  }
+
+  const parsedNumber = parseFloat(normalizedDecimal);
+  if (isNaN(parsedNumber) || parsedNumber < 0 || parsedNumber > MAX_NUTRITION_VALUE) {
+    return undefined;
+  }
+
+  return Math.round(parsedNumber * DECIMAL_PRECISION) / DECIMAL_PRECISION;
+}
+
+/**
+ * Retrieves nutrition terms for the specified language from i18n
+ *
+ * @param language - Language code to get nutrition terms for
+ * @returns Nutrition terms object or undefined if not found/error
+ */
+function getNutritionTermsForLanguage(language: string) {
+  try {
+    const result = i18n.getResource(language, 'translation', 'recipe.nutrition.ocr');
+    if (result && typeof result === 'object') {
+      return result;
+    }
+  } catch (error) {
+    ocrLogger.error('i18n nutrition terms failed', { error });
+    return undefined;
+  }
+}
+
+/**
+ * Finds and merges "per 100g" indicator lines in nutrition text
+ *
+ * Searches for nutrition table headers indicating "per 100g" values using fuzzy matching.
+ * Merges consecutive lines that together form a complete "per 100g" term.
+ *
+ * @param lines - Array of text lines from nutrition table
+ * @param nutritionTerms - Localized nutrition terminology
+ * @returns Index of the merged "per 100g" line, or -1 if not found
+ */
+function findAndMergePer100gLines(lines: string[], nutritionTerms: NutritionTerms): number {
+  const per100gTerms = nutritionTerms[per100gKey];
+  const per100gFuse = new Fuse(per100gTerms, {
+    threshold: FUSE_THRESHOLD,
+  });
+
+  for (let i = 0; i < lines.length; i++) {
+    if (per100gFuse.search(lines[i].toLowerCase()).length > 0) {
+      let endIndex = i;
+
+      while (endIndex + 1 < lines.length) {
+        const currentMerged = lines.slice(i, endIndex + 2).join(' ');
+        if (per100gFuse.search(currentMerged.toLowerCase()).length > 0) {
+          endIndex++;
+        } else {
+          break;
+        }
+      }
+
+      if (endIndex > i) {
+        const mergedLine = lines.slice(i, endIndex + 1).join(' ');
+        lines.splice(i, endIndex - i + 1, mergedLine);
+      }
+
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+/**
+ * Creates Fuse.js search objects for nutrition term matching
+ *
+ * Builds fuzzy search objects for each nutrition term type, excluding
+ * special keys like "per100g" and "perPortion".
+ *
+ * @param nutritionTerms - Localized nutrition terminology
+ * @returns Record of Fuse objects keyed by nutrition term type
+ */
+function createFuseObjects(nutritionTerms: NutritionTerms): Record<OcrKeys, Fuse<string>> {
+  const fuseOfNutritionTerms = {} as Record<OcrKeys, Fuse<string>>;
+
+  for (const [termKey, termValue] of Object.entries(nutritionTerms)) {
+    if (termKey !== per100gKey && termKey !== perPortionKey) {
+      fuseOfNutritionTerms[termKey as OcrKeys] = new Fuse(termValue, {
+        threshold: FUSE_THRESHOLD,
+      });
+    }
+  }
+
+  return fuseOfNutritionTerms;
+}
+
+/**
+ * Filters lines to extract nutrition labels from OCR text
+ *
+ * Searches through lines up to the "per 100g" indicator to find lines that
+ * match known nutrition terms using fuzzy matching.
+ *
+ * @param lines - Array of text lines from nutrition table
+ * @param per100gIndex - Index of the "per 100g" indicator line
+ * @param fuseOfNutritionTerms - Fuse objects for nutrition term matching
+ * @returns Array of filtered nutrition label lines
+ */
+function filterNutritionLabels(
+  lines: string[],
+  per100gIndex: number,
+  fuseOfNutritionTerms: Record<OcrKeys, Fuse<string>>
+): string[] {
+  const linesToSearch = lines.slice(0, per100gIndex + 1);
+
+  const filteredLines = linesToSearch.filter(item => {
+    for (const [key, fuse] of Object.entries(fuseOfNutritionTerms)) {
+      if (
+        key !== per100gKey &&
+        key !== perPortionKey &&
+        fuse.search(item.toLowerCase()).length > 0
+      ) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  return duplicateEnergyLabelIfNeeded(filteredLines, fuseOfNutritionTerms);
+}
+
+/**
+ * Extracts nutrition values from lines following the "per 100g" indicator
+ *
+ * Gets the value lines that correspond to nutrition labels, stopping at
+ * "per portion" indicator if found (indicating two-column format).
+ *
+ * @param lines - Array of text lines from nutrition table
+ * @param per100gIndex - Index of the "per 100g" indicator line
+ * @param nutritionTerms - Localized nutrition terminology
+ * @returns Array of nutrition value lines
+ */
+function extractNutritionValues(
+  lines: string[],
+  per100gIndex: number,
+  nutritionTerms: NutritionTerms
+): string[] {
+  const linesAfterPer100g = lines.slice(per100gIndex + 1);
+
+  const perPortionTerms = nutritionTerms['perPortion'];
+  const perPortionFuse = new Fuse(perPortionTerms, {
+    threshold: FUSE_THRESHOLD,
+  });
+
+  const perPortionIndex = linesAfterPer100g.findIndex(line => {
+    return perPortionFuse.search(line.toLowerCase()).length > 0;
+  });
+
+  if (perPortionIndex !== -1) {
+    return linesAfterPer100g.slice(0, perPortionIndex);
+  } else {
+    return linesAfterPer100g;
+  }
+}
+
+/**
+ * Duplicates energy label if only one is found to handle both kcal and kJ values
+ *
+ * Nutrition tables often show energy in both kcal and kJ but may only have one
+ * "Energy" label. This function duplicates the energy label when needed.
+ *
+ * @param nutritionLabels - Array of nutrition label strings
+ * @param fuseOfNutritionTerms - Fuse objects for nutrition term matching
+ * @returns Array with energy label duplicated if necessary
+ */
+function duplicateEnergyLabelIfNeeded(
+  nutritionLabels: string[],
+  fuseOfNutritionTerms: Record<OcrKeys, Fuse<string>>
+): string[] {
+  const labelsWithPossibleDuplicate = [...nutritionLabels];
+  const energyFuse = fuseOfNutritionTerms['energyKcal'];
+
+  let energyLabelCount = 0;
+  let firstEnergyIndex = -1;
+
+  for (let i = 0; i < labelsWithPossibleDuplicate.length; i++) {
+    if (energyFuse.search(labelsWithPossibleDuplicate[i].toLowerCase()).length > 0) {
+      energyLabelCount++;
+      firstEnergyIndex = i;
+    }
+  }
+
+  if (energyLabelCount === 1) {
+    const duplicatedEnergyLabel = labelsWithPossibleDuplicate[firstEnergyIndex];
+    labelsWithPossibleDuplicate.splice(firstEnergyIndex + 1, 0, duplicatedEnergyLabel);
+  }
+
+  return labelsWithPossibleDuplicate;
+}
+
+/**
+ * Parses nutrition labels and values into a structured nutrition object
+ *
+ * Matches labels to known nutrition terms and parses corresponding values.
+ * Handles special logic for energy values (kcal vs kJ) by using value magnitude
+ * to distinguish between them.
+ *
+ * @param nutritionLabels - Array of nutrition label strings
+ * @param nutritionValues - Array of nutrition value strings
+ * @param fuseOfNutritionTerms - Fuse objects for nutrition term matching
+ * @returns Structured nutrition object with parsed values
+ */
+function parseNutritionLabelsAndValues(
+  nutritionLabels: string[],
+  nutritionValues: string[],
+  fuseOfNutritionTerms: Record<OcrKeys, Fuse<string>>
+): nutritionObject {
+  const parsedNutritionObject: nutritionObject = {};
+
+  const energyCalKey: OcrKeys = 'energyKcal';
+  const energyJoulKey: OcrKeys = 'energyKj';
+
+  for (let i = 0; i < nutritionLabels.length; i++) {
+    const label = nutritionLabels[i].toLowerCase();
+    const value = nutritionValues[i]?.toLowerCase() || '';
+
+    let labelKey: OcrKeys | undefined;
+    for (const [key, fuse] of Object.entries(fuseOfNutritionTerms)) {
+      if (fuse.search(label).length > 0) {
+        labelKey = key as OcrKeys;
+        break;
+      }
+    }
+
+    if (!labelKey) {
+      ocrLogger.info(`Label ${label} not found in nutrition terms`);
+      continue;
+    }
+
+    const valueParsed = parseNutritionValue(value);
+    if (!valueParsed) {
+      ocrLogger.info(`Value ${value} could not be converted to number`);
+      continue;
+    }
+
+    if (labelKey !== energyCalKey && labelKey !== energyJoulKey) {
+      parsedNutritionObject[labelKey as keyof nutritionObject] = valueParsed;
+    } else {
+      if (parsedNutritionObject[energyCalKey]) {
+        if (valueParsed < parsedNutritionObject[energyCalKey]) {
+          parsedNutritionObject[energyJoulKey] = parsedNutritionObject[energyCalKey];
+          parsedNutritionObject[energyCalKey] = valueParsed;
+        } else {
+          parsedNutritionObject[energyJoulKey] = valueParsed;
+        }
+      } else if (parsedNutritionObject[energyJoulKey]) {
+        if (valueParsed > parsedNutritionObject[energyJoulKey]) {
+          parsedNutritionObject[energyCalKey] = parsedNutritionObject[energyJoulKey];
+          parsedNutritionObject[energyJoulKey] = valueParsed;
+        } else {
+          parsedNutritionObject[energyCalKey] = valueParsed;
+        }
+      } else {
+        parsedNutritionObject[valueParsed < 1000 ? energyCalKey : energyJoulKey] = valueParsed;
+      }
+    }
+  }
+
+  return parsedNutritionObject;
+}
+
+/**
+ * Transforms OCR result into a structured nutrition object
+ *
+ * Main function for processing nutrition table OCR results. Extracts nutrition
+ * labels and values from structured nutrition tables, handling various formats
+ * and language-specific terms.
+ *
+ * @param ocr - Text recognition result from ML Kit
+ * @returns Structured nutrition object with parsed nutrition data
+ */
+function transformOCRInNutrition(ocr: TextRecognitionResult): nutritionObject {
+  const originalLines = convertBlockOnArrayOfString(ocr.blocks);
+
+  const nutritionTerms = getNutritionTermsForLanguage(i18n.language);
+  if (!nutritionTerms) {
+    return {};
+  }
+
+  const nutritionSearches = createFuseObjects(nutritionTerms as NutritionTerms);
+  const per100gIndex = findAndMergePer100gLines(originalLines, nutritionTerms as NutritionTerms);
+
+  if (per100gIndex === -1) {
+    return {};
+  }
+
+  const extractedLabels = filterNutritionLabels(originalLines, per100gIndex, nutritionSearches);
+  const extractedValues = extractNutritionValues(
+    originalLines,
+    per100gIndex,
+    nutritionTerms as NutritionTerms
+  );
+
+  if (extractedValues.length < extractedLabels.length) {
+    return {};
+  }
+  const matchingValues = extractedValues.slice(0, extractedLabels.length);
+
+  return parseNutritionLabelsAndValues(extractedLabels, matchingValues, nutritionSearches);
 }

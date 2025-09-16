@@ -14,6 +14,7 @@ import {
   isRecipePartiallyEqual,
   isShoppingEqual,
   isTagEqual,
+  nutritionTableElement,
   preparationStepElement,
   recipeColumnsEncoding,
   recipeColumnsNames,
@@ -74,8 +75,6 @@ export class RecipeDatabase {
   protected _recipesTable: TableManipulation;
   protected _ingredientsTable: TableManipulation;
   protected _tagsTable: TableManipulation;
-  // TODO add nutrition
-  // protected _nutritionTable: TableManipulation;
 
   protected _shoppingListTable: TableManipulation;
 
@@ -93,7 +92,6 @@ export class RecipeDatabase {
     this._recipesTable = new TableManipulation(recipeTableName, recipeColumnsEncoding);
     this._ingredientsTable = new TableManipulation(ingredientsTableName, ingredientColumnsEncoding);
     this._tagsTable = new TableManipulation(tagTableName, tagColumnsEncoding);
-    // this._nutritionTable = new TableManipulation(nutritionTableName, nutritionColumnsNames);
 
     this._shoppingListTable = new TableManipulation(
       shoppingListTableName,
@@ -144,7 +142,6 @@ export class RecipeDatabase {
     await this._ingredientsTable.deleteTable(this._dbConnection);
     await this._tagsTable.deleteTable(this._dbConnection);
     await this._shoppingListTable.deleteTable(this._dbConnection);
-    // await this._nutritionTable.deleteTable(this._dbConnection);
 
     this._recipes = new Array<recipeTableElement>();
     this._ingredients = new Array<ingredientTableElement>();
@@ -180,7 +177,6 @@ export class RecipeDatabase {
     await this._ingredientsTable.createTable(this._dbConnection);
     await this._tagsTable.createTable(this._dbConnection);
     await this._shoppingListTable.createTable(this._dbConnection);
-    // await this._nutritionTable.createTable();
 
     this._ingredients = await this.getAllIngredients();
     this._tags = await this.getAllTags();
@@ -1061,7 +1057,17 @@ export class RecipeDatabase {
       .map(result => result.item);
   }
 
-  protected constructUpdateRecipeStructure(
+  /**
+   * Constructs a Map structure for updating recipe data in the database
+   *
+   * Converts an encoded recipe element into a Map structure suitable for
+   * database update operations, mapping column names to their corresponding values.
+   *
+   * @private
+   * @param encodedRecipe - The encoded recipe data to construct update structure from
+   * @returns Map with column names as keys and recipe data as values
+   */
+  private constructUpdateRecipeStructure(
     encodedRecipe: encodedRecipeElement
   ): Map<string, string | number> {
     return new Map<string, string | number>([
@@ -1073,10 +1079,21 @@ export class RecipeDatabase {
       [recipeColumnsNames.ingredients, encodedRecipe.INGREDIENTS],
       [recipeColumnsNames.preparation, encodedRecipe.PREPARATION],
       [recipeColumnsNames.time, encodedRecipe.TIME],
+      [recipeColumnsNames.nutrition, encodedRecipe.NUTRITION],
     ]);
   }
 
-  protected constructUpdateIngredientStructure(
+  /**
+   * Constructs a Map structure for updating ingredient data in the database
+   *
+   * Converts an ingredient element into a Map structure suitable for database
+   * update operations, properly encoding seasonal data with separators.
+   *
+   * @private
+   * @param ingredient - The ingredient data to construct update structure from
+   * @returns Map with column names as keys and ingredient data as values
+   */
+  private constructUpdateIngredientStructure(
     ingredient: ingredientTableElement
   ): Map<string, string | number> {
     return new Map<string, string | number>([
@@ -1087,12 +1104,32 @@ export class RecipeDatabase {
     ]);
   }
 
-  protected constructUpdateTagStructure(tag: tagTableElement): Map<string, string | number> {
+  /**
+   * Constructs a Map structure for updating tag data in the database
+   *
+   * Converts a tag element into a Map structure suitable for database
+   * update operations.
+   *
+   * @private
+   * @param tag - The tag data to construct update structure from
+   * @returns Map with column names as keys and tag data as values
+   */
+  private constructUpdateTagStructure(tag: tagTableElement): Map<string, string | number> {
     return new Map<string, string | number>([[tagsColumnsNames.name, tag.name]]);
   }
 
-  /* PROTECTED METHODS */
-  protected async openDatabase() {
+  /* PRIVATE METHODS */
+
+  /**
+   * Opens a connection to the SQLite database
+   *
+   * Creates and establishes a connection to the SQLite database using the configured
+   * database name. Logs success/failure for debugging purposes.
+   *
+   * @private
+   * @throws Will log error if database connection fails
+   */
+  private async openDatabase() {
     try {
       databaseLogger.debug('Opening database connection', { databaseName: this._databaseName });
       this._dbConnection = await SQLite.openDatabaseAsync(this._databaseName);
@@ -1105,7 +1142,16 @@ export class RecipeDatabase {
     }
   }
 
-  protected async deleteDatabase() {
+  /**
+   * Completely removes the database file and resets the instance
+   *
+   * Closes the current database connection, deletes the database file from storage,
+   * and resets all internal data structures to their initial state.
+   *
+   * @private
+   * @throws Will log error if database deletion fails
+   */
+  private async deleteDatabase() {
     try {
       await this._dbConnection.closeAsync();
       await SQLite.deleteDatabaseAsync(this._databaseName);
@@ -1118,7 +1164,18 @@ export class RecipeDatabase {
     }
   }
 
-  protected async verifyTagsExist(tags: Array<tagTableElement>): Promise<Array<tagTableElement>> {
+  /**
+   * Verifies that all provided tags exist in the database, creating them if necessary
+   *
+   * Checks each tag against the local cache and database. If a tag doesn't exist,
+   * it automatically adds it to maintain data integrity. Returns the complete
+   * array of tags with database IDs assigned.
+   *
+   * @private
+   * @param tags - Array of tags to verify and potentially create
+   * @returns Promise resolving to array of verified tags with database IDs
+   */
+  private async verifyTagsExist(tags: Array<tagTableElement>): Promise<Array<tagTableElement>> {
     // TODO is it really useful to return a new Array ?
     // isn't it better to simply return eventually the array to push ?
     const result = new Array<tagTableElement>();
@@ -1137,7 +1194,18 @@ export class RecipeDatabase {
     return result;
   }
 
-  protected async verifyIngredientsExist(
+  /**
+   * Verifies that all provided ingredients exist in the database, creating them if necessary
+   *
+   * Checks each ingredient against the local cache and database. For existing ingredients,
+   * preserves the original quantity while using the database ingredient metadata.
+   * For missing ingredients, automatically adds them to maintain data integrity.
+   *
+   * @private
+   * @param ingredients - Array of ingredients to verify and potentially create
+   * @returns Promise resolving to array of verified ingredients with quantities preserved
+   */
+  private async verifyIngredientsExist(
     ingredients: Array<ingredientTableElement>
   ): Promise<Array<ingredientTableElement>> {
     // TODO is it really useful to return a new Array ?
@@ -1157,51 +1225,59 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-                if (newIngredients.length > 0) {
-                    let alertTitle: string;
-                    let alertMessage = "Do you want to add or edit it before  ?";
-                    const alertOk = "OK";
-                    const alertCancel = "Cancel";
-                    const alertEdit = "Edit before add";
-                    if (newIngredients.length > 1) {
-                        // Plural
-                        alertTitle = "INGREDIENTS NOT FOUND";
-                        alertMessage = `Following ingredients were not found in database :  \n`;
-                        newIngredients.forEach(ing => {
-                            alertMessage += "\t- " + ing.ingName + "\n";
-                        });
-                        alertMessage += `Do you want to add these as is or edit them before adding ?`;
-
-                    } else {
-                        alertTitle = `INGREDIENT NOT FOUND`;
-                        alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                    }
-
-
-                    switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                        case alertUserChoice.neutral:
-                            // TODO edit before add
-                            break;
-                        case alertUserChoice.ok:
-                            await this.addMultipleIngredients(newIngredients);
-                            result = result.concat(newIngredients);
-                            break;
-                        case alertUserChoice.cancel:
-                        default:
-                            databaseLogger.debug("User canceled adding ingredient");
-                            break;
-                    }
-                }
-                 */
+                        if (newIngredients.length > 0) {
+                            let alertTitle: string;
+                            let alertMessage = "Do you want to add or edit it before  ?";
+                            const alertOk = "OK";
+                            const alertCancel = "Cancel";
+                            const alertEdit = "Edit before add";
+                            if (newIngredients.length > 1) {
+                                // Plural
+                                alertTitle = "INGREDIENTS NOT FOUND";
+                                alertMessage = `Following ingredients were not found in database :  \n`;
+                                newIngredients.forEach(ing => {
+                                    alertMessage += "\t- " + ing.ingName + "\n";
+                                });
+                                alertMessage += `Do you want to add these as is or edit them before adding ?`;
+    
+                            } else {
+                                alertTitle = `INGREDIENT NOT FOUND`;
+                                alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                            }
+    
+    
+                            switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                                case alertUserChoice.neutral:
+                                    // TODO edit before add
+                                    break;
+                                case alertUserChoice.ok:
+                                    await this.addMultipleIngredients(newIngredients);
+                                    result = result.concat(newIngredients);
+                                    break;
+                                case alertUserChoice.cancel:
+                                default:
+                                    databaseLogger.debug("User canceled adding ingredient");
+                                    break;
+                            }
+                        }
+                         */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);
     return result;
   }
 
-  protected constructSearchRecipeStructure(
-    recipe: recipeTableElement
-  ): Map<string, string | number> {
+  /**
+   * Constructs a Map structure for searching recipes in the database
+   *
+   * Creates a search criteria Map using key recipe fields (title, description, image)
+   * for database query operations when searching without an ID.
+   *
+   * @private
+   * @param recipe - The recipe data to construct search criteria from
+   * @returns Map with column names as keys and search values
+   */
+  private constructSearchRecipeStructure(recipe: recipeTableElement): Map<string, string | number> {
     return new Map<string, string | number>([
       [recipeColumnsNames.title, recipe.title],
       [recipeColumnsNames.description, recipe.description],
@@ -1209,7 +1285,17 @@ export class RecipeDatabase {
     ]);
   }
 
-  protected constructSearchIngredientStructure(
+  /**
+   * Constructs a Map structure for searching ingredients in the database
+   *
+   * Creates a search criteria Map using key ingredient fields (name, unit, type)
+   * for database query operations when searching without an ID.
+   *
+   * @private
+   * @param ingredient - The ingredient data to construct search criteria from
+   * @returns Map with column names as keys and search values
+   */
+  private constructSearchIngredientStructure(
     ingredient: ingredientTableElement
   ): Map<string, string | number> {
     return new Map<string, string>([
@@ -1219,11 +1305,32 @@ export class RecipeDatabase {
     ]);
   }
 
-  protected constructSearchTagStructure(tag: tagTableElement): Map<string, string | number> {
+  /**
+   * Constructs a Map structure for searching tags in the database
+   *
+   * Creates a search criteria Map using the tag name for database query
+   * operations when searching without an ID.
+   *
+   * @private
+   * @param tag - The tag data to construct search criteria from
+   * @returns Map with column names as keys and search values
+   */
+  private constructSearchTagStructure(tag: tagTableElement): Map<string, string | number> {
     return new Map<string, string | number>([[tagsColumnsNames.name, tag.name]]);
   }
 
-  protected encodeRecipe(recToEncode: recipeTableElement): encodedRecipeElement {
+  /**
+   * Encodes a recipe object for database storage
+   *
+   * Converts a recipe from the application format to the database storage format,
+   * encoding all nested objects (tags, ingredients, preparation steps, nutrition)
+   * into string representations using appropriate separators.
+   *
+   * @private
+   * @param recToEncode - The recipe object to encode for database storage
+   * @returns Encoded recipe element ready for database insertion/update
+   */
+  private encodeRecipe(recToEncode: recipeTableElement): encodedRecipeElement {
     return {
       ID: recToEncode.id ? recToEncode.id : 0,
       IMAGE_SOURCE: recToEncode.image_Source,
@@ -1238,10 +1345,22 @@ export class RecipeDatabase {
         .map(step => step.title + textSeparator + step.description)
         .join(EncodingSeparator),
       TIME: recToEncode.time,
+      NUTRITION: recToEncode.nutrition ? this.encodeNutrition(recToEncode.nutrition) : '',
     };
   }
 
-  protected async decodeRecipe(encodedRecipe: encodedRecipeElement): Promise<recipeTableElement> {
+  /**
+   * Decodes a recipe from database storage format to application format
+   *
+   * Converts an encoded recipe element from the database into the full application
+   * format, decoding all nested data structures (ingredients, tags, preparation, nutrition)
+   * and resolving file paths and database references.
+   *
+   * @private
+   * @param encodedRecipe - The encoded recipe data from database
+   * @returns Promise resolving to fully decoded recipe object
+   */
+  private async decodeRecipe(encodedRecipe: encodedRecipeElement): Promise<recipeTableElement> {
     const [decodedIngredients, decodedSeason] = await this.decodeIngredientFromRecipe(
       encodedRecipe.INGREDIENTS
     );
@@ -1256,10 +1375,21 @@ export class RecipeDatabase {
       season: decodedSeason,
       preparation: this.decodePreparation(encodedRecipe.PREPARATION),
       time: encodedRecipe.TIME,
+      nutrition: this.decodeNutrition(encodedRecipe.NUTRITION),
     };
   }
 
-  protected async decodeArrayOfRecipe(
+  /**
+   * Decodes an array of recipes from database storage format
+   *
+   * Processes multiple encoded recipe elements from database queries,
+   * decoding each one into the full application format.
+   *
+   * @private
+   * @param queryResult - Array of encoded recipe elements from database
+   * @returns Promise resolving to array of fully decoded recipe objects
+   */
+  private async decodeArrayOfRecipe(
     queryResult: Array<encodedRecipeElement>
   ): Promise<Array<recipeTableElement>> {
     const returnRecipes = new Array<recipeTableElement>();
@@ -1271,7 +1401,18 @@ export class RecipeDatabase {
     return returnRecipes;
   }
 
-  protected encodeIngredient(ingredientToEncode: ingredientTableElement): string {
+  /**
+   * Encodes an ingredient for storage within a recipe's ingredients list
+   *
+   * Converts an ingredient to a string representation containing the ingredient's
+   * database ID and quantity, separated by a text separator. Used when storing
+   * ingredient references within recipe data.
+   *
+   * @private
+   * @param ingredientToEncode - The ingredient object to encode
+   * @returns String representation in format "ID--quantity", or empty string if ingredient not found
+   */
+  private encodeIngredient(ingredientToEncode: ingredientTableElement): string {
     // To encode : ID--quantity
     const quantity = ingredientToEncode.quantity ? ingredientToEncode.quantity.toString() : '';
     let idForEncoding: number;
@@ -1291,7 +1432,22 @@ export class RecipeDatabase {
     return idForEncoding + textSeparator + quantity;
   }
 
-  protected async decodeIngredientFromRecipe(
+  /**
+   * Decodes ingredients from a recipe's encoded ingredient string
+   *
+   * Parses the encoded ingredient string from a recipe, looking up each ingredient
+   * by ID in the database and combining it with the recipe-specific quantities.
+   * Also calculates the combined seasonal availability based on all ingredients.
+   *
+   * @private
+   * @param encodedIngredient - Encoded string containing ingredient IDs and quantities
+   * @returns Promise resolving to tuple of [decoded ingredients array, combined season array]
+   *
+   * @example
+   * Input: "1--250__2--100__3--0.5"
+   * Output: [[ingredient1 with quantity 250, ingredient2 with quantity 100, ...], ["5","6","7"]]
+   */
+  private async decodeIngredientFromRecipe(
     encodedIngredient: string
   ): Promise<[Array<ingredientTableElement>, Array<string>]> {
     const arrDecoded = new Array<ingredientTableElement>();
@@ -1349,7 +1505,21 @@ export class RecipeDatabase {
     return [arrDecoded, recipeSeason];
   }
 
-  protected decodeIngredient(dbIngredient: encodedIngredientElement): ingredientTableElement {
+  /**
+   * Decodes a single ingredient from database storage format
+   *
+   * Converts an encoded ingredient element from the database into the application
+   * format, parsing the seasonal data from its encoded string representation.
+   *
+   * @private
+   * @param dbIngredient - The encoded ingredient data from database
+   * @returns Decoded ingredient object in application format
+   *
+   * @example
+   * Input: {"ID":1,"INGREDIENT":"Flour","UNIT":"g", "TYPE":"grain", "SEASON":"1__2__3__12"}
+   * Output: {id: 1, name: "Flour", unit: "g", type: "grain", season: ["1","2","3","12"]}
+   */
+  private decodeIngredient(dbIngredient: encodedIngredientElement): ingredientTableElement {
     // Ex :  {"ID":1,"INGREDIENT":"INGREDIENT NAME","UNIT":"g", "TYPE":"BASE", "SEASON":"*"}
     return {
       id: dbIngredient.ID,
@@ -1360,7 +1530,18 @@ export class RecipeDatabase {
     };
   }
 
-  protected decodeArrayOfIngredients(
+  /**
+   * Decodes an array of ingredients from database storage format
+   *
+   * Processes multiple encoded ingredient elements from database queries,
+   * converting each one to the application format. Returns empty array if
+   * input is null, undefined, or empty.
+   *
+   * @private
+   * @param queryResult - Array of encoded ingredient elements from database
+   * @returns Array of decoded ingredient objects in application format
+   */
+  private decodeArrayOfIngredients(
     queryResult: Array<encodedIngredientElement>
   ): Array<ingredientTableElement> {
     if (!queryResult || !Array.isArray(queryResult) || queryResult.length == 0) {
@@ -1369,14 +1550,39 @@ export class RecipeDatabase {
     return queryResult.map(ingredient => this.decodeIngredient(ingredient));
   }
 
-  protected decodeSeason(
+  /**
+   * Calculates the intersection of two seasonal availability arrays
+   *
+   * Combines seasonal data from multiple ingredients to determine when a recipe
+   * can be made using seasonal ingredients. Returns months that are common to both seasons.
+   *
+   * @private
+   * @param previousSeason - Previously calculated season array (accumulated from other ingredients)
+   * @param ingredientSeason - Season array from current ingredient
+   * @returns Array of month strings that are available in both seasons
+   *
+   * @example
+   * Input: ["5","6","7","8"], ["6","7","8","9"]
+   * Output: ["6","7","8"]
+   */
+  private decodeSeason(
     previousSeason: Array<string>,
     ingredientSeason: Array<string>
   ): Array<string> {
     return previousSeason.filter(month => ingredientSeason.includes(month));
   }
 
-  protected encodeTag(tag: tagTableElement): string {
+  /**
+   * Encodes a tag for storage within a recipe's tags list
+   *
+   * Converts a tag to its database ID string representation for storage
+   * within recipe data. Looks up the tag in the local cache if ID is missing.
+   *
+   * @private
+   * @param tag - The tag object to encode
+   * @returns String representation of the tag's database ID, or error message if not found
+   */
+  private encodeTag(tag: tagTableElement): string {
     if (tag.id === undefined) {
       const foundedTag = this.find_tag(tag);
       if (foundedTag && foundedTag.id) {
@@ -1389,7 +1595,21 @@ export class RecipeDatabase {
     }
   }
 
-  protected async decodeTagFromRecipe(encodedTag: string): Promise<Array<tagTableElement>> {
+  /**
+   * Decodes tags from a recipe's encoded tag string
+   *
+   * Parses the encoded tag string from a recipe, looking up each tag by ID
+   * in the database to get the full tag information including names.
+   *
+   * @private
+   * @param encodedTag - Encoded string containing tag IDs separated by encoding separators
+   * @returns Promise resolving to array of decoded tag objects
+   *
+   * @example
+   * Input: "1__2__5__3__4"
+   * Output: [{id: 1, name: "Italian"}, {id: 2, name: "Dinner"}, ...]
+   */
+  private async decodeTagFromRecipe(encodedTag: string): Promise<Array<tagTableElement>> {
     const arrDecoded = new Array<tagTableElement>();
 
     // Ex : "1__2__5__3__4"
@@ -1412,19 +1632,123 @@ export class RecipeDatabase {
     return arrDecoded;
   }
 
-  protected decodeTag(dbTag: encodedTagElement): tagTableElement {
+  /**
+   * Decodes a single tag from database storage format
+   *
+   * Converts an encoded tag element from the database into the application format.
+   *
+   * @private
+   * @param dbTag - The encoded tag data from database
+   * @returns Decoded tag object in application format
+   *
+   * @example
+   * Input: {"ID":4,"NAME":"Italian"}
+   * Output: {id: 4, name: "Italian"}
+   */
+  private decodeTag(dbTag: encodedTagElement): tagTableElement {
     // Ex : {"ID":4,"NAME":"TAG NAME"}
     return { id: dbTag.ID, name: dbTag.NAME };
   }
 
-  protected decodeArrayOfTags(queryResult: Array<encodedTagElement>): Array<tagTableElement> {
+  /**
+   * Decodes an array of tags from database storage format
+   *
+   * Processes multiple encoded tag elements from database queries,
+   * converting each one to the application format. Returns empty array if
+   * input is null, undefined, or empty.
+   *
+   * @private
+   * @param queryResult - Array of encoded tag elements from database
+   * @returns Array of decoded tag objects in application format
+   */
+  private decodeArrayOfTags(queryResult: Array<encodedTagElement>): Array<tagTableElement> {
     if (!queryResult || !Array.isArray(queryResult) || queryResult.length == 0) {
       return new Array<tagTableElement>();
     }
     return queryResult.map(tagFound => this.decodeTag(tagFound));
   }
 
-  protected decodePreparation(encodedPreparation: string): Array<preparationStepElement> {
+  /**
+   * Encodes nutrition information for database storage
+   *
+   * Converts a nutrition object to a string representation by joining all
+   * nutritional values with text separators for compact storage within recipe data.
+   *
+   * @private
+   * @param nutrition - The nutrition object to encode
+   * @returns String representation of all nutrition values separated by text separators
+   */
+  private encodeNutrition(nutrition: nutritionTableElement): string {
+    return [
+      nutrition.id || 0,
+      nutrition.energyKcal,
+      nutrition.energyKj,
+      nutrition.fat,
+      nutrition.saturatedFat,
+      nutrition.carbohydrates,
+      nutrition.sugars,
+      nutrition.fiber,
+      nutrition.protein,
+      nutrition.salt,
+      nutrition.portionWeight,
+    ].join(textSeparator);
+  }
+
+  /**
+   * Decodes nutrition information from database storage format
+   *
+   * Parses an encoded nutrition string back into a nutrition object.
+   * Returns undefined if the string is empty or has invalid format.
+   *
+   * @private
+   * @param encodedNutrition - Encoded string containing nutrition values separated by text separators
+   * @returns Decoded nutrition object or undefined if invalid/empty
+   *
+   * @example
+   * Input: "0--250--1046--15.0--8.0--25.0--12.0--2.5--6.0--0.8--100"
+   * Output: {id: undefined, energyKcal: 250, energyKj: 1046, fat: 15.0, ...}
+   */
+  private decodeNutrition(encodedNutrition: string): nutritionTableElement | undefined {
+    if (!encodedNutrition || encodedNutrition.trim().length === 0) {
+      return undefined;
+    }
+
+    const parts = encodedNutrition.split(textSeparator);
+    if (parts.length !== 11) {
+      databaseLogger.warn('Invalid nutrition data format', { encodedNutrition });
+      return undefined;
+    }
+
+    return {
+      id: Number(parts[0]) || undefined,
+      energyKcal: Number(parts[1]),
+      energyKj: Number(parts[2]),
+      fat: Number(parts[3]),
+      saturatedFat: Number(parts[4]),
+      carbohydrates: Number(parts[5]),
+      sugars: Number(parts[6]),
+      fiber: Number(parts[7]),
+      protein: Number(parts[8]),
+      salt: Number(parts[9]),
+      portionWeight: Number(parts[10]),
+    };
+  }
+
+  /**
+   * Decodes preparation steps from database storage format
+   *
+   * Parses an encoded preparation string back into an array of preparation step objects.
+   * Each step can have both a title and description, or just a description.
+   *
+   * @private
+   * @param encodedPreparation - Encoded string containing preparation steps
+   * @returns Array of preparation step objects with title and description
+   *
+   * @example
+   * Input: "Cook pasta--Boil water and add pasta__Mix sauce--Combine ingredients"
+   * Output: [{title: "Cook pasta", description: "Boil water and add pasta"}, {title: "Mix sauce", description: "Combine ingredients"}]
+   */
+  private decodePreparation(encodedPreparation: string): Array<preparationStepElement> {
     if (!encodedPreparation) {
       return [];
     }
@@ -1443,7 +1767,18 @@ export class RecipeDatabase {
     });
   }
 
-  protected encodeShopping(shopToEncode: shoppingListTableElement): encodedShoppingListElement {
+  /**
+   * Encodes a shopping list item for database storage
+   *
+   * Converts a shopping list item from the application format to the database
+   * storage format, encoding recipe titles as a joined string and converting
+   * the purchased boolean to a numeric value.
+   *
+   * @private
+   * @param shopToEncode - The shopping list item to encode for database storage
+   * @returns Encoded shopping list element ready for database insertion/update
+   */
+  private encodeShopping(shopToEncode: shoppingListTableElement): encodedShoppingListElement {
     return {
       ID: shopToEncode.id ? shopToEncode.id : 0,
       TYPE: shopToEncode.type as string,
@@ -1455,7 +1790,18 @@ export class RecipeDatabase {
     };
   }
 
-  protected decodeShopping(encodedShop: encodedShoppingListElement): shoppingListTableElement {
+  /**
+   * Decodes a shopping list item from database storage format
+   *
+   * Converts an encoded shopping list element from the database into the
+   * application format, parsing recipe titles and converting the numeric
+   * purchased value back to a boolean.
+   *
+   * @private
+   * @param encodedShop - The encoded shopping list data from database
+   * @returns Decoded shopping list item in application format
+   */
+  private decodeShopping(encodedShop: encodedShoppingListElement): shoppingListTableElement {
     return {
       id: encodedShop.ID,
       type: encodedShop.TYPE as TListFilter,
@@ -1469,7 +1815,18 @@ export class RecipeDatabase {
     };
   }
 
-  protected decodeArrayOfShopping(
+  /**
+   * Decodes an array of shopping list items from database storage format
+   *
+   * Processes multiple encoded shopping list elements from database queries,
+   * converting each one to the application format. Returns empty array if
+   * input is null, undefined, or empty.
+   *
+   * @private
+   * @param queryResult - Array of encoded shopping list elements from database
+   * @returns Array of decoded shopping list items in application format
+   */
+  private decodeArrayOfShopping(
     queryResult: Array<encodedShoppingListElement>
   ): Array<shoppingListTableElement> {
     if (!queryResult || !Array.isArray(queryResult) || queryResult.length == 0) {
@@ -1478,19 +1835,46 @@ export class RecipeDatabase {
     return queryResult.map(shoppingElement => this.decodeShopping(shoppingElement));
   }
 
-  protected async getAllRecipes(): Promise<Array<recipeTableElement>> {
+  /**
+   * Retrieves all recipes from the database
+   *
+   * Fetches all recipe records from the database and decodes them into
+   * the application format for use in the local cache.
+   *
+   * @private
+   * @returns Promise resolving to array of all recipes in application format
+   */
+  private async getAllRecipes(): Promise<Array<recipeTableElement>> {
     return await this.decodeArrayOfRecipe(
       (await this._recipesTable.searchElement(this._dbConnection)) as Array<encodedRecipeElement>
     );
   }
 
-  protected async getAllTags(): Promise<Array<tagTableElement>> {
+  /**
+   * Retrieves all tags from the database
+   *
+   * Fetches all tag records from the database and decodes them into
+   * the application format for use in the local cache.
+   *
+   * @private
+   * @returns Promise resolving to array of all tags in application format
+   */
+  private async getAllTags(): Promise<Array<tagTableElement>> {
     return this.decodeArrayOfTags(
       (await this._tagsTable.searchElement(this._dbConnection)) as Array<encodedTagElement>
     );
   }
 
-  protected async getAllIngredients(): Promise<Array<ingredientTableElement>> {
+  /**
+   * Retrieves all ingredients from the database
+   *
+   * Fetches all ingredient records from the database and decodes them into
+   * the application format for use in the local cache.
+   *
+   * @private
+   * @returns Promise resolving to array of all ingredients in application format
+   */
+  private async getAllIngredients(): Promise<Array<ingredientTableElement>> {
     return this.decodeArrayOfIngredients(
       (await this._ingredientsTable.searchElement(
         this._dbConnection
@@ -1498,7 +1882,16 @@ export class RecipeDatabase {
     );
   }
 
-  protected async getAllShopping(): Promise<Array<shoppingListTableElement>> {
+  /**
+   * Retrieves all shopping list items from the database
+   *
+   * Fetches all shopping list records from the database and decodes them into
+   * the application format for use in the local cache.
+   *
+   * @private
+   * @returns Promise resolving to array of all shopping list items in application format
+   */
+  private async getAllShopping(): Promise<Array<shoppingListTableElement>> {
     return this.decodeArrayOfShopping(
       (await this._shoppingListTable.searchElement(
         this._dbConnection
@@ -1506,7 +1899,16 @@ export class RecipeDatabase {
     );
   }
 
-  protected async addShoppingList(shop: shoppingListTableElement) {
+  /**
+   * Adds a shopping list item to the database
+   *
+   * Inserts a new shopping list item into the database, encodes it for storage,
+   * and adds it to the local cache upon successful insertion.
+   *
+   * @private
+   * @param shop - The shopping list item to add to the database
+   */
+  private async addShoppingList(shop: shoppingListTableElement) {
     const dbRes = await this._shoppingListTable.insertElement(
       this.encodeShopping(shop),
       this._dbConnection
@@ -1531,7 +1933,17 @@ export class RecipeDatabase {
     }
   }
 
-  protected async removeRecipeFromShopping(recipe: recipeTableElement) {
+  /**
+   * Removes a recipe's ingredients from shopping list items
+   *
+   * When a recipe is deleted, this method removes the recipe's contribution
+   * from all related shopping list items. It subtracts quantities and removes
+   * the recipe title from items. Items with zero or negative quantities are deleted.
+   *
+   * @private
+   * @param recipe - The recipe whose ingredients should be removed from shopping lists
+   */
+  private async removeRecipeFromShopping(recipe: recipeTableElement) {
     const editedShopping = new Set<string>();
     const deletedShopping = new Set<string>();
 
@@ -1614,6 +2026,20 @@ export class RecipeDatabase {
     }
   }
 
+  /**
+   * Cleans ingredient names for fuzzy matching
+   *
+   * Removes parenthetical content and extra whitespace from ingredient names
+   * to improve fuzzy search accuracy by focusing on the core ingredient name.
+   *
+   * @private
+   * @param name - The ingredient name to clean
+   * @returns Cleaned ingredient name suitable for fuzzy matching
+   *
+   * @example
+   * Input: "Tomatoes (canned, diced)   extra spaces"
+   * Output: "Tomatoes extra spaces"
+   */
   private cleanIngredientName(name: string): string {
     if (!name) {
       return '';
@@ -1628,6 +2054,22 @@ export class RecipeDatabase {
     return cleaned;
   }
 
+  /**
+   * Compares two ingredient lists for similarity
+   *
+   * Determines if two ingredient lists are similar by comparing both ingredient
+   * names and quantities per person. Uses a 20% threshold for quantity differences.
+   * Used in the similar recipes feature to find recipes with comparable ingredients.
+   *
+   * @private
+   * @param ingredients1 - First ingredient list to compare
+   * @param ingredients2 - Second ingredient list to compare
+   * @returns True if ingredients lists are similar, false otherwise
+   *
+   * @example
+   * Two recipes with "flour: 2 cups per person" and "flour: 2.1 cups per person" would be similar
+   * Two recipes with "flour: 2 cups per person" and "flour: 3 cups per person" would not be similar (50% difference > 20% threshold)
+   */
   private areIngredientsSimilar(
     ingredients1: coreIngredientElement[],
     ingredients2: coreIngredientElement[]

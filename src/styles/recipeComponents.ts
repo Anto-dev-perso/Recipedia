@@ -92,6 +92,7 @@ export const recipeTextStyles = StyleSheet.create({
     alignItems: 'center',
     gap: padding.medium,
   } as ViewStyle,
+  button: { ...recipeMargins.mediumVerticalMargin } as ViewStyle,
 });
 
 /**

@@ -66,7 +66,6 @@ export const recipeDatabaseName = 'RecipesDatabase';
 export const recipeTableName = 'RecipesTable';
 export const ingredientsTableName = 'IngredientsTable';
 export const tagTableName = 'TagsTable';
-export const nutritionTableName = 'NutritionnalValueTable';
 export const shoppingListTableName = 'ShoppingListTable';
 
 /** SQLite data type enumeration */
@@ -95,6 +94,7 @@ export enum recipeColumnsNames {
   ingredients = 'INGREDIENTS',
   preparation = 'PREPARATION',
   time = 'TIME',
+  nutrition = 'NUTRITION',
 }
 
 /**
@@ -122,6 +122,8 @@ export type recipeTableElement = {
   preparation: Array<preparationStepElement>;
   /** Total preparation time in minutes */
   time: number;
+  /** Optional nutrition facts (undefined when not available) */
+  nutrition?: nutritionTableElement;
 };
 
 export type encodedRecipeElement = {
@@ -134,6 +136,7 @@ export type encodedRecipeElement = {
   INGREDIENTS: string;
   PREPARATION: string;
   TIME: number;
+  NUTRITION: string;
 };
 
 export const recipeColumnsEncoding: Array<databaseColumnType> = [
@@ -145,6 +148,7 @@ export const recipeColumnsEncoding: Array<databaseColumnType> = [
   { colName: recipeColumnsNames.ingredients, type: encodedType.TEXT },
   { colName: recipeColumnsNames.preparation, type: encodedType.TEXT },
   { colName: recipeColumnsNames.time, type: encodedType.INTEGER },
+  { colName: recipeColumnsNames.nutrition, type: encodedType.TEXT },
 ];
 
 /**
@@ -193,15 +197,29 @@ export const ingredientColumnsEncoding: Array<databaseColumnType> = [
 ];
 
 export type nutritionTableElement = {
+  /** Optional database ID (undefined for new nutrition data) */
   id?: number;
-  type: string;
-  unit: string;
+  /** Energy in kcal per 100g */
+  energyKcal: number;
+  /** Energy in kJ per 100g */
+  energyKj: number;
+  /** Total fats in grams per 100g */
+  fat: number;
+  /** Saturated fats in grams per 100g (subset of total fats) */
+  saturatedFat: number;
+  /** Total carbohydrates in grams per 100g */
+  carbohydrates: number;
+  /** Sugars in grams per 100g (subset of carbohydrates) */
+  sugars: number;
+  /** Dietary fiber in grams per 100g */
+  fiber: number;
+  /** Proteins in grams per 100g */
+  protein: number;
+  /** Salt in grams per 100g */
+  salt: number;
+  /** Portion size in grams for per-portion calculations */
+  portionWeight: number;
 };
-
-export const nutritionColumnsNames: Array<databaseColumnType> = [
-  { colName: 'INGREDIENT', type: encodedType.TEXT },
-  { colName: 'UNIT', type: encodedType.TEXT },
-];
 
 /**
  * Individual preparation step with structured data

@@ -12,17 +12,20 @@ import months from './months';
 export default {
   ...navigation,
   ...common,
-  ...recipe,
   ...shopping,
   ...parameters,
   ...seasons,
   ...months,
-  ingredientTypes,
-  filterTypes: filters.filterTypes,
+  ...recipe,
+  recipe: {
+    nutrition: recipe.nutrition,
+  },
   alerts: {
     missingElements: alerts.missingElements,
     ocrRecipe: alerts.ocrRecipe,
     tagSimilarity: alerts.tagSimilarity,
     ingredientSimilarity: alerts.ingredientSimilarity,
   },
+  ingredientTypes,
+  filterTypes: filters.filterTypes,
 };

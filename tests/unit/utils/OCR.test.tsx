@@ -6,6 +6,7 @@ import {
   recognizeText,
   WarningHandler,
 } from '@utils/OCR';
+import { nutritionObject } from '@customTypes/OCRTypes';
 import {
   ingredientTableElement,
   ingredientType,
@@ -24,6 +25,8 @@ jest.mock('@react-native-ml-kit/text-recognition', () => ({
     recognize: jest.fn(),
   },
 }));
+
+jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
 const mockRecognize = TextRecognition.recognize as jest.Mock;
 const mockWarn: WarningHandler = jest.fn();
@@ -2320,20 +2323,6 @@ describe('OCR Utility Functions', () => {
       ),
     };
 
-    const mockIngredientsNoHeader: TextRecognitionResult = {
-      text: 'Some random text without a valid header token',
-      blocks: [
-        {
-          recognizedLanguages: [],
-          text: '',
-          lines: [
-            { elements: [], recognizedLanguages: [], text: 'ingredient1 (g)' },
-            { elements: [], recognizedLanguages: [], text: 'ingredient2 (ml)' },
-          ],
-        },
-      ],
-    };
-
     const mockIncompleteGroup: TextRecognitionResult = {
       text: 'ingredient1 (g)\ningredient2 (ml)\n2p\n100',
       blocks: [
@@ -3781,6 +3770,494 @@ describe('OCR Utility Functions', () => {
         expect(result).toEqual({
           recipeTags: new Array<tagTableElement>(tagAlreadyPresent, ...expectedTags),
         });
+      });
+    });
+  });
+
+  describe('on nutrition field', () => {
+    const mockResultNutrition1: TextRecognitionResult = {
+      text: 'Énergie\nINFORMATIONS NUTRITIONNELLES\nMatières grasses\ndont acides gras saturés\nGlucides\ndont sucres\nFibres\nProtéines\nSel\nFer\nMagnésium\nPotassium\nPhosphore\nVitamine E\nPour\n100 g\n1937 kJ\n463 kcal\n219\n2,0 g\n54g\n149\n6,59\n11g\n0,149\n3,9 mg\n89,3 mg\n303 mg\n213 mg\n4,6 mg\n% des RNJ*\npour 100 g\n23%\n30%\n10%\n21%\n16%\n22%\n22%\n2,3%\n28%\n24%\n15%\n30%\n38%\n',
+      blocks: [
+        {
+          recognizedLanguages: [],
+          text: 'Énergie',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Énergie' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'INFORMATIONS NUTRITIONNELLES',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'INFORMATIONS NUTRITIONNELLES' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Matières grasses\ndont acides gras saturés',
+          lines: [
+            { elements: [], recognizedLanguages: [], text: 'Matières grasses' },
+            {
+              elements: [],
+              recognizedLanguages: [],
+              text: 'dont acides gras saturés',
+            },
+          ],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Glucides\ndont sucres',
+          lines: [
+            { elements: [], recognizedLanguages: [], text: 'Glucides' },
+            {
+              elements: [],
+              recognizedLanguages: [],
+              text: 'dont sucres',
+            },
+          ],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Fibres',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Fibres' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Protéines',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Protéines' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Sel',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Sel' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Magnésium',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Magnésium' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Potassium',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Potassium' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Phosphore\nVitamine E',
+          lines: [
+            { elements: [], recognizedLanguages: [], text: 'Phosphore' },
+            {
+              elements: [],
+              recognizedLanguages: [],
+              text: 'Vitamine E',
+            },
+          ],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'Pour',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Pour' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '100 g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '100 g' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '1937 kJ',
+          lines: [{ elements: [], recognizedLanguages: [], text: '1937 kJ' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '463 kcal',
+          lines: [{ elements: [], recognizedLanguages: [], text: '463 kcal' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '219',
+          lines: [{ elements: [], recognizedLanguages: [], text: '219' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '2,0 g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '2,0 g' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '54g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '54g' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '149',
+          lines: [{ elements: [], recognizedLanguages: [], text: '149' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '6,59',
+          lines: [{ elements: [], recognizedLanguages: [], text: '6,59' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '11g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '11g' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '0,149',
+          lines: [{ elements: [], recognizedLanguages: [], text: '0,149' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '3,9 mg',
+          lines: [{ elements: [], recognizedLanguages: [], text: '3,9 mg' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '89,3 mg',
+          lines: [{ elements: [], recognizedLanguages: [], text: '89,3 mg' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '303 mg',
+          lines: [{ elements: [], recognizedLanguages: [], text: '303 mg' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '213 mg',
+          lines: [{ elements: [], recognizedLanguages: [], text: '213 mg' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '4,6 mg',
+          lines: [{ elements: [], recognizedLanguages: [], text: '4,6 mg' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '% des RNJ*',
+          lines: [{ elements: [], recognizedLanguages: [], text: '% des RNJ*' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: 'pour 100 g',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'pour 100 g' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '23%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '23%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '30%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '30%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '10%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '10%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '21%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '21%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '16%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '16%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '22%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '22%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '22%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '22%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '2,3%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '2,3%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '28%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '28%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '24%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '24%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '15%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '15%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '30%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '30%' }],
+        },
+        {
+          recognizedLanguages: [],
+          text: '38%',
+          lines: [{ elements: [], recognizedLanguages: [], text: '38%' }],
+        },
+      ],
+    };
+
+    const mockResultQuitoque: TextRecognitionResult = {
+      text: 'Valeurs nutritionnelles\nPar portion\nÉnergie (kJ)\nÉnergie (kCal)\nMatières grasses\ndont acides gras saturés\nGlucides\ndont sucre\nFibres\nProtéines\nSel\nPour 10Og\n911 kJ\n218 kCal\n8,53 g\n0,46g\n24,37 g\n2,92 g\n0,81g\n9,93g\n0,65 g',
+      blocks: [
+        {
+          recognizedLanguages: [],
+          text: 'Valeurs nutritionnelles',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Valeurs nutritionnelles' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Par portion',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Par portion' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Énergie (kJ)',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Énergie (kJ)' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Énergie (kCal)',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Énergie (kCal)' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Matières grasses',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Matières grasses' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'dont acides gras saturés',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'dont acides gras saturés' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Glucides',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Glucides' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'dont sucre',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'dont sucre' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Fibres',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Fibres' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Protéines',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Protéines' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Sel',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Sel' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: 'Pour 10Og',
+          lines: [{ elements: [], recognizedLanguages: [], text: 'Pour 10Og' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '911 kJ',
+          lines: [{ elements: [], recognizedLanguages: [], text: '911 kJ' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '218 kCal',
+          lines: [{ elements: [], recognizedLanguages: [], text: '218 kCal' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '8,53 g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '8,53 g' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '0,46g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '0,46g' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '24,37 g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '24,37 g' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '2,92 g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '2,92 g' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '0,81g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '0,81g' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '9,93g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '9,93g' }],
+        },
+
+        {
+          recognizedLanguages: [],
+          text: '0,65 g',
+          lines: [{ elements: [], recognizedLanguages: [], text: '0,65 g' }],
+        },
+      ],
+    };
+
+    const expectedNutrition1: nutritionObject = {
+      energyKcal: 463,
+      energyKj: 1937,
+      protein: 11,
+      fat: 21,
+      saturatedFat: 2,
+      carbohydrates: 54,
+      sugars: 14,
+      fiber: 6.5,
+      salt: 0.14,
+    };
+
+    const expectedNutritionQuitoque: nutritionObject = {
+      energyKcal: 218,
+      energyKj: 911,
+      fat: 8.53,
+      saturatedFat: 0.46,
+      carbohydrates: 24.37,
+      sugars: 2.92,
+      fiber: 0.81,
+      protein: 9.93,
+      salt: 0.65,
+    };
+
+    describe('on recognizeText', () => {
+      test('returns correct nutrition data from French label 1', async () => {
+        mockRecognize.mockResolvedValue(mockResultNutrition1);
+
+        const result = await recognizeText(uriForOCR, recipeColumnsNames.nutrition);
+        expect(result).toEqual(expectedNutrition1);
+      });
+
+      test('returns correct nutrition data from quitoque', async () => {
+        mockRecognize.mockResolvedValue(mockResultQuitoque);
+
+        const result = await recognizeText(uriForOCR, recipeColumnsNames.nutrition);
+        expect(result).toEqual(expectedNutritionQuitoque);
+      });
+
+      test('returns empty object when no nutrition values found', async () => {
+        const mockResultEmpty: TextRecognitionResult = {
+          text: 'Some random text without nutrition values',
+          blocks: [
+            {
+              recognizedLanguages: [],
+              text: 'Some random text',
+              lines: [{ elements: [], recognizedLanguages: [], text: 'Some random text' }],
+            },
+          ],
+        };
+
+        mockRecognize.mockResolvedValue(mockResultEmpty);
+        expect(await recognizeText(uriForOCR, recipeColumnsNames.nutrition)).toEqual({});
+      });
+    });
+
+    describe('on extractFieldFromImage', () => {
+      test('returns nutrition object when OCR gives valid nutrition data', async () => {
+        mockRecognize.mockResolvedValue(mockResultQuitoque);
+
+        const result = await extractFieldFromImage(
+          uriForOCR,
+          recipeColumnsNames.nutrition,
+          baseState,
+          mockWarn
+        );
+
+        expect(result.recipeNutrition).toEqual(expectedNutritionQuitoque);
+        expect(mockWarn).not.toHaveBeenCalled();
+      });
+
+      test('handles empty nutrition data', async () => {
+        const mockResultEmpty: TextRecognitionResult = {
+          text: 'No nutrition data',
+          blocks: [],
+        };
+
+        mockRecognize.mockResolvedValue(mockResultEmpty);
+
+        const result = await extractFieldFromImage(
+          uriForOCR,
+          recipeColumnsNames.nutrition,
+          baseState,
+          mockWarn
+        );
+
+        expect(result.recipeNutrition).toEqual({});
+        expect(mockWarn).not.toHaveBeenCalled();
+      });
+
+      test('extracts partial nutrition data from extractFieldFromImage', async () => {
+        mockRecognize.mockResolvedValue(mockResultNutrition1);
+
+        const result = await extractFieldFromImage(
+          uriForOCR,
+          recipeColumnsNames.nutrition,
+          baseState,
+          mockWarn
+        );
+
+        expect(result.recipeNutrition).toEqual(expectedNutrition1);
+        expect(mockWarn).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('edge cases and error handling', () => {
+      test('returns empty object when no per100g marker found', async () => {
+        const mockResultNoMarker: TextRecognitionResult = {
+          text: 'Some random text without nutrition markers',
+          blocks: [
+            {
+              recognizedLanguages: [],
+              text: 'Some random text',
+              lines: [{ elements: [], recognizedLanguages: [], text: 'Some random text' }],
+            },
+          ],
+        };
+
+        mockRecognize.mockResolvedValue(mockResultNoMarker);
+        expect(await recognizeText(uriForOCR, recipeColumnsNames.nutrition)).toEqual({});
       });
     });
   });

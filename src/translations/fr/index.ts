@@ -12,11 +12,15 @@ import months from './months';
 export default {
   ...navigation,
   ...common,
-  ...recipe,
   ...shopping,
   ...parameters,
   ...seasons,
   ...months,
+
+  ...recipe,
+  recipe: {
+    nutrition: recipe.nutrition,
+  },
   ingredientTypes,
   filterTypes: filters.filterTypes,
   alerts: {

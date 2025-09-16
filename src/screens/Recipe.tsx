@@ -71,6 +71,7 @@ import {
   extractTagsName,
   ingredientTableElement,
   ingredientType,
+  nutritionTableElement,
   preparationStepElement,
   recipeColumnsNames,
   recipeTableElement,
@@ -106,6 +107,7 @@ import Alert, { AlertProps } from '@components/dialogs/Alert';
 import { getDefaultPersons } from '@utils/settings';
 import { scaleQuantityForPersons } from '@utils/Quantity';
 import SimilarityDialog, { SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
+import RecipeNutrition, { RecipeNutritionProps } from '@components/organisms/RecipeNutrition';
 import { ocrLogger, recipeLogger, validationLogger } from '@utils/logger';
 
 /** Enum defining the four possible recipe interaction modes */
@@ -178,6 +180,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
   const { colors } = useTheme();
 
+  const recipeTestId = 'Recipe';
+
   const props: RecipePropType = route.params;
   const initStateFromProp = props.mode === 'readOnly' || props.mode === 'edit';
 
@@ -203,6 +207,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   );
   const [recipeTime, setRecipeTime] = useState(
     initStateFromProp ? props.recipe.time : defaultValueNumber
+  );
+  const [recipeNutrition, setRecipeNutrition] = useState(
+    initStateFromProp ? props.recipe.nutrition : undefined
   );
   const [imgForOCR, setImgForOCR] = useState(
     props.mode === 'addFromPic' ? new Array<string>(props.imgUri) : new Array<string>()
@@ -595,6 +602,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       season: initStateFromProp ? props.recipe.season : new Array<string>(),
       preparation: recipePreparation,
       time: recipeTime,
+      nutrition: recipeNutrition,
     };
   }
 
@@ -820,6 +828,28 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     }
     if (newFieldData.recipeIngredients) {
       setRecipeIngredients(newFieldData.recipeIngredients);
+    }
+    if (newFieldData.recipeNutrition) {
+      const newNutrition: nutritionTableElement = {
+        energyKcal: 0,
+        energyKj: 0,
+        fat: 0,
+        saturatedFat: 0,
+        carbohydrates: 0,
+        sugars: 0,
+        fiber: 0,
+        protein: 0,
+        salt: 0,
+        portionWeight: 0,
+      };
+
+      for (const [key, value] of Object.entries(newFieldData.recipeNutrition)) {
+        if (value !== undefined) {
+          newNutrition[key as keyof nutritionTableElement] = value;
+        }
+      }
+
+      setRecipeNutrition(newNutrition);
     }
   }
 
@@ -1222,6 +1252,46 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     }
   }
 
+  function recipeNutritionProp(): RecipeNutritionProps {
+    switch (stackMode) {
+      case recipeStateType.readOnly:
+        return {
+          parentTestId: recipeTestId,
+          nutrition: recipeNutrition,
+          mode: recipeStateType.readOnly,
+        };
+      case recipeStateType.edit:
+        return {
+          parentTestId: recipeTestId,
+          nutrition: recipeNutrition,
+          mode: recipeStateType.edit,
+          onNutritionChange: setRecipeNutrition,
+        };
+      case recipeStateType.addManual:
+        return {
+          parentTestId: recipeTestId,
+          nutrition: recipeNutrition,
+          mode: recipeStateType.addManual,
+          onNutritionChange: setRecipeNutrition,
+        };
+      case recipeStateType.addOCR:
+        return {
+          parentTestId: recipeTestId,
+          nutrition: recipeNutrition,
+          mode: recipeStateType.addOCR,
+          onNutritionChange: setRecipeNutrition,
+          openModal: () => openModalForField(recipeColumnsNames.nutrition),
+        };
+      default:
+        recipeLogger.warn('Unknown stack mode in recipeNutritionProp', { stackMode });
+        return {
+          parentTestId: recipeTestId,
+          nutrition: undefined,
+          mode: recipeStateType.readOnly,
+        };
+    }
+  }
+
   function recipeValidationButtonProps(): [string, () => Promise<void>] {
     switch (stackMode) {
       case recipeStateType.readOnly:
@@ -1274,6 +1344,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
         {/*Preparation*/}
         <RecipeTextRender {...recipePreparationProp()} />
+
+        {/*Nutrition*/}
+        <RecipeNutrition {...recipeNutritionProp()} />
 
         {/* Add some space to avoid missing clicking */}
         <View style={{ paddingVertical: LargeButtonDiameter / 2 }} />

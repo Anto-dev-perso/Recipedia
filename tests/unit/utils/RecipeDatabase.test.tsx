@@ -5,6 +5,7 @@ import { ingredientsDataset } from '@test-data/ingredientsDataset';
 import {
   ingredientTableElement,
   ingredientType,
+  nutritionTableElement,
   recipeTableElement,
   shoppingListTableElement,
   tagTableElement,
@@ -890,10 +891,8 @@ describe('RecipeDatabase', () => {
       expect(db.get_shopping()).toEqual([]);
     });
 
-    test('Delete database reset everything', async () => {
-      // TODO deleteDatabase to call at exit ?
-      // @ts-ignore deleteDatabase should not been called but still be tested
-      await db.deleteDatabase();
+    test('Reset database clears all data', async () => {
+      await db.reset();
 
       expect(db.get_recipes()).toEqual([]);
       expect(db.get_tags()).toEqual([]);
@@ -1236,6 +1235,153 @@ describe('RecipeDatabase', () => {
 
         const result = db.findSimilarIngredients('AnyIngredient');
         expect(result).toEqual([]);
+      });
+    });
+  });
+
+  describe('RecipeDatabase nutrition tests', () => {
+    const db = RecipeDatabase.getInstance();
+
+    beforeEach(async () => {
+      await db.init();
+      await db.addMultipleIngredients(ingredientsDataset);
+      await db.addMultipleTags(tagsDataset);
+    });
+
+    afterEach(async () => {
+      await db.reset();
+    });
+
+    describe('Nutrition', () => {
+      const testNutrition: nutritionTableElement = {
+        energyKcal: 250,
+        energyKj: 1046,
+        fat: 15.0,
+        saturatedFat: 8.0,
+        carbohydrates: 25.0,
+        sugars: 12.0,
+        fiber: 2.5,
+        protein: 6.0,
+        salt: 0.8,
+        portionWeight: 100,
+      };
+
+      test('should store and retrieve recipes with nutrition data correctly', async () => {
+        const recipeWithNutrition: recipeTableElement = {
+          ...recipesDataset[0],
+          nutrition: testNutrition,
+        };
+
+        await db.addRecipe(recipeWithNutrition);
+        const retrievedRecipes = db.get_recipes();
+        const addedRecipe = retrievedRecipes.find(r => r.title === recipeWithNutrition.title);
+
+        expect(addedRecipe).toBeDefined();
+        expect(addedRecipe?.nutrition).toEqual(testNutrition);
+      });
+
+      test('should store and retrieve recipes without nutrition data correctly', async () => {
+        const recipeWithoutNutrition: recipeTableElement = {
+          ...recipesDataset[1],
+          nutrition: undefined,
+        };
+
+        await db.addRecipe(recipeWithoutNutrition);
+        const retrievedRecipes = db.get_recipes();
+        const addedRecipe = retrievedRecipes.find(r => r.title === recipeWithoutNutrition.title);
+
+        expect(addedRecipe).toBeDefined();
+        expect(addedRecipe?.nutrition).toBeUndefined();
+      });
+
+      test('should update recipe nutrition data correctly', async () => {
+        const originalRecipe: recipeTableElement = {
+          ...recipesDataset[2],
+          nutrition: undefined,
+        };
+
+        await db.addRecipe(originalRecipe);
+        const addedRecipe = db.get_recipes().find(r => r.title === originalRecipe.title);
+        expect(addedRecipe?.nutrition).toBeUndefined();
+
+        const updatedRecipe = {
+          ...addedRecipe!,
+          nutrition: testNutrition,
+        };
+
+        const updateSuccess = await db.editRecipe(updatedRecipe);
+        expect(updateSuccess).toBe(true);
+
+        const finalRecipe = db.get_recipes().find(r => r.title === updatedRecipe.title);
+        expect(finalRecipe?.nutrition).toEqual(testNutrition);
+      });
+
+      test('should remove nutrition data when updated to undefined', async () => {
+        const recipeWithNutrition: recipeTableElement = {
+          ...recipesDataset[0],
+          nutrition: testNutrition,
+        };
+
+        await db.addRecipe(recipeWithNutrition);
+        const addedRecipe = db.get_recipes().find(r => r.title === recipeWithNutrition.title);
+        expect(addedRecipe?.nutrition).toEqual(testNutrition);
+
+        const updatedRecipe = {
+          ...addedRecipe!,
+          nutrition: undefined,
+        };
+
+        const updateSuccess = await db.editRecipe(updatedRecipe);
+        expect(updateSuccess).toBe(true);
+
+        const finalRecipe = db.get_recipes().find(r => r.title === recipeWithNutrition.title);
+        expect(finalRecipe?.nutrition).toBeUndefined();
+      });
+
+      test('should preserve nutrition data through database operations', async () => {
+        const recipeWithNutrition: recipeTableElement = {
+          ...recipesDataset[0],
+          nutrition: testNutrition,
+        };
+
+        await db.addRecipe(recipeWithNutrition);
+
+        // Simulate database restart
+        await db.reset();
+        await db.init();
+        await db.addMultipleIngredients(ingredientsDataset);
+        await db.addMultipleTags(tagsDataset);
+        await db.addRecipe(recipeWithNutrition);
+
+        const retrievedRecipe = db.get_recipes().find(r => r.title === recipeWithNutrition.title);
+        expect(retrievedRecipe?.nutrition).toEqual(testNutrition);
+      });
+
+      test('should handle nutrition data with decimal values correctly', async () => {
+        const precisionNutrition: nutritionTableElement = {
+          energyKcal: 123.456,
+          energyKj: 987.654,
+          fat: 1.23,
+          saturatedFat: 0.45,
+          carbohydrates: 67.89,
+          sugars: 12.34,
+          fiber: 5.67,
+          protein: 8.9,
+          salt: 0.123,
+          portionWeight: 150.5,
+        };
+
+        const recipeWithPrecisionNutrition: recipeTableElement = {
+          ...recipesDataset[0],
+          nutrition: precisionNutrition,
+        };
+
+        await db.addRecipe(recipeWithPrecisionNutrition);
+        const retrievedRecipe = db
+          .get_recipes()
+          .find(r => r.title === recipeWithPrecisionNutrition.title);
+
+        expect(retrievedRecipe?.nutrition).toEqual(precisionNutrition);
       });
     });
   });
