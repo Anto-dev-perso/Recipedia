@@ -63,7 +63,11 @@ export function NutritionTable({
 
   return (
     <View style={recipeTextStyles.containerSection}>
-      <Card mode={'elevated'} style={{ borderWidth: 0.5, borderColor: colors.outline }}>
+      <Card
+        mode={'elevated'}
+        style={{ borderWidth: 0.5, borderColor: colors.outline }}
+        testID={testId}
+      >
         <Card.Content>
           <Text
             variant='headlineSmall'
