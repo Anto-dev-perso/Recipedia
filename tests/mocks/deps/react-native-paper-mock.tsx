@@ -259,6 +259,23 @@ export const Switch: React.FC<any> = props => (
   </TouchableOpacity>
 );
 
+export const SegmentedButtons: React.FC<any> = props => (
+  <View testID={props.testID} style={props.style}>
+    {props.buttons?.map((button: any, index: number) => (
+      <TouchableOpacity
+        key={button.value || index}
+        testID={props.testID + '::Button::' + (button.value || index)}
+        onPress={() => props.onValueChange && props.onValueChange(button.value)}
+        {...{ value: props.value, onValueChange: props.onValueChange }}
+      >
+        <RNText testID={props.testID + '::Button::' + (button.value || index) + '::Label'}>
+          {button.label}
+        </RNText>
+      </TouchableOpacity>
+    ))}
+  </View>
+);
+
 export const List = {
   Section: (props: any) => (
     <View testID='list-section' {...props}>
