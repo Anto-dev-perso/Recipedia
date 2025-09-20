@@ -1,3 +1,10 @@
+## [0.11.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.10.0...v0.11.0) (2025-09-20)
+
+### Features
+
+* **App:** update splash screen and icons, add notification settings ([248488d](https://github.com/Anto-dev-perso/Recipedia/commit/248488d632f8f2436f0741045c5d242c53e4400b))
+* **App:** update splash screen and icons, add notification settings ([#66](https://github.com/Anto-dev-perso/Recipedia/issues/66)) ([98b6cb0](https://github.com/Anto-dev-perso/Recipedia/commit/98b6cb033c9f2fe08972ae5026a566014448699f))
+
 ## [0.10.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.9.0...v0.10.0) (2025-09-16)
 
 ### Features
