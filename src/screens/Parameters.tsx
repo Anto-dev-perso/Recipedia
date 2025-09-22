@@ -1,71 +1,73 @@
 /**
- * Parameters - Comprehensive app settings and configuration screen
+ * Parameters - Comprehensive app settings and configuration hub
  *
- * The main settings hub providing access to all app configuration options including
- * appearance settings, recipe defaults, data management, and app information.
- * Features organized sections with intuitive navigation and real-time setting updates.
+ * A centralized settings screen providing access to all app configuration options
+ * including appearance, language, recipe management, and navigation shortcuts.
+ * Features organized sections with Material Design components and persistent settings.
  *
  * Key Features:
- * - Appearance settings (dark mode, language selection)
- * - Recipe defaults (serving count, seasonal filtering)
- * - Data management (ingredients, tags administration)
- * - App information (version, about details)
- * - Real-time setting synchronization
- * - Context integration for global state management
- * - Hierarchical navigation to detailed setting screens
+ * - **Appearance Settings**: Dark mode toggle and language selection
+ * - **Recipe Management**: Default persons adjustment and seasonal filtering
+ * - **Database Navigation**: Quick access to ingredients and tags management
+ * - **App Information**: Version display and about section
+ * - **Theme Integration**: Automatic dark/light mode styling
+ * - **Internationalization**: Full i18n support with dynamic language switching
+ * - **Persistent Settings**: All preferences saved across app sessions
  *
  * Settings Categories:
- *
- * **Appearance:**
- * - Dark/Light mode toggle with instant theme switching
- * - Language selection with localized interface
- *
- * **Recipe Defaults:**
- * - Default serving count for new recipes
- * - Seasonal filtering toggle for search results
- *
- * **Data Management:**
- * - Ingredient database administration
- * - Tag system management and organization
- *
- * **About:**
- * - App version information
- * - Build and configuration details
+ * - **Appearance**: Theme and language preferences
+ * - **Recipe Defaults**: Portion size and filtering preferences
+ * - **Database Management**: Ingredient and tag administration
+ * - **Information**: App version and credits
  *
  * Navigation Integration:
- * - Seamless navigation to specialized setting screens
- * - Proper back navigation with state preservation
- * - Context-aware navigation based on current settings
+ * - Direct navigation to sub-settings screens
+ * - Modal presentation for complex settings flows
+ * - Integration with bottom tab navigation
+ * - Support for deep linking to specific settings
+ *
+ * State Management:
+ * - Context-based theme management (DarkModeContext)
+ * - Global season filter state (SeasonFilterContext)
+ * - Persistent storage for all user preferences
+ * - Real-time updates when settings change
+ *
+ * UI/UX Features:
+ * - Material Design 3 components throughout
+ * - Consistent spacing and typography
+ * - Accessible design with proper contrast
+ * - Smooth transitions and interactions
+ * - Section-based organization for easy navigation
  *
  * @example
  * ```typescript
- * // Navigation integration (typically in tab navigator)
- * <Tab.Screen
- *   name="Parameters"
- *   component={Parameters}
- *   options={{
- *     tabBarIcon: ({ color }) => <Icon name="settings" color={color} />
- *   }}
- * />
+ * // Navigation to Parameters from any screen
+ * navigation.navigate('Tabs', { screen: 'Parameters' });
+ *
+ * // Navigation to sub-settings
+ * navigation.navigate('LanguageSettings');
+ * navigation.navigate('DefaultPersonsSettings');
  *
  * // The Parameters screen automatically handles:
- * // - Loading current settings from storage/context
- * // - Providing navigation to detailed setting screens
- * // - Real-time updates to global app state
- * // - Organized presentation of all configuration options
+ * // - Theme context integration
+ * // - Settings persistence
+ * // - Navigation to sub-screens
+ * // - Real-time preference updates
  * ```
  */
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Divider, List, Switch, useTheme } from 'react-native-paper';
+import { CopilotStep, walkthroughable } from 'react-native-copilot';
+import { useIsTutorialActive } from '@components/organisms/TutorialController';
 import { useI18n } from '@utils/i18n';
 import { getDefaultPersons } from '@utils/settings';
 import { useSeasonFilter } from '@context/SeasonFilterContext';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
 import { useNavigation } from '@react-navigation/native';
-import { Icons } from '@assets/Icons';
 import { DarkModeContext } from '@context/DarkModeContext';
+import { Icons } from '@assets/Icons';
 import Constants from 'expo-constants';
 
 /**
@@ -73,6 +75,8 @@ import Constants from 'expo-constants';
  *
  * @returns JSX element representing the comprehensive settings interface
  */
+const CopilotView = walkthroughable(View);
+
 export function Parameters() {
   const { t, getLocale, getLocaleName } = useI18n();
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
@@ -81,6 +85,7 @@ export function Parameters() {
   const { colors } = useTheme();
   const currentLocale = getLocale();
   const AppVersion = Constants.expoConfig?.version ?? 'N/A';
+  const isTutorialActive = useIsTutorialActive();
 
   // Load settings on component mount
   useEffect(() => {
@@ -116,7 +121,7 @@ export function Parameters() {
   const languageId = appearanceId + '::Language';
 
   const recipeId = sectionId + '::RecipeDefaults';
-  const personId = recipeId + '::Person';
+  const personsId = recipeId + '::Persons';
   const seasonId = recipeId + '::Season';
 
   const dataId = sectionId + '::Data';
@@ -125,6 +130,41 @@ export function Parameters() {
 
   const aboutId = sectionId + '::About';
   const versionId = aboutId + '::Version';
+
+  /**
+   * Recipe Defaults Section - Internal component for recipe management settings
+   *
+   * Renders the recipe defaults section with default persons and season filter settings.
+   * Has direct access to parent component's state and handlers for cleaner implementation.
+   */
+  function RecipeDefaultsSection() {
+    return (
+      <List.Section>
+        <List.Subheader testID={recipeId + '::SubHeader'}>{t('recipe_defaults')}</List.Subheader>
+        <List.Item
+          testID={personsId + '::Item'}
+          title={t('default_persons')}
+          description={`${defaultPersons} ${t('persons')}`}
+          left={props => <List.Icon {...props} icon={Icons.groupPeople} />}
+          right={props => <List.Icon {...props} icon={Icons.chevronRight} />}
+          onPress={handlePersonsPress}
+        />
+        <Divider testID={recipeId + '::Divider'} />
+        <List.Item
+          testID={seasonId + '::Item'}
+          title={t('default_season_filter')}
+          left={props => <List.Icon {...props} icon={Icons.plannerUnselectedIcon} />}
+          right={() => (
+            <Switch
+              testID={seasonId + '::Switch'}
+              value={seasonFilter}
+              onValueChange={setSeasonFilter}
+            />
+          )}
+        />
+      </List.Section>
+    );
+  }
 
   return (
     <View style={{ backgroundColor: colors.background }}>
@@ -156,30 +196,15 @@ export function Parameters() {
         </List.Section>
 
         {/* Recipe Defaults Section */}
-        <List.Section>
-          <List.Subheader testID={recipeId + '::SubHeader'}>{t('recipe_defaults')}</List.Subheader>
-          <List.Item
-            testID={personId + '::Item'}
-            title={t('default_persons')}
-            description={`${defaultPersons} ${t('persons')}`}
-            left={props => <List.Icon {...props} icon={Icons.groupPeople} />}
-            right={props => <List.Icon {...props} icon={Icons.chevronRight} />}
-            onPress={handlePersonsPress}
-          />
-          <Divider testID={recipeId + '::Divider'} />
-          <List.Item
-            testID={seasonId + '::Item'}
-            title={t('default_season_filter')}
-            left={props => <List.Icon {...props} icon={Icons.plannerUnselectedIcon} />}
-            right={() => (
-              <Switch
-                testID={seasonId + '::Switch'}
-                value={seasonFilter}
-                onValueChange={setSeasonFilter}
-              />
-            )}
-          />
-        </List.Section>
+        {isTutorialActive ? (
+          <CopilotStep text={t('tutorial.parameters.description')} order={4} name='Parameters'>
+            <CopilotView testID={screenId + '::Tutorial'}>
+              <RecipeDefaultsSection />
+            </CopilotView>
+          </CopilotStep>
+        ) : (
+          <RecipeDefaultsSection />
+        )}
 
         {/* Data Management Section */}
         <List.Section>
