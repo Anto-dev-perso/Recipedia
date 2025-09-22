@@ -32,7 +32,7 @@
  */
 
 import React from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 import { useTheme } from 'react-native-paper';
 
@@ -44,6 +44,12 @@ export type CustomImageProps = {
   uri?: string;
   /** How the image should be resized to fit its container (default: 'cover') */
   contentFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+  /** Custom background color (defaults to theme.colors.tertiary) */
+  backgroundColor?: string;
+  /** Size for width and height (if provided, overrides flex: 1) */
+  size?: number;
+  /** Whether to make the image circular (applies size/2 as border radius) */
+  circular?: boolean;
   /** Callback fired when image loads successfully */
   onLoadSuccess?: () => void;
   /** Callback fired when image fails to load */
@@ -61,16 +67,28 @@ export type CustomImageProps = {
 export function CustomImage({
   uri,
   contentFit = 'cover',
+  backgroundColor,
+  size,
+  circular,
   onLoadSuccess,
   onLoadError,
   testID,
 }: CustomImageProps) {
   const { colors } = useTheme();
 
+  const dimensions: StyleProp<ViewStyle> = size ? { width: size, height: size } : { flex: 1 };
+  const borderRadius = circular && size ? size / 2 : 0;
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={dimensions}>
       <Image
-        style={{ flex: 1, backgroundColor: colors.tertiary }}
+        style={{
+          flex: 1,
+          backgroundColor: backgroundColor || colors.tertiary,
+          borderRadius: borderRadius,
+          width: size,
+          height: size,
+        }}
         testID={testID + '::Image'}
         source={uri}
         contentFit={contentFit}
