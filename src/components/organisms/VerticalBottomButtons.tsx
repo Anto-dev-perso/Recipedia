@@ -27,27 +27,84 @@
  * ```
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import BottomTopButton from '@components/molecules/BottomTopButton';
-import { BottomTopButtonOffset, bottomTopPosition } from '@styles/buttons';
+import { BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter } from '@styles/buttons';
 import { View } from 'react-native';
+import { CopilotStep, useCopilot, walkthroughable } from 'react-native-copilot';
+import { useIsTutorialActive } from '@components/organisms/TutorialController';
+import { CopilotStepData } from '@customTypes/TutorialTypes';
+import { useI18n } from '@utils/i18n';
+import { TUTORIAL_TIMING } from '@utils/Constants';
 import { pickImage, takePhoto } from '@utils/ImagePicker';
 import { Icons } from '@assets/Icons';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
 import { useNavigation } from '@react-navigation/native';
 import RoundButton from '@components/atomic/RoundButton';
 import { useTheme } from 'react-native-paper';
+import { padding } from '@styles/spacing';
 
 /**
  * VerticalBottomButtons component for expandable recipe creation menu
  *
  * @returns JSX element representing an expandable FAB menu for recipe creation actions
  */
+const CopilotView = walkthroughable(View);
+
 export function VerticalBottomButtons() {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
+  const { t } = useI18n();
+  const isTutorialActive = useIsTutorialActive();
+  const { copilotEvents } = useCopilot();
 
   const [multipleLayout, setMultipleLayout] = useState(false);
+  const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const tutorialOrder = 1;
+
+  const startDemo = () => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+    }
+
+    demoIntervalRef.current = setInterval(() => {
+      setMultipleLayout(prev => {
+        return !prev;
+      });
+    }, TUTORIAL_TIMING.DEMO_INTERVAL);
+  };
+
+  const stopDemo = () => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+      demoIntervalRef.current = null;
+    }
+    setMultipleLayout(false);
+  };
+
+  const handleStepChange = (step: CopilotStepData) => {
+    if (step.order === tutorialOrder) {
+      startDemo();
+    } else {
+      stopDemo();
+    }
+  };
+
+  useEffect(() => {
+    if (!isTutorialActive) {
+      return;
+    }
+
+    copilotEvents.on('stepChange', handleStepChange);
+    copilotEvents.on('stop', stopDemo);
+
+    return () => {
+      copilotEvents.off('stepChange', handleStepChange);
+      copilotEvents.off('stop', stopDemo);
+      stopDemo();
+    };
+  }, [isTutorialActive, copilotEvents]);
 
   // TODO add a loading because camera can takes a while
   async function takePhotoAndOpenNewRecipe() {
@@ -66,6 +123,24 @@ export function VerticalBottomButtons() {
 
   return (
     <View>
+      {isTutorialActive && (
+        <View>
+          <CopilotStep text={t('tutorial.home.description')} order={tutorialOrder} name='home'>
+            <CopilotView
+              testID={'HomeTutorial'}
+              style={{
+                position: 'absolute',
+                bottom: -padding.large,
+                right: padding.small,
+                width: LargeButtonDiameter + padding.small,
+                height: BottomTopButtonOffset * 4,
+                backgroundColor: 'transparent',
+                pointerEvents: 'none',
+              }}
+            />
+          </CopilotStep>
+        </View>
+      )}
       {multipleLayout ? (
         <View>
           <BottomTopButton
@@ -74,7 +149,9 @@ export function VerticalBottomButtons() {
             position={bottomTopPosition.bottom_right}
             size={'medium'}
             icon={Icons.minusIcon}
-            onPressFunction={() => setMultipleLayout(false)}
+            onPressFunction={() => {
+              setMultipleLayout(false);
+            }}
           />
 
           <BottomTopButton
@@ -84,11 +161,11 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={BottomTopButtonOffset}
             icon={Icons.pencilIcon}
-            onPressFunction={() =>
+            onPressFunction={() => {
               navigate('Recipe', {
                 mode: 'addManually',
-              })
-            }
+              });
+            }}
           />
 
           <BottomTopButton
@@ -98,7 +175,9 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={2 * BottomTopButtonOffset}
             icon={Icons.galleryIcon}
-            onPressFunction={pickImageAndOpenNewRecipe}
+            onPressFunction={() => {
+              pickImageAndOpenNewRecipe();
+            }}
           />
 
           <BottomTopButton
@@ -108,7 +187,9 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={3 * BottomTopButtonOffset}
             icon={Icons.cameraIcon}
-            onPressFunction={takePhotoAndOpenNewRecipe}
+            onPressFunction={() => {
+              takePhotoAndOpenNewRecipe();
+            }}
           />
         </View>
       ) : (
@@ -118,7 +199,9 @@ export function VerticalBottomButtons() {
           position={bottomTopPosition.bottom_right}
           size={'medium'}
           icon={Icons.plusIcon}
-          onPressFunction={() => setMultipleLayout(true)}
+          onPressFunction={() => {
+            setMultipleLayout(true);
+          }}
         />
       )}
     </View>
