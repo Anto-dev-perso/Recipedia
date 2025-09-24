@@ -55,6 +55,7 @@ import { padding, screenHeight } from '@styles/spacing';
 import { useI18n } from '@utils/i18n';
 import Search from '@screens/Search';
 import { Tab } from '@customTypes/ScreenTypes';
+import { useIsTutorialActive } from '@components/organisms/TutorialController';
 
 /**
  * BottomTabs component - Material Design 3 tab navigation
@@ -109,6 +110,9 @@ export function BottomTabs() {
     }
   }
 
+  // In case of tutorial, we won't lazy load the screens
+  const shouldRenderLazy = !useIsTutorialActive();
+
   return (
     <>
       <StatusBar backgroundColor={colors.primaryContainer} />
@@ -157,16 +161,25 @@ export function BottomTabs() {
           tabBarLabelStyle: fonts.bodyMedium,
         })}
       >
-        <Tab.Screen name='Home' component={Home} options={{ tabBarLabel: t('home') }} />
-        <Tab.Screen name='Search' component={Search} />
-        <Tab.Screen name='Shopping' component={Shopping} options={{ tabBarLabel: t('shopping') }} />
+        <Tab.Screen
+          name='Home'
+          component={Home}
+          options={{ tabBarLabel: t('home'), lazy: shouldRenderLazy }}
+        />
+        <Tab.Screen name='Search' component={Search} options={{ lazy: shouldRenderLazy }} />
+        <Tab.Screen
+          name='Shopping'
+          component={Shopping}
+          options={{ tabBarLabel: t('shopping'), lazy: shouldRenderLazy }}
+        />
         <Tab.Screen
           name='Parameters'
           component={Parameters}
-          options={{ tabBarLabel: t('parameters') }}
+          options={{ tabBarLabel: t('parameters'), lazy: shouldRenderLazy }}
         />
       </Tab.Navigator>
     </>
   );
 }
+
 export default BottomTabs;
