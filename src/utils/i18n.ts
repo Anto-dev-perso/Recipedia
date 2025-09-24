@@ -8,10 +8,13 @@ import en from '@translations/en';
 // Import translations
 
 // Language name mapping
-const LANGUAGE_NAMES: { [key: string]: string } = {
+export const LANGUAGE_NAMES: { [key: string]: string } = {
   en: 'English',
   fr: 'Français',
 };
+
+// Export supported language type
+export type SupportedLanguage = keyof typeof LANGUAGE_NAMES;
 
 // Initialize i18next instance
 const i18n = createInstance();
