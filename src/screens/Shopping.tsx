@@ -49,10 +49,12 @@
 
 import { shoppingListTableElement } from '@customTypes/DatabaseElementTypes';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SectionList, StyleProp, TextStyle, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ShoppingScreenProp } from '@customTypes/ScreenTypes';
+import { CopilotStep, useCopilot, walkthroughable } from 'react-native-copilot';
+import { useIsTutorialActive } from '@components/organisms/TutorialController';
+import { CopilotStepData } from '@customTypes/TutorialTypes';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { Checkbox, Divider, List, Text, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
@@ -67,6 +69,8 @@ import { bottomTopPosition } from '@styles/buttons';
 import { Icons } from '@assets/Icons';
 import Alert from '@components/dialogs/Alert';
 import { shoppingLogger } from '@utils/logger';
+import { TUTORIAL_TIMING } from '@utils/Constants';
+import { padding } from '@styles/spacing';
 
 /** Type for dialog data containing ingredient and recipe information */
 type ingredientDataForDialog = Pick<shoppingListTableElement, 'name' | 'recipesTitle'>;
@@ -77,11 +81,18 @@ type ingredientDataForDialog = Pick<shoppingListTableElement, 'name' | 'recipesT
  * @param props - Navigation props for the Shopping screen
  * @returns JSX element representing the shopping list interface
  */
-export function Shopping({ navigation }: ShoppingScreenProp) {
+const CopilotView = walkthroughable(View);
+
+export function Shopping() {
   const { t } = useI18n();
   const { colors, fonts } = useTheme();
+  const isTutorialActive = useIsTutorialActive();
+  const { copilotEvents, currentStep } = useCopilot();
 
   const [shoppingList, setShoppingList] = useState(new Array<shoppingListTableElement>());
+  const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stepName = 'shopping';
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [ingredientDataForDialog, setIngredientDataForDialog] = useState<ingredientDataForDialog>({
@@ -91,11 +102,67 @@ export function Shopping({ navigation }: ShoppingScreenProp) {
 
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
 
-  useFocusEffect(() => {
-    navigation.addListener('focus', () => {
+  const performDemo = () => {
+    setIngredientDataForDialog(shoppingList[2]);
+    setIsDialogOpen(true);
+    setTimeout(closingDialogInDemo, TUTORIAL_TIMING.DEMO_INTERVAL);
+  };
+
+  const closingDialogInDemo = () => {
+    setIsDialogOpen(false);
+    setIngredientDataForDialog({ name: '', recipesTitle: [] });
+  };
+
+  const stopDemo = () => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+      demoIntervalRef.current = null;
+    }
+    closingDialogInDemo();
+  };
+
+  const startDemo = () => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+      demoIntervalRef.current = null;
+    }
+
+    demoIntervalRef.current = setInterval(performDemo, TUTORIAL_TIMING.DEMO_INTERVAL);
+  };
+
+  const handleStepChange = (step: CopilotStepData) => {
+    if (step.name === stepName) {
+      startDemo();
+    } else {
+      stopDemo();
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
       setShoppingList([...RecipeDatabase.getInstance().get_shopping()]);
-    });
-  });
+    }, [])
+  );
+
+  useEffect(() => {
+    if (!isTutorialActive || !copilotEvents) {
+      return;
+    }
+
+    // Start demo if we're already on our step when component mounts
+    if (currentStep?.name === stepName) {
+      startDemo();
+    }
+
+    copilotEvents.on('stepChange', handleStepChange);
+    copilotEvents.on('stop', stopDemo);
+
+    return () => {
+      copilotEvents.off('stepChange', handleStepChange);
+      copilotEvents.off('stop', stopDemo);
+      stopDemo();
+    };
+  }, [currentStep]);
 
   const sections = shoppingCategories
     .map(category => {
@@ -270,6 +337,23 @@ export function Shopping({ navigation }: ShoppingScreenProp) {
           renderSectionHeader={renderSectionHeader}
           stickySectionHeadersEnabled={false}
         />
+      )}
+
+      {/* Positioned overlay for tutorial highlighting - appears in center where dialog shows */}
+      {isTutorialActive && (
+        <CopilotStep text={t('tutorial.shopping.description')} order={3} name={stepName}>
+          <CopilotView
+            style={{
+              position: 'absolute',
+              top: '32%',
+              left: padding.small,
+              right: padding.small,
+              height: '58%',
+              backgroundColor: 'transparent',
+              pointerEvents: 'none',
+            }}
+          />
+        </CopilotStep>
       )}
 
       <Alert
