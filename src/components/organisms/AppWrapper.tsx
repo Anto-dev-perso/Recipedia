@@ -3,7 +3,8 @@ import RootNavigator from '@navigation/RootNavigator';
 import WelcomeScreen from '@screens/WelcomeScreen';
 import { TutorialProvider } from './TutorialController';
 import { isFirstLaunch, markAsLaunched } from '@utils/firstLaunch';
-import { appLogger } from '@utils/logger';
+import { appLogger, tutorialLogger } from '@utils/logger';
+import RecipeDatabase from '@utils/RecipeDatabase';
 
 enum AppMode {
   Loading = 'loading',
@@ -28,11 +29,17 @@ export default function AppWrapper() {
   }, []);
 
   const handleAppLaunch = () => {
+    RecipeDatabase.getInstance().resetShoppingList();
+    tutorialLogger.info('App launch - resetting shopping list');
     setMode(AppMode.Ready);
     markAsLaunched();
   };
 
-  const handleStartTutorial = () => {
+  const handleStartTutorial = async () => {
+    const recipeDb = RecipeDatabase.getInstance();
+    const recipeForTutorial = recipeDb.get_recipes()[0];
+    await recipeDb.addRecipeToShopping(recipeForTutorial);
+    tutorialLogger.info('Added recipe to shopping list for tutorial', recipeForTutorial);
     setMode(AppMode.Tutorial);
   };
 

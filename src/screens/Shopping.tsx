@@ -52,8 +52,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { SectionList, StyleProp, TextStyle, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CopilotStep, useCopilot, walkthroughable } from 'react-native-copilot';
-import { useIsTutorialActive } from '@components/organisms/TutorialController';
+import { CopilotStep, walkthroughable } from 'react-native-copilot';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { Checkbox, Divider, List, Text, useTheme } from 'react-native-paper';
@@ -69,7 +69,7 @@ import { bottomTopPosition } from '@styles/buttons';
 import { Icons } from '@assets/Icons';
 import Alert from '@components/dialogs/Alert';
 import { shoppingLogger } from '@utils/logger';
-import { TUTORIAL_TIMING } from '@utils/Constants';
+import { TUTORIAL_DEMO_INTERVAL } from '@utils/Constants';
 import { padding } from '@styles/spacing';
 
 /** Type for dialog data containing ingredient and recipe information */
@@ -86,13 +86,15 @@ const CopilotView = walkthroughable(View);
 export function Shopping() {
   const { t } = useI18n();
   const { colors, fonts } = useTheme();
-  const isTutorialActive = useIsTutorialActive();
-  const { copilotEvents, currentStep } = useCopilot();
+  const copilotData = useSafeCopilot();
+  const copilotEvents = copilotData?.copilotEvents;
+  const currentStep = copilotData?.currentStep;
 
   const [shoppingList, setShoppingList] = useState(new Array<shoppingListTableElement>());
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isDialogOpenRef = useRef(false);
 
-  const stepName = 'shopping';
+  const stepOrder = 3;
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [ingredientDataForDialog, setIngredientDataForDialog] = useState<ingredientDataForDialog>({
@@ -102,15 +104,22 @@ export function Shopping() {
 
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
 
-  const performDemo = () => {
-    setIngredientDataForDialog(shoppingList[2]);
-    setIsDialogOpen(true);
-    setTimeout(closingDialogInDemo, TUTORIAL_TIMING.DEMO_INTERVAL);
+  const toggleDemoDialog = () => {
+    if (isDialogOpenRef.current) {
+      setIsDialogOpen(false);
+      setIngredientDataForDialog({ name: '', recipesTitle: [] });
+      isDialogOpenRef.current = false;
+    } else {
+      setIngredientDataForDialog(shoppingList[2]);
+      setIsDialogOpen(true);
+      isDialogOpenRef.current = true;
+    }
   };
 
   const closingDialogInDemo = () => {
     setIsDialogOpen(false);
     setIngredientDataForDialog({ name: '', recipesTitle: [] });
+    isDialogOpenRef.current = false;
   };
 
   const stopDemo = () => {
@@ -127,11 +136,11 @@ export function Shopping() {
       demoIntervalRef.current = null;
     }
 
-    demoIntervalRef.current = setInterval(performDemo, TUTORIAL_TIMING.DEMO_INTERVAL);
+    demoIntervalRef.current = setInterval(toggleDemoDialog, TUTORIAL_DEMO_INTERVAL);
   };
 
   const handleStepChange = (step: CopilotStepData) => {
-    if (step.name === stepName) {
+    if (step.order === stepOrder) {
       startDemo();
     } else {
       stopDemo();
@@ -145,12 +154,12 @@ export function Shopping() {
   );
 
   useEffect(() => {
-    if (!isTutorialActive || !copilotEvents) {
+    if (!copilotData || !copilotEvents) {
       return;
     }
 
     // Start demo if we're already on our step when component mounts
-    if (currentStep?.name === stepName) {
+    if (currentStep?.order === stepOrder) {
       startDemo();
     }
 
@@ -340,8 +349,8 @@ export function Shopping() {
       )}
 
       {/* Positioned overlay for tutorial highlighting - appears in center where dialog shows */}
-      {isTutorialActive && (
-        <CopilotStep text={t('tutorial.shopping.description')} order={3} name={stepName}>
+      {copilotData && (
+        <CopilotStep text={t('tutorial.shopping.description')} order={stepOrder} name={'Shopping'}>
           <CopilotView
             style={{
               position: 'absolute',

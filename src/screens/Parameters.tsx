@@ -60,7 +60,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Divider, List, Switch, useTheme } from 'react-native-paper';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
-import { useIsTutorialActive } from '@components/organisms/TutorialController';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { useI18n } from '@utils/i18n';
 import { getDefaultPersons } from '@utils/settings';
 import { useSeasonFilter } from '@context/SeasonFilterContext';
@@ -85,7 +85,7 @@ export function Parameters() {
   const { colors } = useTheme();
   const currentLocale = getLocale();
   const AppVersion = Constants.expoConfig?.version ?? 'N/A';
-  const isTutorialActive = useIsTutorialActive();
+  const copilotData = useSafeCopilot();
 
   // Load settings on component mount
   useEffect(() => {
@@ -196,7 +196,7 @@ export function Parameters() {
         </List.Section>
 
         {/* Recipe Defaults Section */}
-        {isTutorialActive ? (
+        {copilotData ? (
           <CopilotStep text={t('tutorial.parameters.description')} order={4} name='Parameters'>
             <CopilotView testID={screenId + '::Tutorial'}>
               <RecipeDefaultsSection />

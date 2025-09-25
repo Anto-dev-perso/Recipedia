@@ -40,11 +40,8 @@
 /** Default numeric value used for form inputs and data initialization */
 export const defaultValueNumber = -1;
 
-/** Tutorial timing configuration for consistent demo behavior across all screens */
-export const TUTORIAL_TIMING = {
-  /** Interval between demo actions (in milliseconds) */
-  DEMO_INTERVAL: 3000,
-} as const;
+/** Interval between demo actions during tutorial (in milliseconds) */
+export const TUTORIAL_DEMO_INTERVAL = 1500;
 
 /**
  * Array of initial recipe images for app demonstration and onboarding

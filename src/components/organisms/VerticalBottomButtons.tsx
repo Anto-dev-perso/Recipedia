@@ -31,11 +31,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import BottomTopButton from '@components/molecules/BottomTopButton';
 import { BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter } from '@styles/buttons';
 import { View } from 'react-native';
-import { CopilotStep, useCopilot, walkthroughable } from 'react-native-copilot';
-import { useIsTutorialActive } from '@components/organisms/TutorialController';
+import { CopilotStep, walkthroughable } from 'react-native-copilot';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
 import { useI18n } from '@utils/i18n';
-import { TUTORIAL_TIMING } from '@utils/Constants';
+import { TUTORIAL_DEMO_INTERVAL } from '@utils/Constants';
 import { pickImage, takePhoto } from '@utils/ImagePicker';
 import { Icons } from '@assets/Icons';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
@@ -55,13 +55,15 @@ export function VerticalBottomButtons() {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
   const { t } = useI18n();
-  const isTutorialActive = useIsTutorialActive();
-  const { copilotEvents } = useCopilot();
+
+  const copilotData = useSafeCopilot();
+  const copilotEvents = copilotData?.copilotEvents;
+  const currentStep = copilotData?.currentStep;
 
   const [multipleLayout, setMultipleLayout] = useState(false);
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const tutorialOrder = 1;
+  const stepOrder = 1;
 
   const startDemo = () => {
     if (demoIntervalRef.current) {
@@ -72,7 +74,7 @@ export function VerticalBottomButtons() {
       setMultipleLayout(prev => {
         return !prev;
       });
-    }, TUTORIAL_TIMING.DEMO_INTERVAL);
+    }, TUTORIAL_DEMO_INTERVAL);
   };
 
   const stopDemo = () => {
@@ -84,7 +86,7 @@ export function VerticalBottomButtons() {
   };
 
   const handleStepChange = (step: CopilotStepData) => {
-    if (step.order === tutorialOrder) {
+    if (step.order === stepOrder) {
       startDemo();
     } else {
       stopDemo();
@@ -92,8 +94,13 @@ export function VerticalBottomButtons() {
   };
 
   useEffect(() => {
-    if (!isTutorialActive) {
+    if (!copilotData || !copilotEvents) {
       return;
+    }
+
+    // Start demo if we're already on our step when component mounts
+    if (currentStep?.order === stepOrder) {
+      startDemo();
     }
 
     copilotEvents.on('stepChange', handleStepChange);
@@ -104,7 +111,7 @@ export function VerticalBottomButtons() {
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  }, [isTutorialActive, copilotEvents]);
+  }, [currentStep]);
 
   // TODO add a loading because camera can takes a while
   async function takePhotoAndOpenNewRecipe() {
@@ -123,10 +130,11 @@ export function VerticalBottomButtons() {
 
   return (
     <View>
-      {isTutorialActive && (
+      {copilotData && (
         <View>
-          <CopilotStep text={t('tutorial.home.description')} order={tutorialOrder} name='home'>
+          <CopilotStep text={t('tutorial.home.description')} order={stepOrder} name={'Home'}>
             <CopilotView
+              key='home-copilot-view'
               testID={'HomeTutorial'}
               style={{
                 position: 'absolute',

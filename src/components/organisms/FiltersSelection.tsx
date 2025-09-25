@@ -44,12 +44,12 @@ import React, { useEffect, useRef } from 'react';
 import TagButton from '@components/atomic/TagButton';
 import { Icons } from '@assets/Icons';
 import { useI18n } from '@utils/i18n';
-import { TUTORIAL_TIMING } from '@utils/Constants';
+import { TUTORIAL_DEMO_INTERVAL } from '@utils/Constants';
 import { FlatList, View } from 'react-native';
 import { padding } from '@styles/spacing';
 import { Button } from 'react-native-paper';
-import { CopilotStep, useCopilot, walkthroughable } from 'react-native-copilot';
-import { useIsTutorialActive } from '@components/organisms/TutorialController';
+import { CopilotStep, walkthroughable } from 'react-native-copilot';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
 
 /**
@@ -84,12 +84,13 @@ export function FiltersSelection({
   onRemoveFilter,
 }: FiltersSelectionProps) {
   const { t } = useI18n();
-  const isTutorialActive = useIsTutorialActive();
-  const { copilotEvents } = useCopilot();
+  const copilotData = useSafeCopilot();
+  const copilotEvents = copilotData?.copilotEvents;
+  const currentStep = copilotData?.currentStep;
 
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const tutorialOrder = 2;
+  const stepOrder = 2;
   const selectionTestID = testId + '::FiltersSelection';
 
   const triggerToggle = () => {
@@ -101,7 +102,7 @@ export function FiltersSelection({
       clearInterval(demoIntervalRef.current);
     }
 
-    demoIntervalRef.current = setInterval(triggerToggle, TUTORIAL_TIMING.DEMO_INTERVAL);
+    demoIntervalRef.current = setInterval(triggerToggle, TUTORIAL_DEMO_INTERVAL);
   };
 
   const stopDemo = () => {
@@ -113,7 +114,7 @@ export function FiltersSelection({
   };
 
   const handleStepChange = (step: CopilotStepData) => {
-    if (step.order === tutorialOrder) {
+    if (step.order === stepOrder) {
       startDemo();
     } else {
       stopDemo();
@@ -143,8 +144,13 @@ export function FiltersSelection({
   }
 
   useEffect(() => {
-    if (!isTutorialActive) {
+    if (!copilotData || !copilotEvents) {
       return;
+    }
+
+    // Start demo if we're already on our step when component mounts
+    if (currentStep?.order === stepOrder) {
+      startDemo();
     }
 
     copilotEvents.on('stepChange', handleStepChange);
@@ -155,7 +161,7 @@ export function FiltersSelection({
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  }, [isTutorialActive, copilotEvents]);
+  }, [currentStep]);
 
   return (
     <>
@@ -181,9 +187,9 @@ export function FiltersSelection({
         )}
       />
 
-      {isTutorialActive ? (
+      {copilotData ? (
         <View>
-          <CopilotStep text={t('tutorial.search.description')} order={tutorialOrder} name='Search'>
+          <CopilotStep text={t('tutorial.search.description')} order={stepOrder} name={'Search'}>
             <CopilotView testID={selectionTestID + '::Tutorial'}>
               <FilterToggleButton />
             </CopilotView>

@@ -20,9 +20,12 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
   };
 
   const handleStop = () => {
-    tutorialLogger.info('Tutorial stopping');
-    navigation.navigate('Home');
+    tutorialLogger.info('Tutorial stopped');
     onComplete();
+    // Navigate to Home after copilot cleanup completes
+    setTimeout(() => {
+      navigation.navigate('Home');
+    }, 0);
   };
 
   const handleStepChange = (step: CopilotStepData) => {

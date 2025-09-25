@@ -55,7 +55,7 @@ import { padding, screenHeight } from '@styles/spacing';
 import { useI18n } from '@utils/i18n';
 import Search from '@screens/Search';
 import { Tab } from '@customTypes/ScreenTypes';
-import { useIsTutorialActive } from '@components/organisms/TutorialController';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
 
 /**
  * BottomTabs component - Material Design 3 tab navigation
@@ -111,7 +111,8 @@ export function BottomTabs() {
   }
 
   // In case of tutorial, we won't lazy load the screens
-  const shouldRenderLazy = !useIsTutorialActive();
+  const copilotData = useSafeCopilot();
+  const shouldRenderLazy = !copilotData;
 
   return (
     <>
