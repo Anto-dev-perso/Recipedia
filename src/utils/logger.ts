@@ -76,6 +76,7 @@ const log = logger.createLogger({
     'Validation',
     'Navigation',
     'App',
+    'Tutorial',
   ],
 });
 
@@ -138,6 +139,9 @@ export const navigationLogger = log.extend('Navigation');
 /** Logger for app-level events, startup, and lifecycle */
 export const appLogger = log.extend('App');
 
+/** Logger for tutorial system events and step management */
+export const tutorialLogger = log.extend('Tutorial');
+
 /**
  * Default export providing organized access to all loggers
  *
@@ -167,4 +171,5 @@ export default {
   validation: validationLogger,
   navigation: navigationLogger,
   app: appLogger,
+  tutorial: tutorialLogger,
 };
