@@ -69,7 +69,7 @@ import { bottomTopPosition } from '@styles/buttons';
 import { Icons } from '@assets/Icons';
 import Alert from '@components/dialogs/Alert';
 import { shoppingLogger } from '@utils/logger';
-import { TUTORIAL_DEMO_INTERVAL } from '@utils/Constants';
+import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
 import { padding } from '@styles/spacing';
 
 /** Type for dialog data containing ingredient and recipe information */
@@ -94,7 +94,7 @@ export function Shopping() {
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isDialogOpenRef = useRef(false);
 
-  const stepOrder = 3;
+  const stepOrder = TUTORIAL_STEPS.Shopping.order;
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [ingredientDataForDialog, setIngredientDataForDialog] = useState<ingredientDataForDialog>({
@@ -354,10 +354,10 @@ export function Shopping() {
           <CopilotView
             style={{
               position: 'absolute',
-              top: '32%',
+              top: '33%',
               left: padding.small,
               right: padding.small,
-              height: '58%',
+              height: '55%',
               backgroundColor: 'transparent',
               pointerEvents: 'none',
             }}

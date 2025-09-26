@@ -35,7 +35,7 @@ import { CopilotStep, walkthroughable } from 'react-native-copilot';
 import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
 import { useI18n } from '@utils/i18n';
-import { TUTORIAL_DEMO_INTERVAL } from '@utils/Constants';
+import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS, TUTORIAL_VERTICAL_OFFSET } from '@utils/Constants';
 import { pickImage, takePhoto } from '@utils/ImagePicker';
 import { Icons } from '@assets/Icons';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
@@ -63,7 +63,7 @@ export function VerticalBottomButtons() {
   const [multipleLayout, setMultipleLayout] = useState(false);
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const stepOrder = 1;
+  const stepOrder = TUTORIAL_STEPS.Home.order;
 
   const startDemo = () => {
     if (demoIntervalRef.current) {
@@ -138,7 +138,7 @@ export function VerticalBottomButtons() {
               testID={'HomeTutorial'}
               style={{
                 position: 'absolute',
-                bottom: -padding.large,
+                bottom: -padding.large + TUTORIAL_VERTICAL_OFFSET,
                 right: padding.small,
                 width: LargeButtonDiameter + padding.small,
                 height: BottomTopButtonOffset * 4,

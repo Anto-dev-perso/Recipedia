@@ -44,7 +44,7 @@ import React, { useEffect, useRef } from 'react';
 import TagButton from '@components/atomic/TagButton';
 import { Icons } from '@assets/Icons';
 import { useI18n } from '@utils/i18n';
-import { TUTORIAL_DEMO_INTERVAL } from '@utils/Constants';
+import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
 import { FlatList, View } from 'react-native';
 import { padding } from '@styles/spacing';
 import { Button } from 'react-native-paper';
@@ -90,7 +90,7 @@ export function FiltersSelection({
 
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const stepOrder = 2;
+  const stepOrder = TUTORIAL_STEPS.Search.order;
   const selectionTestID = testId + '::FiltersSelection';
 
   const triggerToggle = () => {

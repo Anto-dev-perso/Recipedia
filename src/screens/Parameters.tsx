@@ -69,6 +69,7 @@ import { useNavigation } from '@react-navigation/native';
 import { DarkModeContext } from '@context/DarkModeContext';
 import { Icons } from '@assets/Icons';
 import Constants from 'expo-constants';
+import { TUTORIAL_STEPS } from '@utils/Constants';
 
 /**
  * Parameters screen component - Main app settings and configuration hub
@@ -197,7 +198,11 @@ export function Parameters() {
 
         {/* Recipe Defaults Section */}
         {copilotData ? (
-          <CopilotStep text={t('tutorial.parameters.description')} order={4} name='Parameters'>
+          <CopilotStep
+            text={t('tutorial.parameters.description')}
+            order={TUTORIAL_STEPS.Parameters.order}
+            name={TUTORIAL_STEPS.Parameters.name}
+          >
             <CopilotView testID={screenId + '::Tutorial'}>
               <RecipeDefaultsSection />
             </CopilotView>

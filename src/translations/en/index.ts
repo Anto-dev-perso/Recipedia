@@ -8,6 +8,7 @@ import ingredientTypes from './ingredientTypes';
 import filters from './filters';
 import alerts from './alerts';
 import months from './months';
+import onboarding from './onboarding';
 
 export default {
   ...navigation,
@@ -17,6 +18,7 @@ export default {
   ...seasons,
   ...months,
   ...recipe,
+  ...onboarding,
   recipe: {
     nutrition: recipe.nutrition,
   },

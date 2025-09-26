@@ -5,6 +5,7 @@ import { tutorialLogger } from '@utils/logger';
 import { TabScreenNavigation } from '@customTypes/ScreenTypes';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
 import { TutorialTooltip } from '@components/molecules/TutorialTooltip';
+import { TUTORIAL_VERTICAL_OFFSET } from '@utils/Constants';
 
 interface TutorialProviderProps {
   children: React.ReactNode;
@@ -36,11 +37,13 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
     });
   };
 
-  // Auto-start tutorial when copilot is ready and not already visible
+  // Auto-start tutorial when copilot is ready
   useEffect(() => {
     if (copilotEvents && !visible) {
-      tutorialLogger.info('Starting tutorial');
-      start();
+      tutorialLogger.info('Starting tutorial on next tick');
+      setTimeout(() => {
+        start();
+      }, 0);
     }
   }, [copilotEvents, visible, start]);
 
@@ -65,8 +68,19 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
 }
 
 export function TutorialProvider({ children, onComplete }: TutorialProviderProps) {
+  const tooltipStyle = {
+    margin: 0,
+    padding: 0,
+  };
+
   return (
-    <CopilotProvider overlay='view' animated={true} tooltipComponent={TutorialTooltip}>
+    <CopilotProvider
+      overlay='view'
+      animated={true}
+      tooltipComponent={TutorialTooltip}
+      tooltipStyle={tooltipStyle}
+      verticalOffset={TUTORIAL_VERTICAL_OFFSET}
+    >
       {children}
       <TutorialManager onComplete={onComplete} />
     </CopilotProvider>

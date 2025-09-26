@@ -43,6 +43,20 @@ export const defaultValueNumber = -1;
 /** Interval between demo actions during tutorial (in milliseconds) */
 export const TUTORIAL_DEMO_INTERVAL = 1500;
 
+/** Tutorial step configuration by screen name */
+export const TUTORIAL_STEPS = {
+  Home: { order: 1, name: 'Home' },
+  Search: { order: 2, name: 'Search' },
+  Shopping: { order: 3, name: 'Shopping' },
+  Parameters: { order: 4, name: 'Parameters' },
+} as const;
+
+/**
+ * Tutorial spotlight vertical offset in pixels
+ * Applied to all tutorial steps for consistent positioning
+ */
+export const TUTORIAL_VERTICAL_OFFSET = 20;
+
 /**
  * Array of initial recipe images for app demonstration and onboarding
  * Contains require() statements for bundled image assets representing
