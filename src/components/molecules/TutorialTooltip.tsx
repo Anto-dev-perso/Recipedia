@@ -94,8 +94,11 @@ export function TutorialTooltip() {
   // From copilot source files, see that they add 15 padding to tooltip
   const paddingOfCopilot = 15;
 
+  const testId = 'TutorialTooltip';
+
   return (
     <Card
+      testID={testId}
       mode='elevated'
       style={{
         //   Remove the padding to let the card filling the tooltip
@@ -104,7 +107,9 @@ export function TutorialTooltip() {
       }}
     >
       <Card.Content>
-        <Text variant='bodyMedium'>{currentStep?.text}</Text>
+        <Text testID={testId + '::Text'} variant='bodyMedium'>
+          {currentStep?.text}
+        </Text>
       </Card.Content>
 
       <Card.Actions
@@ -115,17 +120,30 @@ export function TutorialTooltip() {
         }}
       >
         {!isFirstStep && (
-          <Button mode='text' onPress={handlePrevious} textColor={colors.primary} compact>
+          <Button
+            testID={testId + '::Previous'}
+            mode='text'
+            onPress={handlePrevious}
+            textColor={colors.primary}
+            compact
+          >
             {t('tutorial.previous')}
           </Button>
         )}
 
         <View style={{ flexDirection: 'row', gap: padding.medium }}>
-          <Button mode='text' onPress={stop} textColor={colors.outline} compact>
+          <Button
+            testID={testId + '::Skip'}
+            mode='text'
+            onPress={stop}
+            textColor={colors.outline}
+            compact
+          >
             {t('tutorial.skip')}
           </Button>
 
           <Button
+            testID={testId + '::Next'}
             mode='contained'
             onPress={isLastStep ? stop : handleNext}
             buttonColor={colors.primary}
