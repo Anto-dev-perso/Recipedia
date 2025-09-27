@@ -1,7 +1,7 @@
 import { shoppingListTableElement } from '@customTypes/DatabaseElementTypes';
 import { listFilter } from '@customTypes/RecipeFiltersTypes';
 
-export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
+export const testShopping: Array<Array<shoppingListTableElement>> = [
   [
     {
       id: 1,
@@ -1815,7 +1815,7 @@ export const shoppingDataset: Array<Array<shoppingListTableElement>> = [
   ],
 ];
 
-export const shoppingAddedMultipleTimes: Array<shoppingListTableElement> = shoppingDataset[0].map(
+export const shoppingAddedMultipleTimes: Array<shoppingListTableElement> = testShopping[0].map(
   element => ({
     ...element,
     quantity: (Number(element.quantity) * 2).toString(),

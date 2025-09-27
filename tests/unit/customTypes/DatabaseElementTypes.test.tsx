@@ -16,7 +16,7 @@ import {
 import { testRecipes } from '@test-data/recipesDataset';
 import { testIngredients } from '@test-data/ingredientsDataset';
 import { testTags } from '@test-data/tagsDataset';
-import { shoppingDataset } from '@test-data/shoppingListsDataset';
+import { testShopping } from '@test-data/shoppingListsDataset';
 import { nonIngredientFilters } from '@customTypes/RecipeFiltersTypes';
 
 describe('DatabaseElementTypes Helper Functions', () => {
@@ -293,8 +293,8 @@ describe('DatabaseElementTypes Helper Functions', () => {
   });
 
   test('isShoppingEqual correctly identifies equal shopping items', () => {
-    const firstShop: shoppingListTableElement = shoppingDataset[0][0];
-    const secondShop: shoppingListTableElement = shoppingDataset[0][1];
+    const firstShop: shoppingListTableElement = testShopping[0][0];
+    const secondShop: shoppingListTableElement = testShopping[0][1];
 
     expect(isShoppingEqual(firstShop, firstShop)).toBe(true);
     expect(isShoppingEqual(firstShop, secondShop)).toBe(false);

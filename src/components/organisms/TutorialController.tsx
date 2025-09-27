@@ -7,10 +7,10 @@ import { CopilotStepData } from '@customTypes/TutorialTypes';
 import { TutorialTooltip } from '@components/molecules/TutorialTooltip';
 import { TUTORIAL_VERTICAL_OFFSET } from '@utils/Constants';
 
-interface TutorialProviderProps {
+export type TutorialProviderProps = {
   children: React.ReactNode;
   onComplete: () => void;
-}
+};
 
 function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete'>) {
   const navigation = useNavigation<TabScreenNavigation>();

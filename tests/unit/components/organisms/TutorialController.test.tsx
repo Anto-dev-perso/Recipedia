@@ -16,10 +16,6 @@ jest.mock('@react-navigation/native', () =>
   require('@mocks/deps/react-navigation-mock').reactNavigationMock()
 );
 
-jest.mock('@components/molecules/TutorialTooltip', () =>
-  require('@mocks/components/molecules/TutorialTooltip-mock').tutorialTooltipMock()
-);
-
 describe('TutorialController Component', () => {
   const mockOnComplete = jest.fn();
 
