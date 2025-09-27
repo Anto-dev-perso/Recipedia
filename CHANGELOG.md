@@ -1,3 +1,17 @@
+## [0.12.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.11.0...v0.12.0) (2025-09-27)
+
+### Features
+
+* **App:** add first launch logic, and integrates WelcomeScreen and tutorial ([da84894](https://github.com/Anto-dev-perso/Recipedia/commit/da84894d6d75831e98b3e66f366c0ceec4bbbcfc))
+* **datasets:** add placeholders for English and French datasets ([85c9858](https://github.com/Anto-dev-perso/Recipedia/commit/85c9858fa00057cc7939af5dc03e12fb62999452))
+* **Home:** integrate tutorial steps with demo toggle logic ([5f6c3c1](https://github.com/Anto-dev-perso/Recipedia/commit/5f6c3c157863c7fa4acff76898fb0d40d34f6339))
+* **Search:** integrate tutorial step with demo toggle logic ([ffbec94](https://github.com/Anto-dev-perso/Recipedia/commit/ffbec9484d843ada3e0f015bb01c74aa9cdd564b))
+* **Settings:** define recipe management as the highlight of tour ([7908e68](https://github.com/Anto-dev-perso/Recipedia/commit/7908e68d3b94ea3bdb1444db7819b79d4d0beee7))
+* **Shopping:** integrate tutorial steps with demo logic ([cba3c0c](https://github.com/Anto-dev-perso/Recipedia/commit/cba3c0cc4106bf19dbcc2f631eb07a059a574e01))
+* **Tutorial:** add `TutorialProvider` component and integrate tutorial logger ([66bf0a7](https://github.com/Anto-dev-perso/Recipedia/commit/66bf0a748cdd531f1d84742271ce351740688dce))
+* **Tutorial:** add `TutorialTooltip` component ([1a74754](https://github.com/Anto-dev-perso/Recipedia/commit/1a7475477fe004d551be6606321d7b8c06bce56b))
+* **Welcome:** add WelcomeScreen and first launch to async storage ([7def573](https://github.com/Anto-dev-perso/Recipedia/commit/7def57355629cceccb135e46facdc023b2d2306a))
+
 ## [0.11.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.10.0...v0.11.0) (2025-09-20)
 
 ### Features
