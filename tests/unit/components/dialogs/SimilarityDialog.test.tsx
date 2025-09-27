@@ -2,9 +2,9 @@ import { act, fireEvent, render } from '@testing-library/react-native';
 import SimilarityDialog, { SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import React from 'react';
-import { tagsDataset } from '@test-data/tagsDataset';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
@@ -25,8 +25,8 @@ describe('SimilarityDialog', () => {
   const mockOnUseExisting = jest.fn();
   const mockOnDismiss = jest.fn();
 
-  const sampleTag = tagsDataset[11];
-  const sampleIngredient = ingredientsDataset[33];
+  const sampleTag = testTags[11];
+  const sampleIngredient = testIngredients[33];
 
   const renderTagDialog = (overrideProps: any = {}) => {
     const defaultProps = {
@@ -100,9 +100,9 @@ describe('SimilarityDialog', () => {
 
   beforeEach(async () => {
     await database.init();
-    await database.addMultipleIngredients(ingredientsDataset);
-    await database.addMultipleTags(tagsDataset);
-    await database.addMultipleRecipes(recipesDataset);
+    await database.addMultipleIngredients(testIngredients);
+    await database.addMultipleTags(testTags);
+    await database.addMultipleRecipes(testRecipes);
   });
 
   afterEach(() => {

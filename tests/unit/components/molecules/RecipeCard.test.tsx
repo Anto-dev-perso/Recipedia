@@ -1,11 +1,11 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import RecipeCard, { RecipeCardProps } from '@components/molecules/RecipeCard';
 import React from 'react';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { tagsDataset } from '@test-data/tagsDataset';
+import { testTags } from '@test-data/tagsDataset';
 import { mockNavigate } from '@mocks/deps/react-navigation-mock';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
@@ -17,11 +17,11 @@ jest.mock('@react-navigation/native', () =>
 const Stack = createStackNavigator();
 
 describe('RecipeCard Component', () => {
-  const sampleRecipe: recipeTableElement = recipesDataset[0];
-  const recipeWithoutImage: recipeTableElement = { ...recipesDataset[1], image_Source: '' };
+  const sampleRecipe: recipeTableElement = testRecipes[0];
+  const recipeWithoutImage: recipeTableElement = { ...testRecipes[1], image_Source: '' };
   const recipeWithManyTags: recipeTableElement = {
-    ...recipesDataset[2],
-    tags: tagsDataset,
+    ...testRecipes[2],
+    tags: testTags,
   };
 
   const renderRecipeCard = (overrideProps = {}) => {

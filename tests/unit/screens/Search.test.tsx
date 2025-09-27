@@ -1,9 +1,9 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import Search from '@screens/Search';
 import RecipeDatabase from '@utils/RecipeDatabase';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
-import { tagsDataset } from '@test-data/tagsDataset';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
@@ -106,9 +106,9 @@ describe('Search Screen', () => {
   beforeEach(async () => {
     resetFiltersSelection();
     await database.init();
-    await database.addMultipleIngredients(ingredientsDataset);
-    await database.addMultipleTags(tagsDataset);
-    await database.addMultipleRecipes(recipesDataset);
+    await database.addMultipleIngredients(testIngredients);
+    await database.addMultipleTags(testTags);
+    await database.addMultipleRecipes(testRecipes);
 
     // Render component for all tests
     renderResult = renderSearchComponent();

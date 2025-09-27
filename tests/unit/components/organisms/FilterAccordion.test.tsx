@@ -1,8 +1,8 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import { FilterAccordion, FilterAccordionProps } from '@components/organisms/FilterAccordion';
 import React from 'react';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
-import { tagsDataset } from '@test-data/tagsDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
+import { testTags } from '@test-data/tagsDataset';
 import { ingredientTableElement } from '@customTypes/DatabaseElementTypes';
 import { nonIngredientFilters, TListFilter } from '@customTypes/RecipeFiltersTypes';
 import { selectFilterCategoriesValuesToDisplay } from '@utils/FilterFunctions';
@@ -14,8 +14,8 @@ const { t } = useI18n();
 
 describe('FilterAccordion Component', () => {
   const defaultTestId = 'test-filter-accordion';
-  const sampleTags = tagsDataset.slice(0, 5).map(tag => tag.name);
-  const sampleIngredients: ingredientTableElement[] = ingredientsDataset.slice(0, 8);
+  const sampleTags = testTags.slice(0, 5).map(tag => tag.name);
+  const sampleIngredients: ingredientTableElement[] = testIngredients.slice(0, 8);
   const emptyFiltersState = new Map<TListFilter, string[]>();
 
   const sampleFilteredIngredients = selectFilterCategoriesValuesToDisplay(

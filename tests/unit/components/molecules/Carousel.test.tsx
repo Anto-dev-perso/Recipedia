@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 import Carousel, { CarouselItemProps } from '@components/molecules/Carousel';
 import React from 'react';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
 jest.mock(
@@ -10,9 +10,9 @@ jest.mock(
 );
 
 describe('Carousel Component', () => {
-  const sampleRecipes: Array<recipeTableElement> = recipesDataset.slice(0, 3);
+  const sampleRecipes: Array<recipeTableElement> = testRecipes.slice(0, 3);
   const emptyRecipes: Array<recipeTableElement> = [];
-  const singleRecipe: Array<recipeTableElement> = [recipesDataset[0]];
+  const singleRecipe: Array<recipeTableElement> = [testRecipes[0]];
 
   const renderCarousel = (overrideProps = {}) => {
     const defaultProps: CarouselItemProps = {
@@ -93,18 +93,18 @@ describe('Carousel Component', () => {
   });
 
   test('maintains performance with large recipe arrays', () => {
-    const { getByTestId } = renderCarousel({ items: recipesDataset });
+    const { getByTestId } = renderCarousel({ items: testRecipes });
 
-    assertRecipeCardRendering(getByTestId, recipesDataset.length, recipesDataset);
+    assertRecipeCardRendering(getByTestId, testRecipes.length, testRecipes);
   });
 
   test('handles recipe data variations correctly', () => {
     // Create recipes with different data characteristics
     const variedRecipes = [
-      { ...recipesDataset[0], title: 'Recipe with Special Characters: café & créme' },
-      { ...recipesDataset[1], title: '' }, // Empty title
+      { ...testRecipes[0], title: 'Recipe with Special Characters: café & créme' },
+      { ...testRecipes[1], title: '' }, // Empty title
       {
-        ...recipesDataset[2],
+        ...testRecipes[2],
         title: 'Very Long Recipe Title That Might Cause Layout Issues Or Text Truncation Problems',
       },
     ];

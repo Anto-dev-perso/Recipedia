@@ -1,9 +1,9 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import SettingsItemCard, { SettingsItemCardProps } from '@components/molecules/SettingsItemCard';
 import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
 import React from 'react';
-import { tagsDataset } from '@test-data/tagsDataset';
+import { testTags } from '@test-data/tagsDataset';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
@@ -27,7 +27,7 @@ describe('SettingsItemCard Component', () => {
       type: 'ingredient',
       index: 0,
       testIdPrefix: testIDProp,
-      item: ingredientsDataset[9],
+      item: testIngredients[9],
       onEdit: mockOnEdit,
       onDelete: mockOnDelete,
     };
@@ -81,7 +81,7 @@ describe('SettingsItemCard Component', () => {
       type: 'tag',
       index: 0,
       testIdPrefix: testIDProp,
-      item: tagsDataset[13],
+      item: testTags[13],
       onEdit: mockOnEdit,
       onDelete: mockOnDelete,
     };

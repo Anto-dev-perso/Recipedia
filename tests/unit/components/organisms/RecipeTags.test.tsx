@@ -1,9 +1,9 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import RecipeTags, { RecipeTagProps } from '@components/organisms/RecipeTags';
 import React from 'react';
-import { tagsDataset } from '@test-data/tagsDataset';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 import RecipeDatabase from '@utils/RecipeDatabase';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
@@ -29,7 +29,7 @@ jest.mock('@expo/vector-icons', () => require('@mocks/deps/expo-vector-icons-moc
 jest.mock('@shopify/flash-list', () => require('@mocks/deps/flashlist-mock').flashListMock());
 
 describe('RecipeTags Component', () => {
-  const sampleTags = tagsDataset.map(tag => tag.name).sort();
+  const sampleTags = testTags.map(tag => tag.name).sort();
 
   describe('readOnly mode', () => {
     it('renders a HorizontalList showing the provided tags', () => {
@@ -72,9 +72,9 @@ describe('RecipeTags Component', () => {
       jest.clearAllMocks();
 
       await dbInstance.init();
-      await dbInstance.addMultipleIngredients(ingredientsDataset);
-      await dbInstance.addMultipleTags(tagsDataset);
-      await dbInstance.addMultipleRecipes(recipesDataset);
+      await dbInstance.addMultipleIngredients(testIngredients);
+      await dbInstance.addMultipleTags(testTags);
+      await dbInstance.addMultipleRecipes(testRecipes);
     });
     afterEach(async () => {
       await dbInstance.reset();

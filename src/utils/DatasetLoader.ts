@@ -6,9 +6,9 @@ import {
 import { appLogger } from '@utils/logger';
 import { LANGUAGE_NAMES, SupportedLanguage } from '@utils/i18n';
 
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
-import { tagsDataset } from '@test-data/tagsDataset';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 
 import { englishIngredients } from '@assets/datasets/en/ingredients';
 import { englishTags } from '@assets/datasets/en/tags';
@@ -25,9 +25,9 @@ export interface DatasetCollection {
 
 function loadTestDataset(): DatasetCollection {
   return {
-    ingredients: ingredientsDataset,
-    tags: tagsDataset,
-    recipes: recipesDataset,
+    ingredients: testIngredients,
+    tags: testTags,
+    recipes: testRecipes,
   };
 }
 
