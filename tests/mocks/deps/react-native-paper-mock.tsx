@@ -219,6 +219,7 @@ export const useTheme = jest.fn(() => ({
     primaryContainer: '#e8def8',
     secondary: '#03dac6',
     secondaryContainer: '#cefaf8',
+    tertiary: '#7c5800',
     background: '#f6f6f6',
     surface: '#ffffff',
     error: '#b00020',
@@ -232,6 +233,7 @@ export const useTheme = jest.fn(() => ({
     placeholder: '#9e9e9e',
     backdrop: 'rgba(0,0,0,0.5)',
     notification: '#f50057',
+    outline: '#79767d',
   },
   fonts: {
     bodySmall: { fontSize: 12 },

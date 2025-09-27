@@ -1,10 +1,18 @@
 export const mockNavigate = jest.fn();
+export const mockAddListener = jest.fn((event, handler) => {
+  // Store the handler for testing
+  if (event === 'state') {
+    setTimeout(() => handler(), 0);
+  }
+  return jest.fn(); // Return unsubscribe function
+});
 
 export function reactNavigationMock() {
   return {
     ...jest.requireActual('@react-navigation/native'),
     useNavigation: () => ({
       navigate: mockNavigate,
+      addListener: mockAddListener,
     }),
     useFocusEffect: jest.fn(callback => {
       const mockNav = {

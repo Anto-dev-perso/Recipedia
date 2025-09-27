@@ -37,7 +37,8 @@ module.exports = {
         '^react-native-image-crop-picker$': '<rootDir>/tests/mocks/deps/react-native-image-crop-picker-mock.tsx',
         '^react-native-reanimated$': '<rootDir>/tests/mocks/deps/react-native-reanimated-mock.ts',
         '^react-native-gesture-handler$': '<rootDir>/tests/mocks/deps/react-native-gesture-handler-mock',
-        '^@react-native-async-storage/async-storage$': '<rootDir>/tests/mocks/deps/async-storage-mock'
+        '^@react-native-async-storage/async-storage$': '<rootDir>/tests/mocks/deps/async-storage-mock',
+        '^react-native-copilot$': '<rootDir>/tests/mocks/deps/react-native-copilot-mock.tsx'
     },
     setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
 };
