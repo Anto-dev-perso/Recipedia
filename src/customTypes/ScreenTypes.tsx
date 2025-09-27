@@ -92,6 +92,8 @@ export const Tab = createBottomTabNavigator<TabScreenParamList>();
 /** Navigation prop type for stack navigation usage */
 export type StackScreenNavigation = NavigationProp<StackScreenParamList>;
 
+export type TabScreenNavigation = NavigationProp<TabScreenParamList>;
+
 // =============================================================================
 // TAB SCREEN PROP TYPES
 // =============================================================================

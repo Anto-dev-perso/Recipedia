@@ -13,10 +13,10 @@ import {
   shoppingListTableElement,
   tagTableElement,
 } from '@customTypes//DatabaseElementTypes';
-import { recipesDataset } from '@test-data/recipesDataset';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
-import { tagsDataset } from '@test-data/tagsDataset';
-import { shoppingDataset } from '@test-data/shoppingListsDataset';
+import { testRecipes } from '@test-data/recipesDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testShopping } from '@test-data/shoppingListsDataset';
 import { nonIngredientFilters } from '@customTypes/RecipeFiltersTypes';
 
 describe('DatabaseElementTypes Helper Functions', () => {
@@ -97,32 +97,32 @@ describe('DatabaseElementTypes Helper Functions', () => {
   });
 
   test('isRecipePartiallyEqual correctly identifies closes enough recipes', () => {
-    expect(isRecipePartiallyEqual(recipesDataset[0], recipesDataset[1])).toBe(false);
-    expect(isRecipePartiallyEqual(recipesDataset[0], recipesDataset[0])).toBe(true);
+    expect(isRecipePartiallyEqual(testRecipes[0], testRecipes[1])).toBe(false);
+    expect(isRecipePartiallyEqual(testRecipes[0], testRecipes[0])).toBe(true);
 
-    let expected: recipeTableElement = { ...recipesDataset[0], id: 9999 };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    let expected: recipeTableElement = { ...testRecipes[0], id: 9999 };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
-    expected = { ...recipesDataset[0], image_Source: 'Different Image' };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], image_Source: 'Different Image' };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[1], image_Source: 'Different Image' };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[1], image_Source: 'Different Image' };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], description: 'Different description' };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], description: 'Different description' };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], tags: [] };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expected = { ...testRecipes[0], tags: [] };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
-    expected = { ...recipesDataset[0], tags: [{ name: 'One' }, { name: 'Two' }] };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expected = { ...testRecipes[0], tags: [{ name: 'One' }, { name: 'Two' }] };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
-    expected = { ...recipesDataset[0], tags: [...recipesDataset[0].tags, { name: 'Another one' }] };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expected = { ...testRecipes[0], tags: [...testRecipes[0].tags, { name: 'Another one' }] };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
     expected = {
-      ...recipesDataset[0],
+      ...testRecipes[0],
       ingredients: [
         {
           name: 'New Ingredient',
@@ -133,15 +133,15 @@ describe('DatabaseElementTypes Helper Functions', () => {
         },
       ],
     };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
-    expected = { ...recipesDataset[0], ingredients: [] };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expected = { ...testRecipes[0], ingredients: [] };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
     expected = {
-      ...recipesDataset[0],
+      ...testRecipes[0],
       ingredients: [
-        ...recipesDataset[0].ingredients,
+        ...testRecipes[0].ingredients,
         {
           name: 'New Ingredient',
           season: ['never mind'],
@@ -151,60 +151,60 @@ describe('DatabaseElementTypes Helper Functions', () => {
         },
       ],
     };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
-    expected = { ...recipesDataset[0], persons: -1 };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expected = { ...testRecipes[0], persons: -1 };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
-    expected = { ...recipesDataset[0], season: ['not season'] };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expected = { ...testRecipes[0], season: ['not season'] };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
     expected = {
-      ...recipesDataset[0],
+      ...testRecipes[0],
       preparation: [{ title: 'Different', description: 'A different preparation' }],
     };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
-    expected = { ...recipesDataset[0], preparation: [] };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expected = { ...testRecipes[0], preparation: [] };
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
 
     expected = {
-      ...recipesDataset[0],
+      ...testRecipes[0],
       preparation: [
-        ...recipesDataset[0].preparation,
+        ...testRecipes[0].preparation,
         { title: 'New', description: 'A new element in preparation' },
       ],
     };
-    expect(isRecipePartiallyEqual(recipesDataset[0], expected)).toBe(true);
+    expect(isRecipePartiallyEqual(testRecipes[0], expected)).toBe(true);
   });
 
   test('isRecipeEqual correctly identifies equal recipes', () => {
-    expect(isRecipeEqual(recipesDataset[0], recipesDataset[1])).toBe(false);
-    expect(isRecipeEqual(recipesDataset[0], recipesDataset[0])).toBe(true);
+    expect(isRecipeEqual(testRecipes[0], testRecipes[1])).toBe(false);
+    expect(isRecipeEqual(testRecipes[0], testRecipes[0])).toBe(true);
 
-    let expected: recipeTableElement = { ...recipesDataset[0], id: 9999 };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(true);
+    let expected: recipeTableElement = { ...testRecipes[0], id: 9999 };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(true);
 
-    expected = { ...recipesDataset[0], image_Source: 'Different Image' };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], image_Source: 'Different Image' };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[1], image_Source: 'Different Image' };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[1], image_Source: 'Different Image' };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], description: 'Different description' };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], description: 'Different description' };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], tags: [] };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], tags: [] };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], tags: [{ name: 'One' }, { name: 'Two' }] };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], tags: [{ name: 'One' }, { name: 'Two' }] };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], tags: [...recipesDataset[0].tags, { name: 'Another one' }] };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], tags: [...testRecipes[0].tags, { name: 'Another one' }] };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
     expected = {
-      ...recipesDataset[0],
+      ...testRecipes[0],
       ingredients: [
         {
           name: 'New Ingredient',
@@ -215,15 +215,15 @@ describe('DatabaseElementTypes Helper Functions', () => {
         },
       ],
     };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], ingredients: [] };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], ingredients: [] };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
     expected = {
-      ...recipesDataset[0],
+      ...testRecipes[0],
       ingredients: [
-        ...recipesDataset[0].ingredients,
+        ...testRecipes[0].ingredients,
         {
           name: 'New Ingredient',
           season: ['never mind'],
@@ -233,68 +233,68 @@ describe('DatabaseElementTypes Helper Functions', () => {
         },
       ],
     };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], persons: -1 };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], persons: -1 };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], season: ['not season'] };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], season: ['not season'] };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
     expected = {
-      ...recipesDataset[0],
+      ...testRecipes[0],
       preparation: [{ title: 'Different', description: 'A different preparation' }],
     };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
-    expected = { ...recipesDataset[0], preparation: [] };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expected = { ...testRecipes[0], preparation: [] };
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
 
     expected = {
-      ...recipesDataset[0],
+      ...testRecipes[0],
       preparation: [
-        ...recipesDataset[0].preparation,
+        ...testRecipes[0].preparation,
         { title: 'New', description: 'A new element in preparation' },
       ],
     };
-    expect(isRecipeEqual(recipesDataset[0], expected)).toBe(false);
+    expect(isRecipeEqual(testRecipes[0], expected)).toBe(false);
   });
 
   test('isIngredientEqual correctly identifies equal ingredients', () => {
-    expect(isIngredientEqual(ingredientsDataset[0], ingredientsDataset[0])).toBe(true);
-    expect(isIngredientEqual(ingredientsDataset[0], ingredientsDataset[1])).toBe(false);
+    expect(isIngredientEqual(testIngredients[0], testIngredients[0])).toBe(true);
+    expect(isIngredientEqual(testIngredients[0], testIngredients[1])).toBe(false);
 
-    let expected: ingredientTableElement = { ...ingredientsDataset[0], id: 9999 };
-    expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(true);
+    let expected: ingredientTableElement = { ...testIngredients[0], id: 9999 };
+    expect(isIngredientEqual(testIngredients[0], expected)).toBe(true);
 
-    expected = { ...ingredientsDataset[0], name: 'New Ingredient' };
-    expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(false);
+    expected = { ...testIngredients[0], name: 'New Ingredient' };
+    expect(isIngredientEqual(testIngredients[0], expected)).toBe(false);
 
-    expected = { ...ingredientsDataset[0], quantity: '0' };
-    expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(true);
-    expect(isIngredientEqual({ ...ingredientsDataset[0], quantity: '50' }, expected)).toBe(true);
+    expected = { ...testIngredients[0], quantity: '0' };
+    expect(isIngredientEqual(testIngredients[0], expected)).toBe(true);
+    expect(isIngredientEqual({ ...testIngredients[0], quantity: '50' }, expected)).toBe(true);
 
-    expected = { ...ingredientsDataset[0], season: ['other'] };
-    expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(true);
+    expected = { ...testIngredients[0], season: ['other'] };
+    expect(isIngredientEqual(testIngredients[0], expected)).toBe(true);
 
-    expected = { ...ingredientsDataset[0], type: ingredientType.poultry };
-    expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(false);
+    expected = { ...testIngredients[0], type: ingredientType.poultry };
+    expect(isIngredientEqual(testIngredients[0], expected)).toBe(false);
 
-    expected = { ...ingredientsDataset[0], unit: 'no unit' };
-    expect(isIngredientEqual(ingredientsDataset[0], expected)).toBe(false);
+    expected = { ...testIngredients[0], unit: 'no unit' };
+    expect(isIngredientEqual(testIngredients[0], expected)).toBe(false);
   });
 
   test('isTagEqual correctly identifies equal tags', () => {
-    expect(isTagEqual(tagsDataset[0], tagsDataset[0])).toBe(true);
-    expect(isTagEqual(tagsDataset[0], tagsDataset[1])).toBe(false);
+    expect(isTagEqual(testTags[0], testTags[0])).toBe(true);
+    expect(isTagEqual(testTags[0], testTags[1])).toBe(false);
 
-    let expected: tagTableElement = { ...tagsDataset[0], id: 9999 };
-    expect(isTagEqual(tagsDataset[0], expected)).toBe(true);
+    let expected: tagTableElement = { ...testTags[0], id: 9999 };
+    expect(isTagEqual(testTags[0], expected)).toBe(true);
   });
 
   test('isShoppingEqual correctly identifies equal shopping items', () => {
-    const firstShop: shoppingListTableElement = shoppingDataset[0][0];
-    const secondShop: shoppingListTableElement = shoppingDataset[0][1];
+    const firstShop: shoppingListTableElement = testShopping[0][0];
+    const secondShop: shoppingListTableElement = testShopping[0][1];
 
     expect(isShoppingEqual(firstShop, firstShop)).toBe(true);
     expect(isShoppingEqual(firstShop, secondShop)).toBe(false);

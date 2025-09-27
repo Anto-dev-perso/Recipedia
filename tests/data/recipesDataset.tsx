@@ -1,6 +1,6 @@
 import { ingredientType, recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
-export const recipesDataset: Array<recipeTableElement> = [
+export const testRecipes: Array<recipeTableElement> = [
   {
     id: 1,
     image_Source: 'spaghetti_bolognese.png',

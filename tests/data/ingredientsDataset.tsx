@@ -1,6 +1,6 @@
 import { ingredientTableElement, ingredientType } from '@customTypes/DatabaseElementTypes';
 
-export const ingredientsDataset: ingredientTableElement[] = [
+export const testIngredients: ingredientTableElement[] = [
   {
     id: 1,
     name: 'Spaghetti',

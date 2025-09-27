@@ -1,10 +1,10 @@
 import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import Recipe, { editRecipeManually, RecipePropType } from '@screens/Recipe';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 import RecipeDatabase from '@utils/RecipeDatabase';
-import { tagsDataset } from '@test-data/tagsDataset';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
 import {
   extractIngredientsNameWithQuantity,
   shoppingListTableElement,
@@ -220,7 +220,7 @@ function checkTags(
         JSON.stringify(prop.recipe.tags.map(tag => tag.name))
       );
       expect(getByTestId('RecipeTags::RandomTags').props.children).not.toEqual(
-        recipesDataset[6].tags.map(tag => tag.name)
+        testRecipes[6].tags.map(tag => tag.name)
       );
       expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
       expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
@@ -230,7 +230,7 @@ function checkTags(
         JSON.stringify(newValueExpected?.map(tag => tag.name))
       );
       expect(getByTestId('RecipeTags::RandomTags').props.children).not.toEqual(
-        recipesDataset[6].tags.map(tag => tag.name)
+        testRecipes[6].tags.map(tag => tag.name)
       );
       expect(getByTestId('RecipeTags::AddNewTag').props.children).toBeTruthy();
       expect(getByTestId('RecipeTags::RemoveTag').props.children).toBeTruthy();
@@ -608,12 +608,12 @@ describe('Recipe Component tests', () => {
   } as NativeStackNavigationProp<StackScreenParamList, 'Recipe'>;
   const mockRouteReadOnly: RecipePropType = {
     mode: 'readOnly',
-    recipe: recipesDataset[1],
+    recipe: testRecipes[1],
   };
 
   const mockRouteEdit: RecipePropType = {
     mode: 'edit',
-    recipe: { ...recipesDataset[6] } as const,
+    recipe: { ...testRecipes[6] } as const,
   } as const;
 
   const mockRouteAddOCR: RecipePropType = { mode: 'addFromPic', imgUri: defaultUri };
@@ -630,15 +630,15 @@ describe('Recipe Component tests', () => {
     jest.clearAllMocks();
 
     await dbInstance.init();
-    await dbInstance.addMultipleIngredients(ingredientsDataset);
-    await dbInstance.addMultipleTags(tagsDataset);
-    await dbInstance.addMultipleRecipes(recipesDataset);
+    await dbInstance.addMultipleIngredients(testIngredients);
+    await dbInstance.addMultipleTags(testTags);
+    await dbInstance.addMultipleRecipes(testRecipes);
 
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue('4');
   });
   afterEach(async () => {
     await dbInstance.reset();
-    mockRouteEdit.recipe = { ...recipesDataset[6] };
+    mockRouteEdit.recipe = { ...testRecipes[6] };
   });
 
   // -------- INIT CASES --------
@@ -1129,7 +1129,7 @@ describe('Recipe Component tests', () => {
     const mockRecipeWithNutrition = {
       mode: 'edit' as const,
       recipe: {
-        ...recipesDataset[1], // Start with complete recipe
+        ...testRecipes[1], // Start with complete recipe
         nutrition: {
           energyKcal: 0, // Zero value should trigger validation error
           energyKj: 200,
@@ -1164,7 +1164,7 @@ describe('Recipe Component tests', () => {
     const mockRouteEditWithoutImage = {
       mode: 'edit' as const,
       recipe: {
-        ...recipesDataset[1],
+        ...testRecipes[1],
         image_Source: '',
       },
     };
@@ -1188,7 +1188,7 @@ describe('Recipe Component tests', () => {
     const mockRecipeWithZeroNutrition = {
       mode: 'edit' as const,
       recipe: {
-        ...recipesDataset[1],
+        ...testRecipes[1],
         nutrition: {
           energyKcal: 0,
           energyKj: 0,
@@ -1243,7 +1243,7 @@ describe('Recipe Component tests', () => {
     const mockCompleteRecipe = {
       mode: 'edit' as const,
       recipe: {
-        ...recipesDataset[1],
+        ...testRecipes[1],
         nutrition: undefined,
       },
     };

@@ -8,10 +8,13 @@ import en from '@translations/en';
 // Import translations
 
 // Language name mapping
-const LANGUAGE_NAMES: { [key: string]: string } = {
+export const LANGUAGE_NAMES: { [key: string]: string } = {
   en: 'English',
   fr: 'Français',
 };
+
+// Export supported language type
+export type SupportedLanguage = keyof typeof LANGUAGE_NAMES;
 
 // Initialize i18next instance
 const i18n = createInstance();
@@ -56,6 +59,7 @@ export const useI18n = () => {
      * Changes the current locale
      * @param locale The locale to set (e.g., 'en', 'fr')
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setLocale: (locale: string): Promise<any> => i18n.changeLanguage(locale),
 
     /**

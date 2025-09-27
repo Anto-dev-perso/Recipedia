@@ -27,27 +27,94 @@
  * ```
  */
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import BottomTopButton from '@components/molecules/BottomTopButton';
-import { BottomTopButtonOffset, bottomTopPosition } from '@styles/buttons';
+import { BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter } from '@styles/buttons';
 import { View } from 'react-native';
+import { CopilotStep, walkthroughable } from 'react-native-copilot';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
+import { CopilotStepData } from '@customTypes/TutorialTypes';
+import { useI18n } from '@utils/i18n';
+import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS, TUTORIAL_VERTICAL_OFFSET } from '@utils/Constants';
 import { pickImage, takePhoto } from '@utils/ImagePicker';
 import { Icons } from '@assets/Icons';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
 import { useNavigation } from '@react-navigation/native';
 import RoundButton from '@components/atomic/RoundButton';
 import { useTheme } from 'react-native-paper';
+import { padding } from '@styles/spacing';
 
 /**
  * VerticalBottomButtons component for expandable recipe creation menu
  *
  * @returns JSX element representing an expandable FAB menu for recipe creation actions
  */
+const CopilotView = walkthroughable(View);
+
 export function VerticalBottomButtons() {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
+  const { t } = useI18n();
+
+  const copilotData = useSafeCopilot();
+  const copilotEvents = copilotData?.copilotEvents;
+  const currentStep = copilotData?.currentStep;
 
   const [multipleLayout, setMultipleLayout] = useState(false);
+  const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stepOrder = TUTORIAL_STEPS.Home.order;
+
+  const startDemo = useCallback(() => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+    }
+
+    demoIntervalRef.current = setInterval(() => {
+      setMultipleLayout(prev => {
+        return !prev;
+      });
+    }, TUTORIAL_DEMO_INTERVAL);
+  }, []);
+
+  const stopDemo = useCallback(() => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+      demoIntervalRef.current = null;
+    }
+    setMultipleLayout(false);
+  }, []);
+
+  const handleStepChange = useCallback(
+    (step: CopilotStepData | undefined) => {
+      if (step?.order === stepOrder) {
+        startDemo();
+      } else {
+        stopDemo();
+      }
+    },
+    [stepOrder, startDemo, stopDemo]
+  );
+
+  useEffect(() => {
+    if (!copilotData || !copilotEvents) {
+      return;
+    }
+
+    // Start demo if we're already on our step when component mounts
+    if (currentStep?.order === stepOrder) {
+      startDemo();
+    }
+
+    copilotEvents.on('stepChange', handleStepChange);
+    copilotEvents.on('stop', stopDemo);
+
+    return () => {
+      copilotEvents.off('stepChange', handleStepChange);
+      copilotEvents.off('stop', stopDemo);
+      stopDemo();
+    };
+  }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
 
   // TODO add a loading because camera can takes a while
   async function takePhotoAndOpenNewRecipe() {
@@ -66,6 +133,24 @@ export function VerticalBottomButtons() {
 
   return (
     <View>
+      {copilotData && (
+        <View>
+          <CopilotStep text={t('tutorial.home.description')} order={stepOrder} name={'Home'}>
+            <CopilotView
+              key='home-copilot-view'
+              testID={'HomeTutorial'}
+              style={{
+                position: 'absolute',
+                bottom: -padding.large + TUTORIAL_VERTICAL_OFFSET,
+                right: padding.small,
+                width: LargeButtonDiameter + padding.small,
+                height: BottomTopButtonOffset * 4,
+                pointerEvents: 'none',
+              }}
+            />
+          </CopilotStep>
+        </View>
+      )}
       {multipleLayout ? (
         <View>
           <BottomTopButton
@@ -74,7 +159,9 @@ export function VerticalBottomButtons() {
             position={bottomTopPosition.bottom_right}
             size={'medium'}
             icon={Icons.minusIcon}
-            onPressFunction={() => setMultipleLayout(false)}
+            onPressFunction={() => {
+              setMultipleLayout(false);
+            }}
           />
 
           <BottomTopButton
@@ -84,11 +171,11 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={BottomTopButtonOffset}
             icon={Icons.pencilIcon}
-            onPressFunction={() =>
+            onPressFunction={() => {
               navigate('Recipe', {
                 mode: 'addManually',
-              })
-            }
+              });
+            }}
           />
 
           <BottomTopButton
@@ -98,7 +185,9 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={2 * BottomTopButtonOffset}
             icon={Icons.galleryIcon}
-            onPressFunction={pickImageAndOpenNewRecipe}
+            onPressFunction={() => {
+              pickImageAndOpenNewRecipe();
+            }}
           />
 
           <BottomTopButton
@@ -108,7 +197,9 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={3 * BottomTopButtonOffset}
             icon={Icons.cameraIcon}
-            onPressFunction={takePhotoAndOpenNewRecipe}
+            onPressFunction={() => {
+              takePhotoAndOpenNewRecipe();
+            }}
           />
         </View>
       ) : (
@@ -118,7 +209,9 @@ export function VerticalBottomButtons() {
           position={bottomTopPosition.bottom_right}
           size={'medium'}
           icon={Icons.plusIcon}
-          onPressFunction={() => setMultipleLayout(true)}
+          onPressFunction={() => {
+            setMultipleLayout(true);
+          }}
         />
       )}
     </View>

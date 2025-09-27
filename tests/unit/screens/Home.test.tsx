@@ -1,13 +1,13 @@
 import { render, waitFor } from '@testing-library/react-native';
 import Home from '@screens/Home';
 import React from 'react';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import RecipeDatabase from '@utils/RecipeDatabase';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
-import { tagsDataset } from '@test-data/tagsDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
+import { testTags } from '@test-data/tagsDataset';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () =>
@@ -58,9 +58,9 @@ describe('Home Screen', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
     await database.init();
-    await database.addMultipleIngredients(ingredientsDataset);
-    await database.addMultipleTags(tagsDataset);
-    await database.addMultipleRecipes(recipesDataset);
+    await database.addMultipleIngredients(testIngredients);
+    await database.addMultipleTags(testTags);
+    await database.addMultipleRecipes(testRecipes);
   });
   afterEach(async () => await database.reset());
 
@@ -88,9 +88,9 @@ describe('Home Screen', () => {
       getByTestId('Recommendation 3::CarouselProps').props.children
     );
 
-    expect(recipesDataset).toEqual(expect.arrayContaining(reco1));
-    expect(recipesDataset).toEqual(expect.arrayContaining(reco2));
-    expect(recipesDataset).toEqual(expect.arrayContaining(reco3));
+    expect(testRecipes).toEqual(expect.arrayContaining(reco1));
+    expect(testRecipes).toEqual(expect.arrayContaining(reco2));
+    expect(testRecipes).toEqual(expect.arrayContaining(reco3));
 
     expect(reco1).not.toEqual(reco2);
     expect(reco1).not.toEqual(reco3);

@@ -1,6 +1,6 @@
 import { tagTableElement } from '@customTypes/DatabaseElementTypes';
 
-export const tagsDataset: Array<tagTableElement> = [
+export const testTags: Array<tagTableElement> = [
   { id: 1, name: 'Italian' },
   { id: 2, name: 'Dinner' },
   { id: 3, name: 'Mexican' },

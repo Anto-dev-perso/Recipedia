@@ -106,6 +106,7 @@ export function CustomTextInput({
   const [isEditing, setIsEditing] = useState(false);
   const [inputHeight, setInputHeight] = React.useState(screenHeight * 0.08);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const inputRef = useRef<any>(null);
 
   function handlePress() {

@@ -3,6 +3,8 @@ import Parameters from '@screens/Parameters';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { getMockCopilotEvents, resetMockCopilot } from '@mocks/deps/react-native-copilot-mock';
+import { TUTORIAL_STEPS } from '@utils/Constants';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock('@utils/settings', () => require('@mocks/utils/settings-mock'));
@@ -17,6 +19,12 @@ const { mockSetSeasonFilter } = require('@mocks/context/SeasonFilterContext-mock
 const { mockNavigate } = require('@mocks/deps/react-navigation-mock');
 
 jest.mock('expo-constants', () => require('@mocks/deps/expo-constants-mock').expoConstantsMock());
+
+jest.mock('@hooks/useSafeCopilot', () =>
+  require('@mocks/hooks/useSafeCopilot-mock').useSafeCopilotMock()
+);
+
+const { mockUseSafeCopilot } = require('@mocks/hooks/useSafeCopilot-mock');
 
 const Stack = createStackNavigator();
 
@@ -59,10 +67,10 @@ describe('Parameters Screen', () => {
     ).toBe('locale name');
 
     expect(
-      getByTestId('Parameters::Section::RecipeDefaults::Person::Item::Title').props.children
+      getByTestId('Parameters::Section::RecipeDefaults::Persons::Item::Title').props.children
     ).toBe('default_persons');
     expect(
-      getByTestId('Parameters::Section::RecipeDefaults::Person::Item::Description').props.children
+      getByTestId('Parameters::Section::RecipeDefaults::Persons::Item::Description').props.children
     ).toBe(expectedPersonsCount);
     expect(
       getByTestId('Parameters::Section::RecipeDefaults::Season::Item::Title').props.children
@@ -161,13 +169,13 @@ describe('Parameters Screen', () => {
 
     await waitFor(() => {
       expect(
-        getByTestId('Parameters::Section::RecipeDefaults::Person::Item::Title').props.children
+        getByTestId('Parameters::Section::RecipeDefaults::Persons::Item::Title').props.children
       ).toBe('default_persons');
     });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
-    fireEvent.press(getByTestId('Parameters::Section::RecipeDefaults::Person::Item'));
+    fireEvent.press(getByTestId('Parameters::Section::RecipeDefaults::Persons::Item'));
 
     expect(mockNavigate).toHaveBeenCalledTimes(1);
     expect(mockNavigate).toHaveBeenCalledWith('DefaultPersonsSettings');
@@ -243,7 +251,7 @@ describe('Parameters Screen', () => {
     });
 
     fireEvent.press(getByTestId('Parameters::Section::Appearance::Language::Item'));
-    fireEvent.press(getByTestId('Parameters::Section::RecipeDefaults::Person::Item'));
+    fireEvent.press(getByTestId('Parameters::Section::RecipeDefaults::Persons::Item'));
     fireEvent.press(getByTestId('Parameters::Section::Data::Ingredients::Item'));
 
     expect(mockNavigate).toHaveBeenCalledTimes(3);
@@ -281,5 +289,132 @@ describe('Parameters Screen', () => {
     expect(mockToggleDarkMode).toHaveBeenCalled();
     expect(mockSetSeasonFilter).toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalled();
+  });
+
+  describe('In Tutorial Mode', () => {
+    const mockEvents = getMockCopilotEvents();
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      resetMockCopilot();
+      mockUseSafeCopilot.mockReturnValue(null);
+    });
+
+    test('renders with tutorial wrapper when copilot is available', async () => {
+      mockUseSafeCopilot.mockReturnValue({
+        copilotEvents: mockEvents,
+        currentStep: { order: 1, name: 'Home', text: 'Home step' },
+        isActive: true,
+      });
+
+      const { getByTestId } = renderParameters();
+
+      await waitFor(() => {
+        expect(getByTestId('CopilotStep::Parameters')).toBeTruthy();
+        expect(getByTestId('Parameters::Tutorial')).toBeTruthy();
+      });
+
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Persons::Item')).toBeTruthy();
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Season::Item')).toBeTruthy();
+    });
+
+    test('renders without tutorial wrapper when copilot is not available', async () => {
+      const { queryByTestId, getByTestId } = renderParameters();
+
+      await waitFor(() => {
+        expect(queryByTestId('CopilotStep::Parameters')).toBeNull();
+        expect(queryByTestId('Parameters::Tutorial')).toBeNull();
+      });
+
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Persons::Item')).toBeTruthy();
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Season::Item')).toBeTruthy();
+    });
+
+    test('handles tutorial integration correctly', async () => {
+      mockUseSafeCopilot.mockReturnValue({
+        copilotEvents: mockEvents,
+        currentStep: {
+          order: TUTORIAL_STEPS.Parameters.order,
+          name: 'Parameters',
+          text: 'Parameters step',
+        },
+        isActive: true,
+      });
+
+      const { getByTestId } = renderParameters();
+
+      await waitFor(() => {
+        expect(getByTestId('CopilotStep::Parameters')).toBeTruthy();
+        expect(getByTestId('Parameters::Tutorial')).toBeTruthy();
+      });
+
+      expect(
+        getByTestId('Parameters::Section::RecipeDefaults::Persons::Item::Title').props.children
+      ).toBe('default_persons');
+      expect(
+        getByTestId('Parameters::Section::RecipeDefaults::Season::Item::Title').props.children
+      ).toBe('default_season_filter');
+    });
+
+    test('renders tutorial content with proper structure', async () => {
+      mockUseSafeCopilot.mockReturnValue({
+        copilotEvents: mockEvents,
+        currentStep: {
+          order: TUTORIAL_STEPS.Parameters.order,
+          name: 'Parameters',
+          text: 'Parameters step',
+        },
+        isActive: true,
+      });
+
+      const { getByTestId } = renderParameters();
+
+      await waitFor(() => {
+        expect(getByTestId('CopilotStep::Parameters')).toBeTruthy();
+        expect(getByTestId('Parameters::Tutorial')).toBeTruthy();
+      });
+
+      expect(getByTestId('Parameters::Section::RecipeDefaults::SubHeader')).toBeTruthy();
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Divider')).toBeTruthy();
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Persons::Item')).toBeTruthy();
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Season::Item')).toBeTruthy();
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Season::Switch')).toBeTruthy();
+    });
+
+    test('does not set up listeners when copilot events unavailable', async () => {
+      mockUseSafeCopilot.mockReturnValue({
+        copilotEvents: null,
+        currentStep: { order: 1, name: 'Home', text: 'Home step' },
+        isActive: true,
+      });
+
+      renderParameters();
+
+      expect(mockEvents.on).not.toHaveBeenCalled();
+    });
+
+    test('tutorial wrapper contains recipe defaults section', async () => {
+      mockUseSafeCopilot.mockReturnValue({
+        copilotEvents: mockEvents,
+        currentStep: {
+          order: TUTORIAL_STEPS.Parameters.order,
+          name: 'Parameters',
+          text: 'Parameters step',
+        },
+        isActive: true,
+      });
+
+      const { getByTestId } = renderParameters();
+
+      await waitFor(() => {
+        expect(getByTestId('Parameters::Tutorial')).toBeTruthy();
+      });
+
+      const tutorialWrapper = getByTestId('Parameters::Tutorial');
+      expect(tutorialWrapper).toBeTruthy();
+
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Persons::Item')).toBeTruthy();
+      expect(getByTestId('Parameters::Section::RecipeDefaults::Season::Item')).toBeTruthy();
+    });
   });
 });

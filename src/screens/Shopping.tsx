@@ -49,10 +49,12 @@
 
 import { shoppingListTableElement } from '@customTypes/DatabaseElementTypes';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SectionList, StyleProp, TextStyle, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ShoppingScreenProp } from '@customTypes/ScreenTypes';
+import { CopilotStep, walkthroughable } from 'react-native-copilot';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
+import { CopilotStepData } from '@customTypes/TutorialTypes';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { Checkbox, Divider, List, Text, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
@@ -67,6 +69,8 @@ import { bottomTopPosition } from '@styles/buttons';
 import { Icons } from '@assets/Icons';
 import Alert from '@components/dialogs/Alert';
 import { shoppingLogger } from '@utils/logger';
+import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
+import { padding } from '@styles/spacing';
 
 /** Type for dialog data containing ingredient and recipe information */
 type ingredientDataForDialog = Pick<shoppingListTableElement, 'name' | 'recipesTitle'>;
@@ -77,11 +81,20 @@ type ingredientDataForDialog = Pick<shoppingListTableElement, 'name' | 'recipesT
  * @param props - Navigation props for the Shopping screen
  * @returns JSX element representing the shopping list interface
  */
-export function Shopping({ navigation }: ShoppingScreenProp) {
+const CopilotView = walkthroughable(View);
+
+export function Shopping() {
   const { t } = useI18n();
   const { colors, fonts } = useTheme();
+  const copilotData = useSafeCopilot();
+  const copilotEvents = copilotData?.copilotEvents;
+  const currentStep = copilotData?.currentStep;
 
   const [shoppingList, setShoppingList] = useState(new Array<shoppingListTableElement>());
+  const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isDialogOpenRef = useRef(false);
+
+  const stepOrder = TUTORIAL_STEPS.Shopping.order;
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [ingredientDataForDialog, setIngredientDataForDialog] = useState<ingredientDataForDialog>({
@@ -91,11 +104,77 @@ export function Shopping({ navigation }: ShoppingScreenProp) {
 
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
 
-  useFocusEffect(() => {
-    navigation.addListener('focus', () => {
+  const toggleDemoDialog = useCallback(() => {
+    if (isDialogOpenRef.current) {
+      setIsDialogOpen(false);
+      setIngredientDataForDialog({ name: '', recipesTitle: [] });
+      isDialogOpenRef.current = false;
+    } else {
+      setIngredientDataForDialog(shoppingList[2]);
+      setIsDialogOpen(true);
+      isDialogOpenRef.current = true;
+    }
+  }, [shoppingList]);
+
+  const closingDialogInDemo = () => {
+    setIsDialogOpen(false);
+    setIngredientDataForDialog({ name: '', recipesTitle: [] });
+    isDialogOpenRef.current = false;
+  };
+
+  const stopDemo = useCallback(() => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+      demoIntervalRef.current = null;
+    }
+    closingDialogInDemo();
+  }, []);
+
+  const startDemo = useCallback(() => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+      demoIntervalRef.current = null;
+    }
+
+    demoIntervalRef.current = setInterval(toggleDemoDialog, TUTORIAL_DEMO_INTERVAL);
+  }, [toggleDemoDialog]);
+
+  const handleStepChange = useCallback(
+    (step: CopilotStepData | undefined) => {
+      if (step?.order === stepOrder) {
+        startDemo();
+      } else {
+        stopDemo();
+      }
+    },
+    [stepOrder, startDemo, stopDemo]
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
       setShoppingList([...RecipeDatabase.getInstance().get_shopping()]);
-    });
-  });
+    }, [])
+  );
+
+  useEffect(() => {
+    if (!copilotData || !copilotEvents) {
+      return;
+    }
+
+    // Start demo if we're already on our step when component mounts
+    if (currentStep?.order === stepOrder) {
+      startDemo();
+    }
+
+    copilotEvents.on('stepChange', handleStepChange);
+    copilotEvents.on('stop', stopDemo);
+
+    return () => {
+      copilotEvents.off('stepChange', handleStepChange);
+      copilotEvents.off('stop', stopDemo);
+      stopDemo();
+    };
+  }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
 
   const sections = shoppingCategories
     .map(category => {
@@ -270,6 +349,22 @@ export function Shopping({ navigation }: ShoppingScreenProp) {
           renderSectionHeader={renderSectionHeader}
           stickySectionHeadersEnabled={false}
         />
+      )}
+
+      {/* Positioned overlay for tutorial highlighting - appears in center where dialog shows */}
+      {copilotData && (
+        <CopilotStep text={t('tutorial.shopping.description')} order={stepOrder} name={'Shopping'}>
+          <CopilotView
+            style={{
+              position: 'absolute',
+              top: '33%',
+              left: padding.small,
+              right: padding.small,
+              height: '55%',
+              pointerEvents: 'none',
+            }}
+          />
+        </CopilotStep>
       )}
 
       <Alert

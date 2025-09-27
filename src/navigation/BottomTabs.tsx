@@ -109,6 +109,9 @@ export function BottomTabs() {
     }
   }
 
+  // Disable lazy loading for instant tab switching and reliable tutorial
+  const shouldRenderLazy = false;
+
   return (
     <>
       <StatusBar backgroundColor={colors.primaryContainer} />
@@ -157,16 +160,25 @@ export function BottomTabs() {
           tabBarLabelStyle: fonts.bodyMedium,
         })}
       >
-        <Tab.Screen name='Home' component={Home} options={{ tabBarLabel: t('home') }} />
-        <Tab.Screen name='Search' component={Search} />
-        <Tab.Screen name='Shopping' component={Shopping} options={{ tabBarLabel: t('shopping') }} />
+        <Tab.Screen
+          name='Home'
+          component={Home}
+          options={{ tabBarLabel: t('home'), lazy: shouldRenderLazy }}
+        />
+        <Tab.Screen name='Search' component={Search} options={{ lazy: shouldRenderLazy }} />
+        <Tab.Screen
+          name='Shopping'
+          component={Shopping}
+          options={{ tabBarLabel: t('shopping'), lazy: shouldRenderLazy }}
+        />
         <Tab.Screen
           name='Parameters'
           component={Parameters}
-          options={{ tabBarLabel: t('parameters') }}
+          options={{ tabBarLabel: t('parameters'), lazy: shouldRenderLazy }}
         />
       </Tab.Navigator>
     </>
   );
 }
+
 export default BottomTabs;

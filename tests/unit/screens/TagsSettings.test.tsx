@@ -4,9 +4,9 @@ import TagsSettings from '@screens/TagsSettings';
 import { isTagEqual, tagTableElement } from '@customTypes/DatabaseElementTypes';
 import { mockNavigationFunctions } from '@mocks/deps/react-navigation-mock';
 import RecipeDatabase from '@utils/RecipeDatabase';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
-import { tagsDataset } from '@test-data/tagsDataset';
-import { recipesDataset } from '@test-data/recipesDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testRecipes } from '@test-data/recipesDataset';
 import { QueryByQuery } from '@testing-library/react-native/build/queries/make-queries';
 import {
   CommonQueryOptions,
@@ -32,7 +32,7 @@ jest.mock(
 const mockRoute = {
   key: 'TagsSettings',
   name: 'TagsSettings',
-  params: { tag: tagsDataset[0] },
+  params: { tag: testTags[0] },
 };
 
 const defaultProps = {
@@ -64,16 +64,16 @@ function dialogIsOpen(item: tagTableElement, mode: DialogMode, getByTestId: Quer
 describe('TagsSettings Screen', () => {
   const db = RecipeDatabase.getInstance();
 
-  let sortedDataset = tagsDataset;
+  let sortedDataset = testTags;
 
   beforeEach(async () => {
     jest.clearAllMocks();
 
     await db.init();
-    await db.addMultipleIngredients(ingredientsDataset);
-    await db.addMultipleTags(tagsDataset);
-    await db.addMultipleRecipes(recipesDataset);
-    await db.addMultipleShopping(recipesDataset);
+    await db.addMultipleIngredients(testIngredients);
+    await db.addMultipleTags(testTags);
+    await db.addMultipleRecipes(testRecipes);
+    await db.addMultipleShopping(testRecipes);
 
     sortedDataset = [...db.get_tags()].sort((a, b) => a.name.localeCompare(b.name));
   });

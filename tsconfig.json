@@ -34,6 +34,9 @@
       "@utils/*": [
         "utils/*"
       ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
       "@test-data/*": [
         "../tests/data/*"
       ],

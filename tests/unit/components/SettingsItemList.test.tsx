@@ -1,8 +1,8 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import SettingsItemList, { SettingsItemListProps } from '@components/organisms/SettingsItemList';
-import { tagsDataset } from '@test-data/tagsDataset';
-import { ingredientsDataset } from '@test-data/ingredientsDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
 import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
 
 // Mock dependencies
@@ -15,9 +15,9 @@ jest.mock(
 );
 
 describe('SettingsItemList Component', () => {
-  const mockTags = [tagsDataset[7], tagsDataset[0], tagsDataset[8]];
+  const mockTags = [testTags[7], testTags[0], testTags[8]];
 
-  const mockIngredients = [ingredientsDataset[1], ingredientsDataset[4]];
+  const mockIngredients = [testIngredients[1], testIngredients[4]];
 
   const mockOnEdit = jest.fn();
   const mockOnDelete = jest.fn();

@@ -99,6 +99,7 @@ export type TextInputWithDropDownType = {
  * @returns JSX element representing an autocomplete text input with dropdown suggestions
  */
 export function TextInputWithDropDown(props: TextInputWithDropDownType) {
+  const { onValidate } = props;
   /**
    * Filters the reference array based on user input with case-insensitive matching
    *
@@ -155,9 +156,9 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
     // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
     if (filteredTextArray.length <= 1) {
       setShowDropdown(false);
-      props.onValidate?.(textInput);
+      onValidate?.(textInput);
     }
-  }, [filteredTextArray.length, props.onValidate, textInput]);
+  }, [filteredTextArray.length, onValidate, textInput]);
 
   useEffect(() => {
     const keyboardListener = Keyboard.addListener('keyboardDidHide', () => {
