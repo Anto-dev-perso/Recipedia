@@ -102,6 +102,39 @@ export const getMockCopilotMethods = (): Partial<jest.Mocked<CopilotContextType>
 
 export const getMockCopilotEvents = (): jest.Mocked<Emitter<Events>> => mockCopilotEvents;
 
+export const getEventHandler = (
+  eventName: 'start' | 'stop' | 'stepChange'
+): Function | undefined => {
+  const calls = mockCopilotEvents.on.mock.calls;
+  const eventCall = calls.find(call => call[0] === eventName);
+  return eventCall ? eventCall[1] : undefined;
+};
+
+export const triggerStartEvent = (): void => {
+  const handler = getEventHandler('start');
+  if (handler) {
+    handler();
+  }
+};
+
+export const triggerStopEvent = (): void => {
+  const handler = getEventHandler('stop');
+  if (handler) {
+    handler();
+  }
+};
+
+export const triggerStepChangeEvent = (step: {
+  name: string;
+  order: number;
+  text: string;
+}): void => {
+  const handler = getEventHandler('stepChange');
+  if (handler) {
+    handler(step);
+  }
+};
+
 export const resetMockCopilot = (): void => {
   mockCopilotState = {
     isActive: false,
