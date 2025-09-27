@@ -82,7 +82,7 @@ export class TableManipulation {
     try {
       await db.execAsync(dropQuery);
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.error('deleteTable: \nQuery: "', dropQuery, '"\nReceived error : ', error);
       return false;
     }
@@ -121,7 +121,7 @@ export class TableManipulation {
     try {
       await db.execAsync(createQuery);
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.error('createTable: \nQuery: "', createQuery, '"\nReceived error : ', error);
       return false;
     }
@@ -154,7 +154,7 @@ export class TableManipulation {
       } else {
         return true;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.error(
         'deleteElementById: \nQuery: "',
         deleteQuery,
@@ -184,7 +184,7 @@ export class TableManipulation {
       } else {
         return true;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.error('deleteElement: \nQuery: "', deleteQuery, '"\nReceived error : ', error);
       return false;
     }
@@ -223,7 +223,7 @@ export class TableManipulation {
     try {
       const result: SQLiteRunResult = await db.runAsync(insertQuery, params);
       return result.lastInsertRowId;
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.error('insertElement: \nQuery: "', insertQuery, '"\nReceived error : ', error);
       return undefined;
     }
@@ -245,7 +245,7 @@ export class TableManipulation {
     try {
       await db.runAsync(insertQuery, params);
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.error(
         'insertArrayOfElement<',
         typeof arrayElements[0],
@@ -276,7 +276,7 @@ export class TableManipulation {
     try {
       const result = await db.runAsync(updateQuery);
       return result.changes > 0;
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.error('editElement: \nQuery: "', updateQuery, '"\nReceived error : ', error);
       return false;
     }
@@ -327,7 +327,7 @@ export class TableManipulation {
         }
       });
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.warn('batchUpdateElementsById: \nReceived error : ', error);
       return false;
     }
@@ -363,7 +363,7 @@ export class TableManipulation {
         return undefined;
       }
       return result;
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.warn(
         'searchElementById: \nQuery: "',
         searchQuery,
@@ -407,7 +407,7 @@ export class TableManipulation {
 
     try {
       return await db.getAllAsync<T>(searchQuery, [numOfElements]);
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.warn(
         'searchRandomlyElement: \nQuery: "',
         searchQuery,
@@ -448,7 +448,7 @@ export class TableManipulation {
 
     try {
       return await db.getAllAsync<T>(searchQuery);
-    } catch (error: any) {
+    } catch (error: unknown) {
       databaseLogger.warn('searchElement: \nQuery: "', searchQuery, '"\nReceived error : ', error);
       return undefined;
     }
@@ -558,4 +558,5 @@ export class TableManipulation {
     return [insertQuery, returnValues];
   }
 }
+
 export default TableManipulation;

@@ -59,6 +59,7 @@ export const useI18n = () => {
      * Changes the current locale
      * @param locale The locale to set (e.g., 'en', 'fr')
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setLocale: (locale: string): Promise<any> => i18n.changeLanguage(locale),
 
     /**

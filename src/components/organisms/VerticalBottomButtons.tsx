@@ -27,7 +27,7 @@
  * ```
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import BottomTopButton from '@components/molecules/BottomTopButton';
 import { BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter } from '@styles/buttons';
 import { View } from 'react-native';
@@ -65,7 +65,7 @@ export function VerticalBottomButtons() {
 
   const stepOrder = TUTORIAL_STEPS.Home.order;
 
-  const startDemo = () => {
+  const startDemo = useCallback(() => {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
     }
@@ -75,23 +75,26 @@ export function VerticalBottomButtons() {
         return !prev;
       });
     }, TUTORIAL_DEMO_INTERVAL);
-  };
+  }, []);
 
-  const stopDemo = () => {
+  const stopDemo = useCallback(() => {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
       demoIntervalRef.current = null;
     }
     setMultipleLayout(false);
-  };
+  }, []);
 
-  const handleStepChange = (step: CopilotStepData | undefined) => {
-    if (step?.order === stepOrder) {
-      startDemo();
-    } else {
-      stopDemo();
-    }
-  };
+  const handleStepChange = useCallback(
+    (step: CopilotStepData | undefined) => {
+      if (step?.order === stepOrder) {
+        startDemo();
+      } else {
+        stopDemo();
+      }
+    },
+    [stepOrder, startDemo, stopDemo]
+  );
 
   useEffect(() => {
     if (!copilotData || !copilotEvents) {
@@ -111,7 +114,7 @@ export function VerticalBottomButtons() {
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  }, [currentStep]);
+  }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
 
   // TODO add a loading because camera can takes a while
   async function takePhotoAndOpenNewRecipe() {
@@ -142,7 +145,6 @@ export function VerticalBottomButtons() {
                 right: padding.small,
                 width: LargeButtonDiameter + padding.small,
                 height: BottomTopButtonOffset * 4,
-                backgroundColor: 'transparent',
                 pointerEvents: 'none',
               }}
             />

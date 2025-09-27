@@ -40,7 +40,7 @@
  * ```
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import TagButton from '@components/atomic/TagButton';
 import { Icons } from '@assets/Icons';
 import { useI18n } from '@utils/i18n';
@@ -93,33 +93,36 @@ export function FiltersSelection({
   const stepOrder = TUTORIAL_STEPS.Search.order;
   const selectionTestID = testId + '::FiltersSelection';
 
-  const triggerToggle = () => {
+  const triggerToggle = useCallback(() => {
     setAddingAFilter(prev => !prev);
-  };
+  }, [setAddingAFilter]);
 
-  const startDemo = () => {
+  const startDemo = useCallback(() => {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
     }
 
     demoIntervalRef.current = setInterval(triggerToggle, TUTORIAL_DEMO_INTERVAL);
-  };
+  }, [triggerToggle]);
 
-  const stopDemo = () => {
+  const stopDemo = useCallback(() => {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
       demoIntervalRef.current = null;
     }
     setAddingAFilter(false);
-  };
+  }, [setAddingAFilter]);
 
-  const handleStepChange = (step: CopilotStepData | undefined) => {
-    if (step?.order === stepOrder) {
-      startDemo();
-    } else {
-      stopDemo();
-    }
-  };
+  const handleStepChange = useCallback(
+    (step: CopilotStepData | undefined) => {
+      if (step?.order === stepOrder) {
+        startDemo();
+      } else {
+        stopDemo();
+      }
+    },
+    [stepOrder, startDemo, stopDemo]
+  );
 
   /**
    * Filter Toggle Button - Internal component for filter mode switching
@@ -161,7 +164,7 @@ export function FiltersSelection({
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  }, [currentStep]);
+  }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
 
   return (
     <>

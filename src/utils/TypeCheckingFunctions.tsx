@@ -104,8 +104,8 @@ export function isArrayOfType<T>(val: unknown, keys: (keyof T)[]): boolean {
  * isOfType<User>(obj, ["name", "age"]) // true if obj has name and age properties
  * ```
  */
-export function isOfType<T>(val: any, keys: (keyof T)[]): boolean {
-  return val && typeof val === 'object' && hasSameKeysAs<T>(val, keys);
+export function isOfType<T>(val: unknown, keys: (keyof T)[]): boolean {
+  return Boolean(val && typeof val === 'object' && hasSameKeysAs<T>(val, keys));
 }
 
 /**

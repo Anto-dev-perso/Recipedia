@@ -49,7 +49,7 @@
 
 import { shoppingListTableElement } from '@customTypes/DatabaseElementTypes';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SectionList, StyleProp, TextStyle, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
@@ -104,7 +104,7 @@ export function Shopping() {
 
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
 
-  const toggleDemoDialog = () => {
+  const toggleDemoDialog = useCallback(() => {
     if (isDialogOpenRef.current) {
       setIsDialogOpen(false);
       setIngredientDataForDialog({ name: '', recipesTitle: [] });
@@ -114,7 +114,7 @@ export function Shopping() {
       setIsDialogOpen(true);
       isDialogOpenRef.current = true;
     }
-  };
+  }, [shoppingList]);
 
   const closingDialogInDemo = () => {
     setIsDialogOpen(false);
@@ -122,30 +122,33 @@ export function Shopping() {
     isDialogOpenRef.current = false;
   };
 
-  const stopDemo = () => {
+  const stopDemo = useCallback(() => {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
       demoIntervalRef.current = null;
     }
     closingDialogInDemo();
-  };
+  }, []);
 
-  const startDemo = () => {
+  const startDemo = useCallback(() => {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
       demoIntervalRef.current = null;
     }
 
     demoIntervalRef.current = setInterval(toggleDemoDialog, TUTORIAL_DEMO_INTERVAL);
-  };
+  }, [toggleDemoDialog]);
 
-  const handleStepChange = (step: CopilotStepData | undefined) => {
-    if (step?.order === stepOrder) {
-      startDemo();
-    } else {
-      stopDemo();
-    }
-  };
+  const handleStepChange = useCallback(
+    (step: CopilotStepData | undefined) => {
+      if (step?.order === stepOrder) {
+        startDemo();
+      } else {
+        stopDemo();
+      }
+    },
+    [stepOrder, startDemo, stopDemo]
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -171,7 +174,7 @@ export function Shopping() {
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  }, [currentStep]);
+  }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
 
   const sections = shoppingCategories
     .map(category => {
@@ -358,7 +361,6 @@ export function Shopping() {
               left: padding.small,
               right: padding.small,
               height: '55%',
-              backgroundColor: 'transparent',
               pointerEvents: 'none',
             }}
           />
