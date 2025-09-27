@@ -113,8 +113,8 @@ export function FiltersSelection({
     setAddingAFilter(false);
   };
 
-  const handleStepChange = (step: CopilotStepData) => {
-    if (step.order === stepOrder) {
+  const handleStepChange = (step: CopilotStepData | undefined) => {
+    if (step?.order === stepOrder) {
       startDemo();
     } else {
       stopDemo();

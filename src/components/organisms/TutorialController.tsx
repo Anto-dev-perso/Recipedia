@@ -12,14 +12,34 @@ export type TutorialProviderProps = {
   onComplete: () => void;
 };
 
+/**
+ * TutorialManager - Internal component managing tutorial lifecycle and events
+ *
+ * Handles tutorial start/stop events, step changes, and auto-start functionality.
+ * Integrates with navigation to ensure proper screen transitions during tutorial.
+ *
+ * @param props - Component props
+ * @param props.onComplete - Callback fired when tutorial completes
+ */
 function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete'>) {
   const navigation = useNavigation<TabScreenNavigation>();
   const { start, copilotEvents, visible } = useCopilot();
 
+  /**
+   * Handles tutorial start event
+   *
+   * Logs tutorial initiation for analytics and debugging purposes.
+   */
   const handleStart = () => {
     tutorialLogger.info('Tutorial started');
   };
 
+  /**
+   * Handles tutorial stop/completion event
+   *
+   * Fires completion callback, logs tutorial end, and navigates back to Home screen.
+   * Uses setTimeout to ensure navigation occurs after copilot cleanup completes.
+   */
   const handleStop = () => {
     tutorialLogger.info('Tutorial stopped');
     onComplete();
@@ -29,12 +49,22 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
     }, 0);
   };
 
-  const handleStepChange = (step: CopilotStepData) => {
-    tutorialLogger.debug('Copilot step change', {
-      name: step.name,
-      order: step.order,
-      text: step.text,
-    });
+  /**
+   * Handles tutorial step change events
+   *
+   * Logs step transitions for debugging and analytics. Only logs when
+   * step data is available to avoid undefined reference errors.
+   *
+   * @param step - Tutorial step data or undefined if no step
+   */
+  const handleStepChange = (step: CopilotStepData | undefined) => {
+    if (step) {
+      tutorialLogger.debug('Copilot step change', {
+        name: step.name,
+        order: step.order,
+        text: step.text,
+      });
+    }
   };
 
   // Auto-start tutorial when copilot is ready
@@ -67,6 +97,24 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
   return null;
 }
 
+/**
+ * TutorialProvider - Context provider for guided tutorial experience
+ *
+ * Wraps the app with react-native-copilot functionality to enable guided tutorials.
+ * Manages tutorial state, step progression, and provides custom tooltip component.
+ *
+ * Features:
+ * - Copilot provider integration with custom styling
+ * - Tutorial step management and event handling
+ * - Auto-start capability when copilot is ready
+ * - Custom tooltip component with navigation controls
+ * - Completion callback handling
+ *
+ * @param props - Component props
+ * @param props.children - Child components to wrap with tutorial functionality
+ * @param props.onComplete - Callback fired when tutorial is completed or stopped
+ * @returns JSX element with tutorial provider wrapper
+ */
 export function TutorialProvider({ children, onComplete }: TutorialProviderProps) {
   const tooltipStyle = {
     margin: 0,

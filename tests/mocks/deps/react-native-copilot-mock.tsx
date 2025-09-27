@@ -1,7 +1,36 @@
 import React, { PropsWithChildren } from 'react';
 import { View } from 'react-native';
-import type { CopilotContextType, CopilotOptions, Events, Step } from 'react-native-copilot';
 import type { Emitter } from 'mitt';
+
+type CopilotStepData = {
+  order: number;
+  name: string;
+  text: string;
+};
+
+type Events = {
+  stepChange: CopilotStepData | undefined;
+  start: undefined;
+  stop: undefined;
+};
+
+type CopilotContextType = {
+  start: () => void;
+  stop: () => void;
+  goToNext: () => void;
+  goToNth: (step: number) => void;
+  goToPrev: () => void;
+  registerStep: (step: any) => void;
+  unregisterStep: (stepId: string) => void;
+  currentStep: CopilotStepData | undefined;
+  isActive: boolean;
+  copilotEvents: Emitter<Events> | null;
+};
+
+type CopilotOptions = {
+  overlay?: string;
+  animated?: boolean;
+};
 
 const mockCopilotEvents: jest.Mocked<Emitter<Events>> = {
   on: jest.fn(),
@@ -23,7 +52,7 @@ const mockCopilotMethods: Partial<jest.Mocked<CopilotContextType>> = {
 
 interface MockCopilotState {
   isActive: boolean;
-  currentStep: Step | null;
+  currentStep: CopilotStepData | null;
   isFirstStep: boolean;
   isLastStep: boolean;
   visible: boolean;
@@ -68,7 +97,7 @@ export const CopilotStep: React.FC<CopilotStepProps> = ({ children, name, ...pro
 
 export const walkthroughable = <P = any,>(
   Component: React.ComponentType<P>
-): React.FunctionComponent<P> => Component;
+): React.ComponentType<P> => Component;
 
 // Create a stable return object to prevent infinite re-renders
 let stableCopilotReturn: CopilotContextType | null = null;
@@ -92,6 +121,11 @@ export const useCopilot = jest.fn((): CopilotContextType => {
   return stableCopilotReturn!;
 });
 
+/**
+ * Updates the mock copilot state for testing purposes
+ *
+ * @param state - Partial state object to merge with existing mock state
+ */
 export const setMockCopilotState = (state: Partial<MockCopilotState>) => {
   mockCopilotState = { ...mockCopilotState, ...state };
   updateStableCopilotReturn();
@@ -102,11 +136,17 @@ export const getMockCopilotMethods = (): Partial<jest.Mocked<CopilotContextType>
 
 export const getMockCopilotEvents = (): jest.Mocked<Emitter<Events>> => mockCopilotEvents;
 
+/**
+ * Retrieves the event handler function for a specific copilot event
+ *
+ * @param eventName - The name of the event to get the handler for
+ * @returns The handler function if found, undefined otherwise
+ */
 export const getEventHandler = (
   eventName: 'start' | 'stop' | 'stepChange'
 ): Function | undefined => {
   const calls = mockCopilotEvents.on.mock.calls;
-  const eventCall = calls.find(call => call[0] === eventName);
+  const eventCall = calls.find(call => (call[0] as string) === eventName);
   return eventCall ? eventCall[1] : undefined;
 };
 
@@ -124,6 +164,11 @@ export const triggerStopEvent = (): void => {
   }
 };
 
+/**
+ * Triggers a stepChange event with the specified step data
+ *
+ * @param step - The step data to pass to the stepChange event handler
+ */
 export const triggerStepChangeEvent = (step: {
   name: string;
   order: number;
@@ -135,6 +180,11 @@ export const triggerStepChangeEvent = (step: {
   }
 };
 
+/**
+ * Resets the mock copilot state to its initial values and clears all Jest mocks
+ *
+ * Use this function in test setup or cleanup to ensure a clean test environment
+ */
 export const resetMockCopilot = (): void => {
   mockCopilotState = {
     isActive: false,

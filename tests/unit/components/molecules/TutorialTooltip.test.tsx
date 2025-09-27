@@ -163,8 +163,10 @@ describe('TutorialTooltip Component', () => {
     fireEvent.press(getByTestId('TutorialTooltip::Next'));
 
     // Simulate navigation state change
-    const stateListener = mockAddListener.mock.calls.find(call => call[0] === 'state')[1];
-    stateListener();
+    const stateListener = mockAddListener.mock.calls.find(call => call[0] === 'state')?.[1];
+    if (stateListener) {
+      stateListener();
+    }
 
     expect(mockGoToNext).toHaveBeenCalled();
   });

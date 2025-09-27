@@ -13,6 +13,27 @@ enum AppMode {
   Ready = 'ready',
 }
 
+/**
+ * AppWrapper - Root application component managing app initialization and modes
+ *
+ * Controls the main application flow including first-time user experience,
+ * tutorial mode, and normal app operation. Handles state transitions between
+ * different app modes based on user actions and first launch detection.
+ *
+ * App Modes:
+ * - Loading: Initial state while checking first launch
+ * - Welcome: First-time user onboarding screen
+ * - Tutorial: Guided tutorial with sample data
+ * - Ready: Normal app operation
+ *
+ * Features:
+ * - First launch detection and onboarding
+ * - Tutorial mode with pre-populated shopping list
+ * - Shopping list reset on app launch
+ * - State management for app flow
+ *
+ * @returns JSX element representing the current app mode
+ */
 export default function AppWrapper() {
   const [mode, setMode] = useState<AppMode>(AppMode.Loading);
 
@@ -28,6 +49,12 @@ export default function AppWrapper() {
     });
   }, []);
 
+  /**
+   * Handles normal app launch initialization
+   *
+   * Resets shopping list, marks app as launched, and transitions to ready mode.
+   * This function is called both for normal app launch and after tutorial completion.
+   */
   const handleAppLaunch = () => {
     RecipeDatabase.getInstance().resetShoppingList();
     tutorialLogger.info('App launch - resetting shopping list');
@@ -35,6 +62,13 @@ export default function AppWrapper() {
     markAsLaunched();
   };
 
+  /**
+   * Handles tutorial mode initialization
+   *
+   * Prepares the app for tutorial by adding a sample recipe to the shopping list
+   * and transitioning to tutorial mode. This ensures the tutorial has meaningful
+   * data to demonstrate app features.
+   */
   const handleStartTutorial = async () => {
     const recipeDb = RecipeDatabase.getInstance();
     const recipeForTutorial = recipeDb.get_recipes()[0];
@@ -43,11 +77,23 @@ export default function AppWrapper() {
     setMode(AppMode.Tutorial);
   };
 
+  /**
+   * Handles welcome screen skip action
+   *
+   * Bypasses the tutorial and proceeds directly to normal app operation.
+   * Calls handleAppLaunch to perform standard initialization.
+   */
   const handleSkipWelcome = () => {
     handleAppLaunch();
     appLogger.info('Welcome skipped - proceeding to main app');
   };
 
+  /**
+   * Handles tutorial completion
+   *
+   * Transitions from tutorial mode to normal app operation after tutorial
+   * is completed. Performs same initialization as normal app launch.
+   */
   const handleTutorialComplete = () => {
     handleAppLaunch();
     appLogger.info('Tutorial completed successfully');

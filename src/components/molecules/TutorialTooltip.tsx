@@ -8,6 +8,20 @@ import { TabScreenNavigation } from '@customTypes/ScreenTypes';
 import { TUTORIAL_STEPS } from '@utils/Constants';
 import { padding } from '@styles/spacing';
 
+/**
+ * TutorialTooltip - Interactive tutorial overlay component
+ *
+ * Displays tutorial step content with navigation controls. Integrates with react-native-copilot
+ * to provide guided tutorial experience with Previous/Next/Skip/Finish buttons.
+ *
+ * Features:
+ * - Step-by-step navigation with screen transitions
+ * - Automatic navigation state handling
+ * - Customizable tooltip styling with Material Design
+ * - Integration with copilot tutorial system
+ *
+ * @returns JSX element for tutorial tooltip overlay
+ */
 export function TutorialTooltip() {
   const { colors } = useTheme();
   const { t } = useI18n();
@@ -33,7 +47,13 @@ export function TutorialTooltip() {
 
   const { isFirstStep, isLastStep, goToNext, goToPrev, stop, currentStep } = copilotData;
 
-  // Helper function to find step by order
+  /**
+   * Helper function to find tutorial step configuration by order number
+   *
+   * @param order - The order number of the tutorial step to find
+   * @returns Tutorial step configuration object
+   * @throws Error if step with given order is not found
+   */
   const findStepByOrder = (order: number) => {
     const screens = Object.values(TUTORIAL_STEPS);
     const step = screens.find(step => step.order === order);
@@ -45,10 +65,22 @@ export function TutorialTooltip() {
     return step;
   };
 
+  /**
+   * Gets the screen name for the next tutorial step
+   *
+   * @param currentOrder - Current step order number
+   * @returns Screen name for the next step
+   */
   const getNextScreen = (currentOrder: number) => {
     return findStepByOrder(currentOrder + 1).name;
   };
 
+  /**
+   * Gets the screen name for the previous tutorial step
+   *
+   * @param currentOrder - Current step order number
+   * @returns Screen name for the previous step
+   */
   const getPreviousScreen = (currentOrder: number) => {
     return findStepByOrder(currentOrder - 1).name;
   };
@@ -58,6 +90,13 @@ export function TutorialTooltip() {
     return null;
   }
 
+  /**
+   * Handles advancing to the next tutorial step
+   *
+   * Navigates to the next screen in the tutorial sequence and sets up
+   * step advancement to occur after navigation completes. Uses deferred
+   * execution to ensure proper timing with navigation state changes.
+   */
   const handleNext = async () => {
     if (!currentStep) {
       return;
@@ -75,6 +114,13 @@ export function TutorialTooltip() {
     navigation.navigate(nextScreen);
   };
 
+  /**
+   * Handles going back to the previous tutorial step
+   *
+   * Navigates to the previous screen in the tutorial sequence and sets up
+   * step regression to occur after navigation completes. Uses deferred
+   * execution to ensure proper timing with navigation state changes.
+   */
   const handlePrevious = async () => {
     if (!currentStep) {
       return;
