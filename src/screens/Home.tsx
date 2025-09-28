@@ -46,16 +46,23 @@
 
 import RecipeRecommendation from '@components/organisms/RecipeRecommendation';
 
-import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import React, { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { FlatList, RefreshControl, SafeAreaView, View } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
 import RecipeDatabase from '@utils/RecipeDatabase';
+import { generateHomeRecommendations } from '@utils/FilterFunctions';
+import { RecommendationType } from '@customTypes/RecipeFiltersTypes';
 import VerticalBottomButtons from '@components/organisms/VerticalBottomButtons';
 import { useFocusEffect } from '@react-navigation/native';
 import { useI18n } from '@utils/i18n';
-import { screenWidth } from '@styles/spacing';
+import { padding, screenWidth } from '@styles/spacing';
 import { homeLogger } from '@utils/logger';
+import { useSeasonFilter } from '@context/SeasonFilterContext';
+
+const homeId = 'Home';
+const recommandationId = homeId + '::RecipeRecommendation';
+
+const howManyItemInCarousel = 20;
 
 /**
  * Home screen component - Main dashboard with recipe recommendations
@@ -66,118 +73,98 @@ import { homeLogger } from '@utils/logger';
 /**
  * Home screen component - Main dashboard with recipe recommendations
  */
+
 export function Home() {
   const { t } = useI18n();
   const { colors } = useTheme();
+  const { seasonFilter } = useSeasonFilter();
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [recommendations, setRecommendations] = useState<Array<RecommendationType>>([]);
 
-  const homeId = 'Home';
-  const recommandationId = homeId + '::RecipeRecommendation';
-
-  const howManyItemInCarousel = 4;
-  // TODO name these recommendation (and maybe add more ?)
-  const [elementsForRecommendation1, setElementsForRecommendation1] = useState(
-    new Array<recipeTableElement>()
-  );
-  const [elementsForRecommendation2, setElementsForRecommendation2] = useState(
-    new Array<recipeTableElement>()
-  );
-  const [elementsForRecommendation3, setElementsForRecommendation3] = useState(
-    new Array<recipeTableElement>()
-  );
-  const [elementsForRecommendation4, setElementsForRecommendation4] = useState(
-    new Array<recipeTableElement>()
-  );
-
-  function randomlySearchElements(databaseInstance: RecipeDatabase) {
-    homeLogger.debug('Loading random recipe recommendations', {
+  const loadRecommendations = useCallback(() => {
+    homeLogger.debug('Loading smart recipe recommendations', {
       carouselSize: howManyItemInCarousel,
+      seasonFilterEnabled: seasonFilter,
     });
-    setElementsForRecommendation1(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
-    setElementsForRecommendation2(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
-    setElementsForRecommendation3(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
-    setElementsForRecommendation4(databaseInstance.searchRandomlyRecipes(howManyItemInCarousel));
-    homeLogger.debug('Random recipe recommendations loaded successfully');
-  }
+
+    setRecommendations(generateHomeRecommendations(seasonFilter, howManyItemInCarousel));
+    homeLogger.debug('Smart recipe recommendations loaded successfully');
+  }, [seasonFilter]);
 
   const onRefresh = useCallback(() => {
     homeLogger.info('User refreshing home screen recommendations');
     setRefreshing(true);
-    randomlySearchElements(RecipeDatabase.getInstance());
+    loadRecommendations();
     setRefreshing(false);
-  }, []);
+  }, [loadRecommendations]);
 
   useEffect(() => {
-    randomlySearchElements(RecipeDatabase.getInstance());
-  }, []);
+    loadRecommendations();
+  }, [loadRecommendations]);
 
   useFocusEffect(() => {
     const recipeDb = RecipeDatabase.getInstance();
     const recipeTitleDeleted = new Set<string>();
-    const checkIfRecipeExistAndUpdateTitlesToDelete = (recipeArray: Array<recipeTableElement>) => {
-      for (const recipe of recipeArray) {
+
+    // Check if any recipes in recommendations no longer exist
+    recommendations.forEach(recommendation => {
+      recommendation.recipes.forEach(recipe => {
         if (!recipeDb.isRecipeExist(recipe)) {
           recipeTitleDeleted.add(recipe.title);
         }
-      }
-    };
-    checkIfRecipeExistAndUpdateTitlesToDelete(elementsForRecommendation1);
-    checkIfRecipeExistAndUpdateTitlesToDelete(elementsForRecommendation2);
-    checkIfRecipeExistAndUpdateTitlesToDelete(elementsForRecommendation3);
-    checkIfRecipeExistAndUpdateTitlesToDelete(elementsForRecommendation4);
+      });
+    });
 
+    // If any recipes were deleted, refresh recommendations
     if (recipeTitleDeleted.size > 0) {
-      const filterArrayAndUpdateState = (
-        recipeArray: Array<recipeTableElement>,
-        setState: React.Dispatch<React.SetStateAction<Array<recipeTableElement>>>
-      ) => {
-        const filteredArray = recipeArray.filter(recipe => !recipeTitleDeleted.has(recipe.title));
-        if (filteredArray.length < howManyItemInCarousel) {
-          setState([
-            ...filteredArray,
-            ...recipeDb.searchRandomlyRecipes(howManyItemInCarousel - filteredArray.length),
-          ]);
-        }
-      };
-      filterArrayAndUpdateState(elementsForRecommendation1, setElementsForRecommendation1);
-      filterArrayAndUpdateState(elementsForRecommendation2, setElementsForRecommendation2);
-      filterArrayAndUpdateState(elementsForRecommendation3, setElementsForRecommendation3);
-      filterArrayAndUpdateState(elementsForRecommendation4, setElementsForRecommendation4);
+      homeLogger.info('Detected deleted recipes, refreshing recommendations', {
+        deletedCount: recipeTitleDeleted.size,
+      });
+      loadRecommendations();
     }
   });
 
+  const renderEmptyState = () => (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: padding.medium,
+      }}
+    >
+      <Text
+        variant='headlineSmall'
+        style={{ textAlign: 'center', marginBottom: padding.veryLarge }}
+      >
+        {t('emptyState.noRecommendations.title')}
+      </Text>
+      <Text variant='bodyMedium' style={{ textAlign: 'center', color: colors.onSurfaceVariant }}>
+        {t('emptyState.noRecommendations.description')}
+      </Text>
+    </View>
+  );
+
   return (
-    <SafeAreaView style={{ backgroundColor: colors.background }}>
-      <ScrollView
-        testID={'HomeScrollView'}
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <FlatList
+        data={recommendations}
+        renderItem={({ item }) => (
+          <RecipeRecommendation
+            testId={`${recommandationId}::${item.id}`}
+            carouselProps={item.recipes}
+            titleRecommendation={t(item.titleKey, item.titleParams)}
+          />
+        )}
+        keyExtractor={item => item.id}
+        ListEmptyComponent={renderEmptyState}
         refreshControl={
           <RefreshControl colors={[colors.primary]} refreshing={refreshing} onRefresh={onRefresh} />
         }
-      >
-        <RecipeRecommendation
-          testId={recommandationId + '::1'}
-          carouselProps={elementsForRecommendation1}
-          titleRecommendation={`${t('recommendation')} 1`}
-        />
-        <RecipeRecommendation
-          testId={recommandationId + '::2'}
-          carouselProps={elementsForRecommendation2}
-          titleRecommendation={`${t('recommendation')} 2`}
-        />
-        <RecipeRecommendation
-          testId={recommandationId + '::3'}
-          carouselProps={elementsForRecommendation3}
-          titleRecommendation={`${t('recommendation')} 3`}
-        />
-        <RecipeRecommendation
-          testId={recommandationId + '::4'}
-          carouselProps={elementsForRecommendation4}
-          titleRecommendation={`${t('recommendation')} 4`}
-        />
-        {/* Add padding to avoid having the last carousel item on buttons */}
-        <View style={{ paddingBottom: screenWidth / 6 }} />
-      </ScrollView>
+        contentContainerStyle={{ paddingBottom: screenWidth / 6, flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      />
       <VerticalBottomButtons />
     </SafeAreaView>
   );
