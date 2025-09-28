@@ -47,7 +47,11 @@
  * ```
  */
 
-import { ingredientType, shoppingListTableElement } from './DatabaseElementTypes';
+import {
+  ingredientType,
+  recipeTableElement,
+  shoppingListTableElement,
+} from './DatabaseElementTypes';
 
 /** Current month for seasonal filtering (1-12) */
 export const currentMonth = new Date().getMonth() + 1;
@@ -144,3 +148,22 @@ export const prepTimeValues = [
   'preparationTimes.fourtyToFifty',
   'preparationTimes.oneHourPlus',
 ];
+
+/**
+ * Type definition for home screen recommendation objects
+ *
+ * Represents a collection of recipes with a common theme (random, seasonal,
+ * ingredient-based, or tag-based) for display in the home screen carousel.
+ */
+export type RecommendationType = {
+  /** Unique identifier for the recommendation */
+  id: string;
+  /** Translation key for the recommendation title */
+  titleKey: string;
+  /** Optional parameters for title translation interpolation */
+  titleParams?: { ingredientName?: string; tagName?: string };
+  /** Array of recipes in this recommendation */
+  recipes: Array<recipeTableElement>;
+  /** Category type of the recommendation */
+  type: 'random' | 'seasonal' | 'ingredient' | 'tag';
+};

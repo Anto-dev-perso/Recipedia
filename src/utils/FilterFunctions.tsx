@@ -10,6 +10,7 @@
 import {
   arrayOfType,
   ingredientTableElement,
+  ingredientType,
   recipeTableElement,
 } from '@customTypes/DatabaseElementTypes';
 import {
@@ -17,10 +18,12 @@ import {
   filtersCategories,
   listFilter,
   prepTimeValues,
+  RecommendationType,
   TListFilter,
 } from '@customTypes/RecipeFiltersTypes';
 import { TFunction } from 'i18next';
-import { searchLogger } from '@utils/logger';
+import { homeLogger, searchLogger } from '@utils/logger';
+import RecipeDatabase from './RecipeDatabase';
 
 /**
  * Creates filter categories with available values for UI display
@@ -178,7 +181,7 @@ export function filterFromRecipe(
             elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.title, value);
             break;
           case listFilter.inSeason:
-            elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.season, value);
+            elementToKeep = elementToKeep && isRecipeInCurrentSeason(recipe);
             break;
           case listFilter.tags:
             elementToKeep =
@@ -423,7 +426,7 @@ export function retrieveAllFilters(filters: Map<TListFilter, Array<string>>): Ar
  * @param filters - The filter values to search for
  * @returns True if any filter value is found in the element
  */
-function isTheElementContainsTheFilter(
+export function isTheElementContainsTheFilter(
   elementToTest: string | Array<string>,
   filters: Array<string> | string
 ): boolean {
@@ -479,4 +482,203 @@ function applyToRecipeFilterPrepTime(
     }
   }
   return false;
+}
+
+/**
+ * Filters recipes to only include those that are in season for the current month
+ *
+ * Uses the same seasonal logic as the main filtering system, checking if recipes
+ * contain the current month or are available year-round ('*').
+ *
+ * @param recipes - Array of recipes to filter
+ * @returns Array of recipes that are currently in season
+ *
+ * @example
+ * ```typescript
+ * const seasonalRecipes = filterRecipesByCurrentSeason(allRecipes);
+ * console.log(`Found ${seasonalRecipes.length} seasonal recipes`);
+ * ```
+ */
+export function filterRecipesByCurrentSeason(
+  recipes: Array<recipeTableElement>
+): Array<recipeTableElement> {
+  const currentMonth = new Date().getMonth() + 1;
+  const monthString = currentMonth.toString();
+
+  return recipes.filter(recipe => isTheElementContainsTheFilter(recipe.season, [monthString, '*']));
+}
+
+/**
+ * Checks if a single recipe is in season for the current month
+ *
+ * @param recipe - The recipe to check
+ * @returns True if the recipe is in season, false otherwise
+ */
+export function isRecipeInCurrentSeason(recipe: recipeTableElement): boolean {
+  const currentMonth = new Date().getMonth() + 1;
+  const monthString = currentMonth.toString();
+  return isTheElementContainsTheFilter(recipe.season, [monthString, '*']);
+}
+
+/**
+ * Shuffles an array using the Fisher-Yates algorithm and optionally returns a subset
+ *
+ * This function creates a shuffled copy of the input array without modifying the original.
+ * Optionally returns only the first N elements from the shuffled array.
+ *
+ * @param arrayToShuffle - The array to shuffle
+ * @param numberOfElementsWanted - Optional number of elements to return from shuffled array
+ * @returns Shuffled array or subset of shuffled array
+ *
+ * @example
+ * ```typescript
+ * const recipes = [recipe1, recipe2, recipe3, recipe4, recipe5];
+ * const shuffled = fisherYatesShuffle(recipes, 3); // Returns 3 random recipes
+ * ```
+ */
+export function fisherYatesShuffle<T>(
+  arrayToShuffle: Array<T>,
+  numberOfElementsWanted?: number
+): Array<T> {
+  const shuffled = [...arrayToShuffle]; // Create a copy to avoid mutating the original array
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); // Pick a random index
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
+  }
+  if (
+    numberOfElementsWanted === undefined ||
+    numberOfElementsWanted === 0 ||
+    numberOfElementsWanted >= arrayToShuffle.length
+  ) {
+    return shuffled;
+  } else {
+    return shuffled.slice(0, numberOfElementsWanted);
+  }
+}
+
+/**
+ * Retrieves a random selection of recipes from the provided array
+ *
+ * @param recipes - Array of recipes to select from
+ * @param numOfElements - Number of random recipes to return
+ * @returns Array of random recipes
+ *
+ * @example
+ * ```typescript
+ * const randomRecipes = getRandomRecipes(allRecipes, 5);
+ * console.log(`Got ${randomRecipes.length} random recipes`);
+ * ```
+ */
+export function getRandomRecipes(
+  recipes: Array<recipeTableElement>,
+  numOfElements: number
+): Array<recipeTableElement> {
+  if (recipes.length === 0) {
+    return [];
+  }
+  return fisherYatesShuffle(recipes, numOfElements);
+}
+
+/**
+ * Generates smart recommendations for the home screen
+ *
+ * Creates diverse recipe recommendations using various filtering strategies
+ * including random selection, seasonal filtering, ingredient-based filtering,
+ * and tag-based filtering. Respects user preferences for seasonal filtering.
+ *
+ * @param seasonFilterEnabled - Whether the user has global seasonal filtering enabled
+ * @param recipesPerRecommendation - Number of recipes per recommendation (default: 20)
+ * @returns Array of recommendation objects with titles and recipes
+ *
+ * @example
+ * ```typescript
+ * const recommendations = generateHomeRecommendations(false, 20);
+ * console.log(`Generated ${recommendations.length} recommendations`);
+ * ```
+ */
+export function generateHomeRecommendations(
+  seasonFilterEnabled: boolean,
+  recipesPerRecommendation: number
+): Array<RecommendationType> {
+  const recipeDatabase = RecipeDatabase.getInstance();
+  const recommendations = new Array<RecommendationType>();
+  const allRecipes = recipeDatabase.get_recipes();
+
+  const seasonalRecipes = filterRecipesByCurrentSeason(allRecipes);
+
+  const recipesForFiltering = seasonFilterEnabled ? seasonalRecipes : allRecipes;
+
+  recommendations.push({
+    id: 'random',
+    titleKey: 'recommendations.randomSelection',
+    recipes: getRandomRecipes(recipesForFiltering, recipesPerRecommendation),
+    type: 'random' as const,
+  });
+
+  // Only add dedicated seasonal recommendation when season filter is disabled
+  if (!seasonFilterEnabled && seasonalRecipes.length > 0) {
+    const shuffledSeasonalRecipes = fisherYatesShuffle(seasonalRecipes, recipesPerRecommendation);
+    recommendations.push({
+      id: 'seasonal',
+      titleKey: 'recommendations.perfectForCurrentSeason',
+      recipes: shuffledSeasonalRecipes,
+      type: 'seasonal' as const,
+    });
+  }
+
+  const randomGrainIngredients = recipeDatabase.getRandomIngredientsByType(
+    ingredientType.grainOrCereal,
+    2
+  );
+  randomGrainIngredients.forEach((ingredient, index) => {
+    const ingredientRecipes = recipesForFiltering.filter(recipe =>
+      isTheElementContainsTheFilter(
+        recipe.ingredients.map(ing => ing.name),
+        ingredient.name
+      )
+    );
+
+    if (ingredientRecipes.length > 0) {
+      const shuffledIngredientRecipes = fisherYatesShuffle(
+        ingredientRecipes,
+        recipesPerRecommendation
+      );
+      recommendations.push({
+        id: `grain-${index + 1}`,
+        titleKey: `recommendations.basedOnIngredient`,
+        titleParams: { ingredientName: ingredient.name },
+        recipes: shuffledIngredientRecipes,
+        type: 'ingredient' as const,
+      });
+    }
+  });
+
+  const randomTags = recipeDatabase.getRandomTags(3);
+  randomTags.forEach((tag, index) => {
+    const tagRecipes = recipesForFiltering.filter(recipe =>
+      isTheElementContainsTheFilter(
+        recipe.tags.map(t => t.name),
+        tag.name
+      )
+    );
+
+    if (tagRecipes.length > 0) {
+      const shuffledTagRecipes = fisherYatesShuffle(tagRecipes, recipesPerRecommendation);
+      recommendations.push({
+        id: `tag-${index + 1}`,
+        titleKey: `recommendations.tagRecipes`,
+        titleParams: { tagName: tag.name },
+        recipes: shuffledTagRecipes,
+        type: 'tag' as const,
+      });
+    }
+  });
+
+  homeLogger.info('Generated home recommendations', {
+    count: recommendations.length,
+    seasonFilterEnabled,
+    recipesPerRecommendation,
+  });
+
+  return recommendations;
 }
