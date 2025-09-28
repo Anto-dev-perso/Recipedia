@@ -12,6 +12,7 @@ import {
 } from '@customTypes/DatabaseElementTypes';
 import { shoppingAddedMultipleTimes, testShopping } from '@test-data/shoppingListsDataset';
 import { listFilter } from '@customTypes/RecipeFiltersTypes';
+import { getRandomRecipes } from '@utils/FilterFunctions';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 
@@ -44,7 +45,7 @@ describe('RecipeDatabase', () => {
     // TODO found a test where the openDatabase fails
 
     test('Database initialization creates all tables', async () => {
-      expect(db.searchRandomlyRecipes(1)).toEqual([]);
+      expect(getRandomRecipes(db.get_recipes(), 1)).toEqual([]);
     });
 
     test('Find functions return undefined when the array are empty', () => {
@@ -977,52 +978,65 @@ describe('RecipeDatabase', () => {
     // TODO implement and test cases where we verify a tag but it doesn't exist (yet)
     // TODO implement and test cases where we verify an ingredient but it doesn't exist (yet)
 
-    test('Randomly select recipes', async () => {
-      const allRecipes = db.get_recipes();
+    test('getRandomIngredientsByType returns correct number of ingredients', () => {
+      const grainIngredients = db.getRandomIngredientsByType(ingredientType.grainOrCereal, 2);
+      expect(grainIngredients.length).toBeLessThanOrEqual(2);
 
-      {
-        const randomRecipe = db.searchRandomlyRecipes(1);
-        expect(randomRecipe.length).toBe(1);
-        // @ts-ignore id shall always be defined now
-        expect(randomRecipe[0]).toEqual(allRecipes[randomRecipe[0].id - 1]);
+      grainIngredients.forEach(ingredient => {
+        expect(ingredient.type).toBe(ingredientType.grainOrCereal);
+      });
 
-        const anotherRandomRecipeWithoutId = db.searchRandomlyRecipes(1);
-        expect(anotherRandomRecipeWithoutId.length).toBe(1);
-        expect(anotherRandomRecipeWithoutId).not.toEqual(randomRecipe[0]);
-        expect(anotherRandomRecipeWithoutId[0]).toEqual(
-          // @ts-ignore id shall always be defined now
-          allRecipes[anotherRandomRecipeWithoutId[0].id - 1]
-        );
-      }
-      {
-        const multipleRecipes = db.searchRandomlyRecipes(5);
-        const uniqueRecipe = new Set(multipleRecipes);
-        expect(multipleRecipes.length).toBe(5);
-        expect(uniqueRecipe.size).toEqual(multipleRecipes.length);
-        for (let i = 0; i < multipleRecipes.length; i++) {
-          // @ts-ignore id shall always been defined now
-          expect(multipleRecipes[i]).toEqual(allRecipes[multipleRecipes[i].id - 1]);
-        }
-      }
+      const uniqueIngredients = new Set(grainIngredients.map(ingredient => ingredient.id));
+      expect(uniqueIngredients.size).toBe(grainIngredients.length);
+    });
 
-      {
-        const searchAll = db.searchRandomlyRecipes(allRecipes.length);
-        expect(searchAll.length).toBe(allRecipes.length);
-        for (let i = 0; i < searchAll.length; i++) {
-          // @ts-ignore id shall always been defined now
-          expect(searchAll[i]).toEqual(allRecipes[searchAll[i].id - 1]);
-        }
-        expect(searchAll).not.toEqual(allRecipes); // not equal because all elements should not be in the same order
+    test('getRandomIngredientsByType handles edge cases', () => {
+      const zeroIngredients = db.getRandomIngredientsByType(ingredientType.grainOrCereal, 0);
+      expect(zeroIngredients).toEqual([]);
 
-        const searchAllAgain = db.searchRandomlyRecipes(allRecipes.length);
-        expect(searchAllAgain.length).toBe(allRecipes.length);
-        for (let i = 0; i < searchAllAgain.length; i++) {
-          // @ts-ignore id shall always been defined now
-          expect(searchAllAgain[i]).toEqual(allRecipes[searchAllAgain[i].id - 1]);
-        }
-        expect(searchAllAgain).not.toEqual(allRecipes);
-        expect(searchAllAgain).not.toEqual(searchAll);
-      }
+      const meatIngredients = db.getRandomIngredientsByType(ingredientType.meat, 1000);
+      expect(meatIngredients.length).toBeGreaterThan(0);
+      expect(meatIngredients.length).toBeLessThan(1000);
+      expect(meatIngredients.length).toBeLessThanOrEqual(db.get_ingredients().length);
+
+      meatIngredients.forEach(ingredient => {
+        expect(ingredient.type).toBe(ingredientType.meat);
+      });
+
+      const uniqueMeatIngredients = new Set(meatIngredients.map(ingredient => ingredient.id));
+      expect(uniqueMeatIngredients.size).toBe(meatIngredients.length);
+    });
+
+    test('getRandomIngredientsByType returns empty array for non-existent type', () => {
+      const nonExistentType = 'nonExistentType' as ingredientType;
+      const result = db.getRandomIngredientsByType(nonExistentType, 5);
+      expect(result).toEqual([]);
+    });
+
+    test('getRandomTags returns correct number of tags', () => {
+      const randomTags = db.getRandomTags(3);
+      expect(randomTags.length).toBeLessThanOrEqual(3);
+
+      const uniqueTags = new Set(randomTags.map(tag => tag.id));
+      expect(uniqueTags.size).toBe(randomTags.length);
+    });
+
+    test('getRandomTags handles edge cases', () => {
+      const zeroTags = db.getRandomTags(0);
+      expect(zeroTags).toEqual([]);
+
+      const allTags = db.get_tags();
+      const manyTags = db.getRandomTags(1000);
+      expect(manyTags.length).toBeGreaterThan(0);
+      expect(manyTags.length).toBeLessThan(1000);
+      expect(manyTags.length).toBeLessThanOrEqual(allTags.length);
+
+      manyTags.forEach(tag => {
+        expect(allTags).toContainEqual(tag);
+      });
+
+      const uniqueManyTags = new Set(manyTags.map(tag => tag.id));
+      expect(uniqueManyTags.size).toBe(manyTags.length);
     });
 
     describe('findSimilarTags', () => {

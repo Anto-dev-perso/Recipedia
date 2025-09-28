@@ -3,11 +3,21 @@ import {
   editTitleInMultimap,
   extractFilteredRecipeDatas,
   filterFromRecipe,
+  filterRecipesByCurrentSeason,
+  fisherYatesShuffle,
+  generateHomeRecommendations,
+  getRandomRecipes,
+  isRecipeInCurrentSeason,
   removeTitleInMultimap,
   removeValueToMultimap,
   retrieveAllFilters,
 } from '@utils/FilterFunctions';
-import { listFilter, prepTimeValues, TListFilter } from '@customTypes/RecipeFiltersTypes';
+import {
+  listFilter,
+  prepTimeValues,
+  RecommendationType,
+  TListFilter,
+} from '@customTypes/RecipeFiltersTypes';
 import { testRecipes } from '@test-data/recipesDataset';
 import {
   ingredientTableElement,
@@ -17,8 +27,13 @@ import {
 import { testTags } from '@test-data/tagsDataset';
 import { testIngredients } from '@test-data/ingredientsDataset';
 import { useI18n } from '@utils/i18n';
+import RecipeDatabase from '@utils/RecipeDatabase';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
+jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
+jest.mock('@utils/FileGestion', () =>
+  require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
+);
 
 const { t } = useI18n();
 
@@ -181,30 +196,12 @@ describe('FilterFunctions', () => {
 
   test('filterFromRecipe with only season filters', () => {
     const filtersSeason = new Map<TListFilter, Array<string>>([
-      [listFilter.inSeason, ['not existing']],
+      [listFilter.inSeason, ['seasonal']],
     ]);
-    const seasonFilterArray = filtersSeason.get(listFilter.inSeason) as Array<string>;
 
-    expect(filterFromRecipe(testRecipes, filtersSeason, t)).toEqual([]);
-
-    seasonFilterArray.push('3');
-    expect(filterFromRecipe(testRecipes, filtersSeason, t)).toEqual(
-      Array<recipeTableElement>(testRecipes[0], testRecipes[2], testRecipes[6], testRecipes[9])
-    );
-
-    seasonFilterArray.push('1');
-    expect(filterFromRecipe(testRecipes, filtersSeason, t)).toEqual(
-      Array<recipeTableElement>(
-        testRecipes[0],
-        testRecipes[2],
-        testRecipes[5],
-        testRecipes[6],
-        testRecipes[9]
-      )
-    );
-
-    seasonFilterArray.push('*');
-    expect(filterFromRecipe(testRecipes, filtersSeason, t)).toEqual(testRecipes);
+    const expected = filterRecipesByCurrentSeason(testRecipes);
+    const result = filterFromRecipe(testRecipes, filtersSeason, t);
+    expect(result).toEqual(expected);
   });
 
   test('filterFromRecipe with only tags filters', () => {
@@ -464,5 +461,259 @@ describe('FilterFunctions', () => {
 
     removeTitleInMultimap(filtersMixed);
     expect(filtersMixed).toEqual(expectedResult);
+  });
+
+  describe('Seasonal filtering functions', () => {
+    const currentMonth = new Date().getMonth() + 1;
+    const otherMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+
+    test('isRecipeInCurrentSeason returns true for current month recipes', () => {
+      const seasonalRecipe: recipeTableElement = {
+        ...testRecipes[0],
+        season: [currentMonth.toString()],
+      };
+
+      expect(isRecipeInCurrentSeason(seasonalRecipe)).toBe(true);
+    });
+
+    test('isRecipeInCurrentSeason returns true for year-round recipes', () => {
+      const yearRoundRecipe: recipeTableElement = {
+        ...testRecipes[1],
+        season: ['*'],
+      };
+      expect(isRecipeInCurrentSeason(yearRoundRecipe)).toBe(true);
+    });
+
+    test('isRecipeInCurrentSeason returns false for off-season recipes', () => {
+      const offSeasonRecipe: recipeTableElement = {
+        ...testRecipes[2],
+      };
+
+      offSeasonRecipe.season = ['0'];
+      expect(isRecipeInCurrentSeason(offSeasonRecipe)).toBe(false);
+
+      offSeasonRecipe.season = ['13'];
+      expect(isRecipeInCurrentSeason(offSeasonRecipe)).toBe(false);
+
+      offSeasonRecipe.season = ['another season'];
+      expect(isRecipeInCurrentSeason(offSeasonRecipe)).toBe(false);
+
+      offSeasonRecipe.season = [(currentMonth + 1).toString()];
+      expect(isRecipeInCurrentSeason(offSeasonRecipe)).toBe(false);
+
+      offSeasonRecipe.season = [(currentMonth - 1).toString()];
+      expect(isRecipeInCurrentSeason(offSeasonRecipe)).toBe(false);
+    });
+
+    test('isRecipeInCurrentSeason handles multiple seasons', () => {
+      const multiSeasonRecipe = {
+        ...testRecipes[0],
+        season: [currentMonth.toString(), otherMonth.toString()],
+      };
+      expect(isRecipeInCurrentSeason(multiSeasonRecipe)).toBe(true);
+    });
+
+    test('filterRecipesByCurrentSeason filters correctly', () => {
+      const wildCardRecipe: recipeTableElement = {
+        ...testRecipes[0],
+        season: ['*'],
+      };
+      const offSeasonRecipe: recipeTableElement = {
+        ...testRecipes[1],
+        season: [(currentMonth - 1).toString()],
+      };
+
+      const recipes = [wildCardRecipe, offSeasonRecipe];
+      const filtered = filterRecipesByCurrentSeason(recipes);
+
+      expect(filtered).toHaveLength(1);
+      expect(filtered).toContain(wildCardRecipe);
+      expect(filtered).not.toContain(offSeasonRecipe);
+    });
+
+    test('filterRecipesByCurrentSeason returns empty array for empty input', () => {
+      expect(filterRecipesByCurrentSeason([])).toEqual([]);
+    });
+
+    test('filterRecipesByCurrentSeason returns empty array when no recipes match', () => {
+      const offSeasonOnly: recipeTableElement = {
+        ...testRecipes[2],
+        season: [(currentMonth - 1).toString()],
+      };
+      const recipes = [offSeasonOnly];
+      expect(filterRecipesByCurrentSeason(recipes)).toEqual([]);
+    });
+  });
+
+  describe('Shuffle and random selection functions', () => {
+    test('fisherYatesShuffle returns shuffled array with same elements', () => {
+      const original = [1, 2, 3, 4, 5];
+      const shuffled = fisherYatesShuffle(original);
+
+      expect(shuffled).toHaveLength(original.length);
+      expect(original).toEqual([1, 2, 3, 4, 5]);
+
+      const uniqueItems = new Set(shuffled);
+      expect(uniqueItems.size).toBe(shuffled.length);
+
+      expect(shuffled.sort()).toEqual(original.sort());
+    });
+
+    test('fisherYatesShuffle with numberOfElementsWanted returns correct subset', () => {
+      const original = [1, 2, 3, 4, 5];
+      const shuffled = fisherYatesShuffle(original, 3);
+
+      expect(shuffled).toHaveLength(3);
+      shuffled.forEach(item => {
+        expect(original).toContain(item);
+      });
+
+      const uniqueItems = new Set(shuffled);
+      expect(uniqueItems.size).toBe(shuffled.length);
+    });
+
+    test('fisherYatesShuffle handles edge cases', () => {
+      expect(fisherYatesShuffle([])).toEqual([]);
+      expect(fisherYatesShuffle([1])).toEqual([1]);
+
+      const result = fisherYatesShuffle([1, 2], 0);
+      expect(result).toEqual([]);
+
+      const largeResult = fisherYatesShuffle([1, 2], 5);
+      expect(largeResult.sort()).toEqual([1, 2]);
+    });
+
+    test('getRandomRecipes returns correct number of recipes', () => {
+      const recipes = testRecipes.slice(0, 5);
+      const random = getRandomRecipes(recipes, 3);
+
+      expect(random).toHaveLength(3);
+      random.forEach(recipe => {
+        expect(recipes).toContain(recipe);
+      });
+    });
+
+    test('getRandomRecipes handles edge cases', () => {
+      expect(getRandomRecipes([], 5)).toEqual([]);
+      expect(getRandomRecipes(testRecipes.slice(0, 2), 5)).toHaveLength(2);
+    });
+
+    test('getRandomRecipes comprehensive database integration test', () => {
+      const allRecipes = testRecipes;
+
+      const randomRecipe = getRandomRecipes(allRecipes, 1);
+      expect(randomRecipe.length).toBe(1);
+      expect(allRecipes).toContain(randomRecipe[0]);
+
+      const anotherRandomRecipe = getRandomRecipes(allRecipes, 1);
+      expect(anotherRandomRecipe.length).toBe(1);
+      expect(allRecipes).toContain(anotherRandomRecipe[0]);
+
+      const multipleRecipes = getRandomRecipes(allRecipes, 5);
+      const uniqueRecipes = new Set(multipleRecipes.map(r => r.id));
+      expect(multipleRecipes.length).toBe(5);
+      expect(uniqueRecipes.size).toEqual(multipleRecipes.length);
+
+      multipleRecipes.forEach(recipe => {
+        expect(allRecipes).toContain(recipe);
+      });
+
+      const searchAll = getRandomRecipes(allRecipes, allRecipes.length);
+      expect(searchAll.length).toBe(allRecipes.length);
+
+      searchAll.forEach(recipe => {
+        expect(allRecipes).toContain(recipe);
+      });
+
+      const allSame = searchAll.every((recipe, index) => recipe === allRecipes[index]);
+      expect(allSame).toBe(false);
+
+      const searchAllAgain = getRandomRecipes(allRecipes, allRecipes.length);
+      expect(searchAllAgain.length).toBe(allRecipes.length);
+
+      searchAllAgain.forEach(recipe => {
+        expect(allRecipes).toContain(recipe);
+      });
+
+      const sameAsOriginal = searchAllAgain.every((recipe, index) => recipe === allRecipes[index]);
+      const sameAsFirst = searchAllAgain.every((recipe, index) => recipe === searchAll[index]);
+      expect(sameAsOriginal).toBe(false);
+      expect(sameAsFirst).toBe(false);
+    });
+  });
+
+  describe('Home recommendations', () => {
+    const database = RecipeDatabase.getInstance();
+
+    beforeEach(async () => {
+      await database.init();
+      await database.addMultipleIngredients(testIngredients);
+      await database.addMultipleTags(testTags);
+      await database.addMultipleRecipes(testRecipes);
+    });
+
+    afterEach(async () => {
+      await database.reset();
+    });
+
+    function assertRecommendation(
+      receivedRecommendations: RecommendationType[],
+      isSeasonFilter: boolean
+    ) {
+      const expectedNumberOfElementsMinimum = isSeasonFilter ? 4 : 3;
+      expect(receivedRecommendations.length).toBeGreaterThanOrEqual(
+        expectedNumberOfElementsMinimum
+      );
+
+      const randomRecommendation = receivedRecommendations[0];
+      expect(randomRecommendation.id).toBe('random');
+      expect(randomRecommendation.type).toBe('random');
+      expect(randomRecommendation.recipes.length).toBeGreaterThan(0);
+      expect(randomRecommendation.titleKey).toBe('recommendations.randomSelection');
+      expect(randomRecommendation.titleParams).toBeUndefined();
+
+      if (!isSeasonFilter) {
+        const seasonRecommendation = receivedRecommendations[1];
+        expect(seasonRecommendation.id).toBe('seasonal');
+        expect(seasonRecommendation.type).toBe('seasonal');
+        expect(seasonRecommendation.recipes.length).toBeGreaterThan(0);
+        expect(seasonRecommendation.titleKey).toBe('recommendations.perfectForCurrentSeason');
+        expect(seasonRecommendation.titleParams).toBeUndefined();
+      }
+
+      const ingredientRecommendation = receivedRecommendations[isSeasonFilter ? 1 : 2];
+      expect(ingredientRecommendation.id.split('-')[0]).toBe('grain');
+      expect(ingredientRecommendation.type).toBe('ingredient');
+      expect(ingredientRecommendation.recipes.length).toBeGreaterThan(0);
+      expect(ingredientRecommendation.titleKey).toBe('recommendations.basedOnIngredient');
+      expect(ingredientRecommendation.titleParams).toBeDefined();
+
+      const tagRecommendation = receivedRecommendations[receivedRecommendations.length - 1];
+      expect(tagRecommendation.id.split('-')[0]).toBe('tag');
+      expect(tagRecommendation.type).toBe('tag');
+      expect(tagRecommendation.recipes.length).toBeGreaterThan(0);
+      expect(tagRecommendation.titleKey).toBe('recommendations.tagRecipes');
+      expect(tagRecommendation.titleParams).toBeDefined();
+    }
+
+    test('generateHomeRecommendations creates recommendations when season filter disabled', () => {
+      const recommendations = generateHomeRecommendations(false, 4);
+      assertRecommendation(recommendations, false);
+    });
+
+    test('generateHomeRecommendations respects season filter when enabled', () => {
+      const recommendations = generateHomeRecommendations(true, 4);
+      assertRecommendation(recommendations, true);
+    });
+
+    test('generateHomeRecommendations handles empty database', async () => {
+      await database.reset();
+      await database.init();
+      const recommendations = generateHomeRecommendations(false, 4);
+
+      expect(recommendations).toHaveLength(1);
+      expect(recommendations[0].type).toBe('random');
+      expect(recommendations[0].recipes).toEqual([]);
+    });
   });
 });
