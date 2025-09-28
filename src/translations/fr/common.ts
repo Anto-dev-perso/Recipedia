@@ -28,4 +28,13 @@ export default {
   // Time units
   minutes: 'minutes',
   hours: 'heures',
+
+  // Home screen recommendations
+  recommendations: {
+    randomSelection: 'Sélection aléatoire',
+    perfectForCurrentSeason: 'De saison',
+    greatGrainDishes: 'Excellents Plats aux Céréales',
+    basedOnIngredient: 'À base de {{ingredientName}}',
+    tagRecipes: 'Étiqueté {{tagName}}',
+  },
 };

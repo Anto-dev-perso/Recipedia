@@ -30,4 +30,13 @@ export default {
   // Time units
   minutes: 'minutes',
   hours: 'hours',
+
+  // Home screen recommendations
+  recommendations: {
+    randomSelection: 'Random Selection',
+    perfectForCurrentSeason: 'Seasonal Picks',
+    greatGrainDishes: 'Great Grain Dishes',
+    basedOnIngredient: '{{ingredientName}}-based',
+    tagRecipes: 'Tagged {{tagName}}',
+  },
 };
