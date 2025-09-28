@@ -502,10 +502,7 @@ function applyToRecipeFilterPrepTime(
 export function filterRecipesByCurrentSeason(
   recipes: Array<recipeTableElement>
 ): Array<recipeTableElement> {
-  const currentMonth = new Date().getMonth() + 1;
-  const monthString = currentMonth.toString();
-
-  return recipes.filter(recipe => isTheElementContainsTheFilter(recipe.season, [monthString, '*']));
+  return recipes.filter(recipe => isRecipeInCurrentSeason(recipe));
 }
 
 /**
@@ -517,7 +514,9 @@ export function filterRecipesByCurrentSeason(
 export function isRecipeInCurrentSeason(recipe: recipeTableElement): boolean {
   const currentMonth = new Date().getMonth() + 1;
   const monthString = currentMonth.toString();
-  return isTheElementContainsTheFilter(recipe.season, [monthString, '*']);
+
+  // Check if recipe season contains current month or wildcard
+  return recipe.season.includes(monthString) || recipe.season.includes('*');
 }
 
 /**
