@@ -1,3 +1,15 @@
+## [0.13.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.12.0...v0.13.0) (2025-09-28)
+
+### Features
+
+* **translations:** add empty state messages for recommendations in English and French ([c903eb9](https://github.com/Anto-dev-perso/Recipedia/commit/c903eb9191a8805a611d90f5767387ae42455f1f))
+* **translations:** add home screen recommendations for English and French ([ad06c66](https://github.com/Anto-dev-perso/Recipedia/commit/ad06c66b5ecf3f85052e70f86b0119fa9f38d7a3))
+* **utils:** add new recipe filtering and recommendation features ([d586c92](https://github.com/Anto-dev-perso/Recipedia/commit/d586c9277012d5b634061241f690043964bfd0c7))
+
+### Bug Fixes
+
+* **utils:** handle edge case in shuffle function when numberOfElementsWanted is 0 ([2a2b4b9](https://github.com/Anto-dev-perso/Recipedia/commit/2a2b4b944a0b3491d6fd3937657248f33b5ba3a1))
+
 ## [0.12.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.11.0...v0.12.0) (2025-09-27)
 
 ### Features
