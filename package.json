@@ -29,7 +29,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json}\"",
     "typecheck": "tsc --noEmit",
-    "quality": "npm run lint && npm run format:check && npm run typecheck",
+    "expo:doctor": "npx expo-doctor",
+    "quality": "npm run lint && npm run format:check && npm run typecheck && npm run expo:doctor",
     "docs:build": "typedoc",
     "docs:clean": "rm -rf docs/",
     "workflow:build-test:android": "npm run build:test:android && npm run install:android && npm run test:e2e:android",
@@ -37,6 +38,14 @@
     "release": "semantic-release",
     "security:audit": "npm audit --audit-level=moderate",
     "prepare": "husky"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": ["@react-native-ml-kit/text-recognition"],
+        "listUnknownPackages": false
+      }
+    }
   },
   "lint-staged": {
     "{src,tests}/**/*.{ts,tsx,js,jsx}": [
@@ -49,8 +58,8 @@
   },
   "dependencies": {
     "@babel/core": "~7.28.4",
-    "@react-native-async-storage/async-storage": "^2.1.2",
-    "@react-native-community/slider": "^4.5.6",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-community/slider": "4.5.5",
     "@react-native-ml-kit/text-recognition": "~1.5.2",
     "@react-navigation/bottom-tabs": "~6.5.8",
     "@react-navigation/native": "~6.1.7",
@@ -82,7 +91,7 @@
     "react-native-paper": "~5.13.1",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
-    "react-native-svg": "15.13.0"
+    "react-native-svg": "15.8.0"
   },
   "resolutions": {
     "react": "18.3.1",
