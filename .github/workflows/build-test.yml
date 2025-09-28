@@ -133,7 +133,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build Android APK locally
-        run: npm run build:android
+        run: npm run build:test:android
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

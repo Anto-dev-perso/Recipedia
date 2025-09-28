@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -11,13 +11,13 @@ permissions:
   pull-requests: write
 
 jobs:
-  release:
+  semantic-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          fetch-depth: 0  # needed for semantic-release to access tags
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -27,7 +27,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Release
+      - name: Semantic Release
+        id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run release
