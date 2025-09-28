@@ -62,7 +62,7 @@ import { useSeasonFilter } from '@context/SeasonFilterContext';
 const homeId = 'Home';
 const recommandationId = homeId + '::RecipeRecommendation';
 
-const howManyItemInCarousel = 20;
+export const howManyItemInCarousel = 20;
 
 /**
  * Home screen component - Main dashboard with recipe recommendations
@@ -125,26 +125,34 @@ export function Home() {
     }
   });
 
-  const renderEmptyState = () => (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: padding.medium,
-      }}
-    >
-      <Text
-        variant='headlineSmall'
-        style={{ textAlign: 'center', marginBottom: padding.veryLarge }}
+  const renderEmptyState = () => {
+    const emptyStateTestId = homeId + '::EmptyState';
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: padding.medium,
+        }}
       >
-        {t('emptyState.noRecommendations.title')}
-      </Text>
-      <Text variant='bodyMedium' style={{ textAlign: 'center', color: colors.onSurfaceVariant }}>
-        {t('emptyState.noRecommendations.description')}
-      </Text>
-    </View>
-  );
+        <Text
+          testID={emptyStateTestId + '::Title'}
+          variant='headlineSmall'
+          style={{ textAlign: 'center', marginBottom: padding.veryLarge }}
+        >
+          {t('emptyState.noRecommendations.title')}
+        </Text>
+        <Text
+          testID={emptyStateTestId + '::Description'}
+          variant='bodyMedium'
+          style={{ textAlign: 'center', color: colors.onSurfaceVariant }}
+        >
+          {t('emptyState.noRecommendations.description')}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>

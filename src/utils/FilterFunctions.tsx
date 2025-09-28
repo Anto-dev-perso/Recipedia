@@ -603,6 +603,10 @@ export function generateHomeRecommendations(
   const recommendations = new Array<RecommendationType>();
   const allRecipes = recipeDatabase.get_recipes();
 
+  if (allRecipes.length === 0) {
+    return recommendations;
+  }
+
   const seasonalRecipes = filterRecipesByCurrentSeason(allRecipes);
 
   const recipesForFiltering = seasonFilterEnabled ? seasonalRecipes : allRecipes;

@@ -710,10 +710,7 @@ describe('FilterFunctions', () => {
       await database.reset();
       await database.init();
       const recommendations = generateHomeRecommendations(false, 4);
-
-      expect(recommendations).toHaveLength(1);
-      expect(recommendations[0].type).toBe('random');
-      expect(recommendations[0].recipes).toEqual([]);
+      expect(recommendations).toHaveLength(0);
     });
   });
 });

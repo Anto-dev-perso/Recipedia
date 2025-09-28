@@ -61,6 +61,11 @@ export function i18nMock() {
 
     delete: 'delete',
     cancel: 'cancel',
+    'emptyState.noRecommendations.title': 'No Recommendations Available',
+    'emptyState.noRecommendations.description':
+      'Add some recipes to your collection to see personalized recommendations.',
+    'recommendations.randomSelection': 'Random Selection',
+    'recommendations.perfectForCurrentSeason': 'Seasonal Picks',
   };
   return {
     useI18n: () => ({
