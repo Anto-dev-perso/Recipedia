@@ -39,4 +39,12 @@ export default {
     basedOnIngredient: '{{ingredientName}}-based',
     tagRecipes: 'Tagged {{tagName}}',
   },
+
+  // Empty states
+  emptyState: {
+    noRecommendations: {
+      title: 'No Recommendations Available',
+      description: 'Add some recipes to your collection to see personalized recommendations.',
+    },
+  },
 };
