@@ -539,16 +539,16 @@ export function fisherYatesShuffle<T>(
   arrayToShuffle: Array<T>,
   numberOfElementsWanted?: number
 ): Array<T> {
+  if (numberOfElementsWanted === 0) {
+    return [];
+  }
+
   const shuffled = [...arrayToShuffle]; // Create a copy to avoid mutating the original array
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1)); // Pick a random index
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
   }
-  if (
-    numberOfElementsWanted === undefined ||
-    numberOfElementsWanted === 0 ||
-    numberOfElementsWanted >= arrayToShuffle.length
-  ) {
+  if (numberOfElementsWanted === undefined || numberOfElementsWanted >= arrayToShuffle.length) {
     return shuffled;
   } else {
     return shuffled.slice(0, numberOfElementsWanted);
