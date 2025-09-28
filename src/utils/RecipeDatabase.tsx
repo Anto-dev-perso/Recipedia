@@ -38,6 +38,7 @@ import { isNumber, subtractNumberInString, sumNumberInString } from '@utils/Type
 import Fuse from 'fuse.js/dist/fuse.js';
 import { scaleQuantityForPersons } from '@utils/Quantity';
 import { databaseLogger } from '@utils/logger';
+import { fisherYatesShuffle } from './FilterFunctions';
 
 /**
  * RecipeDatabase - Singleton class for managing recipe data storage and operations
@@ -507,27 +508,6 @@ export class RecipeDatabase {
     }
   }
 
-  /**
-   * Retrieves a random selection of recipes from the database
-   *
-   * @param numOfElements - Number of random recipes to return
-   * @returns Array of random recipes
-   *
-   * @example
-   * ```typescript
-   * const randomRecipes = db.searchRandomlyRecipes(5);
-   * console.log(`Got ${randomRecipes.length} random recipes`);
-   * ```
-   */
-  public searchRandomlyRecipes(numOfElements: number): Array<recipeTableElement> {
-    if (this._recipes.length == 0) {
-      databaseLogger.error('Cannot get random recipes - recipe table is empty');
-      return new Array<recipeTableElement>();
-    } else {
-      return fisherYatesShuffle(this._recipes, numOfElements);
-    }
-  }
-
   public searchRandomlyTags(numOfElements: number): Array<tagTableElement> {
     if (this._tags.length == 0) {
       databaseLogger.error('Cannot get random tags - tag table is empty');
@@ -559,6 +539,45 @@ export class RecipeDatabase {
         return res;
       }
     }
+  }
+
+  /**
+   * Gets random ingredients of a specific type
+   *
+   * @param type - The ingredient type to filter by
+   * @param count - Number of random ingredients to return
+   * @returns Array of random ingredients of the specified type
+   */
+  public getRandomIngredientsByType(
+    type: ingredientType,
+    count: number
+  ): Array<ingredientTableElement> {
+    if (this._ingredients.length === 0) {
+      return [];
+    }
+
+    const ingredientsOfType = this._ingredients.filter(ingredient => ingredient.type === type);
+
+    if (ingredientsOfType.length === 0) {
+      databaseLogger.debug('No ingredients found for type', { ingredientType: type });
+      return [];
+    }
+
+    return fisherYatesShuffle(ingredientsOfType, count);
+  }
+
+  /**
+   * Gets random tags from the database
+   *
+   * @param count - Number of random tags to return
+   * @returns Array of random tags
+   */
+  public getRandomTags(count: number): Array<tagTableElement> {
+    if (this._tags.length === 0) {
+      return [];
+    }
+
+    return fisherYatesShuffle(this._tags, count);
   }
 
   public async deleteRecipe(recipe: recipeTableElement): Promise<boolean> {
@@ -1225,42 +1244,42 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-                            if (newIngredients.length > 0) {
-                                let alertTitle: string;
-                                let alertMessage = "Do you want to add or edit it before  ?";
-                                const alertOk = "OK";
-                                const alertCancel = "Cancel";
-                                const alertEdit = "Edit before add";
-                                if (newIngredients.length > 1) {
-                                    // Plural
-                                    alertTitle = "INGREDIENTS NOT FOUND";
-                                    alertMessage = `Following ingredients were not found in database :  \n`;
-                                    newIngredients.forEach(ing => {
-                                        alertMessage += "\t- " + ing.ingName + "\n";
-                                    });
-                                    alertMessage += `Do you want to add these as is or edit them before adding ?`;
-
-                                } else {
-                                    alertTitle = `INGREDIENT NOT FOUND`;
-                                    alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                                }
-
-
-                                switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                                    case alertUserChoice.neutral:
-                                        // TODO edit before add
-                                        break;
-                                    case alertUserChoice.ok:
-                                        await this.addMultipleIngredients(newIngredients);
-                                        result = result.concat(newIngredients);
-                                        break;
-                                    case alertUserChoice.cancel:
-                                    default:
-                                        databaseLogger.debug("User canceled adding ingredient");
-                                        break;
-                                }
-                            }
-                             */
+                                                                if (newIngredients.length > 0) {
+                                                                    let alertTitle: string;
+                                                                    let alertMessage = "Do you want to add or edit it before  ?";
+                                                                    const alertOk = "OK";
+                                                                    const alertCancel = "Cancel";
+                                                                    const alertEdit = "Edit before add";
+                                                                    if (newIngredients.length > 1) {
+                                                                        // Plural
+                                                                        alertTitle = "INGREDIENTS NOT FOUND";
+                                                                        alertMessage = `Following ingredients were not found in database :  \n`;
+                                                                        newIngredients.forEach(ing => {
+                                                                            alertMessage += "\t- " + ing.ingName + "\n";
+                                                                        });
+                                                                        alertMessage += `Do you want to add these as is or edit them before adding ?`;
+    
+                                                                    } else {
+                                                                        alertTitle = `INGREDIENT NOT FOUND`;
+                                                                        alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                                                                    }
+    
+    
+                                                                    switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                                                                        case alertUserChoice.neutral:
+                                                                            // TODO edit before add
+                                                                            break;
+                                                                        case alertUserChoice.ok:
+                                                                            await this.addMultipleIngredients(newIngredients);
+                                                                            result = result.concat(newIngredients);
+                                                                            break;
+                                                                        case alertUserChoice.cancel:
+                                                                        default:
+                                                                            databaseLogger.debug("User canceled adding ingredient");
+                                                                            break;
+                                                                    }
+                                                                }
+                                                                 */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);
@@ -2107,39 +2126,3 @@ export class RecipeDatabase {
 }
 
 export default RecipeDatabase;
-
-/**
- * Shuffles an array using the Fisher-Yates algorithm and optionally returns a subset
- *
- * This function creates a shuffled copy of the input array without modifying the original.
- * Optionally returns only the first N elements from the shuffled array.
- *
- * @param arrayToShuffle - The array to shuffle
- * @param numberOfElementsWanted - Optional number of elements to return from shuffled array
- * @returns Shuffled array or subset of shuffled array
- *
- * @example
- * ```typescript
- * const recipes = [recipe1, recipe2, recipe3, recipe4, recipe5];
- * const shuffled = fisherYatesShuffle(recipes, 3); // Returns 3 random recipes
- * ```
- */
-export function fisherYatesShuffle<T>(
-  arrayToShuffle: Array<T>,
-  numberOfElementsWanted?: number
-): Array<T> {
-  const shuffled = [...arrayToShuffle]; // Create a copy to avoid mutating the original array
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1)); // Pick a random index
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
-  }
-  if (
-    numberOfElementsWanted === undefined ||
-    numberOfElementsWanted === 0 ||
-    numberOfElementsWanted >= arrayToShuffle.length
-  ) {
-    return shuffled;
-  } else {
-    return shuffled.slice(0, numberOfElementsWanted);
-  }
-}

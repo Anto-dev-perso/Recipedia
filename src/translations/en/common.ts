@@ -30,4 +30,21 @@ export default {
   // Time units
   minutes: 'minutes',
   hours: 'hours',
+
+  // Home screen recommendations
+  recommendations: {
+    randomSelection: 'Random Selection',
+    perfectForCurrentSeason: 'Seasonal Picks',
+    greatGrainDishes: 'Great Grain Dishes',
+    basedOnIngredient: '{{ingredientName}}-based',
+    tagRecipes: 'Tagged {{tagName}}',
+  },
+
+  // Empty states
+  emptyState: {
+    noRecommendations: {
+      title: 'No Recommendations Available',
+      description: 'Add some recipes to your collection to see personalized recommendations.',
+    },
+  },
 };
