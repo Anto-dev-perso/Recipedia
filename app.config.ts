@@ -63,7 +63,9 @@ export default ({config}: ConfigContext): ExpoConfig => {
             },
             package: appId,
             permissions: ['android.permission.CAMERA'],
-            versionCode: getAndroidVersionCode(version)
+            versionCode: getAndroidVersionCode(version),
+            compileSdkVersion: 35,
+            targetSdkVersion: 35
         },
         plugins: [
             'expo-localization',

@@ -182,7 +182,7 @@ jobs:
       - name: Setup Android Emulator and run E2E tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: 35
           arch: x86_64
           script: |
             npm run install:android
