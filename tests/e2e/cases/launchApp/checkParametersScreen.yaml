@@ -1,0 +1,13 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Navigate to Parameters screen"
+
+- runFlow:
+    file: "../../asserts/Parameters/en/assertParametersScreen.yaml"
+    label: "Assert Parameters screen is displayed correctly"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate back to Home screen"

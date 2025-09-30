@@ -2,15 +2,17 @@ appId: "com.recipedia"
 ---
 - assertVisible:
     id: "Parameters::Section::RecipeDefaults::SubHeader"
+    label: "Recipe Defaults section is displayed"
+- assertVisible:
     text: "Recipe Defaults"
-    label: "Recipe Defaults section is displayed with the right text"
+    label: "Recipe Defaults section has the right text"
 - assertVisible:
     text: "󰡉"
     label: "Default persons icon is displayed"
 - assertVisible:
-    id: "Parameters::Section::RecipeDefaults::Person::Item"
-    text: "Default Number of Persons, 2 persons"
-    label: "Default persons item is displayed with the right text"
+    id: "Parameters::Section::RecipeDefaults::Persons::Item"
+    text: "Default Number of Persons, 4 persons"
+    label: "Default persons item is displayed with correct text"
 - assertVisible:
     text: "󰅂"
     index: 0
@@ -20,8 +22,10 @@ appId: "com.recipedia"
     label: "Default season filter icon is displayed"
 - assertVisible:
     id: "Parameters::Section::RecipeDefaults::Season::Item"
+    label: "Default season filter item is displayed"
+- assertVisible:
     text: "Default Season Filter"
-    label: "Default season filter item is displayed with the right text"
+    label: "Default season filter item has the right text"
 - assertVisible:
     id: "Parameters::Section::RecipeDefaults::Season::Switch"
     label: "Season filter switch is visible"

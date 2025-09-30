@@ -1,0 +1,13 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- runFlow:
+    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    label: "Assert Search screen is displayed correctly"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate back to Home screen"

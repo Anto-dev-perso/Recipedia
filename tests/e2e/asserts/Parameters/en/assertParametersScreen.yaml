@@ -1,8 +1,8 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "./menuBar.yaml"
-    label: "Check that the menu bar is displayed correctly in English"
+    file: "../../BottomTabs/en/assertBottomTabs.yaml"
+    label: "Check bottom navigation tabs"
 - runFlow:
     file: "./assertAppearanceSection.yaml"
     label: "Check that the appearance section is displayed correctly in English"

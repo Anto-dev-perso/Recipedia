@@ -1,0 +1,65 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../BottomTabs/fr/assertBottomTabs.yaml"
+    label: "Check bottom navigation tabs in French"
+
+- assertVisible:
+    id: "ExpandButton::RoundButton"
+    label: "Expand button is displayed"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::random::SubHeader"
+    label: "Random recommendation section is displayed"
+- assertVisible:
+    id: "Home::RecipeRecommendation::random::Carousel::Card::0"
+    label: "Random recommendation has its first card"
+- assertVisible:
+    id: "Home::RecipeRecommendation::random::Carousel::Card::1"
+    label: "Random recommendation has its second card"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::seasonal::SubHeader"
+    label: "Seasonal recommendation section is displayed"
+- assertVisible:
+    id: "Home::RecipeRecommendation::seasonal::Carousel::Card::0"
+    label: "Seasonal recommendation has its first card"
+
+- scrollUntilVisible:
+    element:
+      id: "Home::RecipeRecommendation::grain-[1-2]::SubHeader"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to grain-based recommendations"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::grain-[1-2]::SubHeader"
+    text: "^.+-based$"
+    label: "Grain-based recommendation is displayed in French"
+- assertVisible:
+    id: "Home::RecipeRecommendation::grain-[1-2]::Carousel::Card::0"
+    label: "Grain recommendation has its first card"
+
+- scrollUntilVisible:
+    element:
+      id: "Home::RecipeRecommendation::tag-[1-3]::SubHeader"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to tag-based recommendations"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::tag-[1-3]::SubHeader"
+    text: "^Taguées [A-Za-zÀ-ÿ]+$"
+    label: "Tag-based recommendation is displayed in French"
+- assertVisible:
+    id: "Home::RecipeRecommendation::tag-[1-3]::Carousel::Card::0"
+    label: "Tag recommendation has its first card"
+
+- scrollUntilVisible:
+    element:
+      id: "Home::RecipeRecommendation::random::SubHeader"
+    direction: UP
+    speed: 80
+    label: "Scroll back to top of Home screen"

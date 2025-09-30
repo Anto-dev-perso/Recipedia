@@ -1,0 +1,10 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../BottomTabs/en/assertBottomTabs.yaml"
+    label: "Check bottom navigation tabs"
+
+- assertVisible:
+    id: "ShoppingScreen::TextNoItem"
+    text: "No items in shopping list"
+    label: "Empty shopping list message is displayed"

@@ -1,23 +1,24 @@
 appId: "com.recipedia"
 name: "Launch and check screens are displayed correctly"
-
 ---
 - launchApp
 
-- runFlow: asserts/Home/homeScreenVisible.yaml
-- tapOn:
-    text: "Shopping"
-    label: Go to Shopping screen
-- runFlow: asserts/Shopping/shoppingEmpty.yaml
+- runFlow:
+    file: "cases/launchApp/skipWelcomeScreen.yaml"
+    label: "Skip welcome screen"
 
-- tapOn:
-    text: "Home"
-    label: Return to Home screen
-- tapOn:
-    text: "Parameters"
-    label: Go to Parameters screen
-- runFlow: asserts/Parameters/Parameters.yaml
-- tapOn:
-    text: "Home"
-    label: Return to Home screen
-- runFlow: asserts/Home/homeScreenVisible.yaml
+- runFlow:
+    file: "cases/launchApp/checkHomeScreen.yaml"
+    label: "Check Home screen"
+
+- runFlow:
+    file: "cases/launchApp/checkSearchScreen.yaml"
+    label: "Check Search screen"
+
+- runFlow:
+    file: "cases/launchApp/checkShoppingScreen.yaml"
+    label: "Check Shopping screen"
+
+- runFlow:
+    file: "cases/launchApp/checkParametersScreen.yaml"
+    label: "Check Parameters screen"

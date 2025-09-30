@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "./assertSearchScreenUI.yaml"
+    label: "Assert Search screen UI elements in English"
+
+- runFlow:
+    file: "../assertSearchScreenRecipeCards.yaml"
+    label: "Assert Search screen recipe cards"

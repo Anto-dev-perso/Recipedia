@@ -1,0 +1,7 @@
+appId: "com.recipedia"
+name: "Skip welcome screen if present"
+
+---
+- tapOn:
+    id: "WelcomeScreen::SkipButton"
+    label: Skip welcome screen on first launch
