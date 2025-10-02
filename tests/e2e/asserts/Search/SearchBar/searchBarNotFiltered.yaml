@@ -1,77 +1,94 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    text: "󰍉"
-    label: Search button is not displayed
-- assertVisible:
-    text: "Title of recipe"
-    label: Search string is not displayed
-- assertNotVisible:
-    text: "󰻱"
-    label: Assert icon add filter is not displayed
-- assertNotVisible:
-    text: "Add a filter"
-    label: Add filter button is not displayed
-- assertNotVisible:
-    text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
-    label: Spaghetti Bolognese is not displayed
-- assertNotVisible:
-    text: "Chicken Tacos, Mexican, Lunch, Prep. 20 min, 2 p."
-    label: Chicken Tacos is not displayed
-- assertNotVisible:
-    text: "Caesar Salad, Salad, Healthy, Prep. 15 min, 2 p."
-    label: Caesar salad is not displayed
-- assertNotVisible:
-    text: "Classic Pancakes, Breakfast, Dessert, Prep. 25 min, 2 p."
-    label: Classic Pancakes is not displayed
-- assertNotVisible:
-    text: "Margherita Pizza, Italian, Lunch, Prep. 20 min, 2 p."
-    label: Margherita Pizza is not displayed
-- assertNotVisible:
-    text: "Vegetable Soup, Healthy, Soup, Prep. 40 min, 2 p."
-    label: Vegetable Soup is not displayed
-- assertNotVisible:
-    text: "Chocolate Cake, Dessert, Chocolate, Prep. 60 min, 2 p."
-    label: Chocolate Cake is displayed
-- assertNotVisible:
-    text: "Pesto Pasta, Italian, Quick Meal, Prep. 20 min, 2 p."
-    label: Pesto Pasta is not displayed
-- assertNotVisible:
-    text: "Sushi Rolls, Japanese, Seafood, Prep. 45 min, 2 p."
-    label: Sushi Rolls element is not displayed
-- assertNotVisible:
-    text: "Lentil Curry, Indian, Vegetarian, Prep. 35 min, 2 p."
-    label: Lentil Curry is not displayed
-#- assertVisible:
-#    text: "󰅖"
-#    label: Cross icon is displayed
+    id: "SearchScreen::SearchBarResults::Item::0-content"
+    label: "First dropdown item is displayed"
+
 - assertVisible:
     text: "Caesar Salad"
-    label: Caesar Salad is displayed
+    label: "Caesar Salad is displayed in dropdown"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::1-content"
+    label: "Second dropdown item is displayed"
+
 - assertVisible:
     text: "Chicken Tacos"
-    label: Chicken Tacos is displayed
+    label: "Chicken Tacos is displayed in dropdown"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::2-content"
+    label: "Third dropdown item is displayed"
+
 - assertVisible:
     text: "Chocolate Cake"
-    label: Chocolate Cake is displayed
+    label: "Chocolate Cake is displayed in dropdown"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::3-content"
+    label: "Fourth dropdown item is displayed"
+
 - assertVisible:
     text: "Classic Pancakes"
-    label: Classic Pancakes is displayed
+    label: "Classic Pancakes is displayed in dropdown"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::4-content"
+    label: "Fifth dropdown item is displayed"
+
 - assertVisible:
     text: "Lentil Curry"
-    label: Lentil Curry is displayed
+    label: "Lentil Curry is displayed in dropdown"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::5-content"
+    label: "Sixth dropdown item is displayed"
+
 - assertVisible:
     text: "Margherita Pizza"
-    label: Margherita Pizza is displayed
+    label: "Margherita Pizza is displayed in dropdown"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::6-content"
+    label: "Seventh dropdown item is displayed"
+
 - assertVisible:
     text: "Pesto Pasta"
-    label: Pesto Pasta is displayed
+    label: "Pesto Pasta is displayed in dropdown"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::7-content"
+    label: "Eighth dropdown item is displayed"
+
+- assertVisible:
+    text: "Spaghetti Bolognese"
+    label: "Spaghetti Bolognese is displayed in dropdown"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::SearchBarResults::Item::8-content"
+    direction: DOWN
+    speed: 40
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::8-content"
+    label: "Ninth dropdown item is displayed"
+
 - assertVisible:
     text: "Sushi Rolls"
-    label: Sushi Rolls is displayed
+    label: "Sushi Rolls is displayed in dropdown"
+
 - assertVisible:
-    text: "Sushi Rolls"
-    label: Sushi Rolls is displayed
+    id: "SearchScreen::SearchBarResults::Item::9-content"
+    label: "Tenth dropdown item is displayed"
+
 - assertVisible:
     text: "Vegetable Soup"
-    label: Vegetable Soup is displayed
+    label: "Vegetable Soup is displayed in dropdown"
+
+- scrollUntilVisible:
+    element:
+      text: "Caesar Salad"
+    direction: UP
+    speed: 40
+    label: "Scroll back to top of dropdown"

@@ -422,4 +422,45 @@ describe('Search Screen', () => {
     // Assert FilterAccordion is still hidden (addingFilterMode is false)
     expect(() => getByTestId('SearchScreen::FilterAccordion')).toThrow();
   });
+
+  test('BackHandler closes search bar dropdown when clicked', async () => {
+    const { getByTestId } = renderResult;
+    const { BackHandler } = require('react-native');
+
+    assertInitialComponentState(getByTestId);
+
+    await waitAndRerender(renderResult);
+
+    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
+    expect(() => getByTestId('SearchScreen::SearchBarResults')).toThrow();
+
+    fireEvent.press(getByTestId('SearchScreen::SearchBar::ToggleClicked'));
+    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('true');
+    expect(getByTestId('SearchScreen::SearchBarResults')).toBeTruthy();
+
+    const backPressHandlers = BackHandler.addEventListener.mock.calls[0];
+    const backPressHandler = backPressHandlers[1];
+    const result = backPressHandler();
+
+    expect(result).toBe(true);
+    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
+  });
+
+  test('BackHandler allows navigation when search bar is not clicked', async () => {
+    const { getByTestId } = renderResult;
+    const { BackHandler } = require('react-native');
+
+    assertInitialComponentState(getByTestId);
+
+    await waitAndRerender(renderResult);
+
+    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
+
+    const backPressHandlers = BackHandler.addEventListener.mock.calls[0];
+    const backPressHandler = backPressHandlers[1];
+    const result = backPressHandler();
+
+    expect(result).toBe(false);
+    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
+  });
 });

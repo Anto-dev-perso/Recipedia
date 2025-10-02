@@ -1,0 +1,26 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search bar to open dropdown"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- runFlow:
+    file: "../../asserts/Search/SearchBar/searchBarNotFiltered.yaml"
+    label: "Assert search bar dropdown shows all recipes"
+
+- pressKey: "BACK"
+
+- runFlow:
+    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    label: "Assert Search screen is back to normal view"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate back to Home screen"

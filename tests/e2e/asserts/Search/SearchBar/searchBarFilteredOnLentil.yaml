@@ -5,16 +5,8 @@ appId: "com.recipedia"
     label: "First filtered item is displayed"
 
 - assertVisible:
-    text: "Classic Pancakes"
-    label: "Classic Pancakes is displayed"
-
-- assertVisible:
-    id: "SearchScreen::SearchBarResults::Item::1-content"
-    label: "Second filtered item is displayed"
-
-- assertVisible:
-    text: "Pesto Pasta"
-    label: "Pesto Pasta is displayed"
+    text: "Lentil Curry"
+    label: "Lentil Curry is displayed"
 
 - assertNotVisible:
     text: "Caesar Salad"
@@ -29,12 +21,16 @@ appId: "com.recipedia"
     label: "Chocolate Cake is not displayed"
 
 - assertNotVisible:
-    text: "Lentil Curry"
-    label: "Lentil Curry is not displayed"
+    text: "Classic Pancakes"
+    label: "Classic Pancakes is not displayed"
 
 - assertNotVisible:
     text: "Margherita Pizza"
     label: "Margherita Pizza is not displayed"
+
+- assertNotVisible:
+    text: "Pesto Pasta"
+    label: "Pesto Pasta is not displayed"
 
 - assertNotVisible:
     text: "Spaghetti Bolognese"

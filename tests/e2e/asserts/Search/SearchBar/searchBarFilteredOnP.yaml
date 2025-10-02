@@ -1,77 +1,53 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    text: "󰍉"
-    label: Search button is displayed
-- assertVisible:
-    text: "Title of recipe"
-    label: Search string is displayed
-- assertNotVisible:
-    text: "󰻱"
-    label: Assert icon add filter is not displayed
-- assertNotVisible:
-    text: "Add a filter"
-    label: Add filter button is not displayed
-- assertNotVisible:
-    text: "Spaghetti Bolognese, Italian, Dinner, Prep. 33 min, 2 p."
-    label: Spaghetti Bolognese is not displayed
-- assertNotVisible:
-    text: "Chicken Tacos, Mexican, Lunch, Prep. 20 min, 2 p."
-    label: Chicken Tacos is not displayed
-- assertNotVisible:
-    text: "Caesar Salad, Salad, Healthy, Prep. 15 min, 2 p."
-    label: Caesar salad is not displayed
-- assertNotVisible:
-    text: "Classic Pancakes, Breakfast, Dessert, Prep. 25 min, 2 p."
-    label: Classic Pancakes is not displayed
-- assertNotVisible:
-    text: "Margherita Pizza, Italian, Lunch, Prep. 20 min, 2 p."
-    label: Margherita Pizza is not displayed
-- assertNotVisible:
-    text: "Vegetable Soup, Healthy, Soup, Prep. 40 min, 2 p."
-    label: Vegetable Soup is not displayed
-- assertNotVisible:
-    text: "Chocolate Cake, Dessert, Chocolate, Prep. 60 min, 2 p."
-    label: Chocolate Cake is not displayed
-- assertNotVisible:
-    text: "Pesto Pasta, Italian, Quick Meal, Prep. 20 min, 2 p."
-    label: Pesto Pasta is not displayed
-- assertNotVisible:
-    text: "Sushi Rolls, Japanese, Seafood, Prep. 45 min, 2 p."
-    label: Sushi Rolls element is not displayed
-- assertNotVisible:
-    text: "Lentil Curry, Indian, Vegetarian, Prep. 35 min, 2 p."
-    label: Lentil Curry is not displayed
-- assertVisible:
-    text: "󰅖"
-    label: Cross icon is displayed
-- assertNotVisible:
-    text: "Caesar Salad"
-    label: Caesar Salad is not displayed
-- assertNotVisible:
-    text: "Chicken Tacos"
-    label: Chicken Tacos is not displayed
-- assertNotVisible:
-    text: "Chocolate Cake"
-    label: Chocolate Cake is not displayed
+    id: "SearchScreen::SearchBarResults::Item::0-content"
+    label: "First filtered item is displayed"
+
 - assertVisible:
     text: "Classic Pancakes"
-    label: Classic Pancakes is displayed
-- assertNotVisible:
-    text: "Lentil Curry"
-    label: Lentil Curry is not displayed
+    label: "Classic Pancakes is displayed"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::1-content"
+    label: "Second filtered item is displayed"
+
 - assertVisible:
     text: "Margherita Pizza"
-    label: Margherita Pizza is displayed
+    label: "Margherita Pizza is displayed"
+
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::2-content"
+    label: "Third filtered item is displayed"
+
 - assertVisible:
     text: "Pesto Pasta"
-    label: Pesto Pasta is displayed
+    label: "Pesto Pasta is displayed"
+
+- assertNotVisible:
+    text: "Caesar Salad"
+    label: "Caesar Salad is not displayed"
+
+- assertNotVisible:
+    text: "Chicken Tacos"
+    label: "Chicken Tacos is not displayed"
+
+- assertNotVisible:
+    text: "Chocolate Cake"
+    label: "Chocolate Cake is not displayed"
+
+- assertNotVisible:
+    text: "Lentil Curry"
+    label: "Lentil Curry is not displayed"
+
+- assertNotVisible:
+    text: "Spaghetti Bolognese"
+    label: "Spaghetti Bolognese is not displayed"
+
 - assertNotVisible:
     text: "Sushi Rolls"
-    label: Sushi Rolls is not displayed
-- assertNotVisible:
-    text: "Sushi Rolls"
-    label: Sushi Rolls is not displayed
+    label: "Sushi Rolls is not displayed"
+
 - assertNotVisible:
     text: "Vegetable Soup"
-    label: Vegetable Soup is not displayed
+    label: "Vegetable Soup is not displayed"
