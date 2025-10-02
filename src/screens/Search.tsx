@@ -46,8 +46,16 @@
  * ```
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, ListRenderItemInfo, SafeAreaView, ScrollView, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  BackHandler,
+  FlatList,
+  Keyboard,
+  ListRenderItemInfo,
+  SafeAreaView,
+  ScrollView,
+  View,
+} from 'react-native';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { listFilter, TListFilter } from '@customTypes/RecipeFiltersTypes';
 import {
@@ -80,6 +88,9 @@ export function Search() {
   const { colors } = useTheme();
 
   const { seasonFilter } = useSeasonFilter();
+
+  // Refs
+  const scrollViewRef = useRef<ScrollView>(null);
 
   // Core state
   const [filtersState, setFiltersState] = useState(new Map<TListFilter, Array<string>>());
@@ -116,6 +127,20 @@ export function Search() {
       return prevState;
     });
   }, [seasonFilter, t]);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (searchBarClicked) {
+        Keyboard.dismiss();
+        setSearchBarClicked(false);
+        scrollViewRef.current?.scrollTo({ y: 0, animated: false });
+        return true;
+      }
+      return false;
+    });
+
+    return () => backHandler.remove();
+  }, [searchBarClicked]);
 
   // Update search string and filter state
   const updateSearchString = useCallback((newSearchString: string) => {
@@ -177,6 +202,7 @@ export function Search() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} testID={screenId}>
       {/* When there are no recipes, put flex on scrollView to child view to take the whole screen*/}
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={filteredRecipes.length === 0 ? { flex: 1 } : {}}
         showsVerticalScrollIndicator={true}
       >
