@@ -2,33 +2,33 @@ appId: "com.recipedia"
 ---
 - assertVisible:
     id: "BackButton::RoundButton"
-    label: Back button is displayed
+    label: "Back button is displayed"
 - assertVisible:
     text: "󰌍"
-    label: Back button icon is displayed
+    label: "Back button icon is displayed"
 - assertVisible:
     id: "RecipeValidate"
-    label: Add recipe button is displayed
+    label: "Add recipe button is displayed"
 - assertVisible:
     text: "Validate the recipe with these modifications"
-    label: Validate recipe button has the correct text
+    label: "Validate recipe button has the correct text"
 - assertVisible:
     id: "RecipeImage::RoundButton"
-    label: OCR image button is still rendered
+    label: "Image button is rendered"
 - assertVisible:
     text: "󰄀"
-    label: Add image button has the right icon
+    label: "Image button has the correct icon"
 - assertVisible:
     id: "RecipeImage"
-    label: Image is rendered
+    label: "Image is rendered"
 - assertVisible:
     id: "RecipeTitle::Text"
     text: "Title:"
-    label: Intro text for the title is rendered
+    label: "Title label is rendered"
 - assertVisible:
     id: "RecipeTitle::TextInput"
     text: "Pesto Pasta"
-    label: Title of the recipe is rendered
+    label: "Title input is rendered"
 
 - scrollUntilVisible:
     element:
@@ -40,57 +40,64 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeDescription::Text"
     text: "Description:"
-    label: Intro text for the description is rendered
+    label: "Intro text for the description is rendered"
 - assertVisible:
     id: "RecipeDescription::TextInput"
     text: "Pasta tossed with fresh basil pesto."
-    label: Description of the recipe is rendered
+    label: "Description of the recipe is rendered"
 - assertVisible:
     id: "RecipeTags::HeaderText"
     text: "Tags:"
-    label: Intro text for the tags is rendered
+    label: "Intro text for the tags is rendered"
 - assertVisible:
     id: "RecipeTags::ElementText"
     text: "Tags are a way to identify a recipe and make easier its search.\nHere are some examples of tags you can have : .*, .*, .*"
-    label: Explanation text for the tags is rendered
+    label: "Explanation text for the tags is rendered"
 - assertVisible:
     id: "RecipeTags::0::Chip"
-    label: First tag chip is rendered
+    label: "First tag chip is rendered"
 - assertVisible:
     text: "Italian"
-    label: First tag of the recipe is rendered
+    label: "First tag of the recipe is rendered"
 - assertVisible:
     text: "󰅖"
     index: 0
-    label: Cross icon of the first tag is rendered
+    label: "Cross icon of the first tag is rendered"
 - assertVisible:
     id: "RecipeTags::1::Chip"
-    label: Second tag chip is rendered
+    label: "Second tag chip is rendered"
 - assertVisible:
     text: "Quick Meal"
-    label: Second tag of the recipe is rendered
+    label: "Second tag of the recipe is rendered"
 - assertVisible:
     text: "󰅖"
     index: 1
-    label: Cross icon of the second tag is rendered
+    label: "Cross icon of the second tag is rendered"
 - assertVisible:
     id: "RecipeTags::RoundButton"
-    label: Add button for the tag is rendered
+    label: "Add button for the tag is rendered"
 - assertVisible:
     text: "󰐕"
-    label: Add button for the tag is rendered
+    label: "Add button for the tag is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::PrefixText"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
     id: "RecipePersons::PrefixText"
     text: "This recipe is for : "
-    label: Intro text for the number of persons is rendered
+    label: "Intro text for the number of persons is rendered"
 - assertVisible:
     id: "RecipePersons::TextInput"
     text: "2"
-    label: Number of persons is rendered
+    label: "Number of persons is rendered"
 - assertVisible:
     id: "RecipePersons::SuffixText"
     text: " persons"
-    label: Outro text for the number of persons is rendered
+    label: "Outro text for the number of persons is rendered"
 
 - scrollUntilVisible:
     element:
@@ -101,55 +108,55 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeIngredients::PrefixText"
     text: "Ingredients: "
-    label: Section Ingredients is rendered
+    label: "Section Ingredients is rendered"
 - assertVisible:
     id: "RecipeIngredients::Column1"
     text: "Quantity"
-    label: Column Quantity is rendered
+    label: "Column Quantity is rendered"
 - assertVisible:
     id: "RecipeIngredients::Column2"
     text: "Unit"
-    label: Column Unit is rendered
+    label: "Column Unit is rendered"
 - assertVisible:
     id: "RecipeIngredients::Column3"
     text: "Name"
-    label: Column Ingredient name is rendered
+    label: "Column Ingredient name is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
     text: "200"
-    label: Quantity of first ingredient is rendered
+    label: "Quantity of first ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::Unit::TextInput"
     text: "g"
-    label: First occurrence of the g unit is rendered
+    label: "First occurrence of the g unit is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
     text: "Pasta"
-    label: Ingredient Pasta is rendered
+    label: "Ingredient Pasta is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
     text: "50"
-    label: Quantity of second ingredient is rendered
+    label: "Quantity of second ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::Unit::TextInput"
     text: "g"
-    label: Second occurrence of the g unit is rendered
+    label: "Second occurrence of the g unit is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
     text: "Basil Leaves"
-    label: Ingredient Basil Leaves is rendered
+    label: "Ingredient Basil Leaves is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
     text: "30"
-    label: Quantity of third ingredient is rendered
+    label: "Quantity of third ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::Unit::TextInput"
     text: "g"
-    label: Third occurrence of the g unit is rendered
+    label: "Third occurrence of the g unit is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
     text: "Parmesan"
-    label: Ingredient Parmesan is rendered
+    label: "Ingredient Parmesan is rendered"
 
 - scrollUntilVisible:
     element:
@@ -160,27 +167,27 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
     text: "50"
-    label: Quantity of fourth ingredient is rendered
+    label: "Quantity of fourth ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::Unit::TextInput"
     text: "ml"
-    label: ml unit is rendered
+    label: "ml unit is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::Dropdown::TextInput"
     text: "Olive Oil"
-    label: Ingredient Olive Oil is rendered
+    label: "Ingredient Olive Oil is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::QuantityInput::TextInput"
     text: "20"
-    label: Quantity of fifth ingredient is rendered
+    label: "Quantity of fifth ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::Unit::TextInput"
     text: "g"
-    label: Fourth occurrence of the g unit is rendered
+    label: "Fourth occurrence of the g unit is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::Dropdown::TextInput"
     text: "Pine Nuts"
-    label: Ingredient Pine Nuts is rendered
+    label: "Ingredient Pine Nuts is rendered"
 
 - scrollUntilVisible:
     element:
@@ -190,22 +197,22 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::AddButton::RoundButton"
-    label: Add button of the ingredients is rendered
+    label: "Add button of the ingredients is rendered"
 - assertVisible:
     text: "󰐕"
-    label: Add button of the ingredients has the correct icon
+    label: "Add button of the ingredients has the correct icon"
 - assertVisible:
     id: "RecipeTime::PrefixText"
     text: "Time to prepare the recipe :"
-    label: Intro text for the time to prepare is rendered
+    label: "Intro text for the time to prepare is rendered"
 - assertVisible:
     id: "RecipeTime::TextInput"
     text: "20"
-    label: Time to prepare is rendered
+    label: "Time to prepare is rendered"
 - assertVisible:
     id: "RecipeTime::SuffixText"
     text: "min"
-    label: Outro text for the time to prepare is rendered
+    label: "Outro text for the time to prepare is rendered"
 
 - scrollUntilVisible:
     element:
@@ -216,22 +223,22 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Step"
     text: "Preparation: step 1"
-    label: Preparation section for first step is rendered
+    label: "Preparation section for first step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Title"
     text: "Title of step 1 : "
-    label: Intro text for the title of first step is rendered
+    label: "Intro text for the title of first step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
-    text: "Cook the pasta according to the package instructions."
-    label: First preparation step title is rendered
+    text: "Cook pasta"
+    label: "First preparation step title is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Content"
     text: "Content of step 1 : "
-    label: First step is rendered
+    label: "First step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
-    label: First step input is rendered
+    label: "First step input is rendered"
 
 - scrollUntilVisible:
     element:
@@ -242,22 +249,22 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipePreparation::TextRender::1::Step"
     text: "Preparation: step 2"
-    label: Preparation section for second step is rendered
+    label: "Preparation section for second step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::1::Title"
     text: "Title of step 2 : "
-    label: Intro text for the title of second step is rendered
+    label: "Intro text for the title of second step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
-    text: "Blend basil leaves, Parmesan, olive oil, and pine nuts to make pesto."
-    label: Second preparation step title is rendered
+    text: "Make pesto"
+    label: "Second preparation step title is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::1::Content"
     text: "Content of step 2 : "
-    label: Intro text for second step is rendered
+    label: "Intro text for second step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
-    label: Second step input is rendered
+    label: "Second step input is rendered"
 
 - scrollUntilVisible:
     element:
@@ -269,22 +276,22 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipePreparation::TextRender::2::Step"
     text: "Preparation: step 3"
-    label: Preparation section for third step is rendered
+    label: "Preparation section for third step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::2::Title"
     text: "Title of step 3 : "
-    label: Intro text for the title of third step is rendered
+    label: "Intro text for the title of third step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
-    text: "Toss the pasta with the pesto sauce and serve warm."
-    label: Third preparation step title is rendered
+    text: "Combine and serve"
+    label: "Third preparation step title is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::2::Content"
     text: "Content of step 3 : "
-    label: Intro text for third step is rendered
+    label: "Intro text for third step is rendered"
 - assertVisible:
     id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
-    label: Third step input is rendered
+    label: "Third step input is rendered"
 
 - scrollUntilVisible:
     element:
@@ -300,7 +307,15 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipePreparation::AddButton::RoundButton"
-    label: Add button of the preparation is rendered
+    label: "Add button of the preparation is rendered"
 - assertVisible:
     text: "󰐕"
-    label: Add button of the preparation has the right icon
+    label: "Add button of the preparation has the right icon"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    centerElement: true
+    speed: 80
+    label: "Scroll back to top"

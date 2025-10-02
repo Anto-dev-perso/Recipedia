@@ -1,0 +1,25 @@
+appId: "com.recipedia"
+env:
+  recipeName: "Vegetable Soup"
+---
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate to Home screen"
+
+- runFlow:
+    file: "../../flows/Home/refreshUntilRecipeFound.yaml"
+    env:
+      recipeName: ${recipeName}
+    label: "Refresh Home screen until recipe is found"
+
+- runFlow:
+    file: "../../asserts/Recipe/ReadOnly/vegetableSoup.yaml"
+    label: "Assert Vegetable Soup recipe is displayed correctly"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Back to the Home Screen"
+
+- runFlow:
+    file: "../../asserts/Home/en/assertHomeScreen.yaml"
+    label: "Assert Home screen is displayed"

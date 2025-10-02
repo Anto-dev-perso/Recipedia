@@ -1,0 +1,39 @@
+appId: "com.recipedia"
+env:
+  recipeName: "Sushi Rolls"
+---
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate to Home screen"
+
+- runFlow:
+    file: "../../flows/Home/refreshUntilRecipeFound.yaml"
+    env:
+      recipeName: ${recipeName}
+    label: "Refresh Home screen until recipe is found"
+
+- runFlow:
+    file: "../../asserts/Recipe/ReadOnly/sushiRolls.yaml"
+    label: "Assert Sushi Rolls recipe is displayed correctly"
+
+- tapOn:
+    id: "RecipeEdit::RoundButton"
+    waitToSettleTimeoutMs: 0
+    retryTapIfNoChange: false
+    label: "Tap on the Edit button"
+
+- runFlow:
+    file: "../../asserts/Recipe/Edit/sushiRolls.yaml"
+    label: "Assert Sushi Rolls edit screen is displayed correctly"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Validate the modifications"
+
+- runFlow:
+    file: "../../asserts/Recipe/ReadOnly/sushiRolls.yaml"
+    label: "Assert modified Sushi Rolls recipe is displayed correctly"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Back to the Home Screen"

@@ -2,41 +2,41 @@ appId: "com.recipedia"
 ---
 - assertVisible:
     id: "BackButton::RoundButton"
-    label: Back button is displayed
+    label: "Back button is displayed"
 - assertVisible:
     text: "󰌍"
-    label: Back button icon is displayed
+    label: "Back button icon is displayed"
 - assertVisible:
     id: "RecipeValidate"
-    label: Add recipe button is displayed
+    label: "Add recipe button is displayed"
 - assertVisible:
     text: "Add to the menu"
-    label: Add recipe button has the correct text
+    label: "Add recipe button has the correct text"
 - assertVisible:
     id: "RecipeDelete::RoundButton"
-    label: Delete button is displayed
+    label: "Delete button is displayed"
 - assertVisible:
     text: "󰆴"
-    label: Delete icon is displayed
+    label: "Delete icon is displayed"
 - assertVisible:
     id: "RecipeEdit::RoundButton"
-    label: Edit button is rendered
+    label: "Edit button is rendered"
 - assertVisible:
     text: "󰏫"
-    label: Edit button has the correct icon
+    label: "Edit button has the correct icon"
 - assertNotVisible:
     id: "RecipeImage::RoundButton"
-    label: Image button is not rendered
+    label: "Image button is not rendered"
 - assertVisible:
     id: "RecipeTitle::Text"
     text: "Aiguillettes de poulet a la sauce satay"
-    label: Title text is displayed
+    label: "Title text is displayed"
 - assertVisible:
     id: "RecipeDescription::Text"
     text: "CUISINEZ NOS FILETS DE POULET FRANCAIS AVEC DU RIZ BASMATI BIO ET\
     \ UNE SAUCE SATAY MAISON: UN CONDIMENT ASIATIQUE A BASE DE CACAHUETES ET GINGEMBRE\
     \ !"
-    label: Description text is displayed
+    label: "Description text is displayed"
 
 - scrollUntilVisible:
     element:
@@ -47,19 +47,19 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeTags::0::Chip"
-    label: First tag chip is displayed
+    label: "First tag chip is displayed"
 - assertVisible:
     text: "Healthy"
-    label: First tag text is displayed
+    label: "First tag text is displayed"
 - assertVisible:
     id: "RecipeTags::0::Chip"
-    label: Second tag chip is displayed
+    label: "Second tag chip is displayed"
 - assertVisible:
     text: "Italian"
-    label: Second tag text is displayed
+    label: "Second tag text is displayed"
 - assertVisible:
-    text: "Ingredients (2 persons)"
-    label: Ingredient section and persons is displayed
+    id: "RecipePersons::Text"
+    label: "Number of persons is rendered"
 
 - scrollUntilVisible:
     element:
@@ -71,31 +71,31 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
     text: "200 g"
-    label: First ingredient quantity is displayed
+    label: "First ingredient quantity is displayed"
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::IngredientName"
     text: "Chicken Breast"
-    label: First ingredient name is displayed
+    label: "First ingredient name is displayed"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
     text: "2 g"
-    label: Second ingredient quantity is displayed
+    label: "Second ingredient quantity is displayed"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::IngredientName"
     text: "Onions"
-    label: Second ingredient name is displayed
+    label: "Second ingredient name is displayed"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
     text: "5 g"
-    label: Third ingredient quantity is displayed
+    label: "Third ingredient quantity is displayed"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::IngredientName"
     text: "Avocado"
-    label: Third ingredient name is displayed
+    label: "Third ingredient name is displayed"
 - assertVisible:
     id: "RecipeTime::Text"
     text: "Preparation (20 min)"
-    label: Preparation section and persons are displayed
+    label: "Preparation section and persons are displayed"
 
 - scrollUntilVisible:
     element:

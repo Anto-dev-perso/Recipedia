@@ -1,79 +1,132 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
+    id: "BackButton::RoundButton"
+    label: "Back button is displayed"
+
+- assertVisible:
     text: "󰌍"
-    label: Back button is rendered
+    label: "Back button icon is displayed"
 - assertVisible:
     id: "RecipeImage"
-    label: Image is rendered
+    label: "Image is rendered"
+
 - assertVisible:
-    text: "CHICKEN TACOS"
-    label: Title is rendered
+    id: "RecipeTitle::Text"
+    text: "Chicken Tacos"
+    label: "Title is rendered"
+
 - assertVisible:
+    id: "RecipeDescription::Text"
     text: "Mexican-style tacos with chicken."
-    label: Description is rendered
+    label: "Description is rendered"
+
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    label: "First tag is rendered"
+
 - assertVisible:
     text: "Mexican"
-    label: Tag Mexican is rendered
+    label: "Tag Mexican is rendered"
+- assertVisible:
+    id: "RecipeTags::1::Chip"
+    label: "Second tag is rendered"
+
 - assertVisible:
     text: "Lunch"
-    label: Tag Lunch is rendered
+    label: "Tag Lunch is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
-    text: "Ingredients (2 persons)"
-    label: Ingredients title and number of persons is rendered
-- swipe:
-    start: "50%,65%"
-    end: "50%,30%"
-    label: Swipe down to see other items
-- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
     text: "Taco Shells"
-    label: Ingredient Taco Shells is rendered
+    label: "Ingredient Taco Shells is rendered"
+
 - assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
     text: "6 pieces"
-    label: Quantity of Taco Shells is rendered
+    label: "Quantity of Taco Shells is rendered"
+
 - assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
     text: "Chicken Breast"
-    label: Ingredient Chicken Breast is rendered
+    label: "Ingredient Chicken Breast is rendered"
+
 - assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
     text: "300 g"
-    label: Quantity of Chicken Breast is rendered
+    label: "Quantity of Chicken Breast is rendered"
+
 - assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
     text: "Lettuce"
-    label: Ingredient Lettuce is rendered
+    label: "Ingredient Lettuce is rendered"
+
 - assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
     text: "50 g"
-    index: 0
-    label: Quantity of Lettuce is rendered
+    label: "Quantity of Lettuce is rendered"
+
 - assertVisible:
+    id: "RecipeIngredients::TextRender::3::IngredientName"
     text: "Cheddar"
-    label: Ingredient Cheddar is rendered
+    label: "Ingredient Cheddar is rendered"
+
 - assertVisible:
+    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
     text: "50 g"
-    index: 1
-    label: Quantity of Cheddar is rendered
-- swipe:
-    start: "50%,65%"
-    end: "50%,30%"
-    label: Swipe down to see other items
+    label: "Quantity of Cheddar is rendered"
+
 - assertVisible:
+    id: "RecipeTime::Text"
     text: "Preparation (20 min)"
-    label: Preparation title and time of preparation is rendered
+    label: "Preparation title and time of preparation is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::SectionTitle"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
-    text: "1) Cook the chicken breast and slice it into strips."
-    label: First section of the preparation is rendered
-- swipe:
-    start: "50%,65%"
-    end: "50%,30%"
-    label: Swipe down to see other items
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) Prepare chicken"
+    label: "First section of the preparation is rendered"
+
 - assertVisible:
-    text: "2) Fill each taco shell with chicken, lettuce, and cheddar."
-    label: Second section of the preparation is rendered
+    id: "RecipePreparation::TextRender::1::SectionTitle"
+    text: "2) Assemble tacos"
+    label: "Second section of the preparation is rendered"
+
 - assertVisible:
-    text: "3) Serve immediately."
-    label: Third section of the preparation is rendered
+    id: "RecipePreparation::TextRender::2::SectionTitle"
+    text: "3) Serve"
+    label: "Third section of the preparation is rendered"
+- assertVisible:
+    id: "RecipeEdit::RoundButton"
+    label: "Edit button is rendered"
+
 - assertVisible:
     text: "󰏫"
-    label: Edit Button is rendered
+    label: "Edit button has the correct icon"
+
+- assertVisible:
+    id: "RecipeValidate"
+    label: "Add recipe button is displayed"
+
 - assertVisible:
     text: "Add to the menu"
-    label: Add to menu button is rendered
+    label: "Add to menu button has the correct text"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    centerElement: true
+    speed: 80
+    label: "Scroll back to top"
