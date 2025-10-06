@@ -60,8 +60,8 @@ capabilities for extracting recipe information from images.
    ```
 
 4. **Run on your platform**
-    - **Android**: `npm run android`
-    - **iOS**: `npm run ios`
+    - **Android**: `npm run dev:android`
+    - **iOS**: `npm run dev:ios`
 
 ## 🏗️ Project Architecture
 
@@ -111,7 +111,8 @@ src/
 
 ### API Documentation
 
-The project maintains comprehensive API documentation generated with TypeDoc, covering all components, utilities, and types. The documentation is automatically published to GitHub Pages and includes:
+The project maintains comprehensive API documentation generated with TypeDoc, covering all components, utilities, and
+types. The documentation is automatically published to GitHub Pages and includes:
 
 - **Component Documentation**: All atomic, molecular, and organism components
 - **Utility Functions**: Database operations, file management, and helper functions
@@ -120,12 +121,14 @@ The project maintains comprehensive API documentation generated with TypeDoc, co
 - **Examples**: Usage examples and code snippets
 
 **Documentation Commands:**
+
 ```bash
 npm run docs:build    # Generate documentation
 npm run docs:clean    # Clean documentation build
 ```
 
 **Viewing Documentation:**
+
 - **Online**: [https://anto-dev-perso.github.io/Recipedia/](https://anto-dev-perso.github.io/Recipedia/)
 - **Local**: Run `npm run docs:build` then open `docs/index.html`
 
@@ -137,15 +140,15 @@ Recipedia includes comprehensive testing at multiple levels:
 
 ```bash
 npm run test:unit           # Run all unit tests
-npm run test:unit-watch     # Run tests in watch mode
-npm run test:unit-coverage  # Run with coverage report
+npm run test:unit:watch     # Run tests in watch mode
+npm run test:unit:coverage  # Run with coverage report
 ```
 
 ### End-to-End Tests
 
 ```bash
 npm run test:e2e:android    # Run E2E tests on Android
-npm run build-install-and-test:e2e:android  # Full cycle
+npm run workflow:build-test:android  # Full cycle
 ```
 
 ### Test Coverage
@@ -157,16 +160,16 @@ npm run build-install-and-test:e2e:android  # Full cycle
 
 ### Available Scripts
 
-| Command                    | Description                    |
-|----------------------------|--------------------------------|
-| `npm start`                | Start Expo development server  |
-| `npm run android`          | Run on Android device/emulator |
-| `npm run ios`              | Run on iOS device/simulator    |
-| `npm run build:android`    | Build Android APK              |
-| `npm run build:ios`        | Build iOS app                  |
-| `npm run test:unit`        | Run unit tests                 |
-| `npm run test:e2e:android` | Run E2E tests                  |
-| `npm run release`          | Create semantic release        |
+| Command                      | Description                    |
+|------------------------------|--------------------------------|
+| `npm start`                  | Start Expo development server  |
+| `npm run dev:android`        | Run on Android device/emulator |
+| `npm run dev:ios`            | Run on iOS device/simulator    |
+| `npm run build:test:android` | Build Android APK              |
+| `npm run build:test:ios`     | Build iOS app                  |
+| `npm run test:unit`          | Run unit tests                 |
+| `npm run test:e2e:android`   | Run E2E tests                  |
+| `npm run release`            | Create semantic release        |
 
 ### Code Style
 

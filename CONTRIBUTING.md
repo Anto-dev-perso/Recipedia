@@ -66,10 +66,10 @@ For mobile development:
 npm start
 
 # Run on Android
-npm run:android
+npm run dev:android
 
-# Run on iOS  
-npm run:ios
+# Run on iOS
+npm run dev:ios
 ```
 
 ### Database Development
@@ -85,12 +85,11 @@ The app uses SQLite for local storage. The database is managed through the `Reci
 ```bash
 # Development
 npm start                    # Start Expo dev server
-npm run android             # Run on Android
-npm run ios                 # Run on iOS
+npm run dev:android         # Run on Android
+npm run dev:ios             # Run on iOS
 
 # Code Quality
-npm run quality:check       # Check all quality gates
-npm run quality:fix         # Auto-fix formatting and linting
+npm run quality             # Check all quality gates
 npm run lint                # ESLint check
 npm run lint:fix            # ESLint auto-fix
 npm run format              # Format with Prettier
@@ -99,8 +98,8 @@ npm run typecheck           # TypeScript check
 
 # Testing
 npm run test:unit           # Run unit tests
-npm run test:unit-watch     # Run tests in watch mode
-npm run test:unit-coverage  # Run with coverage
+npm run test:unit:watch     # Run tests in watch mode
+npm run test:unit:coverage  # Run with coverage
 npm run test:e2e:android    # Run E2E tests
 
 # Documentation
@@ -108,8 +107,8 @@ npm run docs:build          # Generate API documentation
 npm run docs:clean          # Clean documentation build
 
 # Building
-npm run build:android       # Build Android APK
-npm run build:ios          # Build iOS app
+npm run build:test:android  # Build Android APK
+npm run build:test:ios      # Build iOS app
 
 # Release
 npm run release            # Semantic release
@@ -249,10 +248,10 @@ All new functionality must include unit tests:
 npm run test:unit
 
 # Run with coverage
-npm run test:unit-coverage
+npm run test:unit:coverage
 
 # Watch mode during development
-npm run test:unit-watch
+npm run test:unit:watch
 ```
 
 ### Test Guidelines

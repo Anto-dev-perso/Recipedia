@@ -9,7 +9,7 @@ const {getDefaultConfig} = require('expo/metro-config');
 
 const defaultConfig = getDefaultConfig(__dirname);
 
-defaultConfig.resolver.sourceExts = ['jsx', 'js', 'ts', 'tsx', 'json'];
+// Extend default extensions instead of overriding
 defaultConfig.resolver.assetExts.push('db');
 
 // Enable persistent filesystem caching for faster builds
