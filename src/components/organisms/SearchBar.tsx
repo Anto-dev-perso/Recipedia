@@ -1,3 +1,4 @@
+// TODO: SDK 53 - Consider using React 19 Actions for form handling and pending state management
 /**
  * SearchBar - Interactive recipe search component with clear functionality
  *
