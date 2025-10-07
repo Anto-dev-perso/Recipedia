@@ -49,3 +49,8 @@ android/*
 ios/*
 .idea
 .windsurf/
+
+
+# Claude
+CLAUDE.md
+.claude/*
