@@ -61,7 +61,7 @@ import { isArrayOfNumber, isArrayOfType, isNumber, isString } from '@utils/TypeC
 import { defaultValueNumber } from '@utils/Constants';
 import { ocrLogger } from '@utils/logger';
 import i18n from '@utils/i18n';
-import Fuse from 'fuse.js/dist/fuse.js';
+import Fuse from 'fuse.js';
 
 /** Type representing person count and cooking time extracted from OCR */
 export type personAndTimeObject = { person: number; time: number };
