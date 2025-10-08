@@ -20,7 +20,7 @@ appId: "com.recipedia"
 - pressKey: "enter"
 
 - runFlow:
-    file: "../../asserts/Search/searchScreenFilteredOnCa.yaml"
+    file: "../../asserts/Search/en/searchScreenFilteredOnCa.yaml"
     label: "Assert Search screen shows filtered recipe cards"
 
 - tapOn:

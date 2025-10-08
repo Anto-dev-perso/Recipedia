@@ -234,7 +234,7 @@ export function Search() {
 
             {addingFilterMode && (
               <FilterAccordion
-                testId={screenId + '::FilterAccordion'}
+                testId={screenId}
                 tagsList={filteredTags}
                 ingredientsList={filteredIngredients}
                 filtersState={filtersState}

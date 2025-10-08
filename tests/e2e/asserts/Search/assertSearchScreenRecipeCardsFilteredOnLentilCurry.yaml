@@ -1,0 +1,91 @@
+appId: "com.recipedia"
+---
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::0::Content"
+    text: "Italian, Dinner"
+    label: "Spaghetti Bolognese tags are displayed"
+- assertNotVisible:
+    text: "Spaghetti Bolognese"
+    label: "Spaghetti Bolognese title is visible"
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::3::Content"
+    text: "Mexican, Lunch"
+    label: "Chicken Tacos tags are not displayed"
+- assertNotVisible:
+    text: "Chicken Tacos"
+    label: "Chicken Tacos title is not visible"
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::2::Content"
+    text: "Breakfast, Dessert"
+    label: "Classic Pancakes tags are displayed"
+- assertNotVisible:
+    text: "Classic Pancakes"
+    label: "Classic Pancakes title is visible"
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::3::Content"
+    text: "Salad, Healthy"
+    label: "Caesar Salad tags are not displayed"
+- assertNotVisible:
+    text: "Caesar Salad"
+    label: "Caesar Salad title is not visible"
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::2::Content"
+    text: "Italian, Lunch"
+    label: "Margherita Pizza tags are not displayed"
+- assertNotVisible:
+    text: "Margherita Pizza"
+    label: "Margherita Pizza title is not visible"
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::5::Content"
+    text: "Healthy, Soup"
+    label: "Vegetable Soup tags are displayed"
+- assertNotVisible:
+    text: "Vegetable Soup"
+    label: "Vegetable Soup title is visible"
+
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::1::Content"
+    text: "Dessert, Chocolate"
+    label: "Chocolate Cake tags are not displayed"
+- assertNotVisible:
+    text: "Chocolate Cake"
+    label: "Chocolate Cake title is not visible"
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::3::Content"
+    text: "Italian, Quick Meal"
+    label: "Pesto Pasta tags are not displayed"
+- assertNotVisible:
+    text: "Pesto Pasta"
+    label: "Pesto Pasta title is not visible"
+
+
+- assertNotVisible:
+    id: "SearchScreen::RecipeCards::8::Content"
+    text: "Japanese, Seafood"
+    label: "Sushi Rolls tags are displayed"
+- assertNotVisible:
+    text: "Sushi Rolls"
+    label: "Sushi Rolls title is visible"
+
+- assertVisible:
+    id: "SearchScreen::RecipeCards::0::Content"
+    text: "Indian, Vegetarian"
+    label: "Lentil Curry tags are displayed"
+- assertVisible:
+    text: "Lentil Curry"
+    label: "Lentil Curry title is visible"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::SearchBar"
+    direction: UP
+    speed: 80
+    label: "Scroll back to top of Search screen"

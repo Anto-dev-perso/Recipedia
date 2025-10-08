@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Dinner"
+    label: "Dinner filter is not visible"

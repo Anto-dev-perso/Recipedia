@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Romaine Lettuce"
+    label: "Romaine Lettuce filter is not visible"

@@ -1,0 +1,8 @@
+appId: "com.recipedia"
+
+---
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::${ITEM_INDEX}"
+    label: "Vegetarian filter is visible"
+
+- evalScript: ${output.itemIndex = output.itemIndex + 1}

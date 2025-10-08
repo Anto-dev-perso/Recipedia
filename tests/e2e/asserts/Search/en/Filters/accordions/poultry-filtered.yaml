@@ -1,0 +1,40 @@
+appId: "com.recipedia"
+
+
+---
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Poultry accordion is displayed"
+
+- assertVisible:
+    text: "Poultry"
+    label: "Poultry accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    text: "Poultry"
+    label: "Expand Poultry accordion"
+
+# Initialize counter for visible items
+- evalScript: ${output.itemIndex = 0}
+
+# Item 0: Chicken - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Chicken')!== undefined}
+    file: "poultry-items/chicken-visible.yaml"
+
+# Item 0: Chicken - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Chicken')=== undefined}
+    file: "poultry-items/chicken-hidden.yaml"
+
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Poultry accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

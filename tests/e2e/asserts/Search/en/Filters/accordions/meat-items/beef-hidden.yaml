@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Beef"
+    label: "Beef filter is not visible"

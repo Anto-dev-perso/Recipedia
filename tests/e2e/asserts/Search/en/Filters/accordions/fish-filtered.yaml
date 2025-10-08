@@ -1,0 +1,40 @@
+appId: "com.recipedia"
+
+
+---
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Fish accordion is displayed"
+
+- assertVisible:
+    text: "Fish"
+    label: "Fish accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    text: "Fish"
+    label: "Expand Fish accordion"
+
+# Initialize counter for visible items
+- evalScript: ${output.itemIndex = 0}
+
+# Item 0: Salmon - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Salmon')!== undefined}
+    file: "fish-items/salmon-visible.yaml"
+
+# Item 0: Salmon - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Salmon')=== undefined}
+    file: "fish-items/salmon-hidden.yaml"
+
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Fish accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

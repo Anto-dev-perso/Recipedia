@@ -1,0 +1,40 @@
+appId: "com.recipedia"
+
+
+---
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Legumes accordion is displayed"
+
+- assertVisible:
+    text: "Legumes"
+    label: "Legumes accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    text: "Legumes"
+    label: "Expand Legumes accordion"
+
+# Initialize counter for visible items
+- evalScript: ${output.itemIndex = 0}
+
+# Item 0: Black Beans - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Black Beans')!== undefined}
+    file: "legumes-items/blackBeans-visible.yaml"
+
+# Item 0: Black Beans - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Black Beans')=== undefined}
+    file: "legumes-items/blackBeans-hidden.yaml"
+
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Legumes accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Pasta"
+    label: "Pasta filter is not visible"

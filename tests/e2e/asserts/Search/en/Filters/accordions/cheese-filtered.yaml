@@ -1,0 +1,64 @@
+appId: "com.recipedia"
+
+
+---
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Cheese accordion is displayed"
+
+- assertVisible:
+    text: "Cheese"
+    label: "Cheese accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    text: "Cheese"
+    label: "Expand Cheese accordion"
+
+# Initialize counter for visible items
+- evalScript: ${output.itemIndex = 0}
+
+# Item 0: Cheddar Cheese - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Cheddar Cheese')!== undefined}
+    file: "cheese-items/cheddarCheese-visible.yaml"
+
+# Item 0: Cheddar Cheese - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Cheddar Cheese')=== undefined}
+    file: "cheese-items/cheddarCheese-hidden.yaml"
+
+# Item 1: Mozzarella Cheese - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Mozzarella Cheese')!== undefined}
+    file: "cheese-items/mozzarellaCheese-visible.yaml"
+
+# Item 1: Mozzarella Cheese - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Mozzarella Cheese')=== undefined}
+    file: "cheese-items/mozzarellaCheese-hidden.yaml"
+
+# Item 2: Parmesan Cheese - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Parmesan Cheese')!== undefined}
+    file: "cheese-items/parmesanCheese-visible.yaml"
+
+# Item 2: Parmesan Cheese - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Parmesan Cheese')=== undefined}
+    file: "cheese-items/parmesanCheese-hidden.yaml"
+
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Cheese accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

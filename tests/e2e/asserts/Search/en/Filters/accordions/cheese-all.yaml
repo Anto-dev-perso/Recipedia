@@ -1,0 +1,36 @@
+appId: "com.recipedia"
+---
+# Assert accordion is displayed
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Cheese accordion is displayed"
+
+- assertVisible:
+    text: "Cheese"
+    label: "Cheese accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Expand Cheese accordion"
+
+# Assert all items are visible
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::0"
+    label: "Cheddar Cheese filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::1"
+    label: "Mozzarella Cheese filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::2"
+    label: "Parmesan Cheese filter is visible"
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Cheese accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

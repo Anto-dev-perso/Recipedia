@@ -1,0 +1,7 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::${output.itemIndex}"
+    label: "Soy Sauce filter is visible"
+
+- evalScript: ${output.itemIndex = output.itemIndex + 1}

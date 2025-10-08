@@ -1,0 +1,40 @@
+appId: "com.recipedia"
+
+
+---
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Meat accordion is displayed"
+
+- assertVisible:
+    text: "Meat"
+    label: "Meat accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    text: "Meat"
+    label: "Expand Meat accordion"
+
+# Initialize counter for visible items
+- evalScript: ${output.itemIndex = 0}
+
+# Item 0: Beef - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Beef')!== undefined}
+    file: "meat-items/beef-visible.yaml"
+
+# Item 0: Beef - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Beef')=== undefined}
+    file: "meat-items/beef-hidden.yaml"
+
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Meat accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

@@ -1,0 +1,98 @@
+appId: "com.recipedia"
+---
+# Assert accordion is displayed
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Tags accordion is displayed"
+
+- assertVisible:
+    text: "Tags"
+    label: "Tags accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Expand Tags accordion"
+
+# Assert all items are visible
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::0"
+    label: "Breakfast filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::1"
+    label: "Chocolate filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::2"
+    label: "Dessert filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::3"
+    label: "Dinner filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::4"
+    label: "Healthy filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::5"
+    label: "Indian filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::6"
+    label: "Italian filter is visible"
+
+# Scroll down to see remaining tags
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::14"
+    direction: DOWN
+    label: "Scroll to see remaining tags"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::7"
+    label: "Japanese filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::8"
+    label: "Lunch filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::9"
+    label: "Mexican filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::10"
+    label: "Quick Meal filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::11"
+    label: "Salad filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::12"
+    label: "Seafood filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::13"
+    label: "Soup filter is visible"
+
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::14"
+    label: "Vegetarian filter is visible"
+
+# Scroll back up to see accordion header
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    direction: UP
+    label: "Scroll back up to Tags accordion header"
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Tags accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

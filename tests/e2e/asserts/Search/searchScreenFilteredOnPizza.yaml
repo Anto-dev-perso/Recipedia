@@ -1,9 +1,0 @@
-appId: "com.recipedia"
----
-- assertVisible:
-    id: "SearchScreen::RecipeCards::0"
-    label: "First recipe card is visible"
-
-- assertVisible:
-    text: "Margherita Pizza"
-    label: "Margherita Pizza is displayed"

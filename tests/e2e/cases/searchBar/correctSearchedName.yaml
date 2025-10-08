@@ -40,7 +40,7 @@ appId: "com.recipedia"
     label: "Select Margherita Pizza from dropdown"
 
 - runFlow:
-    file: "../../asserts/Search/searchScreenFilteredOnPizza.yaml"
+    file: "../../asserts/Search/en/searchScreenFilteredOnPizza.yaml"
     label: "Assert Search screen shows Pizza results"
 
 - tapOn:

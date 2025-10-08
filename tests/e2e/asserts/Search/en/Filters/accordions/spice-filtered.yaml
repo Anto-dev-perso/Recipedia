@@ -1,0 +1,64 @@
+appId: "com.recipedia"
+
+
+---
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Spice accordion is displayed"
+
+- assertVisible:
+    text: "Spice"
+    label: "Spice accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    text: "Spice"
+    label: "Expand Spice accordion"
+
+# Initialize counter for visible items
+- evalScript: ${output.itemIndex = 0}
+
+# Item 0: Black Pepper - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Black Pepper')!== undefined}
+    file: "spice-items/blackPepper-visible.yaml"
+
+# Item 0: Black Pepper - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Black Pepper')=== undefined}
+    file: "spice-items/blackPepper-hidden.yaml"
+
+# Item 1: Cumin - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Cumin')!== undefined}
+    file: "spice-items/cumin-visible.yaml"
+
+# Item 1: Cumin - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Cumin')=== undefined}
+    file: "spice-items/cumin-hidden.yaml"
+
+# Item 2: Paprika - Assert visible if in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Paprika')!== undefined}
+    file: "spice-items/paprika-visible.yaml"
+
+# Item 2: Paprika - Assert NOT visible if not in VISIBLE_ITEMS
+- runFlow:
+    when:
+      true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Paprika')=== undefined}
+    file: "spice-items/paprika-hidden.yaml"
+
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Spice accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

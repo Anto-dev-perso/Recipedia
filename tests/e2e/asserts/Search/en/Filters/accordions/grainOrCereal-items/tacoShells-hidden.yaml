@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Taco Shells"
+    label: "Taco Shells filter is not visible"

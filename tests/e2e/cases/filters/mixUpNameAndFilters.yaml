@@ -1,0 +1,55 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Open Search Bar"
+
+- inputText:
+    text: "Ca"
+    label: "Input text 'Ca' in the Bar"
+
+- pressKey: "enter"
+
+- runFlow:
+    file: "../../asserts/Search/en/searchScreenFilteredOnCa.yaml"
+    label: "Assert filter view with Ca"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Open the filter page"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::2"
+    label: "Tap on Tags category to select an element inside"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::2::Item::0"
+    label: "Select tag Chocolate as filter"
+
+- runFlow:
+    file: "../../asserts/Search/en/Filters/filtersViewFilteredOnCaAndChocolate.yaml"
+    label: "Assert filter view with Ca and Chocolate"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Close the filter page"
+
+- runFlow:
+    file: "../../asserts/Search/en/searchScreenFilteredOnCaAndChocolate.yaml"
+    label: "Assert search results filtered on Ca and Chocolate"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::1::Chip"
+    label: "Remove Chocolate filter"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove 'Ca' text filter"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate back to Home screen"
