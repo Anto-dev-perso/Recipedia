@@ -48,7 +48,7 @@ appId: "com.recipedia"
     label: "Add the Romaine Lettuce in filters"
 
 - runFlow:
-    file: "../../asserts/Search/en/Filters/scrollBackToTop.yaml"
+    file: "../../flows/Search/scrollBackToTop.yaml"
     label: "Scroll back to top of filters"
 
 - runFlow:

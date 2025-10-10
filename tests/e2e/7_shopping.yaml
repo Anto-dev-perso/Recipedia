@@ -3,5 +3,10 @@ name: "Shopping screen test suite"
 ---
 - launchApp
 
-- runFlow: flows/Shopping/addOneRecipe.yaml
-- runFlow: flows/Shopping/addMultipleRecipes.yaml
+- runFlow:
+    file: "cases/shopping/addOneRecipe.yaml"
+    label: "Test adding one recipe to shopping list"
+
+- runFlow:
+    file: "cases/shopping/addMultipleRecipes.yaml"
+    label: "Test adding multiple recipes to shopping list"

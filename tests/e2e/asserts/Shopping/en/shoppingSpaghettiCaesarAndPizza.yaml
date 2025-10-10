@@ -1,0 +1,144 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "./assertShoppingScreenUI.yaml"
+    label: "Assert shopping screen UI elements"
+
+- assertVisible:
+    id: "ShoppingScreen::SectionList::ingredientTypes.grainOrCereal::SubHeader"
+    label: "Grain or Cereal category header is displayed"
+
+- assertVisible:
+    text: "Grain or Cereal"
+    label: "Grain or Cereal category text is displayed"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Spaghetti"
+      INGREDIENT_NAME_LOWER: "spaghetti"
+      RECIPE_NAMES: "Spaghetti Bolognese"
+    label: "Assert and check Spaghetti ingredient"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Croutons"
+      INGREDIENT_NAME_LOWER: "croutons"
+      RECIPE_NAMES: "Caesar Salad"
+    label: "Assert and check Croutons ingredient"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Pizza Dough"
+      INGREDIENT_NAME_LOWER: "pizza dough"
+      RECIPE_NAMES: "Margherita Pizza"
+    label: "Assert and check Pizza Dough ingredient"
+
+- assertVisible:
+    id: "ShoppingScreen::SectionList::ingredientTypes.vegetable::SubHeader"
+    label: "Vegetable category header is displayed"
+
+- assertVisible:
+    text: "Vegetable"
+    label: "Vegetable category text is displayed"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Romaine Lettuce"
+      INGREDIENT_NAME_LOWER: "romaine lettuce"
+      RECIPE_NAMES: "Caesar Salad"
+    label: "Assert and check Romaine Lettuce ingredient"
+
+- assertVisible:
+    id: "ShoppingScreen::SectionList::ingredientTypes.sauce::SubHeader"
+    label: "Sauce category header is displayed"
+
+- assertVisible:
+    text: "Sauce"
+    label: "Sauce category text is displayed"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Tomato Sauce"
+      INGREDIENT_NAME_LOWER: "tomato sauce"
+      RECIPE_NAMES: "Spaghetti Bolognese\n\t- Margherita Pizza"
+    label: "Assert and check Tomato Sauce ingredient"
+
+- scrollUntilVisible:
+    element:
+      id: "ShoppingScreen::SectionList::Basil Leaves"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to last item (Basil Leaves)"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Caesar Dressing"
+      INGREDIENT_NAME_LOWER: "caesar dressing"
+      RECIPE_NAMES: "Caesar Salad"
+    label: "Assert and check Caesar Dressing ingredient"
+
+- assertVisible:
+    id: "ShoppingScreen::SectionList::ingredientTypes.meat::SubHeader"
+    label: "Meat category header is displayed"
+
+- assertVisible:
+    text: "Meat"
+    label: "Meat category text is displayed"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Ground Beef"
+      INGREDIENT_NAME_LOWER: "ground beef"
+      RECIPE_NAMES: "Spaghetti Bolognese"
+    label: "Assert and check Ground Beef ingredient"
+
+- assertVisible:
+    id: "ShoppingScreen::SectionList::ingredientTypes.cheese::SubHeader"
+    label: "Cheese category header is displayed"
+
+- assertVisible:
+    text: "Cheese"
+    label: "Cheese category text is displayed"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Parmesan"
+      INGREDIENT_NAME_LOWER: "parmesan"
+      RECIPE_NAMES: "Spaghetti Bolognese\n\t- Caesar Salad"
+    label: "Assert and check Parmesan ingredient"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Mozzarella"
+      INGREDIENT_NAME_LOWER: "mozzarella"
+      RECIPE_NAMES: "Margherita Pizza"
+    label: "Assert and check Mozzarella ingredient"
+
+- assertVisible:
+    id: "ShoppingScreen::SectionList::ingredientTypes.spice::SubHeader"
+    label: "Spice category header is displayed"
+
+- assertVisible:
+    text: "Spice"
+    label: "Spice category text is displayed"
+
+- runFlow:
+    file: "../../../flows/Shopping/en/assertAndCheckIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Basil Leaves"
+      INGREDIENT_NAME_LOWER: "basil leaves"
+      RECIPE_NAMES: "Margherita Pizza"
+    label: "Assert and check Basil Leaves ingredient"
+
+- runFlow:
+    file: "../../../flows/Shopping/scrollToTop.yaml"
+    label: "Scroll back to top for next tests"

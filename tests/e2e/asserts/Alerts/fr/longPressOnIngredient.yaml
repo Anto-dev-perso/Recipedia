@@ -1,0 +1,29 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "ShoppingScreen::Dialog::Title"
+    label: "Alert title is displayed"
+
+- assertVisible:
+    text: "Recettes utilisant ${INGREDIENT_NAME}"
+    label: "Alert title text is displayed in French"
+
+- assertVisible:
+    id: "ShoppingScreen::Dialog::Content"
+    label: "Alert content is displayed"
+
+- assertVisible:
+    text: "${MESSAGE_TEXT}"
+    label: "Alert message text is displayed"
+
+- assertVisible:
+    id: "ShoppingScreen::Dialog::Confirm-text"
+    label: "Alert confirm button text is displayed"
+
+- assertVisible:
+    text: "OK"
+    label: "OK text is displayed"
+
+- tapOn:
+    id: "ShoppingScreen::Dialog::Confirm"
+    label: "Close the alert"

@@ -1,0 +1,67 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Navigate to Shopping screen"
+
+- runFlow:
+    file: "../../asserts/Shopping/en/shoppingEmpty.yaml"
+    label: "Assert empty shopping screen"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::RecipeCards::2::Content"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to Classic Pancakes recipe"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::2"
+    label: "Open Classic Pancakes recipe"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Add Classic Pancakes to menu"
+
+- runFlow:
+    file: "../../asserts/Alerts/en/addingRecipe.yaml"
+    env:
+      RECIPE_NAME: "Classic Pancakes"
+    label: "Assert recipe added alert"
+
+- runFlow:
+    file: "../../flows/Search/scrollBackToTop.yaml"
+    label: "Scroll back to top of Search screen"
+
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Navigate to Shopping screen"
+
+- runFlow:
+    file: "../../asserts/Shopping/en/shoppingPancake.yaml"
+    label: "Assert Pancake ingredients in shopping list"
+
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Navigate to Parameters screen"
+
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Navigate back to Shopping screen to verify persistence"
+
+- runFlow:
+    file: "../../asserts/Shopping/en/shoppingPancake.yaml"
+    label: "Assert shopping list persisted"
+
+- runFlow:
+    file: "../../flows/Shopping/en/clearShoppingList.yaml"
+    label: "Assert shopping list persisted"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate to Home screen"
