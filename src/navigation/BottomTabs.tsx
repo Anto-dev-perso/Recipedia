@@ -175,6 +175,7 @@ export function BottomTabs() {
           name='Search'
           component={Search}
           options={{
+            tabBarLabel: t('search'),
             lazy: shouldRenderLazy,
             tabBarTestID: testId + '::Search',
           }}
