@@ -1,8 +1,9 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "Home::SearchButton::RoundButton"
-    label: "Open Search screen"
+    id: "BottomTabs::Search"
+    label: "Go to Search screen via bottom tab"
+
 - tapOn:
     id: "SearchScreen::RecipeCards::1"
     label: "Open a recipe"

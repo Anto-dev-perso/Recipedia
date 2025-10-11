@@ -5,6 +5,6 @@ appId: "com.recipedia"
     label: "Check bottom navigation tabs in French"
 
 - assertVisible:
-    id: "Shopping::TextNoItem"
+    id: "ShoppingScreen::TextNoItem"
     text: "Aucun article dans la liste de courses"
     label: "Empty shopping list message is displayed in French"

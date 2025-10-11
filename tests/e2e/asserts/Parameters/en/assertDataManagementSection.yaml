@@ -2,26 +2,41 @@ appId: "com.recipedia"
 ---
 - assertVisible:
     id: "Parameters::Section::Data::SubHeader"
+    label: "Data Management section header is displayed"
+
+- assertVisible:
     text: "Data Management"
-    label: "Data Management section is displayed with the right text"
+    label: "Data Management section header text is displayed"
+
 - assertVisible:
     text: "󰉛"
     label: "Ingredient icon is displayed"
+
 - assertVisible:
     id: "Parameters::Section::Data::Ingredients::Item"
+    label: "Ingredients item is displayed"
+
+- assertVisible:
     text: "Ingredients, Edit ingredients and their seasonality"
-    label: "Ingredients item is displayed with the right text"
+    label: "Ingredients item shows correct text"
+
 - assertVisible:
     text: "󰅂"
     index: 1
     label: "Ingredients has a chevron icon"
+
 - assertVisible:
     text: "󰓻"
     label: "Tags icon is displayed"
+
 - assertVisible:
     id: "Parameters::Section::Data::Tags::Item"
+    label: "Tags item is displayed"
+
+- assertVisible:
     text: "Tags, Manage recipe tags"
-    label: "Tags item is displayed with the right text"
+    label: "Tags item shows correct text"
+
 - assertVisible:
     text: "󰅂"
     index: 2

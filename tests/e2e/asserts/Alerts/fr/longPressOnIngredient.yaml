@@ -13,8 +13,8 @@ appId: "com.recipedia"
     label: "Alert content is displayed"
 
 - assertVisible:
-    text: "${MESSAGE_TEXT}"
-    label: "Alert message text is displayed"
+    text: "Voici la liste des recettes utilisant cet ingrédient :\n\t- ${RECIPE_NAMES}"
+    label: "Alert message content is displayed"
 
 - assertVisible:
     id: "ShoppingScreen::Dialog::Confirm-text"

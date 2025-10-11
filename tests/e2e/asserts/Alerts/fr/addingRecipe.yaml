@@ -9,7 +9,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "Recipe::Dialog::Content"
-    text: "La recette \"${RECIPE_NAME}\" a été ajoutée avec succès à la liste de courses"
+    text: "La recette \"${RECIPE_NAME}\" ajoutée avec succès à la liste de courses"
     label: "Alert message is rendered"
 
 - assertVisible:

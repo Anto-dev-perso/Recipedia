@@ -1,9 +1,14 @@
 appId: "com.recipedia"
-name: "Check that the Parameters screen is displayed and working as intended."
+name: "Parameters screen test suite"
 ---
 - launchApp
 
-- runFlow: "flows/Parameters/darkMode.yaml"
-- runFlow: "flows/Parameters/language/checkLanguageChange.yaml"
+- runFlow:
+    file: "cases/parameters/darkModeToggle.yaml"
+    label: "Test dark mode toggle functionality"
+
+- runFlow:
+    file: "cases/parameters/languageChange.yaml"
+    label: "Test language change across all screens"
 
 # TODO add default person and season filter test

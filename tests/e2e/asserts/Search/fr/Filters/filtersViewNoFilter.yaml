@@ -1,0 +1,137 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "filterViewHeader.yaml"
+    label: "Assert filter view header elements in French"
+
+# Initialize accordion index counter
+- evalScript: ${output.accordionIndex = 0}
+
+# Accordion 0: Only in-season ingredients
+- runFlow:
+    file: "accordions/inSeason-all.yaml"
+    label: "Assert Only in-season ingredients accordion with all items visible"
+
+# Accordion 1: Preparation Time
+- runFlow:
+    file: "accordions/preparationTime-all.yaml"
+    label: "Assert Preparation Time accordion with all items visible"
+
+# Scroll down to see Tags accordion at top
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::6"
+    direction: DOWN
+    label: "Scroll until Plant Protein accordion is visible to position Tags at top"
+
+# Accordion 2: Tags
+- runFlow:
+    file: "accordions/tags-all.yaml"
+    label: "Assert Tags accordion with all items visible"
+
+# Accordion 3: Grain or Cereal
+- runFlow:
+    file: "accordions/grainOrCereal-all.yaml"
+    label: "Assert Grain or Cereal accordion with all items visible"
+
+# Accordion 4: Legumes
+- runFlow:
+    file: "accordions/legumes-all.yaml"
+    label: "Assert Legumes accordion with all items visible"
+
+# Accordion 5: Vegetable
+- runFlow:
+    file: "accordions/vegetable-all.yaml"
+    label: "Assert Vegetable accordion with all items visible"
+
+# Accordion 6: Plant Protein
+- runFlow:
+    file: "accordions/plantProtein-all.yaml"
+    label: "Assert Plant Protein accordion with all items visible"
+
+# Accordion 7: Condiment
+- runFlow:
+    file: "accordions/condiment-all.yaml"
+    label: "Assert Condiment accordion with all items visible"
+
+# Scroll down to see more accordions
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::12"
+    direction: DOWN
+    label: "Scroll to Dairy accordion"
+
+
+# Accordion 8: Sauce
+- runFlow:
+    file: "accordions/sauce-all.yaml"
+    label: "Assert Sauce accordion with all items visible"
+
+# Accordion 9: Meat
+- runFlow:
+    file: "accordions/meat-all.yaml"
+    label: "Assert Meat accordion with all items visible"
+
+# Accordion 10: Poultry
+- runFlow:
+    file: "accordions/poultry-all.yaml"
+    label: "Assert Poultry accordion with all items visible"
+
+# Accordion 11: Fish
+- runFlow:
+    file: "accordions/fish-all.yaml"
+    label: "Assert Fish accordion with all items visible"
+
+# Scroll down to see more accordions
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::18"
+    direction: DOWN
+    label: "Scroll to Nuts and Seeds accordion"
+
+# Accordion 12: Dairy
+- runFlow:
+    file: "accordions/dairy-all.yaml"
+    label: "Assert Dairy accordion with all items visible"
+
+# Accordion 13: Cheese
+- runFlow:
+    file: "accordions/cheese-all.yaml"
+    label: "Assert Cheese accordion with all items visible"
+
+# Accordion 14: Sugar
+- runFlow:
+    file: "accordions/sugar-all.yaml"
+    label: "Assert Sugar accordion with all items visible"
+
+# Accordion 15: Spice
+- runFlow:
+    file: "accordions/spice-all.yaml"
+    label: "Assert Spice accordion with all items visible"
+
+# Accordion 16: Fruit
+- runFlow:
+    file: "accordions/fruit-all.yaml"
+    label: "Assert Fruit accordion with all items visible"
+
+# Accordion 17: Oil and Fat
+- runFlow:
+    file: "accordions/oilAndFat-all.yaml"
+    label: "Assert Oil and Fat accordion with all items visible"
+
+# Scroll down to see more accordions
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::18"
+    direction: DOWN
+    label: "Scroll to Nuts and Seeds accordion"
+
+# Accordion 18: Nuts and Seeds
+- runFlow:
+    file: "accordions/nutsAndSeeds-all.yaml"
+    label: "Assert Nuts and Seeds accordion with all items visible"
+
+# Scroll back to top
+- runFlow:
+    file: "scrollBackToTop.yaml"
+    label: "Scroll back to top of filters"

@@ -14,26 +14,20 @@ appId: "com.recipedia"
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Expand Preparation Time accordion"
 
-# Assert all items are visible
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::0"
-    label: "0-5 min filter is visible"
+# Initialize counter for visible items
+- evalScript: ${output.itemIndex = 0}
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::1"
-    label: "5-10 min filter is visible"
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::2"
-    label: "10-15 min filter is visible"
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::3"
-    label: "15-20 min filter is visible"
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::4"
-    label: "20-30 min filter is visible"
+# Assert all items are visible - use item flows
+- runFlow:
+    file: "preparationTime-items/0-5min-visible.yaml"
+- runFlow:
+    file: "preparationTime-items/5-10min-visible.yaml"
+- runFlow:
+    file: "preparationTime-items/10-15min-visible.yaml"
+- runFlow:
+    file: "preparationTime-items/15-20min-visible.yaml"
+- runFlow:
+    file: "preparationTime-items/20-30min-visible.yaml"
 
 - scrollUntilVisible:
     element:
@@ -41,17 +35,12 @@ appId: "com.recipedia"
     direction: DOWN
     label: "Scroll to see remaining preparation time options"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::5"
-    label: "30-45 min filter is visible"
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::6"
-    label: "45-60 min filter is visible"
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::7"
-    label: "More than 1 hour filter is visible"
+- runFlow:
+    file: "preparationTime-items/30-45min-visible.yaml"
+- runFlow:
+    file: "preparationTime-items/45-60min-visible.yaml"
+- runFlow:
+    file: "preparationTime-items/moreThan1Hour-visible.yaml"
 
 - scrollUntilVisible:
     element:

@@ -11,7 +11,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::PrefixText"
+      id: "RecipeTags::HeaderText"
     direction: DOWN
     speed: 70
 
@@ -31,6 +31,13 @@ appId: "com.recipedia"
     id: "RecipePersons::SuffixText"
     text: " personnes"
     label: "Outro text for the recipe persons is displayed in French"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: DOWN
+    speed: 70
+
 - assertVisible:
     id: "RecipeIngredients::PrefixText"
     text: "Ingrédients : "
@@ -38,7 +45,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Content"
+      id: "RecipeTime::PrefixText"
     direction: DOWN
     speed: 60
 
@@ -50,6 +57,13 @@ appId: "com.recipedia"
     id: "RecipeTime::SuffixText"
     text: "min"
     label: "Outro text for the recipe time is displayed in French"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Content"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Step"
     text: "Préparation: étape 1"

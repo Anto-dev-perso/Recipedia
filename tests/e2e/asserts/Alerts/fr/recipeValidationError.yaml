@@ -1,0 +1,31 @@
+appId: "com.recipedia"
+
+---
+
+- assertVisible:
+    id: "Recipe::Dialog::Title"
+    label: "Le titre de l'alerte est affiché"
+
+- assertVisible:
+    text: "Élements manquants"
+    label: "Le texte du titre de l'alerte est affiché"
+
+- assertVisible:
+    id: "Recipe::Dialog::Content"
+    label: "Le contenu de l'alerte est affiché"
+
+- assertVisible:
+    text: "Vous n'avez pas renseigné tous les éléments essentiels à une recette. Avant de valider, veuillez renseigner : ${MISSING_ELEMENTS}"
+    label: "Le message de l'alerte est affiché"
+
+- assertVisible:
+    id: "Recipe::Dialog::Confirm-text"
+    label: "Le bouton de validation de l'alerte est affiché"
+
+- assertVisible:
+    text: "Compris"
+    label: "Le texte Compris est affiché"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Fermer l'alerte"

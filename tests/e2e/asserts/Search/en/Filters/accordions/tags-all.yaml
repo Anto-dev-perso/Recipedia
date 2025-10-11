@@ -14,34 +14,41 @@ appId: "com.recipedia"
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Expand Tags accordion"
 
-# Assert all items are visible
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::0"
-    label: "Breakfast filter is visible"
+# Assert all items are visible - use item flows
+- runFlow:
+    file: "tags-items/breakfast-visible.yaml"
+    env:
+      ITEM_INDEX: "0"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::1"
-    label: "Chocolate filter is visible"
+- runFlow:
+    file: "tags-items/chocolate-visible.yaml"
+    env:
+      ITEM_INDEX: "1"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::2"
-    label: "Dessert filter is visible"
+- runFlow:
+    file: "tags-items/dessert-visible.yaml"
+    env:
+      ITEM_INDEX: "2"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::3"
-    label: "Dinner filter is visible"
+- runFlow:
+    file: "tags-items/dinner-visible.yaml"
+    env:
+      ITEM_INDEX: "3"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::4"
-    label: "Healthy filter is visible"
+- runFlow:
+    file: "tags-items/healthy-visible.yaml"
+    env:
+      ITEM_INDEX: "4"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::5"
-    label: "Indian filter is visible"
+- runFlow:
+    file: "tags-items/indian-visible.yaml"
+    env:
+      ITEM_INDEX: "5"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::6"
-    label: "Italian filter is visible"
+- runFlow:
+    file: "tags-items/italian-visible.yaml"
+    env:
+      ITEM_INDEX: "6"
 
 # Scroll down to see remaining tags
 - scrollUntilVisible:
@@ -50,37 +57,45 @@ appId: "com.recipedia"
     direction: DOWN
     label: "Scroll to see remaining tags"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::7"
-    label: "Japanese filter is visible"
+- runFlow:
+    file: "tags-items/japanese-visible.yaml"
+    env:
+      ITEM_INDEX: "7"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::8"
-    label: "Lunch filter is visible"
+- runFlow:
+    file: "tags-items/lunch-visible.yaml"
+    env:
+      ITEM_INDEX: "8"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::9"
-    label: "Mexican filter is visible"
+- runFlow:
+    file: "tags-items/mexican-visible.yaml"
+    env:
+      ITEM_INDEX: "9"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::10"
-    label: "Quick Meal filter is visible"
+- runFlow:
+    file: "tags-items/quickMeal-visible.yaml"
+    env:
+      ITEM_INDEX: "10"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::11"
-    label: "Salad filter is visible"
+- runFlow:
+    file: "tags-items/salad-visible.yaml"
+    env:
+      ITEM_INDEX: "11"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::12"
-    label: "Seafood filter is visible"
+- runFlow:
+    file: "tags-items/seafood-visible.yaml"
+    env:
+      ITEM_INDEX: "12"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::13"
-    label: "Soup filter is visible"
+- runFlow:
+    file: "tags-items/soup-visible.yaml"
+    env:
+      ITEM_INDEX: "13"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::14"
-    label: "Vegetarian filter is visible"
+- runFlow:
+    file: "tags-items/vegetarian-visible.yaml"
+    env:
+      ITEM_INDEX: "14"
 
 # Scroll back up to see accordion header
 - scrollUntilVisible:

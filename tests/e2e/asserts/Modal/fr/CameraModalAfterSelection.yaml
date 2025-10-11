@@ -1,0 +1,48 @@
+appId: "com.recipedia"
+---
+
+- assertVisible:
+    id: "ModalImageSelect::ExplanationText"
+    text: "Choisissez une image:"
+    label: "Le texte d'explication du modal est affiché"
+- assertVisible:
+    id: "Modal::List#0::SquareButton::Image"
+    label: "L'image de la caméra est affichée"
+- assertVisible:
+    id: "Modal::List#1::SquareButton::Image"
+    label: "La première image de la galerie est affichée"
+- assertVisible:
+    id: "Modal::List#2::SquareButton::Image"
+    label: "La deuxième image de la galerie est affichée"
+- assertVisible:
+    id: "Modal::List#3::SquareButton::Image"
+    label: "La troisième image de la galerie est affichée"
+- assertVisible:
+    id: "Modal::List#4::SquareButton::Image"
+    label: "La quatrième image de la galerie est affichée"
+- assertVisible:
+    id: "Modal::List#5::SquareButton::Image"
+    label: "La cinquième image de la galerie est affichée"
+- assertVisible:
+    id: "Modal::List#6::SquareButton::Image"
+    label: "La sixième image de la galerie est affichée"
+- assertVisible:
+    id: "Modal::Camera::RoundButton"
+    label: "Le bouton caméra est affiché"
+- assertVisible:
+    text: "󰄀"
+    label: "Le bouton caméra a la bonne icône"
+- assertVisible:
+    id: "Modal::Camera::Text"
+    text: "Prendre une nouvelle photo"
+    label: "Le texte d'aide de la caméra est affiché"
+- assertVisible:
+    id: "Modal::Gallery::RoundButton"
+    label: "Le bouton galerie est affiché"
+- assertVisible:
+    text: "󰋫"
+    label: "Le bouton galerie a la bonne icône"
+- assertVisible:
+    id: "Modal::Gallery::Text"
+    text: "Choisir depuis la galerie"
+    label: "Le texte d'aide de la galerie est affiché"

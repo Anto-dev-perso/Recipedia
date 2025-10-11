@@ -1,0 +1,62 @@
+appId: "com.recipedia"
+---
+# Assert accordion is displayed
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Grain or Cereal accordion is displayed"
+
+- assertVisible:
+    text: "Céréales et Grains"
+    label: "Grain or Cereal accordion title is displayed in French"
+
+# Expand the accordion
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Expand Grain or Cereal accordion"
+
+# Initialize counter for visible items
+- evalScript: ${output.itemIndex = 0}
+
+# Assert all items are visible - reuse item flows from English
+- runFlow:
+    file: "../../../en/Filters/accordions/grainOrCereal-items/spaghetti-visible.yaml"
+    env:
+      ITEM_INDEX: "0"
+
+- runFlow:
+    file: "../../../en/Filters/accordions/grainOrCereal-items/tacoShells-visible.yaml"
+    env:
+      ITEM_INDEX: "1"
+
+- runFlow:
+    file: "../../../en/Filters/accordions/grainOrCereal-items/flour-visible.yaml"
+    env:
+      ITEM_INDEX: "2"
+
+- runFlow:
+    file: "../../../en/Filters/accordions/grainOrCereal-items/croutons-visible.yaml"
+    env:
+      ITEM_INDEX: "3"
+
+- runFlow:
+    file: "../../../en/Filters/accordions/grainOrCereal-items/pizzaDough-visible.yaml"
+    env:
+      ITEM_INDEX: "4"
+
+- runFlow:
+    file: "../../../en/Filters/accordions/grainOrCereal-items/pasta-visible.yaml"
+    env:
+      ITEM_INDEX: "5"
+
+- runFlow:
+    file: "../../../en/Filters/accordions/grainOrCereal-items/sushiRice-visible.yaml"
+    env:
+      ITEM_INDEX: "6"
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Grain or Cereal accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

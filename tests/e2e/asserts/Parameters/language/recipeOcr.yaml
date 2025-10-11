@@ -27,8 +27,12 @@ appId: "com.recipedia"
     label: "Explanation text for the recipe tags is displayed in French"
 - assertVisible:
     id: "RecipePersons::PrefixText"
-    text: "Pour combien de personnes ?"
+    text: "Cette recette est pour : "
     label: "Intro text for the recipe persons is displayed in French"
+- assertVisible:
+    id: "RecipePersons::SuffixText"
+    text: " personnes"
+    label: "Outro text for the recipe persons is displayed in French"
 - assertVisible:
     id: "RecipeIngredients::PrefixText"
     text: "Ingrédients : "
