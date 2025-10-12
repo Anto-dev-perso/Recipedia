@@ -1,0 +1,6 @@
+appId: "com.recipedia"
+---
+# This flow is deprecated - use cases/recipeAdding/validation/all.yaml instead
+- runFlow:
+    file: "../../../cases/recipeAdding/validation/all.yaml"
+    label: "Run all validation error cases"

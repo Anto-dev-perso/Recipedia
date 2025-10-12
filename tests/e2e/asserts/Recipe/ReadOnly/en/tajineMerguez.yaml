@@ -1,0 +1,126 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../common/buttonsReadOnly.yaml"
+    label: "Assert common ReadOnly buttons and image"
+
+- runFlow:
+    file: "../../common/titleReadOnly.yaml"
+    env:
+      TITLE: "TAJINE DE MERGUEZ AU CUMIN"
+    label: "Assert recipe title"
+
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: ""
+    label: "Description of the recipe is empty"
+
+- scrollUntilVisible:
+    element:
+      text: "Ingredients (4 persons)"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertNotVisible:
+    id: "RecipeTags::0::Chip"
+    label: "Tags part is not rendered"
+
+- assertVisible:
+    text: "Ingredients (4 persons)"
+    label: "Ingredient section and persons is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "2 "
+    label: "First ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "carotte"
+    label: "First ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "2 sachet"
+    label: "Second ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "cumin"
+    label: "Second ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    text: "8 "
+    label: "Third ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
+    text: "merguez"
+    label: "Third ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    text: "2 "
+    label: "Fourth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::IngredientName"
+    text: "navet"
+    label: "Fourth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    text: "800 g"
+    label: "Fifth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::IngredientName"
+    text: "pommes de terre jaunes"
+    label: "Fifth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeTime::Text"
+    text: "Preparation (25 min)"
+    label: "Preparation section and time are displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) Avant de commencer"
+    label: "First preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: "First preparation paragraph is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionTitle"
+    text: "2) Le tajine"
+    label: "Second preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: "Second preparation paragraph is displayed"

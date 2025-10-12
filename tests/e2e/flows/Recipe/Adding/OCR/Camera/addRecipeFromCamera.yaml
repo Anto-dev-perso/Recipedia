@@ -1,27 +1,40 @@
 appId: "com.recipedia"
 ---
-#TODO replace swipe by scrollUntilVisible
-- runFlow: ocrImage.yaml
-- runFlow: ocrTitle.yaml
-- runFlow: ocrDescription.yaml
+- runFlow:
+    file: "ocrImage.yaml"
+    label: "OCR image"
+
+- runFlow:
+    file: "ocrTitle.yaml"
+    label: "OCR title"
+
+- runFlow:
+    file: "ocrDescription.yaml"
+    label: "OCR description"
+
 - scrollUntilVisible:
     element:
-      id: "RecipePersons::OpenModal::RoundButton"
+      id: "RecipeIngredients::PrefixText"
     direction: DOWN
-    centerElement: true
-- runFlow: ocrPersons.yaml
-- runFlow: ocrIngredients.yaml
-- runFlow: ocrTime.yaml
-- runFlow: ocrPreparation.yaml
+    speed: 60
+    centerElement:
+    label: "Scroll to ingredient section"
+
+- runFlow:
+    file: "ocrIngredients.yaml"
+    label: "OCR ingredients"
+
+- runFlow:
+    file: "ocrTime.yaml"
+    label: "OCR time"
+
+- runFlow:
+    file: "ocrPreparation.yaml"
+    label: "OCR preparation"
+
 - scrollUntilVisible:
     element:
       id: "RecipeImage::RoundButton"
     direction: UP
     speed: 80
-    label: Swipe up to reset screen to start
-- scrollUntilVisible:
-    element:
-      text: "󰘤"
-    direction: UP
-    speed: 60
-    label: Swipe up to reset screen to start
+    label: "Scroll back to top"

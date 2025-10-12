@@ -13,7 +13,7 @@ env:
     label: "Refresh Home screen until recipe is found"
 
 - runFlow:
-    file: "../../asserts/Recipe/ReadOnly/sushiRolls.yaml"
+    file: "../../asserts/Recipe/ReadOnly/en/sushiRolls.yaml"
     label: "Assert Sushi Rolls recipe is displayed correctly"
 
 - tapOn:
@@ -31,7 +31,7 @@ env:
     label: "Validate the modifications"
 
 - runFlow:
-    file: "../../asserts/Recipe/ReadOnly/sushiRolls.yaml"
+    file: "../../asserts/Recipe/ReadOnly/en/sushiRolls.yaml"
     label: "Assert modified Sushi Rolls recipe is displayed correctly"
 
 - tapOn:

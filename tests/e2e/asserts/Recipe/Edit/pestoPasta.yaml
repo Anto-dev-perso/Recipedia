@@ -1,17 +1,8 @@
 appId: "com.recipedia"
 ---
-- assertVisible:
-    id: "BackButton::RoundButton"
-    label: "Back button is displayed"
-- assertVisible:
-    text: "󰌍"
-    label: "Back button icon is displayed"
-- assertVisible:
-    id: "RecipeValidate"
-    label: "Add recipe button is displayed"
-- assertVisible:
-    text: "Validate the recipe with these modifications"
-    label: "Validate recipe button has the correct text"
+- runFlow:
+    file: "../common/buttonsEdit.yaml"
+    label: "Assert edit mode buttons are displayed"
 - assertVisible:
     id: "RecipeImage::RoundButton"
     label: "Image button is rendered"

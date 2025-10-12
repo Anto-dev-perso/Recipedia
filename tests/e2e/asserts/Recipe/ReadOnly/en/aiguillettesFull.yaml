@@ -1,0 +1,142 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../common/buttonsReadOnly.yaml"
+    label: "Assert read-only buttons are displayed"
+
+- runFlow:
+    file: "../common/titleReadOnly.yaml"
+    env:
+      TITLE: "Aiguillettes de poulet a la sauce satay"
+    label: "Assert title is displayed"
+
+- runFlow:
+    file: "../common/descriptionReadOnly.yaml"
+    env:
+      DESCRIPTION: "CUISINEZ NOS FILETS DE POULET FRANCAIS AVEC DU RIZ BASMATI BIO ET UNE SAUCE SATAY MAISON: UN CONDIMENT ASIATIQUE A BASE DE CACAHUETES ET GINGEMBRE !"
+    label: "Assert description is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::0::Chip"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tags"
+
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    label: "First tag chip is displayed"
+
+- assertVisible:
+    text: "Healthy"
+    label: "First tag text is displayed"
+
+- assertVisible:
+    id: "RecipeTags::1::Chip"
+    label: "Second tag chip is displayed"
+
+- assertVisible:
+    text: "Italian"
+    label: "Second tag text is displayed"
+
+- runFlow:
+    file: "../common/personsReadOnly.yaml"
+    label: "Assert persons is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to time"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "200 g"
+    label: "First ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "Chicken Breast"
+    label: "First ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "2 g"
+    label: "Second ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "Onions"
+    label: "Second ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    text: "5 g"
+    label: "Third ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
+    text: "Avocado"
+    label: "Third ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeTime::Text"
+    text: "Preparation (20 min)"
+    label: "Preparation section and time are displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+    label: "Scroll to first preparation step"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) Le riz"
+    label: "First preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz selon les indications du paquet.Pendant ce temps, preparez les filets de poulet a la sauce satay."
+    label: "First preparation paragraph is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+    label: "Scroll to second preparation step"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionTitle"
+    text: "2) La sauce"
+    label: "Second preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    text: "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\nSalez, poivrez. Mixez jusqu'a obtenir une texture homogene."
+    label: "Second preparation paragraph is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::SectionTitle"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to third preparation step"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionTitle"
+    text: "3) LA CUISSON DU POULET"
+    label: "Third preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionParagraph"
+    text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson a feu moyen a vif."
+    label: "Third preparation paragraph is displayed"

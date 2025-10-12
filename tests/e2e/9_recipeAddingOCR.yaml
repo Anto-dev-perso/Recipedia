@@ -1,0 +1,12 @@
+appId: "com.recipedia"
+name: "Recipe Adding test suite"
+---
+- launchApp
+
+- runFlow: flows/Recipe/Adding/ocrHelloFresh.yaml
+- runFlow: flows/Recipe/Adding/ocrQuitoqueV3Recipe.yaml
+- runFlow: flows/Recipe/Adding/ocrQuitoqueV2Recipe.yaml
+- runFlow: flows/Recipe/Adding/ocrQuitoqueV1Recipe.yaml
+  
+
+# TODO missing corner cases on OCR

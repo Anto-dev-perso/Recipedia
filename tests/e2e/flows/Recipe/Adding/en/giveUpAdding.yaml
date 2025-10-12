@@ -1,0 +1,6 @@
+appId: "com.recipedia"
+---
+# This flow is deprecated - use cases/recipeAdding/manual/cancel.yaml instead
+- runFlow:
+    file: "../../../cases/recipeAdding/manual/cancel.yaml"
+    label: "Run recipe adding cancellation case"

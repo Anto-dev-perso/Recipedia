@@ -1,0 +1,29 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "Recipe::Dialog::Title"
+    label: "Alert title is displayed"
+
+- assertVisible:
+    text: "Missing element"
+    label: "Alert title text is displayed"
+
+- assertVisible:
+    id: "Recipe::Dialog::Content"
+    label: "Alert content is displayed"
+
+- assertVisible:
+    text: "You're missing ${MISSING_ELEMENT} to your recipe. Please add this before validate."
+    label: "Alert message is displayed"
+
+- assertVisible:
+    id: "Recipe::Dialog::Confirm-text"
+    label: "Alert confirm button is displayed"
+
+- assertVisible:
+    text: "Understood"
+    label: "Understood text is displayed"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Close the alert"

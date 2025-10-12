@@ -1,0 +1,6 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "RecipeDescription::TextInput"
+    text: "${DESCRIPTION}"
+    label: "Description TextInput is displayed with text"

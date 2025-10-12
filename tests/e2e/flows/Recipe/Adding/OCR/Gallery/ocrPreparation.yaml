@@ -3,35 +3,35 @@ appId: "com.recipedia"
 
 - tapOn:
     id: "RecipePreparation::OpenModal::RoundButton"
-    label: Tap on OCR button of recipe preparation
+    label: "Tap on OCR button of recipe preparation"
 - runFlow:
     when:
       true: ${output.isDescriptionToOCR == true && output.isTagsToOCR == true && output.isPersons == true}
     commands:
       - tapOn:
           id: "Modal::List#6::SquareButton::Image"
-          label: Select preparation picture
+          label: "Select preparation picture"
 - runFlow:
     when:
       true: ${(output.isDescriptionToOCR == true && output.isTagsToOCR == false && output.isPersons == true) || (output.isDescriptionToOCR == false && output.isTagsToOCR == true && output.isPersons == true || output.isDescriptionToOCR == true && output.isTagsToOCR == true && output.isPersons == false)}
     commands:
       - tapOn:
           id: "Modal::List#5::SquareButton::Image"
-          label: Select preparation picture
+          label: "Select preparation picture"
 - runFlow:
     when:
       true: ${(output.isDescriptionToOCR == false && output.isTagsToOCR == false && output.isPersons == true) ||(output.isDescriptionToOCR == false && output.isTagsToOCR == true && output.isPersons == false) ||(output.isDescriptionToOCR == true && output.isTagsToOCR == false && output.isPersons == false)}
     commands:
       - tapOn:
           id: "Modal::List#4::SquareButton::Image"
-          label: Select preparation picture
+          label: "Select preparation picture"
 - runFlow:
     when:
       true: ${output.isDescriptionToOCR == false && output.isTagsToOCR == false && output.isPersons == false}
     commands:
       - tapOn:
           id: "Modal::List#3::SquareButton::Image"
-          label: Select preparation picture
+          label: "Select preparation picture"
 - runFlow:
     file: ../android/validateWithoutCropping.yaml
     when:

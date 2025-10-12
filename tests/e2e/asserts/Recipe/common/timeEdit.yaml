@@ -1,0 +1,14 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    text: "Time to prepare the recipe :"
+    label: "Time to prepare text is displayed"
+
+- assertVisible:
+    id: "RecipeTime::TextInput"
+    text: "${TIME}"
+    label: "Time TextInput is displayed with correct text"
+
+- assertVisible:
+    text: "min"
+    label: "Minute text is displayed"

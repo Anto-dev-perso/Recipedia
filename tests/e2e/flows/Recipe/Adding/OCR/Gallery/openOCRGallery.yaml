@@ -1,27 +1,29 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    text: "󰐕"
-    label: Press the Plus bottom button
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu"
+
 - tapOn:
     id: "GalleryButton::RoundButton"
-    label: Press the Gallery bottom button
-- repeat:
-    while:
-      notVisible:
-        id: "com.android.providers.media.module:id/icon_thumbnail"
-        index: ${output.nbImageForThisRecipe - 1}
-    commands:
-      - pressKey: "BACK"
-      - tapOn:
-          id: "GalleryButton::RoundButton"
-          label: Press the Gallery bottom button
-- runFlow:
-    file: ../android/pickFromGallery.yaml
-    when:
-      platform: Android
+    label: "Open gallery for OCR"
+
 # TODO iOS
 #- runFlow:
-#    file: iOS/selectFromCamera.yaml
+#    file: "../iOS/openGallery.yaml"
+#    label: "Wait for gallery to load (iOS)"
+#    when:
+#      platform: iOS
+
+- runFlow:
+    file: "../android/pickFromGallery.yaml"
+    label: "Pick images from gallery (Android)"
+    when:
+      platform: Android
+
+# TODO iOS
+#- runFlow:
+#    file: "../iOS/pickFromGallery.yaml"
+#    label: "Pick images from gallery (iOS)"
 #    when:
 #      platform: iOS

@@ -1,0 +1,17 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "BackButton::RoundButton"
+    label: "Back button is displayed"
+
+- assertNotVisible:
+    id: "RecipeDelete::RoundButton"
+    label: "Delete button is not displayed"
+
+- assertVisible:
+    id: "RecipeValidate"
+    label: "Add recipe button is displayed"
+
+- assertVisible:
+    text: "Add this new recipe"
+    label: "Add recipe button text is displayed"

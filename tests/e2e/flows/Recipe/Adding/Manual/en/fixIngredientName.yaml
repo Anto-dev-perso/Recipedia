@@ -1,0 +1,7 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    label: "Press on ingredient name input"
+
+- pressKey: enter

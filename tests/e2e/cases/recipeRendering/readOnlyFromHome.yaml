@@ -13,7 +13,7 @@ env:
     label: "Refresh Home screen until recipe is found"
 
 - runFlow:
-    file: "../../asserts/Recipe/ReadOnly/vegetableSoup.yaml"
+    file: "../../asserts/Recipe/ReadOnly/en/vegetableSoup.yaml"
     label: "Assert Vegetable Soup recipe is displayed correctly"
 
 - tapOn:

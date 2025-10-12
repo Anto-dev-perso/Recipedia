@@ -1,0 +1,203 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../common/buttonsReadOnly.yaml"
+    label: "Assert common ReadOnly buttons and image"
+
+- runFlow:
+    file: "../../common/titleReadOnly.yaml"
+    env:
+      TITLE: "CURRY DE POIS CHICHES ET POIREAU AUX ÉPICES CACHEMIRE"
+    label: "Assert recipe title"
+
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: "Coupez le poireau en 4 dans la longueur sans aller au bout. Lavez-les sous un filet d'eau en écartant les feuilles pour bien éliminer la terre."
+    label: "Description of the recipe is rendered"
+
+- scrollUntilVisible:
+    element:
+      text: "Ingredients (4 persons)"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertNotVisible:
+    id: "RecipeTags::0::Chip"
+    label: "Tags part is not rendered"
+
+- assertVisible:
+    text: "Ingredients (4 persons)"
+    label: "Ingredient section and persons is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "2 "
+    label: "First ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "carotte"
+    label: "First ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "2 "
+    label: "Second ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "citronnelle"
+    label: "Second ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    text: "2 "
+    label: "Third ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
+    text: "cébette"
+    label: "Third ingredient name is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    text: "2 "
+    label: "Fourth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::IngredientName"
+    text: "gousse d'ail"
+    label: "Fourth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    text: "400 ml"
+    label: "Fifth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::IngredientName"
+    text: "lait de coco"
+    label: "Fifth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::5::QuantityAndUnit"
+    text: "2 "
+    label: "Sixth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::5::IngredientName"
+    text: "oignon jaune"
+    label: "Sixth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::6::QuantityAndUnit"
+    text: "2 "
+    label: "Seventh ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::6::IngredientName"
+    text: "poireau"
+    label: "Seventh ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::7::QuantityAndUnit"
+    text: "200 g égoutté"
+    label: "Eighth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::7::IngredientName"
+    text: "pois chiches conserve  Bio"
+    label: "Eighth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::8::QuantityAndUnit"
+    text: "250 g"
+    label: "Ninth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::8::IngredientName"
+    text: "Purée de tomates"
+    label: "Ninth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::9::QuantityAndUnit"
+    text: "300 g"
+    label: "Tenth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::9::IngredientName"
+    text: "riz basmati  Bio"
+    label: "Tenth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::10::QuantityAndUnit"
+    text: "2 sachet"
+    label: "Eleventh ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::10::IngredientName"
+    text: "épices Cachemire"
+    label: "Eleventh ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeTime::Text"
+    text: "Preparation (40 min)"
+    label: "Preparation section and time are displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) La préparation"
+    label: "First preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: "First preparation paragraph is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionTitle"
+    text: "2) Le curry"
+    label: "Second preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: "Second preparation paragraph is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionTitle"
+    text: "3) Le riz"
+    label: "Third preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: "Third preparation paragraph is displayed"

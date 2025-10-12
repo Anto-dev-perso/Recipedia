@@ -1,0 +1,45 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/openAddManually.yaml"
+    label: "Open manual recipe adding screen"
+
+- runFlow:
+    file: "emptyRecipe.yaml"
+    label: "Test validation with empty recipe"
+
+- runFlow:
+    file: "onlyImage.yaml"
+    label: "Test validation with only image "
+
+- runFlow:
+    file: "onlyImageTitle.yaml"
+    label: "Test validation with only image and title"
+
+- runFlow:
+    file: "withoutIngredients.yaml"
+    label: "Test validation with title and description"
+
+- runFlow:
+    file: "withoutPreparation.yaml"
+    label: "Test validation with tag added"
+
+- runFlow:
+    file: "withoutTime.yaml"
+    label: "Test validation with persons added"
+
+- runFlow:
+    file: "almostComplete.yaml"
+    label: "Test validation with ingredients added"
+
+- runFlow:
+    file: "withTime.yaml"
+    label: "Test validation with time added"
+
+- runFlow:
+    file: "completeWithoutValidating.yaml"
+    label: "Complete recipe and validate successfully"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Collapse FAB menu"

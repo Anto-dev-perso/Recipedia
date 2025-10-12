@@ -1,17 +1,22 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    text: "󰐕"
-    label: "Expand the add recipe buttons"
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu"
+
 - tapOn:
     id: "CameraButton::RoundButton"
-    label: Press the Camera bottom button
+    label: "Open camera for OCR"
+
 - runFlow:
-    file: ../android/takePhoto.yaml
+    file: "../android/takePhoto.yaml"
+    label: "Take photo (Android)"
     when:
       platform: Android
+
 # TODO iOS
 #- runFlow:
-#    file: iOS/takePhoto.yaml
+#    file: "../iOS/takePhoto.yaml"
+#    label: "Take photo (iOS)"
 #    when:
 #      platform: iOS

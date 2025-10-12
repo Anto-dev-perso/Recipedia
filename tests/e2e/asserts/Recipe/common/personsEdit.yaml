@@ -1,0 +1,14 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    text: "This recipe is for : "
+    label: "Person text sentence begin is displayed"
+
+- assertVisible:
+    id: "RecipePersons::TextInput"
+    text: "${PERSONS}"
+    label: "Person TextInput is displayed with correct text"
+
+- assertVisible:
+    text: " persons"
+    label: "Person text sentence end is displayed"

@@ -1,0 +1,41 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "BackButton::RoundButton"
+    label: "Back button is displayed"
+
+- assertVisible:
+    text: "󰌍"
+    label: "Back button icon is displayed"
+
+- assertVisible:
+    id: "RecipeValidate"
+    label: "Add recipe button is displayed"
+
+- assertVisible:
+    text: "Add to the menu"
+    label: "Add recipe button has the correct text"
+
+- assertVisible:
+    id: "RecipeDelete::RoundButton"
+    label: "Delete button is displayed"
+
+- assertVisible:
+    text: "󰆴"
+    label: "Delete icon is displayed"
+
+- assertVisible:
+    id: "RecipeEdit::RoundButton"
+    label: "Edit button is rendered"
+
+- assertVisible:
+    text: "󰏫"
+    label: "Edit button has the correct icon"
+
+- assertNotVisible:
+    id: "RecipeImage::RoundButton"
+    label: "Image button is not rendered"
+
+- assertVisible:
+    id: "RecipeImage::Image"
+    label: "Image is displayed"

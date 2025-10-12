@@ -16,7 +16,7 @@ appId: "com.recipedia"
     label: "Open Pesto Pasta recipe"
 
 - runFlow:
-    file: "../../asserts/Recipe/ReadOnly/pestoPasta.yaml"
+    file: "../../asserts/Recipe/ReadOnly/en/pestoPasta.yaml"
     label: "Assert Pesto Pasta recipe is displayed correctly"
 
 - tapOn:

@@ -1,0 +1,15 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredientTime.yaml"
+    label: "Add time"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/en/validateRecipe.yaml"
+    label: "Try to validate recipe"
+
+- runFlow:
+    file: "../../../asserts/Alerts/en/recipeValidationErrorSingle.yaml"
+    env:
+      MISSING_ELEMENT: "some instructions for the preparation"
+    label: "Assert validation error (same as without time)"

@@ -8,10 +8,10 @@ appId: "com.recipedia"
     speed: 60
 - tapOn:
     id: "RecipeIngredients::OpenModal::RoundButton"
-    label: Tap on OCR button of recipe ingredients
+    label: "Tap on OCR button of recipe ingredients"
 - tapOn:
     id: "Modal::List#2::SquareButton::Image"
-    label: Select ingredients picture
+    label: "Select ingredients picture"
 - runFlow:
     file: ../android/validateWithoutCropping.yaml
     when:

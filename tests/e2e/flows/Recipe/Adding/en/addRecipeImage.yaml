@@ -4,13 +4,13 @@ appId: "com.recipedia"
     id: "RecipeImage::RoundButton"
     label: "Tap on camera button of recipe image"
 - runFlow:
-    file: ../../../asserts/Modal/CameraModal.yaml
+    file: "../../../../asserts/Modal/en/CameraModalNoImages.yaml"
     label: "Check camera modal is displayed"
 - tapOn:
     id: "Modal::Camera::RoundButton"
     label: "Select camera option"
 - runFlow:
-    file: ./OCR/android/takePhoto.yaml
+    file: "../OCR/android/takePhoto.yaml"
     when:
       platform: Android
     label: "Take photo on Android"
@@ -25,7 +25,7 @@ appId: "com.recipedia"
     label: "Select camera picture"
 
 - runFlow:
-    file: ./OCR/android/validateWithoutCropping.yaml
+    file: "../OCR/android/validateWithoutCropping.yaml"
     when:
       platform: Android
     label: "Validate without cropping on Android"

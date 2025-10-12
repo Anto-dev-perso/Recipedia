@@ -1,0 +1,6 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "${TITLE}"
+    label: "Title text is displayed"

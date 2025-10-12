@@ -1,0 +1,12 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeTitle::TextInput"
+    label: "Tap on Title's TextInput"
+
+- inputText:
+    text: "Title"
+    label: "Write the title in the input text"
+
+- hideKeyboard:
+    label: "Close the keyboard"

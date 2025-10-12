@@ -1,0 +1,71 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/openAddManually.yaml"
+    label: "Open manual recipe adding screen"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/en/addRecipeImage.yaml"
+    label: "Fill image of recipe"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitle.yaml"
+    label: "Add title"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitleDescription.yaml"
+    label: "Add description"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitleDescriptionTag.yaml"
+    label: "Add tag"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitleDescriptionTagPerson.yaml"
+    label: "Add persons"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredient.yaml"
+    label: "Add ingredient"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredientTime.yaml"
+    label: "Add time"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/tryAddFull.yaml"
+    label: "Add preparation"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Cancel recipe adding"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Collapse FAB menu"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search bar"
+
+- inputText:
+    text: "Title"
+    label: "Search for cancelled recipe"
+
+- pressKey: enter
+
+- assertNotVisible:
+    text: "Title, Japanese, Prep. 56789 min, 2 p."
+    label: "Recipe should not exist"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Tap clear icon to remove search filter"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Return to home screen"

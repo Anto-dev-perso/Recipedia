@@ -1,55 +1,49 @@
 appId: "com.recipedia"
 ---
-- assertVisible:
-    id: "BackButton::RoundButton"
-    label: Back button is displayed
-- assertVisible:
-    text: "󰌍"
-    label: Back button icon is displayed
-- assertNotVisible:
-    text: "󰆴"
-    label: Delete icon is not displayed
-- assertNotVisible:
-    id: "RecipeDelete::RoundButton"
-    label: Delete button id is not displayed
-- assertNotVisible:
-    text: "󰏫"
-    label: Edit button icon is not displayed
-- assertVisible:
-    id: "RecipeValidate"
-    label: Add recipe button id is displayed
-- assertVisible:
-    text: "Add this new recipe"
-    label: Add recipe button text is displayed
+- runFlow:
+    file: "../common/buttonsEdit.yaml"
+    label: "Assert edit mode buttons are displayed"
 - assertVisible:
     id: "RecipePreparation::AddButton::RoundButton"
-    label: New preparation id is displayed with the correct icon
+    label: "New preparation id is displayed with the correct icon"
+
 - assertVisible:
     text: "󰐕"
-    label: Add tag button icons is displayed
-- swipe:
-    start: "50%,40%"
-    end: "50%,60%"
-    label: Swipe up to see other items
+    label: "Add tag button icons is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::Step"
+    direction: UP
+    speed: 40
+    label: "Scroll to third preparation step"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::Step"
+    text: "Preparation: step 3"
+    label: "Preparation #3 step is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::Title"
+    text: "Title of step 3 : "
+    label: "Preparation #3 title text is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
+    text: "LA CUISSON DU POULET"
+    label: "Preparation #3 paragraph title input text id is displayed with the correct text"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::Content"
+    text: "Content of step 3 : "
+    label: "Preparation #3 content text is displayed"
+
 - assertVisible:
     id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
     text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
     \ ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson\
     \ a feu moyen a vif."
-    label: Preparation \#2 paragraph input text id is displayed with the correct text
-- assertVisible:
-    text: "Content of step 3 : "
-    label: Preparation \#2 content text is displayed
-- assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
-    text: "LA CUISSON DU POULET"
-    label: Preparation \#2 paragraph title input text id is displayed with the correct text
-- assertVisible:
-    text: "Title of step 3 : "
-    label: Preparation \#2 title text is displayed
-- assertVisible:
-    text: "Preparation: step 3"
-    label: Preparation \#2 text is displayed
+    label: "Preparation #3 paragraph input text id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
@@ -58,24 +52,31 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
+    id: "RecipePreparation::TextRender::1::Step"
+    text: "Preparation: step 2"
+    label: "Preparation #2 step is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::Title"
+    text: "Title of step 2 : "
+    label: "Preparation #2 title text is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
+    text: "La sauce"
+    label: "Preparation #2 paragraph title input text id is displayed with the correct text"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::Content"
+    text: "Content of step 2 : "
+    label: "Preparation #2 content text is displayed"
+
+- assertVisible:
     id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
     text: "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez\
     \ et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\n\
     Salez, poivrez. Mixez jusqu'a obtenir une texture homogene."
-    label: Preparation \#2 paragraph input text id is displayed with the correct text
-- assertVisible:
-    text: "Content of step 2 : "
-    label: Preparation \#2 content text is displayed
-- assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
-    text: "La sauce"
-    label: Preparation \#2 paragraph title input text id is displayed with the correct text
-- assertVisible:
-    text: "Title of step 2 : "
-    label: Preparation \#2 title text is displayed
-- assertVisible:
-    text: "Preparation: step 2"
-    label: Preparation \#2 text is displayed
+    label: "Preparation #2 paragraph input text id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
@@ -84,24 +85,31 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
+    id: "RecipePreparation::TextRender::0::Step"
+    text: "Preparation: step 1"
+    label: "Preparation #1 step is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::Title"
+    text: "Title of step 1 : "
+    label: "Preparation #1 title text is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+    text: "Le riz"
+    label: "Preparation #1 paragraph title input text id is displayed with the correct text"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::Content"
+    text: "Content of step 1 : "
+    label: "Preparation #1 content text is displayed"
+
+- assertVisible:
     id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
     text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz\
     \ selon les indications du paquet.Pendant ce temps, preparez les filets de poulet\
     \ a la sauce satay."
-    label: Preparation \#1 paragraph input text id is displayed with the correct text
-- assertVisible:
-    text: "Content of step 1 : "
-    label: Preparation \#1 content text is displayed
-- assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
-    text: "Le riz"
-    label: Preparation \#1 paragraph title input text id is displayed with the correct text
-- assertVisible:
-    text: "Title of step 1 : "
-    label: Preparation \#1 title text is displayed
-- assertVisible:
-    text: "Preparation: step 1"
-    label: Preparation \#1 text is displayed
+    label: "Preparation #1 paragraph input text id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
@@ -111,20 +119,24 @@ appId: "com.recipedia"
 
 - assertVisible:
     text: "Time to prepare the recipe :"
-    label: Time to prepare text is displayed
+    label: "Time to prepare text is displayed"
+
 - assertVisible:
     id: "RecipeTime::TextInput"
     text: "20"
-    label: Time TextInput is displayed with the correct text
+    label: "Time TextInput is displayed with the correct text"
+
 - assertVisible:
     text: "min"
-    label: Minute text is displayed
+    label: "Minute text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::AddButton::RoundButton"
-    label: Add ingredient button is displayed with the correct text
+    label: "Add ingredient button is displayed with the correct text"
+
 - assertVisible:
     text: "󰐕"
-    label: Add tag button icons is displayed
+    label: "Add tag button icons is displayed"
 
 - scrollUntilVisible:
     element:
@@ -134,81 +146,107 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
-    label: Ingredient \#3 name TextInput is displayed
+    label: "Ingredient #3 name TextInput is displayed"
+
 - assertVisible:
     text: "Avocado"
-    label: Ingredient \#3 name text is displayed
+    label: "Ingredient #3 name text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::Unit::TextInput"
     text: "g"
-    label: Ingredient \#3 unit text is displayed
+    label: "Ingredient #3 unit text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
-    label: Ingredient \#3 quantity TextInput is displayed
+    label: "Ingredient #3 quantity TextInput is displayed"
+
 - assertVisible:
     text: "5"
-    label: Ingredient \#3 quantity text is displayed
+    label: "Ingredient #3 quantity text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
-    label: Ingredient \#2 name TextInput is displayed
+    label: "Ingredient #2 name TextInput is displayed"
+
 - assertVisible:
     text: "Onions"
-    label: Ingredient \#2 name text is displayed
+    label: "Ingredient #2 name text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::Unit::TextInput"
     text: "g"
-    label: Ingredient \#2 unit text is displayed
+    label: "Ingredient #2 unit text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
-    label: Ingredient \#2 quantity TextInput is displayed
+    label: "Ingredient #2 quantity TextInput is displayed"
+
 - assertVisible:
     text: "5"
-    label: Ingredient \#2 quantity text is displayed
+    label: "Ingredient #2 quantity text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
-    label: Ingredient \#1 name TextInput is displayed
+    label: "Ingredient #1 name TextInput is displayed"
+
 - assertVisible:
     text: "Chicken Breast"
-    label: Ingredient \#1 name text is displayed
+    label: "Ingredient #1 name text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::Unit::TextInput"
     text: "g"
-    label: Ingredient \#1 unit text is displayed
+    label: "Ingredient #1 unit text is displayed"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
-    label: Ingredient \#1 quantity TextInput is displayed
+    label: "Ingredient #1 quantity TextInput is displayed"
+
 - assertVisible:
     text: "2"
-    label: Ingredient \#1 quantity text is displayed
+    label: "Ingredient #1 quantity text is displayed"
+
 - assertVisible:
+    id: "RecipeIngredients::Column3"
     text: "Name"
-    label: Ingredient name column is displayed
+    label: "Ingredient name column is displayed"
+
 - assertVisible:
+    id: "RecipeIngredients::Column2"
     text: "Unit"
-    label: Unit column is displayed
+    label: "Unit column is displayed"
+
 - assertVisible:
+    id: "RecipeIngredients::Column1"
     text: "Quantity"
-    label: Quantity column is displayed
+    label: "Quantity column is displayed"
+
 - assertVisible:
+    id: "RecipeIngredients::PrefixText"
     text: "Ingredients: "
-    label: Ingredient section is displayed
+    label: "Ingredient section is displayed"
 
 - scrollUntilVisible:
     element:
       id: "RecipePersons::PrefixText"
     direction: UP
     speed: 40
+    centerElement: true
 
 - assertVisible:
+    id: "RecipePersons::SuffixText"
     text: " persons"
-    label: Person text sentence end is displayed
+    label: "Person text sentence end is displayed"
+
 - assertVisible:
     id: "RecipePersons::TextInput"
-    text: "2"
-    label: Person TextInput is displayed with the correct text
+    text: "4"
+    label: "Person TextInput is displayed with the correct text"
+
 - assertVisible:
     text: "This recipe is for : "
-    label: Person text sentence begin is displayed
+    label: "Person text sentence begin is displayed"
 
 - scrollUntilVisible:
     element:
@@ -218,39 +256,48 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeTags::RoundButton"
-    label: Add tag button is displayed
+    label: "Add tag button is displayed"
+
 - assertVisible:
     text: "󰐕"
-    label: Add tag button icons is displayed
+    label: "Add tag button icons is displayed"
+
 - assertVisible:
     text: "󰅖"
     index: 1
-    label: Second tag's icon is displayed
+    label: "Second tag's icon is displayed"
+
 - assertVisible:
     id: "RecipeTags::1::Chip"
-    label: Second tag's chip is displayed
+    label: "Second tag's chip is displayed"
+
 - assertVisible:
     text: "Italian"
-    label: First tag's text is displayed
+    label: "First tag's text is displayed"
+
 - assertVisible:
     text: "󰅖"
     index: 0
-    label: First tag's icon is displayed
+    label: "First tag's icon is displayed"
+
 - assertVisible:
     text: "Healthy"
-    label: Second tag's text is displayed
+    label: "Second tag's text is displayed"
+
 - assertVisible:
     id: "RecipeTags::0::Chip"
-    label: First tag's chip is displayed
+    label: "First tag's chip is displayed"
+
 - assertVisible:
     id: "RecipeTags::ElementText"
     text: "Tags are a way to identify a recipe and make easier its search.\n\
     Here are some examples of tags you can have : .*, .*, .*"
-    label: Explanation text id for the tags is displayed with the correct text
+    label: "Explanation text id for the tags is displayed with the correct text"
+
 - assertVisible:
     id: "RecipeTags::HeaderText"
     text: "Tags:"
-    label: Header text id for the tags is displayed with the correct text
+    label: "Header text id for the tags is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
@@ -263,24 +310,32 @@ appId: "com.recipedia"
     text: "Cuisinez nos filets de poulet francais avec du riz basmati bio et\
     \ une sauce satay maison: un condiment asiatique a base de cacahuetes et gingembre\
     \ !"
-    label: Description TextInput is displayed with the correct text
+    label: "Description TextInput is displayed with the correct text"
+
 - assertVisible:
     text: "Description:"
-    label: Description Title id is displayed with the correct text
+    label: "Description Title id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
       id: "RecipeImage"
     direction: UP
     speed: 60
+    centerElement: true
 
 - assertVisible:
     id: "RecipeTitle::TextInput"
     text: "Aiguillettes de poulet a la sauce satay"
-    label: Title TextInput is displayed with its text
+    label: "Title TextInput is displayed with its text"
+
 - assertVisible:
     text: "Title:"
-    label: Title introduction text is displayed
+    label: "Title introduction text is displayed"
+
 - assertVisible:
     id: "RecipeImage"
-    label: Image id is displayed
+    label: "Image is displayed"
+
+- assertVisible:
+    id: "RecipeImage::RoundButton"
+    label: "Camera button for changing the image is displayed"

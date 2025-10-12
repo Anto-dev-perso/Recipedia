@@ -1,0 +1,61 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/openAddManually.yaml"
+    label: "Open manual recipe adding screen"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/Manual/en/addAiguillettes.yaml"
+    label: "Fill in complete recipe (Aiguillettes)"
+
+- runFlow:
+    file: "../../../asserts/Recipe/Edit/aiguillettesFull.yaml"
+    label: "Assert recipe is filled correctly"
+
+- runFlow:
+    file: "../../../flows/Recipe/Adding/en/validateRecipe.yaml"
+    label: "Validate the recipe"
+
+- runFlow:
+    file: "../../../asserts/Alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: "Aiguillettes de poulet a la sauce satay"
+    label: "Assert recipe added successfully"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search bar"
+
+- inputText:
+    text: "Aig"
+    label: "Search for new recipe"
+
+- pressKey: enter
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0"
+    label: "Open newly created recipe (first result)"
+
+- runFlow:
+    file: "../../../asserts/Recipe/ReadOnly/en/aiguillettesFull.yaml"
+    label: "Assert recipe content in read-only mode"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Return to search results"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Tap clear icon to remove search filter"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Return to home screen"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Collapse FAB menu"

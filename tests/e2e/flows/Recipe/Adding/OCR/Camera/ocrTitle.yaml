@@ -3,10 +3,10 @@ appId: "com.recipedia"
 
 - tapOn:
     id: "RecipeTitle::OpenModal::RoundButton"
-    label: Tap on OCR button of recipe title
+    label: "Tap on OCR button of recipe title"
 - tapOn:
     id: "Modal::List#5::SquareButton::Image"
-    label: Select title picture
+    label: "Select title picture"
 - runFlow:
     file: ../android/validateWithoutCropping.yaml
     when:

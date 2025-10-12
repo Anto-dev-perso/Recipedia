@@ -8,11 +8,11 @@ appId: "com.recipedia"
     speed: 60
 - tapOn:
     id: "RecipeTime::ManuallyFill::RoundButton"
-    label: Tap on text input of the time to prepare
+    label: "Tap on text input of the time to prepare"
 - tapOn:
     id: "RecipeTime::TextInput"
-    label: Tap on text input of the time to prepare
+    label: "Tap on text input of the time to prepare"
 - inputText:
     text: "40"
-    label: Enter the time to prepare this recipe
+    label: "Enter the time to prepare this recipe"
 - pressKey: "enter"
