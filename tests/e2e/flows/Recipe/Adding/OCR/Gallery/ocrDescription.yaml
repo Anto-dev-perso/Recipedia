@@ -1,18 +1,20 @@
 appId: "com.recipedia"
 ---
-
 - tapOn:
     id: "RecipeDescription::OpenModal::RoundButton"
     label: "Tap on OCR button of recipe description"
-- tapOn:
-    id: "Modal::List#2::SquareButton::Image"
-    label: "Select description picture"
+
 - runFlow:
-    file: ../android/validateWithoutCropping.yaml
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: description
     when:
       platform: Android
 # TODO iOS
-#- runFlow:
-#    file: iOS/validateWithoutCropping.yaml
-#    when:
-#      platform: iOS
+
+- runFlow:
+    file: ../android/selectMostRecentFromModal.yaml
+    label: "Select description from modal for OCR"
+    when:
+      platform: Android
+# TODO iOS

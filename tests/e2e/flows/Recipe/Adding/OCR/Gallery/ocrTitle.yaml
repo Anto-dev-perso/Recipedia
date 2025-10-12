@@ -1,18 +1,20 @@
 appId: "com.recipedia"
 ---
-
 - tapOn:
     id: "RecipeTitle::OpenModal::RoundButton"
     label: "Tap on OCR button of recipe title"
-- tapOn:
-    id: "Modal::List#1::SquareButton::Image"
-    label: "Select title picture"
+
 - runFlow:
-    file: ../android/validateWithoutCropping.yaml
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: title
     when:
       platform: Android
 # TODO iOS
-#- runFlow:
-#    file: iOS/validateWithoutCropping.yaml
-#    when:
-#      platform: iOS
+
+- runFlow:
+    file: ../android/selectMostRecentFromModal.yaml
+    label: "Select title from modal for OCR"
+    when:
+      platform: Android
+# TODO iOS

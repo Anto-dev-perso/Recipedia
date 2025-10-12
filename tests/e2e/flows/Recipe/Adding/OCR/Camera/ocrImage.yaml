@@ -1,49 +1,32 @@
 appId: "com.recipedia"
 ---
+# Camera mode: already on empty recipe screen, no need to open gallery button
+- runFlow:
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: image
+    when:
+      platform: Android
+# TODO iOS
+
 - tapOn:
     id: "RecipeImage::RoundButton"
     label: "Tap on OCR button of recipe image"
-- runFlow: ../../../../../asserts/Modal/en/CameraModal.yaml
+
 - runFlow:
-    file: ../android/selectFromCamera.yaml
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: image
     when:
       platform: Android
 # TODO iOS
-#- runFlow:
-#    file: iOS/selectFromCamera.yaml
-#    when:
-#      platform: iOS
-- runFlow: ../../../../../asserts/Modal/en/CameraModalAfterSelection.yaml
-- tapOn:
-    id: "Modal::List#0::SquareButton::Image"
-    label: "Select camera picture"
+
+- evalScript: ${output.modalImageCounter = 1}
+
 - runFlow:
-    file: ../android/validateWithoutCropping.yaml
+    file: ../android/selectMostRecentFromModal.yaml
+    label: "Select title from modal for OCR"
     when:
       platform: Android
+
 # TODO iOS
-#- runFlow:
-#    file: iOS/validateWithoutCropping.yaml
-#    when:
-#      platform: iOS
-- scrollUntilVisible:
-    element:
-      id: "RecipeImage::RoundButton"
-    direction: UP
-    speed: 60
-    label: "Swipe up to see button at top of the screen"
-- tapOn:
-    id: "RecipeImage::RoundButton"
-    label: "Tap on OCR button of recipe image"
-- tapOn:
-    id: "Modal::List#6::SquareButton::Image"
-    label: "Select recipe image picture"
-- runFlow:
-    file: ../android/validateWithoutCropping.yaml
-    when:
-      platform: Android
-# TODO iOS
-#- runFlow:
-#    file: iOS/validateWithoutCropping.yaml
-#    when:
-#      platform: iOS

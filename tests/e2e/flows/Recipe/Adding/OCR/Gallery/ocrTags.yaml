@@ -1,29 +1,20 @@
 appId: "com.recipedia"
 ---
-
 - tapOn:
     id: "RecipeTags::OpenModal::RoundButton"
     label: "Tap on OCR button of recipe tags"
+
 - runFlow:
-    when:
-      true: ${output.isDescriptionToOCR == true}
-    commands:
-      - tapOn:
-          id: "Modal::List#3::SquareButton::Image"
-          label: "Select tags picture"
-- runFlow:
-    when:
-      true: ${output.isDescriptionToOCR == false}
-    commands:
-      - tapOn:
-          id: "Modal::List#2::SquareButton::Image"
-          label: "Select tags picture"
-- runFlow:
-    file: ../android/validateWithoutCropping.yaml
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: tags
     when:
       platform: Android
 # TODO iOS
-#- runFlow:
-#    file: iOS/validateWithoutCropping.yaml
-#    when:
-#      platform: iOS
+
+- runFlow:
+    file: ../android/selectMostRecentFromModal.yaml
+    label: "Select tags from modal for OCR"
+    when:
+      platform: Android
+# TODO iOS

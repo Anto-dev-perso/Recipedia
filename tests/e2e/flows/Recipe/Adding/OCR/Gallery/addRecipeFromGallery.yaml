@@ -33,12 +33,13 @@ appId: "com.recipedia"
           label: "OCR tags"
 
 - runFlow:
-    file: "ocrIngredients.yaml"
-    label: "OCR ingredients"
-
-- runFlow:
     file: "ocrTime.yaml"
     label: "OCR time"
+
+
+- runFlow:
+    file: "ocrIngredients.yaml"
+    label: "OCR ingredients"
 
 - runFlow:
     file: "ocrPreparation.yaml"

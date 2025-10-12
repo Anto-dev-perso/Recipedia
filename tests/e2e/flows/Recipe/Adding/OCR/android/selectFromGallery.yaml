@@ -1,19 +1,13 @@
 appId: "com.recipedia"
 ---
-- evalScript: ${output.counter = output.nbImageForThisRecipe}
+# Selects most recent image (index 0) from Android gallery and validates
+# TODO: Implement iOS version in ../iOS/selectFromGallery.yaml
 
-- repeat:
-    while:
-      true: ${output.counter > 0}
-    commands:
-      - evalScript: ${output.counter = output.counter - 1}
-      - tapOn:
-          id: "Modal::Gallery::RoundButton"
-          label: "Open gallery modal"
-      - tapOn:
-          id: "com.android.providers.media.module:id/icon_thumbnail"
-          index: ${output.counter}
-          label: "Select picture ${output.counter}"
-      - runFlow:
-          file: "validateWithoutCropping.yaml"
-          label: "Validate image without cropping"
+
+- tapOn:
+    id: "com.android.providers.media.module:id/icon_thumbnail"
+    index: 0
+    label: "Select most recent picture from Android gallery"
+
+- runFlow:
+    file: validateWithoutCropping.yaml

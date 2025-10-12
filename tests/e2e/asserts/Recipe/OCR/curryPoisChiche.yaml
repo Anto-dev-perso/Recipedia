@@ -16,10 +16,9 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTags::HeaderText"
+      id: "RecipeTags::RoundButton"
     direction: DOWN
     speed: 60
-    centerElement: true
 
 - assertVisible:
     id: "RecipeDescription::Text"

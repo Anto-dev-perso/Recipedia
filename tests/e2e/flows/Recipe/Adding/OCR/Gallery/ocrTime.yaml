@@ -1,6 +1,5 @@
 appId: "com.recipedia"
 ---
-
 - scrollUntilVisible:
     element:
       id: "RecipePreparation::OpenModal::RoundButton"
@@ -30,27 +29,12 @@ appId: "com.recipedia"
           id: "RecipeTime::OpenModal::RoundButton"
           label: "Tap on button to OCR time to prepare"
       - runFlow:
-          when:
-            true: ${output.isDescriptionToOCR == true && output.isTagsToOCR == true }
-          commands:
-            - tapOn:
-                id: "Modal::List#4::SquareButton::Image"
-                label: "Select preparation picture"
-      - runFlow:
-          when:
-            true: ${(output.isDescriptionToOCR == true && output.isTagsToOCR == false) || (output.isDescriptionToOCR == false && output.isTagsToOCR == true) }
-          commands:
-            - tapOn:
-                id: "Modal::List#3::SquareButton::Image"
-                label: "Select preparation picture"
-      - runFlow:
-          when:
-            true: ${output.isDescriptionToOCR == false && output.isTagsToOCR == false }
-          commands:
-            - tapOn:
-                id: "Modal::List#2::SquareButton::Image"
-                label: "Select preparation picture"
-      - runFlow:
-          file: ../android/validateWithoutCropping.yaml
+          file: ../android/addMedia.yaml
+          env:
+            FIELD_NAME: personsAndTime
           when:
             platform: Android
+      # TODO iOS
+      - runFlow:
+          file: ../android/selectMostRecentFromModal.yaml
+          label: "Select time from modal for OCR"

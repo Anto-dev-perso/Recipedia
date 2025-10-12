@@ -1,18 +1,8 @@
 appId: "com.recipedia"
 ---
-- evalScript: ${output.nbImageForThisRecipe = 6}
-
 - evalScript: ${output.isDescriptionToOCR = true}
-
 - evalScript: ${output.isTagsToOCR = false}
-
-- evalScript: ${output.isPersons = true}
-
-- evalScript: ${output.isTime = false}
-
-- runFlow:
-    file: "OCR/addMediaQuitoqueV3.yaml"
-    label: "Add Quitoque V3 recipe media files with delays"
+- evalScript: ${output.isTime = true}
 
 - runFlow:
     file: "OCR/Camera/openOCRCamera.yaml"
@@ -24,7 +14,17 @@ appId: "com.recipedia"
 
 - runFlow:
     file: "OCR/Camera/addRecipeFromCamera.yaml"
+    env:
+      RECIPE_NAME: quitoqueV3
     label: "Add recipe from camera using OCR"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage::Image"
+    direction: UP
+    speed: 80
+    centerElement: true
+    label: "Scroll back to top"
 
 - runFlow:
     file: "../../../asserts/Recipe/OCR/curryPoisChiche.yaml"
@@ -33,7 +33,6 @@ appId: "com.recipedia"
 - runFlow:
     file: "en/validateRecipe.yaml"
     label: "Validate the recipe"
-
 
 - runFlow:
     file: "../../../asserts/Alerts/en/recipeAddedToDatabase.yaml"

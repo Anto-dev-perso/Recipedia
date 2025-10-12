@@ -1,25 +1,18 @@
 appId: "com.recipedia"
 ---
-- evalScript: ${output.nbImageForThisRecipe = 6}
-
 - evalScript: ${output.isDescriptionToOCR = true}
-
 - evalScript: ${output.isTagsToOCR = false}
-
 - evalScript: ${output.isPersons = true}
-
 - evalScript: ${output.isTime = false}
 
-- runFlow:
-    file: "OCR/addMediaQuitoqueV2.yaml"
-    label: "Add Quitoque V2 recipe media files with delays"
-
-- runFlow:
-    file: "OCR/Gallery/openOCRGallery.yaml"
-    label: "Open OCR from gallery"
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu"
 
 - runFlow:
     file: "OCR/Gallery/addRecipeFromGallery.yaml"
+    env:
+      RECIPE_NAME: quitoqueV2
     label: "Add recipe from gallery using OCR"
 
 - runFlow:

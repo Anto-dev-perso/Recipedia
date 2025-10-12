@@ -1,25 +1,18 @@
 appId: "com.recipedia"
 ---
-- evalScript: ${output.nbImageForThisRecipe = 6}
-
 - evalScript: ${output.isDescriptionToOCR = true}
-
 - evalScript: ${output.isTagsToOCR = true}
-
 - evalScript: ${output.isPersons = false}
-
 - evalScript: ${output.isTime = false}
 
-- runFlow:
-    file: "OCR/addMediaHelloFresh.yaml"
-    label: "Add HelloFresh recipe media files with delays"
-
-- runFlow:
-    file: "OCR/Gallery/openOCRGallery.yaml"
-    label: "Open OCR from gallery"
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu"
 
 - runFlow:
     file: "OCR/Gallery/addRecipeFromGallery.yaml"
+    env:
+      RECIPE_NAME: hellofresh
     label: "Add recipe from gallery using OCR"
 
 - runFlow:
