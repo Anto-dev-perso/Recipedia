@@ -1,5 +1,13 @@
 appId: "com.recipedia"
 ---
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to tags section"
+
 - tapOn:
     id: "RecipeTags::OpenModal::RoundButton"
     label: "Tap on OCR button of recipe tags"

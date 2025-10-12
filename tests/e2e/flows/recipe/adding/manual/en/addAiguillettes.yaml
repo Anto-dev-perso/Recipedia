@@ -60,8 +60,11 @@ appId: "com.recipedia"
 
 - swipe:
     start: "50%,40%"
-    end: "50%,20%"
+    end: "50%,25%"
     label: "Swipe down to see dropdown items"
+
+- hideKeyboard:
+    label: "Close the keyboard"
 
 - tapOn:
     text: "Italian"

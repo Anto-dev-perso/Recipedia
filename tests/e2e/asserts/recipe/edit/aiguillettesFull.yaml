@@ -1,8 +1,5 @@
 appId: "com.recipedia"
 ---
-- runFlow:
-    file: "../common/buttonsEdit.yaml"
-    label: "Assert edit mode buttons are displayed"
 - assertVisible:
     id: "RecipePreparation::AddButton::RoundButton"
     label: "New preparation id is displayed with the correct icon"
@@ -339,3 +336,7 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeImage::RoundButton"
     label: "Camera button for changing the image is displayed"
+
+- runFlow:
+    file: "../common/buttonsAddingManually.yaml"
+    label: "Assert adding manually mode buttons are displayed"

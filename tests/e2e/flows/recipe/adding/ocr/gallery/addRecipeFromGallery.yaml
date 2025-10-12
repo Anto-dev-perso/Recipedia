@@ -16,14 +16,6 @@ appId: "com.recipedia"
           file: "ocrDescription.yaml"
           label: "OCR description"
 
-- scrollUntilVisible:
-    element:
-      id: "RecipeTags::OpenModal::RoundButton"
-    direction: DOWN
-    speed: 60
-    centerElement: true
-    label: "Scroll to tags section"
-
 - runFlow:
     when:
       true: ${output.isTagsToOCR}
@@ -38,12 +30,13 @@ appId: "com.recipedia"
 
 
 - runFlow:
+    file: "ocrPreparation.yaml"
+    label: "OCR preparation"
+
+- runFlow:
     file: "ocrIngredients.yaml"
     label: "OCR ingredients"
 
-- runFlow:
-    file: "ocrPreparation.yaml"
-    label: "OCR preparation"
 
 - runFlow:
     file: "../../en/validateRecipe.yaml"

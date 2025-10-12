@@ -3,7 +3,7 @@ appId: "com.recipedia"
 - scrollUntilVisible:
     element:
       id: "RecipeIngredients::OpenModal::RoundButton"
-    direction: DOWN
+    direction: UP
     centerElement: true
     speed: 60
 

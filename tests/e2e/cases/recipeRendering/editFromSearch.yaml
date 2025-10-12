@@ -39,3 +39,7 @@ appId: "com.recipedia"
     direction: UP
     speed: 80
     label: "Scroll back to top of Search screen"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Back to the Home Screen"

@@ -1,8 +1,8 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../common/buttonsEdit.yaml"
-    label: "Assert edit mode buttons are displayed"
+    file: "../common/buttonsAddingManually.yaml"
+    label: "Assert manually adding mode buttons are displayed"
 - assertVisible:
     id: "RecipeImage"
     label: "Image id is displayed"

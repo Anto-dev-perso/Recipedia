@@ -305,8 +305,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeImage"
+      id: "RecipeImage::RoundButton"
     direction: UP
-    centerElement: true
     speed: 80
     label: "Scroll back to top"

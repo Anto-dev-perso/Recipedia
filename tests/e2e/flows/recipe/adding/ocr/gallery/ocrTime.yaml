@@ -5,6 +5,7 @@ appId: "com.recipedia"
       id: "RecipePreparation::OpenModal::RoundButton"
     direction: DOWN
     speed: 60
+    centerElement: true
 
 - runFlow:
     when:

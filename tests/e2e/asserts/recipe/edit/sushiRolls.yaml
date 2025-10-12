@@ -172,6 +172,15 @@ appId: "com.recipedia"
     id: "RecipeIngredients::TextRender::3::Dropdown::TextInput"
     text: "Avocado"
     label: "Ingredient Avocado is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll down to the time to prepare"
+
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::QuantityInput::TextInput"
     text: "50"
@@ -190,6 +199,7 @@ appId: "com.recipedia"
 - assertVisible:
     text: "󰐕"
     label: "Add button of the ingredients has the correct icon"
+
 - assertVisible:
     id: "RecipeTime::PrefixText"
     text: "Time to prepare the recipe :"
@@ -205,7 +215,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+      id: "RecipePreparation::TextRender::0::Title"
     direction: DOWN
     speed: 60
 
@@ -221,6 +231,13 @@ appId: "com.recipedia"
     id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
     text: "Prepare rice"
     label: "First preparation step title is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    direction: DOWN
+    speed: 40
+
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Content"
     text: "Content of step 1 : "
@@ -233,7 +250,7 @@ appId: "com.recipedia"
     element:
       id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
     direction: DOWN
-    speed: 60
+    speed: 40
 
 - assertVisible:
     id: "RecipePreparation::TextRender::1::Step"
@@ -247,6 +264,13 @@ appId: "com.recipedia"
     id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
     text: "Spread rice"
     label: "Second preparation step title is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
+    direction: DOWN
+    speed: 40
+
 - assertVisible:
     id: "RecipePreparation::TextRender::1::Content"
     text: "Content of step 2 : "
@@ -259,7 +283,7 @@ appId: "com.recipedia"
     element:
       id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
     direction: DOWN
-    speed: 60
+    speed: 40
 
 - assertVisible:
     id: "RecipePreparation::TextRender::2::Step"
@@ -273,6 +297,13 @@ appId: "com.recipedia"
     id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
     text: "Add fillings and roll"
     label: "Third preparation step title is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
+    direction: DOWN
+    speed: 40
+
 - assertVisible:
     id: "RecipePreparation::TextRender::2::Content"
     text: "Content of step 3 : "
@@ -283,9 +314,9 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::AddButton::RoundButton"
+      id: "RecipePreparation::TextRender::3::TextInputTitle::TextInput"
     direction: DOWN
-    speed: 80
+    speed: 40
 
 - assertVisible:
     id: "RecipePreparation::TextRender::3::Step"
@@ -299,6 +330,14 @@ appId: "com.recipedia"
     id: "RecipePreparation::TextRender::3::TextInputTitle::TextInput"
     text: "Serve"
     label: "Fourth preparation step title is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::3::TextInputContent::TextInput"
+    direction: DOWN
+    speed: 40
+
+
 - assertVisible:
     id: "RecipePreparation::TextRender::3::Content"
     text: "Content of step 4 : "
@@ -312,7 +351,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeImage"
+      id: "RecipeImage::Image"
     direction: UP
     centerElement: true
     speed: 80
