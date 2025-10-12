@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Only in-season ingredients"
+    label: "Season filter text is not visible"
+
+- assertNotVisible:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "No filter chips are visible"
