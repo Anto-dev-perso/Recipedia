@@ -11,4 +11,12 @@ name: "Parameters screen test suite"
     file: "cases/parameters/languageChange.yaml"
     label: "Test language change across all screens"
 
-# TODO add default person and season filter test
+- runFlow:
+    file: "cases/parameters/seasonFilterToggle.yaml"
+    label: "Test default season filter parameter toggle behavior"
+
+- runFlow:
+    file: "cases/parameters/seasonFilterEdgeCases.yaml"
+    label: "Test default season filter parameter edge cases"
+
+# TODO add default person test

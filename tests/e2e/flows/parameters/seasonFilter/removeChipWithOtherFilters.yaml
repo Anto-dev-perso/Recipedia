@@ -1,0 +1,61 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "Parameters::Section::RecipeDefaults::Season::Switch"
+    label: "Toggle season filter ON"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- runFlow:
+    file: "../../../asserts/search/en/assertSeasonFilterApplied.yaml"
+    label: "Verify season filter is auto-applied"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Open filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::1"
+    label: "Expand Preparation Time accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::1::Item::0"
+    label: "Select 0-5 min preparation time filter"
+
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Verify first filter chip is visible"
+
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::1::Chip"
+    label: "Verify second filter chip is visible"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Close filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove season filter chip"
+
+- assertNotVisible:
+    text: "Only in-season ingredients"
+    label: "Verify season filter text is no longer visible"
+
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Verify preparation time filter chip is still visible"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove preparation time filter"
+
+- tapOn:
+    text: "Parameters"
+    label: "Navigate back to Parameters"
+
+- tapOn:
+    id: "Parameters::Section::RecipeDefaults::Season::Switch"
+    label: "Reset season filter to OFF"
