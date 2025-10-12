@@ -16,7 +16,7 @@ appId: "com.recipedia"
     label: "Click directly on Lentil Curry from dropdown"
 
 - runFlow:
-    file: "../../asserts/Search/searchScreenFilteredOnLentilCury.yaml"
+    file: "../../asserts/Search/en/searchScreenFilteredOnLentilCury.yaml"
     label: "Assert Search screen shows filtered results for Lentil Curry"
 
 - tapOn:

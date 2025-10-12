@@ -9,9 +9,10 @@ appId: "com.recipedia"
     label: "Delete button is not displayed"
 
 - assertVisible:
-    id: "RecipeValidate"
-    label: "Add recipe button is displayed"
+    id: "RecipeImage::RoundButton"
+    label: "Edit image button is displayed"
 
 - assertVisible:
-    text: "Add this new recipe"
-    label: "Add recipe button text is displayed"
+    id: "RecipeValidate-text"
+    text: "Validate the recipe with these modifications"
+    label: "Add recipe button is displayed"

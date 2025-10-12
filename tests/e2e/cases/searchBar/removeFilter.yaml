@@ -20,7 +20,7 @@ appId: "com.recipedia"
 - pressKey: "enter"
 
 - runFlow:
-    file: "../../asserts/Search/searchScreenFilteredOnLentilCury.yaml"
+    file: "../../asserts/Search/en/searchScreenFilteredOnLentilCury.yaml"
     label: "Assert Search screen shows filtered results for Lentil Curry"
 
 - tapOn:

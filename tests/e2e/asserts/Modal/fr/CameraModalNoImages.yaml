@@ -20,7 +20,7 @@ appId: "com.recipedia"
     label: "Gallery button has the right icon"
 - assertVisible:
     text: "󰋫"
-    label: "Gallery helper text is rendered
+    label: "Gallery helper text is rendered"
 - assertVisible:
     id: "Modal::Gallery::Text"
     text: "Choisir depuis la galerie"

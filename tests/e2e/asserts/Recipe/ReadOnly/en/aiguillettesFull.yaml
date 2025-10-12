@@ -1,17 +1,17 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../common/buttonsReadOnly.yaml"
+    file: "../../common/buttonsReadOnly.yaml"
     label: "Assert read-only buttons are displayed"
 
 - runFlow:
-    file: "../common/titleReadOnly.yaml"
+    file: "../../common/titleReadOnly.yaml"
     env:
       TITLE: "Aiguillettes de poulet a la sauce satay"
     label: "Assert title is displayed"
 
 - runFlow:
-    file: "../common/descriptionReadOnly.yaml"
+    file: "../../common/descriptionReadOnly.yaml"
     env:
       DESCRIPTION: "CUISINEZ NOS FILETS DE POULET FRANCAIS AVEC DU RIZ BASMATI BIO ET UNE SAUCE SATAY MAISON: UN CONDIMENT ASIATIQUE A BASE DE CACAHUETES ET GINGEMBRE !"
     label: "Assert description is displayed"
@@ -41,7 +41,7 @@ appId: "com.recipedia"
     label: "Second tag text is displayed"
 
 - runFlow:
-    file: "../common/personsReadOnly.yaml"
+    file: "../../common/personsReadOnly.yaml"
     label: "Assert persons is displayed"
 
 - scrollUntilVisible:
