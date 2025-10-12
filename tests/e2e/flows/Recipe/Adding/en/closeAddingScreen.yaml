@@ -1,9 +1,0 @@
-appId: "com.recipedia"
----
-- tapOn:
-    id: "BackButton::RoundButton"
-    label: "Close adding screen"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Collapse FAB menu"

@@ -1,6 +1,0 @@
-appId: "com.recipedia"
-
----
-- tapOn:
-    text: "UNDERSTOOD"
-    label: Close the Alert

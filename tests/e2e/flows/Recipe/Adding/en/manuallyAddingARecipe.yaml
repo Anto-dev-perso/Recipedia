@@ -1,6 +1,0 @@
-appId: "com.recipedia"
----
-# This flow is deprecated - use cases/recipeAdding/manual/complete.yaml instead
-- runFlow:
-    file: "../../../cases/recipeAdding/manual/complete.yaml"
-    label: "Run complete manual recipe adding case"
