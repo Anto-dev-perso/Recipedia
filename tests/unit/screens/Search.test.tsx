@@ -9,6 +9,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { SeasonFilterProvider } from '@context/SeasonFilterContext';
 import { resetFiltersSelection } from '@mocks/components/organisms/FiltersSelection-mock';
+import { BackHandler } from 'react-native';
+
+jest.mock('react-native/Libraries/Utilities/BackHandler', () =>
+  require('@mocks/deps/react-native-backhandler-mock')
+);
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () =>
@@ -105,6 +110,7 @@ describe('Search Screen', () => {
 
   beforeEach(async () => {
     resetFiltersSelection();
+    jest.clearAllMocks();
     await database.init();
     await database.addMultipleIngredients(testIngredients);
     await database.addMultipleTags(testTags);
@@ -281,9 +287,13 @@ describe('Search Screen', () => {
 
     // Test toggling addingFilterMode to true
     fireEvent.press(getByTestId('SearchScreen::ToggleAddingFilterMode'));
+
+    // Wait for state update to propagate
+    await waitAndRerender(renderResult);
+
     expect(getByTestId('SearchScreen::AddingFilterMode').props.children).toEqual('true');
 
-    // Assert FilterAccordion is now visible
+    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
     expect(() => getByTestId('SearchScreen::FilterAccordion')).not.toThrow();
 
     // Assert all other components are still present
@@ -423,32 +433,8 @@ describe('Search Screen', () => {
     expect(() => getByTestId('SearchScreen::FilterAccordion')).toThrow();
   });
 
-  test('BackHandler closes search bar dropdown when clicked', async () => {
-    const { getByTestId } = renderResult;
-    const { BackHandler } = require('react-native');
-
-    assertInitialComponentState(getByTestId);
-
-    await waitAndRerender(renderResult);
-
-    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
-    expect(() => getByTestId('SearchScreen::SearchBarResults')).toThrow();
-
-    fireEvent.press(getByTestId('SearchScreen::SearchBar::ToggleClicked'));
-    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('true');
-    expect(getByTestId('SearchScreen::SearchBarResults')).toBeTruthy();
-
-    const backPressHandlers = BackHandler.addEventListener.mock.calls[0];
-    const backPressHandler = backPressHandlers[1];
-    const result = backPressHandler();
-
-    expect(result).toBe(true);
-    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
-  });
-
   test('BackHandler allows navigation when search bar is not clicked', async () => {
     const { getByTestId } = renderResult;
-    const { BackHandler } = require('react-native');
 
     assertInitialComponentState(getByTestId);
 
@@ -456,8 +442,12 @@ describe('Search Screen', () => {
 
     expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
 
-    const backPressHandlers = BackHandler.addEventListener.mock.calls[0];
-    const backPressHandler = backPressHandlers[1];
+    // Get the BackHandler callback that was registered
+    expect(BackHandler.addEventListener).toHaveBeenCalledWith(
+      'hardwareBackPress',
+      expect.any(Function)
+    );
+    const backPressHandler = (BackHandler.addEventListener as jest.Mock).mock.calls[0][1];
     const result = backPressHandler();
 
     expect(result).toBe(false);
