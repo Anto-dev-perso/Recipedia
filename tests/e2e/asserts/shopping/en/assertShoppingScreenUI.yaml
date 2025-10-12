@@ -1,0 +1,17 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../bottomtabs/en/assertBottomTabs.yaml"
+    label: "Check bottom navigation tabs"
+
+- assertVisible:
+    id: "ShoppingScreen::SectionList"
+    label: "Shopping list section is displayed"
+
+- assertVisible:
+    id: "ShoppingScreen::ClearShoppingListButton::RoundButton"
+    label: "Clear shopping list button is displayed"
+
+- assertVisible:
+    text: "󰆴"
+    label: "Clear shopping list icons is displayed"

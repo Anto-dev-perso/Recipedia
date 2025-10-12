@@ -11,25 +11,25 @@ appId: "com.recipedia"
 - inputText: "P"
 
 - runFlow:
-    file: "../../asserts/Search/SearchBar/searchBarFilteredOnP.yaml"
+    file: "../../asserts/search/searchbar/searchBarFilteredOnP.yaml"
     label: "Assert dropdown filtered on 'P'"
 
 - inputText: "a"
 
 - runFlow:
-    file: "../../asserts/Search/SearchBar/searchBarFilteredOnPa.yaml"
+    file: "../../asserts/search/searchbar/searchBarFilteredOnPa.yaml"
     label: "Assert dropdown filtered on 'Pa'"
 
 - pressKey: "backspace"
 
 - runFlow:
-    file: "../../asserts/Search/SearchBar/searchBarFilteredOnP.yaml"
+    file: "../../asserts/search/searchbar/searchBarFilteredOnP.yaml"
     label: "Assert dropdown filtered back to 'P'"
 
 - inputText: "i"
 
 - runFlow:
-    file: "../../asserts/Search/SearchBar/searchBarFilteredOnPi.yaml"
+    file: "../../asserts/search/searchbar/searchBarFilteredOnPi.yaml"
     label: "Assert dropdown filtered on 'Pi'"
 
 - hideKeyboard:
@@ -40,7 +40,7 @@ appId: "com.recipedia"
     label: "Select Margherita Pizza from dropdown"
 
 - runFlow:
-    file: "../../asserts/Search/en/searchScreenFilteredOnPizza.yaml"
+    file: "../../asserts/search/en/searchScreenFilteredOnPizza.yaml"
     label: "Assert Search screen shows Pizza results"
 
 - tapOn:
@@ -48,7 +48,7 @@ appId: "com.recipedia"
     label: "Tap clear icon to remove search filter"
 
 - runFlow:
-    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
     label: "Assert all recipe cards are visible again"
 
 - tapOn:

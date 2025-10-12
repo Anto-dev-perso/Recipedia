@@ -7,13 +7,13 @@ env:
     label: "Navigate to Home screen"
 
 - runFlow:
-    file: "../../flows/Home/refreshUntilRecipeFound.yaml"
+    file: "../../flows/home/refreshUntilRecipeFound.yaml"
     env:
       recipeName: ${recipeName}
     label: "Refresh Home screen until recipe is found"
 
 - runFlow:
-    file: "../../asserts/Recipe/ReadOnly/en/sushiRolls.yaml"
+    file: "../../asserts/recipe/readonly/en/sushiRolls.yaml"
     label: "Assert Sushi Rolls recipe is displayed correctly"
 
 - tapOn:
@@ -23,7 +23,7 @@ env:
     label: "Tap on the Edit button"
 
 - runFlow:
-    file: "../../asserts/Recipe/Edit/sushiRolls.yaml"
+    file: "../../asserts/recipe/edit/sushiRolls.yaml"
     label: "Assert Sushi Rolls edit screen is displayed correctly"
 
 - tapOn:
@@ -31,7 +31,7 @@ env:
     label: "Validate the modifications"
 
 - runFlow:
-    file: "../../asserts/Recipe/ReadOnly/en/sushiRolls.yaml"
+    file: "../../asserts/recipe/readonly/en/sushiRolls.yaml"
     label: "Assert modified Sushi Rolls recipe is displayed correctly"
 
 - tapOn:

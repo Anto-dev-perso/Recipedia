@@ -17,7 +17,7 @@ appId: "com.recipedia"
     label: "Select Spaghetti as filter"
 
 - runFlow:
-    file: "../../asserts/Search/en/Filters/filtersViewFilteredOnSpaghetti.yaml"
+    file: "../../asserts/search/en/filters/filtersViewFilteredOnSpaghetti.yaml"
     label: "Assert filter view with Spaghetti selected"
 
 - tapOn:

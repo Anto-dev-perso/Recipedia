@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../../flows/Recipe/Adding/Manual/en/openAddManually.yaml"
+    file: "../../../flows/recipe/adding/manual/en/openAddManually.yaml"
     label: "Open manual recipe adding screen"
 
 - runFlow:

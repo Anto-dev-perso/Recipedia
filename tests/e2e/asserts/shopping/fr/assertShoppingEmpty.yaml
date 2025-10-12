@@ -1,0 +1,10 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../bottomtabs/fr/assertBottomTabs.yaml"
+    label: "Check bottom navigation tabs in French"
+
+- assertVisible:
+    id: "ShoppingScreen::TextNoItem"
+    text: "Aucun article dans la liste de courses"
+    label: "Empty shopping list message is displayed in French"

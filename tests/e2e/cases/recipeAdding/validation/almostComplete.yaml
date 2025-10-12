@@ -1,29 +1,29 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredient.yaml"
+    file: "../../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredient.yaml"
     label: "Add ingredient"
 
 - runFlow:
-    file: "../../../flows/Recipe/Adding/en/validateRecipe.yaml"
+    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
     label: "Try to validate recipe"
 
 - runFlow:
-    file: "../../../asserts/Alerts/en/recipeValidationError.yaml"
+    file: "../../../asserts/alerts/en/recipeValidationError.yaml"
     env:
       MISSING_ELEMENTS: "\n\t- names for all ingredients\n\t- some instructions for the preparation"
     label: "Assert validation error for missing name on ingredient and preparation"
 
 - runFlow:
-    file: "../../../flows/Recipe/Adding/Manual/en/fixIngredientName.yaml"
+    file: "../../../flows/recipe/adding/manual/en/fixIngredientName.yaml"
     label: "Validate the ingredient name"
 
 - runFlow:
-    file: "../../../flows/Recipe/Adding/en/validateRecipe.yaml"
+    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
     label: "Try to validate recipe"
 
 - runFlow:
-    file: "../../../asserts/Alerts/en/recipeValidationErrorSingle.yaml"
+    file: "../../../asserts/alerts/en/recipeValidationErrorSingle.yaml"
     env:
       MISSING_ELEMENT: "some instructions for the preparation"
     label: "Assert validation error for missing preparation only"

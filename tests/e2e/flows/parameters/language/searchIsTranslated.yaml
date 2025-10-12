@@ -19,7 +19,7 @@ appId: "com.recipedia"
     label: "Press adding filter to check other texts"
 
 - runFlow:
-    file: "../../../asserts/Search/fr/Filters/filtersViewNoFilter.yaml"
+    file: "../../../asserts/search/fr/filters/filtersViewNoFilter.yaml"
     label: "Assert all filter accordions in French"
 
 - tapOn:

@@ -12,13 +12,13 @@ appId: "com.recipedia"
     label: "Dismiss keyboard"
 
 - runFlow:
-    file: "../../asserts/Search/SearchBar/searchBarNotFiltered.yaml"
+    file: "../../asserts/search/searchbar/searchBarNotFiltered.yaml"
     label: "Assert search bar dropdown shows all recipes"
 
 - pressKey: "BACK"
 
 - runFlow:
-    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
     label: "Assert Search screen is back to normal view"
 
 - tapOn:

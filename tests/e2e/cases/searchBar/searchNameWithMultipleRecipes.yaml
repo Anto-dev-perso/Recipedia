@@ -14,13 +14,13 @@ appId: "com.recipedia"
     label: "Dismiss keyboard"
 
 - runFlow:
-    file: "../../asserts/Search/SearchBar/searchBarFilteredOnCa.yaml"
+    file: "../../asserts/search/searchbar/searchBarFilteredOnCa.yaml"
     label: "Assert search bar dropdown shows filtered results for 'Ca'"
 
 - pressKey: "enter"
 
 - runFlow:
-    file: "../../asserts/Search/en/searchScreenFilteredOnCa.yaml"
+    file: "../../asserts/search/en/searchScreenFilteredOnCa.yaml"
     label: "Assert Search screen shows filtered recipe cards"
 
 - tapOn:
@@ -28,7 +28,7 @@ appId: "com.recipedia"
     label: "Tap clear icon to remove search filter"
 
 - runFlow:
-    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
     label: "Assert all recipe cards are visible again"
 
 - tapOn:

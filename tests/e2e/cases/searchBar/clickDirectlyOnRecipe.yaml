@@ -16,7 +16,7 @@ appId: "com.recipedia"
     label: "Click directly on Lentil Curry from dropdown"
 
 - runFlow:
-    file: "../../asserts/Search/en/searchScreenFilteredOnLentilCury.yaml"
+    file: "../../asserts/search/en/searchScreenFilteredOnLentilCury.yaml"
     label: "Assert Search screen shows filtered results for Lentil Curry"
 
 - tapOn:
@@ -24,7 +24,7 @@ appId: "com.recipedia"
     label: "Tap clear icon to remove search filter"
 
 - runFlow:
-    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
     label: "Assert all recipe cards are visible again"
 
 - tapOn:

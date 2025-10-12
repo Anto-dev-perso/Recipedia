@@ -1,5 +1,5 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../asserts/Home/en/assertHomeScreen.yaml"
+    file: "../../asserts/home/en/assertHomeScreen.yaml"
     label: "Assert Home screen is displayed correctly"

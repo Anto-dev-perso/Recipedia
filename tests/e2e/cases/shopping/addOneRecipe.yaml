@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Navigate to Shopping screen"
 
 - runFlow:
-    file: "../../asserts/Shopping/en/shoppingEmpty.yaml"
+    file: "../../asserts/shopping/en/shoppingEmpty.yaml"
     label: "Assert empty shopping screen"
 
 - tapOn:
@@ -29,13 +29,13 @@ appId: "com.recipedia"
     label: "Add Classic Pancakes to menu"
 
 - runFlow:
-    file: "../../asserts/Alerts/en/addingRecipe.yaml"
+    file: "../../asserts/alerts/en/addingRecipe.yaml"
     env:
       RECIPE_NAME: "Classic Pancakes"
     label: "Assert recipe added alert"
 
 - runFlow:
-    file: "../../flows/Search/scrollBackToTop.yaml"
+    file: "../../flows/search/scrollBackToTop.yaml"
     label: "Scroll back to top of Search screen"
 
 - tapOn:
@@ -43,7 +43,7 @@ appId: "com.recipedia"
     label: "Navigate to Shopping screen"
 
 - runFlow:
-    file: "../../asserts/Shopping/en/shoppingPancake.yaml"
+    file: "../../asserts/shopping/en/shoppingPancake.yaml"
     label: "Assert Pancake ingredients in shopping list"
 
 - tapOn:
@@ -55,11 +55,11 @@ appId: "com.recipedia"
     label: "Navigate back to Shopping screen to verify persistence"
 
 - runFlow:
-    file: "../../asserts/Shopping/en/shoppingPancake.yaml"
+    file: "../../asserts/shopping/en/shoppingPancake.yaml"
     label: "Assert shopping list persisted"
 
 - runFlow:
-    file: "../../flows/Shopping/en/clearShoppingList.yaml"
+    file: "../../flows/shopping/en/clearShoppingList.yaml"
     label: "Assert shopping list persisted"
 
 - tapOn:

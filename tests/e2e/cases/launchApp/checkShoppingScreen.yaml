@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Navigate to Shopping screen"
 
 - runFlow:
-    file: "../../asserts/Shopping/en/assertShoppingEmpty.yaml"
+    file: "../../asserts/shopping/en/assertShoppingEmpty.yaml"
     label: "Assert Shopping screen is displayed correctly"
 
 - tapOn:

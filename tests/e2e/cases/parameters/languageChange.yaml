@@ -5,27 +5,27 @@ appId: "com.recipedia"
     label: "Tap on Parameters button in the bottom bar"
 
 - runFlow:
-    file: "../../flows/Parameters/language/switchToFrench.yaml"
+    file: "../../flows/parameters/language/switchToFrench.yaml"
     label: "Switch language to French"
 
 - runFlow:
-    file: "../../asserts/Parameters/fr/assertParametersScreen.yaml"
+    file: "../../asserts/parameters/fr/assertParametersScreen.yaml"
     label: "Check that the Parameters screen is displayed correctly in French"
 
 - runFlow:
-    file: "../../flows/Parameters/language/shoppingIsTranslated.yaml"
+    file: "../../flows/parameters/language/shoppingIsTranslated.yaml"
     label: "Check that the shopping list screen has been translated to French"
 
 - runFlow:
-    file: "../../flows/Parameters/language/homeIsTranslated.yaml"
+    file: "../../flows/parameters/language/homeIsTranslated.yaml"
     label: "Check that the home screen has been translated to French"
 
 - runFlow:
-    file: "../../flows/Parameters/language/recipeIsTranslated.yaml"
+    file: "../../flows/parameters/language/recipeIsTranslated.yaml"
     label: "Check that the recipe screen has been translated to French"
 
 - runFlow:
-    file: "../../flows/Parameters/language/searchIsTranslated.yaml"
+    file: "../../flows/parameters/language/searchIsTranslated.yaml"
     label: "Check that the search screen has been translated to French"
 
 - tapOn:
@@ -33,7 +33,7 @@ appId: "com.recipedia"
     label: "Navigate back to the Parameters screen"
 
 - runFlow:
-    file: "../../flows/Parameters/language/switchToEnglish.yaml"
+    file: "../../flows/parameters/language/switchToEnglish.yaml"
     label: "Switch language back to English"
 
 - tapOn:

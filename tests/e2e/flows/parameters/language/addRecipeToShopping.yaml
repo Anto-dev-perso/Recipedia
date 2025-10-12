@@ -13,7 +13,7 @@ appId: "com.recipedia"
     label: "Add the recipe to the shopping list"
 
 - runFlow:
-    file: "../../../asserts/Alerts/fr/addingRecipe.yaml"
+    file: "../../../asserts/alerts/fr/addingRecipe.yaml"
     label: "Check alert is translated"
     env:
       RECIPE_NAME: "Chicken Tacos"

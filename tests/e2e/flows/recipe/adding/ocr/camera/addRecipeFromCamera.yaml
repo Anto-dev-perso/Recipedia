@@ -1,0 +1,33 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "ocrImage.yaml"
+    label: "OCR image"
+
+- runFlow:
+    file: "../gallery/ocrTitle.yaml"
+    label: "OCR title"
+
+- runFlow:
+    file: "../gallery/ocrDescription.yaml"
+    label: "OCR description"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to tags section"
+
+- runFlow:
+    file: "../gallery/ocrTime.yaml"
+    label: "OCR time"
+
+- runFlow:
+    file: "../gallery/ocrIngredients.yaml"
+    label: "OCR ingredients"
+
+- runFlow:
+    file: "../gallery/ocrPreparation.yaml"
+    label: "OCR preparation"

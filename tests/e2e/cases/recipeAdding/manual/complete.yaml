@@ -1,23 +1,23 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../../flows/Recipe/Adding/Manual/en/openAddManually.yaml"
+    file: "../../../flows/recipe/adding/manual/en/openAddManually.yaml"
     label: "Open manual recipe adding screen"
 
 - runFlow:
-    file: "../../../flows/Recipe/Adding/Manual/en/addAiguillettes.yaml"
+    file: "../../../flows/recipe/adding/manual/en/addAiguillettes.yaml"
     label: "Fill in complete recipe (Aiguillettes)"
 
 - runFlow:
-    file: "../../../asserts/Recipe/Edit/aiguillettesFull.yaml"
+    file: "../../../asserts/recipe/edit/aiguillettesFull.yaml"
     label: "Assert recipe is filled correctly"
 
 - runFlow:
-    file: "../../../flows/Recipe/Adding/en/validateRecipe.yaml"
+    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
     label: "Validate the recipe"
 
 - runFlow:
-    file: "../../../asserts/Alerts/en/recipeAddedToDatabase.yaml"
+    file: "../../../asserts/alerts/en/recipeAddedToDatabase.yaml"
     env:
       RECIPE_NAME: "Aiguillettes de poulet a la sauce satay"
     label: "Assert recipe added successfully"
@@ -41,7 +41,7 @@ appId: "com.recipedia"
     label: "Open newly created recipe (first result)"
 
 - runFlow:
-    file: "../../../asserts/Recipe/ReadOnly/en/aiguillettesFull.yaml"
+    file: "../../../asserts/recipe/readonly/en/aiguillettesFull.yaml"
     label: "Assert recipe content in read-only mode"
 
 - tapOn:

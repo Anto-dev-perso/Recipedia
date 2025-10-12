@@ -15,7 +15,7 @@ appId: "com.recipedia"
 - pressKey: "enter"
 
 - runFlow:
-    file: "../../asserts/Search/en/searchScreenFilteredOnCa.yaml"
+    file: "../../asserts/search/en/searchScreenFilteredOnCa.yaml"
     label: "Assert filter view with Ca"
 
 - tapOn:
@@ -31,7 +31,7 @@ appId: "com.recipedia"
     label: "Select tag Chocolate as filter"
 
 - runFlow:
-    file: "../../asserts/Search/en/Filters/filtersViewFilteredOnCaAndChocolate.yaml"
+    file: "../../asserts/search/en/filters/filtersViewFilteredOnCaAndChocolate.yaml"
     label: "Assert filter view with Ca and Chocolate"
 
 - tapOn:
@@ -39,7 +39,7 @@ appId: "com.recipedia"
     label: "Close the filter page"
 
 - runFlow:
-    file: "../../asserts/Search/en/searchScreenFilteredOnCaAndChocolate.yaml"
+    file: "../../asserts/search/en/searchScreenFilteredOnCaAndChocolate.yaml"
     label: "Assert search results filtered on Ca and Chocolate"
 
 - tapOn:

@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../Recipe/Adding/fr/addRecipeImage.yaml"
+    file: "../../recipe/adding/fr/addRecipeImage.yaml"
     label: "Add recipe image in French"
 
 - tapOn:

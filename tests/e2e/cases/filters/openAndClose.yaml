@@ -9,7 +9,7 @@ appId: "com.recipedia"
     label: "Open the filter page"
 
 - runFlow:
-    file: "../../asserts/Search/en/Filters/filtersViewNoFilter.yaml"
+    file: "../../asserts/search/en/filters/filtersViewNoFilter.yaml"
     label: "Assert filter view with no filters applied"
 
 - tapOn:

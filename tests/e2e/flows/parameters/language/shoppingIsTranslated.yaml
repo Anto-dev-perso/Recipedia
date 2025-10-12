@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Go to the shopping list screen"
 
 - runFlow:
-    file: "../../../asserts/Shopping/fr/assertShoppingEmpty.yaml"
+    file: "../../../asserts/shopping/fr/assertShoppingEmpty.yaml"
     label: "Check that empty shopping list is translated in French"
 
 - runFlow:
@@ -13,9 +13,9 @@ appId: "com.recipedia"
     label: "Add a recipe to check shopping is translated"
 
 - runFlow:
-    file: "../../../asserts/Shopping/shoppingTacosTranslatedInFrench.yaml"
+    file: "../../../asserts/shopping/shoppingTacosTranslatedInFrench.yaml"
     label: "Check that non empty shopping list is translated in French"
 
 - runFlow:
-    file: "../../../flows/Shopping/fr/clearShoppingList.yaml"
+    file: "../../../flows/shopping/fr/clearShoppingList.yaml"
     label: "Clear shopping list"

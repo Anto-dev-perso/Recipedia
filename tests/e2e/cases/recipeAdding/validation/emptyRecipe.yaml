@@ -1,15 +1,15 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../../asserts/Recipe/Edit/recipeEmpty.yaml"
+    file: "../../../asserts/recipe/edit/recipeEmpty.yaml"
     label: "Assert recipe is empty"
 
 - runFlow:
-    file: "../../../flows/Recipe/Adding/Manual/en/tryAddEmpty.yaml"
+    file: "../../../flows/recipe/adding/manual/en/tryAddEmpty.yaml"
     label: "Try to validate empty recipe"
 
 - runFlow:
-    file: "../../../asserts/Alerts/en/recipeValidationError.yaml"
+    file: "../../../asserts/alerts/en/recipeValidationError.yaml"
     env:
       MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation"
     label: "Assert validation error for all missing elements"

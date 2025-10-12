@@ -1,15 +1,15 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../../flows/Recipe/Adding/Manual/en/tryAddOnlyImageTitleDescriptionTag.yaml"
+    file: "../../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTag.yaml"
     label: "Add tag"
 
 - runFlow:
-    file: "../../../flows/Recipe/Adding/en/validateRecipe.yaml"
+    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
     label: "Try to validate recipe"
 
 - runFlow:
-    file: "../../../asserts/Alerts/en/recipeValidationError.yaml"
+    file: "../../../asserts/alerts/en/recipeValidationError.yaml"
     env:
       MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
     label: "Assert validation error (same as title only)"

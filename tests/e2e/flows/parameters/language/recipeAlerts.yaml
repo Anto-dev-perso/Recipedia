@@ -7,7 +7,7 @@ appId: "com.recipedia"
     id: "RecipeValidate"
     label: "Try to validate the adding when empty"
 - runFlow:
-    file: "../../../asserts/Alerts/fr/recipeValidationError.yaml"
+    file: "../../../asserts/alerts/fr/recipeValidationError.yaml"
     label: "Check that alert for empty recipe is translated in French"
     env:
       MISSING_ELEMENTS: "\n\t- une image\n\t- un titre\n\t- des ingrédients\n\t- des instructions pour la préparation"
@@ -18,7 +18,7 @@ appId: "com.recipedia"
     id: "RecipeValidate"
     label: "Validate the recipe adding"
 - runFlow:
-    file: "../../../asserts/Alerts/fr/recipeAddedToDatabase.yaml"
+    file: "../../../asserts/alerts/fr/recipeAddedToDatabase.yaml"
     label: "Check that alert for added recipe is translated in French"
     env:
       RECIPE_NAME: "Titre"

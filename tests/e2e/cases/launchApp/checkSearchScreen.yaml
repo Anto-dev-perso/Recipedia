@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Navigate to Search screen"
 
 - runFlow:
-    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
     label: "Assert Search screen is displayed correctly"
 
 - tapOn:

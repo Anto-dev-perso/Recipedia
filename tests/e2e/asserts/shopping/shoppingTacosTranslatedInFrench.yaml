@@ -1,0 +1,33 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "ShoppingScreen::SectionList::ingredientTypes.grainOrCereal::SubHeader"
+    label: "Grain or Cereales subheader is displayed"
+
+- assertVisible:
+    text: "Céréales et Grains"
+    label: "Grain or Cereales subheader shows French text"
+
+- assertVisible:
+    id: "ShoppingScreen::SectionList::Taco Shells"
+    label: "Taco Shells ingredient is displayed"
+
+- assertVisible:
+    text: "Taco Shells, 1 recette"
+    label: "Ingredient counter shows French text"
+
+- repeat:
+    while:
+      notVisible:
+        id: "ShoppingScreen::Dialog::Title"
+    commands:
+      - longPressOn:
+          id: "ShoppingScreen::SectionList::Taco Shells"
+          label: "Long press on Taco Shells to show recipe usage"
+
+- runFlow:
+    file: "../alerts/fr/longPressOnIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "taco shells"
+      RECIPE_NAMES: "Chicken Tacos"
+    label: "Check that alert is translated to French"

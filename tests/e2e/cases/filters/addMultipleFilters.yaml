@@ -17,7 +17,7 @@ appId: "com.recipedia"
     label: "Select 15-20 min as filter"
 
 - runFlow:
-    file: "../../asserts/Search/en/Filters/filtersViewFilteredOn1520Min.yaml"
+    file: "../../asserts/search/en/filters/filtersViewFilteredOn1520Min.yaml"
     label: "Assert filter view with 15-20 min selected"
 
 - tapOn:
@@ -25,7 +25,7 @@ appId: "com.recipedia"
     label: "Close the filter page"
 
 - runFlow:
-    file: "../../asserts/Search/en/searchScreenFilteredOn1520Min.yaml"
+    file: "../../asserts/search/en/searchScreenFilteredOn1520Min.yaml"
     label: "Assert search results filtered on 15-20 min"
 
 - tapOn:
@@ -48,11 +48,11 @@ appId: "com.recipedia"
     label: "Add the Romaine Lettuce in filters"
 
 - runFlow:
-    file: "../../flows/Search/scrollBackToTop.yaml"
+    file: "../../flows/search/scrollBackToTop.yaml"
     label: "Scroll back to top of filters"
 
 - runFlow:
-    file: "../../asserts/Search/en/Filters/filtersViewFilteredOn1520MinAndLettuce.yaml"
+    file: "../../asserts/search/en/filters/filtersViewFilteredOn1520MinAndLettuce.yaml"
     label: "Assert filter view with 15-20 min and Lettuce"
 
 - tapOn:
@@ -60,7 +60,7 @@ appId: "com.recipedia"
     label: "Close the filter page"
 
 - runFlow:
-    file: "../../asserts/Search/en/searchScreenFilteredOn1520MinAndLettuce.yaml"
+    file: "../../asserts/search/en/searchScreenFilteredOn1520MinAndLettuce.yaml"
     label: "Assert search results filtered on 15-20 min and Lettuce"
 
 - tapOn:
@@ -68,7 +68,7 @@ appId: "com.recipedia"
     label: "Remove 15-20 min filter"
 
 - runFlow:
-    file: "../../asserts/Search/en/searchScreenFilteredOnLettuce.yaml"
+    file: "../../asserts/search/en/searchScreenFilteredOnLettuce.yaml"
     label: "Assert search results filtered on Lettuce only"
 
 - tapOn:
@@ -76,7 +76,7 @@ appId: "com.recipedia"
     label: "Remove Romaine Lettuce filter"
 
 - runFlow:
-    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
     label: "Assert that all recipes are back when removing all filters"
 
 - tapOn:

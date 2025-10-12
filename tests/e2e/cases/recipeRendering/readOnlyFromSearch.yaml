@@ -9,7 +9,7 @@ appId: "com.recipedia"
     label: "Open Chicken Tacos recipe"
 
 - runFlow:
-    file: "../../asserts/Recipe/ReadOnly/en/chickenTacos.yaml"
+    file: "../../asserts/recipe/readonly/en/chickenTacos.yaml"
     label: "Assert Chicken Tacos recipe is displayed correctly"
 
 - tapOn:
@@ -17,7 +17,7 @@ appId: "com.recipedia"
     label: "Back to the Search Screen"
 
 - runFlow:
-    file: "../../asserts/Search/en/assertSearchScreen.yaml"
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
     label: "Assert Search screen is displayed"
 
 - tapOn:
