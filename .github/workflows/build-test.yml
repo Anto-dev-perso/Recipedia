@@ -193,5 +193,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: maestro-test-results
-          path: maestro_logs/.maestro/tests/
+          path: maestro_logs/.maestro/tests
           retention-days: 7
