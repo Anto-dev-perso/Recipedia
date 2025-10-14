@@ -184,6 +184,7 @@ jobs:
         with:
           api-level: 35
           arch: x86_64
+          disable-animations: 'true'
           script: |
             npm run install:android
             npm run test:e2e:android
