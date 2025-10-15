@@ -1,7 +1,0 @@
-appId: "com.recipedia"
-name: "Shopping screen test suite"
----
-- launchApp
-
-- runFlow: flows/Shopping/addOneRecipe.yaml
-- runFlow: flows/Shopping/addMultipleRecipes.yaml

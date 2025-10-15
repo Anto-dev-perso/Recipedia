@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Pizza Dough"
+    label: "Pizza Dough filter is not visible"

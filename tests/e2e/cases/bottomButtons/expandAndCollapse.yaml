@@ -1,0 +1,22 @@
+appId: "com.recipedia"
+---
+
+- runFlow:
+    file: "../../asserts/home/assertCollapsedButtons.yaml"
+    label: "Assert FAB menu is collapsed initially"
+
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Tap on expand button to open FAB menu"
+
+- runFlow:
+    file: "../../asserts/home/assertExpandedButtons.yaml"
+    label: "Assert FAB menu is expanded with all buttons visible"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Tap on reduce button to collapse FAB menu"
+
+- runFlow:
+    file: "../../asserts/home/assertCollapsedButtons.yaml"
+    label: "Assert FAB menu is collapsed again"

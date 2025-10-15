@@ -1,0 +1,18 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "BottomTabs::Home"
+    text: "Accueil"
+    label: "Home tab is displayed in French"
+- assertVisible:
+    id: "BottomTabs::Search"
+    text: "Recherche"
+    label: "Search tab is displayed in French"
+- assertVisible:
+    id: "BottomTabs::Shopping"
+    text: "Courses"
+    label: "Shopping tab is displayed in French"
+- assertVisible:
+    id: "BottomTabs::Parameters"
+    text: "Paramètres"
+    label: "Parameters tab is displayed in French"

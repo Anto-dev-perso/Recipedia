@@ -1,0 +1,28 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../bottomtabs/en/assertBottomTabs.yaml"
+    label: "Check bottom navigation tabs"
+- runFlow:
+    file: "./assertAppearanceSection.yaml"
+    label: "Check that the appearance section is displayed correctly in English"
+- runFlow:
+    file: "./assertRecipeDefaultsSection.yaml"
+    label: "Check that the recipe defaults section is displayed correctly in English"
+- scrollUntilVisible:
+    element:
+      id: "Parameters::Section::About::Version::Item"
+    direction: DOWN
+    speed: 60
+- runFlow:
+    file: "./assertDataManagementSection.yaml"
+    label: "Check that the data management section is displayed correctly in English"
+- runFlow:
+    file: "./assertAboutSection.yaml"
+    label: "Check that the about section is displayed correctly in English"
+
+- scrollUntilVisible:
+    element:
+      id: "Parameters::Section::Appearance::SubHeader"
+    direction: UP
+    speed: 60

@@ -11,15 +11,20 @@ import months from './months';
 import onboarding from './onboarding';
 
 export default {
-  ...navigation,
   ...common,
-  ...shopping,
   ...parameters,
   ...seasons,
   ...months,
-  ...onboarding,
-
   ...recipe,
+  ...onboarding,
+  home: navigation.home,
+  search: navigation.search,
+  parameters: navigation.parameters,
+  plannification: navigation.plannification,
+  shopping: navigation.shopping,
+  shoppingScreen: {
+    ...shopping,
+  },
   recipe: {
     nutrition: recipe.nutrition,
   },

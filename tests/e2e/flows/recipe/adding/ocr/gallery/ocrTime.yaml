@@ -1,0 +1,41 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+
+- runFlow:
+    when:
+      true: ${output.isTime == false}
+    commands:
+      - tapOn:
+          id: "RecipeTime::ManuallyFill::RoundButton"
+          label: "Tap on button to enter time manually"
+      - tapOn:
+          id: "RecipeTime::TextInput"
+          label: "Tap on text input of the time to prepare"
+      - inputText:
+          text: "30"
+          label: "Enter the time to prepare this recipe"
+      - pressKey: "enter"
+
+- runFlow:
+    when:
+      true: ${output.isTime == true}
+    commands:
+      - tapOn:
+          id: "RecipeTime::OpenModal::RoundButton"
+          label: "Tap on button to OCR time to prepare"
+      - runFlow:
+          file: ../android/addMedia.yaml
+          env:
+            FIELD_NAME: personsAndTime
+          when:
+            platform: Android
+      # TODO iOS
+      - runFlow:
+          file: ../android/selectMostRecentFromModal.yaml
+          label: "Select time from modal for OCR"

@@ -1,0 +1,43 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "ocrImage.yaml"
+    label: "OCR image"
+
+- runFlow:
+    file: "ocrTitle.yaml"
+    label: "OCR title"
+
+- runFlow:
+    when:
+      true: ${output.isDescriptionToOCR}
+    commands:
+      - runFlow:
+          file: "ocrDescription.yaml"
+          label: "OCR description"
+
+- runFlow:
+    when:
+      true: ${output.isTagsToOCR}
+    commands:
+      - runFlow:
+          file: "ocrTags.yaml"
+          label: "OCR tags"
+
+- runFlow:
+    file: "ocrTime.yaml"
+    label: "OCR time"
+
+
+- runFlow:
+    file: "ocrPreparation.yaml"
+    label: "OCR preparation"
+
+- runFlow:
+    file: "ocrIngredients.yaml"
+    label: "OCR ingredients"
+
+
+- runFlow:
+    file: "../../en/validateRecipe.yaml"
+    label: "Validate the recipe"

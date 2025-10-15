@@ -1,0 +1,46 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    text: "Parameters"
+    label: "Tap on Parameters button in the bottom bar"
+
+- runFlow:
+    file: "../../flows/parameters/language/switchToFrench.yaml"
+    label: "Switch language to French"
+
+- runFlow:
+    file: "../../asserts/parameters/fr/assertParametersScreen.yaml"
+    label: "Check that the Parameters screen is displayed correctly in French"
+
+- runFlow:
+    file: "../../flows/parameters/language/shoppingIsTranslated.yaml"
+    label: "Check that the shopping list screen has been translated to French"
+
+- runFlow:
+    file: "../../flows/parameters/language/homeIsTranslated.yaml"
+    label: "Check that the home screen has been translated to French"
+
+- runFlow:
+    file: "../../flows/parameters/language/recipeIsTranslated.yaml"
+    label: "Check that the recipe screen has been translated to French"
+
+- runFlow:
+    file: "../../flows/parameters/language/searchIsTranslated.yaml"
+    label: "Check that the search screen has been translated to French"
+
+- tapOn:
+    text: "Paramètres"
+    label: "Navigate back to the Parameters screen"
+
+- runFlow:
+    file: "../../flows/parameters/language/switchToEnglish.yaml"
+    label: "Switch language back to English"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate back to the home screen"
+
+# TODO check that ingredients quantities translation works
+# TODO check database management pop ups too
+# TODO check tag and ingredient name found/missing (while adding)
+# TODO check on recipe card that it is translated too

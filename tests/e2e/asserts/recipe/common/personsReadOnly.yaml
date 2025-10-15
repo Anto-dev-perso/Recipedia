@@ -1,0 +1,6 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "RecipePersons::Text"
+    text: "Ingredients (4 persons)"
+    label: "Number of persons is rendered"

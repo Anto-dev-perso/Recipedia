@@ -180,6 +180,8 @@ export function RecipeTextRender(textRenderProps: RecipeTextRenderProps) {
                 editText={{
                   withBorder: true,
                   onChangeFunction: textRenderProps.textEdited,
+                  onTitleChangeFunction: textRenderProps.onTitleEdit,
+                  onDescriptionChangeFunction: textRenderProps.onDescriptionEdit,
                 }}
               />
 

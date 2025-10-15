@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "15-20 min"
+    label: "15-20 min filter is not visible"

@@ -1,0 +1,199 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../common/buttonsReadOnly.yaml"
+    label: "Assert common ReadOnly buttons and image"
+
+- runFlow:
+    file: "../../common/titleReadOnly.yaml"
+    env:
+      TITLE: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
+    label: "Assert recipe title"
+
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: "La sauce satay est une sauce d'Asie du Sud-Est à base de cacahuètes, ail et gingembre! Reproduisez-la pour accompagner notre poulet français !"
+    label: "Description of the recipe is rendered"
+
+- scrollUntilVisible:
+    element:
+      text: "Ingredients (4 persons)"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertNotVisible:
+    id: "RecipeTags::0::Chip"
+    label: "Tags part is not rendered"
+
+- assertVisible:
+    text: "Ingredients (4 persons)"
+    label: "Ingredient section and persons is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "200 g"
+    label: "First ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "cacahuètes grillées"
+    label: "First ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "70 g"
+    label: "Second ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "concentré de tomates"
+    label: "Second ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    text: "4 "
+    label: "Third ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
+    text: "flet de poulet"
+    label: "Third ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    text: "1à3 cm"
+    label: "Fourth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::IngredientName"
+    text: "gingembre"
+    label: "Fourth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    text: "2 "
+    label: "Fifth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::IngredientName"
+    text: "gOussed'ail"
+    label: "Fifth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::5::QuantityAndUnit"
+    text: "400 mL"
+    label: "Sixth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::5::IngredientName"
+    text: "lait de coco"
+    label: "Sixth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::6::QuantityAndUnit"
+    text: "2 "
+    label: "Seventh ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::6::IngredientName"
+    text: "oignon jaune"
+    label: "Seventh ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::7::QuantityAndUnit"
+    text: "1 "
+    label: "Eighth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::7::IngredientName"
+    text: "oignon nouveau"
+    label: "Eighth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::8::QuantityAndUnit"
+    text: "300 g"
+    label: "Ninth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::8::IngredientName"
+    text: "riz basmati  Bio"
+    label: "Ninth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeTime::Text"
+    text: "Preparation (30 min)"
+    label: "Preparation section and time are displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) Le poulet"
+    label: "First preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: "First preparation paragraph is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionTitle"
+    text: "2) La sauce satay"
+    label: "Second preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: "Second preparation paragraph is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionTitle"
+    text: "3) Le poulet sauce satay"
+    label: "Third preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionParagraph"
+    text: "[\\s\\S]+"
+    label: "Third preparation paragraph is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::3::SectionParagraph"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionTitle"
+    text: "4) Le riz"
+    label: "Fourth preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionParagraph"
+    text: "Portez une casserole d'eau salée à ébullition.\nFaites cuire le riz selon les indications du paquet.\nRetirez la base de l'oignon nouveau et émincez-le.\nDégustez sans attendre votre poulet sauce satay accompagné du riz!\nParsemez-le d'oignon nouveau."
+    label: "Fourth preparation paragraph is displayed"

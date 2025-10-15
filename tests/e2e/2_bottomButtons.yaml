@@ -3,39 +3,6 @@ name: "Check that home right buttons are expanding"
 ---
 - launchApp
 
-- tapOn:
-    text: "󰐕"
-    label: Tap on Plus button
-- assertVisible:
-    text: "󰍴"
-    label: Minus button is displayed
-- assertVisible:
-    text: "󰏫"
-    label: Pen button is displayed
-- assertVisible:
-    text: "󰋫"
-    label: Picture button is displayed
-- assertVisible:
-    text: "󰄀"
-    label: Camera button is displayed
-- assertNotVisible:
-    text: "󰐕"
-    label: Plus button is not displayed
-- tapOn:
-    text: "󰍴"
-    label: Tap on Minus button
-- assertNotVisible:
-    text: "󰍴"
-    label: Minus button is not displayed
-- assertNotVisible:
-    text: "󰏫"
-    label: Pen button is not displayed
-- assertNotVisible:
-    text: ""
-    label: Picture button is not displayed
-- assertNotVisible:
-    text: ""
-    label: Camera button is not displayed
-- assertVisible:
-    text: "󰐕"
-    label: Plus button is displayed
+- runFlow:
+    file: "cases/bottomButtons/expandAndCollapse.yaml"
+    label: "Test FAB menu expand and collapse"

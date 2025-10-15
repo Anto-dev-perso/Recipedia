@@ -1,9 +1,0 @@
-appId: "com.recipedia"
-name: "Check that the Parameters screen is displayed and working as intended."
----
-- launchApp
-
-- runFlow: "flows/Parameters/darkMode.yaml"
-- runFlow: "flows/Parameters/language/checkLanguageChange.yaml"
-
-# TODO add default person and season filter test

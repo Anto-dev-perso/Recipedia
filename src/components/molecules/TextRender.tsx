@@ -138,12 +138,17 @@ export function TextRender(props: TextRenderProps) {
               style={recipeTextRenderStyles.firstColumn}
               contentStyle={recipeTextRenderStyles.columnContentStyle}
               value={quantity.toString()}
-              onChangeText={newQuantity =>
+              onChangeText={newQuantity => {
+                // Get current ingredient data from props.text
+                const currentItem = props.text[index] as string;
+                const [currentUnitAndQuantity, currentIngName] = currentItem.split(textSeparator);
+                const [, currentUnit] = currentUnitAndQuantity.split(unitySeparator);
+
                 props.editText?.onChangeFunction(
                   index,
-                  `${newQuantity}${unitySeparator}${unit}${textSeparator}${ingName}`
-                )
-              }
+                  `${newQuantity}${unitySeparator}${currentUnit}${textSeparator}${currentIngName}`
+                );
+              }}
             />
             <CustomTextInput
               testID={props.testID + `::${index}::Unit`}
@@ -159,12 +164,16 @@ export function TextRender(props: TextRenderProps) {
               absoluteDropDown={true}
               referenceTextArray={ingredientsList}
               value={ingName}
-              onValidate={newIngredientName =>
+              onValidate={newIngredientName => {
+                // Get current ingredient data from props.text
+                const currentItem = props.text[index] as string;
+                const [currentUnitAndQuantity] = currentItem.split(textSeparator);
+
                 props.editText?.onChangeFunction(
                   index,
-                  `${unitAndQuantity}${textSeparator}${newIngredientName}`
-                )
-              }
+                  `${currentUnitAndQuantity}${textSeparator}${newIngredientName}`
+                );
+              }}
             />
           </View>
         ) : (
@@ -220,9 +229,11 @@ export function TextRender(props: TextRenderProps) {
                   if (props.editText?.onTitleChangeFunction) {
                     props.editText.onTitleChangeFunction(index, newTitle);
                   } else {
+                    // Get current step data from props.text
+                    const currentItem = props.text[index] as preparationStepElement;
                     props.editText?.onChangeFunction(
                       index,
-                      `${newTitle}${textSeparator}${item.description}`
+                      `${newTitle}${textSeparator}${currentItem.description}`
                     );
                   }
                 }}
@@ -243,9 +254,11 @@ export function TextRender(props: TextRenderProps) {
                   if (props.editText?.onDescriptionChangeFunction) {
                     props.editText.onDescriptionChangeFunction(index, newParagraph);
                   } else {
+                    // Get current step data from props.text
+                    const currentItem = props.text[index] as preparationStepElement;
                     props.editText?.onChangeFunction(
                       index,
-                      `${item.title}${textSeparator}${newParagraph}`
+                      `${currentItem.title}${textSeparator}${newParagraph}`
                     );
                   }
                 }}

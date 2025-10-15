@@ -1,135 +1,27 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "Home::SearchButton::RoundButton"
-    label: "Open Search screen"
+    id: "BottomTabs::Search"
+    label: "Go to Search screen via bottom tab"
+
 - assertVisible:
     id: "SearchScreen::SearchBar"
     text: "Titre de la recette"
     label: "Search bar placeholder is displayed in French"
+
 - assertVisible:
     id: "SearchScreen::FiltersToggleButtons-text"
     text: "Ajouter un filtre"
     label: "Add filter text is displayed in French"
+
 - tapOn:
     id: "SearchScreen::FiltersToggleButtons"
     label: "Press adding filter to check other texts"
-- assertVisible:
-    id: "SearchScreen::FiltersToggleButtons-text"
-    text: "Voir les recettes filtrées"
-    label: "See recipe text is displayed in French"
 
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::0"
-    text: "Recettes de saisons uniquement"
-    label: "On season filter is displayed in French"
+- runFlow:
+    file: "../../../asserts/search/fr/filters/filtersViewNoFilter.yaml"
+    label: "Assert all filter accordions in French"
+
 - tapOn:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::0"
-    label: "Expand on season filter"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::0::Item::0"
-    text: "Recettes de saisons uniquement"
-    label: "On season contain the item displayed in French"
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::1"
-    text: "Temps de préparation"
-    label: "Prep time filter is displayed in French"
-- tapOn:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::1"
-    label: "Expand prep time filter"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::1::Item::7"
-    text: "+60 min"
-    label: "Prep time contain the item displayed in French"
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::2"
-    text: "Étiquettes"
-    label: "Tag filter is displayed in French"
-
-- scrollUntilVisible:
-    element:
-      id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::8"
-    direction: DOWN
-    speed: 60
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::3"
-    text: "Céréales et Grains"
-    label: "Cereals filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::4"
-    text: "Légumineuses"
-    label: "Legumes filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::5"
-    text: "Légumes"
-    label: "Vegatable filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::6"
-    text: "Protéines Végétales"
-    label: "Plant protein filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::7"
-    text: "Condiments"
-    label: "Condiment filter is displayed in French"
-
-- scrollUntilVisible:
-    element:
-      id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::13"
-    direction: DOWN
-    speed: 60
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::8"
-    text: "Sauces"
-    label: "Sauce filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::9"
-    text: "Viande"
-    label: "Meat filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::10"
-    text: "Volaille"
-    label: "Poultry filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::11"
-    text: "Poisson"
-    label: "Fish filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::12"
-    text: "Produits Laitiers"
-    label: "Dairy filter is displayed in French"
-
-- scrollUntilVisible:
-    element:
-      id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::18"
-    direction: DOWN
-    speed: 60
-
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::13"
-    text: "Fromage"
-    label: "Cheese filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::14"
-    text: "Sucre"
-    label: "Sugar filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::15"
-    text: "Épices"
-    label: "Spices filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::16"
-    text: "Fruits"
-    label: "Fruits filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::17"
-    text: "Huiles et Graisses"
-    label: "Oil filter is displayed in French"
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::FilterAccordionAccordion::18"
-    text: "Noix et Graines"
-    label: "Nuts filter is displayed in French"
-- pressKey: "BACK"
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Close the filters"

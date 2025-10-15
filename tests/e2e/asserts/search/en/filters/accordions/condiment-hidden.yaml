@@ -1,0 +1,6 @@
+appId: "com.recipedia"
+---
+# Assert accordion is NOT displayed
+- assertNotVisible:
+    text: "Condiment"
+    label: "Condiment accordion is not displayed"

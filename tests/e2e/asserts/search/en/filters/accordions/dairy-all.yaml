@@ -1,0 +1,28 @@
+appId: "com.recipedia"
+---
+# Assert accordion is displayed
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Dairy accordion is displayed"
+
+- assertVisible:
+    text: "Dairy"
+    label: "Dairy accordion title is displayed"
+
+# Expand the accordion
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Expand Dairy accordion"
+
+# Assert all items are visible
+- assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::0"
+    label: "Milk filter is visible"
+
+# Collapse the accordion back
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    label: "Collapse Dairy accordion"
+
+# Increment accordion index for next accordion
+- evalScript: ${output.accordionIndex = output.accordionIndex + 1}

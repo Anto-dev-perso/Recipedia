@@ -1,0 +1,27 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::OpenModal::RoundButton"
+    direction: UP
+    centerElement: true
+    speed: 60
+
+- tapOn:
+    id: "RecipeIngredients::OpenModal::RoundButton"
+    label: "Tap on OCR button of recipe ingredients"
+
+- runFlow:
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: ingredients
+    when:
+      platform: Android
+# TODO iOS
+
+- runFlow:
+    file: ../android/selectMostRecentFromModal.yaml
+    label: "Select ingredients from modal for OCR"
+    when:
+      platform: Android
+# TODO iOS

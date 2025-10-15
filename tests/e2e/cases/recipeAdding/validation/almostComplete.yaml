@@ -1,0 +1,29 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredient.yaml"
+    label: "Add ingredient"
+
+- runFlow:
+    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
+    label: "Try to validate recipe"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- names for all ingredients\n\t- some instructions for the preparation"
+    label: "Assert validation error for missing name on ingredient and preparation"
+
+- runFlow:
+    file: "../../../flows/recipe/adding/manual/en/fixIngredientName.yaml"
+    label: "Validate the ingredient name"
+
+- runFlow:
+    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
+    label: "Try to validate recipe"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/recipeValidationErrorSingle.yaml"
+    env:
+      MISSING_ELEMENT: "some instructions for the preparation"
+    label: "Assert validation error for missing preparation only"

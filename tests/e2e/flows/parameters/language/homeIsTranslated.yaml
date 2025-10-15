@@ -1,9 +1,9 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    text: "Accueil"
+    id: "BottomTabs::Home"
     label: "Go to the Home screen"
-- assertVisible:
-    id: "Home::RecipeRecommendation::1::SubHeader"
-    text: "Recommandation 1"
-    label: "Check recommendation text is displayed in French"
+
+- runFlow:
+    file: "../../../asserts/home/fr/assertHomeScreen.yaml"
+    label: "Check that the Home screen is displayed correctly in French"

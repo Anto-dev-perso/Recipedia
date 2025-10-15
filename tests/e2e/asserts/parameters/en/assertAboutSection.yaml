@@ -1,0 +1,21 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "Parameters::Section::About::SubHeader"
+    label: "About section header is displayed"
+
+- assertVisible:
+    text: "About"
+    label: "About section header text is displayed"
+
+- assertVisible:
+    text: "󰋼"
+    label: "Version icon is displayed"
+
+- assertVisible:
+    id: "Parameters::Section::About::Version::Item"
+    label: "Version item is displayed"
+
+- assertVisible:
+    text: "Version, .*\\d+\\.\\d+\\.\\d+"
+    label: "Version number format is displayed correctly"

@@ -1,0 +1,28 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to tags section"
+
+- tapOn:
+    id: "RecipeTags::OpenModal::RoundButton"
+    label: "Tap on OCR button of recipe tags"
+
+- runFlow:
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: tags
+    when:
+      platform: Android
+# TODO iOS
+
+- runFlow:
+    file: ../android/selectMostRecentFromModal.yaml
+    label: "Select tags from modal for OCR"
+    when:
+      platform: Android
+# TODO iOS

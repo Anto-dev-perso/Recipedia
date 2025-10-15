@@ -1,0 +1,14 @@
+appId: "com.recipedia"
+---
+- repeat:
+    while:
+      notVisible: ${recipeName}
+    commands:
+      - swipe:
+          direction: "DOWN"
+      - waitForAnimationToEnd
+    label: "Refresh until ${recipeName} is displayed"
+
+- tapOn:
+    text: ${recipeName}
+    label: "Open ${recipeName} recipe"

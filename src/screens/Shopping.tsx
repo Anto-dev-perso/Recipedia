@@ -197,7 +197,7 @@ export function Shopping() {
    * @returns string - Formatted dialog title with ingredient name and context
    */
   function createDialogTitle() {
-    return t('recipeUsingTitle') + ' ' + ingredientDataForDialog.name.toLowerCase();
+    return t('shoppingScreen.recipeUsingTitle') + ' ' + ingredientDataForDialog.name.toLowerCase();
   }
 
   /**
@@ -216,7 +216,7 @@ export function Shopping() {
    */
   function createDialogContent() {
     return (
-      t('recipeUsingMessage') +
+      t('shoppingScreen.recipeUsingMessage') +
       ' :' +
       ingredientDataForDialog.recipesTitle.map(title => `\n\t- ${title}`).join('')
     );
@@ -305,9 +305,9 @@ export function Shopping() {
     const recipesCount = item.recipesTitle.length;
     const recipesText =
       recipesCount > 1
-        ? `${recipesCount} ${t('recipes')}`
+        ? `${recipesCount} ${t('shoppingScreen.recipes')}`
         : recipesCount === 1
-          ? `1 ${t('recipe')}`
+          ? `1 ${t('shoppingScreen.recipe')}`
           : '';
 
     const textStyle: StyleProp<TextStyle> = [
@@ -337,7 +337,7 @@ export function Shopping() {
       {shoppingList.length === 0 ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text testID={screenId + '::TextNoItem'} variant='titleMedium'>
-            {t('noItemsInShoppingList')}
+            {t('shoppingScreen.noItemsInShoppingList')}
           </Text>
         </View>
       ) : (
@@ -369,7 +369,7 @@ export function Shopping() {
 
       <Alert
         isVisible={isDialogOpen}
-        confirmText={t('recipeUsingValidation')}
+        confirmText={t('shoppingScreen.recipeUsingValidation')}
         content={createDialogContent()}
         testId={screenId}
         title={createDialogTitle()}
@@ -380,8 +380,8 @@ export function Shopping() {
       />
       <Alert
         isVisible={isConfirmationDialogOpen}
-        title={t('clearShoppingList')}
-        content={t('confirmClearShoppingList')}
+        title={t('shoppingScreen.clearShoppingList')}
+        content={t('shoppingScreen.confirmClearShoppingList')}
         confirmText={t('confirm')}
         cancelText={t('cancel')}
         testId={screenId + '::ClearConfirmation'}

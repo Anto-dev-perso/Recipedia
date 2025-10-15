@@ -1,5 +1,0 @@
-appId: "com.recipedia"
----
-- tapOn:
-    id: "com.recipedia:id/menu_crop"
-    label: Validate the picture without crop

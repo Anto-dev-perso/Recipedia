@@ -1,0 +1,13 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    text: "Shutter"
+    label: "Take the photo"
+
+- tapOn:
+    text: "Done"
+    label: "Validate that we want this picture"
+
+- runFlow:
+    file: "validateWithoutCropping.yaml"
+    label: "Validate image without cropping"

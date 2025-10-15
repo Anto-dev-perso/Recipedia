@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Cumin"
+    label: "Cumin filter is not visible"

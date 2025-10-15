@@ -1,0 +1,5 @@
+appId: "com.recipedia"
+---
+- assertNotVisible:
+    text: "Black Pepper"
+    label: "Black Pepper filter is not visible"

@@ -1,5 +1,9 @@
 appId: "com.recipedia"
 ---
+- runFlow:
+    file: "../../recipe/adding/fr/addRecipeImage.yaml"
+    label: "Add recipe image in French"
+
 - tapOn:
     id: "RecipeTitle::TextInput"
     label: "Tap on recipe title text input"
@@ -9,21 +13,6 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 
-- scrollUntilVisible:
-    element:
-      id: "RecipePersons::PrefixText"
-    direction: DOWN
-    speed: 60
-    centerElement: true
-
-- tapOn:
-    id: "RecipePersons::CustomTextInput"
-    label: "Tap on recipe person text input"
-- inputText:
-    text: "5"
-    label: "Write a number of persons in the input text"
-- hideKeyboard:
-    label: "Close the keyboard"
 
 - scrollUntilVisible:
     element:

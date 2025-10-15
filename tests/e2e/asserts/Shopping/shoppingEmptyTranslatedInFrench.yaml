@@ -1,6 +1,0 @@
-appId: "com.recipedia"
----
-- assertVisible:
-    id: "ShoppingScreen::TextNoItem"
-    text: "Aucun article dans la liste de courses"
-    label: "Text telling that there are no recipe in list is dsiplayed in French"

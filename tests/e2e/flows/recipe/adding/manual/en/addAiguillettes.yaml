@@ -1,0 +1,309 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../en/addRecipeImage.yaml"
+    label: "Add recipe image"
+
+- tapOn:
+    id: "RecipeTitle::TextInput"
+    label: "Press the TextInput of title"
+
+- inputText:
+    text: "Aiguillettes de poulet a la sauce satay"
+    label: "Enter text for recipe title"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipeDescription::TextInput"
+    label: "Press the TextInput of description"
+
+- inputText:
+    text: "Cuisinez nos filets de poulet francais avec du riz basmati bio et une sauce satay maison: un condiment asiatique a base de cacahuetes et gingembre !"
+    label: "Enter text for recipe description"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipeTags::RoundButton-content"
+    label: "Press the round button of first tags"
+
+- tapOn:
+    id: "RecipeTags::List::0::TextInput"
+    label: "Press the TextInput of first tags"
+
+- inputText:
+    text: "Healthy"
+    label: "Enter text for recipe first tag"
+
+- pressKey: enter
+
+- tapOn:
+    id: "RecipeTags::RoundButton"
+    label: "Press the round button of second tags"
+
+- tapOn:
+    id: "RecipeTags::List::1::TextInput"
+    label: "Press the TextInput of second tags"
+
+- swipe:
+    start: "50%,40%"
+    end: "50%,25%"
+    label: "Swipe down to see dropdown items"
+
+- swipe:
+    start: "50%,40%"
+    end: "50%,25%"
+    label: "Swipe down to see dropdown items"
+
+- swipe:
+    start: "50%,40%"
+    end: "50%,25%"
+    label: "Swipe down to see dropdown items"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    text: "Italian"
+    label: "Press the tag from dropdown list"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Press the round button of first ingredient"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    label: "Press the TextInput of first ingredient's quantity"
+
+- inputText:
+    text: "200"
+    label: "Enter text for recipe first ingredient quantity"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    label: "Press the TextInput of first ingredient's name"
+
+- inputText:
+    text: "Chicken Breast"
+    label: "Enter text for recipe first ingredient name"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Press the round button of second ingredient"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Press the round button of third ingredient"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to second ingredient quantity input"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    label: "Press the TextInput of second ingredient's quantity"
+
+- inputText:
+    text: "2"
+    label: "Enter text for recipe second ingredient quantity"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    label: "Press the TextInput of second ingredient's name"
+
+- inputText:
+    text: "Oni"
+    label: "Enter text for recipe second ingredient name (partial)"
+
+- swipe:
+    start: "50%,40%"
+    end: "50%,30%"
+    label: "Swipe down to see other items"
+
+- tapOn:
+    id: "TextInputWithDropDown::List::Onions"
+    label: "Press the ingredient from the dropdown"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to third ingredient name input"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+    label: "Press the TextInput of third ingredient's name"
+
+- swipe:
+    start: "50%,40%"
+    end: "50%,30%"
+    label: "Swipe down to see dropdown items"
+
+- tapOn:
+    id: "TextInputWithDropDown::List::Avocado"
+    label: "Press the ingredient from the dropdown"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
+    label: "Press the TextInput of third ingredient's quantity"
+
+- inputText:
+    text: "5"
+    label: "Enter text for recipe third ingredient quantity"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipeTime::TextInput"
+    label: "Press the TextInput of time"
+
+- inputText:
+    text: "20"
+    label: "Enter text for recipe time"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to preparation section"
+
+- tapOn:
+    id: "RecipePreparation::AddButton::RoundButton"
+    label: "Press the round button of first preparation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to first preparation title input"
+
+- tapOn:
+    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+    label: "Press the TextInput of first preparation title"
+
+- inputText:
+    text: "Le riz"
+    label: "Enter text for recipe first preparation title"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    label: "Press the TextInput of first preparation paragraph"
+
+- inputText:
+    text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz selon les indications du paquet.Pendant ce temps, preparez les filets de poulet a la sauce satay."
+    label: "Enter text for recipe first preparation paragraph"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipePreparation::AddButton::RoundButton"
+    label: "Press the round button of second preparation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to second preparation title input"
+
+- tapOn:
+    id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
+    label: "Press the TextInput of second preparation title"
+
+- inputText:
+    text: "La sauce"
+    label: "Enter text for recipe second preparation title"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
+    label: "Press the TextInput of second preparation paragraph"
+
+- inputText:
+    text: "Dans le bol d'un mixeur, deposez les ingredients suivants :"
+    label: "Enter text for recipe second preparation paragraph (first line)"
+
+- pressKey: enter
+
+- inputText:
+    text: "epluchez et hachez le gingembre."
+    label: "Enter text for recipe second preparation paragraph (second line)"
+
+- pressKey: enter
+
+- inputText:
+    text: "Ajoutez les cacahuetes, le sucre et le lait de coco."
+    label: "Enter text for recipe second preparation paragraph (third line)"
+
+- pressKey: enter
+
+- inputText:
+    text: "Salez, poivrez. Mixez jusqu'a obtenir une texture homogene."
+    label: "Enter text for recipe second preparation paragraph (fourth line)"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipePreparation::AddButton::RoundButton"
+    waitToSettleTimeoutMs: 0
+    retryTapIfNoChange: false
+    label: "Press the round button of third preparation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to third preparation title input"
+
+- tapOn:
+    id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
+    label: "Press the TextInput of third preparation title"
+
+- inputText:
+    text: "LA CUISSON DU POULET"
+    label: "Enter text for recipe third preparation title"
+
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
+    label: "Press the TextInput of third preparation paragraph"
+
+- inputText:
+    text: "Coupez les filets de poulet en lanieres.\nemincez l'oignon.\nPressez ou hachez l'ail.\nDans une poele, faites chauffer un filet d'huile de cuisson a feu moyen a vif.\n"
+    label: "Enter text for recipe third preparation paragraph"
+
+- hideKeyboard:
+    label: "Close the keyboard"

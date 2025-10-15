@@ -1,0 +1,17 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "./assertSearchScreenUI.yaml"
+    label: "Assert Search screen UI elements in English"
+
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "'Ca' text chip is displayed"
+
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::1::Chip"
+    label: "Chocolate chip is displayed"
+
+- runFlow:
+    file: "../assertSearchScreenRecipeCardsFilteredOnCaAndChocolate.yaml"
+    label: "Assert Search screen recipe cards filtered on 'Ca' text and Chocolate"

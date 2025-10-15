@@ -1,0 +1,45 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "SearchScreen::SearchBarResults::Item::0-content"
+    label: "First filtered item is displayed"
+
+- assertVisible:
+    text: "Lentil Curry"
+    label: "Lentil Curry is displayed"
+
+- assertNotVisible:
+    text: "Caesar Salad"
+    label: "Caesar Salad is not displayed"
+
+- assertNotVisible:
+    text: "Chicken Tacos"
+    label: "Chicken Tacos is not displayed"
+
+- assertNotVisible:
+    text: "Chocolate Cake"
+    label: "Chocolate Cake is not displayed"
+
+- assertNotVisible:
+    text: "Classic Pancakes"
+    label: "Classic Pancakes is not displayed"
+
+- assertNotVisible:
+    text: "Margherita Pizza"
+    label: "Margherita Pizza is not displayed"
+
+- assertNotVisible:
+    text: "Pesto Pasta"
+    label: "Pesto Pasta is not displayed"
+
+- assertNotVisible:
+    text: "Spaghetti Bolognese"
+    label: "Spaghetti Bolognese is not displayed"
+
+- assertNotVisible:
+    text: "Sushi Rolls"
+    label: "Sushi Rolls is not displayed"
+
+- assertNotVisible:
+    text: "Vegetable Soup"
+    label: "Vegetable Soup is not displayed"

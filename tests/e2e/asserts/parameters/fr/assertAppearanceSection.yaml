@@ -1,0 +1,33 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "Parameters::Section::Appearance::SubHeader"
+    label: "Appearance section header is displayed"
+
+- assertVisible:
+    text: "Apparence"
+    label: "Appearance section header shows French text"
+
+- assertVisible:
+    text: "󰔎"
+    label: "Dark mode left icon is displayed"
+
+- assertVisible:
+    id: "Parameters::Section::Appearance::DarkMode::Item"
+    label: "Dark mode item is displayed"
+
+- assertVisible:
+    text: "Mode Sombre"
+    label: "Dark mode item shows French text"
+
+- assertVisible:
+    id: "Parameters::Section::Appearance::DarkMode::Switch"
+    label: "Dark mode switch is visible"
+
+- assertVisible:
+    id: "Parameters::Section::Appearance::Language::Item"
+    label: "Language item is displayed"
+
+- assertVisible:
+    text: "Langue, Français"
+    label: "Language item shows French as selected"

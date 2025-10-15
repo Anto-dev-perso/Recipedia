@@ -437,15 +437,12 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const [unitAndQuantity, newName] = newIngredient.split(textSeparator);
     const [newQuantity, newUnit] = unitAndQuantity.split(unitySeparator);
 
-    if (!newName || newName.trim().length === 0) {
-      return;
-    }
-
     const updateIngredient = (ingredient: ingredientTableElement) => {
       const ingredientCopy: Array<ingredientTableElement> = recipeIngredients.map(ingredient => ({
         ...ingredient,
       }));
       const foundIngredient = ingredientCopy[oldIngredientId];
+
       if (ingredient.id && foundIngredient.id !== ingredient.id) {
         foundIngredient.id = ingredient.id;
       }
@@ -454,6 +451,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       }
       if (ingredient.unit && foundIngredient.unit !== ingredient.unit) {
         foundIngredient.unit = ingredient.unit;
+      }
+      if (ingredient.quantity && foundIngredient.quantity !== ingredient.quantity) {
+        foundIngredient.quantity = ingredient.quantity;
       }
       if (ingredient.season.length > 0 && foundIngredient.season !== ingredient.season) {
         foundIngredient.season = ingredient.season;
@@ -469,7 +469,11 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     };
 
     // Check if ingredient name changed and validate it
-    if (newName.trim().length > 0 && recipeIngredients[oldIngredientId].name !== newName) {
+    if (
+      newName &&
+      newName.trim().length > 0 &&
+      recipeIngredients[oldIngredientId].name !== newName
+    ) {
       const similarIngredients = RecipeDatabase.getInstance().findSimilarIngredients(newName);
 
       const exactMatch = similarIngredients.find(
@@ -610,7 +614,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     await RecipeDatabase.getInstance().addRecipeToShopping(createRecipeFromStates());
     setValidationDialogProp({
       title: t('success'),
-      content: `${t('Recipe')} "${recipeTitle}" ${t('addedToShoppingList')}`,
+      content: t('addedToShoppingList', { recipeName: recipeTitle }),
       confirmText: t('ok'),
       onConfirm: () => navigation.goBack(),
     });
@@ -780,7 +784,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
           await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
           dialogProp.title = t('addAnyway');
-          dialogProp.content = t('Recipe') + ' "' + recipeToAdd.title + '" ' + t('addedToDatabase');
+          dialogProp.content = t('addedToDatabase', { recipeName: recipeToAdd.title });
           dialogProp.confirmText = t('understood');
           dialogProp.onConfirm = () => {
             navigation.goBack();

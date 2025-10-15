@@ -1,0 +1,27 @@
+appId: "com.recipedia"
+---
+# TODO a lot is missing here
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+- assertVisible:
+    id: "RecipePersons::Text"
+    text: "Ingrédients (2 personnes)"
+    label: "Persons text is displayed in French"
+- assertVisible:
+    id: "RecipeTime::Text"
+    text: "Préparation (20 min)"
+    label: "Preparation header with time is displayed in French"
+- assertVisible:
+    id: "RecipeValidate-text"
+    text: "Ajouter au menu"
+    label: "Read only validate button is displayed in French"
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage::Image"
+    direction: UP
+    speed: 60
+# TODO add the alert for deleting recipe

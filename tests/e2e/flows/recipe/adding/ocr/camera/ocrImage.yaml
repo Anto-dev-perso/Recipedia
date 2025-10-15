@@ -1,0 +1,32 @@
+appId: "com.recipedia"
+---
+# Camera mode: already on empty recipe screen, no need to open gallery button
+- runFlow:
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: image
+    when:
+      platform: Android
+# TODO iOS
+
+- tapOn:
+    id: "RecipeImage::RoundButton"
+    label: "Tap on OCR button of recipe image"
+
+- runFlow:
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: image
+    when:
+      platform: Android
+# TODO iOS
+
+- evalScript: ${output.modalImageCounter = 1}
+
+- runFlow:
+    file: ../android/selectMostRecentFromModal.yaml
+    label: "Select title from modal for OCR"
+    when:
+      platform: Android
+
+# TODO iOS

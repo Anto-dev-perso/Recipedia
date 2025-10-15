@@ -1,0 +1,121 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../common/buttonsOCREmpty.yaml"
+    label: "Assert common OCR buttons and image (empty state)"
+
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "Title:"
+    label: "Intro text for the title is rendered"
+
+- assertVisible:
+    id: "RecipeTitle::OpenModal::RoundButton"
+    label: "OCR button for the title is rendered"
+
+- assertVisible:
+    text: "󰘤"
+    index: 1
+    label: "OCR button for the title has the correct icon"
+
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: "Description:"
+    label: "Intro text for the description is rendered"
+
+- assertVisible:
+    id: "RecipeDescription::OpenModal::RoundButton"
+    label: "OCR button for the description is rendered"
+
+- assertVisible:
+    text: "󰘤"
+    index: 2
+    label: "OCR button for the description has the correct icon"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeTags::HeaderText"
+    text: "Tags:"
+    label: "Intro text for the tags is rendered"
+
+- assertVisible:
+    id: "RecipeTags::ElementText"
+    text: "Tags are a way to identify a recipe and make easier its search.\nHere are some examples of tags you can have : .*, .*, .*"
+    label: "Explanation text for the tags is rendered"
+
+- assertVisible:
+    id: "RecipeTags::OpenModal::RoundButton"
+    label: "OCR button for the tags is rendered"
+
+- assertVisible:
+    text: "󰐕"
+    label: "Add button has the correct icon"
+
+- assertVisible:
+    id: "RecipeTags::RoundButton"
+    label: "Add button for the tag is rendered"
+
+- assertVisible:
+    text: "󰘤"
+    label: "OCR button for the tags has the correct icon"
+
+- assertVisible:
+    id: "RecipePersons::PrefixText"
+    text: "This recipe is for : "
+    label: "Intro text for the number of persons is rendered"
+
+- assertVisible:
+    id: "RecipePersons::TextInput"
+    text: "4"
+    label: "Number of persons is rendered"
+
+- assertVisible:
+    id: "RecipePersons::SuffixText"
+    text: " persons"
+    label: "Outro text for the number of persons is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeIngredients::PrefixText"
+    text: "Ingredients: "
+    label: "Section Ingredients is rendered"
+
+- assertVisible:
+    id: "RecipeIngredients::OpenModal::RoundButton"
+    label: "OCR button for the ingredients is rendered"
+
+- assertVisible:
+    id: "RecipeTime::PrefixText"
+    text: "Prep time (minutes):"
+    label: "Intro text for the time to prepare is rendered"
+
+- assertVisible:
+    id: "RecipeTime::OpenModal::RoundButton"
+    label: "OCR button for the time is rendered"
+
+- assertVisible:
+    id: "RecipePreparation::PrefixText"
+    text: "Preparation :"
+    label: "Section Preparation is rendered"
+
+- assertVisible:
+    id: "RecipePreparation::OpenModal::RoundButton"
+    label: "OCR button for the preparation is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage::Image"
+    direction: UP
+    speed: 80
+    centerElement: true
+    label: "Scroll back to top"

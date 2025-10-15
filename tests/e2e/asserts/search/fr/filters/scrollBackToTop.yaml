@@ -1,0 +1,13 @@
+appId: "com.recipedia"
+---
+# Scroll back up to top of filters
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::SearchBar"
+    direction: UP
+    speed: 80
+    label: "Scroll back up to search bar"
+
+- assertVisible:
+    id: "SearchScreen::SearchBar"
+    label: "Search bar is visible"

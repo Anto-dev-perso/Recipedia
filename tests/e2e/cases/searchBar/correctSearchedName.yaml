@@ -1,0 +1,56 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search bar"
+
+- inputText: "P"
+
+- runFlow:
+    file: "../../asserts/search/searchbar/searchBarFilteredOnP.yaml"
+    label: "Assert dropdown filtered on 'P'"
+
+- inputText: "a"
+
+- runFlow:
+    file: "../../asserts/search/searchbar/searchBarFilteredOnPa.yaml"
+    label: "Assert dropdown filtered on 'Pa'"
+
+- pressKey: "backspace"
+
+- runFlow:
+    file: "../../asserts/search/searchbar/searchBarFilteredOnP.yaml"
+    label: "Assert dropdown filtered back to 'P'"
+
+- inputText: "i"
+
+- runFlow:
+    file: "../../asserts/search/searchbar/searchBarFilteredOnPi.yaml"
+    label: "Assert dropdown filtered on 'Pi'"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- tapOn:
+    text: "Margherita Pizza"
+    label: "Select Margherita Pizza from dropdown"
+
+- runFlow:
+    file: "../../asserts/search/en/searchScreenFilteredOnPizza.yaml"
+    label: "Assert Search screen shows Pizza results"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Tap clear icon to remove search filter"
+
+- runFlow:
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
+    label: "Assert all recipe cards are visible again"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate back to Home screen"

@@ -1,21 +1,23 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    text: "Accueil"
-    label: "Go to Home screen"
-- tapOn:
-    id: "Home::SearchButton::RoundButton"
-    label: "Open Search screen"
+    id: "BottomTabs::Search"
+    label: "Go to Search screen via bottom tab"
+
 - tapOn:
     id: "SearchScreen::RecipeCards::1"
     label: "Open a recipe"
+
 - tapOn:
     id: "RecipeValidate"
     label: "Add the recipe to the shopping list"
+
 - runFlow:
-    file: "../../../asserts/Alerts/addingRecipeTacosTranslatedInFrench.yaml"
+    file: "../../../asserts/alerts/fr/addingRecipe.yaml"
     label: "Check alert is translated"
-- pressKey: "BACK"
+    env:
+      RECIPE_NAME: "Chicken Tacos"
+
 - tapOn:
-    text: "Courses"
+    id: "BottomTabs::Shopping"
     label: "Go back to Shopping screen"

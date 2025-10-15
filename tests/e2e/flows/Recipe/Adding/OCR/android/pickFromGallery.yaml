@@ -1,8 +1,0 @@
-appId: "com.recipedia"
----
-- evalScript: ${output.nbImageForThisRecipe = output.nbImageForThisRecipe - 1}
-- tapOn:
-    id: "com.android.providers.media.module:id/icon_thumbnail"
-    index: ${output.nbImageForThisRecipe}
-    label: Pick recipe image
-- runFlow: validateWithoutCropping.yaml

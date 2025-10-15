@@ -10,8 +10,8 @@ export default {
   ok: 'Ok',
   understood: 'Compris',
   success: 'Succès',
-  addedToDatabase: 'ajoutée avec succès à la base de donnée',
-  addedToShoppingList: 'ajoutée avec succès à la liste de courses',
+  addedToDatabase: 'La recette "{{recipeName}}" ajoutée avec succès à la base de donnée',
+  addedToShoppingList: 'La recette "{{recipeName}}" ajoutée avec succès à la liste de courses',
   addFilter: 'Ajouter un filtre',
   seeFilterResult: 'Voir les recettes filtrées',
 

@@ -11,8 +11,8 @@ export default {
   understood: 'Understood',
 
   success: 'Success',
-  addedToDatabase: 'has been successfully added to the database',
-  addedToShoppingList: 'has been successfully added to the shopping list',
+  addedToDatabase: 'Recipe "{{recipeName}}" has been successfully added to the database',
+  addedToShoppingList: 'Recipe "{{recipeName}}" has been successfully added to the shopping list',
   addFilter: 'Add a filter',
   seeFilterResult: 'See filtered recipes',
 

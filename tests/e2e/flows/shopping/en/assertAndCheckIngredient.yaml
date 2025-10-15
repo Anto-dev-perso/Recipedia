@@ -1,0 +1,25 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "ShoppingScreen::SectionList::${INGREDIENT_NAME}"
+    label: "${INGREDIENT_NAME} item is displayed"
+
+- assertVisible:
+    text: "${INGREDIENT_NAME}"
+    label: "${INGREDIENT_NAME} text is displayed"
+
+- repeat:
+    while:
+      notVisible:
+        id: "ShoppingScreen::Dialog::Title"
+    commands:
+      - longPressOn:
+          id: "ShoppingScreen::SectionList::${INGREDIENT_NAME}"
+          label: "Long press on ${INGREDIENT_NAME} to show recipe usage"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/longPressOnIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "${INGREDIENT_NAME_LOWER}"
+      RECIPE_NAMES: "${RECIPE_NAMES}"
+    label: "Assert ${INGREDIENT_NAME} usage alert"

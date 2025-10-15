@@ -1,0 +1,13 @@
+appId: "com.recipedia"
+---
+# Selects most recent image (index 0) from Android gallery and validates
+# TODO: Implement iOS version in ../iOS/selectFromGallery.yaml
+
+
+- tapOn:
+    id: "com.android.providers.media.module:id/icon_thumbnail"
+    index: 0
+    label: "Select most recent picture from Android gallery"
+
+- runFlow:
+    file: validateWithoutCropping.yaml

@@ -1,0 +1,25 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "BottomTabs::Search"
+    label: "Search button is displayed"
+
+- assertVisible:
+    id: "SearchScreen::SearchBar"
+    label: "Search bar is displayed"
+
+- assertVisible:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Filter toggle button is displayed"
+
+- assertVisible:
+    id: "SearchScreen::FiltersToggleButtons-text"
+    label: "Filter toggle button text is displayed"
+
+- assertVisible:
+    text: "See filtered recipes"
+    label: "Filter button shows correct text"
+
+- assertVisible:
+    text: "󰈴"
+    label: "Filter icon is displayed"

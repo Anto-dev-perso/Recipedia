@@ -1,0 +1,134 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "filterViewHeader.yaml"
+    label: "Assert filter view header elements"
+
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "15-20 min filter chip is displayed"
+
+- assertVisible:
+    text: "15-20 min"
+    label: "15-20 min filter chip text is displayed"
+
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::1::Chip"
+    label: "Romaine Lettuce filter chip is displayed"
+
+- assertVisible:
+    text: "Romaine Lettuce"
+    label: "Romaine Lettuce filter chip text is displayed"
+
+# Initialize accordion index counter
+- evalScript: ${output.accordionIndex = 0}
+
+- runFlow:
+    file: "accordions/inSeason.yaml"
+    env:
+      STATE: "all"
+
+- runFlow:
+    file: "accordions/preparationTime.yaml"
+    env:
+      STATE: "all"
+
+- runFlow:
+    file: "accordions/tags.yaml"
+    env:
+      STATE: "filtered"
+      VISIBLE_ITEMS: "Healthy,Salad"
+
+- runFlow:
+    file: "accordions/grainOrCereal.yaml"
+    env:
+      STATE: "filtered"
+      VISIBLE_ITEMS: "Croutons"
+
+- runFlow:
+    file: "accordions/legumes.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/vegetable.yaml"
+    env:
+      STATE: "filtered"
+      VISIBLE_ITEMS: "Romaine Lettuce"
+
+- runFlow:
+    file: "accordions/plantProtein.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/condiment.yaml"
+    env:
+      STATE: "hidden"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::6"
+    direction: DOWN
+    label: "Scroll to Sauce category"
+
+- runFlow:
+    file: "accordions/sauce.yaml"
+    env:
+      STATE: "filtered"
+      VISIBLE_ITEMS: "Caesar Dressing"
+
+- runFlow:
+    file: "accordions/meat.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/poultry.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/fish.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/dairy.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/cheese.yaml"
+    env:
+      STATE: "filtered"
+      VISIBLE_ITEMS: "Parmesan"
+
+- runFlow:
+    file: "accordions/sugar.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/spice.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/fruit.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/oilAndFat.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "accordions/nutsAndSeeds.yaml"
+    env:
+      STATE: "hidden"
+
+- runFlow:
+    file: "scrollBackToTop.yaml"
+    label: "Scroll back to top of filters"

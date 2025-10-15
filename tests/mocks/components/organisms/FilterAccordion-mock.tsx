@@ -12,18 +12,23 @@ export function filterAccordionMock({
   addFilter,
   removeFilter,
 }: FilterAccordionProps) {
+  // Match the actual component behavior: add ::FilterAccordion suffix
+  const accordionId = testId + '::FilterAccordion';
+
   return (
-    <View testID={testId}>
-      <Text testID={testId + '::TagsList'}>{JSON.stringify(tagsList)}</Text>
-      <Text testID={testId + '::IngredientsList'}>{JSON.stringify(ingredientsList)}</Text>
-      <Text testID={testId + '::FiltersState'}>{JSON.stringify(mapToObject(filtersState))}</Text>
+    <View testID={accordionId}>
+      <Text testID={accordionId + '::TagsList'}>{JSON.stringify(tagsList)}</Text>
+      <Text testID={accordionId + '::IngredientsList'}>{JSON.stringify(ingredientsList)}</Text>
+      <Text testID={accordionId + '::FiltersState'}>
+        {JSON.stringify(mapToObject(filtersState))}
+      </Text>
       <Button
-        testID={testId + '::AddFilter'}
+        testID={accordionId + '::AddFilter'}
         onPress={() => addFilter(listFilter.tags, 'New filter')}
         title='Click on Add Filter'
       />
       <Button
-        testID={testId + '::RemoveFilter'}
+        testID={accordionId + '::RemoveFilter'}
         onPress={() => removeFilter(listFilter.tags, 'New filter')}
         title='Click on Remove Filter'
       />

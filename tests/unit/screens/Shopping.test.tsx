@@ -113,7 +113,7 @@ describe('Shopping Screen', () => {
 
     expect(getByTestId('ShoppingScreen::TextNoItem')).toBeTruthy();
     expect(getByTestId('ShoppingScreen::TextNoItem').props.children).toEqual(
-      'noItemsInShoppingList'
+      'shoppingScreen.noItemsInShoppingList'
     );
     expect(queryByTestId('ShoppingScreen::SectionList')).toBeNull();
     expect(queryByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeNull();
@@ -151,12 +151,14 @@ describe('Shopping Screen', () => {
     // Verify Alert dialog props exist and have correct values
     expect(getByTestId('ShoppingScreen::Alert::IsVisible').props.children).toEqual(false);
     expect(getByTestId('ShoppingScreen::Alert::TestId').props.children).toEqual('ShoppingScreen');
-    expect(getByTestId('ShoppingScreen::Alert::Title').props.children).toEqual('recipeUsingTitle ');
+    expect(getByTestId('ShoppingScreen::Alert::Title').props.children).toEqual(
+      'shoppingScreen.recipeUsingTitle '
+    );
     expect(getByTestId('ShoppingScreen::Alert::Content').props.children).toEqual(
-      'recipeUsingMessage :'
+      'shoppingScreen.recipeUsingMessage :'
     );
     expect(getByTestId('ShoppingScreen::Alert::ConfirmText').props.children).toEqual(
-      'recipeUsingValidation'
+      'shoppingScreen.recipeUsingValidation'
     );
 
     // Verify function buttons exist
@@ -177,10 +179,10 @@ describe('Shopping Screen', () => {
       'ShoppingScreen::ClearConfirmation'
     );
     expect(getByTestId('ShoppingScreen::ClearConfirmation::Alert::Title').props.children).toEqual(
-      'clearShoppingList'
+      'shoppingScreen.clearShoppingList'
     );
     expect(getByTestId('ShoppingScreen::ClearConfirmation::Alert::Content').props.children).toEqual(
-      'confirmClearShoppingList'
+      'shoppingScreen.confirmClearShoppingList'
     );
     expect(
       getByTestId('ShoppingScreen::ClearConfirmation::Alert::ConfirmText').props.children
@@ -384,9 +386,11 @@ describe('Shopping Screen', () => {
       expect(getByTestId('ShoppingScreen::Alert::IsVisible').props.children).toBe(false);
 
       expect(getByTestId('ShoppingScreen::Alert::TestId').props.children).toBe('ShoppingScreen');
-      expect(getByTestId('ShoppingScreen::Alert::Title').props.children).toBe('recipeUsingTitle ');
+      expect(getByTestId('ShoppingScreen::Alert::Title').props.children).toBe(
+        'shoppingScreen.recipeUsingTitle '
+      );
       expect(getByTestId('ShoppingScreen::Alert::Content').props.children).toBe(
-        'recipeUsingMessage :'
+        'shoppingScreen.recipeUsingMessage :'
       );
 
       await waitFor(() => {

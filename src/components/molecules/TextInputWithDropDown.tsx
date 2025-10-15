@@ -136,13 +136,34 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
     }
   }, []);
 
-  // Update internal state when props.value changes
+  /**
+   * Sync internal state with external props.value changes
+   *
+   * CRITICAL: This effect must ONLY depend on [props.value], NOT on textInput or other values.
+   *
+   * Why: This component is "semi-controlled" - it maintains internal textInput state for
+   * immediate UI updates while typing, but also accepts external props.value for parent control.
+   *
+   * The Problem (if textInput is in dependencies):
+   * 1. User types "H" → handleSearch updates textInput to "H"
+   * 2. textInput change triggers this effect
+   * 3. Effect sees props.value ("") !== textInput ("H")
+   * 4. Effect resets textInput back to props.value (""), erasing the keystroke
+   * 5. Result: User cannot type because each keystroke gets immediately erased
+   *
+   * The Solution:
+   * Only sync when props.value changes externally (e.g., parent switches to different ingredient).
+   * Ignore our own internal textInput changes to allow free typing.
+   *
+   * DO NOT add textInput, filterArray, or other values to the dependency array.
+   */
   useEffect(() => {
     if (props.value !== undefined && props.value !== textInput) {
       setTextInput(props.value);
       setFilteredTextArray(props.value ? filterArray(props.value) : props.referenceTextArray);
     }
-  }, [props.value, filterArray, props.referenceTextArray, textInput]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.value]);
 
   /**
    * Handles the submission of text input when editing is complete
@@ -153,12 +174,9 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
    * - Encourages selection from suggestions when multiple matches exist
    */
   const handleSubmitEditing = useCallback(() => {
-    // Send validate if user write a new element (length ===0) or if user write manually the only element possible (length===0)
-    if (filteredTextArray.length <= 1) {
-      setShowDropdown(false);
-      onValidate?.(textInput);
-    }
-  }, [filteredTextArray.length, onValidate, textInput]);
+    setShowDropdown(false);
+    onValidate?.(textInput);
+  }, [onValidate, textInput]);
 
   useEffect(() => {
     const keyboardListener = Keyboard.addListener('keyboardDidHide', () => {
@@ -170,7 +188,7 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
     return () => {
       keyboardListener.remove();
     };
-  }, [textInput, showDropdown, handleSubmitEditing]);
+  }, [handleSubmitEditing]);
 
   function handleSelect(text: string) {
     setTextInput(text);

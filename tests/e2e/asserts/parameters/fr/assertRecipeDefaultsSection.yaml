@@ -1,0 +1,42 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "Parameters::Section::RecipeDefaults::SubHeader"
+    label: "Recipe Defaults section header is displayed"
+
+- assertVisible:
+    text: "Paramètres par défaut des recettes"
+    label: "Recipe Defaults section header shows French text"
+
+- assertVisible:
+    text: "󰡉"
+    label: "Default persons icon is displayed"
+
+- assertVisible:
+    id: "Parameters::Section::RecipeDefaults::Persons::Item"
+    label: "Default persons item is displayed"
+
+- assertVisible:
+    text: "Nombre de personnes par défaut, 4 personnes"
+    label: "Default persons item shows French text"
+
+- assertVisible:
+    text: "󰅂"
+    index: 0
+    label: "Default persons has a chevron icon"
+
+- assertVisible:
+    text: "󰃭"
+    label: "Default season filter icon is displayed"
+
+- assertVisible:
+    id: "Parameters::Section::RecipeDefaults::Season::Item"
+    label: "Default season filter item is displayed"
+
+- assertVisible:
+    text: "Filtre de saison par défaut"
+    label: "Default season filter item shows French text"
+
+- assertVisible:
+    id: "Parameters::Section::RecipeDefaults::Season::Switch"
+    label: "Season filter switch is visible"

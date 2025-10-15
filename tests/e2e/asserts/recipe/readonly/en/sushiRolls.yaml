@@ -1,0 +1,140 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "BackButton::RoundButton"
+    label: "Back button is displayed"
+
+- assertVisible:
+    text: "󰌍"
+    label: "Back button icon is displayed"
+
+- assertVisible:
+    id: "RecipeImage"
+    label: "Image is rendered"
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "Sushi Rolls"
+    label: "Title is rendered"
+- assertVisible:
+    id: "RecipeDescription::Text"
+    text: "Classic sushi rolls with nori, rice, and fillings."
+    label: "Description is rendered"
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    label: "First tag is rendered"
+- assertVisible:
+    text: "Japanese"
+    label: "Tag Japanese is rendered"
+- assertVisible:
+    id: "RecipeTags::1::Chip"
+    label: "Second tag is rendered"
+- assertVisible:
+    text: "Seafood"
+    label: "Tag Seafood is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "Sushi Rice"
+    label: "Ingredient Sushi Rice is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "250 g"
+    label: "Quantity of Sushi Rice is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "Nori Sheets"
+    label: "Ingredient Nori Sheets is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "5 pieces"
+    label: "Quantity of Nori Sheets is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
+    text: "Salmon"
+    label: "Ingredient Salmon is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    text: "200 g"
+    label: "Quantity of Salmon is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::IngredientName"
+    text: "Avocado"
+    label: "Ingredient Avocado is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    text: "100 g"
+    label: "Quantity of Avocado is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::IngredientName"
+    text: "Soy Sauce"
+    label: "Ingredient Soy Sauce is rendered"
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    text: "50 ml"
+    label: "Quantity of Soy Sauce is rendered"
+- assertVisible:
+    id: "RecipeTime::Text"
+    text: "Preparation (45 min)"
+    label: "Preparation title and time is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) Prepare rice"
+    label: "First section of the preparation is rendered"
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::SectionTitle"
+    text: "2) Spread rice"
+    label: "Second section of the preparation is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::3::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::SectionTitle"
+    text: "3) Add fillings and roll"
+    label: "Third section of the preparation is rendered"
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionTitle"
+    text: "4) Serve"
+    label: "Fourth section of the preparation is rendered"
+
+- assertVisible:
+    id: "RecipeEdit::RoundButton"
+    label: "Edit button is rendered"
+
+- assertVisible:
+    text: "󰏫"
+    label: "Edit button has the correct icon"
+
+- assertVisible:
+    id: "RecipeValidate"
+    label: "Add recipe button is displayed"
+
+- assertVisible:
+    text: "Add to the menu"
+    label: "Add to menu button has the correct text"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    centerElement: true
+    speed: 80
+    label: "Scroll back to top"

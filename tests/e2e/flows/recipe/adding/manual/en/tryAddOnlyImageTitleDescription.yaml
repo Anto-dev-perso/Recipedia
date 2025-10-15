@@ -1,0 +1,12 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeDescription::TextInput"
+    label: "Tap on Description's TextInput"
+
+- inputText:
+    text: "Description"
+    label: "Write the description in the input text"
+
+- hideKeyboard:
+    label: "Close the keyboard"

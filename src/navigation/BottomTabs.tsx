@@ -56,6 +56,8 @@ import { useI18n } from '@utils/i18n';
 import Search from '@screens/Search';
 import { Tab } from '@customTypes/ScreenTypes';
 
+const testId = 'BottomTabs';
+
 /**
  * BottomTabs component - Material Design 3 tab navigation
  *
@@ -163,18 +165,38 @@ export function BottomTabs() {
         <Tab.Screen
           name='Home'
           component={Home}
-          options={{ tabBarLabel: t('home'), lazy: shouldRenderLazy }}
+          options={{
+            tabBarLabel: t('home'),
+            lazy: shouldRenderLazy,
+            tabBarTestID: testId + '::Home',
+          }}
         />
-        <Tab.Screen name='Search' component={Search} options={{ lazy: shouldRenderLazy }} />
+        <Tab.Screen
+          name='Search'
+          component={Search}
+          options={{
+            tabBarLabel: t('search'),
+            lazy: shouldRenderLazy,
+            tabBarTestID: testId + '::Search',
+          }}
+        />
         <Tab.Screen
           name='Shopping'
           component={Shopping}
-          options={{ tabBarLabel: t('shopping'), lazy: shouldRenderLazy }}
+          options={{
+            tabBarLabel: t('shopping'),
+            lazy: shouldRenderLazy,
+            tabBarTestID: testId + '::Shopping',
+          }}
         />
         <Tab.Screen
           name='Parameters'
           component={Parameters}
-          options={{ tabBarLabel: t('parameters'), lazy: shouldRenderLazy }}
+          options={{
+            tabBarLabel: t('parameters'),
+            lazy: shouldRenderLazy,
+            tabBarTestID: testId + '::Parameters',
+          }}
         />
       </Tab.Navigator>
     </>

@@ -1,5 +1,0 @@
-appId: "com.recipedia"
----
-- tapOn:
-    text: "Add this new recipe"
-    label: Try to validate the recipe

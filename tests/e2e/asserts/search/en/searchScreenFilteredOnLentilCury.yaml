@@ -1,0 +1,13 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "./assertSearchScreenUI.yaml"
+    label: "Assert Search screen UI elements in English"
+
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Lentil curry chip is displayed"
+
+- runFlow:
+    file: "../assertSearchScreenRecipeCardsFilteredOnLentilCurry.yaml"
+    label: "Assert Search screen recipe cards filtered on 'Lentil Curry' text"

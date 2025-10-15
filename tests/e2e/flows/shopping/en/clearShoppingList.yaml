@@ -1,0 +1,14 @@
+appId: "com.recipedia"
+---
+
+- tapOn:
+    id: "ShoppingScreen::ClearShoppingListButton::RoundButton"
+    label: "Clear shopping list"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/clearShopping.yaml"
+    label: "Assert alert clearing shopping list"
+
+- runFlow:
+    file: "../../../asserts/shopping/en/shoppingEmpty.yaml"
+    label: "Assert empty shopping screen"

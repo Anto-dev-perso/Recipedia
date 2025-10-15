@@ -1,27 +1,28 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "Home::SearchButton::RoundButton"
-    label: "Open Search screen"
+    id: "BottomTabs::Search"
+    label: "Go to Search screen via bottom tab"
+
 - tapOn:
     id: "SearchScreen::RecipeCards::1"
     label: "Open a recipe"
 - runFlow:
-    file: "../../../asserts/Parameters/language/recipeReadOnly.yaml"
+    file: "../../../asserts/parameters/language/recipeReadOnly.yaml"
     label: "Check that the fixed text of a read only recipe screen are displayed in French"
 
 - tapOn:
     id: "RecipeEdit::RoundButton"
     label: "Enter edit mode for the recipe"
 - runFlow:
-    file: "../../../asserts/Parameters/language/recipeEdit.yaml"
+    file: "../../../asserts/parameters/language/recipeEdit.yaml"
     label: "Check that the fixed text of a edit recipe screen are displayed in French"
 
 - runFlow:
-    file: "../../Recipe/Adding/OCR/Camera/openOCRCamera.yaml"
+    file: "../../recipe/adding/ocr/camera/openOCRCamera.yaml"
     label: "Open camera"
 - runFlow:
-    file: "../../../asserts/Parameters/language/recipeOcr.yaml"
+    file: "../../../asserts/parameters/language/recipeOcr.yaml"
     label: "Check that the fixed text of a add by image recipe screen are displayed in French"
 - tapOn:
     id: "BackButton::RoundButton"

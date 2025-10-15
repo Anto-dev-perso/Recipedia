@@ -1,0 +1,29 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "ShoppingScreen::Dialog::Title"
+    label: "Alert title is displayed"
+
+- assertVisible:
+    text: "Recipes that use ${INGREDIENT_NAME}"
+    label: "Alert title text is displayed"
+
+- assertVisible:
+    id: "ShoppingScreen::Dialog::Content"
+    label: "Alert content is displayed"
+
+- assertVisible:
+    text: "Here are the list of recipes using this ingredient :\n\t- ${RECIPE_NAMES}"
+    label: "Alert message content is displayed"
+
+- assertVisible:
+    id: "ShoppingScreen::Dialog::Confirm-text"
+    label: "Alert confirm button text is displayed"
+
+- assertVisible:
+    text: "OK"
+    label: "OK text is displayed"
+
+- tapOn:
+    id: "ShoppingScreen::Dialog::Confirm"
+    label: "Close the alert"
