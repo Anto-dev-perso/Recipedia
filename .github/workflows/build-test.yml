@@ -87,6 +87,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Detect changed files
         uses: dorny/paths-filter@v3
@@ -104,6 +106,16 @@ jobs:
               - 'metro.config.js'
               - 'babel.config.js'
               - 'tsconfig.json'
+          base: ${{ github.event.pull_request.base.sha || github.event.before }}
+
+      - name: List all changed files
+        run: |
+          echo "=== All changed files in this PR/push ==="
+          git diff --name-only ${{ github.event.pull_request.base.sha || github.event.before }} ${{ github.sha }}
+          echo ""
+          echo "=== Filter results ==="
+          echo "Build required: ${{ steps.filter.outputs.build_required }}"
+          echo "Changed files matching filter: ${{ steps.filter.outputs.build_required_files }}"
 
       - name: Restore node modules
         uses: actions/cache/restore@v4
@@ -115,16 +127,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Download APK from last successful run
+      - name: Download APK from last run
         if: |
           steps.filter.outputs.build_required != 'true' &&
           github.ref != 'refs/heads/main' &&
@@ -132,23 +135,29 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo "📦 No build required, downloading APK from last successful run..."
+          echo "📦 No build required, looking for cached APK..."
 
-          # Get the last successful run ID for this workflow on the current branch
+          # Get the last run ID (any status) that has the build-apk artifact
           LAST_RUN_ID=$(gh run list \
             --workflow build-test.yml \
             --branch ${{ github.ref_name }} \
-            --status success \
-            --limit 1 \
-            --json databaseId \
-            --jq '.[0].databaseId')
+            --limit 5 \
+            --json databaseId,status \
+            --jq '.[] | select(.status == "completed") | .databaseId' | head -1)
 
           if [ -z "$LAST_RUN_ID" ]; then
-            echo "❌ No successful run found on this branch. Will build instead."
+            echo "❌ No completed run found on this branch. Will build instead."
             echo "BUILD_FALLBACK=true" >> $GITHUB_ENV
           else
-            echo "✅ Found successful run: $LAST_RUN_ID"
-            echo "CACHED_RUN_ID=$LAST_RUN_ID" >> $GITHUB_ENV
+            echo "✅ Found completed run: $LAST_RUN_ID"
+            # Check if artifact exists
+            if gh run view $LAST_RUN_ID --json artifacts --jq '.artifacts[] | select(.name == "build-apk")' > /dev/null 2>&1; then
+              echo "✅ APK artifact found in run $LAST_RUN_ID"
+              echo "CACHED_RUN_ID=$LAST_RUN_ID" >> $GITHUB_ENV
+            else
+              echo "❌ No APK artifact found. Will build instead."
+              echo "BUILD_FALLBACK=true" >> $GITHUB_ENV
+            fi
           fi
 
       - name: Download artifact from previous run
@@ -157,11 +166,42 @@ jobs:
           github.ref != 'refs/heads/main' &&
           !startsWith(github.ref, 'refs/tags/') &&
           env.CACHED_RUN_ID != ''
+        continue-on-error: true
+        id: download
         uses: actions/download-artifact@v5
         with:
           name: build-apk
           run-id: ${{ env.CACHED_RUN_ID }}
           github-token: ${{ github.token }}
+
+      - name: Check download success
+        if: |
+          steps.filter.outputs.build_required != 'true' &&
+          github.ref != 'refs/heads/main' &&
+          !startsWith(github.ref, 'refs/tags/') &&
+          steps.download.outcome == 'failure'
+        run: |
+          echo "❌ Download failed. Will build instead."
+          echo "BUILD_FALLBACK=true" >> $GITHUB_ENV
+
+      - name: Setup Java
+        if: |
+          steps.filter.outputs.build_required == 'true' ||
+          github.ref == 'refs/heads/main' ||
+          startsWith(github.ref, 'refs/tags/') ||
+          env.BUILD_FALLBACK == 'true'
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        if: |
+          steps.filter.outputs.build_required == 'true' ||
+          github.ref == 'refs/heads/main' ||
+          startsWith(github.ref, 'refs/tags/') ||
+          env.BUILD_FALLBACK == 'true'
+        uses: android-actions/setup-android@v3
 
       - name: Setup EAS
         if: |
