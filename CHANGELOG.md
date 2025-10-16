@@ -1,3 +1,13 @@
+## [0.14.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.13.0...v0.14.0) (2025-10-16)
+
+### Features
+
+* **Search:** add back button handling and scroll view ref ([a25fbd3](https://github.com/Anto-dev-perso/Recipedia/commit/a25fbd31a91de39963ea91c27ca8b08d8833abf3))
+
+### Bug Fixes
+
+* **Recipe:** fix ingredient and preparation step editing logic ([aa38e80](https://github.com/Anto-dev-perso/Recipedia/commit/aa38e807ef20e62ec1bb14a0d311c69c0ae946c2))
+
 ## [0.13.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.12.0...v0.13.0) (2025-09-28)
 
 ### Features
