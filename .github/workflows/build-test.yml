@@ -106,6 +106,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Detect changed files
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            build_required:
+              - 'src/**'
+              - 'android/**'
+              - 'app.json'
+              - 'app.config.ts'
+              - 'eas.json'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'metro.config.js'
+              - 'babel.config.js'
+              - 'tsconfig.json'
+
       - uses: actions/setup-node@v5
         with:
           node-version: '20'
@@ -125,7 +142,51 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Download APK from last successful run
+        if: |
+          steps.filter.outputs.build_required != 'true' &&
+          github.ref != 'refs/heads/main' &&
+          !startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "📦 No build required, downloading APK from last successful run..."
+
+          # Get the last successful run ID for this workflow on the current branch
+          LAST_RUN_ID=$(gh run list \
+            --workflow build-test.yml \
+            --branch ${{ github.ref_name }} \
+            --status success \
+            --limit 1 \
+            --json databaseId \
+            --jq '.[0].databaseId')
+
+          if [ -z "$LAST_RUN_ID" ]; then
+            echo "❌ No successful run found on this branch. Will build instead."
+            echo "BUILD_FALLBACK=true" >> $GITHUB_ENV
+          else
+            echo "✅ Found successful run: $LAST_RUN_ID"
+            echo "CACHED_RUN_ID=$LAST_RUN_ID" >> $GITHUB_ENV
+          fi
+
+      - name: Download artifact from previous run
+        if: |
+          steps.filter.outputs.build_required != 'true' &&
+          github.ref != 'refs/heads/main' &&
+          !startsWith(github.ref, 'refs/tags/') &&
+          env.CACHED_RUN_ID != ''
+        uses: actions/download-artifact@v5
+        with:
+          name: build-apk
+          run-id: ${{ env.CACHED_RUN_ID }}
+          github-token: ${{ github.token }}
+
       - name: Setup EAS
+        if: |
+          steps.filter.outputs.build_required == 'true' ||
+          github.ref == 'refs/heads/main' ||
+          startsWith(github.ref, 'refs/tags/') ||
+          env.BUILD_FALLBACK == 'true'
         uses: expo/expo-github-action@v8
         with:
           eas-version: 16.3.0
@@ -133,13 +194,26 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build Android APK locally
+        if: |
+          steps.filter.outputs.build_required == 'true' ||
+          github.ref == 'refs/heads/main' ||
+          startsWith(github.ref, 'refs/tags/') ||
+          env.BUILD_FALLBACK == 'true'
         run: npm run build:test:android
+
+      - name: Rename APK to consistent name
+        if: |
+          steps.filter.outputs.build_required == 'true' ||
+          github.ref == 'refs/heads/main' ||
+          startsWith(github.ref, 'refs/tags/') ||
+          env.BUILD_FALLBACK == 'true'
+        run: mv build-*.apk recipedia-e2e.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: build-apk
-          path: build*.apk
+          path: recipedia-e2e.apk
           retention-days: 7
 
   e2e-tests:
