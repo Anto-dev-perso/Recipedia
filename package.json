@@ -13,7 +13,7 @@
     "build:prod:android": "NODE_OPTIONS=\"--max-old-space-size=4096\" eas build --local --profile production --platform android --non-interactive",
     "build:prod:ios": "eas build --local --profile production --platform ios --non-interactive",
     "build:clean": "rm -rf android/app/build ios/build .expo",
-    "install:android": "adb install build*.apk && rm -f build*.apk",
+    "install:android": "adb install *.apk && rm -f *.apk",
     "install:ios": "echo 'TODO: iOS installation not implemented'",
     "submit:android": "eas submit --platform android --path ./build-*.aab --non-interactive",
     "submit:ios": "eas submit --platform ios --path ./build-*.ipa --non-interactive",
