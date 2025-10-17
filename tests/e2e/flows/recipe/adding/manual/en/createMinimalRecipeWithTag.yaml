@@ -1,0 +1,147 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu"
+
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Tap manual recipe add button"
+
+- runFlow:
+    file: "../../en/addRecipeImage.yaml"
+    label: "Add an image to this recipe"
+
+- tapOn:
+    id: "RecipeTitle::TextInput"
+    label: "Focus on recipe title input"
+
+- inputText:
+    text: "E2E Test Recipe"
+    label: "Enter recipe title"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::RoundButton"
+    direction: DOWN
+    speed: 80
+    label: "Scroll down to find add tag button"
+
+
+- tapOn:
+    id: "RecipeTags::RoundButton"
+    label: "Tap to add tag to recipe"
+
+- tapOn:
+    id: "RecipeTags::List::0::TextInput"
+    label: "Focus on first tag input"
+
+- inputText:
+    text: "RecipeT"
+    label: "Enter the newly created tag name"
+
+- hideKeyboard:
+    label: "Hide the keyboard"
+
+- assertVisible:
+    id: "TextInputWithDropDown::List::RecipeTag"
+    label: "New tag id is displayed in dropdown"
+
+- assertVisible:
+    text: "RecipeTag"
+    label: "New tag text is displayed in dropdown"
+
+- tapOn:
+    id: "TextInputWithDropDown::List::RecipeTag"
+    label: "Select the new tag"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Add an ingredient"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    label: "Focus on ingredient quantity"
+
+- inputText:
+    text: "100"
+    label: "Enter ingredient quantity"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    label: "Focus on ingredient name"
+
+- inputText:
+    text: "Tomatoes"
+    label: "Enter ingredient name"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- tapOn:
+    id: "RecipeTime::TextInput"
+    label: "Focus on time input"
+
+- inputText:
+    text: "10"
+    label: "Enter cooking time"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to preparation section"
+
+- tapOn:
+    id: "RecipePreparation::AddButton::RoundButton"
+    label: "Add preparation step"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to preparation content input"
+
+- tapOn:
+    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    label: "Focus on preparation content"
+
+- inputText:
+    text: "Test preparation step"
+    label: "Enter preparation instructions"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeValidate"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to validate button"
+
+- tapOn:
+    id: "RecipeValidate"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Close the validation dialog"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Reduce the FAB button as we no more need it"

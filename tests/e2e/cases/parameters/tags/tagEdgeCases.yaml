@@ -1,0 +1,25 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Navigate to Tags Settings screen"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/cancelAddEmptyTag.yaml"
+    label: "Test canceling tag add without entering name"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/cancelAddTagWithName.yaml"
+    label: "Test canceling tag add after entering name"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/cancelEditTag.yaml"
+    label: "Test canceling tag edit operation"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/cancelDeleteTag.yaml"
+    label: "Test canceling tag delete operation"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/returnToHome.yaml"
+    label: "Return to Home screen"

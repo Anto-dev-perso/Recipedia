@@ -1,0 +1,18 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    text: "Delete"
+    index: 0
+    label: "Open Delete dialog for Italian tag"
+
+- runFlow:
+    file: "../../../asserts/parameters/tags/en/assertDeleteModalOpen.yaml"
+    label: "Verify Delete confirmation modal is displayed"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::DeleteModal::CancelButton"
+    label: "Cancel delete operation"
+
+- assertVisible:
+    text: "Italian"
+    label: "Verify tag still exists after cancel delete"
