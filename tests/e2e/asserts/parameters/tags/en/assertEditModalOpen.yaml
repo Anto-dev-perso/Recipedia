@@ -1,0 +1,26 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::Title"
+    label: "Edit tag modal title is displayed"
+    text: "Edit tag"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput-label-inactive"
+    text: "Tag Name"
+    label: "Tag name helper displayed"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
+    text: "Italian"
+    label: "Tag name input field is visible"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::CancelButton-text"
+    text: "Cancel"
+    label: "Cancel button is visible"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::ConfirmButton-text"
+    text: "Save"
+    label: "Save button is visible"

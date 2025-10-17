@@ -1,0 +1,24 @@
+appId: "com.recipedia"
+name: "Parameters screen - Tags database management test suite"
+---
+- launchApp
+
+- runFlow:
+    file: "cases/parameters/tags/tagAdd.yaml"
+    label: "Test adding a new tag to the database"
+
+- runFlow:
+    file: "cases/parameters/tags/tagEdit.yaml"
+    label: "Test editing existing tag and verify recipe updates"
+
+- runFlow:
+    file: "cases/parameters/tags/tagDelete.yaml"
+    label: "Test deleting tag and verify recipe updates"
+
+- runFlow:
+    file: "cases/parameters/tags/tagAddAndUseInRecipe.yaml"
+    label: "Test complete workflow: add tag and use in new recipe"
+
+- runFlow:
+    file: "cases/parameters/tags/tagEdgeCases.yaml"
+    label: "Test tag validation and cancel behaviors"

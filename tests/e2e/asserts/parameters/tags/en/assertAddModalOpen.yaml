@@ -1,0 +1,25 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "TagsSettings::ItemDialog::AddModal::Title"
+    label: "Add tag modal title is displayed"
+    text: "Add tag"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::AddModal::Name::TextInput"
+    label: "Tag name input field is visible"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::AddModal::Name::TextInput-label-inactive"
+    text: "Tag Name"
+    label: "Tag name input field is visible"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::AddModal::CancelButton-text"
+    text: "Cancel"
+    label: "Cancel button is visible"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::AddModal::ConfirmButton-text"
+    text: "Add"
+    label: "Confirm button is visible"

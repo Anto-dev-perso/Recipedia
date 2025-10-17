@@ -1,0 +1,76 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Open filters"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::2"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to Tags accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::2"
+    label: "Expand Tags accordion"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::2::Item::6"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to Italian items"
+
+# TODO not working due to a bug
+#- assertNotVisible:
+#    text: "Italian"
+#    label: "Old tag name 'Italian' is not visible in filters"
+#
+#- assertVisible:
+#    text: "Italian Cuisine"
+#    label: "New tag name 'Italian Cuisine' is visible in filters"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::2::Item::6"
+    label: "Select the renamed tag filter"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::SearchBar"
+    direction: UP
+    speed: 60
+    label: "Scroll to top of the Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Wrap the filters part"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Select first recipe from the list"
+
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    #    TODO do not work because of a bug
+    #    text: "Italian Cuisine"
+    text: "Italian"
+    label: "Recipe displays renamed tag 'Italian Cuisine'"
+
+#    TODO do not work because of a bug
+#- assertNotVisible:
+#    text: "Italian"
+#    label: "Old tag name 'Italian' is not visible in recipe"
+
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Return to Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove the filter on italian tag"

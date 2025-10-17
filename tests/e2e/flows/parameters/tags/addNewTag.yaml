@@ -1,0 +1,28 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::AddButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll down to find Add button"
+
+- tapOn:
+    id: "TagsSettings::AddButton"
+    label: "Tap Add button to create a new tag"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::Name::TextInput"
+    label: "Focus on tag name input field"
+
+- inputText:
+    text: "RecipeTag"
+    label: "Enter new tag name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::ConfirmButton"
+    label: "Confirm adding the new tag"
+
+- assertVisible:
+    text: "RecipeTag"
+    label: "Verify new tag appears in the list"

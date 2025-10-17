@@ -1,0 +1,16 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    text: "Parameters"
+    label: "Navigate to Parameters screen"
+
+- scrollUntilVisible:
+    element:
+      id: "Parameters::Section::Data::Tags::Item"
+    direction: DOWN
+    speed: 60
+    label: "Scroll down to find Tags option"
+
+- tapOn:
+    id: "Parameters::Section::Data::Tags::Item"
+    label: "Navigate to Tags Settings screen"

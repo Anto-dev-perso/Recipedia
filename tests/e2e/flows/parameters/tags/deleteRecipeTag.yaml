@@ -1,0 +1,17 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      text: "RecipeTag"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to find RecipeTag"
+
+- tapOn:
+    id: "TagsSettings::11::DeleteButton"
+    label: "Tap Delete button for RecipeTag"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::DeleteModal::ConfirmButton"
+    label: "Confirm deleting the tag"
