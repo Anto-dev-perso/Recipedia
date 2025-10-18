@@ -32,7 +32,7 @@ export function NutritionRow({
     }
   };
 
-  const displayValue = value % 1 === 0 ? value.toString() : value.toFixed(2);
+  const displayValue = value % 1 === 0 ? value.toString() : parseFloat(value.toFixed(2)).toString();
 
   return (
     <View>
