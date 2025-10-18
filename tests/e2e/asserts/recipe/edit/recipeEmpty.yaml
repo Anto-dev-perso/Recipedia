@@ -141,6 +141,10 @@ appId: "com.recipedia"
     id: "RecipePreparation::AddButton::RoundButton"
     label: "New preparation id is displayed with the correct icon"
 
+- runFlow:
+    file: "../common/nutritionEmptyEdit.yaml"
+    label: "Verify nutrition section is empty with add button"
+
 - scrollUntilVisible:
     element:
       id: "RecipeImage"

@@ -112,6 +112,10 @@ appId: "com.recipedia"
     id: "RecipePreparation::OpenModal::RoundButton"
     label: "OCR button for the preparation is rendered"
 
+- runFlow:
+    file: "../common/nutritionEmptyOCR.yaml"
+    label: "Verify nutrition section is empty with OCR scan button"
+
 - scrollUntilVisible:
     element:
       id: "RecipeImage::Image"
