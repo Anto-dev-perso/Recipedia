@@ -4,6 +4,7 @@ appId: "com.recipedia"
 - evalScript: ${output.isTagsToOCR = false}
 - evalScript: ${output.isPersons = true}
 - evalScript: ${output.isTime = true}
+- evalScript: ${output.isNutritionToOCR = false}
 
 - tapOn:
     id: "ExpandButton::RoundButton"

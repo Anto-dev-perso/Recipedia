@@ -126,6 +126,13 @@ appId: "com.recipedia"
       - addMedia:
           - "../../../../../../assets/pouletSatay/preparation.jpg"
 
+- runFlow:
+    when:
+      true: ${RECIPE_NAME == "quitoqueV2" && FIELD_NAME == "nutrition"}
+    commands:
+      - addMedia:
+          - "../../../../../../assets/pouletSatay/nutrition.jpg"
+
 # Quitoque V3 recipe paths (curryPoisChiches)
 - runFlow:
     when:

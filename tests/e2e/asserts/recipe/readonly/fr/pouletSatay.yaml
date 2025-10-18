@@ -1,8 +1,8 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../common/buttonsReadOnly.yaml"
-    label: "Assert common ReadOnly buttons and image"
+    file: "../../common/fr/buttonsReadOnly.yaml"
+    label: "Assert common ReadOnly buttons and image (French)"
 
 - runFlow:
     file: "../../common/titleReadOnly.yaml"
@@ -17,7 +17,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      text: "Ingredients (4 persons)"
+      text: "Ingrédients (4 personnes)"
     direction: DOWN
     centerElement: true
     speed: 60
@@ -27,7 +27,7 @@ appId: "com.recipedia"
     label: "Tags part is not rendered"
 
 - assertVisible:
-    text: "Ingredients (4 persons)"
+    text: "Ingrédients (4 personnes)"
     label: "Ingredient section and persons is displayed"
 
 - scrollUntilVisible:
@@ -128,7 +128,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeTime::Text"
-    text: "Preparation (30 min)"
+    text: "Préparation (30 min)"
     label: "Preparation section and time are displayed"
 
 - scrollUntilVisible:
@@ -199,7 +199,7 @@ appId: "com.recipedia"
     label: "Fourth preparation paragraph is displayed"
 
 - runFlow:
-    file: "../../common/nutritionReadOnly.yaml"
+    file: "../../common/fr/nutritionReadOnly.yaml"
     env:
       ENERGY_KCAL: "218"
       ENERGY_KJ: "911"
@@ -210,4 +210,4 @@ appId: "com.recipedia"
       FIBER: "0.81"
       PROTEIN: "9.93"
       SALT: "0.65"
-    label: "Verify nutrition values from OCR"
+    label: "Verify nutrition values from OCR (French)"

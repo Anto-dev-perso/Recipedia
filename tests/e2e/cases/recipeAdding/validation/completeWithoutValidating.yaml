@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Complete the recipe"
 
 - runFlow:
-    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
+    file: "../../../flows/recipe/adding/validateRecipe.yaml"
     label: "Validate recipe"
 
 - runFlow:

@@ -1,0 +1,47 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionEmptyState::OCRButton::RoundButton"
+    direction: DOWN
+    speed: 90
+    centerElement: true
+    label: "Scroll to nutrition section"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionEmptyState::OCRButton::RoundButton"
+    label: "Tap on OCR button for nutrition"
+
+- runFlow:
+    file: ../android/addMedia.yaml
+    env:
+      FIELD_NAME: nutrition
+    when:
+      platform: Android
+# TODO iOS
+
+- runFlow:
+    file: ../android/selectMostRecentFromModal.yaml
+    label: "Select nutrition from modal for OCR"
+    when:
+      platform: Android
+# TODO iOS
+
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to weight of a portion"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+    label: "Tap on weight input"
+
+- inputText:
+    text: "200"
+    label: "Enter the weight of a portion"
+
+- hideKeyboard:
+    label: "Close the keyboard"

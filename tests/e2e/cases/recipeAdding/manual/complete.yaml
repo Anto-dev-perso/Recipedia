@@ -13,7 +13,7 @@ appId: "com.recipedia"
     label: "Assert recipe is filled correctly"
 
 - runFlow:
-    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
+    file: "../../../flows/recipe/adding/validateRecipe.yaml"
     label: "Validate the recipe"
 
 - runFlow:
