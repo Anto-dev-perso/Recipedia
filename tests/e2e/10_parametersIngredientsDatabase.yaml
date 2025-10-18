@@ -1,0 +1,24 @@
+appId: "com.recipedia"
+name: "Parameters screen - Ingredients database management test suite"
+---
+- launchApp
+
+- runFlow:
+    file: "cases/parameters/ingredients/ingredientAdd.yaml"
+    label: "Test adding a new ingredient to the database"
+
+- runFlow:
+    file: "cases/parameters/ingredients/ingredientDelete.yaml"
+    label: "Test deleting ingredient and verify recipe updates"
+
+- runFlow:
+    file: "cases/parameters/ingredients/ingredientEdit.yaml"
+    label: "Test editing existing ingredient and verify recipe updates"
+
+- runFlow:
+    file: "cases/parameters/ingredients/ingredientAddAndUseInRecipe.yaml"
+    label: "Test complete workflow: add ingredient and use in new recipe"
+
+- runFlow:
+    file: "cases/parameters/ingredients/ingredientEdgeCases.yaml"
+    label: "Test ingredient validation and cancel behaviors"

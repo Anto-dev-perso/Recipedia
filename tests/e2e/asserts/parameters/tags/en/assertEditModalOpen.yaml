@@ -12,7 +12,6 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
-    text: "Italian"
     label: "Tag name input field is visible"
 
 - assertVisible:

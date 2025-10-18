@@ -1,0 +1,17 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Open the filter page"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::0"
+    label: "Expand on season accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::0::Item::0"
+    label: "Apply filter on the seasonality"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Close the filter page"

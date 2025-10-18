@@ -1,0 +1,34 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::AddButton"
+    direction: DOWN
+    speed: 80
+    label: "Scroll down to find Add button"
+
+- tapOn:
+    id: "IngredientsSettings::AddButton"
+    label: "Open Add ingredient dialog again"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::TextInput"
+    label: "Focus on ingredient name input"
+
+- eraseText:
+    label: "Clear existing ingredient name"
+
+- inputText:
+    text: "Test Cancel Ingredient"
+    label: "Enter an ingredient name"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::CancelButton"
+    label: "Cancel after entering ingredient name"
+
+- assertNotVisible:
+    text: "Test Cancel Ingredient"
+    label: "Verify ingredient was not added after cancel"
