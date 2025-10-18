@@ -5,8 +5,8 @@ name: "Recipe OCR test suite"
 
 - runFlow: flows/recipe/adding/ocrHelloFresh.yaml
 - runFlow: flows/recipe/adding/ocrQuitoqueV3Recipe.yaml
-- runFlow: flows/recipe/adding/ocrQuitoqueV2Recipe.yaml
 - runFlow: flows/recipe/adding/ocrQuitoqueV1Recipe.yaml
+- runFlow: flows/recipe/adding/ocrQuitoqueV2Recipe.yaml
 
 
 # TODO missing corner cases on OCR

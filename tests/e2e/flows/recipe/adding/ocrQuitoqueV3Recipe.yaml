@@ -3,6 +3,7 @@ appId: "com.recipedia"
 - evalScript: ${output.isDescriptionToOCR = true}
 - evalScript: ${output.isTagsToOCR = false}
 - evalScript: ${output.isTime = true}
+- evalScript: ${output.isNutritionToOCR = false}
 
 - runFlow:
     file: "ocr/camera/openOCRCamera.yaml"
@@ -31,7 +32,7 @@ appId: "com.recipedia"
     label: "Assert OCR extracted recipe data"
 
 - runFlow:
-    file: "en/validateRecipe.yaml"
+    file: "validateRecipe.yaml"
     label: "Validate the recipe"
 
 - runFlow:
