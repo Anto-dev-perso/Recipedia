@@ -349,10 +349,25 @@ appId: "com.recipedia"
     text: "󰐕"
     label: "Add button of the preparation is rendered"
 
+- runFlow:
+    file: "../common/nutritionEdit.yaml"
+    env:
+      ENERGY_KCAL: "195"
+      ENERGY_KJ: "816"
+      FAT: "8.2"
+      SATURATED_FAT: "1.8"
+      CARBOHYDRATES: "22"
+      SUGARS: "2.5"
+      FIBER: "1.2"
+      PROTEIN: "12.5"
+      SALT: "1.85"
+      PORTION_WEIGHT: "160"
+    label: "Assert nutrition table is displayed with correct values"
+
 - scrollUntilVisible:
     element:
       id: "RecipeImage::Image"
     direction: UP
     centerElement: true
-    speed: 80
+    speed: 99
     label: "Scroll back to top"

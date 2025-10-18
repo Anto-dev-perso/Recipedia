@@ -1,0 +1,25 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "Recipe::RecipeNutrition::DeleteAlert::Dialog::Title"
+    text: "Remove nutritional information"
+    label: "Delete nutrition alert title is visible"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::DeleteAlert::Dialog::Content"
+    text: "Are you sure you want to remove all nutritional information? This action cannot be undone."
+    label: "Delete nutrition alert content is visible"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::DeleteAlert::Dialog::Cancel-text"
+    text: "Cancel"
+    label: "Delete nutrition alert cancel button is visible"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::DeleteAlert::Dialog::Confirm-text"
+    text: "Delete"
+    label: "Delete nutrition alert delete button is visible"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::DeleteAlert::Dialog::Confirm-text"
+    label: "Confirm deletion"
