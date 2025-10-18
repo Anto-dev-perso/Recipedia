@@ -58,7 +58,9 @@ export function IngredientsSettings() {
   const handleAddIngredient = async (newIngredient: ingredientTableElement) => {
     const insertedIngredient = await database.addIngredient(newIngredient);
     if (insertedIngredient) {
-      setIngredients([...ingredients, newIngredient]);
+      setIngredients(
+        [...ingredients, insertedIngredient].sort((a, b) => a.name.localeCompare(b.name))
+      );
     } else {
       ingredientsSettingsLogger.warn('Failed to add ingredient to database', {
         ingredientName: newIngredient.name,
@@ -73,7 +75,7 @@ export function IngredientsSettings() {
       if (idx !== -1) {
         const updatedIngredients = [...ingredients];
         updatedIngredients[idx] = newIngredient;
-        setIngredients(updatedIngredients);
+        setIngredients(updatedIngredients.sort((a, b) => a.name.localeCompare(b.name)));
       }
     } else {
       ingredientsSettingsLogger.warn('Failed to update ingredient in database', {
