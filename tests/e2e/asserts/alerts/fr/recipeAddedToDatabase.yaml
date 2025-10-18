@@ -5,18 +5,18 @@ appId: "com.recipedia"
 - assertVisible:
     id: "Recipe::Dialog::Title"
     text: "Ajouter"
-    label: "Le titre de l'alerte est affiché"
+    label: "Alert title is rendered"
 
 - assertVisible:
     id: "Recipe::Dialog::Content"
     text: "La recette \"${RECIPE_NAME}\" ajoutée avec succès à la base de donnée"
-    label: "Le message de l'alerte est affiché"
+    label: "Alert message is rendered"
 
 - assertVisible:
     id: "Recipe::Dialog::Confirm-text"
     text: "Compris"
-    label: "Le bouton de validation de l'alerte est affiché"
+    label: "Alert validation button is rendered"
 
 - tapOn:
     id: "Recipe::Dialog::Confirm"
-    label: "Fermer l'alerte"
+    label: "Close the alert"

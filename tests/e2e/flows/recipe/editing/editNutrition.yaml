@@ -1,0 +1,45 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to nutrition section"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+    label: "Tap on energy kcal input"
+
+
+- eraseText
+- inputText: "${NEW_ENERGY_KCAL}"
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::TextInput"
+    label: "Tap on fat input"
+
+- eraseText
+- inputText: "${NEW_FAT}"
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to protein field"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::TextInput"
+    label: "Tap on protein input"
+
+- eraseText
+- inputText: "${NEW_PROTEIN}"
+
+- hideKeyboard:
+    label: "Close the keyboard"

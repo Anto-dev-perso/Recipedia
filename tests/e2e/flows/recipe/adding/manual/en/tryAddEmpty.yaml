@@ -1,5 +1,5 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../en/validateRecipe.yaml"
+    file: "../../validateRecipe.yaml"
     label: "Try to validate empty recipe"

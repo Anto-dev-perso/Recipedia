@@ -167,6 +167,8 @@ const defaultValidationDialogProp: ValidationDialogProps = {
   title: '',
   content: '',
   confirmText: '',
+  onConfirm: undefined,
+  onCancel: undefined,
 };
 
 /**
@@ -662,7 +664,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function showValidationErrorDialog(missingElem: string[]) {
-    const dialogProp = defaultValidationDialogProp;
+    const dialogProp = { ...defaultValidationDialogProp };
     const translatedMissingElemPrefix = 'alerts.missingElements.';
 
     dialogProp.confirmText = t('understood');

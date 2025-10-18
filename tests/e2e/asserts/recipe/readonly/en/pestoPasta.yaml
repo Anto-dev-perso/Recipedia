@@ -112,6 +112,20 @@ appId: "com.recipedia"
     text: "3) Combine and serve"
     label: "Third section of the preparation is rendered"
 
+- runFlow:
+    file: "../../common/nutritionReadOnly.yaml"
+    env:
+      ENERGY_KCAL: "425"
+      ENERGY_KJ: "1780"
+      FAT: "15.8"
+      SATURATED_FAT: "4.2"
+      CARBOHYDRATES: "58"
+      SUGARS: "2.8"
+      FIBER: "3.5"
+      PROTEIN: "16.5"
+      SALT: "0.85"
+    label: "Verify nutrition information is displayed"
+
 - assertVisible:
     id: "RecipeEdit::RoundButton"
     label: "Edit button is rendered"

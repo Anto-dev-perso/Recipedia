@@ -1,0 +1,16 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::EditForm::RemoveButton"
+    direction: DOWN
+    speed: 99
+    label: "Scroll to remove nutrition button"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::RemoveButton"
+    label: "Tap remove nutrition button"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/removeNutrition.yaml"
+    label: "Assert and confirm deletion dialog"

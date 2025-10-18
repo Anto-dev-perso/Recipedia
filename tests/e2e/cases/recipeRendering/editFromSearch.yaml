@@ -29,6 +29,14 @@ appId: "com.recipedia"
     file: "../../asserts/recipe/edit/pestoPasta.yaml"
     label: "Assert Pesto Pasta edit screen is displayed correctly"
 
+- runFlow:
+    file: "../../flows/recipe/editing/editNutrition.yaml"
+    env:
+      NEW_ENERGY_KCAL: "450"
+      NEW_PROTEIN: "18"
+      NEW_FAT: "17"
+    label: "Edit nutrition values"
+
 - tapOn:
     id: "BackButton::RoundButton"
     label: "Back to the Search Screen"

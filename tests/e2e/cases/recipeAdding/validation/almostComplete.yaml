@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Add ingredient"
 
 - runFlow:
-    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
+    file: "../../../flows/recipe/adding/validateRecipe.yaml"
     label: "Try to validate recipe"
 
 - runFlow:
@@ -19,7 +19,7 @@ appId: "com.recipedia"
     label: "Validate the ingredient name"
 
 - runFlow:
-    file: "../../../flows/recipe/adding/en/validateRecipe.yaml"
+    file: "../../../flows/recipe/adding/validateRecipe.yaml"
     label: "Try to validate recipe"
 
 - runFlow:

@@ -26,13 +26,21 @@ env:
     file: "../../asserts/recipe/edit/sushiRolls.yaml"
     label: "Assert Sushi Rolls edit screen is displayed correctly"
 
+- runFlow:
+    file: "../../flows/recipe/editing/removeNutrition.yaml"
+    label: "Remove nutrition table"
+
+- runFlow:
+    file: "../../asserts/recipe/common/nutritionEmptyEdit.yaml"
+    label: "Assert nutrition section is now empty with add button"
+
 - tapOn:
     id: "RecipeValidate"
     label: "Validate the modifications"
 
 - runFlow:
-    file: "../../asserts/recipe/readonly/en/sushiRolls.yaml"
-    label: "Assert modified Sushi Rolls recipe is displayed correctly"
+    file: "../../asserts/recipe/readonly/en/sushiRollsEmpty.yaml"
+    label: "Assert modified Sushi Rolls recipe without nutrition is displayed correctly"
 
 - tapOn:
     id: "BackButton::RoundButton"

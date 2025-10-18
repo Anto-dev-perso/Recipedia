@@ -37,7 +37,14 @@ appId: "com.recipedia"
     file: "ocrIngredients.yaml"
     label: "OCR ingredients"
 
+- runFlow:
+    when:
+      true: ${output.isNutritionToOCR}
+    commands:
+      - runFlow:
+          file: "ocrNutrition.yaml"
+          label: "OCR nutrition"
 
 - runFlow:
-    file: "../../en/validateRecipe.yaml"
+    file: "../../validateRecipe.yaml"
     label: "Validate the recipe"
