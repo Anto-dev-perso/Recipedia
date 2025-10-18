@@ -1,0 +1,98 @@
+appId: "com.recipedia"
+---
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to energy kcal field"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+    label: "Tap energy kcal input"
+
+- inputText:
+    text: "250"
+    label: "Enter energy kcal value"
+
+- hideKeyboard:
+    label: "Close keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::TextInput"
+    label: "Tap energy kj input"
+
+- inputText:
+    text: "1000"
+    label: "Enter energy kj value"
+
+- hideKeyboard:
+    label: "Close keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::TextInput"
+    label: "Tap fat input"
+
+- inputText:
+    text: "10"
+    label: "Enter fat value"
+
+- hideKeyboard:
+    label: "Close keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::TextInput"
+    label: "Tap carbohydrates input"
+
+- inputText:
+    text: "30"
+    label: "Enter carbohydrates value"
+
+- hideKeyboard:
+    label: "Close keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::TextInput"
+    label: "Tap sugar input"
+
+- inputText:
+    text: "1"
+    label: "Enter sugar value"
+
+- hideKeyboard:
+    label: "Close keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::TextInput"
+    label: "Tap fiber input"
+
+- inputText:
+    text: "42"
+    label: "Enter fiber value"
+
+- hideKeyboard:
+    label: "Close keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::TextInput"
+    label: "Tap protein input"
+
+- inputText:
+    text: "15"
+    label: "Enter protein value"
+
+- hideKeyboard:
+    label: "Close keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::TextInput"
+    label: "Tap salt input"
+
+- inputText:
+    text: "3"
+    label: "Enter salt value"
+
+- hideKeyboard:
+    label: "Close keyboard"

@@ -1,0 +1,20 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::TextInput"
+    direction: UP
+    speed: 60
+    centerElement: true
+    label: "Scroll to saturated fat field"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::TextInput"
+    label: "Tap saturated fat input"
+
+- inputText:
+    text: "2,5"
+    label: "Enter saturated fat value"
+
+- hideKeyboard:
+    label: "Close keyboard"
