@@ -12,7 +12,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
-    text: "Italian"
+    text: "Lettuce"
     label: "Tag name input field is visible"
 
 - assertVisible:

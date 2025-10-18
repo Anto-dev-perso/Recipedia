@@ -1,0 +1,25 @@
+appId: "com.recipedia"
+---
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::AddButton-container"
+    direction: DOWN
+    speed: 99
+    label: "Scroll to bottom of the screen"
+
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::26::DeleteButton"
+    direction: UP
+    speed: 80
+    label: "Scroll to find RecipeIngredient"
+
+- tapOn:
+    id: "IngredientsSettings::26::DeleteButton"
+    label: "Tap Delete button for RecipeIngredient"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::DeleteModal::ConfirmButton"
+    label: "Tap Confirm button in confirmation dialog"

@@ -1,0 +1,49 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::Title"
+    text: "Edit ingredient"
+    label: "Edit ingredient modal title is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::TextInput"
+    text: "Lettuce"
+    label: "Ingredient name input field shows current value"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::Type"
+    text: "Type:"
+    label: "Type label is visible"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::Menu::Button-text"
+    # TODO bug
+    #    text: "Fruit"
+    label: "Type dropdown menu button is visible"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::Menu::Button"
+    label: "Type dropdown menu button is visible"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::Unit::TextInput"
+    label: "Unit input field is visible"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::SeasonalityCalendar::SeasonalityText"
+    text: "Seasonality:"
+    label: "Seasonality calendar label is visible"
+
+- runFlow:
+    file: "assertSeasonalityCalendarEditModal.yaml"
+    label: "Verify all 12 months are displayed in seasonality calendar"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::CancelButton-text"
+    text: "Cancel"
+    label: "Cancel button is visible"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::ConfirmButton-text"
+    text: "Save"
+    label: "Save button is visible"

@@ -1,0 +1,15 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../recipe/openTestRecipe.yaml"
+    label: "Navigate to and open E2E Test Recipe"
+
+- assertNotVisible:
+    text: "E2E Test Recipe"
+    label: "E2E Test Recipe is NOT visible when season filter is ON (ingredient has no seasonality)"
+
+
+- assertVisible:
+    id: "SearchScreen::TextWhenEmpty"
+    text: "No recipes found matching your filters"
+    label: "Filters result shows no recipes"

@@ -1,0 +1,17 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "IngredientsSettings::30::DeleteButton"
+    label: "Open Delete dialog for Spaghetti ingredient"
+
+- runFlow:
+    file: "../../../asserts/parameters/ingredients/en/assertDeleteModalOpen.yaml"
+    label: "Verify Delete confirmation modal is displayed"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::DeleteModal::CancelButton"
+    label: "Cancel delete operation"
+
+- assertVisible:
+    text: "Spaghetti"
+    label: "Verify ingredient still exists after cancel delete"

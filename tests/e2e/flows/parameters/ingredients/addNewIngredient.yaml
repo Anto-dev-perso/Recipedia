@@ -1,0 +1,76 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::AddButton"
+    direction: DOWN
+    speed: 99
+    label: "Scroll to the bottom of the screen"
+
+- tapOn:
+    id: "IngredientsSettings::AddButton"
+    label: "Tap Add button to create a new ingredient"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::TextInput"
+    label: "Focus on ingredient name input field"
+
+- eraseText:
+    label: "Erase existing ingredient name"
+
+- inputText:
+    text: "RecipeIngredient"
+    label: "Enter new ingredient name"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Menu::Button"
+    label: "Open type dropdown menu"
+
+- tapOn:
+    text: "Vegetable"
+    label: "Select vegetable type"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Unit::TextInput"
+    label: "Focus on unit input field"
+
+- eraseText:
+    label: "Clear existing unit"
+
+- inputText:
+    text: "g"
+    label: "Enter unit"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::5"
+    label: "Unselect may"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::6"
+    label: "Unselect june"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::7"
+    label: "Unselect july"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::8"
+    label: "Unselect august"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::9"
+    label: "Unselect september"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::10"
+    label: "Unselect october"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::ConfirmButton"
+    label: "Confirm adding the new ingredient"
