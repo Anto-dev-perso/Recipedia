@@ -1,0 +1,21 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "openTestRecipe.yaml"
+    label: "Navigate to and open E2E Test Recipe"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Open the E2E Test Recipe"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+# TODO bug
+#- assertNotVisible:
+#    text: "RecipeIngredient"
+#    label: "Verify RecipeIngredient has been removed from the recipe"

@@ -1,0 +1,37 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    text: "Parameters"
+    label: "Navigate to Parameters screen"
+
+- tapOn:
+    id: "Parameters::Section::RecipeDefaults::Season::Switch"
+    label: "Set season filter to ON"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- runFlow:
+    file: "../../asserts/search/en/assertSeasonFilterApplied.yaml"
+    label: "Verify season filter is applied"
+
+- tapOn:
+    text: "Parameters"
+    label: "Navigate back to Parameters"
+
+- tapOn:
+    id: "Parameters::Section::RecipeDefaults::Season::Switch"
+    label: "Toggle season filter OFF"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- runFlow:
+    file: "../../asserts/search/en/assertSeasonFilterNotApplied.yaml"
+    label: "Verify season filter is NOT applied"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate back to Home"

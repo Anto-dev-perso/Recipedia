@@ -1,0 +1,32 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::AddButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll down to find Add button"
+
+- tapOn:
+    id: "TagsSettings::AddButton"
+    label: "Open Add tag dialog"
+
+- runFlow:
+    file: "../../../asserts/parameters/tags/en/assertAddModalOpen.yaml"
+    label: "Verify Add tag modal is displayed"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::CancelButton"
+    label: "Cancel adding tag without entering name"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::0::EditButton"
+    direction: UP
+    speed: 80
+    centerElement: true
+    label: "Scroll up to top of Tags Settings screen"
+
+- runFlow:
+    file: "../../../asserts/parameters/tags/en/assertTagsSettingsScreen.yaml"
+    label: "Verify returned to Tags Settings screen"

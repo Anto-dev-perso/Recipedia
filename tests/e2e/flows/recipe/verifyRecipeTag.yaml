@@ -1,0 +1,36 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Open SearchBar"
+
+- inputText:
+    text: "E2E"
+    label: "Enter the name if the new recipe"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- tapOn:
+    text: "E2E Test Recipe"
+    label: "Select recipe name from the list"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Open recipe from the card"
+
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    label: "Verify tag is displayed as a chip"
+
+- assertVisible:
+    text: "RecipeTag"
+    label: "Verify that the tag has the right name"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Close the recipe"

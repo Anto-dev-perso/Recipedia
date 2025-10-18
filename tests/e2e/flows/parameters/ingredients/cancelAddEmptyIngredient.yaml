@@ -1,0 +1,28 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::AddButton"
+    direction: DOWN
+    speed: 99
+    label: "Scroll down to find Add button"
+
+- tapOn:
+    id: "IngredientsSettings::AddButton"
+    label: "Open Add ingredient dialog"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::CancelButton"
+    label: "Cancel adding ingredient without entering name"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::0::EditButton"
+    direction: UP
+    speed: 99
+    centerElement: true
+    label: "Scroll up to top of Ingredients Settings screen"
+
+- runFlow:
+    file: "../../../asserts/parameters/ingredients/en/assertIngredientsSettingsScreen.yaml"
+    label: "Verify returned to Ingredients Settings screen"

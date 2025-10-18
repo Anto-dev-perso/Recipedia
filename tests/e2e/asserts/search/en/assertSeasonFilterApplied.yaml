@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Season filter chip is visible"
+
+- assertVisible:
+    text: "Only in-season ingredients"
+    label: "Season filter text is displayed in chip"

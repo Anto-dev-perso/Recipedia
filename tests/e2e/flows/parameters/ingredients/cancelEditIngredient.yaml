@@ -1,0 +1,34 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::30::EditButton"
+    direction: UP
+    speed: 80
+    label: "Scroll up to find Spaghetti ingredient for edit test"
+
+- tapOn:
+    id: "IngredientsSettings::30::EditButton"
+    label: "Open Edit dialog for Spaghetti ingredient"
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::TextInput"
+    label: "Focus on ingredient name input"
+
+- inputText:
+    text: " Modified"
+    label: "Modify ingredient name"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::CancelButton"
+    label: "Cancel edit operation"
+
+- assertVisible:
+    text: "Spaghetti"
+    label: "Verify ingredient name unchanged after cancel"
+
+- assertNotVisible:
+    text: "Spaghetti Modified"
+    label: "Verify modified name was not saved"

@@ -1,0 +1,36 @@
+appId: "com.recipedia"
+
+---
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
+    direction: DOWN
+    speed: 50
+    label: "Scroll to ${INGREDIENT_NAME} ingredient name"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
+    text: "${INGREDIENT_NAME}"
+    label: "Ingredient ${INGREDIENT_NAME} is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::${INGREDIENT_INDEX}::EditButton"
+    direction: DOWN
+    speed: 50
+    label: "Scroll to ${INGREDIENT_NAME} edit button"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::EditButton"
+    label: "Edit button for ${INGREDIENT_NAME} is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::${INGREDIENT_INDEX}::DeleteButton"
+    direction: DOWN
+    speed: 50
+    label: "Scroll to ${INGREDIENT_NAME} delete button"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::DeleteButton"
+    label: "Delete button for ${INGREDIENT_NAME} is displayed"

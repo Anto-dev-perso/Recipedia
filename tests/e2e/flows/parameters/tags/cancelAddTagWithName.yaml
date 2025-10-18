@@ -1,0 +1,28 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::AddButton"
+    direction: DOWN
+    speed: 80
+    label: "Scroll down to find Add button"
+
+- tapOn:
+    id: "TagsSettings::AddButton"
+    label: "Open Add tag dialog again"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::Name::TextInput"
+    label: "Focus on tag name input"
+
+- inputText:
+    text: "Test Cancel Tag"
+    label: "Enter a tag name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::CancelButton"
+    label: "Cancel after entering tag name"
+
+- assertNotVisible:
+    text: "Test Cancel Tag"
+    label: "Verify tag was not added after cancel"

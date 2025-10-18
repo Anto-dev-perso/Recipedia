@@ -1,0 +1,47 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    text: "Parameters"
+    label: "Navigate to Parameters screen"
+
+- scrollUntilVisible:
+    element:
+      id: "Parameters::Section::Data::Tags::Item"
+    direction: DOWN
+    speed: 60
+    label: "Scroll down to find Tags option"
+
+- tapOn:
+    id: "Parameters::Section::Data::Tags::Item"
+    label: "Navigate to Tags Settings screen"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::6::TagName"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to Italian Cuisine tag"
+
+- tapOn:
+    id: "TagsSettings::6::EditButton"
+    label: "Tap Edit button for Italian Cuisine tag"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
+    label: "Focus on tag name input field"
+
+- eraseText:
+    label: "Clear existing tag name"
+
+- inputText:
+    text: "Italian"
+    label: "Change tag name back to 'Italian'"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
+    label: "Save the restored tag"
+
+- assertVisible:
+    id: "TagsSettings::6::TagName"
+    text: "Italian"
+    label: "Verify tag restored to original name"

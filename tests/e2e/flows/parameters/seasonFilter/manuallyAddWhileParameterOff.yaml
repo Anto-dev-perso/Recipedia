@@ -1,0 +1,41 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Open filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::0"
+    label: "Expand season filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::0::Item::0"
+    label: "Select season filter manually"
+
+- runFlow:
+    file: "../../../asserts/search/en/assertSeasonFilterApplied.yaml"
+    label: "Verify season filter is applied after manual selection"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Close filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove season filter chip"
+
+- runFlow:
+    file: "../../../asserts/search/en/assertSeasonFilterNotApplied.yaml"
+    label: "Verify season filter is removed"
+
+- tapOn:
+    text: "Parameters"
+    label: "Navigate back to Parameters"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate back to Home screen"

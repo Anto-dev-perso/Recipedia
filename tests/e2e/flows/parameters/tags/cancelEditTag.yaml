@@ -1,0 +1,33 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      text: "Italian"
+    direction: UP
+    speed: 60
+    label: "Scroll up to find Italian tag for edit test"
+
+- tapOn:
+    id: "TagsSettings::6::EditButton"
+    label: "Open Edit dialog for Italian tag"
+
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
+    label: "Focus on tag name input"
+
+- inputText:
+    text: " Modified"
+    label: "Modify tag name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::CancelButton"
+    label: "Cancel edit operation"
+
+- assertVisible:
+    text: "Italian"
+    label: "Verify tag name unchanged after cancel"
+
+- assertNotVisible:
+    text: "Italian Modified"
+    label: "Verify modified name was not saved"

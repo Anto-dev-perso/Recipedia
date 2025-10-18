@@ -1,0 +1,16 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Navigate to Parameters screen"
+
+- scrollUntilVisible:
+    element:
+      id: "Parameters::Section::Data::Ingredients::Item"
+    direction: DOWN
+    speed: 80
+    label: "Scroll down to find Ingredients option"
+
+- tapOn:
+    id: "Parameters::Section::Data::Ingredients::Item"
+    label: "Navigate to Ingredients Settings screen"

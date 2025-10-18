@@ -1,0 +1,22 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeDelete::RoundButton"
+    label: "Delete the test recipe for cleanup"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Confirm recipe deletion"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Confirm the recipe deletion"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove the filter"
+
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Return to Home screen"
