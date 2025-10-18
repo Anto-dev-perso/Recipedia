@@ -41,7 +41,7 @@ appId: "com.recipedia"
     label: "Open newly created recipe (first result)"
 
 - runFlow:
-    file: "../../../asserts/recipe/readonly/en/aiguillettesFull.yaml"
+    file: "../../../asserts/recipe/readonly/en/.yaml"
     label: "Assert recipe content in read-only mode"
 
 - tapOn:

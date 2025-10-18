@@ -406,7 +406,7 @@ export const testRecipes: Array<recipeTableElement> = [
       sugars: 8.2,
       fiber: 3.2,
       protein: 2.4,
-      salt: 0.75,
+      salt: 0.8,
       portionWeight: 250,
     },
   },

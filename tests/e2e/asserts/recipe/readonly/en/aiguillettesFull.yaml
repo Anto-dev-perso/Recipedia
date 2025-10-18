@@ -140,3 +140,7 @@ appId: "com.recipedia"
     id: "RecipePreparation::TextRender::2::SectionParagraph"
     text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson a feu moyen a vif."
     label: "Third preparation paragraph is displayed"
+
+- runFlow:
+    file: "../../common/nutritionEmptyReadOnly.yaml"
+    label: "Verify nutrition section is not displayed (manually added recipe)"
