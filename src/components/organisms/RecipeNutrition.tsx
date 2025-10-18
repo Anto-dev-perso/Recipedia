@@ -95,7 +95,7 @@ export function RecipeNutrition({
           fiber: 0,
           protein: 0,
           salt: 0,
-          portionWeight: 100,
+          portionWeight: 0,
           ...updates,
         };
 
