@@ -1,0 +1,20 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to portion weight field"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+    label: "Tap portion weight input"
+
+- inputText:
+    text: "200"
+    label: "Enter portion weight value"
+
+- hideKeyboard:
+    label: "Close keyboard"

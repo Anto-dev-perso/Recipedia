@@ -149,5 +149,5 @@ appId: "com.recipedia"
     element:
       id: "RecipeImage"
     direction: UP
-    speed: 60
+    speed: 99
     centerElement: true
