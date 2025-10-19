@@ -4,14 +4,5 @@ name: "Recipe Adding test suite"
 - launchApp
 
 - runFlow: cases/recipeAdding/manual/complete.yaml
-
-# Relaunch app to reset counters of elements
-- launchApp
 - runFlow: cases/recipeAdding/manual/cancel.yaml
-
-# Relaunch app to reset counters of elements
-- launchApp
 - runFlow: cases/recipeAdding/validation/all.yaml
-
-
-# TODO try to add a recipe already exist (what is the criteria for doublons ?)

@@ -1,0 +1,21 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeTagSimilarity::SimilarityDialog::AddButton"
+    label: "Add tag to recipe"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/addingTag.yaml"
+    label: "Check that adding modal appears"
+
+- tapOn:
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::TextInput"
+    label: "Focus on tag name input field"
+
+- inputText:
+    text: "${EDIT_SUFFIX}"
+    label: "Edit the tag name"
+
+- tapOn:
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::ConfirmButton"
+    label: "Confirm adding the new tag"

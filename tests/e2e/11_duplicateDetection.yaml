@@ -1,0 +1,12 @@
+appId: "com.recipedia"
+name: "Duplicate detection test suite"
+---
+#- launchApp
+
+- runFlow:
+    file: "cases/duplicates/tags/tagDuplicateUnique.yaml"
+    label: "Test adding unique tag without duplicate warning"
+#
+- runFlow:
+    file: "cases/duplicates/tags/tagDuplicateFuzzy.yaml"
+    label: "Test fuzzy duplicate tag detection with cancel and confirm"

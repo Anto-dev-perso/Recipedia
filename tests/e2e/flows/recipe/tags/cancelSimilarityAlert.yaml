@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../asserts/alerts/en/tagNotFound.yaml"
+    label: "Check that similarity alert appears"
+
+- tapOn:
+    id: "RecipeTagSimilarity::SimilarityDialog::CancelButton"
+    label: "Dismiss similarity alert"

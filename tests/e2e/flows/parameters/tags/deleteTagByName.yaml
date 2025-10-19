@@ -1,0 +1,25 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      text: "${TAG_NAME}"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to find ${TAG_NAME} tag"
+
+- assertVisible:
+    id: "TagsSettings::${TAG_INDEX}::TagName"
+    text: "${TAG_NAME}"
+    label: "Verify ${TAG_NAME} tag exists in database"
+
+- tapOn:
+    id: "TagsSettings::${TAG_INDEX}::DeleteButton"
+    label: "Open delete tag dialog"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::DeleteModal::ConfirmButton"
+    label: "Confirm tag deletion"
+
+- assertNotVisible:
+    text: "${TAG_NAME}"
+    label: "Verify ${TAG_NAME} tag removed from list"

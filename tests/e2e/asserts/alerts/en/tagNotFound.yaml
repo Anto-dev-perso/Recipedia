@@ -1,0 +1,22 @@
+appId: "com.recipedia"
+---
+
+- assertVisible:
+    id: "RecipeTagSimilarity::SimilarityDialog::Title"
+    text: "Tag not found"
+    label: "Alert title is rendered"
+
+- assertVisible:
+    id: "RecipeTagSimilarity::SimilarityDialog::Content"
+    text: "The tag \".*\" doesn't exist. You can modify it below before adding."
+    label: "Alert message is rendered"
+
+- assertVisible:
+    id: "RecipeTagSimilarity::SimilarityDialog::CancelButton-text"
+    text: "Cancel"
+    label: "Alert cancel button is rendered"
+
+- assertVisible:
+    id: "RecipeTagSimilarity::SimilarityDialog::AddButton-text"
+    text: "Add"
+    label: "Alert add button is rendered"

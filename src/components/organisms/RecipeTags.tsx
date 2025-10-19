@@ -86,8 +86,6 @@ export type RecipeTagProps = {
   tagsList: Array<string>;
 } & (RecipeTagsReadOnlyProps | RecipeTagsAddOrEditProps);
 
-let tagsAddedCounter = 0;
-
 /**
  * RecipeTags component for comprehensive tag management
  *
@@ -96,6 +94,7 @@ let tagsAddedCounter = 0;
  */
 export function RecipeTags(tagsProps: RecipeTagProps) {
   const [newTags, setNewTags] = useState(new Array<number>());
+  const [tagsAddedCounter, setTagsAddedCounter] = useState(0);
   const [allTagsNamesSorted, setAllTagsNamesSorted] = useState(
     RecipeDatabase.getInstance()
       .get_tags()
@@ -184,7 +183,7 @@ export function RecipeTags(tagsProps: RecipeTagProps) {
                   icon={Icons.plusIcon}
                   onPressFunction={() => {
                     setNewTags([...newTags, tagsAddedCounter]);
-                    ++tagsAddedCounter;
+                    setTagsAddedCounter(tagsAddedCounter + 1);
                   }}
                 />
               </View>

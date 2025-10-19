@@ -1,0 +1,84 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu to access manual recipe creation"
+
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Open manual recipe creation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to tags section"
+
+- runFlow:
+    file: "../../../flows/recipe/tags/addTagToRecipeInput.yaml"
+    env:
+      TAG_NAME: "Dessrt"
+      TAG_INDEX: "0"
+    label: "Enter fuzzy tag name (first attempt)"
+
+- runFlow:
+    file: "../../../flows/recipe/tags/useFuzzyTag.yaml"
+    label: "Cancel similarity alert"
+
+- assertNotVisible:
+    text: "Dessrt"
+    label: "Verify tag not added to recipe"
+
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    label: "A tag has been added to the recipe"
+
+- assertVisible:
+    text: "Dessert"
+    label: "Verify fuzzy tag added to the recipe"
+
+- runFlow:
+    file: "../../../flows/recipe/tags/addTagToRecipeInput.yaml"
+    env:
+      TAG_NAME: "Dessrt"
+      TAG_INDEX: "1"
+    label: "Enter fuzzy tag name (second attempt)"
+
+- runFlow:
+    file: "../../../flows/recipe/tags/confirmAndEditNewTag.yaml"
+    env:
+      EDIT_SUFFIX: ""
+    label: "Confirm adding fuzzy tag without editing"
+
+- assertVisible:
+    id: "RecipeTags::1::Chip"
+    label: "A tag has been added to the recipe"
+
+- assertVisible:
+    text: "Dessrt"
+    label: "Verify fuzzy tag name appears in recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Exit recipe creation without saving"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Close the FAB buttons"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Navigate to Tags Settings"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/deleteTagByName.yaml"
+    env:
+      TAG_NAME: "Dessrt"
+      #      TODO bug dessert has been added too
+      TAG_INDEX: "3"
+    label: "Delete Dessrt tag"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/returnToHome.yaml"
+    label: "Return to Home screen"
