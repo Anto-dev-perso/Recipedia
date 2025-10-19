@@ -1,0 +1,21 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::DeleteModal::Title"
+    label: "Delete modal title is displayed"
+    text: "Delete"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::DeleteModal::Text"
+    text: "Are you sure you want to delete  .* ?"
+    label: "Confirmation content is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::DeleteModal::CancelButton-text"
+    text: "Cancel"
+    label: "Cancel button is visible"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::DeleteModal::ConfirmButton-text"
+    text: "Delete"
+    label: "Delete button is visible"

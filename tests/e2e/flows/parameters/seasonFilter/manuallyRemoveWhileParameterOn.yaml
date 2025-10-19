@@ -1,0 +1,65 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    text: "Parameters"
+    label: "Navigate to Parameters screen"
+
+- tapOn:
+    id: "Parameters::Section::RecipeDefaults::Season::Switch"
+    label: "Set season filter to ON"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- runFlow:
+    file: "../../../asserts/search/en/assertSeasonFilterApplied.yaml"
+    label: "Verify season filter is applied initially"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Open filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::0"
+    label: "Expand season filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::0::Item::0"
+    label: "Deselect season filter manually"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Close filter accordion"
+
+- runFlow:
+    file: "../../../asserts/search/en/assertSeasonFilterNotApplied.yaml"
+    label: "Verify season filter is removed after manual deselection"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Open filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::0"
+    label: "Expand season filter accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::0::Item::0"
+    label: "Select season filter manually again"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Close filter accordion"
+
+- runFlow:
+    file: "../../../asserts/search/en/assertSeasonFilterApplied.yaml"
+    label: "Verify season filter is applied again"
+
+- tapOn:
+    text: "Parameters"
+    label: "Navigate back to Parameters"
+
+- tapOn:
+    id: "Parameters::Section::RecipeDefaults::Season::Switch"
+    label: "Reset season filter to OFF"

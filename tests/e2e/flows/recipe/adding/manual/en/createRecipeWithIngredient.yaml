@@ -1,0 +1,124 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu"
+
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Tap manual recipe add button"
+
+- runFlow:
+    file: "../../en/addRecipeImage.yaml"
+    label: "Add an image to this recipe"
+
+- tapOn:
+    id: "RecipeTitle::TextInput"
+    label: "Focus on recipe title input"
+
+- inputText:
+    text: "E2E Test Recipe"
+    label: "Enter recipe title"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Add an ingredient"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    label: "Focus on ingredient quantity"
+
+- inputText:
+    text: "100"
+    label: "Enter ingredient quantity"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    label: "Focus on ingredient name"
+
+- inputText:
+    text: "RecipeIng"
+    label: "Enter the newly created ingredient name"
+
+- hideKeyboard:
+    label: "Hide the keyboard"
+
+- assertVisible:
+    id: "TextInputWithDropDown::List::RecipeIngredient"
+    label: "New ingredient id is displayed in dropdown"
+
+- assertVisible:
+    text: "RecipeIngredient"
+    label: "New ingredient text is displayed in dropdown"
+
+- tapOn:
+    id: "TextInputWithDropDown::List::RecipeIngredient"
+    label: "Select the new ingredient"
+
+- tapOn:
+    id: "RecipeTime::TextInput"
+    label: "Focus on time input"
+
+- inputText:
+    text: "10"
+    label: "Enter cooking time"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to preparation section"
+
+- tapOn:
+    id: "RecipePreparation::AddButton::RoundButton"
+    label: "Add preparation step"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to preparation content input"
+
+- tapOn:
+    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    label: "Focus on preparation content"
+
+- inputText:
+    text: "Test preparation step"
+    label: "Enter preparation instructions"
+
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeValidate"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to validate button"
+
+- tapOn:
+    id: "RecipeValidate"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Close the validation dialog"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Reduce the FAB button as we no more need it"

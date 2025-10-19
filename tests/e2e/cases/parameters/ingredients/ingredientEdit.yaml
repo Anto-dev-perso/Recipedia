@@ -1,0 +1,98 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Navigate to Ingredients Settings screen"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::15::IngredientName"
+    direction: DOWN
+    speed: 80
+    label: "Scroll to Lettuce ingredient"
+
+- assertVisible:
+    id: "IngredientsSettings::15::IngredientName"
+    text: "Lettuce"
+    label: "Verify Lettuce ingredient exists"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::15::EditButton"
+    direction: DOWN
+    speed: 50
+    label: "Scroll to Lettuce ingredient"
+
+- tapOn:
+    id: "IngredientsSettings::15::EditButton"
+    label: "Tap Edit button for Lettuce ingredient"
+
+- runFlow:
+    file: "../../../asserts/parameters/ingredients/en/assertEditModalOpen.yaml"
+    label: "Verify Edit ingredient modal is displayed"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::TextInput"
+    label: "Focus on ingredient name input field"
+
+- inputText:
+    text: " Edited"
+    label: "Append ' Edited' to change ingredient name to 'Lettuce Edited'"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Menu::Button"
+    label: "Open type dropdown menu"
+
+- tapOn:
+    text: "Fruit"
+    label: "Change type from vegetable to fruit"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Unit::TextInput"
+    label: "Focus on unit input field"
+
+- eraseText:
+    label: "Clear existing unit"
+
+- inputText:
+    text: "kg"
+    label: "Change unit from g to kg"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::SeasonalityCalendar::10"
+    label: "Remove october from seasonality"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::ConfirmButton"
+    label: "Save the edited ingredient"
+
+- assertVisible:
+    id: "IngredientsSettings::15::IngredientName"
+    text: "Lettuce Edited"
+    label: "Verify ingredient name changed to 'Lettuce Edited' in the list"
+
+- assertNotVisible:
+    text: "Lettuce"
+    label: "Verify old ingredient name 'Lettuce' no longer exists in list"
+
+- runFlow:
+    file: "../../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Return to Home screen"
+
+- runFlow:
+    file: "../../../flows/parameters/ingredients/verifyIngredientRenameInRecipes.yaml"
+    label: "Verify ingredient renamed in recipes"
+
+- runFlow:
+    file: "../../../flows/parameters/ingredients/restoreIngredientValues.yaml"
+    label: "Restore ingredient to original values"
+
+- runFlow:
+    file: "../../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Return to Home screen"

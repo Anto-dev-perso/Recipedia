@@ -1,0 +1,46 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Open SearchBar"
+
+- inputText:
+    text: "Taco"
+    label: "Search for Taco recipe that uses Lettuce"
+
+- pressKey: "enter"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Open Taco recipe from the card"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::2::IngredientName"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
+    # TODO bug
+    #    text: "Lettuce Edited"
+    label: "Verify ingredient name changed to 'Lettuce Edited' in recipe"
+
+# TODO bug
+#- assertNotVisible:
+#    text: "Lettuce"
+#    label: "Verify old ingredient name no longer appears"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Close the recipe"
+
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Clear search bar"

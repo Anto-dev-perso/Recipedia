@@ -35,7 +35,7 @@ npm run test:e2e:android
 npm run workflow:build-test:android
 
 # Run specific test suite
-maestro test tests/e2e/1_launchApp.yaml
+maestro test tests/e2e/01_launchApp.yaml
 ```
 
 ### Current Test Suites

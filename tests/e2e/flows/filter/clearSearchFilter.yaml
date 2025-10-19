@@ -1,0 +1,12 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "Home::SearchBar::TextInput"
+    label: "Tap on search input"
+
+- eraseText:
+    label: "Clear search text"
+
+- tapOn:
+    id: "Home::SearchBar::ClearButton"
+    label: "Clear search filter"

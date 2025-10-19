@@ -1,0 +1,68 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "PESTO PASTA"
+    label: "Pesto Pasta recipe is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::Text"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- assertVisible:
+    id: "RecipePersons::Text"
+    text: "Ingredients (4 persons)"
+    label: "Recipe is for 4 persons"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "Pasta"
+    label: "Ingredient Pasta is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "200 g"
+    label: "Pasta quantity is 200g"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "Basil Leaves"
+    label: "Ingredient Basil Leaves is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "50 g"
+    label: "Basil Leaves quantity is 50g"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
+    text: "Parmesan"
+    label: "Ingredient Parmesan is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    text: "30 g"
+    label: "Parmesan quantity is 30g"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::IngredientName"
+    text: "Olive Oil"
+    label: "Ingredient Olive Oil is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    text: "50 ml"
+    label: "Olive Oil quantity is 50ml"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::IngredientName"
+    text: "Pine Nuts"
+    label: "Ingredient Pine Nuts is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    text: "20 g"
+    label: "Pine Nuts quantity is 20g"

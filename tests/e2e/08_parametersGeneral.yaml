@@ -1,0 +1,24 @@
+appId: "com.recipedia"
+name: "Parameters screen test suite"
+---
+- launchApp
+
+- runFlow:
+    file: "cases/parameters/darkModeToggle.yaml"
+    label: "Test dark mode toggle functionality"
+
+- runFlow:
+    file: "cases/parameters/languageChange.yaml"
+    label: "Test language change across all screens"
+
+- runFlow:
+    file: "cases/parameters/seasonFilterToggle.yaml"
+    label: "Test default season filter parameter toggle behavior"
+
+- runFlow:
+    file: "cases/parameters/seasonFilterEdgeCases.yaml"
+    label: "Test default season filter parameter edge cases"
+
+- runFlow:
+    file: "cases/parameters/defaultPersonsChange.yaml"
+    label: "Test default persons change and recipe quantity scaling"
