@@ -1,0 +1,24 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../common/assertTutorialTooltipVisible.yaml"
+    label: "Verify tutorial tooltip common elements"
+
+- assertVisible:
+    id: "TutorialTooltip::Text"
+    text: "Adjust settings like language, default portions, and manage ingredients and tags. Update details like ingredient seasons to match your preferences."
+    label: "Verify Step 4 (Parameters) description"
+
+- assertVisible:
+    id: "TutorialTooltip::Previous-text"
+    text: "Previous"
+    label: "Verify Previous button is visible"
+
+- assertVisible:
+    id: "TutorialTooltip::Next-text"
+    text: "Finish"
+    label: "Verify Finish button shows Finish text"
+
+- assertVisible:
+    text: "4"
+    label: "Verify Step 4 is visible"

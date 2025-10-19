@@ -1,0 +1,19 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../common/assertTutorialTooltipVisible.yaml"
+    label: "Verify tutorial tooltip common elements"
+
+- assertVisible:
+    id: "TutorialTooltip::Text"
+    text: "Discover seasonal recipes and personalized recommendations. Use the expandable button in the bottom right to add new recipes."
+    label: "Verify Step 1 (Home) description"
+
+- assertVisible:
+    id: "TutorialTooltip::Next-text"
+    text: "Next"
+    label: "Verify Next button is visible"
+
+- assertVisible:
+    text: "1"
+    label: "Verify Step 1 is visible"

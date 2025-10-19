@@ -1,5 +1,0 @@
-appId: "com.recipedia"
----
-- runFlow:
-    file: "../../flows/navigation/skipWelcomeScreen.yaml"
-    label: "Skip welcome screen"

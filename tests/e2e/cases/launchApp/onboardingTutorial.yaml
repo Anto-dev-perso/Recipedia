@@ -1,0 +1,56 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../asserts/onboarding/en/assertWelcomeScreen.yaml"
+    label: "Verify Welcome Screen is displayed on first launch"
+
+- tapOn:
+    id: "WelcomeScreen::StartTourButton"
+    label: "Start the tutorial by tapping Start Tour button"
+
+- runFlow:
+    file: "../../asserts/onboarding/en/assertTutorialStep1.yaml"
+    label: "Verify tutorial Step 1 (Home screen)"
+
+- tapOn:
+    id: "TutorialTooltip::Next"
+    label: "Navigate to Step 2"
+
+- runFlow:
+    file: "../../asserts/onboarding/en/assertTutorialStep2.yaml"
+    label: "Verify tutorial Step 2 (Search screen)"
+
+- tapOn:
+    id: "TutorialTooltip::Next"
+    label: "Navigate to Step 3"
+
+- runFlow:
+    file: "../../asserts/onboarding/en/assertTutorialStep3.yaml"
+    label: "Verify tutorial Step 3 (Shopping screen)"
+
+- tapOn:
+    id: "TutorialTooltip::Next"
+    label: "Navigate to Step 4"
+
+- runFlow:
+    file: "../../asserts/onboarding/en/assertTutorialStep4.yaml"
+    label: "Verify tutorial Step 4 (Parameters screen)"
+
+- tapOn:
+    id: "TutorialTooltip::Previous"
+    label: "Return to previous step"
+
+- runFlow:
+    file: "../../asserts/onboarding/en/assertTutorialStep3.yaml"
+    label: "Verify tutorial Step 3 (Shopping screen)"
+
+- stopApp
+- launchApp
+
+- runFlow:
+    file: "../../asserts/onboarding/en/assertWelcomeScreen.yaml"
+    label: "Verify Welcome Screen reappears after incomplete tutorial"
+
+- tapOn:
+    id: "WelcomeScreen::SkipButton"
+    label: "Skip the tutorial to proceed with tests"

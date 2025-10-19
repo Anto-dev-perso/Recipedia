@@ -1,0 +1,69 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "WelcomeScreen::AppIcon::Image"
+    label: "Check that image is displayed"
+
+- assertVisible:
+    id: "WelcomeScreen::Title"
+    text: "Recipedia"
+    label: "Verify title is visible"
+
+- assertVisible:
+    id: "WelcomeScreen::Subtitle"
+    text: "Store and find your recipes easily"
+    label: "Verify Subtitle is visible"
+
+- assertVisible:
+    id: "WelcomeScreen::Card::Title"
+    text: "What Recipedia does for you:"
+    label: "Verify card title is visible"
+
+- assertVisible:
+    id: "WelcomeScreen::Card::FeaturesList::0::Text"
+    text: "Find recipes quickly"
+    label: "Verify first card feature is visible"
+
+- assertVisible:
+    id: "WelcomeScreen::Card::FeaturesList::0::Icon"
+    label: "Verify first card feature icon is visible"
+
+- assertVisible:
+    text: "󰍉"
+    label: "Verify first feature icon is correct"
+
+- assertVisible:
+    id: "WelcomeScreen::Card::FeaturesList::1::Text"
+    text: "Add recipes easily"
+    label: "Verify second card feature is visible"
+
+- assertVisible:
+    id: "WelcomeScreen::Card::FeaturesList::1::Icon"
+    label: "Verify second card feature icon is visible"
+
+- assertVisible:
+    text: "󰐕"
+    label: "Verify second feature icon is correct"
+
+- assertVisible:
+    id: "WelcomeScreen::Card::FeaturesList::2::Text"
+    text: "Generate shopping lists"
+    label: "Verify third card feature is visible"
+
+- assertVisible:
+    id: "WelcomeScreen::Card::FeaturesList::2::Icon"
+    label: "Verify third card feature icon is visible"
+
+- assertVisible:
+    text: "󰄐"
+    label: "Verify third feature icon is correct"
+
+- assertVisible:
+    id: "WelcomeScreen::StartTourButton-text"
+    text: "Explore"
+    label: "Verify Start Tour button is visible"
+
+- assertVisible:
+    id: "WelcomeScreen::SkipButton-text"
+    text: "Jump In"
+    label: "Verify Skip button is visible"

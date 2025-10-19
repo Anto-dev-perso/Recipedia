@@ -1,0 +1,10 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "TutorialTooltip"
+    label: "Verify tutorial tooltip is displayed"
+
+- assertVisible:
+    id: "TutorialTooltip::Skip-text"
+    text: "Skip"
+    label: "Verify Skip button is visible"

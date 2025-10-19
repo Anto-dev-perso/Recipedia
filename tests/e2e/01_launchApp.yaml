@@ -4,8 +4,8 @@ name: "Launch and check screens are displayed correctly"
 - launchApp
 
 - runFlow:
-    file: "cases/launchApp/skipWelcomeScreen.yaml"
-    label: "Skip welcome screen"
+    file: "cases/launchApp/onboardingTutorial.yaml"
+    label: "Test onboarding tutorial flow"
 
 - runFlow:
     file: "cases/launchApp/checkHomeScreen.yaml"
