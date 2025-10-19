@@ -6,7 +6,15 @@ name: "Duplicate detection test suite"
 - runFlow:
     file: "cases/duplicates/tags/tagDuplicateUnique.yaml"
     label: "Test adding unique tag without duplicate warning"
-#
+
 - runFlow:
     file: "cases/duplicates/tags/tagDuplicateFuzzy.yaml"
     label: "Test fuzzy duplicate tag detection with cancel and confirm"
+
+- runFlow:
+    file: "cases/duplicates/ingredients/ingredientDuplicateUnique.yaml"
+    label: "Test adding unique ingredient without duplicate warning"
+
+- runFlow:
+    file: "cases/duplicates/ingredients/ingredientDuplicateFuzzy.yaml"
+    label: "Test fuzzy duplicate ingredient detection with use existing and add new"

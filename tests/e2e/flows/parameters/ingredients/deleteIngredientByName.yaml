@@ -1,0 +1,20 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::${INGREDIENT_INDEX}::DeleteButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to find ${INGREDIENT_NAME} ingredient"
+
+- tapOn:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::DeleteButton"
+    label: "Open delete ingredient dialog"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::DeleteModal::ConfirmButton"
+    label: "Confirm ingredient deletion"
+
+- assertNotVisible:
+    text: "${INGREDIENT_NAME}"
+    label: "Verify ${INGREDIENT_NAME} ingredient removed from list"
