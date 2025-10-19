@@ -1,0 +1,78 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../flows/parameters/persons/navigateToDefaultPersonsSettings.yaml"
+    label: "Navigate to Default Persons Settings screen"
+
+- runFlow:
+    file: "../../asserts/parameters/defaultPersons/en/assertDefaultPersonsSettingsScreen.yaml"
+    label: "Verify Default Persons Settings screen is displayed"
+
+- assertVisible:
+    id: "DefaultPersonSettings::PersonsValue"
+    text: "4 persons"
+    label: "Verify initial value is 4 persons"
+
+- runFlow:
+    file: "../../flows/parameters/persons/changeTo6Persons.yaml"
+    label: "Change default persons to 6"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Return to Search screen"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::RecipeCards::7"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to find Pesto Pasta"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::7"
+    label: "Open Pesto Pasta recipe"
+
+# TODO bug: quantities not being scaled - see TODO.md
+#- runFlow:
+#    file: "../../asserts/recipe/readonly/en/pestoPastaFor6Persons.yaml"
+#    label: "Verify ingredients scaled to 6 persons"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Return to Search screen"
+
+- runFlow:
+    file: "../../flows/parameters/persons/navigateToDefaultPersonsSettings.yaml"
+    label: "Navigate back to Default Persons Settings"
+
+- runFlow:
+    file: "../../flows/parameters/persons/changeTo4Persons.yaml"
+    label: "Change default persons back to 4"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Return to Search screen"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::7"
+    label: "Open Pesto Pasta recipe"
+
+# TODO bug: quantities not being scaled - see TODO.md
+#- runFlow:
+#    file: "../../asserts/recipe/readonly/en/pestoPastaFor4Persons.yaml"
+#    label: "Verify ingredients back to original 4 persons values"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Return to Search screen"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::SearchBar"
+    direction: UP
+    speed: 99
+    label: "Scroll back to top of Search screen"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Return to Home screen"

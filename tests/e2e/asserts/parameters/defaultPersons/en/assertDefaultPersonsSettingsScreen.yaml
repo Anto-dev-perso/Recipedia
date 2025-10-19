@@ -1,0 +1,34 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "DefaultPersonSettings::Title"
+    text: "Default Number of Persons"
+    label: "Default persons settings title is displayed"
+
+- assertVisible:
+    id: "DefaultPersonSettings::PersonsValue"
+    label: "Persons value text is displayed"
+
+- assertVisible:
+    id: "DefaultPersonSettings::Slider"
+    label: "Slider component is visible"
+
+- assertVisible:
+    id: "DefaultPersonSettings::MinValue"
+    text: "1"
+    label: "Minimum value (1) is displayed"
+
+- assertVisible:
+    id: "DefaultPersonSettings::MaxValue"
+    text: "10"
+    label: "Maximum value (10) is displayed"
+
+- assertVisible:
+    id: "DefaultPersonSettings::Cancel-text"
+    text: "Cancel"
+    label: "Cancel button is visible"
+
+- assertVisible:
+    id: "DefaultPersonSettings::Save-text"
+    text: "Save"
+    label: "Save button is visible"

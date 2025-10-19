@@ -1,0 +1,15 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "DefaultPersonSettings::Slider"
+    point: "56%,50%"
+    label: "Set slider to 6 persons"
+
+- assertVisible:
+    id: "DefaultPersonSettings::PersonsValue"
+    text: "6 persons"
+    label: "Verify slider value changed to 6"
+
+- tapOn:
+    id: "DefaultPersonSettings::Save"
+    label: "Save the new default persons value"

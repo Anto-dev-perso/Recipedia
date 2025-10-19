@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Navigate to Parameters screen"
+
+- tapOn:
+    id: "Parameters::Section::RecipeDefaults::Persons::Item"
+    label: "Tap on Default Number of Persons item"
