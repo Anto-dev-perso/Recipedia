@@ -1,3 +1,9 @@
+## [0.14.2](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.1...v0.14.2) (2025-10-19)
+
+### Bug Fixes
+
+* **ingredients:** add the right ingredient ([e71ad66](https://github.com/Anto-dev-perso/Recipedia/commit/e71ad66ac35c0ddee2cc80f88c4b1c7af647d793))
+
 ## [0.14.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.0...v0.14.1) (2025-10-19)
 
 ### Bug Fixes
