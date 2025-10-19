@@ -9,6 +9,10 @@ appId: "com.recipedia"
     label: "Test validation with empty recipe"
 
 - runFlow:
+    file: "nutritionValidation.yaml"
+    label: "Test nutrition validation (partial and complete)"
+
+- runFlow:
     file: "onlyImage.yaml"
     label: "Test validation with only image "
 

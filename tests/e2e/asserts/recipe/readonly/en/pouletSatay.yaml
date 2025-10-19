@@ -197,3 +197,17 @@ appId: "com.recipedia"
     id: "RecipePreparation::TextRender::3::SectionParagraph"
     text: "Portez une casserole d'eau salée à ébullition.\nFaites cuire le riz selon les indications du paquet.\nRetirez la base de l'oignon nouveau et émincez-le.\nDégustez sans attendre votre poulet sauce satay accompagné du riz!\nParsemez-le d'oignon nouveau."
     label: "Fourth preparation paragraph is displayed"
+
+- runFlow:
+    file: "../../common/nutritionReadOnly.yaml"
+    env:
+      ENERGY_KCAL: "218"
+      ENERGY_KJ: "911"
+      FAT: "8.53"
+      SATURATED_FAT: "0.46"
+      CARBOHYDRATES: "24.37"
+      SUGARS: "2.92"
+      FIBER: "0.81"
+      PROTEIN: "9.93"
+      SALT: "0.65"
+    label: "Verify nutrition values from OCR"

@@ -1,0 +1,89 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::Title"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to nutrition section"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::Title"
+    text: "Nutritional values"
+    label: "Nutrition table title is displayed"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::Subtitle"
+    text: "per 100g"
+    label: "Nutrition subtitle (per 100g) is displayed in edit mode"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+    text: "${ENERGY_KCAL}"
+    label: "Energy kcal input is displayed with correct value"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::TextInput"
+    text: "${ENERGY_KJ}"
+    label: "Energy kJ input is displayed with correct value"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to end of nutrition table"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::TextInput"
+    text: "${FAT}"
+    label: "Fat input is displayed with correct value"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::TextInput"
+    text: "${SATURATED_FAT}"
+    label: "Saturated fat input is displayed with correct value"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::TextInput"
+    text: "${CARBOHYDRATES}"
+    label: "Carbohydrates input is displayed with correct value"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::TextInput"
+    text: "${SUGARS}"
+    label: "Sugars input is displayed with correct value"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::TextInput"
+    text: "${FIBER}"
+    label: "Fiber input is displayed with correct value"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::TextInput"
+    text: "${PROTEIN}"
+    label: "Protein input is displayed with correct value"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::TextInput"
+    text: "${SALT}"
+    label: "Salt input is displayed with correct value"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::EditForm::RemoveButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to remove nutrition button"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+    text: "${PORTION_WEIGHT}"
+    label: "Portion weight input is displayed with correct value"
+
+
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::RemoveButton"
+    label: "Remove nutrition button is displayed"

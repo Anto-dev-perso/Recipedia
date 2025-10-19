@@ -4,6 +4,19 @@ appId: "com.recipedia"
 - evalScript: ${output.isTagsToOCR = false}
 - evalScript: ${output.isPersons = true}
 - evalScript: ${output.isTime = false}
+- evalScript: ${output.isNutritionToOCR = true}
+
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Navigate to Parameters screen"
+
+- runFlow:
+    file: "../../parameters/language/switchToFrench.yaml"
+    label: "Switch to French for OCR"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate to Home screen"
 
 - tapOn:
     id: "ExpandButton::RoundButton"
@@ -16,10 +29,10 @@ appId: "com.recipedia"
     label: "Add recipe from gallery using OCR"
 
 - runFlow:
-    file: "../../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    file: "../../../asserts/alerts/fr/recipeAddedToDatabase.yaml"
     env:
       RECIPE_NAME: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
-    label: "Assert recipe added successfully"
+    label: "Assert recipe added successfully (French)"
 
 - tapOn:
     id: "ReduceButton::RoundButton"
@@ -44,8 +57,8 @@ appId: "com.recipedia"
     label: "Open newly created recipe (first result)"
 
 - runFlow:
-    file: "../../../asserts/recipe/readonly/en/pouletSatay.yaml"
-    label: "Assert recipe content in read-only mode"
+    file: "../../../asserts/recipe/readonly/fr/pouletSatay.yaml"
+    label: "Assert recipe content in read-only mode (French UI)"
 
 - tapOn:
     id: "BackButton::RoundButton"
@@ -55,6 +68,13 @@ appId: "com.recipedia"
     id: "SearchScreen::SearchBar::RightIcon"
     label: "Tap clear icon to remove search filter"
 
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Navigate to Parameters screen"
+
+- runFlow:
+    file: "../../parameters/language/switchToEnglish.yaml"
+    label: "Switch back to English"
 - tapOn:
     id: "BottomTabs::Home"
     label: "Return to home screen"

@@ -1,23 +1,23 @@
 appId: "com.recipedia"
 ---
 - runFlow:
-    file: "../../common/buttonsReadOnly.yaml"
-    label: "Assert common ReadOnly buttons and image"
+    file: "../../common/fr/buttonsReadOnly.yaml"
+    label: "Assert common ReadOnly buttons and image (French)"
 
 - runFlow:
     file: "../../common/titleReadOnly.yaml"
     env:
-      TITLE: "CURRY DE POIS CHICHES ET POIREAU AUX ÉPICES CACHEMIRE"
+      TITLE: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
     label: "Assert recipe title"
 
 - assertVisible:
     id: "RecipeDescription::Text"
-    text: "Coupez le poireau en 4 dans la longueur sans aller au bout. Lavez-les sous un filet d'eau en écartant les feuilles pour bien éliminer la terre."
+    text: "La sauce satay est une sauce d'Asie du Sud-Est à base de cacahuètes, ail et gingembre! Reproduisez-la pour accompagner notre poulet français !"
     label: "Description of the recipe is rendered"
 
 - scrollUntilVisible:
     element:
-      text: "Ingredients (4 persons)"
+      text: "Ingrédients (4 personnes)"
     direction: DOWN
     centerElement: true
     speed: 60
@@ -27,38 +27,8 @@ appId: "com.recipedia"
     label: "Tags part is not rendered"
 
 - assertVisible:
-    text: "Ingredients (4 persons)"
+    text: "Ingrédients (4 personnes)"
     label: "Ingredient section and persons is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
-    text: "2 "
-    label: "First ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
-    text: "carotte"
-    label: "First ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
-    text: "2 "
-    label: "Second ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
-    text: "citronnelle"
-    label: "Second ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
-    text: "2 "
-    label: "Third ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
-    text: "cébette"
-    label: "Third ingredient name is displayed"
 
 - scrollUntilVisible:
     element:
@@ -67,33 +37,63 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "200 g"
+    label: "First ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "cacahuètes grillées"
+    label: "First ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "70 g"
+    label: "Second ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "concentré de tomates"
+    label: "Second ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    text: "4 "
+    label: "Third ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::IngredientName"
+    text: "flet de poulet"
+    label: "Third ingredient name is displayed"
+
+- assertVisible:
     id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
-    text: "2 "
+    text: "1à3 cm"
     label: "Fourth ingredient quantity is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::IngredientName"
-    text: "gousse d'ail"
+    text: "gingembre"
     label: "Fourth ingredient name is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
-    text: "400 ml"
+    text: "2 "
     label: "Fifth ingredient quantity is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::IngredientName"
-    text: "lait de coco"
+    text: "gOussed'ail"
     label: "Fifth ingredient name is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::5::QuantityAndUnit"
-    text: "2 "
+    text: "400 mL"
     label: "Sixth ingredient quantity is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::5::IngredientName"
-    text: "oignon jaune"
+    text: "lait de coco"
     label: "Sixth ingredient name is displayed"
 
 - assertVisible:
@@ -103,52 +103,32 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::6::IngredientName"
-    text: "poireau"
+    text: "oignon jaune"
     label: "Seventh ingredient name is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::7::QuantityAndUnit"
-    text: "200 g égoutté"
+    text: "1 "
     label: "Eighth ingredient quantity is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::7::IngredientName"
-    text: "pois chiches conserve  Bio"
+    text: "oignon nouveau"
     label: "Eighth ingredient name is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::8::QuantityAndUnit"
-    text: "250 g"
+    text: "300 g"
     label: "Ninth ingredient quantity is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::8::IngredientName"
-    text: "Purée de tomates"
+    text: "riz basmati  Bio"
     label: "Ninth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::9::QuantityAndUnit"
-    text: "300 g"
-    label: "Tenth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::9::IngredientName"
-    text: "riz basmati  Bio"
-    label: "Tenth ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::10::QuantityAndUnit"
-    text: "2 sachet"
-    label: "Eleventh ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::10::IngredientName"
-    text: "épices Cachemire"
-    label: "Eleventh ingredient name is displayed"
-
-- assertVisible:
     id: "RecipeTime::Text"
-    text: "Preparation (40 min)"
+    text: "Préparation (30 min)"
     label: "Preparation section and time are displayed"
 
 - scrollUntilVisible:
@@ -160,7 +140,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipePreparation::TextRender::0::SectionTitle"
-    text: "1) La préparation"
+    text: "1) Le poulet"
     label: "First preparation title is displayed"
 
 - assertVisible:
@@ -177,7 +157,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipePreparation::TextRender::1::SectionTitle"
-    text: "2) Le curry"
+    text: "2) La sauce satay"
     label: "Second preparation title is displayed"
 
 - assertVisible:
@@ -194,7 +174,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipePreparation::TextRender::2::SectionTitle"
-    text: "3) Le riz"
+    text: "3) Le poulet sauce satay"
     label: "Third preparation title is displayed"
 
 - assertVisible:
@@ -202,6 +182,32 @@ appId: "com.recipedia"
     text: "[\\s\\S]+"
     label: "Third preparation paragraph is displayed"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::3::SectionParagraph"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionTitle"
+    text: "4) Le riz"
+    label: "Fourth preparation title is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::3::SectionParagraph"
+    text: "Portez une casserole d'eau salée à ébullition.\nFaites cuire le riz selon les indications du paquet.\nRetirez la base de l'oignon nouveau et émincez-le.\nDégustez sans attendre votre poulet sauce satay accompagné du riz!\nParsemez-le d'oignon nouveau."
+    label: "Fourth preparation paragraph is displayed"
+
 - runFlow:
-    file: "../../common/nutritionEmptyReadOnly.yaml"
-    label: "Verify nutrition section is not displayed (OCR recipe)"
+    file: "../../common/fr/nutritionReadOnly.yaml"
+    env:
+      ENERGY_KCAL: "218"
+      ENERGY_KJ: "911"
+      FAT: "8.53"
+      SATURATED_FAT: "0.46"
+      CARBOHYDRATES: "24.37"
+      SUGARS: "2.92"
+      FIBER: "0.81"
+      PROTEIN: "9.93"
+      SALT: "0.65"
+    label: "Verify nutrition values from OCR (French)"
