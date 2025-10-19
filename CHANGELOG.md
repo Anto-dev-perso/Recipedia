@@ -1,3 +1,11 @@
+## [0.14.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.0...v0.14.1) (2025-10-19)
+
+### Bug Fixes
+
+* **NutritionRow:** adjust decimal precision for non-integer values to 2 places ([db0d7e9](https://github.com/Anto-dev-perso/Recipedia/commit/db0d7e9be6cafd1fa4c12b909c3ec4af097ec8c4))
+* **NutritionRow:** ensure float precision conversion is consistent for display values ([9cf4b73](https://github.com/Anto-dev-perso/Recipedia/commit/9cf4b73070423b0ec35e5977b983086a4658e80c))
+* **RecipeNutrition:** set default portionWeight to zero and extend validation dialog props ([a89c56c](https://github.com/Anto-dev-perso/Recipedia/commit/a89c56ca5e7dbda7cd475b399ac95c3d58df944d))
+
 ## [0.14.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.13.0...v0.14.0) (2025-10-16)
 
 ### Features
