@@ -804,11 +804,12 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       if (similarRecipes.length === 0) {
         await addRecipeToDatabase();
       } else {
-        // TODO to test
+        const separator = '\n\t- ';
         dialogProp.title = t('similarRecipeFound');
         dialogProp.content =
           t('similarRecipeFoundContent') +
-          similarRecipes.map((r: recipeTableElement) => r.title).join('\n\t- ');
+          separator +
+          similarRecipes.map((r: recipeTableElement) => r.title).join(separator);
         dialogProp.confirmText = t('addAnyway');
         dialogProp.cancelText = t('cancel');
         dialogProp.onConfirm = async () => {

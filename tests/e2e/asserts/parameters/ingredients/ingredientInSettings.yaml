@@ -2,7 +2,7 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      text: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
+      id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
     direction: DOWN
     speed: 60
     label: "Scroll to find ${INGREDIENT_NAME} ingredient"
