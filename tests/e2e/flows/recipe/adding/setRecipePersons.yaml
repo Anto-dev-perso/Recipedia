@@ -1,0 +1,21 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to persons field"
+
+- tapOn:
+    id: "RecipePersons::TextInput"
+    label: "Focus on persons input"
+
+- eraseText:
+    label: "Erase the default number of persons"
+
+- inputText:
+    text: "${PERSONS}"
+    label: "Enter number of persons"
+
+- pressKey: "ENTER"

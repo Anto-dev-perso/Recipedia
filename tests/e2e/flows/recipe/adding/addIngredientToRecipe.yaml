@@ -1,0 +1,51 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Add ingredient"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::${INDEX}::QuantityInput::TextInput"
+    label: "Focus on ingredient quantity"
+
+- runFlow:
+    when:
+      visible:
+        id: 'RecipeIngredients::TextRender::${INDEX}::QuantityInput::TextInput'
+        text: '.+'
+    commands:
+      - eraseText:
+          label: "Erase the existing ingredient quantity"
+
+- inputText:
+    text: "${QUANTITY}"
+    label: "Enter ingredient quantity"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::${INDEX}::Dropdown::TextInput"
+    label: "Focus on ingredient name"
+
+- runFlow:
+    when:
+      visible:
+        id: 'RecipeIngredients::TextRender::${INDEX}::Dropdown::TextInput'
+        text: '.+'
+    commands:
+      - eraseText:
+          label: "Erase the existing ingredient name"
+
+- inputText:
+    text: "${NAME}"
+    label: "Enter ingredient name"
+
+- pressKey: "ENTER"

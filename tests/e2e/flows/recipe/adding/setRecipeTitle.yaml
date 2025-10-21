@@ -1,0 +1,21 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeTitle::TextInput"
+    label: "Focus on recipe title input"
+
+- runFlow:
+    when:
+      visible:
+        id: 'RecipeTitle::TextInput'
+        text: '.*'
+    commands:
+      - eraseText:
+          label: "Erase the existing title"
+
+- inputText:
+    text: "${TITLE}"
+    label: "Enter recipe title"
+
+- hideKeyboard:
+    label: "Hide keyboard"

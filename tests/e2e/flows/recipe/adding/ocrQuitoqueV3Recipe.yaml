@@ -31,8 +31,8 @@ appId: "com.recipedia"
     file: "../../../asserts/recipe/ocr/curryPoisChiche.yaml"
     label: "Assert OCR extracted recipe data"
 
-- runFlow:
-    file: "validateRecipe.yaml"
+- tapOn:
+    id: "RecipeValidate"
     label: "Validate the recipe"
 
 - runFlow:

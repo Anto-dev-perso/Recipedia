@@ -1,0 +1,76 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Create base recipe"
+
+
+- runFlow:
+    file: "../../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert that the alert is well the adding one (ignore recipe name)"
+
+- runFlow:
+    file: "../../../flows/recipe/adding/createRecipeWithDifferentTitle.yaml"
+    label: "Create recipe with completely different title"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert that the alert is well the adding one (ignore recipe name)"
+
+- runFlow:
+    file: "../../../flows/recipe/adding/createRecipeWithDifferentIngredients.yaml"
+    label: "Create recipe with completely different ingredients"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert that the alert is well the adding one (ignore recipe name)"
+
+- runFlow:
+    file: "../../../flows/recipe/adding/createRecipeWithFarEnoughQuantities.yaml"
+    label: "Create recipe with ingredients quantities outside the tolerance"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert that the alert is well the adding one (ignore recipe name)"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Close the FAB buttons"
+
+- runFlow:
+    file: "../../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Delete first Test Recipe via search"
+
+- runFlow:
+    file: "../../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Delete second Test Recipe via search"
+
+
+- runFlow:
+    file: "../../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Delete third Test Recipe via search"
+
+
+- runFlow:
+    file: "../../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Recipe Name"
+    label: "Delete Completely Different Recipe Name via search"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Return to Home screen"
