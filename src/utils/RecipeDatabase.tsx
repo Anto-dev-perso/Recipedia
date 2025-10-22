@@ -102,8 +102,6 @@ export class RecipeDatabase {
     this._recipes = new Array<recipeTableElement>();
     this._ingredients = new Array<ingredientTableElement>();
     this._tags = new Array<tagTableElement>();
-    // this._nutrition = new Array<>();
-
     this._shopping = new Array<shoppingListTableElement>();
   }
 
@@ -190,6 +188,30 @@ export class RecipeDatabase {
       tagsCount: this._tags.length,
       shoppingItemsCount: this._shopping.length,
     });
+  }
+
+  /**
+   * Checks if the database is empty
+   *
+   * Determines whether the database contains any data by checking if all three
+   * main tables (recipes, ingredients, and tags) are empty. This is useful for
+   * preventing duplicate data insertion during app initialization.
+   *
+   * @returns True if all main tables are empty, false if any table contains data
+   *
+   * @example
+   * ```typescript
+   * const db = RecipeDatabase.getInstance();
+   * await db.init();
+   *
+   * if (db.isDatabaseEmpty()) {
+   *   console.log('Database is empty, loading initial data...');
+   *   await db.addMultipleRecipes(initialRecipes);
+   * }
+   * ```
+   */
+  public isDatabaseEmpty(): boolean {
+    return this._recipes.length === 0 && this._ingredients.length === 0 && this._tags.length === 0;
   }
 
   /**
@@ -1244,42 +1266,42 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-                                                                if (newIngredients.length > 0) {
-                                                                    let alertTitle: string;
-                                                                    let alertMessage = "Do you want to add or edit it before  ?";
-                                                                    const alertOk = "OK";
-                                                                    const alertCancel = "Cancel";
-                                                                    const alertEdit = "Edit before add";
-                                                                    if (newIngredients.length > 1) {
-                                                                        // Plural
-                                                                        alertTitle = "INGREDIENTS NOT FOUND";
-                                                                        alertMessage = `Following ingredients were not found in database :  \n`;
-                                                                        newIngredients.forEach(ing => {
-                                                                            alertMessage += "\t- " + ing.ingName + "\n";
-                                                                        });
-                                                                        alertMessage += `Do you want to add these as is or edit them before adding ?`;
-    
-                                                                    } else {
-                                                                        alertTitle = `INGREDIENT NOT FOUND`;
-                                                                        alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                                                                    }
-    
-    
-                                                                    switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                                                                        case alertUserChoice.neutral:
-                                                                            // TODO edit before add
-                                                                            break;
-                                                                        case alertUserChoice.ok:
-                                                                            await this.addMultipleIngredients(newIngredients);
-                                                                            result = result.concat(newIngredients);
-                                                                            break;
-                                                                        case alertUserChoice.cancel:
-                                                                        default:
-                                                                            databaseLogger.debug("User canceled adding ingredient");
-                                                                            break;
-                                                                    }
-                                                                }
-                                                                 */
+                                                                        if (newIngredients.length > 0) {
+                                                                            let alertTitle: string;
+                                                                            let alertMessage = "Do you want to add or edit it before  ?";
+                                                                            const alertOk = "OK";
+                                                                            const alertCancel = "Cancel";
+                                                                            const alertEdit = "Edit before add";
+                                                                            if (newIngredients.length > 1) {
+                                                                                // Plural
+                                                                                alertTitle = "INGREDIENTS NOT FOUND";
+                                                                                alertMessage = `Following ingredients were not found in database :  \n`;
+                                                                                newIngredients.forEach(ing => {
+                                                                                    alertMessage += "\t- " + ing.ingName + "\n";
+                                                                                });
+                                                                                alertMessage += `Do you want to add these as is or edit them before adding ?`;
+
+                                                                            } else {
+                                                                                alertTitle = `INGREDIENT NOT FOUND`;
+                                                                                alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                                                                            }
+
+
+                                                                            switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                                                                                case alertUserChoice.neutral:
+                                                                                    // TODO edit before add
+                                                                                    break;
+                                                                                case alertUserChoice.ok:
+                                                                                    await this.addMultipleIngredients(newIngredients);
+                                                                                    result = result.concat(newIngredients);
+                                                                                    break;
+                                                                                case alertUserChoice.cancel:
+                                                                                default:
+                                                                                    databaseLogger.debug("User canceled adding ingredient");
+                                                                                    break;
+                                                                            }
+                                                                        }
+                                                                         */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);

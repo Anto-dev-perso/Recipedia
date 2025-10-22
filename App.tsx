@@ -58,16 +58,26 @@ export function App() {
                 await recipeDb.init();
 
                 const isFirst = await isFirstLaunch();
+
+
                 if (isFirst) {
-                    appLogger.info('First launch detected - loading complete dataset');
-                    const currentLanguage = i18n.language as SupportedLanguage;
-                    const dataset = getDataset(currentLanguage);
+                    if (recipeDb.isDatabaseEmpty()) {
+                        appLogger.info('First launch detected and database is empty - loading complete dataset');
+                        const currentLanguage = i18n.language as SupportedLanguage;
+                        const dataset = getDataset(currentLanguage);
 
-                    await recipeDb.addMultipleIngredients(dataset.ingredients);
-                    await recipeDb.addMultipleTags(dataset.tags);
-                    await recipeDb.addMultipleRecipes(dataset.recipes);
+                        await recipeDb.addMultipleIngredients(dataset.ingredients);
+                        await recipeDb.addMultipleTags(dataset.tags);
+                        await recipeDb.addMultipleRecipes(dataset.recipes);
 
-                    appLogger.info('Complete dataset loaded successfully');
+                        appLogger.info('Complete dataset loaded successfully');
+                    } else {
+                        appLogger.warn('First launch flag is set but database already contains data - skipping data load to prevent duplicates', {
+                            recipesCount: recipeDb.get_recipes().length,
+                            ingredientsCount: recipeDb.get_ingredients().length,
+                            tagsCount: recipeDb.get_tags().length,
+                        });
+                    }
                 } else {
                     appLogger.debug('Not first launch - database should already contain data');
                 }
