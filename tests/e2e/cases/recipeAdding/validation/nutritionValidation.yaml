@@ -64,10 +64,11 @@ appId: "com.recipedia"
       MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation"
     label: "Assert validation error NO LONGER includes nutrition"
 
+
 - scrollUntilVisible:
     element:
       id: "RecipeImage"
     direction: UP
-    speed: 99
     centerElement: true
-    label: "Scroll back to top of recipe"
+    speed: 99
+    label: "Scroll back to top"
