@@ -1,3 +1,9 @@
+## [0.14.3](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.2...v0.14.3) (2025-10-22)
+
+### Bug Fixes
+
+* **app:** prevent duplicate data loading on first launch ([45ec34d](https://github.com/Anto-dev-perso/Recipedia/commit/45ec34d560f2f7f9805ed8e5606ec26b36055e8b))
+
 ## [0.14.2](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.1...v0.14.2) (2025-10-19)
 
 ### Bug Fixes
