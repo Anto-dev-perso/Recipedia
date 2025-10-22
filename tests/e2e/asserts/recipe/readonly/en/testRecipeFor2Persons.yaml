@@ -1,0 +1,50 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "TEST RECIPE"
+    label: "Recipe title is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::Text"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- assertVisible:
+    id: "RecipePersons::Text"
+    text: "Ingredients (2 persons)"
+    label: "Recipe is for 2 persons"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "Pasta"
+    label: "First ingredient is Pasta"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "200 g"
+    label: "Pasta quantity is 200g"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "Tomatoes"
+    label: "Second ingredient is Tomatoes"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "100 g"
+    label: "Tomatoes quantity is 100g"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::SectionTitle"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to preparation section"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::0::SectionTitle"
+    text: "1) Cook pasta and mix with tomatoes"
+    label: "Preparation step is displayed"
