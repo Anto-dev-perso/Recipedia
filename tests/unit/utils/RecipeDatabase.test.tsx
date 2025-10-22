@@ -48,6 +48,66 @@ describe('RecipeDatabase', () => {
       expect(getRandomRecipes(db.get_recipes(), 1)).toEqual([]);
     });
 
+    describe('isDatabaseEmpty', () => {
+      test('should return true when all tables are empty', () => {
+        expect(db.isDatabaseEmpty()).toBe(true);
+      });
+
+      test('should return false when only recipes table has data', async () => {
+        await db.addMultipleIngredients(testIngredients);
+        await db.addMultipleTags(testTags);
+        await db.addRecipe(testRecipes[0]);
+
+        expect(db.isDatabaseEmpty()).toBe(false);
+      });
+
+      test('should return false when only ingredients table has data', async () => {
+        await db.addIngredient(testIngredients[0]);
+
+        expect(db.isDatabaseEmpty()).toBe(false);
+      });
+
+      test('should return false when only tags table has data', async () => {
+        await db.addTag(testTags[0]);
+
+        expect(db.isDatabaseEmpty()).toBe(false);
+      });
+
+      test('should return false when all tables have data', async () => {
+        await db.addMultipleIngredients(testIngredients);
+        await db.addMultipleTags(testTags);
+        await db.addMultipleRecipes(testRecipes);
+
+        expect(db.isDatabaseEmpty()).toBe(false);
+      });
+
+      test('should return true after database reset', async () => {
+        await db.addMultipleIngredients(testIngredients);
+        await db.addMultipleTags(testTags);
+        await db.addMultipleRecipes(testRecipes);
+
+        expect(db.isDatabaseEmpty()).toBe(false);
+
+        await db.reset();
+
+        expect(db.isDatabaseEmpty()).toBe(true);
+      });
+
+      test('should return false when only two tables have data', async () => {
+        await db.addIngredient(testIngredients[0]);
+        await db.addTag(testTags[0]);
+
+        expect(db.isDatabaseEmpty()).toBe(false);
+      });
+
+      test('should return true for fresh database instance', async () => {
+        await db.reset();
+        await db.init();
+
+        expect(db.isDatabaseEmpty()).toBe(true);
+      });
+    });
+
     test('Find functions return undefined when the array are empty', () => {
       expect(db.find_recipe(testRecipes[0])).toBeUndefined();
       expect(db.find_ingredient(testIngredients[0])).toBeUndefined();
