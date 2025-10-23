@@ -30,13 +30,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+      id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightNumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to weight of a portion"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightNumericTextInput"
     label: "Tap on weight input"
 
 - inputText:

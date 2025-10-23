@@ -25,7 +25,7 @@ appId: "com.recipedia"
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Tap on recipe ingredients button to add ingredient"
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::CustomTextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     label: "Tap on recipe ingredients quantity text input"
 - inputText:
     text: "200"

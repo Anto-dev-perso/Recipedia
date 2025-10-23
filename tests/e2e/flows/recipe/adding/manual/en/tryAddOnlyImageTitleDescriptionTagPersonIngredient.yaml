@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Press new ingredient button"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     label: "Press on quantity input"
 
 - inputText:

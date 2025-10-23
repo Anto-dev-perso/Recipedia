@@ -2,14 +2,14 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::TextInput"
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
     direction: UP
     speed: 60
     centerElement: true
     label: "Scroll to saturated fat field"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
     label: "Tap saturated fat input"
 
 - inputText:

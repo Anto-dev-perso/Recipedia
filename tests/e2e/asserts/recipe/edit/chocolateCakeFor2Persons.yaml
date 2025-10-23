@@ -12,7 +12,7 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons"
     text: "2"
     label: "Number of persons is 2"
 
@@ -34,13 +34,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+      id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to see more ingredients"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     text: "66,67"
     label: "Flour quantity is scaled to 66,67g"
 
@@ -50,7 +50,7 @@ appId: "com.recipedia"
     label: "First ingredient is Flour"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     text: "16,67"
     label: "Cocoa Powder quantity is scaled to 16,67g"
 
@@ -62,13 +62,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
+      id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
     text: "50"
     label: "Sugar quantity is scaled to 50g"
 
@@ -78,7 +78,7 @@ appId: "com.recipedia"
     label: "Third ingredient is Sugar"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
     text: "33,33"
     label: "Butter quantity is scaled to 33,33g"
 

@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons::NumericTextInput"
     label: "Press person input"
 
 - inputText:

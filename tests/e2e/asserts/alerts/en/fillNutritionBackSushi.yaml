@@ -18,7 +18,7 @@ appId: "com.recipedia"
     label: "Add nutritional information"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::NumericTextInput"
     label: "Focus on Kcal input"
 
 - inputText:
@@ -29,7 +29,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
     label: "Focus on KJ input"
 
 - inputText:
@@ -40,7 +40,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
     label: "Focus on fat"
 
 - inputText:
@@ -51,7 +51,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
     label: "Focus on saturated fat"
 
 - inputText:
@@ -62,7 +62,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::NumericTextInput"
     label: "Focus on carbohydrates"
 
 - inputText:
@@ -73,7 +73,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::NumericTextInput"
     label: "Focus on sugar"
 
 - inputText:
@@ -84,7 +84,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::NumericTextInput"
     label: "Focus on fiber"
 
 - inputText:
@@ -95,7 +95,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::NumericTextInput"
     label: "Focus on protein"
 
 - inputText:
@@ -106,7 +106,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::NumericTextInput"
     label: "Focus on salt"
 
 - inputText:
@@ -117,7 +117,7 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightNumericTextInput"
     label: "Focus on portion weight"
 
 - inputText:
