@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
 import { padding } from '@styles/spacing';
+import NumericTextInput from '@components/atomic/NumericTextInput';
 
 export type NutritionRowProps = {
   label: string;
@@ -25,9 +26,8 @@ export function NutritionRow({
   onValueChange,
   testId,
 }: NutritionRowProps) {
-  const handleTextChange = (text: string) => {
+  const handleValueChange = (numValue: number) => {
     if (field && onValueChange) {
-      const numValue = parseFloat(text) || 0;
       onValueChange(field, numValue);
     }
   };
@@ -46,10 +46,10 @@ export function NutritionRow({
         </Text>
 
         {isEditable && field ? (
-          <TextInput
-            testID={testId + '::TextInput'}
-            value={value.toString()}
-            onChangeText={handleTextChange}
+          <NumericTextInput
+            testID={testId + '::NumericTextInput'}
+            value={value}
+            onChangeValue={handleValueChange}
             keyboardType='numeric'
             dense
             mode='outlined'
