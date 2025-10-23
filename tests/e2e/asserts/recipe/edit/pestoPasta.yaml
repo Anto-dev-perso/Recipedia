@@ -82,7 +82,7 @@ appId: "com.recipedia"
     text: "This recipe is for : "
     label: "Intro text for the number of persons is rendered"
 - assertVisible:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons"
     text: "2"
     label: "Number of persons is rendered"
 - assertVisible:
@@ -113,7 +113,7 @@ appId: "com.recipedia"
     text: "Name"
     label: "Column Ingredient name is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     text: "200"
     label: "Quantity of first ingredient is rendered"
 - assertVisible:
@@ -125,7 +125,7 @@ appId: "com.recipedia"
     text: "Pasta"
     label: "Ingredient Pasta is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     text: "50"
     label: "Quantity of second ingredient is rendered"
 - assertVisible:
@@ -137,7 +137,7 @@ appId: "com.recipedia"
     text: "Basil Leaves"
     label: "Ingredient Basil Leaves is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
     text: "30"
     label: "Quantity of third ingredient is rendered"
 - assertVisible:
@@ -151,12 +151,12 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::4::QuantityInput::TextInput"
+      id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
     direction: DOWN
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
     text: "50"
     label: "Quantity of fourth ingredient is rendered"
 - assertVisible:
@@ -168,7 +168,7 @@ appId: "com.recipedia"
     text: "Olive Oil"
     label: "Ingredient Olive Oil is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
     text: "20"
     label: "Quantity of fifth ingredient is rendered"
 - assertVisible:
@@ -197,7 +197,7 @@ appId: "com.recipedia"
     text: "Time to prepare the recipe :"
     label: "Intro text for the time to prepare is rendered"
 - assertVisible:
-    id: "RecipeTime::TextInput"
+    id: "RecipeTime::NumericTextInput"
     text: "20"
     label: "Time to prepare is rendered"
 - assertVisible:

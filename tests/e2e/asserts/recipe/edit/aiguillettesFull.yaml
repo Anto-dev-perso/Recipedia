@@ -119,7 +119,7 @@ appId: "com.recipedia"
     label: "Time to prepare text is displayed"
 
 - assertVisible:
-    id: "RecipeTime::TextInput"
+    id: "RecipeTime::NumericTextInput"
     text: "20"
     label: "Time TextInput is displayed with the correct text"
 
@@ -155,7 +155,7 @@ appId: "com.recipedia"
     label: "Ingredient #3 unit text is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
     label: "Ingredient #3 quantity TextInput is displayed"
 
 - assertVisible:
@@ -176,7 +176,7 @@ appId: "com.recipedia"
     label: "Ingredient #2 unit text is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     label: "Ingredient #2 quantity TextInput is displayed"
 
 - assertVisible:
@@ -197,7 +197,7 @@ appId: "com.recipedia"
     label: "Ingredient #1 unit text is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     label: "Ingredient #1 quantity TextInput is displayed"
 
 - assertVisible:
@@ -237,7 +237,7 @@ appId: "com.recipedia"
     label: "Person text sentence end is displayed"
 
 - assertVisible:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons"
     text: "4"
     label: "Person TextInput is displayed with the correct text"
 

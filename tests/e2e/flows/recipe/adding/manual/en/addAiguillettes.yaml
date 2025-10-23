@@ -82,7 +82,7 @@ appId: "com.recipedia"
     label: "Press the round button of first ingredient"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     label: "Press the TextInput of first ingredient's quantity"
 
 - inputText:
@@ -110,13 +110,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+      id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to second ingredient quantity input"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     label: "Press the TextInput of second ingredient's quantity"
 
 - inputText:
@@ -161,7 +161,7 @@ appId: "com.recipedia"
     label: "Press the ingredient from the dropdown"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
     label: "Press the TextInput of third ingredient's quantity"
 
 - inputText:
@@ -172,7 +172,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipeTime::TextInput"
+    id: "RecipeTime::NumericTextInput"
     label: "Press the TextInput of time"
 
 - inputText:

@@ -70,7 +70,7 @@ appId: "com.recipedia"
     label: "Add an ingredient"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     label: "Focus on ingredient quantity"
 
 - inputText:
@@ -89,7 +89,7 @@ appId: "com.recipedia"
     label: "Dismiss keyboard"
 
 - tapOn:
-    id: "RecipeTime::TextInput"
+    id: "RecipeTime::NumericTextInput"
     label: "Focus on time input"
 
 - inputText:

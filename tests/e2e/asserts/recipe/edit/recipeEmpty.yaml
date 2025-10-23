@@ -56,7 +56,7 @@ appId: "com.recipedia"
     label: "Person text sentence begin is displayed"
 
 - assertVisible:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons"
     text: "4"
     label: "Person TextInput is displayed with the default text"
 
@@ -89,7 +89,7 @@ appId: "com.recipedia"
     label: "Ingredient name column is displayed"
 
 - assertNotVisible:
-    id: "RecipeIngredients::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::0::QuantityInput::NumericTextInput"
     label: "Ingredient #1 quantity TextInput is not displayed"
 
 - assertNotVisible:
@@ -109,7 +109,7 @@ appId: "com.recipedia"
     label: "Time to prepare text is displayed"
 
 - assertVisible:
-    id: "RecipeTime::TextInput"
+    id: "RecipeTime::NumericTextInput"
     text: ""
     label: "Time TextInput is displayed with the correct text"
 
