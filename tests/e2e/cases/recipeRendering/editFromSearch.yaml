@@ -37,6 +37,14 @@ appId: "com.recipedia"
       NEW_FAT: "17"
     label: "Edit nutrition values"
 
+- runFlow:
+    file: "../../flows/recipe/editing/editNutrition.yaml"
+    env:
+      NEW_ENERGY_KCAL: "425"
+      NEW_PROTEIN: "16.5"
+      NEW_FAT: "15.8"
+    label: "Revert nutrition values"
+
 - tapOn:
     id: "BackButton::RoundButton"
     label: "Back to the Search Screen"

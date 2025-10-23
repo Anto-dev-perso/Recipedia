@@ -1,0 +1,108 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search bar"
+
+- inputText:
+    text: "Chocolate"
+    label: "Search for Chocolate Cake"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Open Chocolate Cake recipe"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/chocolateCakeFor6Persons.yaml"
+    label: "Assert initial state: 6 persons, original quantities"
+
+- tapOn:
+    id: "RecipeEdit::RoundButton"
+    label: "Enter edit mode"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 99
+    label: "Scroll back to top"
+
+- runFlow:
+    file: "../../asserts/recipe/edit/chocolateCakeFor6Persons.yaml"
+    label: "Assert edit mode: 6 persons, original quantities"
+
+- runFlow:
+    file: "../../flows/recipe/editing/changePersonsFrom6To2.yaml"
+    label: "Change persons from 6 to 2"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 99
+    label: "Scroll back to top"
+
+- runFlow:
+    file: "../../asserts/recipe/edit/chocolateCakeFor2Persons.yaml"
+    label: "Assert immediate scaling: 2 persons, scaled quantities (66,67g, 16,67g, 50g, 33,33g)"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Validate the edit"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 99
+    label: "Scroll back to top"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/chocolateCakeFor2Persons.yaml"
+    label: "Assert read-only after edit: 2 persons, scaled quantities"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Return to Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove search filter"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search bar"
+
+- inputText:
+    text: "Chocolate"
+    label: "Search for Chocolate Cake again"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Open Chocolate Cake recipe from search"
+
+# TODO not working
+#- runFlow:
+#    file: "../../asserts/recipe/readonly/en/chocolateCakeFor4Persons.yaml"
+#    label: "Assert persistence: 2 persons, scaled quantities (NOT reset to default)"
+
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Return to Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove search filter"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Return to Home screen"

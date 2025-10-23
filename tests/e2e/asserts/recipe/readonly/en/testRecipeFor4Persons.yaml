@@ -1,0 +1,46 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "RecipeTitle::Text"
+    text: "TEST RECIPE"
+    label: "Recipe title is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::Text"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- assertVisible:
+    id: "RecipePersons::Text"
+    text: "Ingredients (4 persons)"
+    label: "Recipe is scaled to 4 persons"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::1::IngredientName"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to end of ingredients section"
+
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::IngredientName"
+    text: "Pasta"
+    label: "First ingredient is Pasta"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    text: "400 g"
+    label: "Pasta quantity is scaled to 400g"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::IngredientName"
+    text: "Tomatoes"
+    label: "Second ingredient is Tomatoes"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    text: "200 g"
+    label: "Tomatoes quantity is scaled to 200g"

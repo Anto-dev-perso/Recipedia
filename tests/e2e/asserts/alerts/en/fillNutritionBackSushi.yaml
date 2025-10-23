@@ -1,0 +1,132 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeEdit::RoundButton"
+    label: "Enter the edit mode again"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton"
+    direction: DOWN
+    centerElement: true
+    speed: 99
+    label: "Scroll to bottom of the screen for nutrition"
+
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton"
+    label: "Add nutritional information"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+    label: "Focus on Kcal input"
+
+- inputText:
+    text: "195"
+    label: "Enter 195 kcal"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::TextInput"
+    label: "Focus on KJ input"
+
+- inputText:
+    text: "816"
+    label: "Enter 816 kcal"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::TextInput"
+    label: "Focus on fat"
+
+- inputText:
+    text: "8.2"
+    label: "Enter 8.2 g for fat"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::TextInput"
+    label: "Focus on saturated fat"
+
+- inputText:
+    text: "1.8"
+    label: "Enter 1.8 for saturated fat"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::TextInput"
+    label: "Focus on carbohydrates"
+
+- inputText:
+    text: "22"
+    label: "Enter 22 for carbohydrates"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::TextInput"
+    label: "Focus on sugar"
+
+- inputText:
+    text: "2.5"
+    label: "Enter 2.5 for sugar"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::TextInput"
+    label: "Focus on fiber"
+
+- inputText:
+    text: "1.2"
+    label: "Enter 1.2 for fiber"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::TextInput"
+    label: "Focus on protein"
+
+- inputText:
+    text: "12.5"
+    label: "Enter 12.5 for protein"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::TextInput"
+    label: "Focus on salt"
+
+- inputText:
+    text: "1.85"
+    label: "Enter 1.85 for salt"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightTextInput"
+    label: "Focus on portion weight"
+
+- inputText:
+    text: "160"
+    label: "Enter 160 for portion weight"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Save the recipe"
