@@ -6,6 +6,4 @@ appId: "com.recipedia"
 
 - tapOn:
     id: "EditButton::RoundButton"
-    waitToSettleTimeoutMs: 0
-    retryTapIfNoChange: false
     label: "Open manual recipe adding"

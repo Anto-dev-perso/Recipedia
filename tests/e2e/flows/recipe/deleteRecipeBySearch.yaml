@@ -1,0 +1,35 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search input"
+
+- inputText:
+    text: "${SEARCH_TEXT}"
+    label: "Enter search text to find recipe"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Open recipe from results"
+
+- tapOn:
+    id: "RecipeDelete::RoundButton"
+    label: "Delete the recipe"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Confirm recipe deletion"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Close the confirmation dialog"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Remove the filter"

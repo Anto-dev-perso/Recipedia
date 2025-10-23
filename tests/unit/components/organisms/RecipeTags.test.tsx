@@ -143,18 +143,18 @@ describe('RecipeTags Component', () => {
 
         await waitFor(() =>
           expect(
-            getByTestId('RecipeTags::List::1::TextInputWithDropdown::AbsoluteDropDown').props
+            getByTestId('RecipeTags::List::0::TextInputWithDropdown::AbsoluteDropDown').props
               .children
           ).toEqual(false)
         );
         await waitFor(() =>
           expect(
-            getByTestId('RecipeTags::List::2::TextInputWithDropdown::AbsoluteDropDown').props
+            getByTestId('RecipeTags::List::1::TextInputWithDropdown::AbsoluteDropDown').props
               .children
           ).toEqual(false)
         );
 
-        for (let i = 1; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
           expect(
             getByTestId('RecipeTags::List::' + i + '::TextInputWithDropdown::ReferenceTextArray')
               .props.children
@@ -173,36 +173,36 @@ describe('RecipeTags Component', () => {
         }
 
         // Simulate the onValidate event (user finishes entering a new tag).
-        fireEvent.press(getByTestId('RecipeTags::List::1::TextInputWithDropdown::OnValidate'));
+        fireEvent.press(getByTestId('RecipeTags::List::0::TextInputWithDropdown::OnValidate'));
 
         // Verify that the addNewTag callback was called with the correct argument.
         expect(addNewTagMock).toHaveBeenCalledWith('Test string');
 
         // After validation, the new tag input should be removed.
         expect(
-          queryByTestId('RecipeTags::List::1::TextInputWithDropdown::AbsoluteDropDown')
+          queryByTestId('RecipeTags::List::0::TextInputWithDropdown::AbsoluteDropDown')
         ).toBeNull();
         expect(
-          queryByTestId('RecipeTags::List::1::TextInputWithDropdown::ReferenceTextArray')
+          queryByTestId('RecipeTags::List::0::TextInputWithDropdown::ReferenceTextArray')
         ).toBeNull();
-        expect(queryByTestId('RecipeTags::List::1::TextInputWithDropdown::Value')).toBeNull();
-        expect(queryByTestId('RecipeTags::List::1::TextInputWithDropdown::Label')).toBeNull();
-        expect(queryByTestId('RecipeTags::List::1::TextInputWithDropdown::OnValidate')).toBeNull();
+        expect(queryByTestId('RecipeTags::List::0::TextInputWithDropdown::Value')).toBeNull();
+        expect(queryByTestId('RecipeTags::List::0::TextInputWithDropdown::Label')).toBeNull();
+        expect(queryByTestId('RecipeTags::List::0::TextInputWithDropdown::OnValidate')).toBeNull();
 
         expect(
-          getByTestId('RecipeTags::List::2::TextInputWithDropdown::AbsoluteDropDown').props.children
+          getByTestId('RecipeTags::List::1::TextInputWithDropdown::AbsoluteDropDown').props.children
         ).toEqual(false);
         expect(
-          getByTestId('RecipeTags::List::2::TextInputWithDropdown::ReferenceTextArray').props
+          getByTestId('RecipeTags::List::1::TextInputWithDropdown::ReferenceTextArray').props
             .children
         ).toEqual(JSON.stringify(sampleTags.filter(name => !defaultProps.tagsList.includes(name))));
         expect(
-          getByTestId('RecipeTags::List::2::TextInputWithDropdown::Value').props.children
+          getByTestId('RecipeTags::List::1::TextInputWithDropdown::Value').props.children
         ).toBeUndefined();
         expect(
-          getByTestId('RecipeTags::List::2::TextInputWithDropdown::Label').props.children
+          getByTestId('RecipeTags::List::1::TextInputWithDropdown::Label').props.children
         ).toBeUndefined();
-        expect(getByTestId('RecipeTags::List::2::TextInputWithDropdown::OnValidate')).toBeTruthy();
+        expect(getByTestId('RecipeTags::List::1::TextInputWithDropdown::OnValidate')).toBeTruthy();
       });
     });
     describe('add mode', () => {

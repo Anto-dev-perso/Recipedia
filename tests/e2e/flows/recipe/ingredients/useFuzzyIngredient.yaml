@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../asserts/alerts/en/ingredientFuzzy.yaml"
+    label: "Check that fuzzy alert appears"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::SimilarityDialog::UseButton"
+    label: "Use the existing ingredient"

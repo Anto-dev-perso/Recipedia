@@ -1,0 +1,52 @@
+appId: "com.recipedia"
+---
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Title"
+    text: "Add Ingredient"
+    label: "Alert title is rendered"
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Name::TextInput-label-inactive"
+    text: "Ingredient Name"
+    label: "Alert text input label is rendered"
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Name::TextInput"
+    text: "${INGREDIENT_NAME}"
+    label: "Alert text input is rendered"
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Type"
+    text: "Type:"
+    label: "Type label is visible"
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Menu::Button-text"
+    text: "Undefined"
+    label: "Type dropdown menu button is visible"
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::TextInput-label-inactive"
+    text: "Unit"
+    label: "Unit input field is visible"
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::SeasonalityText"
+    text: "Seasonality:"
+    label: "Seasonality calendar label is visible"
+
+- runFlow:
+    file: "alertSeasonalityCalendar.yaml"
+    label: "Verify all 12 months are displayed in seasonality calendar"
+
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::CancelButton-text"
+    text: "Cancel"
+    label: "Cancel button is visible"
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton-text"
+    text: "Add"
+    label: "Add button is visible"

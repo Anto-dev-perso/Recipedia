@@ -1,0 +1,136 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu to access manual recipe creation"
+
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Open manual recipe creation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to ingredients section"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Add ingredient to recipe"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    label: "Focus on ingredient name input"
+
+- inputText:
+    text: "AUniqueIngredient"
+    label: "Enter unique ingredient name (first attempt)"
+
+- pressKey: "ENTER"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/ingredientNotFound.yaml"
+    label: "Check that ingredient not found alert appears"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::SimilarityDialog::CancelButton"
+    label: "Cancel similarity alert"
+
+- assertNotVisible:
+    text: "AUniqueIngredient"
+    label: "Verify ingredient not added to recipe"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Add ingredient to recipe again"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    label: "Focus on ingredient name input again"
+
+- inputText:
+    text: "AUniqueIngredient"
+    label: "Enter unique ingredient name (second attempt)"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::SimilarityDialog::AddButton"
+    label: "Add ingredient to recipe"
+
+- runFlow:
+    file: "../../../asserts/alerts/en/addingIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "AUniqueIngredient"
+    label: "Check that adding modal appears"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Menu::Button"
+    label: "Open the dropdown of the type"
+
+- tapOn:
+    text: "Fish"
+    label: "Select Fish type"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::TextInput"
+    label: "Focus on unit input"
+
+- inputText:
+    text: "MyUnit"
+    label: "Enter unit"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::2"
+    label: "Select february for seasonality"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    label: "Confirm adding the new ingredient"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    text: "AUniqueIngredient"
+    label: "Verify edited ingredient name appears in recipe"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::Unit::TextInput"
+    text: "MyUnit"
+    label: "Verify edited ingredient unit appears in recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Exit recipe creation without saving"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Close the FAB buttons"
+
+- runFlow:
+    file: "../../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Navigate to Ingredients Settings"
+
+- runFlow:
+    file: "../../../asserts/parameters/ingredients/ingredientInSettings.yaml"
+    env:
+      INGREDIENT_NAME: "AUniqueIngredient"
+      INGREDIENT_INDEX: "0"
+      INGREDIENT_TYPE: "Fish"
+      INGREDIENT_UNIT: "MyUnit"
+      INGREDIENT_MONTH_NUMBER: "2"
+    label: "Verify AUniqueIngredient ingredient exists with correct properties"
+
+- runFlow:
+    file: "../../../flows/parameters/ingredients/deleteIngredientByName.yaml"
+    env:
+      INGREDIENT_NAME: "AUniqueIngredient"
+      INGREDIENT_INDEX: "0"
+    label: "Delete AUniqueIngredient ingredient"
+
+- runFlow:
+    file: "../../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Return to Home screen"

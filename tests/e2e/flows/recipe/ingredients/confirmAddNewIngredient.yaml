@@ -1,0 +1,38 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeIngredientSimilarity::SimilarityDialog::AddButton"
+    label: "Add ingredient to recipe"
+
+
+# TODO bug shouldn't accept undefined or empty values
+#- tapOn:
+#    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+#    label: "Confirm adding the new ingredient"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Menu::Button"
+    label: "Open the dropdown of the type"
+
+- tapOn:
+    text: "Plant Protein"
+    label: "Select Plant Protein type"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::TextInput"
+    label: "Focus on unit input"
+
+- inputText:
+    text: "kg"
+    label: "Enter unit"
+
+- hideKeyboard:
+    label: "Hide keyboard"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::5"
+    label: "Select may for seasonality"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    label: "Confirm adding the new ingredient"

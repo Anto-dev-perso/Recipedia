@@ -1,0 +1,31 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to preparation section"
+
+- tapOn:
+    id: "RecipePreparation::AddButton::RoundButton"
+    label: "Add preparation step"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::${INDEX}::TextInputContent::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to preparation step input"
+
+
+- tapOn:
+    id: "RecipePreparation::TextRender::${INDEX}::TextInputContent::TextInput"
+    label: "Focus on preparation step content"
+
+- inputText:
+    text: "${TEXT}"
+    label: "Enter preparation step"
+
+- hideKeyboard:
+    label: "Hide keyboard"

@@ -1,0 +1,26 @@
+appId: "com.recipedia"
+---
+
+- assertVisible:
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::Title"
+    text: "Add Tag"
+    label: "Alert title is rendered"
+
+- assertVisible:
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::TextInput-label-inactive"
+    text: "Tag name"
+    label: "Alert text input is rendered"
+
+- assertVisible:
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::TextInput"
+    label: "Alert text input is rendered"
+
+- assertVisible:
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::CancelButton-text"
+    text: "Cancel"
+    label: "Alert cancel button is rendered"
+
+- assertVisible:
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::ConfirmButton-text"
+    text: "Add"
+    label: "Alert add button is rendered"

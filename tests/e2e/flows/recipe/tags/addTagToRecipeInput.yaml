@@ -1,0 +1,15 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeTags::RoundButton"
+    label: "Add tag to recipe"
+
+- tapOn:
+    id: "RecipeTags::List::${TAG_INDEX}::TextInput"
+    label: "Focus on tag input field"
+
+- inputText:
+    text: "${TAG_NAME}"
+    label: "Enter tag name"
+
+- pressKey: "ENTER"

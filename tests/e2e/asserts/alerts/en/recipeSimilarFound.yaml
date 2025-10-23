@@ -1,0 +1,21 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "Recipe::Dialog::Title"
+    text: "Similar recipe found"
+    label: "Alert title is rendered"
+
+- assertVisible:
+    id: "Recipe::Dialog::Content"
+    text: "A recipe with similar ingredients already exists.\nAre you sure you want to add this one?\n\nExisting recipes:\n\t- Test Recipe"
+    label: "Alert message with similar recipe list is rendered"
+
+- assertVisible:
+    id: "Recipe::Dialog::Cancel-text"
+    text: "Cancel"
+    label: "Cancel button is rendered"
+
+- assertVisible:
+    id: "Recipe::Dialog::Confirm-text"
+    text: "Add"
+    label: "Add anyway button is rendered"

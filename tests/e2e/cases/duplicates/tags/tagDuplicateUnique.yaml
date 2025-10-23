@@ -1,0 +1,75 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Expand FAB menu to access manual recipe creation"
+
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Open manual recipe creation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to tags section"
+
+- runFlow:
+    file: "../../../flows/recipe/tags/addTagToRecipeInput.yaml"
+    env:
+      TAG_NAME: "BreakfastSpecial"
+      TAG_INDEX: "0"
+    label: "Enter unique tag name (first attempt)"
+
+- runFlow:
+    file: "../../../flows/recipe/tags/cancelSimilarityAlert.yaml"
+    label: "Cancel similarity alert"
+
+- assertNotVisible:
+    text: "BreakfastSpecial"
+    label: "Verify tag not added to recipe"
+
+- runFlow:
+    file: "../../../flows/recipe/tags/addTagToRecipeInput.yaml"
+    env:
+      TAG_NAME: "BreakfastSpecial"
+      TAG_INDEX: "1"
+    label: "Enter unique tag name (second attempt)"
+
+- runFlow:
+    file: "../../../flows/recipe/tags/confirmAndEditNewTag.yaml"
+    env:
+      EDIT_SUFFIX: "Edited"
+    label: "Confirm and edit tag to BreakfastSpecialEdited"
+
+- assertVisible:
+    id: "RecipeTags::0::Chip"
+    label: "A tag has been added to the recipe"
+
+- assertVisible:
+    text: "BreakfastSpecialEdited"
+    label: "Verify tag name appears in recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Exit recipe creation without saving"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Close the FAB buttons"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Navigate to Tags Settings"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/deleteTagByName.yaml"
+    env:
+      TAG_NAME: "BreakfastSpecialEdited"
+      TAG_INDEX: "1"
+    label: "Delete BreakfastSpecialEdited tag"
+
+- runFlow:
+    file: "../../../flows/parameters/tags/returnToHome.yaml"
+    label: "Return to Home screen"

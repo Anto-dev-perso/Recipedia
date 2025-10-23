@@ -1,0 +1,52 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to find ${INGREDIENT_NAME} ingredient"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
+    text: "${INGREDIENT_NAME}"
+    label: "Verify ${INGREDIENT_NAME} ingredient name is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::IntroType"
+    text: "Type:"
+    label: "Verify intro type is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::Type"
+    text: "${INGREDIENT_TYPE}"
+    label: "Verify ${INGREDIENT_TYPE} ingredient type is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::IntroUnit"
+    text: "Unit:"
+    label: "Verify intro unit is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::Unit"
+    text: "${INGREDIENT_UNIT}"
+    label: "Verify ${INGREDIENT_UNIT} ingredient unit is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::SeasonalityCalendar::SeasonalityText"
+    text: "Seasonality:"
+    label: "Verify intro seasonality is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::SeasonalityCalendar::${INGREDIENT_MONTH_NUMBER}"
+    label: "Verify month #${INGREDIENT_MONTH_NUMBER} ingredient seasonality is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::EditButton-text"
+    text: "Edit"
+    label: "Verify edit button is displayed"
+
+- assertVisible:
+    id: "IngredientsSettings::${INGREDIENT_INDEX}::DeleteButton-text"
+    text: "Delete"
+    label: "Verify delete button is displayed"

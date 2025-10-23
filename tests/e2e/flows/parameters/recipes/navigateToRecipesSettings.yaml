@@ -1,0 +1,16 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    text: "Parameters"
+    label: "Navigate to Parameters screen"
+
+- scrollUntilVisible:
+    element:
+      id: "Parameters::Section::Data::Recipes::Item"
+    direction: DOWN
+    speed: 60
+    label: "Scroll down to find Recipes option"
+
+- tapOn:
+    id: "Parameters::Section::Data::Recipes::Item"
+    label: "Navigate to Recipes Settings screen"

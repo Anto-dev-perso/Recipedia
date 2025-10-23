@@ -4,9 +4,9 @@ appId: "com.recipedia"
     file: "../../../flows/recipe/adding/manual/en/tryAddFull.yaml"
     label: "Complete the recipe"
 
-- runFlow:
-    file: "../../../flows/recipe/adding/validateRecipe.yaml"
-    label: "Validate recipe"
+- tapOn:
+    id: "RecipeValidate"
+    label: "Validate the recipe"
 
 - runFlow:
     file: "../../../asserts/alerts/en/recipeAddedToDatabase.yaml"

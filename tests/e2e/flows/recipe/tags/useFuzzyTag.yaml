@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../../asserts/alerts/en/tagFuzzy.yaml"
+    label: "Check that fuzzy alert appears"
+
+- tapOn:
+    id: "RecipeTagSimilarity::SimilarityDialog::UseButton"
+    label: "Use the existing tag"

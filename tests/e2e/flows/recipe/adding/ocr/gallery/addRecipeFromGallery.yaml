@@ -45,6 +45,6 @@ appId: "com.recipedia"
           file: "ocrNutrition.yaml"
           label: "OCR nutrition"
 
-- runFlow:
-    file: "../../validateRecipe.yaml"
+- tapOn:
+    id: "RecipeValidate"
     label: "Validate the recipe"
