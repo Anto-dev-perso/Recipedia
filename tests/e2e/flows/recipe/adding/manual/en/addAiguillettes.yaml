@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Add recipe image"
 
 - tapOn:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     label: "Press the TextInput of title"
 
 - inputText:
@@ -16,7 +16,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipeDescription::TextInput"
+    id: "RecipeDescription::CustomTextInput"
     label: "Press the TextInput of description"
 
 - inputText:
@@ -31,7 +31,7 @@ appId: "com.recipedia"
     label: "Press the round button of first tags"
 
 - tapOn:
-    id: "RecipeTags::List::0::TextInput"
+    id: "RecipeTags::List::0::CustomTextInput"
     label: "Press the TextInput of first tags"
 
 - inputText:
@@ -45,7 +45,7 @@ appId: "com.recipedia"
     label: "Press the round button of second tags"
 
 - tapOn:
-    id: "RecipeTags::List::1::TextInput"
+    id: "RecipeTags::List::1::CustomTextInput"
     label: "Press the TextInput of second tags"
 
 - swipe:
@@ -90,7 +90,7 @@ appId: "com.recipedia"
     label: "Enter text for recipe first ingredient quantity"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     label: "Press the TextInput of first ingredient's name"
 
 - inputText:
@@ -124,7 +124,7 @@ appId: "com.recipedia"
     label: "Enter text for recipe second ingredient quantity"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
     label: "Press the TextInput of second ingredient's name"
 
 - inputText:
@@ -142,13 +142,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+      id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to third ingredient name input"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
     label: "Press the TextInput of third ingredient's name"
 
 - swipe:
@@ -195,13 +195,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+      id: "RecipePreparation::TextRender::0::CustomTextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to first preparation title input"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::0::CustomTextInputTitle::CustomTextInput"
     label: "Press the TextInput of first preparation title"
 
 - inputText:
@@ -212,7 +212,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::0::CustomTextInputContent::CustomTextInput"
     label: "Press the TextInput of first preparation paragraph"
 
 - inputText:
@@ -228,13 +228,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
+      id: "RecipePreparation::TextRender::1::CustomTextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to second preparation title input"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::1::CustomTextInputTitle::CustomTextInput"
     label: "Press the TextInput of second preparation title"
 
 - inputText:
@@ -245,7 +245,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::1::CustomTextInputContent::CustomTextInput"
     label: "Press the TextInput of second preparation paragraph"
 
 - inputText:
@@ -281,13 +281,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
+      id: "RecipePreparation::TextRender::2::CustomTextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to third preparation title input"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::2::CustomTextInputTitle::CustomTextInput"
     label: "Press the TextInput of third preparation title"
 
 - inputText:
@@ -298,7 +298,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::2::CustomTextInputContent::CustomTextInput"
     label: "Press the TextInput of third preparation paragraph"
 
 - inputText:

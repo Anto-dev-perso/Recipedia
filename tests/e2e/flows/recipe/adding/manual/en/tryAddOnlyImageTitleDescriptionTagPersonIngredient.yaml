@@ -16,7 +16,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     label: "Press on ingredient name input"
 
 - inputText:

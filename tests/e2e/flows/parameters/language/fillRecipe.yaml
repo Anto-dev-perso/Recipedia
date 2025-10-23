@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Add recipe image in French"
 
 - tapOn:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     label: "Tap on recipe title text input"
 - inputText:
     text: "Titre"
@@ -31,7 +31,7 @@ appId: "com.recipedia"
     text: "200"
     label: "Write an ingredient quantity in the input text"
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     label: "Tap on recipe ingredient name text input"
 - inputText:
     text: "Avocado"
@@ -56,7 +56,7 @@ appId: "com.recipedia"
     speed: 60
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::0::CustomTextInputTitle::CustomTextInput"
     label: "Tap on recipe preparation title text input"
 - inputText:
     text: "Titre de preparation"
@@ -64,7 +64,7 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::0::CustomTextInputContent::CustomTextInput"
     label: "Tap on recipe preparation content text input"
 - inputText:
     text: "Etape de la preparation"

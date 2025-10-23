@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     label: "Tap on Title's TextInput"
 
 - inputText:

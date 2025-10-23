@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     text: "Chocolate Cake"
     label: "Title input shows 'Chocolate Cake'"
 
@@ -45,7 +45,7 @@ appId: "com.recipedia"
     label: "Flour quantity is scaled to 66,67g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     text: "Flour"
     label: "First ingredient is Flour"
 
@@ -55,7 +55,7 @@ appId: "com.recipedia"
     label: "Cocoa Powder quantity is scaled to 16,67g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
     text: "Cocoa Powder"
     label: "Second ingredient is Cocoa Powder"
 
@@ -73,7 +73,7 @@ appId: "com.recipedia"
     label: "Sugar quantity is scaled to 50g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
     text: "Sugar"
     label: "Third ingredient is Sugar"
 
@@ -83,6 +83,6 @@ appId: "com.recipedia"
     label: "Butter quantity is scaled to 33,33g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::3::Dropdown::CustomTextInput"
     text: "Butter"
     label: "Fourth ingredient is Butter"

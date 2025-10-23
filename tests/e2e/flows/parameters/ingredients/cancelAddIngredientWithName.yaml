@@ -12,7 +12,7 @@ appId: "com.recipedia"
     label: "Open Add ingredient dialog again"
 
 - tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::Name::TextInput"
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
     label: "Focus on ingredient name input"
 
 - eraseText:

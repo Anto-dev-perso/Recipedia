@@ -20,7 +20,7 @@ appId: "com.recipedia"
     label: "Add ingredient to recipe"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     label: "Focus on ingredient name input"
 
 - inputText:
@@ -46,7 +46,7 @@ appId: "com.recipedia"
     label: "Add ingredient to recipe again"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     label: "Focus on ingredient name input again"
 
 - inputText:
@@ -74,7 +74,7 @@ appId: "com.recipedia"
     label: "Select Fish type"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::TextInput"
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::CustomTextInput"
     label: "Focus on unit input"
 
 - inputText:
@@ -93,12 +93,12 @@ appId: "com.recipedia"
     label: "Confirm adding the new ingredient"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     text: "AUniqueIngredient"
     label: "Verify edited ingredient name appears in recipe"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Unit::TextInput"
+    id: "RecipeIngredients::TextRender::0::Unit::CustomTextInput"
     text: "MyUnit"
     label: "Verify edited ingredient unit appears in recipe"
 

@@ -19,7 +19,7 @@ appId: "com.recipedia"
     label: "Select Plant Protein type"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::TextInput"
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::CustomTextInput"
     label: "Focus on unit input"
 
 - inputText:

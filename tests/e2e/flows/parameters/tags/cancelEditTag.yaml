@@ -13,7 +13,7 @@ appId: "com.recipedia"
 
 
 - tapOn:
-    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
     label: "Focus on tag name input"
 
 - inputText:
