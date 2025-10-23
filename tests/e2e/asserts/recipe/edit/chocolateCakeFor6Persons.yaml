@@ -1,0 +1,75 @@
+appId: "com.recipedia"
+---
+- assertVisible:
+    id: "RecipeTitle::TextInput"
+    text: "Chocolate Cake"
+    label: "Title input shows 'Chocolate Cake'"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::PrefixText"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipePersons::TextInput"
+    text: "6"
+    label: "Number of persons is 6"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeIngredients::PrefixText"
+    text: "Ingredients: "
+    label: "Section Ingredients is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to end of ingredients section"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    text: "200"
+    label: "Flour quantity is 200"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    text: "Flour"
+    label: "First ingredient is Flour"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    text: "50"
+    label: "Cocoa Powder quantity is 50"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    text: "Cocoa Powder"
+    label: "Second ingredient is Cocoa Powder"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
+    text: "150"
+    label: "Sugar quantity is 150"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+    text: "Sugar"
+    label: "Third ingredient is Sugar"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
+    text: "100"
+    label: "Butter quantity is 100"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::3::Dropdown::TextInput"
+    text: "Butter"
+    label: "Fourth ingredient is Butter"
