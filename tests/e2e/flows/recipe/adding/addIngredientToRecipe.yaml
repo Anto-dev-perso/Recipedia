@@ -32,13 +32,13 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::${INDEX}::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::${INDEX}::Dropdown::CustomTextInput"
     label: "Focus on ingredient name"
 
 - runFlow:
     when:
       visible:
-        id: 'RecipeIngredients::TextRender::${INDEX}::Dropdown::TextInput'
+        id: 'RecipeIngredients::TextRender::${INDEX}::Dropdown::CustomTextInput'
         text: '.+'
     commands:
       - eraseText:

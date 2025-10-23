@@ -13,7 +13,7 @@ appId: "com.recipedia"
     label: "Add an image to this recipe"
 
 - tapOn:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     label: "Focus on recipe title input"
 
 - inputText:
@@ -43,7 +43,7 @@ appId: "com.recipedia"
     label: "Enter ingredient quantity"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     label: "Focus on ingredient name"
 
 - inputText:
@@ -89,13 +89,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+      id: "RecipePreparation::TextRender::0::CustomTextInputContent::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to preparation content input"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::0::CustomTextInputContent::CustomTextInput"
     label: "Focus on preparation content"
 
 - inputText:

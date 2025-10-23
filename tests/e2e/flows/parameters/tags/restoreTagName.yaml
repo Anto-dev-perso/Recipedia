@@ -27,7 +27,7 @@ appId: "com.recipedia"
     label: "Tap Edit button for Italian Cuisine tag"
 
 - tapOn:
-    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
     label: "Focus on tag name input field"
 
 - eraseText:

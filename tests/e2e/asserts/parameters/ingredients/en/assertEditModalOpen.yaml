@@ -6,7 +6,7 @@ appId: "com.recipedia"
     label: "Edit ingredient modal title is displayed"
 
 - assertVisible:
-    id: "IngredientsSettings::ItemDialog::EditModal::Name::TextInput"
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::CustomTextInput"
     text: "Lettuce"
     label: "Ingredient name input field shows current value"
 
@@ -26,7 +26,7 @@ appId: "com.recipedia"
     label: "Type dropdown menu button is visible"
 
 - assertVisible:
-    id: "IngredientsSettings::ItemDialog::EditModal::Unit::TextInput"
+    id: "IngredientsSettings::ItemDialog::EditModal::Unit::CustomTextInput"
     label: "Unit input field is visible"
 
 - assertVisible:

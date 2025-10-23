@@ -12,7 +12,7 @@ appId: "com.recipedia"
     label: "Title introduction text is displayed"
 
 - assertVisible:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     text: ""
     label: "Title TextInput is displayed with empty text"
 
@@ -21,7 +21,7 @@ appId: "com.recipedia"
     label: "Description introduction text is displayed"
 
 - assertVisible:
-    id: "RecipeDescription::TextInput"
+    id: "RecipeDescription::CustomTextInput"
     text: ""
     label: "Description TextInput is displayed with the empty text"
 
@@ -97,7 +97,7 @@ appId: "com.recipedia"
     label: "Ingredient #1 unit text is not displayed"
 
 - assertNotVisible:
-    id: "RecipeIngredients::0::Dropdown::TextInput"
+    id: "RecipeIngredients::0::Dropdown::CustomTextInput"
     label: "Ingredient #1 name TextInput is not displayed"
 
 - assertVisible:

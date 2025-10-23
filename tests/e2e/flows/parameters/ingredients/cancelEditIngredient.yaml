@@ -11,7 +11,7 @@ appId: "com.recipedia"
     id: "IngredientsSettings::30::EditButton"
     label: "Open Edit dialog for Spaghetti ingredient"
 - tapOn:
-    id: "IngredientsSettings::ItemDialog::EditModal::Name::TextInput"
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::CustomTextInput"
     label: "Focus on ingredient name input"
 
 - inputText:

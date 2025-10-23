@@ -17,7 +17,7 @@ appId: "com.recipedia"
     label: "Verify Add ingredient modal is displayed"
 
 - tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::Name::TextInput"
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
     label: "Focus on ingredient name input field"
 
 - eraseText:
@@ -39,7 +39,7 @@ appId: "com.recipedia"
     label: "Select vegetable type"
 
 - tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::Unit::TextInput"
+    id: "IngredientsSettings::ItemDialog::AddModal::Unit::CustomTextInput"
     label: "Focus on unit input field"
 
 - inputText:

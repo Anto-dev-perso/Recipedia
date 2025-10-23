@@ -7,12 +7,12 @@ appId: "com.recipedia"
     label: "Alert title is rendered"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Name::TextInput-label-inactive"
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Name::CustomTextInput-label-inactive"
     text: "Ingredient Name"
     label: "Alert text input label is rendered"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Name::TextInput"
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Name::CustomTextInput"
     text: "${INGREDIENT_NAME}"
     label: "Alert text input is rendered"
 
@@ -27,7 +27,7 @@ appId: "com.recipedia"
     label: "Type dropdown menu button is visible"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::TextInput-label-inactive"
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::CustomTextInput-label-inactive"
     text: "Unit"
     label: "Unit input field is visible"
 

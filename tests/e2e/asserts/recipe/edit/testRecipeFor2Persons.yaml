@@ -6,7 +6,7 @@ appId: "com.recipedia"
     label: "Title label is rendered"
 
 - assertVisible:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     text: "Test Recipe"
     label: "Title input shows 'Test Recipe'"
 
@@ -55,7 +55,7 @@ appId: "com.recipedia"
     label: "Pasta quantity is 200"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     text: "Pasta"
     label: "First ingredient is Pasta"
 
@@ -65,6 +65,6 @@ appId: "com.recipedia"
     label: "Tomatoes quantity is 100"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
     text: "Tomatoes"
     label: "Second ingredient is Tomatoes"
