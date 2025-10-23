@@ -140,7 +140,7 @@ export const Card: React.FC<any> & {
     onPress={props.onPress}
     accessible={true}
   >
-    <View testID={props.testID + '::Container'}>{props.children}</View>
+    <View>{props.children}</View>
   </TouchableOpacity>
 );
 

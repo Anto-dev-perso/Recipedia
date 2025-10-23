@@ -8,8 +8,8 @@ jest.mock(
   () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
 );
 jest.mock(
-  '@components/atomic/CustomTextInput',
-  () => require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock
+  '@components/atomic/NumericTextInput',
+  () => require('@mocks/components/atomic/NumericTextInput-mock').numericTextInputMock
 );
 
 describe('RecipeNumber Component', () => {
@@ -66,7 +66,7 @@ describe('RecipeNumber Component', () => {
         );
         expect(queryByTestId(componentProps.testID + '::PrefixText')).toBeNull();
         expect(queryByTestId(componentProps.testID + '::SuffixText')).toBeNull();
-        expect(queryByTestId(componentProps.testID + '::CustomTextInput')).toBeNull();
+        expect(queryByTestId(componentProps.testID + '::NumericTextInput')).toBeNull();
         expect(queryByTestId(componentProps.testID + '::OpenModal')).toBeNull();
         expect(queryByTestId(componentProps.testID + '::ManuallyFill')).toBeNull();
         break;
@@ -77,10 +77,8 @@ describe('RecipeNumber Component', () => {
         expect(getByTestId(componentProps.testID + '::SuffixText').props.children).toBe(
           componentProps.numberProps.suffixText
         );
-        expect(getByTestId(componentProps.testID + '::TextInput').props.value).toEqual(
-          componentProps.numberProps.textEditable !== defaultValueNumber
-            ? String(componentProps.numberProps.textEditable)
-            : ''
+        expect(getByTestId(componentProps.testID + '::NumericTextInput').props.value).toEqual(
+          String(componentProps.numberProps.textEditable ?? defaultValueNumber)
         );
         expect(queryByTestId(componentProps.testID + '::OpenModal')).toBeNull();
         expect(queryByTestId(componentProps.testID + '::ManuallyFill')).toBeNull();
@@ -104,7 +102,7 @@ describe('RecipeNumber Component', () => {
         expect(
           getByTestId(componentProps.testID + '::ManuallyFill::RoundButton::Icon').props.children
         ).toBe('pencil');
-        expect(queryByTestId(componentProps.testID + '::CustomTextInput')).toBeNull();
+        expect(queryByTestId(componentProps.testID + '::NumericTextInput')).toBeNull();
         break;
     }
   };
@@ -130,27 +128,30 @@ describe('RecipeNumber Component', () => {
 
     assertComponent(getByTestId, queryByTestId, inputChange);
 
-    const textInput = getByTestId('test-recipe-number::TextInput');
+    const textInput = getByTestId('test-recipe-number::NumericTextInput');
     expect(mockSetTextToEdit).not.toHaveBeenCalled();
 
     let textNewValue = '8';
 
     fireEvent.changeText(textInput, textNewValue);
+    fireEvent(textInput, 'onBlur');
 
     expect(mockSetTextToEdit).toHaveBeenCalledTimes(1);
     expect(mockSetTextToEdit).toHaveBeenCalledWith(Number(textNewValue));
     assertComponent(getByTestId, queryByTestId, inputChange);
 
     textNewValue = 'abc';
-    const expectedValue = Number(textNewValue);
+    const expectedValue = 0;
 
     fireEvent.changeText(textInput, textNewValue);
+    fireEvent(textInput, 'onBlur');
     expect(mockSetTextToEdit).toHaveBeenCalledWith(expectedValue);
     assertComponent(getByTestId, queryByTestId, inputChange);
 
     textNewValue = '2.5';
 
     fireEvent.changeText(textInput, textNewValue);
+    fireEvent(textInput, 'onBlur');
     expect(mockSetTextToEdit).toHaveBeenCalledWith(Number(textNewValue));
     assertComponent(getByTestId, queryByTestId, inputChange);
   });
@@ -238,7 +239,7 @@ describe('RecipeNumber Component', () => {
 
   test('handles edge cases with numeric input validation', () => {
     const { getByTestId } = renderRecipeNumber(defaultEditProps);
-    const textInput = getByTestId('test-recipe-number::TextInput');
+    const textInput = getByTestId('test-recipe-number::NumericTextInput');
 
     const testCases = [
       { input: '0', expected: 0 },
@@ -250,6 +251,7 @@ describe('RecipeNumber Component', () => {
 
     testCases.forEach(({ input, expected }, index) => {
       fireEvent.changeText(textInput, input);
+      fireEvent(textInput, 'onBlur');
       expect(mockSetTextToEdit).toHaveBeenNthCalledWith(index + 1, expected);
     });
   });
@@ -367,7 +369,9 @@ describe('RecipeNumber Component', () => {
 
     assertComponent(getByTestId, queryByTestId, updatedProps);
 
-    fireEvent.changeText(getByTestId('test-recipe-number::TextInput'), '20');
+    const textInput = getByTestId('test-recipe-number::NumericTextInput');
+    fireEvent.changeText(textInput, '20');
+    fireEvent(textInput, 'onBlur');
     expect(mockSetTextToEdit).toHaveBeenCalledWith(20);
   });
 });
