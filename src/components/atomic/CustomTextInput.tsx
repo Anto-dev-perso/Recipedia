@@ -160,9 +160,9 @@ export function CustomTextInput({
     editable ? {} : { backgroundColor: colors.backdrop },
   ];
   return (
-    <View style={style} testID={testID + '::CustomTextInput'} pointerEvents={'box-none'}>
+    <View style={style} pointerEvents={'box-none'}>
       <TextInput
-        testID={testID + '::TextInput'}
+        testID={testID + '::CustomTextInput'}
         ref={inputRef}
         label={label}
         value={value ?? ''}
