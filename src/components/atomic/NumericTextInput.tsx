@@ -1,0 +1,104 @@
+/**
+ * NumericTextInput - Specialized text input for numeric values with proper float handling
+ *
+ * A wrapper around React Native Paper's TextInput optimized for numeric input.
+ * Solves the common React Native float input bug where partial decimals (e.g., "2.")
+ * are lost during typing by maintaining local state for raw text and parsing only on blur.
+ *
+ * Key Features:
+ * - Preserves partial decimal input ("2." stays "2." until blur)
+ * - Type-safe numeric value handling
+ * - Support for React Native Paper props (dense, right/Affix)
+ * - Immediate editing (no tap-to-edit behavior)
+ * - Graceful handling of invalid input
+ *
+ * @example
+ * ```typescript
+ * <NumericTextInput
+ *   testID="portion-weight"
+ *   label="Weight"
+ *   value={weight}
+ *   onChangeValue={setWeight}
+ *   right={<TextInput.Affix text="g" />}
+ *   dense
+ * />
+ * ```
+ */
+
+import React, { useEffect, useState } from 'react';
+import { StyleProp, TextStyle } from 'react-native';
+import { TextInput, useTheme } from 'react-native-paper';
+
+export type NumericTextInputProps = {
+  testID: string;
+  value: number;
+  onChangeValue?: (value: number) => void;
+  label?: string;
+  dense?: boolean;
+  right?: React.ReactNode;
+  mode?: 'flat' | 'outlined';
+  style?: StyleProp<TextStyle>;
+  contentStyle?: StyleProp<TextStyle>;
+  keyboardType?: 'numeric' | 'number-pad' | 'decimal-pad';
+  editable?: boolean;
+};
+
+export function NumericTextInput({
+  testID,
+  value,
+  onChangeValue,
+  label,
+  dense = false,
+  right,
+  mode = 'outlined',
+  style,
+  contentStyle,
+  keyboardType = 'numeric',
+  editable = true,
+}: NumericTextInputProps) {
+  const [rawText, setRawText] = useState(value.toString());
+  const { colors } = useTheme();
+
+  useEffect(() => {
+    setRawText(value.toString());
+  }, [value]);
+
+  function handleChangeText(text: string) {
+    setRawText(text);
+  }
+
+  function handleBlur() {
+    const parsed = parseFloat(rawText);
+    const finalValue = isNaN(parsed) ? 0 : parsed;
+
+    if (finalValue !== value) {
+      onChangeValue?.(finalValue);
+    }
+
+    setRawText(finalValue.toString());
+  }
+
+  const inputStyle: StyleProp<TextStyle> = [
+    style,
+    editable ? {} : { backgroundColor: colors.backdrop },
+  ];
+
+  return (
+    <TextInput
+      testID={testID}
+      label={label}
+      value={rawText}
+      onChangeText={handleChangeText}
+      onBlur={handleBlur}
+      mode={mode}
+      dense={dense}
+      keyboardType={keyboardType}
+      editable={editable}
+      style={inputStyle as any}
+      contentStyle={contentStyle}
+      right={right}
+    />
+  );
+}
+
+export default NumericTextInput;
