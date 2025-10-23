@@ -23,7 +23,7 @@ describe('NutritionRow', () => {
       />
     );
 
-    expect(queryByTestId(defaultTestId + '::TextInput')).toBeNull();
+    expect(queryByTestId(defaultTestId + '::NumericTextInput')).toBeNull();
     expect(getByTestId(defaultTestId + '::Text').props.children).toBe(defaultLabel);
     expect(getByTestId(defaultTestId + '::Value').props.children).toEqual(['250', ' ', 'kcal']);
   });
@@ -41,7 +41,7 @@ describe('NutritionRow', () => {
       />
     );
 
-    expect(queryByTestId(defaultTestId + '::TextInput')).toBeNull();
+    expect(queryByTestId(defaultTestId + '::NumericTextInput')).toBeNull();
     expect(getByTestId(defaultTestId + '::Text').props.children).toBe(subItemLabel);
     expect(getByTestId(defaultTestId + '::Value').props.children).toEqual([
       subItem.toString(),
@@ -65,7 +65,7 @@ describe('NutritionRow', () => {
 
     expect(queryByTestId(defaultTestId + '::Value')).toBeNull();
     expect(getByTestId(defaultTestId + '::Text').props.children).toBe(defaultLabel);
-    expect(getByTestId(defaultTestId + '::TextInput').props.value).toBe('250');
+    expect(getByTestId(defaultTestId + '::NumericTextInput').props.value).toBe('250');
   });
 
   test('calls onValueChange when text input changes', () => {
@@ -83,7 +83,9 @@ describe('NutritionRow', () => {
       />
     );
 
-    fireEvent.changeText(getByTestId(defaultTestId + '::TextInput'), '300');
+    const input = getByTestId(defaultTestId + '::NumericTextInput');
+    fireEvent.changeText(input, '300');
+    fireEvent(input, 'onBlur');
     expect(localMockOnValueChange).toHaveBeenCalledWith('energyKcal', 300);
   });
 
@@ -102,7 +104,9 @@ describe('NutritionRow', () => {
       />
     );
 
-    fireEvent.changeText(getByTestId(defaultTestId + '::TextInput'), 'invalid');
+    const input = getByTestId(defaultTestId + '::NumericTextInput');
+    fireEvent.changeText(input, 'invalid');
+    fireEvent(input, 'onBlur');
     expect(localMockOnValueChange).toHaveBeenCalledWith('energyKcal', 0);
   });
 
@@ -112,7 +116,7 @@ describe('NutritionRow', () => {
       <NutritionRow label='Fiber' value={decimalValue} unit='g' testId={defaultTestId} />
     );
 
-    expect(queryByTestId(defaultTestId + '::TextInput')).toBeNull();
+    expect(queryByTestId(defaultTestId + '::NumericTextInput')).toBeNull();
     expect(getByTestId(defaultTestId + '::Text').props.children).toBe('Fiber');
     expect(getByTestId(defaultTestId + '::Value').props.children).toEqual([
       decimalValue.toString(),
@@ -131,7 +135,7 @@ describe('NutritionRow', () => {
       />
     );
 
-    expect(queryByTestId(defaultTestId + '::TextInput')).toBeNull();
+    expect(queryByTestId(defaultTestId + '::NumericTextInput')).toBeNull();
     expect(getByTestId(defaultTestId + '::Text').props.children).toBe(defaultLabel);
     expect(getByTestId(defaultTestId + '::Value').props.children).toEqual([
       defaultValue.toString(),
@@ -154,7 +158,7 @@ describe('NutritionRow', () => {
 
     expect(getByTestId(defaultTestId + '::Text')).toBeTruthy();
     expect(getByTestId(defaultTestId + '::Value')).toBeTruthy();
-    expect(queryByTestId(defaultTestId + '::TextInput')).toBeNull();
+    expect(queryByTestId(defaultTestId + '::NumericTextInput')).toBeNull();
   });
 
   test('does not render text input when editable but no field provided', () => {
@@ -170,6 +174,6 @@ describe('NutritionRow', () => {
 
     expect(getByTestId(defaultTestId + '::Text')).toBeTruthy();
     expect(getByTestId(defaultTestId + '::Value')).toBeTruthy();
-    expect(queryByTestId(defaultTestId + '::TextInput')).toBeNull();
+    expect(queryByTestId(defaultTestId + '::NumericTextInput')).toBeNull();
   });
 });

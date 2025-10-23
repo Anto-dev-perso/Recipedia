@@ -30,7 +30,7 @@ describe('NutritionEditForm', () => {
     expect(getByTestId(defaultTestId + '::PortionWeightText').props.children).toEqual(
       'recipe.nutrition.portionWeight'
     );
-    expect(getByTestId(defaultTestId + '::PortionWeightTextInput').props.value).toEqual(
+    expect(getByTestId(defaultTestId + '::PortionWeightNumericTextInput').props.value).toEqual(
       defaultPortionWeight.toString()
     );
   });
@@ -47,7 +47,9 @@ describe('NutritionEditForm', () => {
     );
 
     const newWeight = 200;
-    fireEvent.changeText(getByTestId(defaultTestId + '::PortionWeightTextInput'), newWeight);
+    const input = getByTestId(defaultTestId + '::PortionWeightNumericTextInput');
+    fireEvent.changeText(input, newWeight.toString());
+    fireEvent(input, 'onBlur');
     expect(localMockOnChange).toHaveBeenCalledWith(newWeight);
   });
 
@@ -62,8 +64,10 @@ describe('NutritionEditForm', () => {
       />
     );
 
-    fireEvent.changeText(getByTestId(defaultTestId + '::PortionWeightTextInput'), 'invalid');
-    expect(localMockOnChange).toHaveBeenCalledWith(100);
+    const input = getByTestId(defaultTestId + '::PortionWeightNumericTextInput');
+    fireEvent.changeText(input, 'invalid');
+    fireEvent(input, 'onBlur');
+    expect(localMockOnChange).toHaveBeenCalledWith(0);
   });
 
   test('shows remove button when showRemoveButton is true', () => {
@@ -81,7 +85,7 @@ describe('NutritionEditForm', () => {
     expect(getByTestId(defaultTestId + '::PortionWeightText').props.children).toEqual(
       'recipe.nutrition.portionWeight'
     );
-    expect(getByTestId(defaultTestId + '::PortionWeightTextInput').props.value).toEqual(
+    expect(getByTestId(defaultTestId + '::PortionWeightNumericTextInput').props.value).toEqual(
       defaultPortionWeight.toString()
     );
     expect(getByTestId(defaultTestId + '::RemoveButton')).toBeTruthy();
@@ -131,7 +135,7 @@ describe('NutritionEditForm', () => {
     expect(getByTestId(customTestId + '::PortionWeightText').props.children).toEqual(
       'recipe.nutrition.portionWeight'
     );
-    expect(getByTestId(customTestId + '::PortionWeightTextInput').props.value).toEqual(
+    expect(getByTestId(customTestId + '::PortionWeightNumericTextInput').props.value).toEqual(
       defaultPortionWeight.toString()
     );
   });

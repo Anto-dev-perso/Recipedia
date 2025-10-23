@@ -66,7 +66,7 @@ describe('SearchBar Component', () => {
   test('handles text input changes correctly', () => {
     const { getByTestId } = renderSearchBar();
 
-    const textInput = getByTestId(defaultTestId + '::TextInput');
+    const textInput = getByTestId(defaultTestId);
     expect(mockUpdateSearchString).not.toHaveBeenCalled();
 
     fireEvent.changeText(textInput, 'spaghetti');
@@ -84,7 +84,7 @@ describe('SearchBar Component', () => {
 
     expect(mockSetSearchBarClicked).not.toHaveBeenCalled();
 
-    const textInput = getByTestId(defaultTestId + '::TextInput');
+    const textInput = getByTestId(defaultTestId);
     fireEvent(textInput, 'onFocus');
 
     expect(mockSetSearchBarClicked).toHaveBeenCalledWith(true);
@@ -95,7 +95,7 @@ describe('SearchBar Component', () => {
 
     expect(mockSetSearchBarClicked).not.toHaveBeenCalled();
 
-    const textInput = getByTestId(defaultTestId + '::TextInput');
+    const textInput = getByTestId(defaultTestId);
     fireEvent(textInput, 'onSubmitEditing');
 
     expect(mockSetSearchBarClicked).toHaveBeenCalledWith(false);
@@ -133,14 +133,14 @@ describe('SearchBar Component', () => {
 
     assertSearchBar(getByTestId, queryByTestId, prop);
 
-    expect(queryByTestId(defaultTestId + '::TextInput')).toBeNull();
+    expect(queryByTestId(defaultTestId)).toBeNull();
   });
 
   test('maintains functionality across rapid interactions', () => {
     const prop: SearchBarProps = { ...defaultProps, searchPhrase: 'test' };
     const { getByTestId } = renderSearchBar(prop);
 
-    const textInput = getByTestId(defaultTestId + '::TextInput');
+    const textInput = getByTestId(defaultTestId);
 
     fireEvent(textInput, 'onFocus');
     fireEvent.changeText(textInput, 'new text');
@@ -180,7 +180,7 @@ describe('SearchBar Component', () => {
     const props: SearchBarProps = { ...defaultProps };
     const { getByTestId, rerender } = renderSearchBar(props);
 
-    const textInput = getByTestId(defaultTestId + '::TextInput');
+    const textInput = getByTestId(defaultTestId);
     fireEvent.changeText(textInput, 'initial');
     expect(mockUpdateSearchString).toHaveBeenCalledWith('initial');
 
@@ -203,7 +203,7 @@ describe('SearchBar Component', () => {
 
   test('handles simultaneous focus and text changes correctly', () => {
     const { getByTestId } = renderSearchBar();
-    const textInput = getByTestId(defaultTestId + '::TextInput');
+    const textInput = getByTestId(defaultTestId);
 
     fireEvent(textInput, 'onFocus');
     fireEvent.changeText(textInput, 'focused text');
@@ -231,7 +231,7 @@ describe('SearchBar Component', () => {
       const expectedProp: SearchBarProps = { ...defaultProps, searchPhrase: text };
       assertSearchBar(getByTestId, queryByTestId, expectedProp);
 
-      const textInput = getByTestId(defaultTestId + '::TextInput');
+      const textInput = getByTestId(defaultTestId);
       fireEvent(textInput, 'onFocus');
       expect(mockSetSearchBarClicked).toHaveBeenCalledWith(true);
 

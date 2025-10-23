@@ -51,7 +51,7 @@ describe('TextInputWithDropDown Component', () => {
   test('renders correctly with default props', () => {
     const { getByTestId, queryByTestId } = render(<TextInputWithDropDown {...defaultProps} />);
 
-    expect(getByTestId('TextInputWithDropDown::TextInput')).toBeTruthy();
+    expect(getByTestId('TextInputWithDropDown::CustomTextInput')).toBeTruthy();
     expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy();
     for (const ingredient of dbInstance.get_ingredients()) {
       expect(
@@ -68,7 +68,7 @@ describe('TextInputWithDropDown Component', () => {
     const { getByTestId, queryByTestId } = render(<TextInputWithDropDown {...props} />);
 
     await waitFor(() =>
-      expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual('Salm')
+      expect(getByTestId('TextInputWithDropDown::CustomTextInput').props.value).toEqual('Salm')
     );
     expect(mockOnChangeText).not.toHaveBeenCalled();
     expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy();
@@ -82,12 +82,12 @@ describe('TextInputWithDropDown Component', () => {
     }
 
     await act(async () => {
-      fireEvent(getByTestId('TextInputWithDropDown::TextInput'), 'focus');
+      fireEvent(getByTestId('TextInputWithDropDown::CustomTextInput'), 'focus');
     });
     await waitFor(() =>
       expect(getByTestId('TextInputWithDropDown::DropdownContainer')).toBeTruthy()
     );
-    expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual('Salm');
+    expect(getByTestId('TextInputWithDropDown::CustomTextInput').props.value).toEqual('Salm');
     expect(mockOnChangeText).not.toHaveBeenCalled();
 
     for (const ingredient of dbInstance.get_ingredients()) {
@@ -113,7 +113,7 @@ describe('TextInputWithDropDown Component', () => {
   test('shows dropdown when text input is on focus and hiding when input no more having elements in the array', async () => {
     const { getByTestId, queryByTestId } = render(<TextInputWithDropDown {...defaultProps} />);
 
-    const input = getByTestId('TextInputWithDropDown::TextInput');
+    const input = getByTestId('TextInputWithDropDown::CustomTextInput');
     await act(async () => {
       fireEvent(input, 'focus');
     });
@@ -121,7 +121,7 @@ describe('TextInputWithDropDown Component', () => {
     await waitFor(() =>
       expect(getByTestId('TextInputWithDropDown::DropdownContainer')).toBeTruthy()
     );
-    expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual('');
+    expect(getByTestId('TextInputWithDropDown::CustomTextInput').props.value).toEqual('');
     expect(mockOnChangeText).not.toHaveBeenCalled();
     for (const ingredient of dbInstance.get_ingredients()) {
       expect(
@@ -143,7 +143,7 @@ describe('TextInputWithDropDown Component', () => {
     await waitFor(() =>
       expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy()
     );
-    expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual(textInput);
+    expect(getByTestId('TextInputWithDropDown::CustomTextInput').props.value).toEqual(textInput);
     expect(mockOnChangeText).not.toHaveBeenCalled();
     for (const ingredient of dbInstance.get_ingredients()) {
       expect(
@@ -158,7 +158,7 @@ describe('TextInputWithDropDown Component', () => {
   test('shows dropdown when typing and hides when selecting an item', async () => {
     const { getByTestId, queryByTestId } = render(<TextInputWithDropDown {...defaultProps} />);
 
-    const input = getByTestId('TextInputWithDropDown::TextInput');
+    const input = getByTestId('TextInputWithDropDown::CustomTextInput');
     const textInput = 'past';
     await act(async () => {
       fireEvent.changeText(input, textInput);
@@ -167,7 +167,7 @@ describe('TextInputWithDropDown Component', () => {
     await waitFor(() =>
       expect(getByTestId('TextInputWithDropDown::DropdownContainer')).toBeTruthy()
     );
-    expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual(textInput);
+    expect(getByTestId('TextInputWithDropDown::CustomTextInput').props.value).toEqual(textInput);
     expect(mockOnChangeText).not.toHaveBeenCalled();
     for (const ingredient of dbInstance.get_ingredients()) {
       if (ingredient.name.toLowerCase().includes('past')) {
@@ -194,7 +194,7 @@ describe('TextInputWithDropDown Component', () => {
       fireEvent.press(getByTestId('TextInputWithDropDown::TouchableOpacity::Pasta'));
     });
     await waitFor(() =>
-      expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual('Pasta')
+      expect(getByTestId('TextInputWithDropDown::CustomTextInput').props.value).toEqual('Pasta')
     );
     expect(mockOnChangeText).toHaveBeenCalledWith('Pasta');
     expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy();
@@ -203,14 +203,14 @@ describe('TextInputWithDropDown Component', () => {
   test('hides dropdown on submit', async () => {
     const { getByTestId, queryByTestId } = render(<TextInputWithDropDown {...defaultProps} />);
 
-    const input = getByTestId('TextInputWithDropDown::TextInput');
+    const input = getByTestId('TextInputWithDropDown::CustomTextInput');
     const textInput = 'banana';
     await act(async () => {
       fireEvent.changeText(input, textInput);
     });
 
     await waitFor(() =>
-      expect(getByTestId('TextInputWithDropDown::TextInput').props.value).toEqual(textInput)
+      expect(getByTestId('TextInputWithDropDown::CustomTextInput').props.value).toEqual(textInput)
     );
     expect(queryByTestId('TextInputWithDropDown::DropdownContainer')).not.toBeTruthy();
     expect(mockOnChangeText).not.toHaveBeenCalled();
