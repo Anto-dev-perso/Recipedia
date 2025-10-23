@@ -85,7 +85,7 @@ export const Text: React.FC<any> = props => (
   </RNText>
 );
 
-export const TextInput = React.forwardRef<any, any>((props, ref) => {
+const TextInputComponent = React.forwardRef<any, any>((props, ref) => {
   const textInputProps: TextInputProps = {
     testID: props.testID,
     style: props.style,
@@ -101,18 +101,26 @@ export const TextInput = React.forwardRef<any, any>((props, ref) => {
     keyboardType: props.keyboardType,
   };
 
-  // If there's a label, render it as Text above the TextInput
-  if (props.label) {
-    return (
-      <View>
-        <RNText testID={props.testID + '::Label'}>{props.label}</RNText>
-        <RNTextInput {...textInputProps} />
-      </View>
-    );
-  }
+  return (
+    <View>
+      {props.label && <RNText testID={props.testID + '::Label'}>{props.label}</RNText>}
+      <RNTextInput
+        {...textInputProps}
+        {...{
+          label: props.label,
+          mode: props.mode,
+          dense: props.dense,
+          right: props.right,
+        }}
+      />
+      {props.right && <View testID={props.testID + '::Right'}>{props.right}</View>}
+    </View>
+  );
+}) as any;
 
-  return <RNTextInput {...textInputProps} />;
-});
+TextInputComponent.Affix = (props: any) => <RNText testID={props.testID}>{props.text}</RNText>;
+
+export const TextInput = TextInputComponent;
 
 export const Chip: React.FC<any> = props => (
   <TouchableOpacity testID={props.testID} onPress={props.onPress} style={props.style}>
