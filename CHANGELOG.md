@@ -1,3 +1,10 @@
+## [0.14.4](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.3...v0.14.4) (2025-10-23)
+
+### Bug Fixes
+
+* **recipe:** ensure dialog properties use spread to avoid mutations ([c94a226](https://github.com/Anto-dev-perso/Recipedia/commit/c94a2266462dec16bd7968830938dff53561e5fe))
+* **recipe:** improve dialog content formatting for similar recipes ([6f5f93d](https://github.com/Anto-dev-perso/Recipedia/commit/6f5f93dd8e732ab5eafb3bc31b4aef021c1b54aa))
+
 ## [0.14.3](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.2...v0.14.3) (2025-10-22)
 
 ### Bug Fixes
