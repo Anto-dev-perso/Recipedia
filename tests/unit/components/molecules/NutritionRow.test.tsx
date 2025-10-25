@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { NutritionRow } from '@components/molecules/NutritionRow';
+import { defaultValueNumber } from '@utils/Constants';
 
 const defaultTestId = 'test';
 const defaultLabel = 'Energy';
@@ -107,7 +108,8 @@ describe('NutritionRow', () => {
     const input = getByTestId(defaultTestId + '::NumericTextInput');
     fireEvent.changeText(input, 'invalid');
     fireEvent(input, 'onBlur');
-    expect(localMockOnValueChange).toHaveBeenCalledWith('energyKcal', 0);
+
+    expect(localMockOnValueChange).toHaveBeenCalledWith('energyKcal', defaultValueNumber);
   });
 
   test('formats decimal values correctly', () => {

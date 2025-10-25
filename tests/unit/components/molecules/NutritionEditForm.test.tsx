@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { NutritionEditForm } from '@components/molecules/NutritionEditForm';
+import { defaultValueNumber } from '@utils/Constants';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock('@components/atomic/WrappableButton', () =>
@@ -67,7 +68,8 @@ describe('NutritionEditForm', () => {
     const input = getByTestId(defaultTestId + '::PortionWeightNumericTextInput');
     fireEvent.changeText(input, 'invalid');
     fireEvent(input, 'onBlur');
-    expect(localMockOnChange).toHaveBeenCalledWith(0);
+
+    expect(localMockOnChange).toHaveBeenCalledWith(defaultValueNumber);
   });
 
   test('shows remove button when showRemoveButton is true', () => {
