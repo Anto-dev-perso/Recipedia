@@ -56,7 +56,7 @@ appId: "com.recipedia"
     label: "Person text sentence begin is displayed"
 
 - assertVisible:
-    id: "RecipePersons"
+    id: "RecipePersons::NumericTextInput"
     text: "4"
     label: "Person TextInput is displayed with the default text"
 

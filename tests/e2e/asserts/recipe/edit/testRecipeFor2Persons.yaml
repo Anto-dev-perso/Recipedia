@@ -22,7 +22,7 @@ appId: "com.recipedia"
     label: "Intro text for the number of persons is rendered"
 
 - assertVisible:
-    id: "RecipePersons"
+    id: "RecipePersons::NumericTextInput"
     text: "2"
     label: "Number of persons is 2"
 

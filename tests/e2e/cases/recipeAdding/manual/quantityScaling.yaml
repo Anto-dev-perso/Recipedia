@@ -25,7 +25,6 @@ appId: "com.recipedia"
       RECIPE_NAME: "Test Recipe"
     label: "Assert recipe added successfully"
 
-
 - tapOn:
     id: "ReduceButton::RoundButton"
     label: "Collapse FAB menu"
@@ -63,7 +62,6 @@ appId: "com.recipedia"
 - tapOn:
     id: "Recipe::Dialog::Confirm"
     label: "Close deletion validation moda"
-
 
 - tapOn:
     id: "SearchScreen::FiltersSelection::0::Chip"

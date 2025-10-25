@@ -26,7 +26,7 @@ appId: "com.recipedia"
     label: "Preparation #3 title text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::CustomTextInputTitle::CustomTextInput"
+    id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
     text: "LA CUISSON DU POULET"
     label: "Preparation #3 paragraph title input text id is displayed with the correct text"
 
@@ -36,7 +36,7 @@ appId: "com.recipedia"
     label: "Preparation #3 content text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::CustomTextInputContent::CustomTextInput"
+    id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
     text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
     \ ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson\
     \ a feu moyen a vif."
@@ -59,7 +59,7 @@ appId: "com.recipedia"
     label: "Preparation #2 title text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::CustomTextInputTitle::CustomTextInput"
+    id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
     text: "La sauce"
     label: "Preparation #2 paragraph title input text id is displayed with the correct text"
 
@@ -69,7 +69,7 @@ appId: "com.recipedia"
     label: "Preparation #2 content text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::CustomTextInputContent::CustomTextInput"
+    id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
     text: "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez\
     \ et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\n\
     Salez, poivrez. Mixez jusqu'a obtenir une texture homogene."
@@ -92,7 +92,7 @@ appId: "com.recipedia"
     label: "Preparation #1 title text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::CustomTextInputTitle::CustomTextInput"
+    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
     text: "Le riz"
     label: "Preparation #1 paragraph title input text id is displayed with the correct text"
 
@@ -102,7 +102,7 @@ appId: "com.recipedia"
     label: "Preparation #1 content text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::CustomTextInputContent::CustomTextInput"
+    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
     text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz\
     \ selon les indications du paquet.Pendant ce temps, preparez les filets de poulet\
     \ a la sauce satay."
@@ -237,11 +237,12 @@ appId: "com.recipedia"
     label: "Person text sentence end is displayed"
 
 - assertVisible:
-    id: "RecipePersons"
+    id: "RecipePersons::NumericTextInput"
     text: "4"
     label: "Person TextInput is displayed with the correct text"
 
 - assertVisible:
+    id: "RecipePersons::PrefixText"
     text: "This recipe is for : "
     label: "Person text sentence begin is displayed"
 
@@ -317,7 +318,7 @@ appId: "com.recipedia"
     element:
       id: "RecipeImage"
     direction: UP
-    speed: 60
+    speed: 99
     centerElement: true
 
 - assertVisible:

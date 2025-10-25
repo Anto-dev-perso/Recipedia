@@ -16,5 +16,4 @@ appId: "com.recipedia"
     text: "200"
     label: "Enter portion weight value"
 
-- hideKeyboard:
-    label: "Close keyboard"
+- pressKey: "ENTER"
