@@ -112,13 +112,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::CustomTextInputContent::CustomTextInput"
+      id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to preparation content input"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::CustomTextInputContent::CustomTextInput"
+    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
     label: "Focus on preparation content"
 
 - inputText:

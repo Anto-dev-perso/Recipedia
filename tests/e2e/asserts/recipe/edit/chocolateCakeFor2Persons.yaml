@@ -12,7 +12,7 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipePersons"
+    id: "RecipePersons::NumericTextInput"
     text: "2"
     label: "Number of persons is 2"
 
