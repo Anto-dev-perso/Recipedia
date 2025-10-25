@@ -203,11 +203,11 @@ id: "BottomTabs::Home"
 
 # Component-level elements
 id: "RecipeTitle::Text"
-id: "RecipeTitle::TextInput"
+id: "RecipeTitle::CustomTextInput"
 id: "RecipeTitle::OpenModal::RoundButton"
 
 # Indexed elements (for lists)
-id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
 id: "Modal::List#2::SquareButton::Image"
 
 # Button types
@@ -221,7 +221,7 @@ id: "RecipeValidate-text"  # Text button
 1. **Be Specific**: Use the full hierarchy to avoid ambiguity
 2. **Use Indices**: For list items, include the index (`::0`, `::1`, `#2`)
 3. **Include Type**: Append element type when multiple elements share a name
-   (`::RoundButton`, `::TextInput`)
+   (`::RoundButton`, `::CustomTextInput`)
 4. **Consistency**: Follow the established pattern for new components
 
 ## File Types
@@ -959,7 +959,7 @@ asserts/
 ```yaml
 # Tap on input field
 - tapOn:
-    id: 'Input::TextInput'
+    id: 'Input::CustomTextInput'
     label: 'Focus on input field'
 
 # Enter text

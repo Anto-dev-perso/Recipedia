@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Add a new tag"
 
 - tapOn:
-    id: "RecipeTags::List::0::TextInput"
+    id: "RecipeTags::List::0::CustomTextInput"
     label: "Press the new tag TextInput"
 
 - inputText:

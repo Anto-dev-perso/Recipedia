@@ -12,7 +12,7 @@ appId: "com.recipedia"
     label: "Open Add tag dialog again"
 
 - tapOn:
-    id: "TagsSettings::ItemDialog::AddModal::Name::TextInput"
+    id: "TagsSettings::ItemDialog::AddModal::Name::CustomTextInput"
     label: "Focus on tag name input"
 
 - inputText:

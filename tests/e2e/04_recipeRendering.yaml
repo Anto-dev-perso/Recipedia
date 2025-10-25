@@ -1,27 +1,26 @@
 appId: "com.recipedia"
 name: "Recipe screen test suite"
 ---
-#- launchApp
-#
-#- runFlow:
-#    file: "cases/recipeRendering/readOnlyFromSearch.yaml"
-#    label: "Test recipe read-only view from Search screen"
-#
-#- runFlow:
-#    file: "cases/recipeRendering/readOnlyFromHome.yaml"
-#    label: "Test recipe read-only view from Home screen"
-#
-#- runFlow:
-#    file: "cases/recipeRendering/editFromSearch.yaml"
-#    label: "Test recipe edit view from Search screen"
-#
-#- runFlow:
-#    file: "cases/recipeRendering/editFromHome.yaml"
-#    label: "Test recipe edit and validate from Home screen"
+- launchApp
+
+- runFlow:
+    file: "cases/recipeRendering/readOnlyFromSearch.yaml"
+    label: "Test recipe read-only view from Search screen"
+
+- runFlow:
+    file: "cases/recipeRendering/readOnlyFromHome.yaml"
+    label: "Test recipe read-only view from Home screen"
+
+- runFlow:
+    file: "cases/recipeRendering/editFromSearch.yaml"
+    label: "Test recipe edit view from Search screen"
+
+- runFlow:
+    file: "cases/recipeRendering/editFromHome.yaml"
+    label: "Test recipe edit and validate from Home screen"
 
 - runFlow:
     file: "cases/recipeRendering/quantityScalingOnEdit.yaml"
     label: "Test quantity scaling when editing recipe persons count"
-
 # TODO edit and validate then open search screen and open the recipe
 # TODO test the recipe deletion (add a recipe then delete it from Home, Search) + what happen if the recipe was in the shopping list

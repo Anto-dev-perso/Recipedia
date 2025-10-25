@@ -105,12 +105,12 @@ describe('ItemDialog Component', () => {
           'add_ingredient'
         );
         expect(queryByTestId('IngredientDialog::AddModal::Text')).toBeNull();
-        expect(getByTestId('IngredientDialog::AddModal::Name::TextInput')).toBeTruthy();
+        expect(getByTestId('IngredientDialog::AddModal::Name::CustomTextInput')).toBeTruthy();
         expect(getByTestId('IngredientDialog::AddModal::Type').props.children).toEqual([
           'type',
           ':',
         ]);
-        expect(getByTestId('IngredientDialog::AddModal::Unit::TextInput')).toBeTruthy();
+        expect(getByTestId('IngredientDialog::AddModal::Unit::CustomTextInput')).toBeTruthy();
 
         expect(
           getByTestId('IngredientDialog::AddModal::SeasonalityCalendar::SelectedMonths').props
@@ -126,12 +126,12 @@ describe('ItemDialog Component', () => {
 
         expect(getByTestId('IngredientDialog::EditModal::Title')).toBeTruthy();
         expect(queryByTestId('IngredientDialog::EditModal::Text')).toBeNull();
-        expect(getByTestId('IngredientDialog::EditModal::Name::TextInput')).toBeTruthy();
+        expect(getByTestId('IngredientDialog::EditModal::Name::CustomTextInput')).toBeTruthy();
         expect(getByTestId('IngredientDialog::EditModal::Type').props.children).toEqual([
           'type',
           ':',
         ]);
-        expect(getByTestId('IngredientDialog::EditModal::Unit::TextInput')).toBeTruthy();
+        expect(getByTestId('IngredientDialog::EditModal::Unit::CustomTextInput')).toBeTruthy();
 
         expect(
           getByTestId('IngredientDialog::EditModal::SeasonalityCalendar::SelectedMonths').props
@@ -150,9 +150,9 @@ describe('ItemDialog Component', () => {
           'confirmDelete',
           ' Test IngredientinterrogationMark',
         ]);
-        expect(queryByTestId('IngredientDialog::DeleteModal::Name::TextInput')).toBeNull();
+        expect(queryByTestId('IngredientDialog::DeleteModal::Name::CustomTextInput')).toBeNull();
         expect(queryByTestId('IngredientDialog::DeleteModal::Type')).toBeNull();
-        expect(queryByTestId('IngredientDialog::DeleteModal::Unit::TextInput')).toBeNull();
+        expect(queryByTestId('IngredientDialog::DeleteModal::Unit::CustomTextInput')).toBeNull();
 
         expect(
           queryByTestId('IngredientDialog::DeleteModal::SeasonalityCalendar::SelectedMonths')
@@ -229,7 +229,7 @@ describe('ItemDialog Component', () => {
 
         expect(getByTestId('TagDialog::AddModal::Title').props.children).toEqual('add_tag');
         expect(queryByTestId('TagDialog::AddModal::Text')).toBeNull();
-        expect(getByTestId('TagDialog::AddModal::Name::TextInput')).toBeTruthy();
+        expect(getByTestId('TagDialog::AddModal::Name::CustomTextInput')).toBeTruthy();
         expect(queryByTestId('TagDialog::AddModal::Menu')).toBeFalsy();
         expect(queryByTestId('TagDialog::AddModal::Unit')).toBeFalsy();
 
@@ -245,7 +245,7 @@ describe('ItemDialog Component', () => {
 
         expect(getByTestId('TagDialog::EditModal::Title').props.children).toEqual('edit_tag');
         expect(queryByTestId('TagDialog::EditModal::Text')).toBeNull();
-        expect(getByTestId('TagDialog::EditModal::Name::TextInput')).toBeTruthy();
+        expect(getByTestId('TagDialog::EditModal::Name::CustomTextInput')).toBeTruthy();
         expect(queryByTestId('TagDialog::EditModal::Menu')).toBeFalsy();
         expect(queryByTestId('TagDialog::EditModal::Unit')).toBeFalsy();
 
@@ -262,7 +262,7 @@ describe('ItemDialog Component', () => {
         expect(getByTestId('TagDialog::DeleteModal::Title').props.children).toEqual('delete');
         expect(getByTestId('TagDialog::DeleteModal::Text')).toBeTruthy();
 
-        expect(queryByTestId('TagDialog::DeleteModal::Name::TextInput')).toBeNull();
+        expect(queryByTestId('TagDialog::DeleteModal::Name::CustomTextInput')).toBeNull();
         expect(queryByTestId('TagDialog::DeleteModal::Menu')).toBeNull();
         expect(queryByTestId('TagDialog::DeleteModal::Unit')).toBeNull();
 

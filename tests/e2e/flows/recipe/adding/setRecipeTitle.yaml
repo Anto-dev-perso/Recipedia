@@ -1,13 +1,13 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     label: "Focus on recipe title input"
 
 - runFlow:
     when:
       visible:
-        id: 'RecipeTitle::TextInput'
+        id: 'RecipeTitle::CustomTextInput'
         text: '.*'
     commands:
       - eraseText:

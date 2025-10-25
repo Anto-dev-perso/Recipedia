@@ -12,7 +12,7 @@ appId: "com.recipedia"
     label: "Scroll to preparation step"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
     label: "Press preparation step title"
 
 - inputText:
@@ -23,7 +23,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
     label: "Press preparation step paragraph"
 
 - inputText:

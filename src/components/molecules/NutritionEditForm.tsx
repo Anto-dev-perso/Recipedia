@@ -5,6 +5,7 @@ import { useI18n } from '@utils/i18n';
 import { recipeTextStyles } from '@styles/recipeComponents';
 import { padding } from '@styles/spacing';
 import WrappableButton from '@components/atomic/WrappableButton';
+import NumericTextInput from '@components/atomic/NumericTextInput';
 
 export type NutritionEditFormProps = {
   portionWeight: number;
@@ -24,11 +25,6 @@ export function NutritionEditForm({
   const { colors } = useTheme();
   const { t } = useI18n();
 
-  const handleWeightChange = (text: string) => {
-    const numValue = parseFloat(text) || 100;
-    onPortionWeightChange(numValue);
-  };
-
   return (
     <View>
       <Divider />
@@ -41,10 +37,10 @@ export function NutritionEditForm({
           >
             {t('recipe.nutrition.portionWeight')}
           </Text>
-          <TextInput
-            testID={testId + '::PortionWeightTextInput'}
-            value={portionWeight.toString()}
-            onChangeText={handleWeightChange}
+          <NumericTextInput
+            testID={testId + '::PortionWeightNumericTextInput'}
+            value={portionWeight}
+            onChangeValue={onPortionWeightChange}
             style={recipeTextStyles.containerElement}
             keyboardType='numeric'
             mode='outlined'

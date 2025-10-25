@@ -6,12 +6,12 @@ appId: "com.recipedia"
     label: "Add ingredient modal title is displayed"
 
 - assertVisible:
-    id: "IngredientsSettings::ItemDialog::AddModal::Name::TextInput-label-inactive"
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput-label-inactive"
     text: "Ingredient Name"
     label: "Ingredient name input title is displayed"
 
 - assertVisible:
-    id: "IngredientsSettings::ItemDialog::AddModal::Name::TextInput"
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
     #    TODO bug
     #    text: ""
     label: "Ingredient name input field is visible"
@@ -27,12 +27,12 @@ appId: "com.recipedia"
     label: "Type dropdown menu button is visible"
 
 - assertVisible:
-    id: "IngredientsSettings::ItemDialog::AddModal::Unit::TextInput-label-inactive"
+    id: "IngredientsSettings::ItemDialog::AddModal::Unit::CustomTextInput-label-inactive"
     text: "Unit"
     label: "Unit input title is displayed"
 
 - assertVisible:
-    id: "IngredientsSettings::ItemDialog::AddModal::Unit::TextInput"
+    id: "IngredientsSettings::ItemDialog::AddModal::Unit::CustomTextInput"
     text: "g"
     label: "Unit input field is visible"
 

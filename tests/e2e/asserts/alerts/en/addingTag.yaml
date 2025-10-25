@@ -7,12 +7,12 @@ appId: "com.recipedia"
     label: "Alert title is rendered"
 
 - assertVisible:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::TextInput-label-inactive"
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::CustomTextInput-label-inactive"
     text: "Tag name"
     label: "Alert text input is rendered"
 
 - assertVisible:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::TextInput"
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::CustomTextInput"
     label: "Alert text input is rendered"
 
 - assertVisible:

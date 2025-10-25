@@ -16,7 +16,7 @@ appId: "com.recipedia"
     label: "Tap Edit button for Lettuce Edited"
 
 - tapOn:
-    id: "IngredientsSettings::ItemDialog::EditModal::Name::TextInput"
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::CustomTextInput"
     label: "Focus on ingredient name input field"
 
 - eraseText:
@@ -38,7 +38,7 @@ appId: "com.recipedia"
     label: "Restore type to vegetable"
 
 - tapOn:
-    id: "IngredientsSettings::ItemDialog::EditModal::Unit::TextInput"
+    id: "IngredientsSettings::ItemDialog::EditModal::Unit::CustomTextInput"
     label: "Focus on unit input field"
 
 - eraseText:

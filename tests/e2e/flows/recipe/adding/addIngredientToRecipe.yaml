@@ -12,13 +12,13 @@ appId: "com.recipedia"
     label: "Add ingredient"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::${INDEX}::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::${INDEX}::QuantityInput::NumericTextInput"
     label: "Focus on ingredient quantity"
 
 - runFlow:
     when:
       visible:
-        id: 'RecipeIngredients::TextRender::${INDEX}::QuantityInput::TextInput'
+        id: 'RecipeIngredients::TextRender::${INDEX}::QuantityInput::NumericTextInput'
         text: '.+'
     commands:
       - eraseText:
@@ -32,13 +32,13 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::${INDEX}::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::${INDEX}::Dropdown::CustomTextInput"
     label: "Focus on ingredient name"
 
 - runFlow:
     when:
       visible:
-        id: 'RecipeIngredients::TextRender::${INDEX}::Dropdown::TextInput'
+        id: 'RecipeIngredients::TextRender::${INDEX}::Dropdown::CustomTextInput'
         text: '.+'
     commands:
       - eraseText:

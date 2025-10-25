@@ -2,13 +2,13 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      id: "RecipeTime::TextInput"
+      id: "RecipeTime::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to time input"
 
 - tapOn:
-    id: "RecipeTime::TextInput"
+    id: "RecipeTime::NumericTextInput"
     label: "Press time input"
 
 - inputText:

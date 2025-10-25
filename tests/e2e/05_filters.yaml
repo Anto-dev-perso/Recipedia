@@ -18,6 +18,5 @@ name: "Tests suite checking that filters are working correctly"
 - runFlow:
     file: "cases/filters/mixUpNameAndFilters.yaml"
     label: "Test mixing search text with filters"
-
 # TODO remove a filter with the filter button
 # TODO add filters so that no recipe is displayed

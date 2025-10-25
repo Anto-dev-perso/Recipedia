@@ -63,12 +63,13 @@ import {
   unitySeparator,
 } from '@styles/typography';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { StyleProp, TextStyle, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import TextInputWithDropDown from '@components/molecules/TextInputWithDropDown';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { recipeTextRenderStyles } from '@styles/recipeComponents';
 import CustomTextInput from '@components/atomic/CustomTextInput';
+import NumericTextInput from '@components/atomic/NumericTextInput';
 import { useI18n } from '@utils/i18n';
 import { uiLogger } from '@utils/logger';
 import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
@@ -133,13 +134,12 @@ export function TextRender(props: TextRenderProps) {
       <View key={index}>
         {props.editText ? (
           <View style={screenViews.tabView}>
-            <CustomTextInput
-              testID={props.testID + `::${index}::QuantityInput`}
-              style={recipeTextRenderStyles.firstColumn}
+            <NumericTextInput
+              testID={props.testID + `::${index}::QuantityInput::NumericTextInput`}
+              style={recipeTextRenderStyles.firstColumn as StyleProp<TextStyle>}
               contentStyle={recipeTextRenderStyles.columnContentStyle}
-              value={quantity.toString()}
-              onChangeText={newQuantity => {
-                // Get current ingredient data from props.text
+              value={parseFloat(quantity) || 0}
+              onChangeValue={newQuantity => {
                 const currentItem = props.text[index] as string;
                 const [currentUnitAndQuantity, currentIngName] = currentItem.split(textSeparator);
                 const [, currentUnit] = currentUnitAndQuantity.split(unitySeparator);
