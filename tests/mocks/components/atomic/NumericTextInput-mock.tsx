@@ -1,6 +1,7 @@
 import { TextInput } from 'react-native';
 import React from 'react';
 import { NumericTextInputProps } from '@components/atomic/NumericTextInput';
+import { defaultValueNumber } from '@utils/Constants';
 
 export function numericTextInputMock({
   testID,
@@ -13,7 +14,11 @@ export function numericTextInputMock({
   right,
   style,
 }: NumericTextInputProps) {
-  const [currentText, setCurrentText] = React.useState(value.toString());
+  const getTextFromValue = (val: number) => {
+    return val === defaultValueNumber ? '' : val.toString();
+  };
+
+  const [currentText, setCurrentText] = React.useState(getTextFromValue(value));
 
   const handleChangeText = (text: string) => {
     setCurrentText(text);
@@ -22,15 +27,20 @@ export function numericTextInputMock({
   const handleBlur = () => {
     if (onChangeValue) {
       const parsed = parseFloat(currentText);
-      const finalValue = isNaN(parsed) ? 0 : parsed;
-      onChangeValue(finalValue);
+      const finalValue = isNaN(parsed) ? defaultValueNumber : parsed;
+
+      if (finalValue !== value) {
+        onChangeValue(finalValue);
+      }
     }
   };
+
+  const displayValue = getTextFromValue(value);
 
   return (
     <TextInput
       testID={testID}
-      value={value.toString()}
+      value={displayValue}
       keyboardType={keyboardType}
       onChangeText={handleChangeText}
       onBlur={handleBlur}

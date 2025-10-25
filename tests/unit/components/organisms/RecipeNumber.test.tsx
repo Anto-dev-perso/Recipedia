@@ -70,19 +70,21 @@ describe('RecipeNumber Component', () => {
         expect(queryByTestId(componentProps.testID + '::OpenModal')).toBeNull();
         expect(queryByTestId(componentProps.testID + '::ManuallyFill')).toBeNull();
         break;
-      case 'editable':
+      case 'editable': {
         expect(getByTestId(componentProps.testID + '::PrefixText').props.children).toBe(
           componentProps.numberProps.prefixText
         );
         expect(getByTestId(componentProps.testID + '::SuffixText').props.children).toBe(
           componentProps.numberProps.suffixText
         );
+        const expectedValue = componentProps.numberProps.textEditable ?? defaultValueNumber;
         expect(getByTestId(componentProps.testID + '::NumericTextInput').props.value).toEqual(
-          String(componentProps.numberProps.textEditable ?? defaultValueNumber)
+          expectedValue === defaultValueNumber ? '' : String(expectedValue)
         );
         expect(queryByTestId(componentProps.testID + '::OpenModal')).toBeNull();
         expect(queryByTestId(componentProps.testID + '::ManuallyFill')).toBeNull();
         break;
+      }
       case 'add':
         expect(getByTestId(componentProps.testID + '::PrefixText').props.children).toBe(
           componentProps.numberProps.prefixText
@@ -141,11 +143,10 @@ describe('RecipeNumber Component', () => {
     assertComponent(getByTestId, queryByTestId, inputChange);
 
     textNewValue = 'abc';
-    const expectedValue = 0;
 
     fireEvent.changeText(textInput, textNewValue);
     fireEvent(textInput, 'onBlur');
-    expect(mockSetTextToEdit).toHaveBeenCalledWith(expectedValue);
+    expect(mockSetTextToEdit).toHaveBeenCalledWith(defaultValueNumber);
     assertComponent(getByTestId, queryByTestId, inputChange);
 
     textNewValue = '2.5';

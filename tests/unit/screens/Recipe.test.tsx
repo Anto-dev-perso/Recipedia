@@ -1131,7 +1131,7 @@ describe('Recipe Component tests', () => {
       recipe: {
         ...testRecipes[1], // Start with complete recipe
         nutrition: {
-          energyKcal: 0, // Zero value should trigger validation error
+          energyKcal: defaultValueNumber, // defaultValueNumber should trigger validation error
           energyKj: 200,
           fat: 5,
           saturatedFat: 1,
@@ -1190,16 +1190,16 @@ describe('Recipe Component tests', () => {
       recipe: {
         ...testRecipes[1],
         nutrition: {
-          energyKcal: 0,
-          energyKj: 0,
-          fat: 0,
-          saturatedFat: 0,
-          carbohydrates: 0,
-          sugars: 0,
-          fiber: 0,
-          protein: 0,
-          salt: 0,
-          portionWeight: 0,
+          energyKcal: defaultValueNumber,
+          energyKj: defaultValueNumber,
+          fat: defaultValueNumber,
+          saturatedFat: defaultValueNumber,
+          carbohydrates: defaultValueNumber,
+          sugars: defaultValueNumber,
+          fiber: defaultValueNumber,
+          protein: defaultValueNumber,
+          salt: defaultValueNumber,
+          portionWeight: defaultValueNumber,
         },
       },
     };

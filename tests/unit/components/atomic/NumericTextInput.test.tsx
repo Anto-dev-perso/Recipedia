@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import NumericTextInput, { NumericTextInputProps } from '@components/atomic/NumericTextInput';
 import { TextInput } from 'react-native-paper';
+import { defaultValueNumber } from '@utils/Constants';
 
 const baseProps: NumericTextInputProps = {
   testID: 'numeric-input',
@@ -58,7 +59,7 @@ describe('NumericTextInput', () => {
     expect(handleChangeValue).toHaveBeenCalledWith(2.5);
   });
 
-  test('handles empty input by defaulting to 0', () => {
+  test('handles empty input by defaulting to defaultValueNumber', () => {
     const handleChangeValue = jest.fn();
     const { getByTestId } = render(
       <NumericTextInput {...baseProps} value={42} onChangeValue={handleChangeValue} />
@@ -68,11 +69,11 @@ describe('NumericTextInput', () => {
     fireEvent.changeText(input, '');
     fireEvent(input, 'onBlur');
 
-    expect(handleChangeValue).toHaveBeenCalledWith(0);
-    expect(input.props.value).toEqual('0');
+    expect(handleChangeValue).toHaveBeenCalledWith(defaultValueNumber);
+    expect(input.props.value).toEqual('');
   });
 
-  test('handles invalid input by defaulting to 0', () => {
+  test('handles invalid input by defaulting to defaultValueNumber', () => {
     const handleChangeValue = jest.fn();
     const { getByTestId } = render(
       <NumericTextInput {...baseProps} value={5} onChangeValue={handleChangeValue} />
@@ -82,8 +83,8 @@ describe('NumericTextInput', () => {
     fireEvent.changeText(input, 'abc');
     fireEvent(input, 'onBlur');
 
-    expect(handleChangeValue).toHaveBeenCalledWith(0);
-    expect(input.props.value).toEqual('0');
+    expect(handleChangeValue).toHaveBeenCalledWith(defaultValueNumber);
+    expect(input.props.value).toEqual('');
   });
 
   test('does not call onChangeValue if value unchanged on blur', () => {
@@ -159,5 +160,58 @@ describe('NumericTextInput', () => {
     const { getByTestId } = render(<NumericTextInput {...baseProps} editable={false} />);
     const input = getByTestId('numeric-input');
     expect(input.props.editable).toBe(false);
+  });
+
+  test('displays empty string when value is defaultValueNumber', () => {
+    const { getByTestId } = render(<NumericTextInput {...baseProps} value={defaultValueNumber} />);
+    const input = getByTestId('numeric-input');
+    expect(input.props.value).toEqual('');
+  });
+
+  test('keeps defaultValueNumber when blurring empty field that started as defaultValueNumber', () => {
+    const handleChange = jest.fn();
+    const { getByTestId } = render(
+      <NumericTextInput {...baseProps} value={defaultValueNumber} onChangeValue={handleChange} />
+    );
+    const input = getByTestId('numeric-input');
+
+    fireEvent(input, 'onBlur');
+    expect(handleChange).not.toHaveBeenCalled();
+  });
+
+  test('converts to defaultValueNumber when blurring empty field that started with a real value', () => {
+    const handleChange = jest.fn();
+    const { getByTestId } = render(
+      <NumericTextInput {...baseProps} value={100} onChangeValue={handleChange} />
+    );
+    const input = getByTestId('numeric-input');
+
+    fireEvent.changeText(input, '');
+    fireEvent(input, 'onBlur');
+    expect(handleChange).toHaveBeenCalledWith(defaultValueNumber);
+  });
+
+  test('allows changing from defaultValueNumber to a real value', () => {
+    const handleChange = jest.fn();
+    const { getByTestId } = render(
+      <NumericTextInput {...baseProps} value={defaultValueNumber} onChangeValue={handleChange} />
+    );
+    const input = getByTestId('numeric-input');
+
+    fireEvent.changeText(input, '5');
+    fireEvent(input, 'onBlur');
+    expect(handleChange).toHaveBeenCalledWith(5);
+  });
+
+  test('handles invalid input from defaultValueNumber by staying at defaultValueNumber', () => {
+    const handleChange = jest.fn();
+    const { getByTestId } = render(
+      <NumericTextInput {...baseProps} value={defaultValueNumber} onChangeValue={handleChange} />
+    );
+    const input = getByTestId('numeric-input');
+
+    fireEvent.changeText(input, 'invalid');
+    fireEvent(input, 'onBlur');
+    expect(handleChange).not.toHaveBeenCalled();
   });
 });
