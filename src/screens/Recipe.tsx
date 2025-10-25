@@ -249,7 +249,11 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   useEffect(() => {
     const previousPersons = previousPersonsRef.current;
     const nextPersons = recipePersons;
-    if (previousPersons > 0 && nextPersons > 0 && previousPersons !== nextPersons) {
+    if (
+      previousPersons !== defaultValueNumber &&
+      nextPersons !== defaultValueNumber &&
+      previousPersons !== nextPersons
+    ) {
       setRecipeIngredients(prevIngredients =>
         prevIngredients.map(ing => ({
           ...ing,
@@ -656,7 +660,10 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     if (recipePersons === defaultValueNumber) {
       missingElem.push(t(translatedMissingElemPrefix + 'titlePersons'));
     }
-    if (recipeNutrition && Object.values(recipeNutrition).some(value => value === 0)) {
+    if (
+      recipeNutrition &&
+      Object.values(recipeNutrition).some(value => value === defaultValueNumber)
+    ) {
       missingElem.push(t(translatedMissingElemPrefix + 'nutrition'));
     }
 
@@ -863,16 +870,16 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     }
     if (newFieldData.recipeNutrition) {
       const newNutrition: nutritionTableElement = {
-        energyKcal: 0,
-        energyKj: 0,
-        fat: 0,
-        saturatedFat: 0,
-        carbohydrates: 0,
-        sugars: 0,
-        fiber: 0,
-        protein: 0,
-        salt: 0,
-        portionWeight: 0,
+        energyKcal: defaultValueNumber,
+        energyKj: defaultValueNumber,
+        fat: defaultValueNumber,
+        saturatedFat: defaultValueNumber,
+        carbohydrates: defaultValueNumber,
+        sugars: defaultValueNumber,
+        fiber: defaultValueNumber,
+        protein: defaultValueNumber,
+        salt: defaultValueNumber,
+        portionWeight: defaultValueNumber,
       };
 
       for (const [key, value] of Object.entries(newFieldData.recipeNutrition)) {

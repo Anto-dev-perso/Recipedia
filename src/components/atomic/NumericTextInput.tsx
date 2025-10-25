@@ -26,8 +26,9 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { StyleProp, TextStyle } from 'react-native';
+import { Keyboard, StyleProp, TextStyle } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
+import { defaultValueNumber } from '@utils/Constants';
 
 export type NumericTextInputProps = {
   testID: string;
@@ -56,12 +57,29 @@ export function NumericTextInput({
   keyboardType = 'numeric',
   editable = true,
 }: NumericTextInputProps) {
-  const [rawText, setRawText] = useState(value.toString());
+  const getTextFromValue = (value: number) => {
+    return value === defaultValueNumber ? '' : value.toString();
+  };
+
+  const [rawText, setRawText] = useState(getTextFromValue(value));
+  const [isFocused, setIsFocused] = useState(false);
   const { colors } = useTheme();
 
   useEffect(() => {
-    setRawText(value.toString());
+    setRawText(value === defaultValueNumber ? '' : value.toString());
   }, [value]);
+
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      if (isFocused) {
+        handleBlur();
+      }
+    });
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, [isFocused, rawText, value]);
 
   function handleChangeText(text: string) {
     setRawText(text);
@@ -69,13 +87,17 @@ export function NumericTextInput({
 
   function handleBlur() {
     const parsed = parseFloat(rawText);
-    const finalValue = isNaN(parsed) ? 0 : parsed;
+    const finalValue = isNaN(parsed) ? defaultValueNumber : parsed;
 
+    setRawText(getTextFromValue(finalValue));
     if (finalValue !== value) {
       onChangeValue?.(finalValue);
     }
+    setIsFocused(false);
+  }
 
-    setRawText(finalValue.toString());
+  function handleFocus() {
+    setIsFocused(true);
   }
 
   const inputStyle: StyleProp<TextStyle> = [
@@ -89,12 +111,13 @@ export function NumericTextInput({
       label={label}
       value={rawText}
       onChangeText={handleChangeText}
+      onFocus={handleFocus}
       onBlur={handleBlur}
       mode={mode}
       dense={dense}
       keyboardType={keyboardType}
       editable={editable}
-      style={inputStyle as any}
+      style={inputStyle}
       contentStyle={contentStyle}
       right={right}
     />
