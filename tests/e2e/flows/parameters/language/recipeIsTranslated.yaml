@@ -28,7 +28,7 @@ appId: "com.recipedia"
     id: "BackButton::RoundButton"
     label: "Quit the recipe screen"
 - runFlow:
-    file: './recipeAlerts.yaml'
+    file: "./recipeAlerts.yaml"
     label: "Check that recipe adding alerts are translated"
 - tapOn:
     id: "ReduceButton::RoundButton"

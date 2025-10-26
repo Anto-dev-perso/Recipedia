@@ -22,4 +22,3 @@ name: "Launch and check screens are displayed correctly"
 - runFlow:
     file: "cases/launchApp/checkParametersScreen.yaml"
     label: "Check Parameters screen"
-

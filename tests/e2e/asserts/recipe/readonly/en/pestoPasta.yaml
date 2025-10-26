@@ -44,7 +44,7 @@ appId: "com.recipedia"
     label: "Ingredient Pasta is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
-    text: "200 g"
+    text: "400 g"
     label: "Quantity of Pasta is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::IngredientName"
@@ -52,7 +52,7 @@ appId: "com.recipedia"
     label: "Ingredient Basil Leaves is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
-    text: "50 g"
+    text: "100 g"
     label: "Quantity of Basil Leaves is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::IngredientName"
@@ -60,7 +60,7 @@ appId: "com.recipedia"
     label: "Ingredient Parmesan is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
-    text: "30 g"
+    text: "60 g"
     label: "Quantity of Parmesan is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::IngredientName"
@@ -68,7 +68,7 @@ appId: "com.recipedia"
     label: "Ingredient Olive Oil is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
-    text: "50 ml"
+    text: "100 ml"
     label: "Quantity of Olive Oil is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::IngredientName"
@@ -76,7 +76,7 @@ appId: "com.recipedia"
     label: "Ingredient Pine Nuts is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
-    text: "20 g"
+    text: "40 g"
     label: "Quantity of Pine Nuts is rendered"
 - assertVisible:
     id: "RecipeTime::Text"

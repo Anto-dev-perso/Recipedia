@@ -13,8 +13,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipePersons::NumericTextInput"
-    text: "6"
-    label: "Number of persons is 6"
+    text: "4"
+    label: "Number of persons is 4"
 
 - scrollUntilVisible:
     element:
@@ -36,8 +36,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
-    text: "200"
-    label: "Flour quantity is 200"
+    text: "133.33"
+    label: "Flour quantity is 133.33"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
@@ -46,8 +46,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
-    text: "50"
-    label: "Cocoa Powder quantity is 50"
+    text: "33.33"
+    label: "Cocoa Powder quantity is 33.33"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
@@ -56,8 +56,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
-    text: "150"
-    label: "Sugar quantity is 150"
+    text: "100"
+    label: "Sugar quantity is 100"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
@@ -66,8 +66,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
-    text: "100"
-    label: "Butter quantity is 100"
+    text: "66.67"
+    label: "Butter quantity is 66.67"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::Dropdown::CustomTextInput"

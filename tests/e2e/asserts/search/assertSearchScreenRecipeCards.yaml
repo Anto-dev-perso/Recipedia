@@ -32,7 +32,7 @@ appId: "com.recipedia"
     label: "Second recipe card prep time is displayed"
 - assertVisible:
     id: "SearchScreen::RecipeCards::1::Persons"
-    text: "2 persons"
+    text: "4 persons"
     label: "Second recipe card persons count is displayed"
 - assertVisible:
     text: "Chicken Tacos"
@@ -78,7 +78,7 @@ appId: "com.recipedia"
     label: "Fourth recipe card prep time is displayed"
 - assertVisible:
     id: "SearchScreen::RecipeCards::3::Persons"
-    text: "2 persons"
+    text: "4 persons"
     label: "Fourth recipe card persons count is displayed"
 - assertVisible:
     text: "Caesar Salad"
@@ -105,7 +105,7 @@ appId: "com.recipedia"
     label: "Fifth recipe card prep time is displayed"
 - assertVisible:
     id: "SearchScreen::RecipeCards::4::Persons"
-    text: "2 persons"
+    text: "4 persons"
     label: "Fifth recipe card persons count is displayed"
 - assertVisible:
     text: "Margherita Pizza"
@@ -151,7 +151,7 @@ appId: "com.recipedia"
     label: "Seventh recipe card prep time is displayed"
 - assertVisible:
     id: "SearchScreen::RecipeCards::6::Persons"
-    text: "6 persons"
+    text: "4 persons"
     label: "Seventh recipe card persons count is displayed"
 - assertVisible:
     text: "Chocolate Cake"
@@ -170,7 +170,7 @@ appId: "com.recipedia"
     label: "Eighth recipe card prep time is displayed"
 - assertVisible:
     id: "SearchScreen::RecipeCards::7::Persons"
-    text: "2 persons"
+    text: "4 persons"
     label: "Eighth recipe card persons count is displayed"
 - assertVisible:
     text: "Pesto Pasta"

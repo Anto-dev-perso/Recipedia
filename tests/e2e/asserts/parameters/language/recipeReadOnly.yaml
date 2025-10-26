@@ -9,7 +9,7 @@ appId: "com.recipedia"
     speed: 60
 - assertVisible:
     id: "RecipePersons::Text"
-    text: "Ingrédients (2 personnes)"
+    text: "Ingrédients (4 personnes)"
     label: "Persons text is displayed in French"
 - assertVisible:
     id: "RecipeTime::Text"
