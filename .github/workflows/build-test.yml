@@ -60,6 +60,20 @@ jobs:
           path: jest-results.json
           retention-days: 7
 
+      - name: Unit tests summary
+        uses: test-summary/action@v2
+        with:
+          paths: jest-results.json
+          output: unit-test-summary
+        if: always()
+
+      - name: Upload unit tests summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-summary
+          path: unit-test-summary.md
+        if: always()
+
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         with:
