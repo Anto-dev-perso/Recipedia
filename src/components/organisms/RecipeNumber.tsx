@@ -58,7 +58,7 @@ import { Icons } from '@assets/Icons';
 import { recipeNumberStyles, recipeTextStyles } from '@styles/recipeComponents';
 import { Text } from 'react-native-paper';
 import { VariantProp } from 'react-native-paper/lib/typescript/components/Typography/types';
-import CustomTextInput from '@components/atomic/CustomTextInput';
+import NumericTextInput from '@components/atomic/NumericTextInput';
 import { defaultValueNumber } from '@utils/Constants';
 
 /** Props for add mode with OCR and manual options */
@@ -144,15 +144,11 @@ function RecipeNumberEditablePart(addOrEditProps: RecipeNumberAddOrEditProps) {
         {addOrEditProps.prefixText}
       </Text>
       {addOrEditProps.editType === 'editable' ? (
-        <CustomTextInput
-          testID={addOrEditProps.testID}
-          value={
-            addOrEditProps.textEditable !== defaultValueNumber
-              ? (addOrEditProps.textEditable?.toString() ?? '')
-              : ''
-          }
-          onChangeText={newNumber => addOrEditProps.setTextToEdit(Number(newNumber))}
-          keyboardType={'numeric'}
+        <NumericTextInput
+          testID={addOrEditProps.testID + '::NumericTextInput'}
+          value={addOrEditProps.textEditable ?? defaultValueNumber}
+          onChangeValue={addOrEditProps.setTextToEdit}
+          keyboardType='numeric'
         />
       ) : (
         <View style={recipeNumberStyles.roundButtonsContainer}>

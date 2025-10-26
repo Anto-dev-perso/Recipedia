@@ -9,7 +9,7 @@ appId: "com.recipedia"
     label: "Check that adding modal appears"
 
 - tapOn:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::TextInput"
+    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::CustomTextInput"
     label: "Focus on tag name input field"
 
 - inputText:

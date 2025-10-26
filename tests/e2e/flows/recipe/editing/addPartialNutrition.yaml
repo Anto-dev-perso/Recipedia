@@ -3,14 +3,14 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::NumericTextInput"
     direction: DOWN
     speed: 60
     centerElement: true
     label: "Scroll to energy kcal field"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::NumericTextInput"
     label: "Tap energy kcal input"
 
 - inputText:
@@ -21,7 +21,7 @@ appId: "com.recipedia"
     label: "Close keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
     label: "Tap energy kj input"
 
 - inputText:
@@ -32,7 +32,7 @@ appId: "com.recipedia"
     label: "Close keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
     label: "Tap fat input"
 
 - inputText:
@@ -43,7 +43,7 @@ appId: "com.recipedia"
     label: "Close keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::NumericTextInput"
     label: "Tap carbohydrates input"
 
 - inputText:
@@ -54,7 +54,7 @@ appId: "com.recipedia"
     label: "Close keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::NumericTextInput"
     label: "Tap sugar input"
 
 - inputText:
@@ -65,7 +65,7 @@ appId: "com.recipedia"
     label: "Close keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::NumericTextInput"
     label: "Tap fiber input"
 
 - inputText:
@@ -76,7 +76,7 @@ appId: "com.recipedia"
     label: "Close keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::NumericTextInput"
     label: "Tap protein input"
 
 - inputText:
@@ -87,7 +87,7 @@ appId: "com.recipedia"
     label: "Close keyboard"
 
 - tapOn:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::TextInput"
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::NumericTextInput"
     label: "Tap salt input"
 
 - inputText:

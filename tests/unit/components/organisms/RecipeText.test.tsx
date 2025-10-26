@@ -54,7 +54,7 @@ describe('RecipeText Component', () => {
   };
 
   const assertReadOnlyMode = (queryByTestId: any, testID: string = 'test-recipe-text') => {
-    expect(queryByTestId(testID + '::TextInput')).toBeNull();
+    expect(queryByTestId(testID + '::CustomTextInput')).toBeNull();
     expect(queryByTestId(testID + '::OpenModal')).toBeNull();
   };
 
@@ -64,8 +64,8 @@ describe('RecipeText Component', () => {
     expectedValue: string = 'Editable recipe content',
     testID: string = 'test-recipe-text'
   ) => {
-    expect(getByTestId(testID + '::TextInput').props.value).toBe(expectedValue);
-    expect(getByTestId(testID + '::TextInput').props.multiline).toBe(true);
+    expect(getByTestId(testID + '::CustomTextInput').props.value).toBe(expectedValue);
+    expect(getByTestId(testID + '::CustomTextInput').props.multiline).toBe(true);
     expect(queryByTestId(testID + '::OpenModal')).toBeNull();
   };
 
@@ -76,7 +76,7 @@ describe('RecipeText Component', () => {
   ) => {
     expect(getByTestId(testID + '::OpenModal::RoundButton::Size').props.children).toBe('medium');
     expect(getByTestId(testID + '::OpenModal::RoundButton::Icon').props.children).toBe('line-scan');
-    expect(queryByTestId(testID + '::TextInput')).toBeNull();
+    expect(queryByTestId(testID + '::CustomTextInput')).toBeNull();
   };
 
   afterEach(() => {
@@ -123,7 +123,7 @@ describe('RecipeText Component', () => {
     assertBasicStructure(getByTestId);
     assertEditableMode(getByTestId, queryByTestId);
 
-    expect(getByTestId('test-recipe-text::TextInput').props.multiline).toBe(true);
+    expect(getByTestId('test-recipe-text::CustomTextInput').props.multiline).toBe(true);
   });
 
   test('renders in add mode with modal button', () => {
@@ -157,7 +157,7 @@ describe('RecipeText Component', () => {
       },
     });
 
-    const textInput = getByTestId('test-recipe-text::TextInput');
+    const textInput = getByTestId('test-recipe-text::CustomTextInput');
     expect(textInput.props.value).toBe('Initial text');
     expect(mockSetTextToEdit).not.toHaveBeenCalled();
 
@@ -260,7 +260,7 @@ describe('RecipeText Component', () => {
     assertEditableMode(getByTestId, queryByTestId, 'test', customTestId);
 
     expect(queryByTestId('test-recipe-text::Text')).toBeNull();
-    expect(queryByTestId('test-recipe-text::TextInput')).toBeNull();
+    expect(queryByTestId('test-recipe-text::CustomTextInput')).toBeNull();
   });
 
   test('handles edge cases in text content', () => {
@@ -360,7 +360,7 @@ describe('RecipeText Component', () => {
       },
     });
 
-    const textInput = getByTestId('test-recipe-text::TextInput');
+    const textInput = getByTestId('test-recipe-text::CustomTextInput');
 
     fireEvent.changeText(textInput, 'change 1');
     fireEvent.changeText(textInput, 'change 2');

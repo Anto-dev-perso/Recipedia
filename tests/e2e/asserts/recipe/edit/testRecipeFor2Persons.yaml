@@ -6,7 +6,7 @@ appId: "com.recipedia"
     label: "Title label is rendered"
 
 - assertVisible:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     text: "Test Recipe"
     label: "Title input shows 'Test Recipe'"
 
@@ -22,7 +22,7 @@ appId: "com.recipedia"
     label: "Intro text for the number of persons is rendered"
 
 - assertVisible:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons::NumericTextInput"
     text: "2"
     label: "Number of persons is 2"
 
@@ -44,27 +44,27 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+      id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     text: "200"
     label: "Pasta quantity is 200"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     text: "Pasta"
     label: "First ingredient is Pasta"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     text: "100"
     label: "Tomatoes quantity is 100"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
     text: "Tomatoes"
     label: "Second ingredient is Tomatoes"

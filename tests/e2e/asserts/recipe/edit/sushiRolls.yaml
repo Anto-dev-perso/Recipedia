@@ -17,7 +17,7 @@ appId: "com.recipedia"
     text: "Title:"
     label: "Intro text for the title is rendered"
 - assertVisible:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     text: "Sushi Rolls"
     label: "Title of the recipe is rendered"
 
@@ -34,7 +34,7 @@ appId: "com.recipedia"
     text: "Description:"
     label: "Intro text for the description is rendered"
 - assertVisible:
-    id: "RecipeDescription::TextInput"
+    id: "RecipeDescription::CustomTextInput"
     text: "CLASSIC SUSHI ROLLS WITH NORI, RICE, AND FILLINGS."
     label: "Description of the recipe is rendered"
 - assertVisible:
@@ -87,7 +87,7 @@ appId: "com.recipedia"
     text: "This recipe is for : "
     label: "Intro text for the number of persons is rendered"
 - assertVisible:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons::NumericTextInput"
     text: "4"
     label: "Number of persons is rendered"
 - assertVisible:
@@ -97,7 +97,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+      id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
     direction: DOWN
     speed: 60
 
@@ -118,79 +118,79 @@ appId: "com.recipedia"
     text: "Name"
     label: "Column Ingredient name is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     text: "250"
     label: "Quantity of first ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Unit::TextInput"
+    id: "RecipeIngredients::TextRender::0::Unit::CustomTextInput"
     text: "g"
     label: "First occurrence of the g unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     text: "Sushi Rice"
     label: "Ingredient Sushi Rice is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     text: "5"
     label: "Quantity of second ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Unit::TextInput"
+    id: "RecipeIngredients::TextRender::1::Unit::CustomTextInput"
     text: "pieces"
     label: "Pieces unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
     text: "Nori Sheets"
     label: "Ingredient Nori Sheets is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
     text: "200"
     label: "Quantity of third ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::Unit::TextInput"
+    id: "RecipeIngredients::TextRender::2::Unit::CustomTextInput"
     text: "g"
     label: "Second occurrence of the g unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
     text: "Salmon"
     label: "Ingredient Salmon is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::4::QuantityInput::TextInput"
+      id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
     direction: DOWN
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
     text: "100"
     label: "Quantity of fourth ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::Unit::TextInput"
+    id: "RecipeIngredients::TextRender::3::Unit::CustomTextInput"
     text: "g"
     label: "Third occurrence of the g unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::3::Dropdown::CustomTextInput"
     text: "Avocado"
     label: "Ingredient Avocado is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTime::TextInput"
+      id: "RecipeTime::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll down to the time to prepare"
 
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
     text: "50"
     label: "Quantity of fifth ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::Unit::TextInput"
+    id: "RecipeIngredients::TextRender::4::Unit::CustomTextInput"
     text: "ml"
     label: "ml unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::4::Dropdown::CustomTextInput"
     text: "Soy Sauce"
     label: "Ingredient Soy Sauce is rendered"
 - assertVisible:
@@ -205,7 +205,7 @@ appId: "com.recipedia"
     text: "Time to prepare the recipe :"
     label: "Intro text for the time to prepare is rendered"
 - assertVisible:
-    id: "RecipeTime::TextInput"
+    id: "RecipeTime::NumericTextInput"
     text: "45"
     label: "Time to prepare is rendered"
 - assertVisible:
@@ -228,13 +228,13 @@ appId: "com.recipedia"
     text: "Title of step 1 : "
     label: "Intro text for the title of first step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
     text: "Prepare rice"
     label: "First preparation step title is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+      id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
@@ -243,12 +243,12 @@ appId: "com.recipedia"
     text: "Content of step 1 : "
     label: "Intro text for first step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
     label: "First step input is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
+      id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
@@ -261,13 +261,13 @@ appId: "com.recipedia"
     text: "Title of step 2 : "
     label: "Intro text for the title of second step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
     text: "Spread rice"
     label: "Second preparation step title is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
+      id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
@@ -276,12 +276,12 @@ appId: "com.recipedia"
     text: "Content of step 2 : "
     label: "Intro text for second step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
     label: "Second step input is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
+      id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 40
 
@@ -294,13 +294,13 @@ appId: "com.recipedia"
     text: "Title of step 3 : "
     label: "Intro text for the title of third step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
     text: "Add fillings and roll"
     label: "Third preparation step title is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
+      id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
@@ -309,12 +309,12 @@ appId: "com.recipedia"
     text: "Content of step 3 : "
     label: "Intro text for third step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
     label: "Third step input is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::3::TextInputTitle::TextInput"
+      id: "RecipePreparation::TextRender::3::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 40
 
@@ -327,13 +327,13 @@ appId: "com.recipedia"
     text: "Title of step 4 : "
     label: "Intro text for the title of Fourth step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::TextInputTitle::TextInput"
+    id: "RecipePreparation::TextRender::3::TextInputTitle::CustomTextInput"
     text: "Serve"
     label: "Fourth preparation step title is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::3::TextInputContent::TextInput"
+      id: "RecipePreparation::TextRender::3::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
@@ -343,7 +343,7 @@ appId: "com.recipedia"
     text: "Content of step 4 : "
     label: "Intro text for Fourth step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::TextInputContent::TextInput"
+    id: "RecipePreparation::TextRender::3::TextInputContent::CustomTextInput"
     label: "Fourth step input is rendered"
 - assertVisible:
     text: "󰐕"

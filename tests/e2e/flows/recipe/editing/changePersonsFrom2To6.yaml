@@ -2,13 +2,13 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      id: "RecipePersons::TextInput"
+      id: "RecipePersons::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to persons field"
 
 - tapOn:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons::NumericTextInput"
     label: "Focus on persons input"
 
 - eraseText:

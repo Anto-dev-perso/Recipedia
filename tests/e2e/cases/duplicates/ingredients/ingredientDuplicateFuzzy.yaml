@@ -20,7 +20,7 @@ appId: "com.recipedia"
     label: "Add ingredient to recipe"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     label: "Focus on ingredient name input"
 
 - inputText:
@@ -38,7 +38,7 @@ appId: "com.recipedia"
     label: "Verify typo ingredient not added to recipe"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     text: "Butter"
     label: "Verify existing Butters ingredient added to recipe"
 
@@ -47,7 +47,7 @@ appId: "com.recipedia"
     label: "Add another ingredient to recipe"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
     label: "Focus on second ingredient name input"
 
 - inputText:

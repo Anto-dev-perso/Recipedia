@@ -6,12 +6,12 @@ appId: "com.recipedia"
     text: "Edit tag"
 
 - assertVisible:
-    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput-label-inactive"
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput-label-inactive"
     text: "Tag Name"
     label: "Tag name helper displayed"
 
 - assertVisible:
-    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
     label: "Tag name input field is visible"
 
 - assertVisible:

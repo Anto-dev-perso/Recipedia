@@ -25,7 +25,7 @@ appId: "com.recipedia"
     label: "Verify Edit tag modal is displayed"
 
 - tapOn:
-    id: "TagsSettings::ItemDialog::EditModal::Name::TextInput"
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
     label: "Focus on tag name input field"
 
 - inputText:

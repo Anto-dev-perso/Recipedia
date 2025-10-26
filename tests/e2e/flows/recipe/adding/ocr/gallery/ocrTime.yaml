@@ -15,7 +15,7 @@ appId: "com.recipedia"
           id: "RecipeTime::ManuallyFill::RoundButton"
           label: "Tap on button to enter time manually"
       - tapOn:
-          id: "RecipeTime::TextInput"
+          id: "RecipeTime::NumericTextInput"
           label: "Tap on text input of the time to prepare"
       - inputText:
           text: "30"

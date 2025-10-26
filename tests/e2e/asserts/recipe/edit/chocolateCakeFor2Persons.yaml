@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "RecipeTitle::TextInput"
+    id: "RecipeTitle::CustomTextInput"
     text: "Chocolate Cake"
     label: "Title input shows 'Chocolate Cake'"
 
@@ -12,7 +12,7 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipePersons::TextInput"
+    id: "RecipePersons::NumericTextInput"
     text: "2"
     label: "Number of persons is 2"
 
@@ -34,55 +34,55 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
+      id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to see more ingredients"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::TextInput"
-    text: "66,67"
-    label: "Flour quantity is scaled to 66,67g"
+    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    text: "66.67"
+    label: "Flour quantity is scaled to 66.67g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     text: "Flour"
     label: "First ingredient is Flour"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::TextInput"
-    text: "16,67"
-    label: "Cocoa Powder quantity is scaled to 16,67g"
+    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+    text: "16.67"
+    label: "Cocoa Powder quantity is scaled to 16.67g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
     text: "Cocoa Powder"
     label: "Second ingredient is Cocoa Powder"
 
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
+      id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::TextInput"
+    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
     text: "50"
     label: "Sugar quantity is scaled to 50g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
     text: "Sugar"
     label: "Third ingredient is Sugar"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityInput::TextInput"
-    text: "33,33"
-    label: "Butter quantity is scaled to 33,33g"
+    id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
+    text: "33.33"
+    label: "Butter quantity is scaled to 33.33g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::Dropdown::TextInput"
+    id: "RecipeIngredients::TextRender::3::Dropdown::CustomTextInput"
     text: "Butter"
     label: "Fourth ingredient is Butter"

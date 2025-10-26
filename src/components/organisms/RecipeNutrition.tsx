@@ -45,6 +45,7 @@ import NutritionTable from '@components/molecules/NutritionTable';
 import NutritionEmptyState from '@components/molecules/NutritionEmptyState';
 import { recipeStateType } from '@screens/Recipe';
 import { recipeLogger } from '@utils/logger';
+import { defaultValueNumber } from '@utils/Constants';
 
 export interface RecipeNutritionProps {
   /** Current nutrition data (undefined when no nutrition available) */
@@ -86,16 +87,16 @@ export function RecipeNutrition({
     const updated = currentNutrition
       ? { ...currentNutrition, ...updates }
       : {
-          energyKcal: 0,
-          energyKj: 0,
-          fat: 0,
-          saturatedFat: 0,
-          carbohydrates: 0,
-          sugars: 0,
-          fiber: 0,
-          protein: 0,
-          salt: 0,
-          portionWeight: 0,
+          energyKcal: defaultValueNumber,
+          energyKj: defaultValueNumber,
+          fat: defaultValueNumber,
+          saturatedFat: defaultValueNumber,
+          carbohydrates: defaultValueNumber,
+          sugars: defaultValueNumber,
+          fiber: defaultValueNumber,
+          protein: defaultValueNumber,
+          salt: defaultValueNumber,
+          portionWeight: defaultValueNumber,
           ...updates,
         };
 
