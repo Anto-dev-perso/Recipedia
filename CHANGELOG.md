@@ -1,3 +1,9 @@
+## [0.15.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.4...v0.15.0) (2025-10-26)
+
+### Features
+
+* **components:** add `NumericTextInput` for type-safe numeric input handling ([69b4b7e](https://github.com/Anto-dev-perso/Recipedia/commit/69b4b7ef3a958053f78ba228833811af9dd7e743))
+
 ## [0.14.4](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.3...v0.14.4) (2025-10-23)
 
 ### Bug Fixes
