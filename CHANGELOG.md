@@ -1,3 +1,9 @@
+## [0.16.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.15.0...v0.16.0) (2025-10-26)
+
+### Features
+
+* **context:** add `DefaultPersonsContext` for management ([8aacaa4](https://github.com/Anto-dev-perso/Recipedia/commit/8aacaa4d7d4ce72a6f98d9161a4e6c8f4b12022c))
+
 ## [0.15.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.14.4...v0.15.0) (2025-10-26)
 
 ### Features
