@@ -7,9 +7,11 @@ import { getMockCopilotEvents, resetMockCopilot } from '@mocks/deps/react-native
 import { TUTORIAL_STEPS } from '@utils/Constants';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
-jest.mock('@utils/settings', () => require('@mocks/utils/settings-mock'));
 jest.mock('@context/DarkModeContext', () => require('@mocks/context/DarkModeContext-mock'));
 jest.mock('@context/SeasonFilterContext', () => require('@mocks/context/SeasonFilterContext-mock'));
+jest.mock('@context/DefaultPersonsContext', () =>
+  require('@mocks/context/DefaultPersonsContext-mock')
+);
 jest.mock('@react-navigation/native', () =>
   require('@mocks/deps/react-navigation-mock').reactNavigationMock()
 );
@@ -211,20 +213,15 @@ describe('Parameters Screen', () => {
     expect(mockNavigate).toHaveBeenCalledWith('TagsSettings');
   });
 
-  test('handles loading state for default persons correctly', async () => {
-    const { mockGetDefaultPersons } = require('@mocks/utils/settings-mock');
-    mockGetDefaultPersons.mockImplementation(
-      () => new Promise(resolve => setTimeout(() => resolve(6), 100))
-    );
+  test('displays default persons from context', async () => {
+    const { getByTestId } = renderParameters();
 
-    const { getByTestId, getAllByTestId } = renderParameters();
-
-    await waitFor(
-      () => {
-        assertParameters(getByTestId, getAllByTestId, '4 persons');
-      },
-      { timeout: 200 }
-    );
+    await waitFor(() => {
+      expect(
+        getByTestId('Parameters::Section::RecipeDefaults::Persons::Item::Description').props
+          .children
+      ).toBe('4 persons');
+    });
   });
 
   test('maintains switch states correctly across interactions', async () => {

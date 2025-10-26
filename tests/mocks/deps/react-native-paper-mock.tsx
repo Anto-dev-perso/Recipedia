@@ -327,3 +327,9 @@ export const List = {
   ),
   AccordionGroup: (props: any) => <View testID={props.testID}>{props.children}</View>,
 };
+
+export const ActivityIndicator: React.FC<any> = props => (
+  <View testID={props.testID}>
+    <RNText testID={props.testID + '::Size'}>{props.size}</RNText>
+  </View>
+);
