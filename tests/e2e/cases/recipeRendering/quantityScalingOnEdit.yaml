@@ -94,7 +94,6 @@ appId: "com.recipedia"
 #    file: "../../asserts/recipe/readonly/en/chocolateCakeFor4Persons.yaml"
 #    label: "Assert persistence: 2 persons, scaled quantities (NOT reset to default)"
 
-
 - tapOn:
     id: "BackButton::RoundButton"
     label: "Return to Search screen"

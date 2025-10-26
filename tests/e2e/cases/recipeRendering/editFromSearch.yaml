@@ -29,6 +29,13 @@ appId: "com.recipedia"
     file: "../../asserts/recipe/edit/pestoPasta.yaml"
     label: "Assert Pesto Pasta edit screen is displayed correctly"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::Title"
+    direction: DOWN
+    speed: 60
+    label: "Scroll back to top of nutrition part"
+
 - runFlow:
     file: "../../flows/recipe/editing/editNutrition.yaml"
     env:
@@ -36,6 +43,13 @@ appId: "com.recipedia"
       NEW_PROTEIN: "18"
       NEW_FAT: "17"
     label: "Edit nutrition values"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::Title"
+    direction: UP
+    speed: 60
+    label: "Scroll back to top of nutrition part"
 
 - runFlow:
     file: "../../flows/recipe/editing/editNutrition.yaml"
@@ -53,7 +67,7 @@ appId: "com.recipedia"
     element:
       id: "SearchScreen::SearchBar"
     direction: UP
-    speed: 80
+    speed: 99
     label: "Scroll back to top of Search screen"
 
 - tapOn:

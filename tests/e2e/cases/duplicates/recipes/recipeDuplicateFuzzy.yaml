@@ -85,10 +85,17 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::AddButton::RoundButton"
+      id: "RecipeIngredients::PrefixText"
     direction: UP
     speed: 60
     label: "Scroll up for adding a new ingredient"
+
+- tapOn:
+    id: RecipeIngredients::TextRender::1::Dropdown::CustomTextInput
+    label: "Focus on ingredient text input so that scrolling won't go down to preparation"
+
+- hideKeyboard:
+    label: "Hide the keyboard"
 
 - runFlow:
     file: "../../../flows/recipe/adding/addIngredientToRecipe.yaml"

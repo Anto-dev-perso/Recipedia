@@ -322,5 +322,5 @@ appId: "com.recipedia"
     element:
       id: "RecipeImage::RoundButton"
     direction: UP
-    speed: 80
+    speed: 99
     label: "Scroll back to top"

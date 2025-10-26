@@ -41,8 +41,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
-    text: "66,67"
-    label: "Flour quantity is scaled to 66,67g"
+    text: "66.67"
+    label: "Flour quantity is scaled to 66.67g"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
@@ -51,8 +51,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
-    text: "16,67"
-    label: "Cocoa Powder quantity is scaled to 16,67g"
+    text: "16.67"
+    label: "Cocoa Powder quantity is scaled to 16.67g"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
@@ -79,8 +79,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
-    text: "33,33"
-    label: "Butter quantity is scaled to 33,33g"
+    text: "33.33"
+    label: "Butter quantity is scaled to 33.33g"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::Dropdown::CustomTextInput"
