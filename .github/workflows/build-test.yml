@@ -53,18 +53,11 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:unit:coverage
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-results
-          path: jest-results.json
-          retention-days: 7
-
       - name: Unit tests summary
         uses: test-summary/action@v2
         with:
-          paths: jest-results.json
-          output: unit-test-summary
+          paths: junit.xml
+          output: unit-test-summary.md
         if: always()
 
       - name: Upload unit tests summary
