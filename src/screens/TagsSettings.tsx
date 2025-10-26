@@ -30,13 +30,13 @@
  * ```
  */
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import { tagTableElement } from '@customTypes/DatabaseElementTypes';
 import SettingsItemList from '@components/organisms/SettingsItemList';
 import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
 import { tagsSettingsLogger } from '@utils/logger';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /**
  * TagsSettings screen component - Recipe tag management
@@ -44,13 +44,12 @@ import { tagsSettingsLogger } from '@utils/logger';
  * @returns JSX element representing the tag management interface
  */
 export function TagsSettings() {
-  const database = RecipeDatabase.getInstance();
+  const { tags, addTag, editTag, deleteTag } = useRecipeDatabase();
 
-  // State for managing tags
-  const [tags, setTags] = useState(
-    [...database.get_tags()].sort((a, b) => a.name.localeCompare(b.name))
+  const tagsSortedAlphabetically = useMemo(
+    () => [...tags].sort((a, b) => a.name.localeCompare(b.name)),
+    [tags]
   );
-  // TODO database could return a sorted array directly
 
   const [dialogVisible, setDialogVisible] = useState(false);
   const [dialogMode, setDialogMode] = useState<DialogMode>('add');
@@ -59,15 +58,8 @@ export function TagsSettings() {
   const testId = 'TagsSettings';
 
   const handleEditTag = async (newTag: tagTableElement) => {
-    const success = await database.editTag(newTag);
-    if (success) {
-      const idx = tags.findIndex(t => t.id === newTag.id);
-      if (idx !== -1) {
-        const updatedTags = [...tags];
-        updatedTags[idx] = newTag;
-        setTags(updatedTags);
-      }
-    } else {
+    const success = await editTag(newTag);
+    if (!success) {
       tagsSettingsLogger.warn('Failed to update tag in database', {
         tagName: newTag.name,
         tagId: newTag.id,
@@ -76,16 +68,11 @@ export function TagsSettings() {
   };
 
   const handleDeleteTag = async (tag: tagTableElement) => {
-    if (await database.deleteTag(tag)) {
-      setTags(tags.filter(t => t.id !== tag.id));
-    }
+    await deleteTag(tag);
   };
 
   const handleAddtag = async (newTag: tagTableElement) => {
-    // TODO database could return this
-    newTag.id = Math.max(0, ...tags.map(t => t.id ?? 0)) + 1;
-    setTags([...tags, newTag]);
-    await database.addTag(newTag);
+    await addTag(newTag);
   };
 
   // Open dialog handlers
@@ -132,7 +119,7 @@ export function TagsSettings() {
   return (
     <View>
       <SettingsItemList
-        items={tags}
+        items={tagsSortedAlphabetically}
         testIdPrefix={testId}
         onAddPress={openAddDialog}
         onEdit={openEditDialog}

@@ -49,15 +49,14 @@ import RecipeRecommendation from '@components/organisms/RecipeRecommendation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, RefreshControl, SafeAreaView, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import { generateHomeRecommendations } from '@utils/FilterFunctions';
 import { RecommendationType } from '@customTypes/RecipeFiltersTypes';
 import VerticalBottomButtons from '@components/organisms/VerticalBottomButtons';
-import { useFocusEffect } from '@react-navigation/native';
 import { useI18n } from '@utils/i18n';
 import { padding, screenWidth } from '@styles/spacing';
 import { homeLogger } from '@utils/logger';
 import { useSeasonFilter } from '@context/SeasonFilterContext';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 const homeId = 'Home';
 const recommandationId = homeId + '::RecipeRecommendation';
@@ -78,6 +77,7 @@ export function Home() {
   const { t } = useI18n();
   const { colors } = useTheme();
   const { seasonFilter } = useSeasonFilter();
+  const { recipes, ingredients, tags } = useRecipeDatabase();
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [recommendations, setRecommendations] = useState<Array<RecommendationType>>([]);
@@ -88,9 +88,11 @@ export function Home() {
       seasonFilterEnabled: seasonFilter,
     });
 
-    setRecommendations(generateHomeRecommendations(seasonFilter, howManyItemInCarousel));
+    setRecommendations(
+      generateHomeRecommendations(recipes, ingredients, tags, seasonFilter, howManyItemInCarousel)
+    );
     homeLogger.debug('Smart recipe recommendations loaded successfully');
-  }, [seasonFilter]);
+  }, [recipes, ingredients, tags, seasonFilter]);
 
   const onRefresh = useCallback(() => {
     homeLogger.info('User refreshing home screen recommendations');
@@ -102,28 +104,6 @@ export function Home() {
   useEffect(() => {
     loadRecommendations();
   }, [loadRecommendations]);
-
-  useFocusEffect(() => {
-    const recipeDb = RecipeDatabase.getInstance();
-    const recipeTitleDeleted = new Set<string>();
-
-    // Check if any recipes in recommendations no longer exist
-    recommendations.forEach(recommendation => {
-      recommendation.recipes.forEach(recipe => {
-        if (!recipeDb.isRecipeExist(recipe)) {
-          recipeTitleDeleted.add(recipe.title);
-        }
-      });
-    });
-
-    // If any recipes were deleted, refresh recommendations
-    if (recipeTitleDeleted.size > 0) {
-      homeLogger.info('Detected deleted recipes, refreshing recommendations', {
-        deletedCount: recipeTitleDeleted.size,
-      });
-      loadRecommendations();
-    }
-  });
 
   const renderEmptyState = () => {
     const emptyStateTestId = homeId + '::EmptyState';
