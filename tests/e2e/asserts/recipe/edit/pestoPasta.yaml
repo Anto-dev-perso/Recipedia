@@ -83,7 +83,7 @@ appId: "com.recipedia"
     label: "Intro text for the number of persons is rendered"
 - assertVisible:
     id: "RecipePersons::NumericTextInput"
-    text: "2"
+    text: "4"
     label: "Number of persons is rendered"
 - assertVisible:
     id: "RecipePersons::SuffixText"
@@ -114,7 +114,7 @@ appId: "com.recipedia"
     label: "Column Ingredient name is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
-    text: "200"
+    text: "400"
     label: "Quantity of first ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::Unit::CustomTextInput"
@@ -126,7 +126,7 @@ appId: "com.recipedia"
     label: "Ingredient Pasta is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
-    text: "50"
+    text: "100"
     label: "Quantity of second ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::Unit::CustomTextInput"
@@ -138,7 +138,7 @@ appId: "com.recipedia"
     label: "Ingredient Basil Leaves is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
-    text: "30"
+    text: "60"
     label: "Quantity of third ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::Unit::CustomTextInput"
@@ -157,7 +157,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
-    text: "50"
+    text: "100"
     label: "Quantity of fourth ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::Unit::CustomTextInput"
@@ -169,7 +169,7 @@ appId: "com.recipedia"
     label: "Ingredient Olive Oil is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
-    text: "20"
+    text: "40"
     label: "Quantity of fifth ingredient is rendered"
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::Unit::CustomTextInput"

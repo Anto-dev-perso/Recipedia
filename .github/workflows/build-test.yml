@@ -387,12 +387,20 @@ jobs:
       - name: Combine test summaries
         if: always()
         run: |
-          echo "### 🧪 CI Test Results Summary\n\n" > full-summary.md
-          echo "#### 🧩 Unit Tests\n\n" >> full-summary.md
+          echo "### 🧪 CI Test Results Summary" > full-summary.md
+          echo "" >> full-summary.md
+          echo "" >> full-summary.md
+          echo "#### 🧩 Unit Tests" >> full-summary.md
+          echo "" >> full-summary.md
+          echo "" >> full-summary.md
           cat unit-test-summary.md >> full-summary.md
-          echo "\n\n#### 📱 E2E Tests\n\n" >> full-summary.md
+          echo "" >> full-summary.md
+          echo "" >> full-summary.md
+          echo "#### 📱 E2E Tests" >> full-summary.md
+          echo "" >> full-summary.md
+          echo "" >> full-summary.md
           cat e2e-test-summary.md >> full-summary.md
-          echo "\n\n_View logs and coverage artifacts in the Actions tab._" >> full-summary.md
+          echo "_View logs and coverage artifacts in the Actions tab._" >> full-summary.md
 
       - name: Comment test summary on PR
         uses: marocchino/sticky-pull-request-comment@v2

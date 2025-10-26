@@ -56,14 +56,14 @@
  * ```
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Divider, List, Switch, useTheme } from 'react-native-paper';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
 import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { useI18n } from '@utils/i18n';
-import { getDefaultPersons } from '@utils/settings';
 import { useSeasonFilter } from '@context/SeasonFilterContext';
+import { useDefaultPersons } from '@context/DefaultPersonsContext';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
 import { useNavigation } from '@react-navigation/native';
 import { DarkModeContext } from '@context/DarkModeContext';
@@ -81,17 +81,12 @@ const CopilotView = walkthroughable(View);
 export function Parameters() {
   const { t, getLocale, getLocaleName } = useI18n();
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
-  const [defaultPersons, setDefaultPersons] = useState(4);
+  const { defaultPersons } = useDefaultPersons();
   const { seasonFilter, setSeasonFilter } = useSeasonFilter();
   const { colors } = useTheme();
   const currentLocale = getLocale();
   const AppVersion = Constants.expoConfig?.version ?? 'N/A';
   const copilotData = useSafeCopilot();
-
-  // Load settings on component mount
-  useEffect(() => {
-    getDefaultPersons().then(value => setDefaultPersons(value));
-  }, []);
 
   const { navigate } = useNavigation<StackScreenNavigation>();
 

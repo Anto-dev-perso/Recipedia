@@ -51,6 +51,8 @@ appId: "com.recipedia"
     speed: 60
     label: "Scroll back to top of nutrition part"
 
+# TODO missing an assert before going back
+
 - runFlow:
     file: "../../flows/recipe/editing/editNutrition.yaml"
     env:

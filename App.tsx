@@ -7,11 +7,12 @@ import {darkTheme, lightTheme} from '@styles/theme';
 import {getDataset} from '@utils/DatasetLoader';
 import i18n, {SupportedLanguage} from '@utils/i18n';
 import AppWrapper from '@components/organisms/AppWrapper';
-import {getDarkMode, initSettings, setDarkMode as setDarkModeSetting} from '@utils/settings';
+import {getDarkMode, getDefaultPersons, initSettings, setDarkMode as setDarkModeSetting,} from '@utils/settings';
 import * as SplashScreen from 'expo-splash-screen';
 import {useFetchFonts} from '@styles/typography';
 import {DarkModeContext} from '@context/DarkModeContext';
 import {SeasonFilterProvider} from '@context/SeasonFilterContext';
+import {DefaultPersonsProvider} from '@context/DefaultPersonsContext';
 import {appLogger} from '@utils/logger';
 import {isFirstLaunch} from '@utils/firstLaunch';
 
@@ -71,6 +72,14 @@ export function App() {
                         await recipeDb.addMultipleRecipes(dataset.recipes);
 
                         appLogger.info('Complete dataset loaded successfully');
+
+                        const defaultPersons = await getDefaultPersons();
+                        appLogger.info('Scaling all recipes to default persons count', {
+                            defaultPersons,
+                            totalRecipes: dataset.recipes.length,
+                        });
+                        await recipeDb.scaleAllRecipesForNewDefaultPersons(defaultPersons);
+                        appLogger.info('All recipes scaled successfully');
                     } else {
                         appLogger.warn('First launch flag is set but database already contains data - skipping data load to prevent duplicates', {
                             recipesCount: recipeDb.get_recipes().length,
@@ -115,20 +124,22 @@ export function App() {
     }
 
     return (
-        <SeasonFilterProvider>
-            <DarkModeContext.Provider
-                value={{
-                    isDarkMode: darkMode,
-                    toggleDarkMode,
-                }}
-            >
-                <PaperProvider theme={theme}>
-                    <NavigationContainer onReady={onLayoutRootView}>
-                        <AppWrapper/>
-                    </NavigationContainer>
-                </PaperProvider>
-            </DarkModeContext.Provider>
-        </SeasonFilterProvider>
+        <DefaultPersonsProvider>
+            <SeasonFilterProvider>
+                <DarkModeContext.Provider
+                    value={{
+                        isDarkMode: darkMode,
+                        toggleDarkMode,
+                    }}
+                >
+                    <PaperProvider theme={theme}>
+                        <NavigationContainer onReady={onLayoutRootView}>
+                            <AppWrapper/>
+                        </NavigationContainer>
+                    </PaperProvider>
+                </DarkModeContext.Provider>
+            </SeasonFilterProvider>
+        </DefaultPersonsProvider>
     );
 }
 

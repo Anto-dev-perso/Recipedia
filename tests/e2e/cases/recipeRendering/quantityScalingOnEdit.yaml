@@ -19,8 +19,8 @@ appId: "com.recipedia"
     label: "Open Chocolate Cake recipe"
 
 - runFlow:
-    file: "../../asserts/recipe/readonly/en/chocolateCakeFor6Persons.yaml"
-    label: "Assert initial state: 6 persons, original quantities"
+    file: "../../asserts/recipe/readonly/en/chocolateCakeFor4Persons.yaml"
+    label: "Assert initial state: 4 persons, scaled quantities"
 
 - tapOn:
     id: "RecipeEdit::RoundButton"
@@ -34,12 +34,12 @@ appId: "com.recipedia"
     label: "Scroll back to top"
 
 - runFlow:
-    file: "../../asserts/recipe/edit/chocolateCakeFor6Persons.yaml"
-    label: "Assert edit mode: 6 persons, original quantities"
+    file: "../../asserts/recipe/edit/chocolateCakeFor4Persons.yaml"
+    label: "Assert edit mode: 4 persons, scaled quantities"
 
 - runFlow:
-    file: "../../flows/recipe/editing/changePersonsFrom6To2.yaml"
-    label: "Change persons from 6 to 2"
+    file: "../../flows/recipe/editing/changePersonsFrom4To2.yaml"
+    label: "Change persons from 4 to 2"
 
 - scrollUntilVisible:
     element:
@@ -50,7 +50,7 @@ appId: "com.recipedia"
 
 - runFlow:
     file: "../../asserts/recipe/edit/chocolateCakeFor2Persons.yaml"
-    label: "Assert immediate scaling: 2 persons, scaled quantities (66,67g, 16,67g, 50g, 33,33g)"
+    label: "Assert immediate scaling: 2 persons, scaled quantities (66,67g, 16,67g, 50g, 33,34g)"
 
 - tapOn:
     id: "RecipeValidate"

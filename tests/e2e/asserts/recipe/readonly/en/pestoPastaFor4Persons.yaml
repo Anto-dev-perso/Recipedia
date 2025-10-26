@@ -24,8 +24,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
-    text: "200 g"
-    label: "Pasta quantity is 200g"
+    text: "400 g"
+    label: "Pasta quantity is 400g"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::IngredientName"
@@ -34,8 +34,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
-    text: "50 g"
-    label: "Basil Leaves quantity is 50g"
+    text: "100 g"
+    label: "Basil Leaves quantity is 100g"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::IngredientName"
@@ -44,8 +44,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
-    text: "30 g"
-    label: "Parmesan quantity is 30g"
+    text: "60 g"
+    label: "Parmesan quantity is 60g"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::IngredientName"
@@ -54,8 +54,8 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
-    text: "50 ml"
-    label: "Olive Oil quantity is 50ml"
+    text: "100 ml"
+    label: "Olive Oil quantity is 100ml"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::IngredientName"
@@ -64,5 +64,5 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
-    text: "20 g"
-    label: "Pine Nuts quantity is 20g"
+    text: "40 g"
+    label: "Pine Nuts quantity is 40g"

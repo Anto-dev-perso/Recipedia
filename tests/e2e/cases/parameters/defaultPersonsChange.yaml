@@ -32,10 +32,9 @@ appId: "com.recipedia"
     id: "SearchScreen::RecipeCards::7"
     label: "Open Pesto Pasta recipe"
 
-# TODO bug: quantities not being scaled - see TODO.md
-#- runFlow:
-#    file: "../../asserts/recipe/readonly/en/pestoPastaFor6Persons.yaml"
-#    label: "Verify ingredients scaled to 6 persons"
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/pestoPastaFor6Persons.yaml"
+    label: "Verify ingredients scaled to 6 persons"
 
 - tapOn:
     id: "BackButton::RoundButton"
@@ -57,10 +56,9 @@ appId: "com.recipedia"
     id: "SearchScreen::RecipeCards::7"
     label: "Open Pesto Pasta recipe"
 
-# TODO bug: quantities not being scaled - see TODO.md
-#- runFlow:
-#    file: "../../asserts/recipe/readonly/en/pestoPastaFor4Persons.yaml"
-#    label: "Verify ingredients back to original 4 persons values"
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/pestoPastaFor4Persons.yaml"
+    label: "Verify ingredients back to original 4 persons values"
 
 - tapOn:
     id: "BackButton::RoundButton"

@@ -1,11 +1,16 @@
 appId: "com.recipedia"
 ---
-- scrollUntilVisible:
-    element:
-      id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
-    direction: DOWN
-    speed: 60
-    label: "Scroll to find ${INGREDIENT_NAME} ingredient"
+- runFlow:
+    when:
+      notVisible:
+        id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"
+          direction: DOWN
+          speed: 60
+          label: "Scroll to find ${INGREDIENT_NAME} ingredient"
 
 - assertVisible:
     id: "IngredientsSettings::${INGREDIENT_INDEX}::IngredientName"

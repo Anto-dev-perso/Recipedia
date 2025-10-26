@@ -26,7 +26,7 @@ name: "Duplicate detection test suite"
 - runFlow:
     file: "cases/duplicates/recipes/recipeDuplicateBoundaries.yaml"
     label: "Test recipe duplicate boundaries when alert should NOT appear"
-#
-#- runFlow:
-#    file: "cases/duplicates/recipes/recipeDuplicateConfirm.yaml"
-#    label: "Test confirming to add recipe despite duplicate warning"
+
+- runFlow:
+    file: "cases/duplicates/recipes/recipeDuplicateConfirm.yaml"
+    label: "Test confirming to add recipe despite duplicate warning"

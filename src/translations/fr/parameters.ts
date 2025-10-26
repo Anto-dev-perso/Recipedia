@@ -19,4 +19,5 @@ export default {
   data_management: 'Gestion des données',
   manage_ingredients_description: 'Modifier les ingrédients et leur saisonnalité',
   manage_tags_description: 'Gérer les tags de recettes',
+  updating_recipes: 'Mise à jour des recettes...',
 };
