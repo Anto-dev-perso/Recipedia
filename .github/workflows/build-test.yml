@@ -368,6 +368,7 @@ jobs:
 
   test-result-summary:
     name: Generate Test Result Summary
+    if: always()
     runs-on: ubuntu-latest
     needs: [ e2e-tests, unit-tests-and-coverage ]
     steps:
