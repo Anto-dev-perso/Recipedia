@@ -1,47 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Button, Text, useTheme } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 import { useI18n } from '@utils/i18n';
-import { getDefaultPersons, setDefaultPersons as saveDefaultPersons } from '@utils/settings';
 import { padding, screenWidth } from '@styles/spacing';
 import { DefaultPersonsSettingsProp } from '@customTypes/ScreenTypes';
 import { BottomScreenTitle } from '@styles/typography';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { defaultPersonsSettingsLogger } from '@utils/logger';
+import { useDefaultPersons } from '@context/DefaultPersonsContext';
 
 // TODO missing a back button on screen
+// TODO: Implement background sync solution for better UX - current implementation blocks UI during scaling
 export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsProp) {
   const { t } = useI18n();
   const { colors } = useTheme();
-  const [persons, setPersons] = useState(-1);
+  const { defaultPersons, setDefaultPersons: setDefaultPersonsContext } = useDefaultPersons();
+  const [persons, setPersons] = useState(defaultPersons);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const loadDefaultPersons = async () => {
-      const value = await getDefaultPersons();
-      defaultPersonsSettingsLogger.debug('Loaded default persons setting', { persons: value });
-      setPersons(value);
-    };
-
-    loadDefaultPersons();
-  }, []);
+    defaultPersonsSettingsLogger.debug('Loaded default persons from context', {
+      persons: defaultPersons,
+    });
+    setPersons(defaultPersons);
+  }, [defaultPersons]);
 
   const handleSave = async () => {
+    const oldPersons = defaultPersons;
     defaultPersonsSettingsLogger.info('Saving new default persons setting', {
-      oldPersons: await getDefaultPersons(),
+      oldPersons,
       newPersons: persons,
     });
 
-    await saveDefaultPersons(persons);
-    navigation.goBack();
+    setIsLoading(true);
 
-    // Schedule database update to run after navigation
-    setTimeout(() => {
-      defaultPersonsSettingsLogger.info('Starting recipe scaling for new default persons', {
-        persons,
-      });
-      RecipeDatabase.getInstance().scaleAllRecipesForNewDefaultPersons(persons);
-    }, 0);
+    await setDefaultPersonsContext(persons);
+    defaultPersonsSettingsLogger.info('Starting recipe scaling for new default persons', {
+      persons,
+    });
+    await RecipeDatabase.getInstance().scaleAllRecipesForNewDefaultPersons(persons);
+
+    defaultPersonsSettingsLogger.info('Recipe scaling completed');
+    setIsLoading(false);
+    navigation.goBack();
   };
 
   const screenTestId = 'DefaultPersonSettings';
@@ -86,12 +88,22 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
         </View>
       </View>
 
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator testID={screenTestId + '::Loading'} size='large' />
+          <Text testID={screenTestId + '::LoadingText'} style={{ marginTop: padding.small }}>
+            {t('updating_recipes')}
+          </Text>
+        </View>
+      )}
+
       <View style={styles.buttonContainer}>
         <Button
           testID={screenTestId + '::Cancel'}
           mode='outlined'
           onPress={() => navigation.goBack()}
           style={styles.button}
+          disabled={isLoading}
         >
           {t('cancel')}
         </Button>
@@ -101,6 +113,7 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
           mode='contained'
           onPress={handleSave}
           style={styles.button}
+          disabled={isLoading}
         >
           {t('save')}
         </Button>
@@ -122,6 +135,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: padding.small,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    marginTop: padding.medium,
   },
   buttonContainer: {
     flexDirection: 'row',
