@@ -73,6 +73,7 @@ import NumericTextInput from '@components/atomic/NumericTextInput';
 import { useI18n } from '@utils/i18n';
 import { uiLogger } from '@utils/logger';
 import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
+import { defaultValueNumber } from '@utils/Constants';
 
 /**
  * Props for the TextRender component
@@ -91,6 +92,17 @@ export type TextRenderProps = {
   /** Configuration for edit mode functionality */
   editText?: editableText;
 };
+
+/**
+ * Parses a quantity string to a number, handling comma decimal separators
+ * @param quantity - The quantity string to parse (may contain comma as decimal separator)
+ * @returns Parsed number or defaultValueNumber if invalid
+ */
+function parseQuantity(quantity: string): number {
+  const normalizedQuantity = quantity.replace(',', '.');
+  const parsed = parseFloat(normalizedQuantity);
+  return isNaN(parsed) ? defaultValueNumber : parsed;
+}
 
 /**
  * TextRender component for multi-format text display and editing
@@ -138,7 +150,7 @@ export function TextRender(props: TextRenderProps) {
               testID={props.testID + `::${index}::QuantityInput::NumericTextInput`}
               style={recipeTextRenderStyles.firstColumn as StyleProp<TextStyle>}
               contentStyle={recipeTextRenderStyles.columnContentStyle}
-              value={parseFloat(quantity) || 0}
+              value={parseQuantity(quantity)}
               onChangeValue={newQuantity => {
                 const currentItem = props.text[index] as string;
                 const [currentUnitAndQuantity, currentIngName] = currentItem.split(textSeparator);
