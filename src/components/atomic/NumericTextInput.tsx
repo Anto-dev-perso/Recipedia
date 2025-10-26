@@ -86,7 +86,8 @@ export function NumericTextInput({
   }
 
   function handleBlur() {
-    const parsed = parseFloat(rawText);
+    const normalizedText = rawText.replace(',', '.');
+    const parsed = parseFloat(normalizedText);
     const finalValue = isNaN(parsed) ? defaultValueNumber : parsed;
 
     setRawText(getTextFromValue(finalValue));
