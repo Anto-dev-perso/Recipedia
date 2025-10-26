@@ -66,7 +66,7 @@ import React from 'react';
 import { StyleProp, TextStyle, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import TextInputWithDropDown from '@components/molecules/TextInputWithDropDown';
-import RecipeDatabase from '@utils/RecipeDatabase';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import { recipeTextRenderStyles } from '@styles/recipeComponents';
 import CustomTextInput from '@components/atomic/CustomTextInput';
 import NumericTextInput from '@components/atomic/NumericTextInput';
@@ -112,6 +112,7 @@ function parseQuantity(quantity: string): number {
  */
 export function TextRender(props: TextRenderProps) {
   const { t } = useI18n();
+  const { ingredients } = useRecipeDatabase();
 
   function selectRender(renderChoice: typoRender) {
     switch (renderChoice) {
@@ -137,10 +138,7 @@ export function TextRender(props: TextRenderProps) {
     const [unitAndQuantity, ingName] = item.split(textSeparator);
     const [quantity, unit] = unitAndQuantity.split(unitySeparator);
 
-    const ingredientsList = RecipeDatabase.getInstance()
-      .get_ingredients()
-      .map(ingredient => ingredient.name)
-      .sort();
+    const ingredientsList = ingredients.map(ingredient => ingredient.name).sort();
 
     return (
       <View key={index}>

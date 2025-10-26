@@ -63,7 +63,7 @@ import {
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 import ItemDialog, { DialogMode } from './ItemDialog';
-import RecipeDatabase from '@utils/RecipeDatabase';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /** Configuration for tag similarity resolution */
 export type SimilarityTagType = {
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
  */
 export function SimilarityDialog({ testId, isVisible, onClose, item }: SimilarityDialogProps) {
   const { t } = useI18n();
+  const { addIngredient, addTag } = useRecipeDatabase();
   const [showItemDialog, setShowItemDialog] = useState(false);
 
   const handleAddNew = () => {
@@ -194,10 +195,10 @@ export function SimilarityDialog({ testId, isVisible, onClose, item }: Similarit
   ) => {
     if (mode === 'add') {
       if (item.type === 'Ingredient') {
-        await RecipeDatabase.getInstance().addIngredient(newItem as ingredientTableElement);
+        await addIngredient(newItem as ingredientTableElement);
         item.onConfirm(newItem as ingredientTableElement);
       } else {
-        await RecipeDatabase.getInstance().addTag(newItem as tagTableElement);
+        await addTag(newItem as tagTableElement);
         item.onConfirm(newItem as tagTableElement);
       }
     }

@@ -47,12 +47,12 @@
  */
 
 import { View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import RoundButton from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
 import HorizontalList from '@components/molecules/HorizontalList';
 import TextInputWithDropDown from '@components/molecules/TextInputWithDropDown';
-import RecipeDatabase from '@utils/RecipeDatabase';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import { FlashList } from '@shopify/flash-list';
 import { recipeTagsStyles } from '@styles/recipeComponents';
 import { Text, useTheme } from 'react-native-paper';
@@ -93,14 +93,17 @@ export type RecipeTagProps = {
  * @returns JSX element representing a tag management interface
  */
 export function RecipeTags(tagsProps: RecipeTagProps) {
+  const { tags } = useRecipeDatabase();
   const [newTags, setNewTags] = useState(new Array<number>());
   const [tagsAddedCounter, setTagsAddedCounter] = useState(0);
-  const [allTagsNamesSorted, setAllTagsNamesSorted] = useState(
-    RecipeDatabase.getInstance()
-      .get_tags()
-      .map(tag => tag.name)
-      .filter(dbTag => !tagsProps.tagsList.includes(dbTag))
-      .sort()
+
+  const allTagsNamesSorted = useMemo(
+    () =>
+      tags
+        .map(tag => tag.name)
+        .filter(dbTag => !tagsProps.tagsList.includes(dbTag))
+        .sort(),
+    [tags, tagsProps.tagsList]
   );
 
   const { t } = useI18n();
@@ -155,9 +158,6 @@ export function RecipeTags(tagsProps: RecipeTagProps) {
                       onValidate={(newText: string) => {
                         tagsProps.addNewTag(newText);
                         setNewTags(newTags.filter(itemToFilter => itemToFilter !== item));
-                        setAllTagsNamesSorted(
-                          allTagsNamesSorted.filter(itemToFilter => itemToFilter !== newText)
-                        );
                       }}
                     />
                   </View>
