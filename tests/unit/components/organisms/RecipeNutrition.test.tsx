@@ -3,6 +3,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { RecipeNutrition } from '@components/organisms/RecipeNutrition';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
 import { recipeStateType } from '@screens/Recipe';
+import { defaultValueNumber } from '@utils/Constants';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock('@components/molecules/NutritionTable', () =>
@@ -148,16 +149,16 @@ describe('RecipeNutrition', () => {
       fireEvent.press(getByTestId(nutritionEmptyStateTestId + '::OnAddNutrition'));
 
       expect(mockOnChange).toHaveBeenCalledWith({
-        energyKcal: 0,
-        energyKj: 0,
-        fat: 0,
-        saturatedFat: 0,
-        carbohydrates: 0,
-        sugars: 0,
-        fiber: 0,
-        protein: 0,
-        salt: 0,
-        portionWeight: 0,
+        energyKcal: defaultValueNumber,
+        energyKj: defaultValueNumber,
+        fat: defaultValueNumber,
+        saturatedFat: defaultValueNumber,
+        carbohydrates: defaultValueNumber,
+        sugars: defaultValueNumber,
+        fiber: defaultValueNumber,
+        protein: defaultValueNumber,
+        salt: defaultValueNumber,
+        portionWeight: defaultValueNumber,
       });
     });
   });
