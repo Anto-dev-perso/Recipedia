@@ -12,6 +12,7 @@ import {
   ingredientTableElement,
   ingredientType,
   recipeTableElement,
+  tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 import {
   FiltersAppliedToDatabase,
@@ -23,7 +24,6 @@ import {
 } from '@customTypes/RecipeFiltersTypes';
 import { TFunction } from 'i18next';
 import { homeLogger, searchLogger } from '@utils/logger';
-import RecipeDatabase from './RecipeDatabase';
 
 /**
  * Creates filter categories with available values for UI display
@@ -585,31 +585,41 @@ export function getRandomRecipes(
  * including random selection, seasonal filtering, ingredient-based filtering,
  * and tag-based filtering. Respects user preferences for seasonal filtering.
  *
+ * @param recipes - Array of all recipes to generate recommendations from
+ * @param ingredients - Array of all ingredients for ingredient-based recommendations
+ * @param tags - Array of all tags for tag-based recommendations
  * @param seasonFilterEnabled - Whether the user has global seasonal filtering enabled
  * @param recipesPerRecommendation - Number of recipes per recommendation (default: 20)
  * @returns Array of recommendation objects with titles and recipes
  *
  * @example
  * ```typescript
- * const recommendations = generateHomeRecommendations(false, 20);
+ * const recommendations = generateHomeRecommendations(
+ *   allRecipes,
+ *   allIngredients,
+ *   allTags,
+ *   false,
+ *   20
+ * );
  * console.log(`Generated ${recommendations.length} recommendations`);
  * ```
  */
 export function generateHomeRecommendations(
+  recipes: recipeTableElement[],
+  ingredients: ingredientTableElement[],
+  tags: tagTableElement[],
   seasonFilterEnabled: boolean,
   recipesPerRecommendation: number
 ): Array<RecommendationType> {
-  const recipeDatabase = RecipeDatabase.getInstance();
   const recommendations = new Array<RecommendationType>();
-  const allRecipes = recipeDatabase.get_recipes();
 
-  if (allRecipes.length === 0) {
+  if (recipes.length === 0) {
     return recommendations;
   }
 
-  const seasonalRecipes = filterRecipesByCurrentSeason(allRecipes);
+  const seasonalRecipes = filterRecipesByCurrentSeason(recipes);
 
-  const recipesForFiltering = seasonFilterEnabled ? seasonalRecipes : allRecipes;
+  const recipesForFiltering = seasonFilterEnabled ? seasonalRecipes : recipes;
 
   recommendations.push({
     id: 'random',
@@ -629,11 +639,9 @@ export function generateHomeRecommendations(
     });
   }
 
-  const randomGrainIngredients = recipeDatabase.getRandomIngredientsByType(
-    ingredientType.grainOrCereal,
-    2
-  );
-  randomGrainIngredients.forEach((ingredient, index) => {
+  const grainIngredients = ingredients.filter(ing => ing.type === ingredientType.grainOrCereal);
+  const randomGrainIngredients = fisherYatesShuffle(grainIngredients, 2);
+  randomGrainIngredients.forEach((ingredient: ingredientTableElement, index: number) => {
     const ingredientRecipes = recipesForFiltering.filter(recipe =>
       isTheElementContainsTheFilter(
         recipe.ingredients.map(ing => ing.name),
@@ -656,8 +664,8 @@ export function generateHomeRecommendations(
     }
   });
 
-  const randomTags = recipeDatabase.getRandomTags(3);
-  randomTags.forEach((tag, index) => {
+  const randomTags = fisherYatesShuffle(tags, 3);
+  randomTags.forEach((tag: tagTableElement, index: number) => {
     const tagRecipes = recipesForFiltering.filter(recipe =>
       isTheElementContainsTheFilter(
         recipe.tags.map(t => t.name),
