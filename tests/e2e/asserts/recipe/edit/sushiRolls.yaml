@@ -28,7 +28,6 @@ appId: "com.recipedia"
     speed: 60
     centerElement: true
 
-
 - assertVisible:
     id: "RecipeDescription::Text"
     text: "Description:"
@@ -97,7 +96,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+      id: "RecipeIngredients::Column1"
     direction: DOWN
     speed: 60
 
@@ -129,6 +128,13 @@ appId: "com.recipedia"
     id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
     text: "Sushi Rice"
     label: "Ingredient Sushi Rice is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
     text: "5"
@@ -179,7 +185,6 @@ appId: "com.recipedia"
     direction: DOWN
     speed: 60
     label: "Scroll down to the time to prepare"
-
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
@@ -336,7 +341,6 @@ appId: "com.recipedia"
       id: "RecipePreparation::TextRender::3::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
-
 
 - assertVisible:
     id: "RecipePreparation::TextRender::3::Content"
