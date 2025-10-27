@@ -509,6 +509,112 @@ describe('RecipeDatabase', () => {
       expect(notUpdated).toBeUndefined();
     });
 
+    describe('Recipe refresh after tag/ingredient operations', () => {
+      test('editTag should refresh recipes from database', async () => {
+        const recipesBefore = db.get_recipes();
+        const firstRecipe = recipesBefore[0];
+        const tagToEdit = { ...testTags[0], name: 'UpdatedTagName' };
+
+        await db.editTag(tagToEdit);
+
+        const recipesAfter = db.get_recipes();
+        expect(recipesAfter).not.toBe(recipesBefore);
+        expect(recipesAfter.length).toBe(recipesBefore.length);
+
+        const updatedRecipe = recipesAfter.find(r => r.id === firstRecipe.id);
+        expect(updatedRecipe).toBeDefined();
+        if (updatedRecipe && updatedRecipe.tags.some(t => t.id === tagToEdit.id)) {
+          const updatedTag = updatedRecipe.tags.find(t => t.id === tagToEdit.id);
+          expect(updatedTag?.name).toBe('UpdatedTagName');
+        }
+      });
+
+      test('deleteTag should refresh recipes from database', async () => {
+        const recipesBefore = db.get_recipes();
+        const tagToDelete = testTags[0];
+
+        await db.deleteTag(tagToDelete);
+
+        const recipesAfter = db.get_recipes();
+        expect(recipesAfter).not.toBe(recipesBefore);
+
+        recipesAfter.forEach(recipe => {
+          const hasDeletedTag = recipe.tags.some(t => t.id === tagToDelete.id);
+          expect(hasDeletedTag).toBe(false);
+        });
+      });
+
+      test('editIngredient should refresh recipes from database', async () => {
+        const recipesBefore = db.get_recipes();
+        const firstRecipe = recipesBefore[0];
+        const ingredientToEdit = { ...testIngredients[0], name: 'UpdatedIngredientName' };
+
+        await db.editIngredient(ingredientToEdit);
+
+        const recipesAfter = db.get_recipes();
+        expect(recipesAfter).not.toBe(recipesBefore);
+        expect(recipesAfter.length).toBe(recipesBefore.length);
+
+        const updatedRecipe = recipesAfter.find(r => r.id === firstRecipe.id);
+        expect(updatedRecipe).toBeDefined();
+        if (updatedRecipe && updatedRecipe.ingredients.some(i => i.id === ingredientToEdit.id)) {
+          const updatedIngredient = updatedRecipe.ingredients.find(
+            i => i.id === ingredientToEdit.id
+          );
+          expect(updatedIngredient?.name).toBe('UpdatedIngredientName');
+        }
+      });
+
+      test('deleteIngredient should refresh recipes from database', async () => {
+        const recipesBefore = db.get_recipes();
+        const ingredientToDelete = testIngredients[0];
+
+        await db.deleteIngredient(ingredientToDelete);
+
+        const recipesAfter = db.get_recipes();
+        expect(recipesAfter).not.toBe(recipesBefore);
+
+        recipesAfter.forEach(recipe => {
+          const hasDeletedIngredient = recipe.ingredients.some(i => i.id === ingredientToDelete.id);
+          expect(hasDeletedIngredient).toBe(false);
+        });
+      });
+
+      test('deleteTag should update recipes in database (not just cache)', async () => {
+        const tagToDelete = testTags[0];
+        const recipeWithTag = db.get_recipes().find(r => r.tags.some(t => t.id === tagToDelete.id));
+
+        expect(recipeWithTag).toBeDefined();
+
+        await db.deleteTag(tagToDelete);
+
+        const recipesReloaded = await db['getAllRecipes']();
+
+        recipesReloaded.forEach(recipe => {
+          const hasDeletedTag = recipe.tags.some(t => t.id === tagToDelete.id);
+          expect(hasDeletedTag).toBe(false);
+        });
+      });
+
+      test('deleteIngredient should update recipes in database (not just cache)', async () => {
+        const ingredientToDelete = testIngredients[0];
+        const recipeWithIngredient = db
+          .get_recipes()
+          .find(r => r.ingredients.some(i => i.id === ingredientToDelete.id));
+
+        expect(recipeWithIngredient).toBeDefined();
+
+        await db.deleteIngredient(ingredientToDelete);
+
+        const recipesReloaded = await db['getAllRecipes']();
+
+        recipesReloaded.forEach(recipe => {
+          const hasDeletedIngredient = recipe.ingredients.some(i => i.id === ingredientToDelete.id);
+          expect(hasDeletedIngredient).toBe(false);
+        });
+      });
+    });
+
     test('editRecipe should update recipe', async () => {
       const recipeToEdit = { ...testRecipes[0], title: 'UpdatedRecipe' };
 
