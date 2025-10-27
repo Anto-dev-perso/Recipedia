@@ -1,10 +1,11 @@
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import SimilarityDialog, { SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import React from 'react';
 import { testTags } from '@test-data/tagsDataset';
 import { testIngredients } from '@test-data/ingredientsDataset';
 import { testRecipes } from '@test-data/recipesDataset';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
@@ -28,7 +29,7 @@ describe('SimilarityDialog', () => {
   const sampleTag = testTags[11];
   const sampleIngredient = testIngredients[33];
 
-  const renderTagDialog = (overrideProps: any = {}) => {
+  const renderTagDialog = async (overrideProps: any = {}) => {
     const defaultProps = {
       testId: 'test-similarity',
       isVisible: true,
@@ -45,10 +46,22 @@ describe('SimilarityDialog', () => {
       ...overrideProps,
     };
 
-    return render(<SimilarityDialog {...defaultProps} />);
+    const result = render(
+      <RecipeDatabaseProvider>
+        <SimilarityDialog {...defaultProps} />
+      </RecipeDatabaseProvider>
+    );
+
+    if (defaultProps.isVisible) {
+      await waitFor(() => {
+        expect(result.getByTestId(`${defaultProps.testId}::SimilarityDialog::Title`)).toBeTruthy();
+      });
+    }
+
+    return result;
   };
 
-  const renderIngredientDialog = (overrideProps: any = {}) => {
+  const renderIngredientDialog = async (overrideProps: any = {}) => {
     const defaultProps: SimilarityDialogProps = {
       testId: 'test-similarity',
       isVisible: true,
@@ -65,7 +78,17 @@ describe('SimilarityDialog', () => {
       ...overrideProps,
     };
 
-    return render(<SimilarityDialog {...defaultProps} />);
+    const result = render(
+      <RecipeDatabaseProvider>
+        <SimilarityDialog {...defaultProps} />
+      </RecipeDatabaseProvider>
+    );
+
+    await waitFor(() => {
+      expect(result.getByTestId(`${defaultProps.testId}::SimilarityDialog::Title`)).toBeTruthy();
+    });
+
+    return result;
   };
 
   const assertSimilarityFoundDialog = (getByTestId: any, itemType: 'Tag' | 'Ingredient') => {
@@ -110,36 +133,36 @@ describe('SimilarityDialog', () => {
     database.reset();
   });
 
-  test('renders tag similarity dialog correctly when similar item is found', () => {
-    const { getByTestId } = renderTagDialog();
+  test('renders tag similarity dialog correctly when similar item is found', async () => {
+    const { getByTestId } = await renderTagDialog();
 
     assertSimilarityFoundDialog(getByTestId, 'Tag');
   });
 
-  test('renders ingredient similarity dialog correctly when similar item is found', () => {
-    const { getByTestId } = renderIngredientDialog();
+  test('renders ingredient similarity dialog correctly when similar item is found', async () => {
+    const { getByTestId } = await renderIngredientDialog();
 
     assertSimilarityFoundDialog(getByTestId, 'Ingredient');
   });
 
-  test('renders new tag dialog correctly when no similar item is found', () => {
-    const { getByTestId } = renderTagDialog({
+  test('renders new tag dialog correctly when no similar item is found', async () => {
+    const { getByTestId } = await renderTagDialog({
       item: { similarItem: undefined },
     });
 
     assertNewItemDialog(getByTestId);
   });
 
-  test('renders new ingredient dialog correctly when no similar item is found', () => {
-    const { getByTestId } = renderIngredientDialog({
+  test('renders new ingredient dialog correctly when no similar item is found', async () => {
+    const { getByTestId } = await renderIngredientDialog({
       item: { similarItem: undefined },
     });
 
     assertNewItemDialog(getByTestId);
   });
 
-  test('does not render dialog when isVisible is false', () => {
-    const { queryByTestId } = renderTagDialog({ isVisible: false });
+  test('does not render dialog when isVisible is false', async () => {
+    const { queryByTestId } = await renderTagDialog({ isVisible: false });
 
     expect(queryByTestId('test-similarity::SimilarityDialog::Title')).toBeNull();
     expect(queryByTestId('test-similarity::SimilarityDialog::Content')).toBeNull();
@@ -148,8 +171,8 @@ describe('SimilarityDialog', () => {
     expect(queryByTestId('test-similarity::SimilarityDialog::CancelButton')).toBeNull();
   });
 
-  test('calls onUseExisting and onClose when UseButton is pressed for tags', () => {
-    const { getByTestId } = renderTagDialog();
+  test('calls onUseExisting and onClose when UseButton is pressed for tags', async () => {
+    const { getByTestId } = await renderTagDialog();
 
     assertSimilarityFoundDialog(getByTestId, 'Tag');
     expect(mockOnUseExisting).not.toHaveBeenCalled();
@@ -164,8 +187,8 @@ describe('SimilarityDialog', () => {
     expect(mockOnDismiss).not.toHaveBeenCalled();
   });
 
-  test('calls onUseExisting and onClose when UseButton is pressed for ingredients', () => {
-    const { getByTestId } = renderIngredientDialog();
+  test('calls onUseExisting and onClose when UseButton is pressed for ingredients', async () => {
+    const { getByTestId } = await renderIngredientDialog();
 
     assertSimilarityFoundDialog(getByTestId, 'Ingredient');
     expect(mockOnUseExisting).not.toHaveBeenCalled();
@@ -180,8 +203,8 @@ describe('SimilarityDialog', () => {
     expect(mockOnDismiss).not.toHaveBeenCalled();
   });
 
-  test('shows ItemDialog when AddButton is pressed', () => {
-    const { getByTestId } = renderTagDialog();
+  test('shows ItemDialog when AddButton is pressed', async () => {
+    const { getByTestId } = await renderTagDialog();
 
     assertSimilarityFoundDialog(getByTestId, 'Tag');
 
@@ -197,7 +220,7 @@ describe('SimilarityDialog', () => {
     expect(mockOnConfirm).not.toHaveBeenCalled();
   });
 
-  test('calls onDismiss and onClose when dialog is dismissed', () => {
+  test('calls onDismiss and onClose when dialog is dismissed', async () => {
     // Create explicit props to ensure proper callback handling
     const testProps = {
       testId: 'test-similarity',
@@ -211,8 +234,8 @@ describe('SimilarityDialog', () => {
         onDismiss: mockOnDismiss,
       },
     };
-    const { getByTestId } = render(<SimilarityDialog {...testProps} />);
 
+    const { getByTestId } = await renderTagDialog(testProps);
     assertNewItemDialog(getByTestId);
     expect(mockOnDismiss).not.toHaveBeenCalled();
     expect(mockOnClose).not.toHaveBeenCalled();
@@ -227,7 +250,7 @@ describe('SimilarityDialog', () => {
     expect(mockOnUseExisting).not.toHaveBeenCalled();
   });
 
-  test('works correctly without optional onUseExisting callback', () => {
+  test('works correctly without optional onUseExisting callback', async () => {
     // Create a tag item with similarItem but no onUseExisting callback
     const itemWithoutOnUseExisting = {
       type: 'Tag' as const,
@@ -238,13 +261,19 @@ describe('SimilarityDialog', () => {
       // explicitly no onUseExisting
     };
     const { getByTestId } = render(
-      <SimilarityDialog
-        testId='test-similarity'
-        isVisible={true}
-        onClose={mockOnClose}
-        item={itemWithoutOnUseExisting}
-      />
+      <RecipeDatabaseProvider>
+        <SimilarityDialog
+          testId='test-similarity'
+          isVisible={true}
+          onClose={mockOnClose}
+          item={itemWithoutOnUseExisting}
+        />
+      </RecipeDatabaseProvider>
     );
+
+    await waitFor(() => {
+      expect(getByTestId('test-similarity::SimilarityDialog::Title')).toBeTruthy();
+    });
 
     assertSimilarityFoundDialog(getByTestId, 'Tag');
     expect(mockOnClose).not.toHaveBeenCalled();
@@ -257,8 +286,8 @@ describe('SimilarityDialog', () => {
     expect(mockOnDismiss).not.toHaveBeenCalled();
   });
 
-  test('works correctly without optional onDismiss callback', () => {
-    const { getByTestId } = renderTagDialog({
+  test('works correctly without optional onDismiss callback', async () => {
+    const { getByTestId } = await renderTagDialog({
       item: { similarItem: undefined, onDismiss: undefined },
     });
 
@@ -273,8 +302,8 @@ describe('SimilarityDialog', () => {
     expect(mockOnUseExisting).not.toHaveBeenCalled();
   });
 
-  test('handles tag creation through ItemDialog workflow', () => {
-    const { getByTestId } = renderTagDialog();
+  test('handles tag creation through ItemDialog workflow', async () => {
+    const { getByTestId } = await renderTagDialog();
 
     assertSimilarityFoundDialog(getByTestId, 'Tag');
 
@@ -288,8 +317,8 @@ describe('SimilarityDialog', () => {
     expect(getByTestId('test-similarity::ItemDialog::IsVisible')).toBeTruthy();
   });
 
-  test('handles ingredient creation through ItemDialog workflow', () => {
-    const { getByTestId } = renderIngredientDialog();
+  test('handles ingredient creation through ItemDialog workflow', async () => {
+    const { getByTestId } = await renderIngredientDialog();
 
     assertSimilarityFoundDialog(getByTestId, 'Ingredient');
 
@@ -303,8 +332,8 @@ describe('SimilarityDialog', () => {
     expect(getByTestId('test-similarity::ItemDialog::IsVisible')).toBeTruthy();
   });
 
-  test('uses different testId correctly for multiple instances', () => {
-    const { getByTestId } = renderTagDialog({ testId: 'custom-similarity-id' });
+  test('uses different testId correctly for multiple instances', async () => {
+    const { getByTestId } = await renderTagDialog({ testId: 'custom-similarity-id' });
 
     expect(getByTestId('custom-similarity-id::SimilarityDialog::Title')).toBeTruthy();
     expect(getByTestId('custom-similarity-id::SimilarityDialog::Content')).toBeTruthy();
@@ -317,8 +346,8 @@ describe('SimilarityDialog', () => {
     expect(() => getByTestId('test-similarity::SimilarityDialog::UseButton')).toThrow();
   });
 
-  test('maintains proper button layout in similarity found scenario', () => {
-    const { getByTestId } = renderIngredientDialog();
+  test('maintains proper button layout in similarity found scenario', async () => {
+    const { getByTestId } = await renderIngredientDialog();
 
     assertSimilarityFoundDialog(getByTestId, 'Ingredient');
 
@@ -333,7 +362,7 @@ describe('SimilarityDialog', () => {
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  test('maintains proper button layout in new item scenario', () => {
+  test('maintains proper button layout in new item scenario', async () => {
     // Create explicit props to ensure proper callback handling
     const testProps = {
       testId: 'test-similarity',
@@ -347,7 +376,7 @@ describe('SimilarityDialog', () => {
         onDismiss: mockOnDismiss,
       },
     };
-    const { getByTestId } = render(<SimilarityDialog {...testProps} />);
+    const { getByTestId } = await renderTagDialog(testProps);
 
     fireEvent.press(getByTestId('test-similarity::SimilarityDialog::AddButton'));
     expect(getByTestId('test-similarity::ItemDialog::IsVisible')).toBeTruthy(); // ItemDialog should appear

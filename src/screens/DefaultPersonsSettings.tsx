@@ -6,9 +6,9 @@ import { useI18n } from '@utils/i18n';
 import { padding, screenWidth } from '@styles/spacing';
 import { DefaultPersonsSettingsProp } from '@customTypes/ScreenTypes';
 import { BottomScreenTitle } from '@styles/typography';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import { defaultPersonsSettingsLogger } from '@utils/logger';
 import { useDefaultPersons } from '@context/DefaultPersonsContext';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 // TODO missing a back button on screen
 // TODO: Implement background sync solution for better UX - current implementation blocks UI during scaling
@@ -16,6 +16,7 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
   const { t } = useI18n();
   const { colors } = useTheme();
   const { defaultPersons, setDefaultPersons: setDefaultPersonsContext } = useDefaultPersons();
+  const { scaleAllRecipesForNewDefaultPersons } = useRecipeDatabase();
   const [persons, setPersons] = useState(defaultPersons);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +40,7 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
     defaultPersonsSettingsLogger.info('Starting recipe scaling for new default persons', {
       persons,
     });
-    await RecipeDatabase.getInstance().scaleAllRecipesForNewDefaultPersons(persons);
+    await scaleAllRecipesForNewDefaultPersons(persons);
 
     defaultPersonsSettingsLogger.info('Recipe scaling completed');
     setIsLoading(false);

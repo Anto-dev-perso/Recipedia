@@ -5,6 +5,7 @@ import { testTags } from '@test-data/tagsDataset';
 import { testIngredients } from '@test-data/ingredientsDataset';
 import { testRecipes } from '@test-data/recipesDataset';
 import RecipeDatabase from '@utils/RecipeDatabase';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () =>
@@ -31,9 +32,25 @@ jest.mock('@shopify/flash-list', () => require('@mocks/deps/flashlist-mock').fla
 describe('RecipeTags Component', () => {
   const sampleTags = testTags.map(tag => tag.name).sort();
 
+  const renderRecipeTags = async (props: RecipeTagProps) => {
+    const result = render(
+      <RecipeDatabaseProvider>
+        <RecipeTags {...props} />
+      </RecipeDatabaseProvider>
+    );
+
+    await waitFor(() => {
+      expect(result.getByTestId('RecipeTags::PropType')).toBeTruthy();
+    });
+    return result;
+  };
+
   describe('readOnly mode', () => {
-    it('renders a HorizontalList showing the provided tags', () => {
-      const { getByTestId } = render(<RecipeTags type='readOnly' tagsList={sampleTags} />);
+    it('renders a HorizontalList showing the provided tags', async () => {
+      const { getByTestId } = await renderRecipeTags({
+        type: 'readOnly',
+        tagsList: sampleTags,
+      });
 
       expect(getByTestId('RecipeTags::PropType').props.children).toEqual('Tag');
       expect(getByTestId('RecipeTags::ItemCount').props.children).toEqual(
@@ -80,11 +97,9 @@ describe('RecipeTags Component', () => {
       await dbInstance.reset();
     });
     describe('edit mode', () => {
-      it('renders header and description texts with the add button', () => {
-        const { getByTestId } = render(<RecipeTags {...defaultProps} />);
+      it('renders header and description texts with the add button', async () => {
+        const { getByTestId } = await renderRecipeTags(defaultProps);
 
-        // Verify that the header and element texts are rendered using testIDs.
-        expect(getByTestId('RecipeTags::HeaderText')).toBeTruthy();
         expect(getByTestId('RecipeTags::ElementText').props.children).toContain(randomTags);
 
         expect(getByTestId('RecipeTags::PropType').props.children).toEqual('Tag');
@@ -102,14 +117,18 @@ describe('RecipeTags Component', () => {
         expect(getByTestId('RecipeTags::RoundButton::OnPressFunction')).toBeTruthy();
       });
 
-      it('does not show a new tag input initially', () => {
-        const { queryByTestId } = render(<RecipeTags {...defaultProps} />);
+      it('does not show a new tag input initially', async () => {
+        const { queryByTestId, getByTestId } = await renderRecipeTags(defaultProps);
+
+        await waitFor(() => {
+          expect(getByTestId('RecipeTags::HeaderText')).toBeTruthy();
+        });
         // No new tag input should be rendered at the start.
         expect(queryByTestId('RecipeTags::List::1')).toBeNull();
       });
 
       it('adds a new tag input field when the RoundButton is pressed', async () => {
-        const { getByTestId } = render(<RecipeTags {...defaultProps} />);
+        const { getByTestId } = await renderRecipeTags(defaultProps);
 
         // Press the RoundButton (using its testID).
         fireEvent.press(getByTestId('RecipeTags::RoundButton::OnPressFunction'));
@@ -135,7 +154,7 @@ describe('RecipeTags Component', () => {
       });
 
       it('calls addNewTag callback when a new tag is validated and removes the input', async () => {
-        const { getByTestId, queryByTestId } = render(<RecipeTags {...defaultProps} />);
+        const { getByTestId, queryByTestId } = await renderRecipeTags(defaultProps);
 
         // Simulate adding a new tag input by pressing the RoundButton.
         fireEvent.press(getByTestId('RecipeTags::RoundButton::OnPressFunction'));
@@ -206,16 +225,14 @@ describe('RecipeTags Component', () => {
       });
     });
     describe('add mode', () => {
-      it('renders header and description texts with the add button', () => {
+      it('renders header and description texts with the add button', async () => {
         const props: RecipeTagProps = {
           ...defaultProps,
           editType: 'add',
           openModal: jest.fn(),
         };
-        const { getByTestId } = render(<RecipeTags {...props} />);
+        const { getByTestId } = await renderRecipeTags(props);
 
-        // Verify that the header and element texts are rendered using testIDs.
-        expect(getByTestId('RecipeTags::HeaderText')).toBeTruthy();
         expect(getByTestId('RecipeTags::ElementText').props.children).toContain(randomTags);
 
         expect(getByTestId('RecipeTags::PropType').props.children).toEqual('Tag');

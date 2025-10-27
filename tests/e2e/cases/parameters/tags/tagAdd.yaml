@@ -38,7 +38,7 @@ appId: "com.recipedia"
     label: "Scroll to new tag"
 
 - assertVisible:
-    id: "TagsSettings::16::TagName"
+    id: "TagsSettings::15::TagName"
     text: "TestTag"
     label: "New tag is displayed without reloading the screen"
 

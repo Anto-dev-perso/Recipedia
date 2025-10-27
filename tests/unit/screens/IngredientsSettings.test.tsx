@@ -18,6 +18,7 @@ import {
 } from '@testing-library/react-native/build/queries/options';
 import { TextMatch } from '@testing-library/react-native/build/matches';
 import { DialogMode } from '@components/dialogs/ItemDialog';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () =>
@@ -43,6 +44,22 @@ const defaultProps = {
   navigation: mockNavigationFunctions,
   route: mockRoute,
 } as any;
+
+const renderIngredientsSettings = async () => {
+  const result = render(
+    <RecipeDatabaseProvider>
+      <IngredientsSettings {...defaultProps} />
+    </RecipeDatabaseProvider>
+  );
+
+  await waitFor(() => {
+    expect(result.getByTestId('IngredientsSettings::SettingsItemList::Type')).toBeTruthy();
+    const items = result.getByTestId('IngredientsSettings::SettingsItemList::Items').props.children;
+    expect(items).not.toEqual('[]');
+  });
+
+  return result;
+};
 
 type QueryByIdType = QueryByQuery<TextMatch, CommonQueryOptions & TextMatchOptions>;
 
@@ -88,8 +105,8 @@ describe('IngredientsSettings Screen', () => {
     await db.reset();
   });
 
-  test('renders correctly with initial tags', () => {
-    const { getByTestId, queryByTestId } = render(<IngredientsSettings {...defaultProps} />);
+  test('renders correctly with initial tags', async () => {
+    const { getByTestId, queryByTestId } = await renderIngredientsSettings();
 
     expect(getByTestId('IngredientsSettings::SettingsItemList::Type').props.children).toEqual(
       'ingredient'
@@ -105,7 +122,7 @@ describe('IngredientsSettings Screen', () => {
   });
 
   test('opens add dialog when add button is pressed and save value', async () => {
-    const { getByTestId } = render(<IngredientsSettings {...defaultProps} />);
+    const { getByTestId } = await renderIngredientsSettings();
     fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress'));
 
     await waitFor(() => {
@@ -130,7 +147,7 @@ describe('IngredientsSettings Screen', () => {
   });
 
   test('opens edit dialog when edit button is pressed and save value', async () => {
-    const { getByTestId } = render(<IngredientsSettings {...defaultProps} />);
+    const { getByTestId } = await renderIngredientsSettings();
     fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnEdit'));
 
     await waitFor(() => {
@@ -153,7 +170,7 @@ describe('IngredientsSettings Screen', () => {
   });
 
   test('opens delete dialog when delete button is pressed and save value', async () => {
-    const { getByTestId } = render(<IngredientsSettings {...defaultProps} />);
+    const { getByTestId } = await renderIngredientsSettings();
     fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnDelete'));
 
     await waitFor(() => {

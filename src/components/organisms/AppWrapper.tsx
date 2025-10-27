@@ -4,7 +4,7 @@ import WelcomeScreen from '@screens/WelcomeScreen';
 import { TutorialProvider } from './TutorialController';
 import { isFirstLaunch, markAsLaunched } from '@utils/firstLaunch';
 import { appLogger, tutorialLogger } from '@utils/logger';
-import RecipeDatabase from '@utils/RecipeDatabase';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 enum AppMode {
   Loading = 'loading',
@@ -35,6 +35,7 @@ enum AppMode {
  * @returns JSX element representing the current app mode
  */
 export default function AppWrapper() {
+  const { clearShoppingList, recipes, addRecipeToShopping } = useRecipeDatabase();
   const [mode, setMode] = useState<AppMode>(AppMode.Loading);
 
   useEffect(() => {
@@ -55,8 +56,8 @@ export default function AppWrapper() {
    * Resets shopping list, marks app as launched, and transitions to ready mode.
    * This function is called both for normal app launch and after tutorial completion.
    */
-  const handleAppLaunch = () => {
-    RecipeDatabase.getInstance().resetShoppingList();
+  const handleAppLaunch = async () => {
+    await clearShoppingList();
     tutorialLogger.info('App launch - resetting shopping list');
     setMode(AppMode.Ready);
     markAsLaunched();
@@ -70,9 +71,8 @@ export default function AppWrapper() {
    * data to demonstrate app features.
    */
   const handleStartTutorial = async () => {
-    const recipeDb = RecipeDatabase.getInstance();
-    const recipeForTutorial = recipeDb.get_recipes()[0];
-    await recipeDb.addRecipeToShopping(recipeForTutorial);
+    const recipeForTutorial = recipes[0];
+    await addRecipeToShopping(recipeForTutorial);
     tutorialLogger.info('Added recipe to shopping list for tutorial', recipeForTutorial);
     setMode(AppMode.Tutorial);
   };

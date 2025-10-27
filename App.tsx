@@ -1,20 +1,17 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import FileGestion from '@utils/FileGestion';
 import {PaperProvider} from 'react-native-paper';
 import {darkTheme, lightTheme} from '@styles/theme';
-import {getDataset} from '@utils/DatasetLoader';
-import i18n, {SupportedLanguage} from '@utils/i18n';
 import AppWrapper from '@components/organisms/AppWrapper';
-import {getDarkMode, getDefaultPersons, initSettings, setDarkMode as setDarkModeSetting,} from '@utils/settings';
+import {getDarkMode, initSettings, setDarkMode as setDarkModeSetting,} from '@utils/settings';
 import * as SplashScreen from 'expo-splash-screen';
 import {useFetchFonts} from '@styles/typography';
 import {DarkModeContext} from '@context/DarkModeContext';
 import {SeasonFilterProvider} from '@context/SeasonFilterContext';
 import {DefaultPersonsProvider} from '@context/DefaultPersonsContext';
+import {RecipeDatabaseProvider, useRecipeDatabase} from '@context/RecipeDatabaseContext';
 import {appLogger} from '@utils/logger';
-import {isFirstLaunch} from '@utils/firstLaunch';
 
 // TODO manage horizontal mode
 
@@ -30,18 +27,16 @@ import {isFirstLaunch} from '@utils/firstLaunch';
 
 SplashScreen.preventAutoHideAsync();
 
-export function App() {
-    useFetchFonts();
-
-    const [isInitialized, setIsInitialized] = useState(false);
+function AppContent() {
+    const [isAppInitialized, setIsAppInitialized] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
+    const {isDatabaseInitialized} = useRecipeDatabase();
 
     useEffect(() => {
         const initialize = async () => {
             try {
                 appLogger.info('Starting app initialization');
 
-                // Initialize settings first
                 appLogger.debug('Initializing settings');
                 await initSettings();
 
@@ -49,49 +44,12 @@ export function App() {
                 setDarkMode(isDarkMode);
                 appLogger.debug('Dark mode setting loaded', {isDarkMode});
 
-
                 appLogger.debug('Initializing file system');
                 await FileGestion.getInstance().init();
-
                 appLogger.debug('File system initialized');
-                appLogger.debug('Initializing database');
-                const recipeDb = RecipeDatabase.getInstance();
-                await recipeDb.init();
 
-                const isFirst = await isFirstLaunch();
-
-
-                if (isFirst) {
-                    if (recipeDb.isDatabaseEmpty()) {
-                        appLogger.info('First launch detected and database is empty - loading complete dataset');
-                        const currentLanguage = i18n.language as SupportedLanguage;
-                        const dataset = getDataset(currentLanguage);
-
-                        await recipeDb.addMultipleIngredients(dataset.ingredients);
-                        await recipeDb.addMultipleTags(dataset.tags);
-                        await recipeDb.addMultipleRecipes(dataset.recipes);
-
-                        appLogger.info('Complete dataset loaded successfully');
-
-                        const defaultPersons = await getDefaultPersons();
-                        appLogger.info('Scaling all recipes to default persons count', {
-                            defaultPersons,
-                            totalRecipes: dataset.recipes.length,
-                        });
-                        await recipeDb.scaleAllRecipesForNewDefaultPersons(defaultPersons);
-                        appLogger.info('All recipes scaled successfully');
-                    } else {
-                        appLogger.warn('First launch flag is set but database already contains data - skipping data load to prevent duplicates', {
-                            recipesCount: recipeDb.get_recipes().length,
-                            ingredientsCount: recipeDb.get_ingredients().length,
-                            tagsCount: recipeDb.get_tags().length,
-                        });
-                    }
-                } else {
-                    appLogger.debug('Not first launch - database should already contain data');
-                }
                 appLogger.info('App initialization completed successfully');
-                setIsInitialized(true);
+                setIsAppInitialized(true);
             } catch (error) {
                 appLogger.error('App initialization failed', {error});
             }
@@ -102,7 +60,6 @@ export function App() {
     const toggleDarkMode = async () => {
         const newValue = !darkMode;
         try {
-            // Save to AsyncStorage
             await setDarkModeSetting(newValue);
             setDarkMode(newValue);
         } catch (error) {
@@ -113,13 +70,13 @@ export function App() {
     const theme = darkMode ? darkTheme : lightTheme;
 
     const onLayoutRootView = useCallback(async () => {
-        if (isInitialized) {
-            appLogger.debug('Hiding splash screen - app ready');
+        if (isAppInitialized && isDatabaseInitialized) {
+            appLogger.debug('Hiding splash screen - app and database ready');
             await SplashScreen.hideAsync();
         }
-    }, [isInitialized]);
+    }, [isAppInitialized, isDatabaseInitialized]);
 
-    if (!isInitialized) {
+    if (!isAppInitialized || !isDatabaseInitialized) {
         return null;
     }
 
@@ -140,6 +97,16 @@ export function App() {
                 </DarkModeContext.Provider>
             </SeasonFilterProvider>
         </DefaultPersonsProvider>
+    );
+}
+
+export function App() {
+    useFetchFonts();
+
+    return (
+        <RecipeDatabaseProvider>
+            <AppContent/>
+        </RecipeDatabaseProvider>
     );
 }
 

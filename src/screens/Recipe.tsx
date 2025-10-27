@@ -91,9 +91,9 @@ import { Icons } from '@assets/Icons';
 import RecipeTextRender, { RecipeTextRenderProps } from '@components/organisms/RecipeTextRender';
 import RecipeText, { RecipeTextProps, TextProp } from '@components/organisms/RecipeText';
 import { textSeparator, typoRender, unitySeparator } from '@styles/typography';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import RecipeTags, { RecipeTagProps } from '@components/organisms/RecipeTags';
 import FileGestion from '@utils/FileGestion';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import RectangleButton from '@components/atomic/RectangleButton';
 import RoundButton from '@components/atomic/RoundButton';
 import { extractFieldFromImage } from '@utils/OCR';
@@ -182,6 +182,17 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
   const { colors } = useTheme();
 
+  const {
+    addRecipe,
+    editRecipe,
+    deleteRecipe,
+    addRecipeToShopping,
+    findSimilarRecipes,
+    findSimilarIngredients,
+    findSimilarTags,
+    searchRandomlyTags,
+  } = useRecipeDatabase();
+
   const recipeTestId = 'Recipe';
 
   const props: RecipePropType = route.params;
@@ -216,11 +227,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   const [imgForOCR, setImgForOCR] = useState(
     props.mode === 'addFromPic' ? new Array<string>(props.imgUri) : new Array<string>()
   );
-  const [randomTags] = useState(
-    RecipeDatabase.getInstance()
-      .searchRandomlyTags(3)
-      .map(element => element.name)
-  );
+  const [randomTags] = useState(searchRandomlyTags(3).map(element => element.name));
 
   const [validationButtonText, validationFunction] = recipeValidationButtonProps();
 
@@ -298,7 +305,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
               content: '',
             };
             //@ts-ignore params.recipe exist because we already checked with switch
-            if (!(await RecipeDatabase.getInstance().deleteRecipe(props.recipe))) {
+            if (!(await deleteRecipe(props.recipe))) {
               dialogProps.content = `${t('errorOccurred')} ${t('deleteRecipe')} ${recipeTitle}`;
             } else {
               dialogProps.content = `${t('recipe')} ${recipeTitle} ${t('delete')} ${t('success')}`;
@@ -367,7 +374,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       return;
     }
 
-    const similarTags = RecipeDatabase.getInstance().findSimilarTags(newTag);
+    const similarTags = findSimilarTags(newTag);
 
     // Check for exact match in database - if found, add it directly without showing dialog
     const exactMatch = similarTags.find(tag => tag.name.toLowerCase() === newTag.toLowerCase());
@@ -480,7 +487,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       newName.trim().length > 0 &&
       recipeIngredients[oldIngredientId].name !== newName
     ) {
-      const similarIngredients = RecipeDatabase.getInstance().findSimilarIngredients(newName);
+      const similarIngredients = findSimilarIngredients(newName);
 
       const exactMatch = similarIngredients.find(
         ing => ing.name.toLowerCase() === newName.toLowerCase()
@@ -617,7 +624,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   async function readOnlyValidation() {
-    await RecipeDatabase.getInstance().addRecipeToShopping(createRecipeFromStates());
+    await addRecipeToShopping(createRecipeFromStates());
     setValidationDialogProp({
       title: t('success'),
       content: t('addedToShoppingList', { recipeName: recipeTitle }),
@@ -710,7 +717,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       // @ts-ignore No need to wait for clearCache
       FileGestion.getInstance().clearCache();
 
-      await RecipeDatabase.getInstance().editRecipe(createRecipeFromStates());
+      await editRecipe(createRecipeFromStates());
       setStackMode(recipeStateType.readOnly);
     } else {
       showValidationErrorDialog(missingElem);
@@ -767,7 +774,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     if (missingElem.length == 0) {
       const dialogProp = { ...defaultValidationDialogProp };
       const recipeToAdd = createRecipeFromStates();
-      const similarRecipes = RecipeDatabase.getInstance().findSimilarRecipes(recipeToAdd);
+      const similarRecipes = findSimilarRecipes(recipeToAdd);
 
       const addRecipeToDatabase = async () => {
         try {
@@ -791,7 +798,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             recipeToAdd.persons = defaultPersons;
           }
 
-          await RecipeDatabase.getInstance().addRecipe(recipeToAdd);
+          await addRecipe(recipeToAdd);
           dialogProp.title = t('addAnyway');
           dialogProp.content = t('addedToDatabase', { recipeName: recipeToAdd.title });
           dialogProp.confirmText = t('understood');

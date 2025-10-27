@@ -5,6 +5,7 @@ import { testRecipes } from '@test-data/recipesDataset';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { testTags } from '@test-data/tagsDataset';
 import { testIngredients } from '@test-data/ingredientsDataset';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 import {
   extractIngredientsNameWithQuantity,
   shoppingListTableElement,
@@ -382,11 +383,22 @@ function checkPersons(
       break;
     case 'addFromPic':
       expect(queryByTestId('RecipePersons::Text')).toBeNull();
-      expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('personPrefixOCR');
-      expect(getByTestId('RecipePersons::SuffixText').props.children).toBeUndefined();
-      if (prop.imgUri === defaultUri) {
-        expect(getByTestId('RecipePersons::OpenModal').props.children).toBeTruthy();
+      // When default persons is loaded (4), it falls through to edit mode
+      // Only shows OCR mode when recipePersons === defaultValueNumber (-1)
+      if (newValueExpected === defaultValueNumber) {
+        expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('personPrefixOCR');
+        expect(getByTestId('RecipePersons::SuffixText').props.children).toBeUndefined();
+        if (prop.imgUri === defaultUri) {
+          expect(getByTestId('RecipePersons::OpenModal').props.children).toBeTruthy();
+        } else {
+          expect(queryByTestId('RecipePersons::OpenModal')).toBeNull();
+        }
       } else {
+        // Falls through to edit mode when default persons is loaded
+        expect(getByTestId('RecipePersons::PrefixText').props.children).toEqual('personPrefixEdit');
+        expect(getByTestId('RecipePersons::SuffixText').props.children).toEqual('personSuffixEdit');
+        expect(getByTestId('RecipePersons::TextEditable').props.children).toEqual(newValueExpected);
+        expect(getByTestId('RecipePersons::SetTextToEdit').props.children).toBeTruthy();
         expect(queryByTestId('RecipePersons::OpenModal')).toBeNull();
       }
       break;
@@ -625,6 +637,26 @@ describe('Recipe Component tests', () => {
     params,
   });
 
+  const renderRecipe = async (route: RouteProp<StackScreenParamList, 'Recipe'>) => {
+    const result = render(
+      <RecipeDatabaseProvider>
+        <Recipe route={route} navigation={mockNavigation} />
+      </RecipeDatabaseProvider>
+    );
+
+    await waitFor(() => {
+      expect(result.getByTestId('BackButton::OnPressFunction')).toBeTruthy();
+      if (route.params.mode === 'addManually') {
+        const personsValue = result.queryByTestId('RecipePersons::TextEditable')?.props.children;
+        if (personsValue !== undefined) {
+          expect(personsValue).toEqual(4);
+        }
+      }
+    });
+
+    return result;
+  };
+
   const dbInstance = RecipeDatabase.getInstance();
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -642,10 +674,8 @@ describe('Recipe Component tests', () => {
   });
 
   // -------- INIT CASES --------
-  test('Initial state is correctly set in readOnly mode', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteReadOnly)} navigation={mockNavigation} />
-    );
+  test('Initial state is correctly set in readOnly mode', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteReadOnly));
 
     checkBottomTopButtons(mockRouteReadOnly, getByTestId, queryByTestId);
 
@@ -660,10 +690,8 @@ describe('Recipe Component tests', () => {
     checkNutrition(mockRouteReadOnly, getByTestId, queryByTestId);
   });
 
-  test('Initial state is correctly set in edit mode', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+  test('Initial state is correctly set in edit mode', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     checkBottomTopButtons(mockRouteEdit, getByTestId, queryByTestId);
 
@@ -678,9 +706,9 @@ describe('Recipe Component tests', () => {
     checkNutrition(mockRouteEdit, getByTestId, queryByTestId);
   });
 
-  test('Initial state is correctly set in add manually mode', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+  test('Initial state is correctly set in add manually mode', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(
+      createMockRoute(mockRouteAddManually)
     );
 
     checkBottomTopButtons(mockRouteAddManually, getByTestId, queryByTestId);
@@ -690,16 +718,14 @@ describe('Recipe Component tests', () => {
     checkDescription(mockRouteAddManually, getByTestId, queryByTestId, '');
     checkTags(mockRouteAddManually, getByTestId, queryByTestId, []);
     checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-    checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
+    checkPersons(mockRouteAddManually, getByTestId, queryByTestId, 4);
     checkTime(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
     checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
     checkNutrition(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
-  test('Initial state is correctly set in add ocr mode', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddOCR)} navigation={mockNavigation} />
-    );
+  test('Initial state is correctly set in add ocr mode', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteAddOCR));
 
     checkBottomTopButtons(mockRouteAddOCR, getByTestId, queryByTestId);
 
@@ -708,17 +734,15 @@ describe('Recipe Component tests', () => {
     checkDescription(mockRouteAddOCR, getByTestId, queryByTestId);
     checkTags(mockRouteAddOCR, getByTestId, queryByTestId);
     checkIngredients(mockRouteAddOCR, getByTestId, queryByTestId);
-    checkPersons(mockRouteAddOCR, getByTestId, queryByTestId);
+    checkPersons(mockRouteAddOCR, getByTestId, queryByTestId, defaultValueNumber);
     checkTime(mockRouteAddOCR, getByTestId, queryByTestId);
     checkPreparation(mockRouteAddOCR, getByTestId, queryByTestId);
     checkNutrition(mockRouteAddOCR, getByTestId, queryByTestId);
   });
 
   // -------- CHANGE ON TITLE CASES --------
-  test('updates recipeTitle and reflects in RecipeText only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+  test('updates recipeTitle and reflects in RecipeText only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     const newTitle = 'New Recipe Title';
     fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), newTitle);
@@ -735,9 +759,9 @@ describe('Recipe Component tests', () => {
     checkPreparation(newEditProp, getByTestId, queryByTestId);
   });
 
-  test('fill recipeTitle and reflects in RecipeText only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+  test('fill recipeTitle and reflects in RecipeText only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(
+      createMockRoute(mockRouteAddManually)
     );
 
     const newTitle = 'New Recipe Title';
@@ -748,16 +772,14 @@ describe('Recipe Component tests', () => {
     checkDescription(mockRouteAddManually, getByTestId, queryByTestId, '');
     checkTags(mockRouteAddManually, getByTestId, queryByTestId, []);
     checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-    checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
+    checkPersons(mockRouteAddManually, getByTestId, queryByTestId, 4);
     checkTime(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
     checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
   // -------- CHANGE ON DESCRIPTION CASES --------
-  test('updates recipeDescription and reflects in RecipeDescription only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+  test('updates recipeDescription and reflects in RecipeDescription only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     const newDescription = 'New Recipe Description';
     fireEvent.press(getByTestId('RecipeDescription::SetTextToEdit'), newDescription);
@@ -774,9 +796,9 @@ describe('Recipe Component tests', () => {
     checkPreparation(newEditProp, getByTestId, queryByTestId);
   });
 
-  test('fill recipeDescription and reflects in RecipeText only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+  test('fill recipeDescription and reflects in RecipeText only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(
+      createMockRoute(mockRouteAddManually)
     );
 
     const newDescription = 'New Recipe Description';
@@ -787,16 +809,14 @@ describe('Recipe Component tests', () => {
     checkDescription(mockRouteAddManually, getByTestId, queryByTestId, newDescription);
     checkTags(mockRouteAddManually, getByTestId, queryByTestId, []);
     checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-    checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
+    checkPersons(mockRouteAddManually, getByTestId, queryByTestId, 4);
     checkTime(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
     checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
   // -------- CHANGE ON TAGS CASES --------
-  test('remove recipeTags and reflects in RecipeTags only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+  test('remove recipeTags and reflects in RecipeTags only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     fireEvent.press(getByTestId('RecipeTags::RemoveTag'));
     const newEditProp: editRecipeManually = {
@@ -819,10 +839,8 @@ describe('Recipe Component tests', () => {
   });
 
   // -------- CHANGE ON PERSONS CASES --------
-  test('updates recipePersons and scales ingredients accordingly', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+  test('updates recipePersons and scales ingredients accordingly', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     const newPerson = '23';
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPerson);
@@ -851,9 +869,9 @@ describe('Recipe Component tests', () => {
     checkPreparation(newEditProp, getByTestId, queryByTestId);
   });
 
-  test('fill recipePersons and reflects in RecipeText only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+  test('fill recipePersons and reflects in RecipeText only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(
+      createMockRoute(mockRouteAddManually)
     );
 
     const newPerson = 23;
@@ -870,10 +888,8 @@ describe('Recipe Component tests', () => {
   });
 
   // -------- CHANGE ON INGREDIENTS CASES --------
-  test('updates recipeIngredients and reflects in RecipeIngredients only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+  test('updates recipeIngredients and reflects in RecipeIngredients only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
     const newEditProp: editRecipeManually = { ...mockRouteEdit };
@@ -892,10 +908,8 @@ describe('Recipe Component tests', () => {
   });
 
   // -------- CHANGE ON TIME CASES --------
-  test('updates recipeTime and reflects in RecipeTime only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+  test('updates recipeTime and reflects in RecipeTime only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     const newTime = '71';
     fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newTime);
@@ -912,9 +926,9 @@ describe('Recipe Component tests', () => {
     checkPreparation(newEditProp, getByTestId, queryByTestId);
   });
 
-  test('fill recipeTime and reflects in RecipeText only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+  test('fill recipeTime and reflects in RecipeText only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(
+      createMockRoute(mockRouteAddManually)
     );
 
     const newTime = 71;
@@ -925,16 +939,14 @@ describe('Recipe Component tests', () => {
     checkDescription(mockRouteAddManually, getByTestId, queryByTestId, '');
     checkTags(mockRouteAddManually, getByTestId, queryByTestId, []);
     checkIngredients(mockRouteAddManually, getByTestId, queryByTestId);
-    checkPersons(mockRouteAddManually, getByTestId, queryByTestId, defaultValueNumber);
+    checkPersons(mockRouteAddManually, getByTestId, queryByTestId, 4);
     checkTime(mockRouteAddManually, getByTestId, queryByTestId, newTime);
     checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
   // -------- CHANGE ON PREPARATION CASES --------
-  test('updates recipePreparation and reflects in RecipePreparation only', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+  test('updates recipePreparation and reflects in RecipePreparation only', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     fireEvent.press(getByTestId('RecipePreparation::TextEdited'));
     const newEditProp: editRecipeManually = {
@@ -957,9 +969,7 @@ describe('Recipe Component tests', () => {
   });
 
   test('validates button on read only mode', async () => {
-    const { getByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteReadOnly)} navigation={mockNavigation} />
-    );
+    const { getByTestId } = await renderRecipe(createMockRoute(mockRouteReadOnly));
 
     expect(RecipeDatabase.getInstance().get_shopping()).toEqual([]);
 
@@ -1013,9 +1023,7 @@ describe('Recipe Component tests', () => {
   });
 
   test('validates button on edit mode', async () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEdit)} navigation={mockNavigation} />
-    );
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
     const newProp: RecipePropType = {
       mode: 'readOnly',
@@ -1075,9 +1083,9 @@ describe('Recipe Component tests', () => {
   //TODO change expected results when recipe edition will be implemented
   // TODO  a validation that new recipe is well inserted in the database
 
-  test('validates button on add manually mode', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+  test('validates button on add manually mode', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(
+      createMockRoute(mockRouteAddManually)
     );
 
     const newTitle = 'New Recipe Title';
@@ -1103,10 +1111,8 @@ describe('Recipe Component tests', () => {
     checkPreparation(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
-  test('shows validation error when image is missing in add mode', () => {
-    const { getByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
-    );
+  test('shows validation error when image is missing in add mode', async () => {
+    const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
 
     // Add all required fields except image
     fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'Test Recipe');
@@ -1125,7 +1131,7 @@ describe('Recipe Component tests', () => {
     );
   });
 
-  test('shows validation error when nutrition has zero values in add mode', () => {
+  test('shows validation error when nutrition has zero values in add mode', async () => {
     const mockRecipeWithNutrition = {
       mode: 'edit' as const,
       recipe: {
@@ -1145,9 +1151,7 @@ describe('Recipe Component tests', () => {
       },
     };
 
-    const { getByTestId } = render(
-      <Recipe route={createMockRoute(mockRecipeWithNutrition as any)} navigation={mockNavigation} />
-    );
+    const { getByTestId } = await renderRecipe(createMockRoute(mockRecipeWithNutrition));
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 
@@ -1160,7 +1164,7 @@ describe('Recipe Component tests', () => {
     );
   });
 
-  test('edit mode validates comprehensively like add mode', () => {
+  test('edit mode validates comprehensively like add mode', async () => {
     const mockRouteEditWithoutImage = {
       mode: 'edit' as const,
       recipe: {
@@ -1169,9 +1173,7 @@ describe('Recipe Component tests', () => {
       },
     };
 
-    const { getByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteEditWithoutImage)} navigation={mockNavigation} />
-    );
+    const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEditWithoutImage));
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 
@@ -1184,7 +1186,7 @@ describe('Recipe Component tests', () => {
     );
   });
 
-  test('shows special nutrition message for single missing nutrition', () => {
+  test('shows special nutrition message for single missing nutrition', async () => {
     const mockRecipeWithZeroNutrition = {
       mode: 'edit' as const,
       recipe: {
@@ -1204,12 +1206,7 @@ describe('Recipe Component tests', () => {
       },
     };
 
-    const { getByTestId } = render(
-      <Recipe
-        route={createMockRoute(mockRecipeWithZeroNutrition as any)}
-        navigation={mockNavigation}
-      />
-    );
+    const { getByTestId } = await renderRecipe(createMockRoute(mockRecipeWithZeroNutrition));
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 
@@ -1222,10 +1219,8 @@ describe('Recipe Component tests', () => {
     );
   });
 
-  test('shows plural validation errors when multiple elements are missing', () => {
-    const { getByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
-    );
+  test('shows plural validation errors when multiple elements are missing', async () => {
+    const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
 
     // Don't add anything - everything should be missing
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
@@ -1239,7 +1234,7 @@ describe('Recipe Component tests', () => {
     );
   });
 
-  test('validation passes when all required fields are complete in edit mode', () => {
+  test('validation passes when all required fields are complete in edit mode', async () => {
     const mockCompleteRecipe = {
       mode: 'edit' as const,
       recipe: {
@@ -1248,9 +1243,7 @@ describe('Recipe Component tests', () => {
       },
     };
 
-    const { getByTestId } = render(
-      <Recipe route={createMockRoute(mockCompleteRecipe as any)} navigation={mockNavigation} />
-    );
+    const { getByTestId } = await renderRecipe(createMockRoute(mockCompleteRecipe as any));
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 
@@ -1259,10 +1252,8 @@ describe('Recipe Component tests', () => {
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(false);
   });
 
-  test('toggles stackMode between readOnly and edit', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteReadOnly)} navigation={mockNavigation} />
-    );
+  test('toggles stackMode between readOnly and edit', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteReadOnly));
     const paramEdit: editRecipeManually = { ...mockRouteReadOnly, mode: 'edit' };
     fireEvent.press(getByTestId('RecipeEdit::OnPressFunction'));
 
@@ -1280,17 +1271,15 @@ describe('Recipe Component tests', () => {
   });
 
   // -------- NUTRITION OCR TESTS --------
-  test('shows OCR nutrition empty state in addOCR mode', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddOCR)} navigation={mockNavigation} />
-    );
+  test('shows OCR nutrition empty state in addOCR mode', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteAddOCR));
 
     checkNutrition(mockRouteAddOCR, getByTestId, queryByTestId);
   });
 
-  test('shows manual nutrition empty state in addManual mode', () => {
-    const { getByTestId, queryByTestId } = render(
-      <Recipe route={createMockRoute(mockRouteAddManually)} navigation={mockNavigation} />
+  test('shows manual nutrition empty state in addManual mode', async () => {
+    const { getByTestId, queryByTestId } = await renderRecipe(
+      createMockRoute(mockRouteAddManually)
     );
 
     checkNutrition(mockRouteAddManually, getByTestId, queryByTestId);

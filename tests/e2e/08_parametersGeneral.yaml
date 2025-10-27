@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Parameters screen test suite"
+name: "08: Parameters screen test suite"
 ---
 - launchApp
 

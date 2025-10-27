@@ -48,16 +48,15 @@
  */
 
 import { shoppingListTableElement } from '@customTypes/DatabaseElementTypes';
-import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SectionList, StyleProp, TextStyle, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
 import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import { Checkbox, Divider, List, Text, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import {
   ShoppingAppliedToDatabase,
   shoppingCategories,
@@ -86,11 +85,15 @@ const CopilotView = walkthroughable(View);
 export function Shopping() {
   const { t } = useI18n();
   const { colors, fonts } = useTheme();
+  const {
+    shopping: shoppingList,
+    purchaseIngredientInShoppingList,
+    clearShoppingList: clearShoppingListDB,
+  } = useRecipeDatabase();
   const copilotData = useSafeCopilot();
   const copilotEvents = copilotData?.copilotEvents;
   const currentStep = copilotData?.currentStep;
 
-  const [shoppingList, setShoppingList] = useState(new Array<shoppingListTableElement>());
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isDialogOpenRef = useRef(false);
 
@@ -148,12 +151,6 @@ export function Shopping() {
       }
     },
     [stepOrder, startDemo, stopDemo]
-  );
-
-  useFocusEffect(
-    React.useCallback(() => {
-      setShoppingList([...RecipeDatabase.getInstance().get_shopping()]);
-    }, [])
   );
 
   useEffect(() => {
@@ -255,15 +252,11 @@ export function Shopping() {
    * - Triggers UI re-render with new purchase state
    */
   function updateShoppingList(ingredientName: string) {
-    const newShoppingList = shoppingList.map(item => item);
-
     const ingToEdit = shoppingList.find(item => item.name === ingredientName);
     if (ingToEdit !== undefined) {
-      ingToEdit.purchased = !ingToEdit.purchased;
+      const newPurchasedState = !ingToEdit.purchased;
       if (ingToEdit.id !== undefined) {
-        RecipeDatabase.getInstance()
-          .purchaseIngredientOfShoppingList(ingToEdit.id, ingToEdit.purchased)
-          .then(() => setShoppingList(newShoppingList));
+        purchaseIngredientInShoppingList(ingToEdit.id, newPurchasedState);
       } else {
         shoppingLogger.warn('Shopping list ingredient missing ID', { ingredientName });
       }
@@ -281,8 +274,7 @@ export function Shopping() {
   }
 
   async function clearShoppingList() {
-    await RecipeDatabase.getInstance().resetShoppingList();
-    setShoppingList([]);
+    await clearShoppingListDB();
     setIsConfirmationDialogOpen(false);
   }
 

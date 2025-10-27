@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Parameters screen - Ingredients database management test suite"
+name: "10: Parameters screen - Ingredients database management test suite"
 ---
 - launchApp
 

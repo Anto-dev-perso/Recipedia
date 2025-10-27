@@ -67,7 +67,6 @@ import {
   removeValueToMultimap,
   retrieveAllFilters,
 } from '@utils/FilterFunctions';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import { useI18n } from '@utils/i18n';
 import { Divider, Text, useTheme } from 'react-native-paper';
 import SearchBar from '@components/organisms/SearchBar';
@@ -77,6 +76,7 @@ import { padding } from '@styles/spacing';
 import RecipeCard from '@components/molecules/RecipeCard';
 import FilterAccordion from '@components/organisms/FilterAccordion';
 import { useSeasonFilter } from '@context/SeasonFilterContext';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /**
  * Search screen component - Advanced recipe search with filtering
@@ -88,6 +88,7 @@ export function Search() {
   const { colors } = useTheme();
 
   const { seasonFilter } = useSeasonFilter();
+  const { recipes } = useRecipeDatabase();
 
   // Refs
   const scrollViewRef = useRef<ScrollView>(null);
@@ -99,8 +100,7 @@ export function Search() {
   const [addingFilterMode, setAddingFilterMode] = useState(false);
 
   // Derived state - calculated from core state, not stored
-  const allRecipes = RecipeDatabase.getInstance().get_recipes();
-  const filteredRecipes = filterFromRecipe(allRecipes, filtersState, t);
+  const filteredRecipes = filterFromRecipe(recipes, filtersState, t);
   const [filteredTitles, filteredIngredients, filteredTags] =
     extractFilteredRecipeDatas(filteredRecipes);
 

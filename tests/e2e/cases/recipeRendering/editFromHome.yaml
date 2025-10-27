@@ -34,7 +34,6 @@ env:
     file: "../../asserts/recipe/common/nutritionEmptyEdit.yaml"
     label: "Assert nutrition section is now empty with add button"
 
-
 - tapOn:
     id: "RecipeValidate"
     label: "Validate the modifications"

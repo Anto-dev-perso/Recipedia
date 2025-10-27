@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Check that home right buttons are expanding"
+name: "02: Check that home right buttons are expanding"
 ---
 - launchApp
 

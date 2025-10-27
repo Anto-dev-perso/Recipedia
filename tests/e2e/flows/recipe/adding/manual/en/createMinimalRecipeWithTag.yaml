@@ -30,7 +30,6 @@ appId: "com.recipedia"
     speed: 80
     label: "Scroll down to find add tag button"
 
-
 - tapOn:
     id: "RecipeTags::RoundButton"
     label: "Tap to add tag to recipe"

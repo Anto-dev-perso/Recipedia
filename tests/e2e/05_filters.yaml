@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Tests suite checking that filters are working correctly"
+name: "05: Tests suite checking that filters are working correctly"
 ---
 - launchApp
 

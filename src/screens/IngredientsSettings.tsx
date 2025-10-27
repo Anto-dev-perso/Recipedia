@@ -25,13 +25,13 @@
  * ```
  */
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { ingredientTableElement } from '@customTypes/DatabaseElementTypes';
 import SettingsItemList from '@components/organisms/SettingsItemList';
 import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
-import RecipeDatabase from '@utils/RecipeDatabase';
 import { ingredientsSettingsLogger } from '@utils/logger';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /**
  * IngredientsSettings screen component - Ingredient database management
@@ -39,29 +39,23 @@ import { ingredientsSettingsLogger } from '@utils/logger';
  * @returns JSX element representing the ingredient management interface
  */
 export function IngredientsSettings() {
-  const database = RecipeDatabase.getInstance();
+  const { ingredients, addIngredient, editIngredient, deleteIngredient } = useRecipeDatabase();
 
-  const [ingredients, setIngredients] = useState(
-    [...database.get_ingredients()].sort((a, b) => a.name.localeCompare(b.name))
+  const ingredientsSortedAlphabetically = useMemo(
+    () => [...ingredients].sort((a, b) => a.name.localeCompare(b.name)),
+    [ingredients]
   );
-  // TODO database could return a sorted array directly
 
   // Dialog states
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<'add' | 'edit' | 'delete'>('add');
-  const [selectedIngredient, setSelectedIngredient] = useState<ingredientTableElement>(
-    ingredients[0]
-  );
+  const [selectedIngredient, setSelectedIngredient] = useState<ingredientTableElement>();
 
   const testId = 'IngredientsSettings';
 
   const handleAddIngredient = async (newIngredient: ingredientTableElement) => {
-    const insertedIngredient = await database.addIngredient(newIngredient);
-    if (insertedIngredient) {
-      setIngredients(
-        [...ingredients, insertedIngredient].sort((a, b) => a.name.localeCompare(b.name))
-      );
-    } else {
+    const insertedIngredient = await addIngredient(newIngredient);
+    if (!insertedIngredient) {
       ingredientsSettingsLogger.warn('Failed to add ingredient to database', {
         ingredientName: newIngredient.name,
       });
@@ -69,15 +63,8 @@ export function IngredientsSettings() {
   };
 
   const handleEditIngredient = async (newIngredient: ingredientTableElement) => {
-    const success = await database.editIngredient(newIngredient);
-    if (success) {
-      const idx = ingredients.findIndex(ing => ing.id === newIngredient.id);
-      if (idx !== -1) {
-        const updatedIngredients = [...ingredients];
-        updatedIngredients[idx] = newIngredient;
-        setIngredients(updatedIngredients.sort((a, b) => a.name.localeCompare(b.name)));
-      }
-    } else {
+    const success = await editIngredient(newIngredient);
+    if (!success) {
       ingredientsSettingsLogger.warn('Failed to update ingredient in database', {
         ingredientName: newIngredient.name,
         ingredientId: newIngredient.id,
@@ -86,9 +73,8 @@ export function IngredientsSettings() {
   };
 
   const handleDeleteIngredient = async (ingredient: ingredientTableElement) => {
-    if (await database.deleteIngredient(ingredient)) {
-      setIngredients(ingredients.filter(ing => ing.id !== ingredient.id));
-    } else {
+    const success = await deleteIngredient(ingredient);
+    if (!success) {
       ingredientsSettingsLogger.warn('Ingredient not found for deletion', { ingredient });
     }
   };
@@ -140,7 +126,7 @@ export function IngredientsSettings() {
   return (
     <View>
       <SettingsItemList
-        items={ingredients}
+        items={ingredientsSortedAlphabetically}
         testIdPrefix={testId}
         onAddPress={openAddDialog}
         onEdit={openEditDialog}
@@ -156,7 +142,7 @@ export function IngredientsSettings() {
         mode={dialogMode}
         item={{
           type: 'Ingredient',
-          value: selectedIngredient,
+          value: selectedIngredient ?? ingredientsSortedAlphabetically[0],
           onConfirmIngredient: handleDialogConfirm,
         }}
       />

@@ -9,6 +9,7 @@ import RecipeDatabase from '@utils/RecipeDatabase';
 import { testIngredients } from '@test-data/ingredientsDataset';
 import { testTags } from '@test-data/tagsDataset';
 import { SeasonFilterProvider } from '@context/SeasonFilterContext';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () =>
@@ -51,13 +52,15 @@ const Stack = createStackNavigator();
 
 async function renderHomeAndWaitForRecommendations() {
   const result = render(
-    <SeasonFilterProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name={'Home'} component={Home} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SeasonFilterProvider>
+    <RecipeDatabaseProvider>
+      <SeasonFilterProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name={'Home'} component={Home} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SeasonFilterProvider>
+    </RecipeDatabaseProvider>
   );
 
   await waitFor(() =>
@@ -169,13 +172,15 @@ describe('Home Screen', () => {
     expect(initialRandomReco.length).toBeLessThanOrEqual(expectedRandomRecommendationLength);
 
     rerender(
-      <SeasonFilterProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name={'Home'} component={Home} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SeasonFilterProvider>
+      <RecipeDatabaseProvider>
+        <SeasonFilterProvider>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name={'Home'} component={Home} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SeasonFilterProvider>
+      </RecipeDatabaseProvider>
     );
 
     await waitFor(() => {
@@ -204,13 +209,15 @@ describe('Home Screen', () => {
     await database.init();
 
     const { getByTestId } = render(
-      <SeasonFilterProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name={'Home'} component={Home} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SeasonFilterProvider>
+      <RecipeDatabaseProvider>
+        <SeasonFilterProvider>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name={'Home'} component={Home} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SeasonFilterProvider>
+      </RecipeDatabaseProvider>
     );
 
     await waitFor(() => {

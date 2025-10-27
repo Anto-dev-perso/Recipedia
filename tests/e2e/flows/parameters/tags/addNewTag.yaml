@@ -23,6 +23,13 @@ appId: "com.recipedia"
     id: "TagsSettings::ItemDialog::AddModal::ConfirmButton"
     label: "Confirm adding the new tag"
 
+- scrollUntilVisible:
+    element:
+      text: "RecipeTag"
+    direction: UP
+    speed: 60
+    label: "Scroll up to find the new tag"
+
 - assertVisible:
     text: "RecipeTag"
     label: "Verify new tag appears in the list"

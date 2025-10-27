@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Shopping screen test suite"
+name: "07: Shopping screen test suite"
 ---
 - launchApp
 

@@ -14,6 +14,7 @@ import {
 } from '@testing-library/react-native/build/queries/options';
 import { TextMatch } from '@testing-library/react-native/build/matches';
 import { DialogMode } from '@components/dialogs/ItemDialog';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () =>
@@ -39,6 +40,22 @@ const defaultProps = {
   navigation: mockNavigationFunctions,
   route: mockRoute,
 } as any;
+
+const renderTagsSettings = async () => {
+  const result = render(
+    <RecipeDatabaseProvider>
+      <TagsSettings {...defaultProps} />
+    </RecipeDatabaseProvider>
+  );
+
+  await waitFor(() => {
+    expect(result.getByTestId('TagsSettings::SettingsItemList::Type')).toBeTruthy();
+    const items = result.getByTestId('TagsSettings::SettingsItemList::Items').props.children;
+    expect(items).not.toEqual('[]');
+  });
+
+  return result;
+};
 
 type QueryByIdType = QueryByQuery<TextMatch, CommonQueryOptions & TextMatchOptions>;
 
@@ -82,8 +99,8 @@ describe('TagsSettings Screen', () => {
     await db.reset();
   });
 
-  test('renders correctly with initial tags', () => {
-    const { getByTestId } = render(<TagsSettings {...defaultProps} />);
+  test('renders correctly with initial tags', async () => {
+    const { getByTestId } = await renderTagsSettings();
 
     expect(getByTestId('TagsSettings::SettingsItemList::Type').props.children).toEqual('tag');
     expect(getByTestId('TagsSettings::SettingsItemList::Items').props.children).toEqual(
@@ -97,7 +114,7 @@ describe('TagsSettings Screen', () => {
   });
 
   test('opens add dialog when add button is pressed and save value', async () => {
-    const { getByTestId } = render(<TagsSettings {...defaultProps} />);
+    const { getByTestId } = await renderTagsSettings();
     fireEvent.press(getByTestId('TagsSettings::SettingsItemList::OnAddPress'));
 
     await waitFor(() => {
@@ -116,7 +133,7 @@ describe('TagsSettings Screen', () => {
   });
 
   test('opens edit dialog when edit button is pressed and save value', async () => {
-    const { getByTestId } = render(<TagsSettings {...defaultProps} />);
+    const { getByTestId } = await renderTagsSettings();
     fireEvent.press(getByTestId('TagsSettings::SettingsItemList::OnEdit'));
 
     await waitFor(() => {
@@ -135,7 +152,7 @@ describe('TagsSettings Screen', () => {
   });
 
   test('opens delete dialog when delete button is pressed and save value', async () => {
-    const { getByTestId } = render(<TagsSettings {...defaultProps} />);
+    const { getByTestId } = await renderTagsSettings();
     fireEvent.press(getByTestId('TagsSettings::SettingsItemList::OnDelete'));
 
     await waitFor(() => {

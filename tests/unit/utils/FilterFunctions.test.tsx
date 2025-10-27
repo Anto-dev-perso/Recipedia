@@ -697,19 +697,28 @@ describe('FilterFunctions', () => {
     }
 
     test('generateHomeRecommendations creates recommendations when season filter disabled', () => {
-      const recommendations = generateHomeRecommendations(false, 4);
+      const recipes = database.get_recipes();
+      const ingredients = database.get_ingredients();
+      const tags = database.get_tags();
+      const recommendations = generateHomeRecommendations(recipes, ingredients, tags, false, 4);
       assertRecommendation(recommendations, false);
     });
 
     test('generateHomeRecommendations respects season filter when enabled', () => {
-      const recommendations = generateHomeRecommendations(true, 4);
+      const recipes = database.get_recipes();
+      const ingredients = database.get_ingredients();
+      const tags = database.get_tags();
+      const recommendations = generateHomeRecommendations(recipes, ingredients, tags, true, 4);
       assertRecommendation(recommendations, true);
     });
 
     test('generateHomeRecommendations handles empty database', async () => {
       await database.reset();
       await database.init();
-      const recommendations = generateHomeRecommendations(false, 4);
+      const recipes = database.get_recipes();
+      const ingredients = database.get_ingredients();
+      const tags = database.get_tags();
+      const recommendations = generateHomeRecommendations(recipes, ingredients, tags, false, 4);
       expect(recommendations).toHaveLength(0);
     });
   });

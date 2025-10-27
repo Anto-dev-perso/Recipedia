@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Recipe Adding test suite"
+name: "06: Recipe Adding test suite"
 ---
 - launchApp
 

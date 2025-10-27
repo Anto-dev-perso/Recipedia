@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Search bar can search for recipes by names"
+name: "03: Search bar can search for recipes by names"
 ---
 - launchApp
 
