@@ -4,17 +4,20 @@
  * Provides a reactive wrapper around the RecipeDatabase singleton, enabling
  * automatic component re-renders when database state changes. Eliminates the
  * need for manual useFocusEffect workarounds and direct getInstance() calls.
+ * Also handles database initialization and first-launch dataset loading.
  *
  * Key Features:
  * - Reactive state management for recipes, ingredients, tags, and shopping
  * - Automatic re-renders when database changes occur
  * - Smart update logic: edits/deletes on ingredients/tags trigger recipe refresh
+ * - Database initialization and first-launch dataset loading
  * - Exposes all essential RecipeDatabase methods through hook interface
  * - Type-safe with full TypeScript support
  * - Testable with thin mock that uses real database operations
  *
  * Architecture:
  * - Provider wraps the app and maintains reactive state
+ * - Initializes database and loads dataset on first launch
  * - Hook provides access to state and database operations
  * - All operations automatically trigger appropriate state refreshes
  * - No manual refresh functions needed
@@ -25,6 +28,12 @@
  * - Delete ingredient/tag: Refreshes both collection AND recipes (recipes might reference them)
  * - Recipe operations: Always refresh recipes
  * - Shopping operations: Always refresh shopping list
+ *
+ * Initialization Logic:
+ * - On mount: Initialize database and load state
+ * - On first launch: Load complete dataset (ingredients, tags, recipes)
+ * - Scale all recipes to default persons count
+ * - Create new array references for React to detect changes
  *
  * @example
  * ```typescript
@@ -52,6 +61,11 @@ import {
   shoppingListTableElement,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
+import { isFirstLaunch } from '@utils/firstLaunch';
+import { getDataset } from '@utils/DatasetLoader';
+import i18n, { SupportedLanguage } from '@utils/i18n';
+import { getDefaultPersons } from '@utils/settings';
+import { databaseLogger } from '@utils/logger';
 
 /**
  * Type definition for the RecipeDatabase context value
@@ -59,7 +73,7 @@ import {
  * Provides access to reactive database state and all database operations.
  * All mutation methods automatically trigger appropriate state refreshes.
  */
-interface RecipeDatabaseContextType {
+export interface RecipeDatabaseContextType {
   /** Current recipes state - reactive, triggers re-renders when changed */
   recipes: recipeTableElement[];
   /** Adds recipe to database and refreshes recipes state */
@@ -123,6 +137,9 @@ interface RecipeDatabaseContextType {
   addMultipleTags: (tags: tagTableElement[]) => Promise<void>;
   /** Adds multiple recipes to database and refreshes recipes state */
   addMultipleRecipes: (recipes: recipeTableElement[]) => Promise<void>;
+
+  /** Indicates whether database initialization has completed */
+  isDatabaseInitialized: boolean;
 }
 
 const RecipeDatabaseContext = createContext<RecipeDatabaseContextType | undefined>(undefined);
@@ -168,12 +185,57 @@ export const RecipeDatabaseProvider: React.FC<{ children: ReactNode }> = ({ chil
 
   useEffect(() => {
     const initializeDatabase = async () => {
-      await db.init();
-      setRecipes([...db.get_recipes()]);
-      setIngredients([...db.get_ingredients()]);
-      setTags([...db.get_tags()]);
-      setShopping([...db.get_shopping()]);
-      setIsInitialized(true);
+      try {
+        databaseLogger.info('Initializing database');
+        await db.init();
+
+        const isFirst = await isFirstLaunch();
+        if (isFirst) {
+          if (db.isDatabaseEmpty()) {
+            databaseLogger.info('First launch detected - loading complete dataset');
+            const currentLanguage = i18n.language as SupportedLanguage;
+            const dataset = getDataset(currentLanguage);
+
+            await db.addMultipleIngredients(dataset.ingredients);
+            await db.addMultipleTags(dataset.tags);
+            await db.addMultipleRecipes(dataset.recipes);
+
+            databaseLogger.info('Dataset loaded successfully', {
+              ingredientsCount: dataset.ingredients.length,
+              tagsCount: dataset.tags.length,
+              recipesCount: dataset.recipes.length,
+            });
+
+            const defaultPersons = await getDefaultPersons();
+            databaseLogger.info('Scaling all recipes to default persons count', {
+              defaultPersons,
+              totalRecipes: dataset.recipes.length,
+            });
+            await db.scaleAllRecipesForNewDefaultPersons(defaultPersons);
+            databaseLogger.info('All recipes scaled successfully');
+          } else {
+            databaseLogger.warn(
+              'First launch flag is set but database already contains data - skipping dataset load',
+              {
+                recipesCount: db.get_recipes().length,
+                ingredientsCount: db.get_ingredients().length,
+                tagsCount: db.get_tags().length,
+              }
+            );
+          }
+        } else {
+          databaseLogger.debug('Not first launch - database already initialized');
+        }
+
+        setRecipes([...db.get_recipes()]);
+        setIngredients([...db.get_ingredients()]);
+        setTags([...db.get_tags()]);
+        setShopping([...db.get_shopping()]);
+        setIsInitialized(true);
+        databaseLogger.info('Database initialization completed successfully');
+      } catch (error) {
+        databaseLogger.error('Database initialization failed', { error });
+      }
     };
     initializeDatabase();
   }, []);
@@ -341,11 +403,8 @@ export const RecipeDatabaseProvider: React.FC<{ children: ReactNode }> = ({ chil
     addMultipleIngredients,
     addMultipleTags,
     addMultipleRecipes,
+    isDatabaseInitialized: isInitialized,
   };
-
-  if (!isInitialized) {
-    return null;
-  }
 
   return (
     <RecipeDatabaseContext.Provider value={contextValue}>{children}</RecipeDatabaseContext.Provider>
