@@ -1,3 +1,9 @@
+## [0.17.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.16.0...v0.17.0) (2025-10-27)
+
+### Features
+
+* **context:** introduce `RecipeDatabaseContext` for centralized recipe ([4dd6201](https://github.com/Anto-dev-perso/Recipedia/commit/4dd6201b99eaaa6862785e591458be5aefe8a32b))
+
 ## [0.16.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.15.0...v0.16.0) (2025-10-26)
 
 ### Features
