@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Parameters screen - Tags database management test suite"
+name: "09: Parameters screen - Tags database management test suite"
 ---
 - launchApp
 

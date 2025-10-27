@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Launch and check screens are displayed correctly"
+name: "01: Launch and check screens are displayed correctly"
 ---
 - launchApp
 

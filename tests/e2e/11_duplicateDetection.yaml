@@ -1,5 +1,5 @@
 appId: "com.recipedia"
-name: "Duplicate detection test suite"
+name: "11: Duplicate detection test suite"
 ---
 - launchApp
 
