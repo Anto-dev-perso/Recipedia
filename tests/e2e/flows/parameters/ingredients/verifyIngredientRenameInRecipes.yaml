@@ -27,14 +27,12 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::2::IngredientName"
-    # TODO bug
-    #    text: "Lettuce Edited"
+    text: "Lettuce Edited"
     label: "Verify ingredient name changed to 'Lettuce Edited' in recipe"
 
-# TODO bug
-#- assertNotVisible:
-#    text: "Lettuce"
-#    label: "Verify old ingredient name no longer appears"
+- assertNotVisible:
+    text: "Lettuce"
+    label: "Verify old ingredient name no longer appears"
 
 - tapOn:
     id: "BackButton::RoundButton"
