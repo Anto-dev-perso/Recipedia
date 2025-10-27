@@ -6,6 +6,7 @@ import RecipeDatabase from '@utils/RecipeDatabase';
 import { testIngredients } from '@test-data/ingredientsDataset';
 import { testTags } from '@test-data/tagsDataset';
 import { testRecipes } from '@test-data/recipesDataset';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 
 jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
 jest.mock('@utils/FileGestion', () =>
@@ -31,6 +32,20 @@ const defaultProps = {
   },
 };
 
+const renderDefaultPersonsSettings = async () => {
+  const result = render(
+    <RecipeDatabaseProvider>
+      <DefaultPersonsSettings {...(defaultProps as any)} />
+    </RecipeDatabaseProvider>
+  );
+
+  await waitFor(() => {
+    expect(result.getByTestId('DefaultPersonSettings::Slider')).toBeTruthy();
+  });
+
+  return result;
+};
+
 describe('DefaultPersonsSettings Screen', () => {
   const database: RecipeDatabase = RecipeDatabase.getInstance();
 
@@ -47,11 +62,7 @@ describe('DefaultPersonsSettings Screen', () => {
   });
 
   test('renders correctly with default values', async () => {
-    const { getByTestId } = render(<DefaultPersonsSettings {...(defaultProps as any)} />);
-
-    await waitFor(() => {
-      expect(getByTestId('DefaultPersonSettings::Slider')).toBeTruthy();
-    });
+    const { getByTestId } = await renderDefaultPersonsSettings();
 
     expect(getByTestId('DefaultPersonSettings::Title').props.children).toEqual('default_persons');
     expect(getByTestId('DefaultPersonSettings::PersonsValue').props.children).toEqual([
@@ -70,11 +81,7 @@ describe('DefaultPersonsSettings Screen', () => {
   });
 
   test('updates persons value when slider changes', async () => {
-    const { getByTestId } = render(<DefaultPersonsSettings {...(defaultProps as any)} />);
-
-    await waitFor(() => {
-      expect(getByTestId('DefaultPersonSettings::Slider')).toBeTruthy();
-    });
+    const { getByTestId } = await renderDefaultPersonsSettings();
 
     fireEvent.press(getByTestId('DefaultPersonSettings::Slider'));
 
@@ -88,7 +95,7 @@ describe('DefaultPersonsSettings Screen', () => {
   });
 
   test('calls navigation.goBack when cancel button is pressed', async () => {
-    const { getByTestId } = render(<DefaultPersonsSettings {...(defaultProps as any)} />);
+    const { getByTestId } = await renderDefaultPersonsSettings();
 
     // Press the cancel button
     fireEvent.press(getByTestId('DefaultPersonSettings::Cancel'));
@@ -98,11 +105,7 @@ describe('DefaultPersonsSettings Screen', () => {
   });
 
   test('saves persons value and navigates back when save button is pressed', async () => {
-    const { getByTestId } = render(<DefaultPersonsSettings {...(defaultProps as any)} />);
-
-    await waitFor(() => {
-      expect(getByTestId('DefaultPersonSettings::Slider')).toBeTruthy();
-    });
+    const { getByTestId } = await renderDefaultPersonsSettings();
 
     fireEvent.press(getByTestId('DefaultPersonSettings::Slider'));
 
@@ -141,11 +144,7 @@ describe('DefaultPersonsSettings Screen', () => {
     expect(ingredientBefore).toBeDefined();
     expect(ingredientBefore?.quantity).toBe('100');
 
-    const { getByTestId } = render(<DefaultPersonsSettings {...(defaultProps as any)} />);
-
-    await waitFor(() => {
-      expect(getByTestId('DefaultPersonSettings::Slider')).toBeTruthy();
-    });
+    const { getByTestId } = await renderDefaultPersonsSettings();
 
     fireEvent.press(getByTestId('DefaultPersonSettings::Slider'));
 

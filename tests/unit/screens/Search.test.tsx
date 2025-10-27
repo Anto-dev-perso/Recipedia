@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import Search from '@screens/Search';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { testIngredients } from '@test-data/ingredientsDataset';
@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { SeasonFilterProvider } from '@context/SeasonFilterContext';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 import { resetFiltersSelection } from '@mocks/components/organisms/FiltersSelection-mock';
 import { BackHandler } from 'react-native';
 
@@ -45,11 +46,9 @@ const Stack = createStackNavigator();
 
 describe('Search Screen', () => {
   const database: RecipeDatabase = RecipeDatabase.getInstance();
-  let renderResult: any;
 
-  // Helper function to render Search component with all necessary providers
-  const renderSearchComponent = () => {
-    const result = render(
+  const defaultComponent = (
+    <RecipeDatabaseProvider>
       <SeasonFilterProvider>
         <NavigationContainer>
           <Stack.Navigator>
@@ -57,22 +56,25 @@ describe('Search Screen', () => {
           </Stack.Navigator>
         </NavigationContainer>
       </SeasonFilterProvider>
-    );
+    </RecipeDatabaseProvider>
+  );
+
+  const renderSearchComponent = async () => {
+    const result = render(defaultComponent);
+    await waitFor(() => {
+      expect(result.getByTestId('SearchScreen')).toBeTruthy();
+    });
     return result;
   };
 
   // Helper function to wait for async operations and rerender if needed
-  const waitAndRerender = async (renderResult: any) => {
+  const waitAndRerender = async (rerender: any, getByTestId: any) => {
     await new Promise(resolve => setTimeout(resolve, 100));
-    renderResult.rerender(
-      <SeasonFilterProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name={'Search'} component={Search} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SeasonFilterProvider>
-    );
+    rerender(defaultComponent);
+    await waitFor(() => {
+      expect(getByTestId('SearchScreen')).toBeTruthy();
+    });
+    return { getByTestId };
   };
 
   // Helper function to assert initial component state
@@ -115,26 +117,20 @@ describe('Search Screen', () => {
     await database.addMultipleIngredients(testIngredients);
     await database.addMultipleTags(testTags);
     await database.addMultipleRecipes(testRecipes);
-
-    // Render component for all tests
-    renderResult = renderSearchComponent();
   });
 
   afterEach(async () => {
     await database.reset();
-    if (renderResult && renderResult.unmount) {
-      renderResult.unmount();
-    }
   });
 
   test('initializes with database recipes', async () => {
-    const { getByTestId } = renderResult;
+    const { getByTestId: emptyGetByTestId, rerender } = await renderSearchComponent();
 
     // Assert initial component state before database data loads
-    assertInitialComponentState(getByTestId);
+    assertInitialComponentState(emptyGetByTestId);
 
     // Wait for database operations to complete and rerender
-    await waitAndRerender(renderResult);
+    const { getByTestId } = await waitAndRerender(rerender, emptyGetByTestId);
 
     // Assert component state after database is populated
     assertDatabasePopulatedState(getByTestId);
@@ -148,13 +144,11 @@ describe('Search Screen', () => {
   });
 
   test('Add filter on child components update the React.useState', async () => {
-    const { getByTestId } = renderResult;
+    const { getByTestId: emptyGetByTestId, rerender } = await renderSearchComponent();
 
-    // Assert initial state
-    assertInitialComponentState(getByTestId);
+    assertInitialComponentState(emptyGetByTestId);
 
-    // Wait for database operations to complete
-    await waitAndRerender(renderResult);
+    const { getByTestId } = await waitAndRerender(rerender, emptyGetByTestId);
 
     // Assert database populated state
     assertDatabasePopulatedState(getByTestId);
@@ -199,13 +193,11 @@ describe('Search Screen', () => {
   });
 
   test('Remove filter on child components update the React.useState', async () => {
-    const { getByTestId } = renderResult;
+    const { getByTestId: emptyGetByTestId, rerender } = await renderSearchComponent();
 
-    // Assert initial state
-    assertInitialComponentState(getByTestId);
+    assertInitialComponentState(emptyGetByTestId);
 
-    // Wait for database operations to complete
-    await waitAndRerender(renderResult);
+    const { getByTestId } = await waitAndRerender(rerender, emptyGetByTestId);
 
     // Assert database populated state
     assertDatabasePopulatedState(getByTestId);
@@ -266,13 +258,11 @@ describe('Search Screen', () => {
   });
 
   test('Click on section on child components update the React.useState', async () => {
-    const { getByTestId } = renderResult;
+    const { getByTestId: emptyGetByTestId, rerender } = await renderSearchComponent();
 
-    // Assert initial state
-    assertInitialComponentState(getByTestId);
+    assertInitialComponentState(emptyGetByTestId);
 
-    // Wait for database operations to complete
-    await waitAndRerender(renderResult);
+    const { getByTestId } = await waitAndRerender(rerender, emptyGetByTestId);
 
     // Test initial addingFilterMode state
     expect(getByTestId('SearchScreen::AddingFilterMode').props.children).toEqual('false');
@@ -289,40 +279,38 @@ describe('Search Screen', () => {
     fireEvent.press(getByTestId('SearchScreen::ToggleAddingFilterMode'));
 
     // Wait for state update to propagate
-    await waitAndRerender(renderResult);
+    const { getByTestId: updatedTestId } = await waitAndRerender(rerender, getByTestId);
 
-    expect(getByTestId('SearchScreen::AddingFilterMode').props.children).toEqual('true');
+    expect(updatedTestId('SearchScreen::AddingFilterMode').props.children).toEqual('true');
 
-    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
-    expect(() => getByTestId('SearchScreen::FilterAccordion')).not.toThrow();
+    expect(updatedTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
+    expect(() => updatedTestId('SearchScreen::FilterAccordion')).not.toThrow();
 
     // Assert all other components are still present
-    expect(getByTestId('SearchScreen::SearchBar')).toBeTruthy();
-    expect(getByTestId('SearchScreen::Divider')).toBeTruthy();
-    expect(getByTestId('SearchScreen::AddFilter')).toBeTruthy();
-    expect(getByTestId('SearchScreen::RemoveFilter')).toBeTruthy();
+    expect(updatedTestId('SearchScreen::SearchBar')).toBeTruthy();
+    expect(updatedTestId('SearchScreen::Divider')).toBeTruthy();
+    expect(updatedTestId('SearchScreen::AddFilter')).toBeTruthy();
+    expect(updatedTestId('SearchScreen::RemoveFilter')).toBeTruthy();
 
     // Test toggling addingFilterMode back to false
-    fireEvent.press(getByTestId('SearchScreen::ToggleAddingFilterMode'));
-    expect(getByTestId('SearchScreen::AddingFilterMode').props.children).toEqual('false');
+    fireEvent.press(updatedTestId('SearchScreen::ToggleAddingFilterMode'));
+    expect(updatedTestId('SearchScreen::AddingFilterMode').props.children).toEqual('false');
 
     // Assert FilterAccordion is hidden again
-    expect(() => getByTestId('SearchScreen::FilterAccordion')).toThrow();
+    expect(() => updatedTestId('SearchScreen::FilterAccordion')).toThrow();
 
     // Assert component returns to initial visual state
-    expect(getByTestId('SearchScreen::Filters').props.children).toEqual('[]');
-    expect(getByTestId('SearchScreen::SearchBar::SearchPhrase').props.children).toEqual('');
-    expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
+    expect(updatedTestId('SearchScreen::Filters').props.children).toEqual('[]');
+    expect(updatedTestId('SearchScreen::SearchBar::SearchPhrase').props.children).toEqual('');
+    expect(updatedTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
   });
 
   test('Click on search bar shall update the React.useState', async () => {
-    const { getByTestId } = renderResult;
+    const { getByTestId: emptyGetByTestId, rerender } = await renderSearchComponent();
 
-    // Assert initial state
-    assertInitialComponentState(getByTestId);
+    assertInitialComponentState(emptyGetByTestId);
 
-    // Wait for database operations to complete
-    await waitAndRerender(renderResult);
+    const { getByTestId } = await waitAndRerender(rerender, emptyGetByTestId);
 
     // Test initial search bar state
     expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
@@ -375,13 +363,11 @@ describe('Search Screen', () => {
   });
 
   test('Edit search phrase shall update the React.useState', async () => {
-    const { getByTestId } = renderResult;
+    const { getByTestId: emptyGetByTestId, rerender } = await renderSearchComponent();
 
-    // Assert initial state
-    assertInitialComponentState(getByTestId);
+    assertInitialComponentState(emptyGetByTestId);
 
-    // Wait for database operations to complete
-    await waitAndRerender(renderResult);
+    const { getByTestId } = await waitAndRerender(rerender, emptyGetByTestId);
 
     // Test initial search phrase state
     expect(getByTestId('SearchScreen::SearchBar::SearchPhrase').props.children).toEqual('');
@@ -434,11 +420,11 @@ describe('Search Screen', () => {
   });
 
   test('BackHandler allows navigation when search bar is not clicked', async () => {
-    const { getByTestId } = renderResult;
+    const { getByTestId: emptyGetByTestId, rerender } = await renderSearchComponent();
 
-    assertInitialComponentState(getByTestId);
+    assertInitialComponentState(emptyGetByTestId);
 
-    await waitAndRerender(renderResult);
+    const { getByTestId } = await waitAndRerender(rerender, emptyGetByTestId);
 
     expect(getByTestId('SearchScreen::SearchBar::Clicked').props.children).toEqual('false');
 

@@ -6,6 +6,7 @@ import { testRecipes } from '@test-data/recipesDataset';
 import React from 'react';
 import { mockNavigationFunctions } from '@mocks/deps/react-navigation-mock';
 import Shopping from '@screens/Shopping';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 import {
   getMockCopilotEvents,
   resetMockCopilot,
@@ -60,19 +61,22 @@ const defaultProps = {
 } as any;
 
 async function renderShoppingAndWaitForButtons() {
-  const result = render(<Shopping {...defaultProps} />);
+  const result = render(
+    <RecipeDatabaseProvider>
+      <Shopping {...defaultProps} />
+    </RecipeDatabaseProvider>
+  );
 
   // Wait for focus effect to trigger and buttons to render if they should be present
   // This checks if shopping list has items, and if so, waits for the clear button
   const hasShoppingItems = RecipeDatabase.getInstance().get_shopping().length > 0;
 
-  if (hasShoppingItems) {
-    await waitFor(() => {
-      expect(
-        result.getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction')
-      ).toBeTruthy();
-    });
-  }
+  await waitFor(() => {
+    const elementExpectedMounted = hasShoppingItems
+      ? 'ShoppingScreen::ClearShoppingListButton::OnPressFunction'
+      : 'ShoppingScreen::TextNoItem';
+    expect(result.getByTestId(elementExpectedMounted)).toBeTruthy();
+  });
 
   return result;
 }
@@ -109,7 +113,7 @@ describe('Shopping Screen', () => {
   test('renders empty state correctly when no shopping items', async () => {
     await database.resetShoppingList();
 
-    const { getByTestId, queryByTestId } = render(<Shopping {...defaultProps} />);
+    const { getByTestId, queryByTestId } = await renderShoppingAndWaitForButtons();
 
     expect(getByTestId('ShoppingScreen::TextNoItem')).toBeTruthy();
     expect(getByTestId('ShoppingScreen::TextNoItem').props.children).toEqual(
@@ -145,8 +149,8 @@ describe('Shopping Screen', () => {
     });
   });
 
-  test('Recipe usage Alert dialog has correct props structure and values', () => {
-    const { getByTestId } = render(<Shopping {...defaultProps} />);
+  test('Recipe usage Alert dialog has correct props structure and values', async () => {
+    const { getByTestId } = await renderShoppingAndWaitForButtons();
 
     // Verify Alert dialog props exist and have correct values
     expect(getByTestId('ShoppingScreen::Alert::IsVisible').props.children).toEqual(false);
@@ -169,8 +173,8 @@ describe('Shopping Screen', () => {
     expect(() => getByTestId('ShoppingScreen::Alert::OnCancel')).toThrow();
   });
 
-  test('Clear confirmation Alert dialog has correct props structure and values', () => {
-    const { getByTestId } = render(<Shopping {...defaultProps} />);
+  test('Clear confirmation Alert dialog has correct props structure and values', async () => {
+    const { getByTestId } = await renderShoppingAndWaitForButtons();
 
     expect(
       getByTestId('ShoppingScreen::ClearConfirmation::Alert::IsVisible').props.children
