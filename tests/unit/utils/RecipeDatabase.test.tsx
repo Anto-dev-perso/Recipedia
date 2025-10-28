@@ -416,6 +416,194 @@ describe('RecipeDatabase', () => {
       expect(expect.arrayContaining(db.get_shopping())).toEqual([]);
     });
 
+    test('Edit a recipe in shopping list updates shopping ingredients', async () => {
+      await db.addRecipeToShopping(testRecipes[0]);
+
+      const shoppingBefore = db.get_shopping();
+      expect(shoppingBefore.length).toBeGreaterThan(0);
+
+      const editedRecipe = {
+        ...testRecipes[0],
+        title: 'Updated Spaghetti',
+        ingredients: [testIngredients[0]],
+      };
+
+      await db.editRecipe(editedRecipe);
+
+      const shoppingAfter = db.get_shopping();
+
+      shoppingAfter.forEach(shop => {
+        expect(shop.recipesTitle).not.toContain(testRecipes[0].title);
+        if (shop.recipesTitle.includes(editedRecipe.title)) {
+          expect(shop.recipesTitle).toContain(editedRecipe.title);
+        }
+      });
+
+      const originalIngredientInShopping = shoppingAfter.find(
+        shop => shop.name === testIngredients[0].name
+      );
+      expect(originalIngredientInShopping).toBeDefined();
+    });
+
+    test('Edit a recipe not in shopping list does not affect shopping', async () => {
+      const shoppingBefore = db.get_shopping();
+
+      const editedRecipe = {
+        ...testRecipes[0],
+        title: 'Updated Recipe Not In Shopping',
+        ingredients: [testIngredients[0]],
+      };
+
+      await db.editRecipe(editedRecipe);
+
+      const shoppingAfter = db.get_shopping();
+      expect(shoppingAfter).toEqual(shoppingBefore);
+    });
+
+    describe('Shopping list management with recipe operations', () => {
+      test('Delete recipe with unique ingredients removes all shopping items', async () => {
+        await db.addRecipeToShopping(testRecipes[0]);
+
+        const shoppingBefore = db.get_shopping();
+        expect(shoppingBefore.length).toBeGreaterThan(0);
+
+        const allIngredientsUnique = shoppingBefore.every(
+          shop => shop.recipesTitle.length === 1 && shop.recipesTitle[0] === testRecipes[0].title
+        );
+        expect(allIngredientsUnique).toBe(true);
+
+        await db.deleteRecipe(testRecipes[0]);
+
+        const shoppingAfter = db.get_shopping();
+        expect(shoppingAfter).toEqual([]);
+      });
+
+      test('Delete recipe removes ingredient when it was the last recipe using it', async () => {
+        await db.addRecipeToShopping(testRecipes[7]);
+        await db.addRecipeToShopping(testRecipes[3]);
+
+        const shoppingBefore = db.get_shopping();
+        const pastaItem = shoppingBefore.find(shop => shop.name === 'Pasta');
+        expect(pastaItem).toBeDefined();
+        expect(pastaItem?.recipesTitle).toEqual(['Pesto Pasta']);
+
+        await db.deleteRecipe(testRecipes[7]);
+
+        const shoppingAfter = db.get_shopping();
+        const pastaAfter = shoppingAfter.find(shop => shop.name === 'Pasta');
+        expect(pastaAfter).toBeUndefined();
+      });
+
+      test('Delete recipe removes ingredient with empty recipesTitle even if quantity mismatch', async () => {
+        await db.addRecipeToShopping(testRecipes[7]);
+
+        const shoppingBefore = db.get_shopping();
+        const oliveOil = shoppingBefore.find(shop => shop.name === 'Olive Oil');
+        expect(oliveOil).toBeDefined();
+        expect(oliveOil?.recipesTitle).toEqual(['Pesto Pasta']);
+        expect(oliveOil?.quantity).toBe('50');
+
+        await db.deleteRecipe(testRecipes[7]);
+
+        const shoppingAfter = db.get_shopping();
+        const oliveOilAfter = shoppingAfter.find(shop => shop.name === 'Olive Oil');
+        expect(oliveOilAfter).toBeUndefined();
+      });
+
+      test('Delete recipe with shared ingredients updates quantities correctly', async () => {
+        await db.addRecipeToShopping(testRecipes[7]);
+        await db.addRecipeToShopping(testRecipes[3]);
+
+        const shopping = db.get_shopping();
+        const parmesanItem = shopping.find(shop => shop.name === 'Parmesan');
+        expect(parmesanItem).toBeDefined();
+        expect(parmesanItem?.quantity).toBe('60');
+        expect(parmesanItem?.recipesTitle).toEqual(['Pesto Pasta', 'Caesar Salad']);
+
+        await db.deleteRecipe(testRecipes[7]);
+
+        const shoppingAfter = db.get_shopping();
+        const parmesanAfter = shoppingAfter.find(shop => shop.name === 'Parmesan');
+
+        expect(parmesanAfter).toBeDefined();
+        expect(parmesanAfter?.quantity).toBe('30');
+        expect(parmesanAfter?.recipesTitle.length).toBe(1);
+        expect(parmesanAfter?.recipesTitle[0]).toBe('Caesar Salad');
+      });
+
+      test('Delete recipe removes title from shopping item recipesTitle array', async () => {
+        await db.addRecipeToShopping(testRecipes[0]);
+
+        const shoppingBefore = db.get_shopping();
+        expect(shoppingBefore.length).toBeGreaterThan(0);
+        shoppingBefore.forEach(shop => {
+          expect(shop.recipesTitle).toContain(testRecipes[0].title);
+        });
+
+        await db.deleteRecipe(testRecipes[0]);
+
+        const shoppingAfter = db.get_shopping();
+        shoppingAfter.forEach(shop => {
+          expect(shop.recipesTitle).not.toContain(testRecipes[0].title);
+        });
+      });
+
+      test('Edit recipe quantity updates shopping list correctly', async () => {
+        const recipe = {
+          ...testRecipes[0],
+          ingredients: [{ ...testIngredients[0], quantity: '200' }],
+        };
+
+        await db.addRecipe(recipe);
+        await db.addRecipeToShopping(recipe);
+
+        const shoppingBefore = db.get_shopping();
+        const pastaItemBefore = shoppingBefore.find(shop => shop.name === testIngredients[0].name);
+        expect(pastaItemBefore).toBeDefined();
+        expect(pastaItemBefore?.quantity).toBe('200');
+
+        const editedRecipe = {
+          ...recipe,
+          ingredients: [{ ...testIngredients[0], quantity: '300' }],
+        };
+
+        await db.editRecipe(editedRecipe);
+
+        const shoppingAfter = db.get_shopping();
+        const pastaItemAfter = shoppingAfter.find(shop => shop.name === testIngredients[0].name);
+        expect(pastaItemAfter).toBeDefined();
+        expect(pastaItemAfter?.quantity).toBe('300');
+        expect(pastaItemAfter?.recipesTitle).toContain(editedRecipe.title);
+      });
+
+      test('Edit recipe ingredient quantities when multiple recipes share ingredients', async () => {
+        await db.addRecipeToShopping(testRecipes[7]);
+        await db.addRecipeToShopping(testRecipes[3]);
+
+        const shopping = db.get_shopping();
+        const parmesanBefore = shopping.find(shop => shop.name === 'Parmesan');
+        expect(parmesanBefore).toBeDefined();
+        expect(parmesanBefore?.quantity).toBe('60');
+
+        const editedRecipe = {
+          ...testRecipes[7],
+          ingredients: testRecipes[7].ingredients.map(ing =>
+            ing.name === 'Parmesan' ? { ...ing, quantity: '60' } : ing
+          ),
+        };
+
+        await db.editRecipe(editedRecipe);
+
+        const shoppingAfter = db.get_shopping();
+        const parmesanAfter = shoppingAfter.find(shop => shop.name === 'Parmesan');
+        expect(parmesanAfter).toBeDefined();
+        expect(parmesanAfter?.quantity).toBe('90');
+        expect(parmesanAfter?.recipesTitle.length).toBe(2);
+        expect(parmesanAfter?.recipesTitle).toContain('Pesto Pasta');
+        expect(parmesanAfter?.recipesTitle).toContain('Caesar Salad');
+      });
+    });
+
     test('Remove a tag and ensure it is deleted', async () => {
       expect(await db.deleteTag(testTags[12])).toEqual(true);
       expect(db.get_tags()).not.toContainEqual(testTags[12]);
