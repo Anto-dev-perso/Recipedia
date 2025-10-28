@@ -1,3 +1,9 @@
+## [0.17.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.17.0...v0.17.1) (2025-10-28)
+
+### Bug Fixes
+
+* **database:** refresh recipes cache after tag/ingredient updates ([f1ef5a3](https://github.com/Anto-dev-perso/Recipedia/commit/f1ef5a34c67e94a1e97e98e6d5a6955b7fe329ae))
+
 ## [0.17.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.16.0...v0.17.0) (2025-10-27)
 
 ### Features
