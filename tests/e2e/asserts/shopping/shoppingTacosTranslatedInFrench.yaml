@@ -13,8 +13,8 @@ appId: "com.recipedia"
     label: "Taco Shells ingredient is displayed"
 
 - assertVisible:
-    text: "Taco Shells, 1 recette"
-    label: "Ingredient counter shows French text"
+    text: "Taco Shells (12pieces), 1 recette"
+    label: "Ingredient with quantity and counter shows French text"
 
 - repeat:
     while:

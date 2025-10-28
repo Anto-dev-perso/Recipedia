@@ -5,8 +5,8 @@ appId: "com.recipedia"
     label: "${INGREDIENT_NAME} item is displayed"
 
 - assertVisible:
-    text: "${INGREDIENT_NAME}"
-    label: "${INGREDIENT_NAME} text is displayed"
+    text: "${INGREDIENT_NAME} (${QUANTITY}${UNIT})"
+    label: "${INGREDIENT_NAME} with quantity is displayed"
 
 - repeat:
     while:
