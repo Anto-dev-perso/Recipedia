@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - recipe-create
+---
+- launchApp:
+    label: "RecipeCreate::ManualQuantityScaling::Launch"
+
+- runFlow:
+    file: "../cases/recipeAdding/manual/quantityScaling.yaml"
+    label: "RecipeCreate::ManualQuantityScaling::TestScaling"

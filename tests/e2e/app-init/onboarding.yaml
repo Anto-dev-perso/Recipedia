@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - app-init
+---
+- launchApp:
+    label: "AppInit::Onboarding::Launch"
+
+- runFlow:
+    file: "../cases/launchApp/onboardingTutorial.yaml"
+    label: "AppInit::Onboarding::TutorialFlow"

@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - settings
+---
+- launchApp:
+    label: "Settings::DarkMode::Launch"
+
+- runFlow:
+    file: "../cases/parameters/darkModeToggle.yaml"
+    label: "Settings::DarkMode::TestToggle"

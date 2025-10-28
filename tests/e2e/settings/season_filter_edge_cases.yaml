@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - settings
+---
+- launchApp:
+    label: "Settings::SeasonFilterEdgeCases::Launch"
+
+- runFlow:
+    file: "../cases/parameters/seasonFilterEdgeCases.yaml"
+    label: "Settings::SeasonFilterEdgeCases::TestEdgeCases"

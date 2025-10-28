@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Search::DirectClick::Launch"
+
+- runFlow:
+    file: "../cases/searchBar/clickDirectlyOnRecipe.yaml"
+    label: "Search::DirectClick::TestClickInDropdown"

@@ -1,9 +1,0 @@
-appId: "com.recipedia"
-name: "06: Recipe Adding test suite"
----
-- launchApp
-
-- runFlow: cases/recipeAdding/manual/complete.yaml
-- runFlow: cases/recipeAdding/manual/cancel.yaml
-- runFlow: cases/recipeAdding/manual/quantityScaling.yaml
-- runFlow: cases/recipeAdding/validation/all.yaml

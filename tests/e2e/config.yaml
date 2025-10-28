@@ -1,0 +1,80 @@
+# Include all flows from subdirectories
+flows:
+  - app-init/*
+  - search/*
+  - recipe-view/*
+  - recipe-create/*
+  - shopping/*
+  - settings/*
+  - tags-db/*
+  - ingredients-db/*
+  - duplicates/*
+
+executionOrder:
+  continueOnFailure: false
+  flowsOrder:
+    # App Initialization
+    - app-init/onboarding
+    - app-init/bottom_tabs
+    - app-init/fab_menu
+
+    # Search & Discovery
+    - search/open_close
+    - search/scroll_independence
+    - search/multiple_results
+    - search/direct_click
+    - search/backspace_correction
+    - search/filter_removal
+    - search/filter_page_toggle
+    - search/filter_single
+    - search/filter_multiple
+    - search/filter_with_text
+
+    # Recipe Viewing
+    - recipe-view/readonly_from_search
+    - recipe-view/readonly_from_home
+    - recipe-view/edit_from_search
+    - recipe-view/edit_from_home
+    - recipe-view/quantity_scaling
+
+    # Recipe Creation
+    - recipe-create/manual_complete
+    - recipe-create/manual_cancel
+    - recipe-create/manual_quantity_scaling
+    - recipe-create/validation_all
+    - recipe-create/ocr_quitoque_v2
+
+    # Shopping List
+    - shopping/add_one_recipe
+    - shopping/add_multiple_recipes
+    - shopping/delete_recipe
+
+    # Settings
+    - settings/dark_mode
+    - settings/language_switch
+    - settings/season_filter_toggle
+    - settings/season_filter_edge_cases
+    - settings/default_persons
+
+    # Tag Database
+    - tags-db/add_new
+    - tags-db/edit_existing
+    - tags-db/delete
+    - tags-db/add_and_use_in_recipe
+    - tags-db/edge_cases
+
+    # Ingredient Database
+    - ingredients-db/add_new
+    - ingredients-db/delete
+    - ingredients-db/edit_existing
+    - ingredients-db/add_and_use_in_recipe
+    - ingredients-db/edge_cases
+
+    # Edge Cases
+    - duplicates/duplicate_tag_unique
+    - duplicates/duplicate_tag_fuzzy
+    - duplicates/duplicate_ingredient_unique
+    - duplicates/duplicate_ingredient_fuzzy
+    - duplicates/duplicate_recipe_fuzzy
+    - duplicates/duplicate_recipe_boundaries
+    - duplicates/duplicate_recipe_confirm

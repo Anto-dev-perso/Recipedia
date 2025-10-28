@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - duplicates
+---
+- launchApp:
+    label: "EdgeCases::DuplicateRecipeConfirm::Launch"
+
+- runFlow:
+    file: "../cases/duplicates/recipes/recipeDuplicateConfirm.yaml"
+    label: "EdgeCases::DuplicateRecipeConfirm::TestConfirmAdd"

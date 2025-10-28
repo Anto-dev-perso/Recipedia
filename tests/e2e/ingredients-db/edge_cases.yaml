@@ -1,0 +1,11 @@
+appId: com.recipedia.app
+tags:
+  - database
+  - ingredients-db
+---
+- launchApp:
+    label: "IngredientsDB::EdgeCases::Launch"
+
+- runFlow:
+    file: "../cases/parameters/ingredients/ingredientEdgeCases.yaml"
+    label: "IngredientsDB::EdgeCases::TestCancelBehaviors"

@@ -1,0 +1,11 @@
+appId: com.recipedia.app
+tags:
+  - database
+  - ingredients-db
+---
+- launchApp:
+    label: "IngredientsDB::Delete::Launch"
+
+- runFlow:
+    file: "../cases/parameters/ingredients/ingredientDelete.yaml"
+    label: "IngredientsDB::Delete::DeleteIngredientAndVerifyRecipes"

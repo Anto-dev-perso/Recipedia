@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Search::MultipleResults::Launch"
+
+- runFlow:
+    file: "../cases/searchBar/searchNameWithMultipleRecipes.yaml"
+    label: "Search::MultipleResults::TestSearchByName"

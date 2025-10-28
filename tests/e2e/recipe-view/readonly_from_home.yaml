@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - recipe-view
+---
+- launchApp:
+    label: "RecipeView::ReadOnlyFromHome::Launch"
+
+- runFlow:
+    file: "../cases/recipeRendering/readOnlyFromHome.yaml"
+    label: "RecipeView::ReadOnlyFromHome::ViewRecipe"

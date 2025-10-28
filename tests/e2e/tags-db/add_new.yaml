@@ -1,0 +1,11 @@
+appId: com.recipedia.app
+tags:
+  - database
+  - tags-db
+---
+- launchApp:
+    label: "TagsDB::AddNew::Launch"
+
+- runFlow:
+    file: "../cases/parameters/tags/tagAdd.yaml"
+    label: "TagsDB::AddNew::AddTag"

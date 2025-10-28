@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - duplicates
+---
+- launchApp:
+    label: "EdgeCases::DuplicateTagFuzzy::Launch"
+
+- runFlow:
+    file: "../cases/duplicates/tags/tagDuplicateFuzzy.yaml"
+    label: "EdgeCases::DuplicateTagFuzzy::TestFuzzyDetection"

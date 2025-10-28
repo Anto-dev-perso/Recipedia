@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - recipe-create
+---
+- launchApp:
+    label: "RecipeCreate::ManualCancel::Launch"
+
+- runFlow:
+    file: "../cases/recipeAdding/manual/cancel.yaml"
+    label: "RecipeCreate::ManualCancel::CancelRecipe"

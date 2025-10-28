@@ -1,0 +1,22 @@
+appId: com.recipedia.app
+tags:
+  - app-init
+---
+- launchApp:
+    label: "AppInit::BottomTabs::Launch"
+
+- runFlow:
+    file: "../cases/launchApp/checkHomeScreen.yaml"
+    label: "AppInit::BottomTabs::CheckHome"
+
+- runFlow:
+    file: "../cases/launchApp/checkSearchScreen.yaml"
+    label: "AppInit::BottomTabs::CheckSearch"
+
+- runFlow:
+    file: "../cases/launchApp/checkShoppingScreen.yaml"
+    label: "AppInit::BottomTabs::CheckShopping"
+
+- runFlow:
+    file: "../cases/launchApp/checkParametersScreen.yaml"
+    label: "AppInit::BottomTabs::CheckParameters"

@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - recipe-view
+---
+- launchApp:
+    label: "RecipeView::QuantityScaling::Launch"
+
+- runFlow:
+    file: "../cases/recipeRendering/quantityScalingOnEdit.yaml"
+    label: "RecipeView::QuantityScaling::TestScaling"

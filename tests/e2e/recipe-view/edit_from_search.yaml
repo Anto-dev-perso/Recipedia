@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - recipe-view
+---
+- launchApp:
+    label: "RecipeView::EditFromSearch::Launch"
+
+- runFlow:
+    file: "../cases/recipeRendering/editFromSearch.yaml"
+    label: "RecipeView::EditFromSearch::EditRecipe"

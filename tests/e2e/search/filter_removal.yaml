@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Search::FilterRemoval::Launch"
+
+- runFlow:
+    file: "../cases/searchBar/removeFilter.yaml"
+    label: "Search::FilterRemoval::TestClearingSearchFilter"

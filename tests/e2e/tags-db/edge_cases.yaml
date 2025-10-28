@@ -1,0 +1,11 @@
+appId: com.recipedia.app
+tags:
+  - database
+  - tags-db
+---
+- launchApp:
+    label: "TagsDB::EdgeCases::Launch"
+
+- runFlow:
+    file: "../cases/parameters/tags/tagEdgeCases.yaml"
+    label: "TagsDB::EdgeCases::TestCancelBehaviors"

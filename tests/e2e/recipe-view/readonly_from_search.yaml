@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - recipe-view
+---
+- launchApp:
+    label: "RecipeView::ReadOnlyFromSearch::Launch"
+
+- runFlow:
+    file: "../cases/recipeRendering/readOnlyFromSearch.yaml"
+    label: "RecipeView::ReadOnlyFromSearch::ViewRecipe"

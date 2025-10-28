@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Search::OpenClose::Launch"
+
+- runFlow:
+    file: "../cases/searchBar/openAndClose.yaml"
+    label: "Search::OpenClose::TestSearchBarDropdown"

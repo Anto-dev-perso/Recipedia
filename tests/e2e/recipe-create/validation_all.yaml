@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - recipe-create
+---
+- launchApp:
+    label: "RecipeCreate::ValidationAll::Launch"
+
+- runFlow:
+    file: "../cases/recipeAdding/validation/all.yaml"
+    label: "RecipeCreate::ValidationAll::TestAllValidations"

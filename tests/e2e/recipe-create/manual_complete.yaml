@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - recipe-create
+---
+- launchApp:
+    label: "RecipeCreate::ManualComplete::Launch"
+
+- runFlow:
+    file: "../cases/recipeAdding/manual/complete.yaml"
+    label: "RecipeCreate::ManualComplete::AddRecipe"

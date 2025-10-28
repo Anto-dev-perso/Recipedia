@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Search::FilterSingle::Launch"
+
+- runFlow:
+    file: "../cases/filters/addAndRemoveFilter.yaml"
+    label: "Search::FilterSingle::TestAddRemoveSingleFilter"

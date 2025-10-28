@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Search::FilterWithText::Launch"
+
+- runFlow:
+    file: "../cases/filters/mixUpNameAndFilters.yaml"
+    label: "Search::FilterWithText::TestSearchTextWithFilters"

@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Search::ScrollIndependence::Launch"
+
+- runFlow:
+    file: "../cases/searchBar/scrollIndependence.yaml"
+    label: "Search::ScrollIndependence::TestDropdownVsRecipeList"

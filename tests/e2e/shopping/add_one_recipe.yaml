@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - shopping
+---
+- launchApp:
+    label: "Shopping::AddOneRecipe::Launch"
+
+- runFlow:
+    file: "../cases/shopping/addOneRecipe.yaml"
+    label: "Shopping::AddOneRecipe::AddRecipe"

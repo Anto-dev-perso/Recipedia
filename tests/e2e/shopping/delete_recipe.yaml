@@ -1,0 +1,10 @@
+appId: com.recipedia.app
+tags:
+  - shopping
+---
+- launchApp:
+    label: "Shopping::DeleteRecipe::Launch"
+
+- runFlow:
+    file: "../cases/shopping/deleteRecipeFromShopping.yaml"
+    label: "Shopping::DeleteRecipe::RemoveRecipe"
