@@ -27,7 +27,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { ingredientTableElement } from '@customTypes/DatabaseElementTypes';
+import { ingredientTableElement, ingredientType } from '@customTypes/DatabaseElementTypes';
 import SettingsItemList from '@components/organisms/SettingsItemList';
 import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
 import { ingredientsSettingsLogger } from '@utils/logger';
@@ -49,7 +49,13 @@ export function IngredientsSettings() {
   // Dialog states
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<'add' | 'edit' | 'delete'>('add');
-  const [selectedIngredient, setSelectedIngredient] = useState<ingredientTableElement>();
+  const [selectedIngredient, setSelectedIngredient] = useState<ingredientTableElement>({
+    name: '',
+    quantity: '',
+    type: ingredientType.undefined,
+    unit: '',
+    season: [],
+  });
 
   const testId = 'IngredientsSettings';
 
@@ -142,7 +148,7 @@ export function IngredientsSettings() {
         mode={dialogMode}
         item={{
           type: 'Ingredient',
-          value: selectedIngredient ?? ingredientsSortedAlphabetically[0],
+          value: selectedIngredient,
           onConfirmIngredient: handleDialogConfirm,
         }}
       />
