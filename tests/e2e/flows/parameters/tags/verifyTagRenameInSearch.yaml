@@ -26,14 +26,13 @@ appId: "com.recipedia"
     speed: 60
     label: "Scroll to Italian items"
 
-# TODO not working due to a bug
-#- assertNotVisible:
-#    text: "Italian"
-#    label: "Old tag name 'Italian' is not visible in filters"
-#
-#- assertVisible:
-#    text: "Italian Cuisine"
-#    label: "New tag name 'Italian Cuisine' is visible in filters"
+- assertNotVisible:
+    text: "Italian"
+    label: "Old tag name 'Italian' is not visible in filters"
+
+- assertVisible:
+    text: "Italian Cuisine"
+    label: "New tag name 'Italian Cuisine' is visible in filters"
 
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::2::Item::6"
@@ -56,16 +55,12 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeTags::0::Chip"
-    #    TODO do not work because of a bug
-    #    text: "Italian Cuisine"
-    text: "Italian"
+    text: "Italian Cuisine"
     label: "Recipe displays renamed tag 'Italian Cuisine'"
 
-#    TODO do not work because of a bug
-#- assertNotVisible:
-#    text: "Italian"
-#    label: "Old tag name 'Italian' is not visible in recipe"
-
+- assertNotVisible:
+    text: "Italian"
+    label: "Old tag name 'Italian' is not visible in recipe"
 
 - tapOn:
     id: "BackButton::RoundButton"

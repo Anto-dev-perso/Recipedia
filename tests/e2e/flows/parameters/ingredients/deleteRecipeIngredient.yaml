@@ -1,13 +1,11 @@
 appId: "com.recipedia"
 ---
-
 - scrollUntilVisible:
     element:
       id: "IngredientsSettings::AddButton-container"
     direction: DOWN
     speed: 99
     label: "Scroll to bottom of the screen"
-
 
 - scrollUntilVisible:
     element:
