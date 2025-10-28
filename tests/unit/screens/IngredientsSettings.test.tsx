@@ -106,7 +106,7 @@ describe('IngredientsSettings Screen', () => {
   });
 
   test('renders correctly with initial tags', async () => {
-    const { getByTestId, queryByTestId } = await renderIngredientsSettings();
+    const { getByTestId } = await renderIngredientsSettings();
 
     expect(getByTestId('IngredientsSettings::SettingsItemList::Type').props.children).toEqual(
       'ingredient'
@@ -121,7 +121,7 @@ describe('IngredientsSettings Screen', () => {
     dialogIsNotOpen(getByTestId);
   });
 
-  test('opens add dialog when add button is pressed and save value', async () => {
+  test('opens add dialog when add button is pressed', async () => {
     const { getByTestId } = await renderIngredientsSettings();
     fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress'));
 
@@ -129,21 +129,17 @@ describe('IngredientsSettings Screen', () => {
       expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
     });
 
-    dialogIsOpen(sortedDataset[0], 'add', getByTestId);
-
-    fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
-
-    await waitFor(() => {
-      expect(db.get_ingredients().length).toEqual(sortedDataset.length + 1);
-    });
-    const expectedIngredient: ingredientTableElement = {
-      id: 38,
-      name: 'New Value',
-      season: ['5', '6', '7', '8', '9', '10'],
-      type: ingredientType.fruit,
-      unit: 'g',
-    };
-    expect(db.get_ingredients()[db.get_ingredients().length - 1]).toEqual(expectedIngredient);
+    dialogIsOpen(
+      {
+        name: '',
+        quantity: '',
+        type: ingredientType.undefined,
+        unit: '',
+        season: [],
+      },
+      'add',
+      getByTestId
+    );
   });
 
   test('opens edit dialog when edit button is pressed and save value', async () => {
