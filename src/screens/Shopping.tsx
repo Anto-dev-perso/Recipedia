@@ -310,7 +310,7 @@ export function Shopping() {
     return (
       <List.Item
         testID={itemTestId}
-        title={item.name}
+        title={`${item.name} (${item.quantity}${item.unit})`}
         titleStyle={textStyle}
         descriptionStyle={textStyle}
         description={recipesText}

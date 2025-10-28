@@ -181,10 +181,11 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTime::NumericTextInput"
+      id: "RecipeIngredients::AddButton::RoundButton"
     direction: DOWN
     speed: 60
-    label: "Scroll down to the time to prepare"
+    centerElement: true
+    label: "Scroll down to the end of ingredients section"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
@@ -201,6 +202,15 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Add button of the ingredients is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll down to the time to prepare"
+
 - assertVisible:
     text: "󰐕"
     label: "Add button of the ingredients has the correct icon"

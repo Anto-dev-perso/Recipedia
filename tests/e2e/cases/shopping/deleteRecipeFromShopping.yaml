@@ -1,0 +1,73 @@
+appId: "com.recipedia"
+---
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Create Test Recipe (Pasta 200g, Tomatoes 100g)"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert recipe added confirmation"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Close the FAB buttons"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search input"
+
+- inputText:
+    text: "Test Recipe"
+    label: "Search for Test Recipe"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Open Test Recipe"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Add Test Recipe to shopping"
+
+- runFlow:
+    file: "../../asserts/alerts/en/addingRecipe.yaml"
+    env:
+      RECIPE_NAME: "Test Recipe"
+    label: "Assert recipe added to shopping alert"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Remove the name filter"
+
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Navigate to Shopping screen"
+
+- runFlow:
+    file: "../../asserts/shopping/en/shoppingTestRecipe.yaml"
+    label: "Assert Test Recipe ingredients in shopping list"
+
+- runFlow:
+    file: "../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Delete Test Recipe from database"
+
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Navigate to Shopping screen"
+
+- runFlow:
+    file: "../../asserts/shopping/en/shoppingEmpty.yaml"
+    label: "Assert shopping list is empty after recipe deletion"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Navigate to Home screen"

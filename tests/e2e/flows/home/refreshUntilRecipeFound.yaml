@@ -2,7 +2,8 @@ appId: "com.recipedia"
 ---
 - repeat:
     while:
-      notVisible: ${recipeName}
+      notVisible:
+        text: ${recipeName}
     commands:
       - swipe:
           direction: "DOWN"

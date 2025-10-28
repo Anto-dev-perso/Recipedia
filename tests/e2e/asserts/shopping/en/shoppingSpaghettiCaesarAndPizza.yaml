@@ -17,6 +17,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Spaghetti"
       INGREDIENT_NAME_LOWER: "spaghetti"
+      QUANTITY: "200"
+      UNIT: "g"
       RECIPE_NAMES: "Spaghetti Bolognese"
     label: "Assert and check Spaghetti ingredient"
 
@@ -25,6 +27,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Croutons"
       INGREDIENT_NAME_LOWER: "croutons"
+      QUANTITY: "100"
+      UNIT: "g"
       RECIPE_NAMES: "Caesar Salad"
     label: "Assert and check Croutons ingredient"
 
@@ -33,6 +37,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Pizza Dough"
       INGREDIENT_NAME_LOWER: "pizza dough"
+      QUANTITY: "500"
+      UNIT: "g"
       RECIPE_NAMES: "Margherita Pizza"
     label: "Assert and check Pizza Dough ingredient"
 
@@ -49,6 +55,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Romaine Lettuce"
       INGREDIENT_NAME_LOWER: "romaine lettuce"
+      QUANTITY: "200"
+      UNIT: "g"
       RECIPE_NAMES: "Caesar Salad"
     label: "Assert and check Romaine Lettuce ingredient"
 
@@ -65,6 +73,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Tomato Sauce"
       INGREDIENT_NAME_LOWER: "tomato sauce"
+      QUANTITY: "450"
+      UNIT: "ml"
       RECIPE_NAMES: "Spaghetti Bolognese\n\t- Margherita Pizza"
     label: "Assert and check Tomato Sauce ingredient"
 
@@ -80,6 +90,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Caesar Dressing"
       INGREDIENT_NAME_LOWER: "caesar dressing"
+      QUANTITY: "100"
+      UNIT: "ml"
       RECIPE_NAMES: "Caesar Salad"
     label: "Assert and check Caesar Dressing ingredient"
 
@@ -96,6 +108,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Ground Beef"
       INGREDIENT_NAME_LOWER: "ground beef"
+      QUANTITY: "300"
+      UNIT: "g"
       RECIPE_NAMES: "Spaghetti Bolognese"
     label: "Assert and check Ground Beef ingredient"
 
@@ -112,6 +126,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Parmesan"
       INGREDIENT_NAME_LOWER: "parmesan"
+      QUANTITY: "110"
+      UNIT: "g"
       RECIPE_NAMES: "Spaghetti Bolognese\n\t- Caesar Salad"
     label: "Assert and check Parmesan ingredient"
 
@@ -120,6 +136,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Mozzarella"
       INGREDIENT_NAME_LOWER: "mozzarella"
+      QUANTITY: "300"
+      UNIT: "g"
       RECIPE_NAMES: "Margherita Pizza"
     label: "Assert and check Mozzarella ingredient"
 
@@ -136,6 +154,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Basil Leaves"
       INGREDIENT_NAME_LOWER: "basil leaves"
+      QUANTITY: "20"
+      UNIT: "g"
       RECIPE_NAMES: "Margherita Pizza"
     label: "Assert and check Basil Leaves ingredient"
 

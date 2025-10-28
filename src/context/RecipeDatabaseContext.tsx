@@ -264,12 +264,14 @@ export const RecipeDatabaseProvider: React.FC<{ children: ReactNode }> = ({ chil
   const editRecipe = async (recipe: recipeTableElement) => {
     const result = await db.editRecipe(recipe);
     refreshRecipes();
+    refreshShopping();
     return result;
   };
 
   const deleteRecipe = async (recipe: recipeTableElement) => {
     const result = await db.deleteRecipe(recipe);
     refreshRecipes();
+    refreshShopping();
     return result;
   };
 

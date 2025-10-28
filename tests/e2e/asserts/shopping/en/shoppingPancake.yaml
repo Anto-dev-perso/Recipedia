@@ -17,6 +17,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Flour"
       INGREDIENT_NAME_LOWER: "flour"
+      QUANTITY: "200"
+      UNIT: "g"
       RECIPE_NAMES: "Classic Pancakes"
     label: "Assert and check Flour ingredient"
 
@@ -33,6 +35,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Eggs"
       INGREDIENT_NAME_LOWER: "eggs"
+      QUANTITY: "2"
+      UNIT: "pieces"
       RECIPE_NAMES: "Classic Pancakes"
     label: "Assert and check Eggs ingredient"
 
@@ -57,6 +61,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Milk"
       INGREDIENT_NAME_LOWER: "milk"
+      QUANTITY: "300"
+      UNIT: "ml"
       RECIPE_NAMES: "Classic Pancakes"
     label: "Assert and check Milk ingredient"
 
@@ -65,6 +71,8 @@ appId: "com.recipedia"
     env:
       INGREDIENT_NAME: "Butter"
       INGREDIENT_NAME_LOWER: "butter"
+      QUANTITY: "50"
+      UNIT: "g"
       RECIPE_NAMES: "Classic Pancakes"
     label: "Assert and check Butter ingredient"
 
