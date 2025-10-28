@@ -110,6 +110,20 @@ describe('Shopping Screen', () => {
     expect(!!(hasEmptyState && hasSectionList)).toBe(false);
   });
 
+  test('shopping items display with quantity and unit in title', async () => {
+    const { getByTestId } = await renderShoppingAndWaitForButtons();
+
+    expect(getByTestId('ShoppingScreen::SectionList::Sushi Rice::Title').props.children).toBe(
+      'Sushi Rice (250g)'
+    );
+    expect(getByTestId('ShoppingScreen::SectionList::Croutons::Title').props.children).toBe(
+      'Croutons (50g)'
+    );
+    expect(getByTestId('ShoppingScreen::SectionList::Romaine Lettuce::Title').props.children).toBe(
+      'Romaine Lettuce (100g)'
+    );
+  });
+
   test('renders empty state correctly when no shopping items', async () => {
     await database.resetShoppingList();
 
