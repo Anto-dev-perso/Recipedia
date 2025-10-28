@@ -1,3 +1,13 @@
+## [0.18.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.17.1...v0.18.0) (2025-10-28)
+
+### Features
+
+* **ui:** display item quantity and unit in shopping list titles ([d037cab](https://github.com/Anto-dev-perso/Recipedia/commit/d037cab0dd09c2e9e54b4a82e969c5fd520b5e2e))
+
+### Bug Fixes
+
+* **database:** update shopping list when recipes are edited or deleted ([dcc40e1](https://github.com/Anto-dev-perso/Recipedia/commit/dcc40e1dd51acafe7536fc9300490ea0a1186f74))
+
 ## [0.17.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.17.0...v0.17.1) (2025-10-28)
 
 ### Bug Fixes
