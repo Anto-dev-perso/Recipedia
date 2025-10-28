@@ -15,7 +15,6 @@ appId: "com.recipedia"
     speed: 60
     label: "Scroll to ingredients section"
 
-# TODO bug
-#- assertNotVisible:
-#    text: "RecipeIngredient"
-#    label: "Verify RecipeIngredient has been removed from the recipe"
+- assertNotVisible:
+    text: "RecipeIngredient"
+    label: "Verify RecipeIngredient has been removed from the recipe"

@@ -27,11 +27,11 @@ appId: "com.recipedia"
 - tapOn:
     id: "TagsSettings::ItemDialog::DeleteModal::ConfirmButton"
     label: "Confirm deleting the tag"
-# TODO bug
-#- assertNotVisible:
-#    text: "TestTag"
-#    label: "Verify tag removed from the list"
-#
+
+- assertNotVisible:
+    text: "TestTag"
+    label: "Verify tag removed from the list"
+
 - runFlow:
     file: "../../../flows/parameters/tags/returnToHome.yaml"
     label: "Return to Home screen"

@@ -4,7 +4,7 @@ appId: "com.recipedia"
     element:
       id: "TagsSettings::AddButton"
     direction: DOWN
-    speed: 60
+    speed: 99
     label: "Scroll down to find Add button"
 
 - tapOn:
@@ -28,7 +28,7 @@ appId: "com.recipedia"
       text: "RecipeTag"
     direction: UP
     speed: 60
-    label: "Scroll up to find the new tag"
+    label: "Scroll to find the newly added tag"
 
 - assertVisible:
     text: "RecipeTag"

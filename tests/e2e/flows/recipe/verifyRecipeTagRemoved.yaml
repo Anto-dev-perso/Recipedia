@@ -8,7 +8,6 @@ appId: "com.recipedia"
     id: "SearchScreen::RecipeCards::0::Cover"
     label: "Open the E2E Test Recipe"
 
-# TODO bug
-#- assertNotVisible:
-#    text: "RecipeTag"
-#    label: "Verify RecipeTag has been removed from the recipe"
+- assertNotVisible:
+    text: "RecipeTag"
+    label: "Verify RecipeTag has been removed from the recipe"
