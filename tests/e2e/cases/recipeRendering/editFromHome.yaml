@@ -7,10 +7,10 @@ env:
     label: "Navigate to Home screen"
 
 - runFlow:
-    file: "../../flows/home/refreshUntilRecipeFound.yaml"
+    file: "../../flows/home/swipelToRecipeAndOpenIt.yaml"
     env:
       recipeName: ${recipeName}
-    label: "Refresh Home screen until recipe is found"
+    label: "Swipe Home screen until recipe is found"
 
 - runFlow:
     file: "../../asserts/recipe/readonly/en/sushiRolls.yaml"
@@ -49,3 +49,8 @@ env:
 - tapOn:
     id: "BackButton::RoundButton"
     label: "Back to the Home Screen"
+
+
+- runFlow:
+    file: "../../flows/home/swipeBackToFirstCard.yaml"
+    label: "Replace the cards to theirs original position"
