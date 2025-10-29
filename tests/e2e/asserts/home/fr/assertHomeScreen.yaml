@@ -27,19 +27,35 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "Home::RecipeRecommendation::grain-[1-2]::SubHeader"
+      id: "Home::RecipeRecommendation::grain-1::SubHeader"
     direction: DOWN
     speed: 60
     centerElement: true
-    label: "Scroll to grain-based recommendations"
+    label: "Scroll to first grain-based recommendations"
 
 - assertVisible:
-    id: "Home::RecipeRecommendation::grain-[1-2]::SubHeader"
+    id: "Home::RecipeRecommendation::grain-1::SubHeader"
     text: "^À base de .+$"
-    label: "Grain-based recommendation is displayed in French"
+    label: "First Grain-based recommendation is displayed in French"
 - assertVisible:
-    id: "Home::RecipeRecommendation::grain-[1-2]::Carousel::Card::0"
-    label: "Grain recommendation has its first card"
+    id: "Home::RecipeRecommendation::grain-1::Carousel::Card::0"
+    label: "First Grain recommendation has its first card"
+
+- scrollUntilVisible:
+    element:
+      id: "Home::RecipeRecommendation::grain-2::SubHeader"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to second grain-based recommendations"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::grain-2::SubHeader"
+    text: "^À base de .+$"
+    label: "Second Grain-based recommendation is displayed in French"
+- assertVisible:
+    id: "Home::RecipeRecommendation::grain-2::Carousel::Card::0"
+    label: "Second Grain recommendation has its first card"
 
 - scrollUntilVisible:
     element:
@@ -59,7 +75,54 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
+      id: "Home::RecipeRecommendation::tag-1::SubHeader"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to first tag-based recommendations"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::tag-1::SubHeader"
+    text: "^Étiqueté .+$"
+    label: "First Tag-based recommendation is displayed in French"
+- assertVisible:
+    id: "Home::RecipeRecommendation::tag-1::Carousel::Card::0"
+    label: "First Tag recommendation has its first card"
+
+- scrollUntilVisible:
+    element:
+      id: "Home::RecipeRecommendation::tag-2::SubHeader"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to second tag-based recommendations"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::tag-2::SubHeader"
+    text: "^Étiqueté .+$"
+    label: "Second Tag-based recommendation is displayed in French"
+- assertVisible:
+    id: "Home::RecipeRecommendation::tag-2::Carousel::Card::0"
+    label: "Second Tag recommendation has its first card"
+
+- scrollUntilVisible:
+    element:
+      id: "Home::RecipeRecommendation::tag-3::SubHeader"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to third tag-based recommendations"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::tag-3::SubHeader"
+    text: "^Étiqueté .+$"
+    label: "Third Tag-based recommendation is displayed in French"
+- assertVisible:
+    id: "Home::RecipeRecommendation::tag-3::Carousel::Card::0"
+    label: "Third Tag recommendation has its first card"
+- scrollUntilVisible:
+    element:
       id: "Home::RecipeRecommendation::random::SubHeader"
     direction: UP
-    speed: 80
+    speed: 99
     label: "Scroll back to top of Home screen"
