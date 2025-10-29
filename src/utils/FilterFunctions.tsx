@@ -640,50 +640,60 @@ export function generateHomeRecommendations(
   }
 
   const grainIngredients = ingredients.filter(ing => ing.type === ingredientType.grainOrCereal);
-  const randomGrainIngredients = fisherYatesShuffle(grainIngredients, 2);
-  randomGrainIngredients.forEach((ingredient: ingredientTableElement, index: number) => {
+  const shuffledGrainIngredients = fisherYatesShuffle(grainIngredients);
+  let grainCount = 0;
+  for (const ingredient of shuffledGrainIngredients) {
+    if (grainCount >= 2) {
+      break;
+    }
     const ingredientRecipes = recipesForFiltering.filter(recipe =>
       isTheElementContainsTheFilter(
         recipe.ingredients.map(ing => ing.name),
         ingredient.name
       )
     );
-
-    if (ingredientRecipes.length > 0) {
-      const shuffledIngredientRecipes = fisherYatesShuffle(
-        ingredientRecipes,
-        recipesPerRecommendation
-      );
-      recommendations.push({
-        id: `grain-${index + 1}`,
-        titleKey: `recommendations.basedOnIngredient`,
-        titleParams: { ingredientName: ingredient.name },
-        recipes: shuffledIngredientRecipes,
-        type: 'ingredient' as const,
-      });
+    if (ingredientRecipes.length === 0) {
+      continue;
     }
-  });
+    const shuffledIngredientRecipes = fisherYatesShuffle(
+      ingredientRecipes,
+      recipesPerRecommendation
+    );
+    recommendations.push({
+      id: `grain-${grainCount + 1}`,
+      titleKey: `recommendations.basedOnIngredient`,
+      titleParams: { ingredientName: ingredient.name },
+      recipes: shuffledIngredientRecipes,
+      type: 'ingredient' as const,
+    });
+    grainCount++;
+  }
 
-  const randomTags = fisherYatesShuffle(tags, 3);
-  randomTags.forEach((tag: tagTableElement, index: number) => {
+  const shuffledTags = fisherYatesShuffle(tags);
+  let tagCount = 0;
+  for (const tag of shuffledTags) {
+    if (tagCount >= 3) {
+      break;
+    }
     const tagRecipes = recipesForFiltering.filter(recipe =>
       isTheElementContainsTheFilter(
         recipe.tags.map(t => t.name),
         tag.name
       )
     );
-
-    if (tagRecipes.length > 0) {
-      const shuffledTagRecipes = fisherYatesShuffle(tagRecipes, recipesPerRecommendation);
-      recommendations.push({
-        id: `tag-${index + 1}`,
-        titleKey: `recommendations.tagRecipes`,
-        titleParams: { tagName: tag.name },
-        recipes: shuffledTagRecipes,
-        type: 'tag' as const,
-      });
+    if (tagRecipes.length === 0) {
+      continue;
     }
-  });
+    const shuffledTagRecipes = fisherYatesShuffle(tagRecipes, recipesPerRecommendation);
+    recommendations.push({
+      id: `tag-${tagCount + 1}`,
+      titleKey: `recommendations.tagRecipes`,
+      titleParams: { tagName: tag.name },
+      recipes: shuffledTagRecipes,
+      type: 'tag' as const,
+    });
+    tagCount++;
+  }
 
   homeLogger.info('Generated home recommendations', {
     count: recommendations.length,
