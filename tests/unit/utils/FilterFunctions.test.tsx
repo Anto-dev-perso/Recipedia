@@ -21,6 +21,7 @@ import {
 import { testRecipes } from '@test-data/recipesDataset';
 import {
   ingredientTableElement,
+  ingredientType,
   isIngredientEqual,
   recipeTableElement,
 } from '@customTypes/DatabaseElementTypes';
@@ -720,6 +721,53 @@ describe('FilterFunctions', () => {
       const tags = database.get_tags();
       const recommendations = generateHomeRecommendations(recipes, ingredients, tags, false, 4);
       expect(recommendations).toHaveLength(0);
+    });
+
+    test('generateHomeRecommendations skips empty tag and ingredient candidates', () => {
+      const recipes = database.get_recipes();
+      const ingredients = database.get_ingredients();
+      const tags = database.get_tags();
+
+      const nonExistingGrain: ingredientTableElement = {
+        name: 'NonExistentGrainCandidate',
+        unit: 'g',
+        type: ingredientType.grainOrCereal,
+        season: ['*'],
+      };
+
+      const nonExistingTag = { name: 'NonExistentTagCandidate' };
+
+      // Place empty candidates first to ensure they are skipped
+      const ingredientsWithEmptyFirst = [nonExistingGrain, ...ingredients];
+      const tagsWithEmptyFirst = [nonExistingTag, ...tags];
+
+      const recommendations = generateHomeRecommendations(
+        recipes,
+        ingredientsWithEmptyFirst,
+        tagsWithEmptyFirst as any,
+        false,
+        4
+      );
+
+      // No tag or ingredient recommendation should be empty
+      const tagRecs = recommendations.filter(r => r.type === 'tag');
+      const grainRecs = recommendations.filter(r => r.type === 'ingredient');
+
+      expect(tagRecs.length).toBeGreaterThan(0);
+      expect(tagRecs.length).toBeLessThanOrEqual(3);
+      tagRecs.forEach((rec, idx) => {
+        expect(rec.recipes.length).toBeGreaterThan(0);
+        expect(rec.id).toBe(`tag-${idx + 1}`);
+        expect(rec.titleParams?.tagName).not.toBe(nonExistingTag.name);
+      });
+
+      expect(grainRecs.length).toBeGreaterThan(0);
+      expect(grainRecs.length).toBeLessThanOrEqual(2);
+      grainRecs.forEach((rec, idx) => {
+        expect(rec.recipes.length).toBeGreaterThan(0);
+        expect(rec.id).toBe(`grain-${idx + 1}`);
+        expect(rec.titleParams?.ingredientName).not.toBe(nonExistingGrain.name);
+      });
     });
   });
 });
