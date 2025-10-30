@@ -173,7 +173,7 @@ function checkDescription(
       expect(queryByTestId('RecipeDescription::OpenModal')).toBeNull();
       break;
     case 'edit':
-      expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('Description:');
+      expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('description:');
       expect(getByTestId('RecipeDescription::TextEditable').props.children).toEqual(
         prop.recipe.description
       );
@@ -181,7 +181,7 @@ function checkDescription(
       expect(queryByTestId('RecipeDescription::OpenModal')).toBeNull();
       break;
     case 'addManually':
-      expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('Description:');
+      expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('description:');
       expect(getByTestId('RecipeDescription::TextEditable').props.children).toEqual(
         newValueExpected
       );
@@ -189,7 +189,7 @@ function checkDescription(
       expect(queryByTestId('RecipeDescription::OpenModal')).toBeNull();
       break;
     case 'addFromPic':
-      expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('Description:');
+      expect(getByTestId('RecipeDescription::RootText').props.children).toEqual('description:');
       expect(queryByTestId('RecipeDescription::TextEditable')).toBeNull();
       expect(queryByTestId('RecipeDescription::SetTextToEdit')).toBeNull();
       if (prop.imgUri === defaultUri) {
