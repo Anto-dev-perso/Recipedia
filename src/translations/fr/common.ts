@@ -21,6 +21,7 @@ export default {
 
   // Confirmation messages
   confirmDelete: 'Êtes-vous sûr de vouloir supprimer ceci ?',
+  interrogationMark: ' ?',
 
   // Error messages
   errorOccurred: 'Une erreur est survenue',
