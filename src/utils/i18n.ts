@@ -38,6 +38,8 @@ i18n
     lng: Localization.locale.split('-')[0], // Use device locale by default
     fallbackLng: 'en',
     debug: __DEV__, // Enable debug in development
+    keySeparator: '.',
+    returnObjects: false,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },

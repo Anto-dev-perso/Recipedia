@@ -26,7 +26,7 @@ export default {
     ...shopping,
   },
   recipe: {
-    nutrition: recipe.nutrition,
+    ...recipe,
   },
   alerts: {
     missingElements: alerts.missingElements,
