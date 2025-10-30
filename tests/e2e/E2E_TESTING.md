@@ -38,7 +38,7 @@ npm run workflow:build-test:android
 maestro test tests/e2e/search/
 
 # Run specific test case
-maestro test tests/e2e/search/open_close.yaml
+maestro test tests/e2e/search/01_open_close.yaml
 
 # Run tests by tag
 maestro test --include-tags search tests/e2e/
@@ -114,12 +114,12 @@ appId: com.recipedia.app
 
 flows:
   # App Initialization
-  - app-init/onboarding.yaml
-  - app-init/bottom_tabs.yaml
+  - app-init/01_onboarding.yaml
+  - app-init/02_bottom_tabs.yaml
 
   # Search & Discovery
-  - search/open_close.yaml
-  - search/scroll_independence.yaml
+  - search/01_open_close.yaml
+  - search/02_scroll_independence.yaml
 
   # Additional test groups...
 

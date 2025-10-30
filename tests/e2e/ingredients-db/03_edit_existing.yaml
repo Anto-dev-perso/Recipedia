@@ -1,0 +1,105 @@
+name: "3: Edit Existing Ingredient Flow"
+appId: com.recipedia.app
+tags:
+  - database
+  - ingredients-db
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Action - Navigate to Ingredients Settings"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::15::IngredientName"
+    direction: DOWN
+    speed: 80
+    label: "Action - Scroll to Lettuce ingredient"
+
+- assertVisible:
+    id: "IngredientsSettings::15::IngredientName"
+    text: "Lettuce"
+    label: "Assert - Verify Lettuce ingredient exists"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::15::EditButton"
+    direction: DOWN
+    speed: 50
+    label: "Action - Scroll to Edit button"
+
+- tapOn:
+    id: "IngredientsSettings::15::EditButton"
+    label: "Action - Open edit dialog for Lettuce"
+
+- runFlow:
+    file: "../asserts/parameters/ingredients/en/assertEditModalOpen.yaml"
+    label: "Assert - Verify Edit ingredient modal displayed"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- inputText:
+    text: " Edited"
+    label: "Action - Append Edited to ingredient name"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Menu::Button"
+    label: "Action - Open type dropdown"
+
+- tapOn:
+    text: "Fruit"
+    label: "Action - Change type from vegetable to fruit"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Unit::CustomTextInput"
+    label: "Action - Focus on unit input"
+
+- eraseText:
+    label: "Action - Clear existing unit"
+
+- inputText:
+    text: "kg"
+    label: "Action - Change unit from g to kg"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::SeasonalityCalendar::10"
+    label: "Action - Remove october from seasonality"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::ConfirmButton"
+    label: "Action - Save edited ingredient"
+
+- assertVisible:
+    id: "IngredientsSettings::15::IngredientName"
+    text: "Lettuce Edited"
+    label: "Assert - Verify ingredient renamed to Lettuce Edited"
+
+- assertNotVisible:
+    text: "Lettuce"
+    label: "Assert - Verify old ingredient name no longer exists"
+
+- runFlow:
+    file: "../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Action - Return to Home screen"
+
+- runFlow:
+    file: "../flows/parameters/ingredients/verifyIngredientRenameInRecipes.yaml"
+    label: "Verification - Verify ingredient renamed in recipes"
+
+- runFlow:
+    file: "../flows/parameters/ingredients/restoreIngredientValues.yaml"
+    label: "Cleanup - Restore ingredient to original values"
+
+- runFlow:
+    file: "../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

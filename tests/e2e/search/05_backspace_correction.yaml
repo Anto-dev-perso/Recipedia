@@ -1,0 +1,62 @@
+name: "5: Search Backspace Correction Flow"
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Action - Focus on search bar"
+
+- inputText: "P"
+
+- runFlow:
+    file: "../asserts/search/searchbar/searchBarFilteredOnP.yaml"
+    label: "Assert - Verify dropdown filtered on 'P'"
+
+- inputText: "a"
+
+- runFlow:
+    file: "../asserts/search/searchbar/searchBarFilteredOnPa.yaml"
+    label: "Assert - Verify dropdown filtered on 'Pa'"
+
+- pressKey: "backspace"
+
+- runFlow:
+    file: "../asserts/search/searchbar/searchBarFilteredOnP.yaml"
+    label: "Assert - Verify dropdown filtered back to 'P'"
+
+- inputText: "i"
+
+- runFlow:
+    file: "../asserts/search/searchbar/searchBarFilteredOnPi.yaml"
+    label: "Assert - Verify dropdown filtered on 'Pi'"
+
+- hideKeyboard:
+    label: "Action - Dismiss keyboard"
+
+- tapOn:
+    text: "Margherita Pizza"
+    label: "Action - Select Margherita Pizza from dropdown"
+
+- runFlow:
+    file: "../asserts/search/en/searchScreenFilteredOnPizza.yaml"
+    label: "Assert - Verify Search screen shows Pizza results"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Action - Tap clear icon to remove search filter"
+
+- runFlow:
+    file: "../asserts/search/en/assertSearchScreen.yaml"
+    label: "Assert - Verify all recipe cards are visible again"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Navigate back to Home screen"

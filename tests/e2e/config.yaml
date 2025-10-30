@@ -1,80 +1,86 @@
 # Include all flows from subdirectories
 flows:
   - app-init/*
-  - search/*
-  - recipe-view/*
-  - recipe-create/*
-  - shopping/*
-  - settings/*
-  - tags-db/*
-  - ingredients-db/*
   - duplicates/*
+  - ingredients-db/*
+  - ocr/*
+  - recipe-create/*
+  - recipe-view/*
+  - search/*
+  - settings/*
+  - shopping/*
+  - tags-db/*
 
 executionOrder:
-  continueOnFailure: false
+  continueOnFailure: true
   flowsOrder:
     # App Initialization
-    - app-init/onboarding
-    - app-init/bottom_tabs
-    - app-init/fab_menu
+    - app-init/01_onboarding
+    - app-init/02_bottom_tabs
+    - app-init/03_fab_menu
 
     # Search & Discovery
-    - search/open_close
-    - search/scroll_independence
-    - search/multiple_results
-    - search/direct_click
-    - search/backspace_correction
-    - search/filter_removal
-    - search/filter_page_toggle
-    - search/filter_single
-    - search/filter_multiple
-    - search/filter_with_text
+    - search/01_open_close
+    - search/02_scroll_independence
+    - search/03_multiple_results
+    - search/04_direct_click
+    - search/05_backspace_correction
+    - search/06_filter_removal
+    - search/07_filter_page_toggle
+    - search/08_filter_single
+    - search/09_filter_multiple
+    - search/10_filter_with_text
 
     # Recipe Viewing
-    - recipe-view/readonly_from_search
-    - recipe-view/readonly_from_home
-    - recipe-view/edit_from_search
-    - recipe-view/edit_from_home
-    - recipe-view/quantity_scaling
+    - recipe-view/01_readonly_from_search
+    - recipe-view/02_readonly_from_home
+    - recipe-view/03_edit_from_search
+    - recipe-view/04_edit_from_home
+    - recipe-view/05_quantity_scaling
 
     # Recipe Creation
-    - recipe-create/manual_complete
-    - recipe-create/manual_cancel
-    - recipe-create/manual_quantity_scaling
-    - recipe-create/validation_all
-    - recipe-create/ocr_quitoque_v2
+    - recipe-create/01_manual_complete
+    - recipe-create/02_manual_cancel
+    - recipe-create/03_manual_quantity_scaling
+    - recipe-create/04_validation_all
 
     # Shopping List
-    - shopping/add_one_recipe
-    - shopping/add_multiple_recipes
-    - shopping/delete_recipe
+    - shopping/01_add_one_recipe
+    - shopping/02_add_multiple_recipes
+    - shopping/03_delete_recipe
 
     # Settings
-    - settings/dark_mode
-    - settings/language_switch
-    - settings/season_filter_toggle
-    - settings/season_filter_edge_cases
-    - settings/default_persons
+    - settings/01_dark_mode
+    - settings/02_language_switch
+    - settings/03_season_filter_toggle
+    - settings/04_season_filter_edge_cases
+    - settings/05_default_persons
 
     # Tag Database
-    - tags-db/add_new
-    - tags-db/edit_existing
-    - tags-db/delete
-    - tags-db/add_and_use_in_recipe
-    - tags-db/edge_cases
+    - tags-db/01_add_new
+    - tags-db/02_edit_existing
+    - tags-db/03_delete
+    - tags-db/04_add_and_use_in_recipe
+    - tags-db/05_edge_cases
 
     # Ingredient Database
-    - ingredients-db/add_new
-    - ingredients-db/delete
-    - ingredients-db/edit_existing
-    - ingredients-db/add_and_use_in_recipe
-    - ingredients-db/edge_cases
+    - ingredients-db/01_add_new
+    - ingredients-db/02_delete
+    - ingredients-db/03_edit_existing
+    - ingredients-db/04_add_and_use_in_recipe
+    - ingredients-db/05_edge_cases
 
     # Edge Cases
-    - duplicates/duplicate_tag_unique
-    - duplicates/duplicate_tag_fuzzy
-    - duplicates/duplicate_ingredient_unique
-    - duplicates/duplicate_ingredient_fuzzy
-    - duplicates/duplicate_recipe_fuzzy
-    - duplicates/duplicate_recipe_boundaries
-    - duplicates/duplicate_recipe_confirm
+    - duplicates/01_duplicate_tag_unique
+    - duplicates/02_duplicate_tag_fuzzy
+    - duplicates/03_duplicate_ingredient_unique
+    - duplicates/04_duplicate_ingredient_fuzzy
+    - duplicates/05_duplicate_recipe_fuzzy
+    - duplicates/06_duplicate_recipe_boundaries
+    - duplicates/07_duplicate_recipe_confirm
+
+    # OCR
+    - ocr/01_ocr_hellofresh
+    - ocr/02_ocr_quitoque_v1
+    - ocr/03_ocr_quitoque_v2
+    - ocr/04_ocr_quitoque_v3

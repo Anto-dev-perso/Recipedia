@@ -1,0 +1,53 @@
+name: "1: Add New Tag Flow"
+appId: com.recipedia.app
+tags:
+  - database
+  - tags-db
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Action - Navigate to Tags Settings"
+
+- runFlow:
+    file: "../asserts/parameters/tags/en/assertTagsSettingsScreen.yaml"
+    label: "Assert - Verify Tags Settings screen displays correctly"
+
+- tapOn:
+    id: "TagsSettings::AddButton"
+    label: "Action - Open add tag dialog"
+
+- runFlow:
+    file: "../asserts/parameters/tags/en/assertAddModalOpen.yaml"
+    label: "Assert - Verify Add tag modal displayed"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::Name::CustomTextInput"
+    label: "Action - Focus on tag name input"
+
+- inputText:
+    text: "TestTag"
+    label: "Action - Enter new tag name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::ConfirmButton"
+    label: "Action - Confirm adding new tag"
+
+- scrollUntilVisible:
+    element:
+      text: "TestTag"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Action - Scroll to new tag"
+
+- assertVisible:
+    id: "TagsSettings::15::TagName"
+    text: "TestTag"
+    label: "Assert - Verify new tag displayed in list"
+
+- runFlow:
+    file: "../flows/parameters/tags/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

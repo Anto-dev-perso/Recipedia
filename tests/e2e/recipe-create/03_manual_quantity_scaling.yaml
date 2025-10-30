@@ -1,0 +1,78 @@
+name: "3: Manual Recipe Quantity Scaling Flow"
+appId: com.recipedia.app
+tags:
+  - recipe-create
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../flows/recipe/adding/fillTestRecipeFor2Persons.yaml"
+    label: "Action - Fill Test Recipe (2 persons, Pasta 200g, Tomatoes 100g)"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 99
+    label: "Action - Scroll back to top"
+
+- runFlow:
+    file: "../asserts/recipe/edit/testRecipeFor2Persons.yaml"
+    label: "Assert - Verify recipe before validation (2 persons, 200g, 100g)"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: "Test Recipe"
+    label: "Assert - Verify recipe added successfully"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Collapse FAB menu"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Action - Focus on search bar"
+
+- inputText:
+    text: "Test Recipe"
+    label: "Action - Search for Test Recipe"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Action - Open Test Recipe from search results"
+
+- runFlow:
+    file: "../asserts/recipe/readonly/en/testRecipeFor4Persons.yaml"
+    label: "Assert - Verify recipe scaled to 4 persons (400g, 200g)"
+
+- tapOn:
+    id: "RecipeDelete::RoundButton"
+    label: "Cleanup - Delete the recipe"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Cleanup - Confirm recipe deletion"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Cleanup - Close deletion validation modal"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Cleanup - Remove filter"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to Home screen"

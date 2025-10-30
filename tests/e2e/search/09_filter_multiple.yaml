@@ -1,0 +1,90 @@
+name: "9: Multiple Filters Application Flow"
+appId: com.recipedia.app
+tags:
+  - search
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Action - Open the filter page"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::1"
+    label: "Action - Expand Preparation Time accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::1::Item::2"
+    label: "Action - Select 15-20 min as filter"
+
+- runFlow:
+    file: "../asserts/search/en/filters/filtersViewFilteredOn1520Min.yaml"
+    label: "Assert - Verify filter view with 15-20 min selected"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Action - Close the filter page"
+
+- runFlow:
+    file: "../asserts/search/en/searchScreenFilteredOn1520Min.yaml"
+    label: "Assert - Verify search results filtered on 15-20 min"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Action - Open the filter page"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::4"
+    direction: DOWN
+    centerElement: true
+    label: "Action - Scroll to Vegetable accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::4"
+    label: "Action - Expand Vegetable accordion"
+
+- tapOn:
+    id: "SearchScreen::FilterAccordion::Accordion::4::Item::1"
+    label: "Action - Add the Romaine Lettuce in filters"
+
+- runFlow:
+    file: "../flows/search/scrollBackToTop.yaml"
+    label: "Action - Scroll back to top of filters"
+
+- runFlow:
+    file: "../asserts/search/en/filters/filtersViewFilteredOn1520MinAndLettuce.yaml"
+    label: "Assert - Verify filter view with 15-20 min and Lettuce"
+
+- tapOn:
+    id: "SearchScreen::FiltersToggleButtons"
+    label: "Action - Close the filter page"
+
+- runFlow:
+    file: "../asserts/search/en/searchScreenFilteredOn1520MinAndLettuce.yaml"
+    label: "Assert - Verify search results filtered on 15-20 min and Lettuce"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Action - Remove 15-20 min filter"
+
+- runFlow:
+    file: "../asserts/search/en/searchScreenFilteredOnLettuce.yaml"
+    label: "Assert - Verify search results filtered on Lettuce only"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Action - Remove Romaine Lettuce filter"
+
+- runFlow:
+    file: "../asserts/search/en/assertSearchScreen.yaml"
+    label: "Assert - Verify that all recipes are back when removing all filters"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Navigate back to Home screen"
