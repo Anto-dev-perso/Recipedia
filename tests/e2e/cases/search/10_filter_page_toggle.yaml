@@ -1,5 +1,5 @@
 name: "10: Filter Page Toggle Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - search
 ---

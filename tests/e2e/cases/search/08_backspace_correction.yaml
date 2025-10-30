@@ -1,5 +1,5 @@
 name: "8: Search Backspace Correction Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - search
 ---

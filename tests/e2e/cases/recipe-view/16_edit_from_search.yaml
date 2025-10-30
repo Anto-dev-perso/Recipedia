@@ -1,5 +1,5 @@
 name: "16: Recipe Edit From Search Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - recipe-view
 ---

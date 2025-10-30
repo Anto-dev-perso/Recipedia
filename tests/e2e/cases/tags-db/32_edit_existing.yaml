@@ -1,5 +1,5 @@
 name: "32: Edit Existing Tag Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - database
   - tags-db

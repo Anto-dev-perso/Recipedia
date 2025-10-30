@@ -1,5 +1,5 @@
 name: "49: OCR Quitoque V1 Gallery Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - recipe-create
   - ocr

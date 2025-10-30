@@ -1,5 +1,5 @@
 name: "36: Add New Ingredient Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - database
   - ingredients-db

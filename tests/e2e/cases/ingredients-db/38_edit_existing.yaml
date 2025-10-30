@@ -1,5 +1,5 @@
 name: "38: Edit Existing Ingredient Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - database
   - ingredients-db

@@ -1,5 +1,5 @@
 name: "42: Duplicate Tag Fuzzy Detection Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - duplicates
 ---

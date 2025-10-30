@@ -1,5 +1,5 @@
 name: "11: Single Filter Application Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - search
 ---

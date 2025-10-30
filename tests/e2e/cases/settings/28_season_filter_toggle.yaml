@@ -1,5 +1,5 @@
 name: "28: Season Filter Toggle Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - settings
 ---

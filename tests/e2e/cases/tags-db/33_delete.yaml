@@ -1,5 +1,5 @@
 name: "33: Delete Tag Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - database
   - tags-db

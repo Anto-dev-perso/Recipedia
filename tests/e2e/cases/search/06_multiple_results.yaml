@@ -1,5 +1,5 @@
 name: "6: Search Multiple Results Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - search
 ---

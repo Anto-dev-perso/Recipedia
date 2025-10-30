@@ -1,5 +1,5 @@
 name: "20: Manual Recipe Creation Cancel Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - recipe-create
 ---

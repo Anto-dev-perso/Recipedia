@@ -1,5 +1,5 @@
 name: "26: Dark Mode Toggle Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - settings
 ---

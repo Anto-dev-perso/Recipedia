@@ -1,5 +1,5 @@
 name: "23: Add Single Recipe To Shopping Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - shopping
 ---

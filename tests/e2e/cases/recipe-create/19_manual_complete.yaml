@@ -1,5 +1,5 @@
 name: "19: Manual Recipe Creation Complete Flow"
-appId: com.recipedia.app
+appId: "com.recipedia"
 tags:
   - recipe-create
 ---
