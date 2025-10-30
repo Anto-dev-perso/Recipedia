@@ -1,0 +1,142 @@
+name: "43: Duplicate Ingredient Unique Detection Flow"
+appId: com.recipedia.app
+tags:
+  - duplicates
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Action - Expand FAB menu"
+
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Action - Open manual recipe creation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Action - Scroll to ingredients section"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Action - Add ingredient to recipe"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- inputText:
+    text: "AUniqueIngredient"
+    label: "Action - Enter unique ingredient name first attempt"
+
+- pressKey: "ENTER"
+
+- runFlow:
+    file: "../../asserts/alerts/en/ingredientNotFound.yaml"
+    label: "Assert - Verify ingredient not found alert"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::SimilarityDialog::CancelButton"
+    label: "Action - Cancel similarity alert"
+
+- assertNotVisible:
+    text: "AUniqueIngredient"
+    label: "Assert - Verify ingredient not added to recipe"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Action - Add ingredient to recipe again"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- inputText:
+    text: "AUniqueIngredient"
+    label: "Action - Enter unique ingredient name second attempt"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::SimilarityDialog::AddButton"
+    label: "Action - Confirm adding ingredient"
+
+- runFlow:
+    file: "../../asserts/alerts/en/addingIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "AUniqueIngredient"
+    label: "Assert - Verify adding modal appears"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Menu::Button"
+    label: "Action - Open type dropdown"
+
+- tapOn:
+    text: "Fish"
+    label: "Action - Select Fish type"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::CustomTextInput"
+    label: "Action - Focus on unit input"
+
+- inputText:
+    text: "MyUnit"
+    label: "Action - Enter unit"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::2"
+    label: "Action - Select february for seasonality"
+
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    label: "Action - Confirm adding new ingredient"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    text: "AUniqueIngredient"
+    label: "Assert - Verify ingredient name appears in recipe"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::Unit::CustomTextInput"
+    text: "MyUnit"
+    label: "Assert - Verify ingredient unit appears in recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Cleanup - Exit recipe creation without saving"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Cleanup - Navigate to Ingredients Settings"
+
+- runFlow:
+    file: "../../asserts/parameters/ingredients/ingredientInSettings.yaml"
+    env:
+      INGREDIENT_NAME: "AUniqueIngredient"
+      INGREDIENT_INDEX: "0"
+      INGREDIENT_TYPE: "Fish"
+      INGREDIENT_UNIT: "MyUnit"
+      INGREDIENT_MONTH_NUMBER: "2"
+    label: "Verification - Verify ingredient exists with correct properties"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/deleteIngredientByName.yaml"
+    env:
+      INGREDIENT_NAME: "AUniqueIngredient"
+      INGREDIENT_INDEX: "0"
+    label: "Cleanup - Delete AUniqueIngredient"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

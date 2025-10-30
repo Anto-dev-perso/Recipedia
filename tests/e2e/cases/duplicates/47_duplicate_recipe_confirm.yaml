@@ -1,0 +1,57 @@
+name: "47: Duplicate Recipe Confirm Flow"
+appId: com.recipedia.app
+tags:
+  - duplicates
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create base recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert - Verify recipe added to database"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Action - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create duplicate recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Action - Confirm adding recipe despite duplicate"
+
+- tapOn:
+    id: "Recipe::Dialog::Confirm"
+    label: "Action - Confirm success message"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Cleanup - Delete first Test Recipe"
+
+- runFlow:
+    file: "../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Cleanup - Delete second Test Recipe"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to Home screen"

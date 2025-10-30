@@ -1,0 +1,141 @@
+name: "45: Duplicate Recipe Fuzzy Detection Flow"
+appId: com.recipedia.app
+tags:
+  - duplicates
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create base recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert - Verify recipe added to database"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Action - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create identical recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage::Image"
+    direction: UP
+    speed: 99
+
+- runFlow:
+    file: "../../flows/recipe/adding/setRecipeTitle.yaml"
+    env:
+      TITLE: "Test Recip"
+    label: "Action - Change title to fuzzy match"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Close recipe screen"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createRecipeWithScaledQuantities.yaml"
+    label: "Action - Create recipe with scaled quantities"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Close recipe screen"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createRecipeWithCloseQuantities.yaml"
+    label: "Action - Create recipe with close quantities"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: UP
+    speed: 60
+    label: "Action - Scroll up for adding ingredient"
+
+- tapOn:
+    id: RecipeIngredients::TextRender::1::Dropdown::CustomTextInput
+    label: "Action - Focus on ingredient input"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- runFlow:
+    file: "../../flows/recipe/adding/addIngredientToRecipe.yaml"
+    env:
+      INDEX: "2"
+      NAME: "Olive Oil"
+      QUANTITY: "5"
+    label: "Action - Add Olive Oil ingredient"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Cleanup - Return to home screen"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Cleanup - Delete Test Recipe"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to Home screen"

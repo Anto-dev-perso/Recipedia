@@ -1,0 +1,31 @@
+name: "14: Recipe Read-Only From Search Flow"
+appId: com.recipedia.app
+tags:
+  - recipe-view
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::1"
+    label: "Action - Open Chicken Tacos recipe"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/chickenTacos.yaml"
+    label: "Assert - Verify Chicken Tacos recipe is displayed correctly"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Back to the Search Screen"
+
+- runFlow:
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
+    label: "Assert - Verify Search screen is displayed"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Navigate back to Home screen"

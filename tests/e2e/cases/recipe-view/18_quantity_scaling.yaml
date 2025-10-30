@@ -1,0 +1,108 @@
+name: "18: Recipe Quantity Scaling Flow"
+appId: com.recipedia.app
+tags:
+  - recipe-view
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Action - Focus on search bar"
+
+- inputText:
+    text: "Chocolate"
+    label: "Action - Search for Chocolate Cake"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Action - Open Chocolate Cake recipe"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/chocolateCakeFor4Persons.yaml"
+    label: "Assert - Verify initial state: 4 persons, scaled quantities"
+
+- tapOn:
+    id: "RecipeEdit::RoundButton"
+    label: "Action - Enter edit mode"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 99
+    label: "Action - Scroll back to top"
+
+- runFlow:
+    file: "../../asserts/recipe/edit/chocolateCakeFor4Persons.yaml"
+    label: "Assert - Verify edit mode: 4 persons, scaled quantities"
+
+- runFlow:
+    file: "../../flows/recipe/editing/changePersonsFrom4To2.yaml"
+    label: "Action - Change persons from 4 to 2"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 99
+    label: "Action - Scroll back to top"
+
+- runFlow:
+    file: "../../asserts/recipe/edit/chocolateCakeFor2Persons.yaml"
+    label: "Assert - Verify immediate scaling: 2 persons, scaled quantities (66,67g, 16,67g, 50g, 33,34g)"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the edit"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 99
+    label: "Action - Scroll back to top"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/chocolateCakeFor2Persons.yaml"
+    label: "Assert - Verify read-only after edit: 2 persons, scaled quantities"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Return to Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Action - Remove search filter"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Action - Focus on search bar"
+
+- inputText:
+    text: "Chocolate"
+    label: "Action - Search for Chocolate Cake again"
+
+- pressKey: "ENTER"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::Cover"
+    label: "Action - Open Chocolate Cake recipe from search"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Return to Search screen"
+
+- tapOn:
+    id: "SearchScreen::FiltersSelection::0::Chip"
+    label: "Cleanup - Remove search filter"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to Home screen"

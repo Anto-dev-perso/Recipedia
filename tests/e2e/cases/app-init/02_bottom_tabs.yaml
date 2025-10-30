@@ -1,0 +1,51 @@
+name: "2: Bottom Tabs Navigation Flow"
+appId: com.recipedia.app
+tags:
+  - app-init
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+# Check Home Screen
+- runFlow:
+    file: "../../asserts/home/en/assertHomeScreen.yaml"
+    label: "Assert - Verify Home screen is displayed correctly"
+
+# Check Search Screen
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- runFlow:
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
+    label: "Assert - Verify Search screen is displayed correctly"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Action - Navigate back to Home screen"
+
+# Check Shopping Screen
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Action - Navigate to Shopping screen"
+
+- runFlow:
+    file: "../../asserts/shopping/en/assertShoppingEmpty.yaml"
+    label: "Assert - Verify Shopping screen is displayed correctly"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Action - Navigate back to Home screen"
+
+# Check Parameters Screen
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Action - Navigate to Parameters screen"
+
+- runFlow:
+    file: "../../asserts/parameters/en/assertParametersScreen.yaml"
+    label: "Assert - Verify Parameters screen is displayed correctly"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Navigate back to Home screen"

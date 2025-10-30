@@ -1,0 +1,44 @@
+name: "33: Delete Tag Flow"
+appId: com.recipedia.app
+tags:
+  - database
+  - tags-db
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Action - Navigate to Tags Settings"
+
+- scrollUntilVisible:
+    element:
+      text: "TestTag"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Action - Scroll to TestTag"
+
+- tapOn:
+    id: "TagsSettings::15::DeleteButton"
+    label: "Action - Open delete confirmation dialog"
+
+- runFlow:
+    file: "../../asserts/parameters/tags/en/assertDeleteModalOpen.yaml"
+    label: "Assert - Verify Delete confirmation modal displayed"
+
+- assertVisible:
+    text: "TestTag"
+    label: "Assert - Verify tag name appears in confirmation"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::DeleteModal::ConfirmButton"
+    label: "Action - Confirm deleting tag"
+
+- assertNotVisible:
+    text: "TestTag"
+    label: "Assert - Verify tag removed from list"
+
+- runFlow:
+    file: "../../flows/parameters/tags/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

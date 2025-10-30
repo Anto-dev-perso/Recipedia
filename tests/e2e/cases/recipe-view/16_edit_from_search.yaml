@@ -1,0 +1,81 @@
+name: "16: Recipe Edit From Search Flow"
+appId: com.recipedia.app
+tags:
+  - recipe-view
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- scrollUntilVisible:
+    element:
+      text: "Pesto Pasta"
+    direction: DOWN
+    speed: 40
+    label: "Action - Scroll to find Pesto Pasta"
+
+- tapOn:
+    text: "Pesto Pasta"
+    label: "Action - Open Pesto Pasta recipe"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/pestoPasta.yaml"
+    label: "Assert - Verify Pesto Pasta recipe is displayed correctly"
+
+- tapOn:
+    id: "RecipeEdit::RoundButton"
+    waitToSettleTimeoutMs: 0
+    retryTapIfNoChange: false
+    label: "Action - Tap on the Edit button"
+
+- runFlow:
+    file: "../../asserts/recipe/edit/pestoPasta.yaml"
+    label: "Assert - Verify Pesto Pasta edit screen is displayed correctly"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::Title"
+    direction: DOWN
+    speed: 60
+    label: "Action - Scroll back to top of nutrition part"
+
+- runFlow:
+    file: "../../flows/recipe/editing/editNutrition.yaml"
+    env:
+      NEW_ENERGY_KCAL: "450"
+      NEW_PROTEIN: "18"
+      NEW_FAT: "17"
+    label: "Action - Edit nutrition values"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::Title"
+    direction: UP
+    speed: 60
+    label: "Action - Scroll back to top of nutrition part"
+
+- runFlow:
+    file: "../../flows/recipe/editing/editNutrition.yaml"
+    env:
+      NEW_ENERGY_KCAL: "425"
+      NEW_PROTEIN: "16.5"
+      NEW_FAT: "15.8"
+    label: "Action - Revert nutrition values"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Back to the Search Screen"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::SearchBar"
+    direction: UP
+    speed: 99
+    label: "Cleanup - Scroll back to top of Search screen"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Back to the Home Screen"
