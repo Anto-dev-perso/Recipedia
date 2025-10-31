@@ -5,10 +5,13 @@ appId: "com.recipedia"
     label: "Add ingredient to recipe"
 
 
-# TODO bug shouldn't accept undefined or empty values
-#- tapOn:
-#    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
-#    label: "Confirm adding the new ingredient"
+- tapOn:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    label: "Try to confirm adding the new ingredient"
+
+- assertVisible:
+    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    label: "Button is still there meaning the adding didn't worked"
 
 - tapOn:
     id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Menu::Button"

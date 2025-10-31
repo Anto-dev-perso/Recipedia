@@ -15,9 +15,6 @@ appId: "com.recipedia"
     id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
     label: "Focus on ingredient name input"
 
-- eraseText:
-    label: "Clear existing ingredient name"
-
 - inputText:
     text: "Test Cancel Ingredient"
     label: "Enter an ingredient name"

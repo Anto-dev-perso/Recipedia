@@ -12,8 +12,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
-    #    TODO bug
-    #    text: ""
+    text: ""
     label: "Ingredient name input field is visible"
 
 - assertVisible:
@@ -23,7 +22,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "IngredientsSettings::ItemDialog::AddModal::Menu::Button-text"
-    text: "Fruit"
+    text: "Select type"
     label: "Type dropdown menu button is visible"
 
 - assertVisible:
@@ -33,7 +32,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "IngredientsSettings::ItemDialog::AddModal::Unit::CustomTextInput"
-    text: "g"
+    text: ""
     label: "Unit input field is visible"
 
 - assertVisible:

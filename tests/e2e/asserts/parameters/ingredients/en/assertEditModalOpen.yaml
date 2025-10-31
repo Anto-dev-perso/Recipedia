@@ -17,8 +17,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "IngredientsSettings::ItemDialog::EditModal::Menu::Button-text"
-    # TODO bug
-    #    text: "Fruit"
+    text: "Vegetable"
     label: "Type dropdown menu button is visible"
 
 - assertVisible:
