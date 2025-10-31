@@ -1285,5 +1285,92 @@ describe('Recipe Component tests', () => {
     checkNutrition(mockRouteAddManually, getByTestId, queryByTestId);
   });
 
+  describe('duplicate prevention', () => {
+    test('prevents adding duplicate tag when tag already exists in recipe', async () => {
+      const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
+
+      const initialTagsJson = getByTestId('RecipeTags::TagsList').props.children;
+      const initialTags = JSON.parse(initialTagsJson);
+      const initialCount = initialTags.length;
+
+      expect(initialCount).toBeGreaterThan(0);
+
+      fireEvent.press(getByTestId('RecipeTags::AddNewTag'));
+
+      await waitFor(
+        () => {
+          const finalTagsJson = getByTestId('RecipeTags::TagsList').props.children;
+          const finalTags = JSON.parse(finalTagsJson);
+          expect(finalTags).toHaveLength(initialCount);
+        },
+        { timeout: 1000 }
+      );
+    });
+
+    test('prevents adding duplicate ingredient when ingredient already exists', async () => {
+      const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
+
+      const initialIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props.children;
+      const initialIngredients = JSON.parse(initialIngredientsJson);
+      const initialCount = initialIngredients.length;
+
+      fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
+
+      await waitFor(() => {
+        const updatedIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props
+          .children;
+        const updatedIngredients = JSON.parse(updatedIngredientsJson);
+        expect(updatedIngredients[0]).toBe(`200${unitySeparator}ml${textSeparator}Milk`);
+      });
+
+      const afterFirstEditIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props
+        .children;
+      const afterFirstEditIngredients = JSON.parse(afterFirstEditIngredientsJson);
+
+      fireEvent.press(getByTestId('RecipeIngredients::AddNewText'));
+
+      await waitFor(() => {
+        const withNewIngredientJson = getByTestId('RecipeIngredients::TextEditable').props.children;
+        const withNewIngredient = JSON.parse(withNewIngredientJson);
+        expect(withNewIngredient).toHaveLength(initialCount + 1);
+        expect(withNewIngredient[withNewIngredient.length - 1]).toBe(
+          `${unitySeparator}${textSeparator}`
+        );
+      });
+
+      fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
+
+      await waitFor(
+        () => {
+          const finalIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props
+            .children;
+          const finalIngredients = JSON.parse(finalIngredientsJson);
+          expect(finalIngredients).toHaveLength(initialCount + 1);
+          expect(finalIngredients[initialCount]).toBe(`${unitySeparator}${textSeparator}`);
+          expect(finalIngredients.filter((ing: string) => ing.includes('Milk'))).toHaveLength(1);
+        },
+        { timeout: 1000 }
+      );
+    });
+
+    test('allows editing ingredient to a different value', async () => {
+      const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
+
+      const initialIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props.children;
+      const initialIngredients = JSON.parse(initialIngredientsJson);
+      const initialCount = initialIngredients.length;
+
+      fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
+
+      await waitFor(() => {
+        const updatedIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props
+          .children;
+        const updatedIngredients = JSON.parse(updatedIngredientsJson);
+        expect(updatedIngredients[0]).toBe(`200${unitySeparator}ml${textSeparator}Milk`);
+        expect(updatedIngredients).toHaveLength(initialCount);
+      });
+    });
+  });
+
   // TODO add delete test
 });
