@@ -23,6 +23,9 @@ export default {
   confirmDelete: 'Êtes-vous sûr de vouloir supprimer ceci ?',
   interrogationMark: ' ?',
 
+  // Selection prompts
+  selectType: 'Sélectionner le type',
+
   // Error messages
   errorOccurred: 'Une erreur est survenue',
   tryAgain: 'Veuillez réessayer',

@@ -135,17 +135,24 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
 
   const [itemName, setItemName] = useState(item.value.name);
 
-  useEffect(() => {
-    if (isVisible) {
-      setItemName(item.value.name);
-    }
-  }, [item.value.name, isVisible]);
-
-  const [ingType, setIngType] = useState<ingredientType>(
-    item.type === 'Ingredient' ? item.value.type : ingredientType.undefined
+  const [ingType, setIngType] = useState<ingredientType | undefined>(
+    item.type === 'Ingredient' && item.value.type !== ingredientType.undefined
+      ? item.value.type
+      : undefined
   );
   const [ingUnit, setIngUnit] = useState(item.type === 'Ingredient' ? item.value.unit : '');
   const [ingSeason, setIngSeason] = useState(item.type === 'Ingredient' ? item.value.season : []);
+
+  useEffect(() => {
+    if (isVisible) {
+      setItemName(item.value.name);
+      if (item.type === 'Ingredient') {
+        setIngType(item.value.type !== ingredientType.undefined ? item.value.type : undefined);
+        setIngUnit(item.value.unit);
+        setIngSeason(item.value.season);
+      }
+    }
+  }, [item.value.name, item.type, item.value, isVisible]);
 
   const handleDismiss = () => {
     onClose();
@@ -162,7 +169,7 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
         item.onConfirmIngredient(mode, {
           id: item.value.id,
           name: itemName,
-          type: ingType,
+          type: ingType ?? ingredientType.undefined,
           unit: ingUnit,
           season: ingSeason,
         });
@@ -173,6 +180,22 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
       default:
         uiLogger.error('Unreachable code in ItemDialog');
     }
+  };
+
+  const isConfirmButtonDisabled = () => {
+    if (!itemName.trim()) {
+      return true;
+    }
+
+    if (mode === 'delete') {
+      return false;
+    }
+
+    if (item.type === 'Ingredient') {
+      return ingType === undefined || !ingUnit.trim();
+    }
+
+    return false;
   };
 
   // Get dialog properties based on the current mode
@@ -254,12 +277,14 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
                           testID={modalTestId + '::Menu::Button'}
                           onPress={() => setTypeMenuVisible(true)}
                         >
-                          {t(ingType)}
+                          {ingType ? t(ingType) : t('selectType')}
                         </Button>
                       }
                     >
                       <FlatList
-                        data={shoppingCategories}
+                        data={shoppingCategories.filter(
+                          category => category !== ingredientType.undefined
+                        )}
                         renderItem={({ item }) => (
                           <Menu.Item
                             key={item}
@@ -300,7 +325,7 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
               testID={modalTestId + '::ConfirmButton'}
               mode='contained'
               onPress={handleConfirm}
-              disabled={!itemName.trim()}
+              disabled={isConfirmButtonDisabled()}
             >
               {confirmButtonText}
             </Button>

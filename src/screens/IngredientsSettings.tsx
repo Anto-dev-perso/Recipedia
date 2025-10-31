@@ -27,7 +27,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { ingredientTableElement } from '@customTypes/DatabaseElementTypes';
+import { ingredientTableElement, ingredientType } from '@customTypes/DatabaseElementTypes';
 import SettingsItemList from '@components/organisms/SettingsItemList';
 import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
 import { ingredientsSettingsLogger } from '@utils/logger';
@@ -122,6 +122,19 @@ export function IngredientsSettings() {
     setIsDialogOpen(false);
   };
 
+  const getDialogIngredientValue = () => {
+    const emptyIngredientTemplate: ingredientTableElement = {
+      name: '',
+      unit: '',
+      type: ingredientType.undefined,
+      season: [],
+    };
+    if (dialogMode === 'add') {
+      return emptyIngredientTemplate;
+    }
+    return selectedIngredient ?? emptyIngredientTemplate;
+  };
+
   // TODO add a counter of how many recipes use this element before deleting it
   return (
     <View>
@@ -142,7 +155,7 @@ export function IngredientsSettings() {
         mode={dialogMode}
         item={{
           type: 'Ingredient',
-          value: selectedIngredient ?? ingredientsSortedAlphabetically[0],
+          value: getDialogIngredientValue(),
           onConfirmIngredient: handleDialogConfirm,
         }}
       />
