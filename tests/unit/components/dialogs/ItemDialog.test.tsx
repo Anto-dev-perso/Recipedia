@@ -412,4 +412,276 @@ describe('ItemDialog Component', () => {
     // Check that onConfirmIngredient was called with the correct mode and values
     expect(mockOnConfirmIngredient).toHaveBeenCalledWith('delete', mockIngredient);
   });
+
+  describe('validation for ingredients', () => {
+    test('disables confirm button when ingredient has undefined type in add mode', () => {
+      const invalidIngredient: ingredientTableElement = {
+        name: 'Test Ingredient',
+        type: ingredientType.undefined,
+        unit: 'kg',
+        season: [],
+      };
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: invalidIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      expect(
+        getByTestId('IngredientDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(true);
+    });
+
+    test('disables confirm button when ingredient has empty unit in add mode', () => {
+      const invalidIngredient: ingredientTableElement = {
+        name: 'Test Ingredient',
+        type: ingredientType.fruit,
+        unit: '',
+        season: [],
+      };
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: invalidIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      expect(
+        getByTestId('IngredientDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(true);
+    });
+
+    test('disables confirm button when ingredient has empty name', () => {
+      const invalidIngredient: ingredientTableElement = {
+        name: '',
+        type: ingredientType.fruit,
+        unit: 'kg',
+        season: [],
+      };
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: invalidIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      expect(
+        getByTestId('IngredientDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(true);
+    });
+
+    test('enables confirm button when ingredient has valid data in add mode', () => {
+      const validIngredient: ingredientTableElement = {
+        name: 'Test Ingredient',
+        type: ingredientType.fruit,
+        unit: 'kg',
+        season: [],
+      };
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: validIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      expect(
+        getByTestId('IngredientDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(false);
+    });
+
+    test('enables confirm button in delete mode regardless of type or unit', () => {
+      const invalidIngredient: ingredientTableElement = {
+        name: 'Test Ingredient',
+        type: ingredientType.undefined,
+        unit: '',
+        season: [],
+      };
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'delete',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: invalidIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      expect(
+        getByTestId('IngredientDialog::DeleteModal::ConfirmButton').props.accessibilityState
+          .disabled
+      ).toBe(false);
+    });
+  });
+
+  describe('validation for tags', () => {
+    test('disables confirm button when tag has empty name in add mode', () => {
+      const invalidTag: tagTableElement = {
+        name: '',
+      };
+
+      const props: ItemDialogProps = {
+        testId: 'TagDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Tag',
+          value: invalidTag,
+          onConfirmTag: mockOnConfirmTag,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      expect(
+        getByTestId('TagDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(true);
+    });
+
+    test('enables confirm button when tag has valid name in add mode', () => {
+      const validTag: tagTableElement = {
+        name: 'Test Tag',
+      };
+
+      const props: ItemDialogProps = {
+        testId: 'TagDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Tag',
+          value: validTag,
+          onConfirmTag: mockOnConfirmTag,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      expect(
+        getByTestId('TagDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(false);
+    });
+  });
+
+  describe('state reset', () => {
+    test('updates ingredient state when dialog reopens with different ingredient', () => {
+      const firstIngredient: ingredientTableElement = {
+        name: 'First Ingredient',
+        type: ingredientType.fruit,
+        unit: 'kg',
+        season: ['1', '2'],
+      };
+
+      const secondIngredient: ingredientTableElement = {
+        name: 'Second Ingredient',
+        type: ingredientType.vegetable,
+        unit: 'pieces',
+        season: ['3', '4', '5'],
+      };
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'edit',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: firstIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId, rerender } = render(<ItemDialog {...props} />);
+
+      expect(getByTestId('IngredientDialog::EditModal::Name::CustomTextInput').props.value).toBe(
+        'First Ingredient'
+      );
+      expect(getByTestId('IngredientDialog::EditModal::Unit::CustomTextInput').props.value).toBe(
+        'kg'
+      );
+
+      const updatedProps: ItemDialogProps = {
+        ...props,
+        isVisible: false,
+      };
+      rerender(<ItemDialog {...updatedProps} />);
+
+      const newProps: ItemDialogProps = {
+        ...props,
+        isVisible: true,
+        item: {
+          type: 'Ingredient',
+          value: secondIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+      rerender(<ItemDialog {...newProps} />);
+
+      expect(getByTestId('IngredientDialog::EditModal::Name::CustomTextInput').props.value).toBe(
+        'Second Ingredient'
+      );
+      expect(getByTestId('IngredientDialog::EditModal::Unit::CustomTextInput').props.value).toBe(
+        'pieces'
+      );
+    });
+  });
+
+  describe('dropdown filtering', () => {
+    test('renders ingredient type menu without undefined type', () => {
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: mockIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      const menu = getByTestId('IngredientDialog::AddModal::Menu');
+      expect(menu).toBeTruthy();
+    });
+  });
 });

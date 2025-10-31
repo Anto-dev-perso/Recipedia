@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { ItemDialogProps } from '@components/dialogs/ItemDialog';
+import { ingredientType } from '@customTypes/DatabaseElementTypes';
 
 export function itemDialogMock({ item, mode, onClose, testId, isVisible }: ItemDialogProps) {
   return (
@@ -18,7 +19,13 @@ export function itemDialogMock({ item, mode, onClose, testId, isVisible }: ItemD
             if (item.type === 'Tag') {
               item.onConfirmTag(mode, { ...item.value, name: 'New Value' });
             } else {
-              item.onConfirmIngredient(mode, { ...item.value, name: 'New Value' });
+              item.onConfirmIngredient(mode, {
+                ...item.value,
+                name: 'New Value',
+                type: ingredientType.fruit,
+                unit: 'g',
+                season: ['5', '6', '7', '8', '9', '10'],
+              });
             }
           }
         }}

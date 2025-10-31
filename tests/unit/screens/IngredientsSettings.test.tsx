@@ -121,7 +121,7 @@ describe('IngredientsSettings Screen', () => {
     dialogIsNotOpen(getByTestId);
   });
 
-  test('opens add dialog when add button is pressed and save value', async () => {
+  test('opens add dialog with empty template when add button is pressed', async () => {
     const { getByTestId } = await renderIngredientsSettings();
     fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress'));
 
@@ -129,7 +129,23 @@ describe('IngredientsSettings Screen', () => {
       expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
     });
 
-    dialogIsOpen(sortedDataset[0], 'add', getByTestId);
+    const emptyTemplate: ingredientTableElement = {
+      name: '',
+      unit: '',
+      type: ingredientType.undefined,
+      season: [],
+    };
+
+    dialogIsOpen(emptyTemplate, 'add', getByTestId);
+  });
+
+  test('opens add dialog when add button is pressed and save value', async () => {
+    const { getByTestId } = await renderIngredientsSettings();
+    fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress'));
+
+    await waitFor(() => {
+      expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
+    });
 
     fireEvent.press(getByTestId('IngredientsSettings::ItemDialog::Item::OnConfirm'));
 
