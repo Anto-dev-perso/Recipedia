@@ -1,0 +1,27 @@
+name: "26: Dark Mode Toggle Flow"
+appId: "com.recipedia"
+tags:
+  - settings
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    text: "Parameters"
+    label: "Action - Navigate to Parameters screen"
+
+- runFlow:
+    file: "../../asserts/parameters/en/assertParametersScreen.yaml"
+    label: "Assert - Verify Parameters screen displays correctly"
+
+- tapOn:
+    id: "Parameters::Section::Appearance::DarkMode::Switch"
+    label: "Action - Toggle dark mode ON"
+
+- tapOn:
+    id: "Parameters::Section::Appearance::DarkMode::Switch"
+    label: "Cleanup - Toggle dark mode OFF to restore state"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to Home screen"

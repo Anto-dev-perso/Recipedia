@@ -1,0 +1,32 @@
+name: "35: Tag Edge Cases Flow"
+appId: "com.recipedia"
+tags:
+  - database
+  - tags-db
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Action - Navigate to Tags Settings"
+
+- runFlow:
+    file: "../../flows/parameters/tags/cancelAddEmptyTag.yaml"
+    label: "Action - Test canceling add without name"
+
+- runFlow:
+    file: "../../flows/parameters/tags/cancelAddTagWithName.yaml"
+    label: "Action - Test canceling add after entering name"
+
+- runFlow:
+    file: "../../flows/parameters/tags/cancelEditTag.yaml"
+    label: "Action - Test canceling edit operation"
+
+- runFlow:
+    file: "../../flows/parameters/tags/cancelDeleteTag.yaml"
+    label: "Action - Test canceling delete operation"
+
+- runFlow:
+    file: "../../flows/parameters/tags/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

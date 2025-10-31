@@ -24,7 +24,7 @@
     "test:unit:watch": "jest --watchAll --silent --config jest.config.js",
     "test:unit:coverage": "jest --silent --coverage  --reporters=jest-junit --config jest.config.js",
     "test:unit:fail-only": "jest --silent --onlyFailures --config jest.config.js",
-    "test:e2e:android": "maestro test --debug-output=maestro_logs  --format junit tests/e2e/*.yaml",
+    "test:e2e:android": "maestro test --debug-output=maestro_logs --format junit tests/e2e/",
     "test:e2e:ios": "echo 'TODO: iOS E2E tests not implemented'",
     "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix",

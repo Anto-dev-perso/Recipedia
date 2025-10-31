@@ -1,0 +1,38 @@
+name: "7: Search Direct Click Flow"
+appId: "com.recipedia"
+tags:
+  - search
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Action - Focus on search bar"
+
+- hideKeyboard:
+    label: "Action - Dismiss keyboard"
+
+- tapOn:
+    text: "Lentil Curry"
+    label: "Action - Click directly on Lentil Curry from dropdown"
+
+- runFlow:
+    file: "../../asserts/search/en/searchScreenFilteredOnLentilCury.yaml"
+    label: "Assert - Verify Search screen shows filtered results for Lentil Curry"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Action - Tap clear icon to remove search filter"
+
+- runFlow:
+    file: "../../asserts/search/en/assertSearchScreen.yaml"
+    label: "Assert - Verify all recipe cards are visible again"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Navigate back to Home screen"

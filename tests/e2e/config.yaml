@@ -1,0 +1,77 @@
+# Include all flows from subdirectories
+flows:
+  - cases/**
+
+
+executionOrder:
+  flowsOrder:
+    # App Initialization
+    - "1: Onboarding Tutorial Flow"
+    - "2: Bottom Tabs Navigation Flow"
+    - "3: FAB Menu Toggle Flow"
+
+    # Search & Discovery
+    - "4: Search Bar Open/Close Flow"
+    - "5: Search Scroll Independence Flow"
+    - "6: Search Multiple Results Flow"
+    - "7: Search Direct Click Flow"
+    - "8: Search Backspace Correction Flow"
+    - "9: Search Filter Removal Flow"
+    - "10: Filter Page Toggle Flow"
+    - "11: Single Filter Application Flow"
+    - "12: Multiple Filters Application Flow"
+    - "13: Filters With Text Search Flow"
+
+    # Recipe Viewing
+    - "14: Recipe Read-Only From Search Flow"
+    - "15: Recipe Read-Only From Home Flow"
+    - "16: Recipe Edit From Search Flow"
+    - "17: Recipe Edit From Home Flow"
+    - "18: Recipe Quantity Scaling Flow"
+
+    # Recipe Creation
+    - "19: Manual Recipe Creation Complete Flow"
+    - "20: Manual Recipe Creation Cancel Flow"
+    - "21: Manual Recipe Quantity Scaling Flow"
+    - "22: Recipe Validation All Fields Flow"
+
+    # Shopping List
+    - "23: Add Single Recipe To Shopping Flow"
+    - "24: Add Multiple Recipes To Shopping Flow"
+    - "25: Delete Recipe From Shopping Flow"
+
+    # Settings
+    - "26: Dark Mode Toggle Flow"
+    - "27: Language Switch Flow"
+    - "28: Season Filter Toggle Flow"
+    - "29: Season Filter Edge Cases Flow"
+    - "30: Default Persons Setting Flow"
+
+    # Tag Database
+    - "31: Add New Tag Flow"
+    - "32: Edit Existing Tag Flow"
+    - "33: Delete Tag Flow"
+    - "34: Add Tag And Use In Recipe Flow"
+    - "35: Tag Edge Cases Flow"
+
+    # Ingredient Database
+    - "36: Add New Ingredient Flow"
+    - "37: Delete Ingredient Flow"
+    - "38: Edit Existing Ingredient Flow"
+    - "39: Add Ingredient And Use In Recipe Flow"
+    - "40: Ingredient Edge Cases Flow"
+
+    # Duplicates
+    - "41: Duplicate Tag Unique Detection Flow"
+    - "42: Duplicate Tag Fuzzy Detection Flow"
+    - "43: Duplicate Ingredient Unique Detection Flow"
+    - "44: Duplicate Ingredient Fuzzy Detection Flow"
+    - "45: Duplicate Recipe Fuzzy Detection Flow"
+    - "46: Duplicate Recipe Boundaries Flow"
+    - "47: Duplicate Recipe Confirm Flow"
+
+    # OCR
+    - "48: OCR HelloFresh Gallery Flow"
+    - "49: OCR Quitoque V1 Gallery Flow"
+    - "50: OCR Quitoque V2 French Flow"
+    - "51: OCR Quitoque V3 Camera Flow"

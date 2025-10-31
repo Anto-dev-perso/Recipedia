@@ -1,0 +1,77 @@
+name: "20: Manual Recipe Creation Cancel Flow"
+appId: "com.recipedia"
+tags:
+  - recipe-create
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/openAddManually.yaml"
+    label: "Action - Open manual recipe adding screen"
+
+- runFlow:
+    file: "../../flows/recipe/adding/en/addRecipeImage.yaml"
+    label: "Action - Fill image of recipe"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitle.yaml"
+    label: "Action - Add title"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescription.yaml"
+    label: "Action - Add description"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTag.yaml"
+    label: "Action - Add tag"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPerson.yaml"
+    label: "Action - Add persons"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredient.yaml"
+    label: "Action - Add ingredient"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredientTime.yaml"
+    label: "Action - Add time"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddFull.yaml"
+    label: "Action - Add preparation"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Cancel recipe adding"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Collapse FAB menu"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Verification - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Verification - Focus on search bar"
+
+- inputText:
+    text: "Title"
+    label: "Verification - Search for cancelled recipe"
+
+- pressKey: enter
+
+- assertNotVisible:
+    text: "Title, Japanese, Prep. 56789 min, 2 p."
+    label: "Assert - Verify recipe should not exist"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Cleanup - Tap clear icon to remove search filter"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to home screen"

@@ -1,0 +1,61 @@
+name: "17: Recipe Edit From Home Flow"
+appId: "com.recipedia"
+tags:
+  - recipe-view
+env:
+  recipeName: "Sushi Rolls"
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Action - Navigate to Home screen"
+
+- runFlow:
+    file: "../../flows/home/swipelToRecipeAndOpenIt.yaml"
+    env:
+      recipeName: ${recipeName}
+    label: "Action - Swipe Home screen until recipe is found"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/sushiRolls.yaml"
+    label: "Assert - Verify Sushi Rolls recipe is displayed correctly"
+
+- tapOn:
+    id: "RecipeEdit::RoundButton"
+    waitToSettleTimeoutMs: 0
+    retryTapIfNoChange: false
+    label: "Action - Tap on the Edit button"
+
+- runFlow:
+    file: "../../asserts/recipe/edit/sushiRolls.yaml"
+    label: "Assert - Verify Sushi Rolls edit screen is displayed correctly"
+
+- runFlow:
+    file: "../../flows/recipe/editing/removeNutrition.yaml"
+    label: "Action - Remove nutrition table"
+
+- runFlow:
+    file: "../../asserts/recipe/common/nutritionEmptyEdit.yaml"
+    label: "Assert - Verify nutrition section is now empty with add button"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the modifications"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/sushiRollsEmpty.yaml"
+    label: "Assert - Verify modified Sushi Rolls recipe without nutrition is displayed correctly"
+
+- runFlow:
+    file: "../../flows/recipe/editing/fillNutritionBackSushi.yaml"
+    label: "Cleanup - Remove nutrition table"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Cleanup - Back to the Home Screen"
+
+- runFlow:
+    file: "../../flows/home/swipeBackToFirstCard.yaml"
+    label: "Cleanup - Replace the cards to theirs original position"

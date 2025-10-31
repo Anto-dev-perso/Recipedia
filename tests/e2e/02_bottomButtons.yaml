@@ -1,8 +1,0 @@
-appId: "com.recipedia"
-name: "02: Check that home right buttons are expanding"
----
-- launchApp
-
-- runFlow:
-    file: "cases/bottomButtons/expandAndCollapse.yaml"
-    label: "Test FAB menu expand and collapse"

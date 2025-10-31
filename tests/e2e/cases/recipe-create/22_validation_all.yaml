@@ -1,0 +1,227 @@
+name: "22: Recipe Validation All Fields Flow"
+appId: "com.recipedia"
+tags:
+  - recipe-create
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/openAddManually.yaml"
+    label: "Action - Open manual recipe adding screen"
+
+- runFlow:
+    file: "../../asserts/recipe/edit/recipeEmpty.yaml"
+    label: "Assert - Verify recipe is empty"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddEmpty.yaml"
+    label: "Action - Try to validate empty recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation"
+    label: "Assert - Verify validation error for all missing elements"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton"
+    direction: DOWN
+    speed: 99
+    centerElement: true
+    label: "Action - Scroll to nutrition section"
+
+- tapOn:
+    id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton"
+    label: "Action - Tap add nutrition button"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddEmpty.yaml"
+    label: "Action - Try to validate with incomplete nutrition"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- complete nutrition information"
+    label: "Assert - Verify validation error includes nutrition"
+
+- runFlow:
+    file: "../../flows/recipe/editing/addPartialNutrition.yaml"
+    label: "Action - Add partial nutrition data"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddEmpty.yaml"
+    label: "Action - Try to validate with incomplete nutrition"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- complete nutrition information"
+    label: "Assert - Verify validation error includes nutrition"
+
+- runFlow:
+    file: "../../flows/recipe/editing/completeSaturatedFat.yaml"
+    label: "Action - Fill saturated fat field"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddEmpty.yaml"
+    label: "Action - Try to validate again"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- complete nutrition information"
+    label: "Assert - Verify validation error still includes nutrition (missing portion weight)"
+
+- runFlow:
+    file: "../../flows/recipe/editing/completePortionWeight.yaml"
+    label: "Action - Fill portion weight to complete nutrition"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddEmpty.yaml"
+    label: "Action - Try to validate with complete nutrition"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation"
+    label: "Assert - Verify validation error NO LONGER includes nutrition"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    centerElement: true
+    speed: 99
+    label: "Action - Scroll back to top"
+
+- runFlow:
+    file: "../../flows/recipe/adding/en/addRecipeImage.yaml"
+    label: "Action - Add only image"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation"
+    label: "Assert - Verify validation error for missing elements"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitle.yaml"
+    label: "Action - Add only image and title"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
+    label: "Assert - Verify validation error for missing elements"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescription.yaml"
+    label: "Action - Add description"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
+    label: "Assert - Verify validation error (same as title only)"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTag.yaml"
+    label: "Action - Add tag"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
+    label: "Assert - Verify validation error (same as title only)"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPerson.yaml"
+    label: "Action - Add persons"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
+    label: "Assert - Verify validation error for missing ingredients and preparation"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredient.yaml"
+    label: "Action - Add ingredient"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
+    env:
+      MISSING_ELEMENTS: "\n\t- names for all ingredients\n\t- some instructions for the preparation"
+    label: "Assert - Verify validation error for missing name on ingredient and preparation"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/fixIngredientName.yaml"
+    label: "Action - Validate the ingredient name"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationErrorSingle.yaml"
+    env:
+      MISSING_ELEMENT: "some instructions for the preparation"
+    label: "Assert - Verify validation error for missing preparation only"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredientTime.yaml"
+    label: "Action - Add time"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeValidationErrorSingle.yaml"
+    env:
+      MISSING_ELEMENT: "some instructions for the preparation"
+    label: "Assert - Verify validation error (same as without time)"
+
+- runFlow:
+    file: "../../flows/recipe/adding/manual/en/tryAddFull.yaml"
+    label: "Action - Complete the recipe"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: "Title"
+    label: "Assert - Verify recipe added successfully"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Collapse FAB menu"

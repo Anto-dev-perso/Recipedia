@@ -1,0 +1,69 @@
+name: "32: Edit Existing Tag Flow"
+appId: "com.recipedia"
+tags:
+  - database
+  - tags-db
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- runFlow:
+    file: "../../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Action - Navigate to Tags Settings"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::6::TagName"
+    direction: DOWN
+    speed: 80
+    label: "Action - Scroll to Italian tag"
+
+- assertVisible:
+    id: "TagsSettings::6::TagName"
+    text: "Italian"
+    label: "Assert - Verify Italian tag exists"
+
+- tapOn:
+    id: "TagsSettings::6::EditButton"
+    label: "Action - Open edit dialog for Italian tag"
+
+- runFlow:
+    file: "../../asserts/parameters/tags/en/assertEditModalOpen.yaml"
+    label: "Assert - Verify Edit tag modal displayed"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    label: "Action - Focus on tag name input"
+
+- inputText:
+    text: " Cuisine"
+    label: "Action - Append Cuisine to tag name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
+    label: "Action - Save edited tag"
+
+- assertVisible:
+    id: "TagsSettings::6::TagName"
+    text: "Italian Cuisine"
+    label: "Assert - Verify tag renamed to Italian Cuisine"
+
+- assertNotVisible:
+    text: "Italian"
+    label: "Assert - Verify old tag name no longer exists"
+
+- runFlow:
+    file: "../../flows/parameters/tags/returnToHome.yaml"
+    label: "Action - Return to Home screen"
+
+- runFlow:
+    file: "../../flows/parameters/tags/verifyTagRenameInSearch.yaml"
+    label: "Verification - Verify tag renamed in Search and recipes"
+
+- runFlow:
+    file: "../../flows/parameters/tags/restoreTagName.yaml"
+    label: "Cleanup - Restore tag name to Italian"
+
+- runFlow:
+    file: "../../flows/parameters/tags/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

@@ -28,39 +28,52 @@ framework that uses YAML configuration files to define test flows.
 ### Key Commands
 
 ```bash
-# Run all E2E tests on Android
+# Run all E2E tests on Android (uses config.yaml)
 npm run test:e2e:android
 
 # Build and test in one command
 npm run workflow:build-test:android
 
-# Run specific test suite
-maestro test tests/e2e/01_launchApp.yaml
+# Run specific feature directory
+maestro test tests/e2e/search/
+
+# Run specific test case
+maestro test tests/e2e/search/04_open_close.yaml
+
+# Run tests by tag
+maestro test --include-tags search tests/e2e/
 ```
 
-### Current Test Suites
+### Current Test Organization
 
-1. `1_launchApp.yaml` - App launch and initial screen verification
-2. `2_bottomButtons.yaml` - Bottom navigation tab tests
-3. `3_searchBar.yaml` - Search functionality tests
-4. `4_recipeRendering.yaml` - Recipe display in read-only and edit modes
-5. `5_filters.yaml` - Ingredient and tag filtering
-6. `6_recipeAddingManually.yaml` - Manual recipe creation flows
-7. `7_shopping.yaml` - Shopping list functionality
-8. `8_parametersScreen.yaml` - Settings and language switching
-9. `9_recipeAddingOCR.yaml` - OCR-based recipe creation
+Tests are organized by feature in subdirectories:
+
+- **app-init/** - App launch, onboarding, FAB menu (3 tests)
+- **search/** - Search bar and filters (10 tests)
+- **recipe-view/** - Recipe display and viewing (5 tests)
+- **recipe-create/** - Recipe creation manual and OCR (5 tests)
+- **shopping/** - Shopping list functionality (3 tests)
+- **settings/** - App parameters and preferences (5 tests)
+- **tags-db/** - Tag database management (5 tests)
+- **ingredients-db/** - Ingredient database management (5 tests)
+- **edge-cases/** - Duplicate detection and validation (7 tests)
+
+Test execution order is controlled by `config.yaml` which orchestrates all 48
+test cases.
 
 ## Architecture
 
 The E2E test architecture follows a hierarchical structure that promotes
-reusability and maintainability.
+reusability and maintainability following Maestro best practices.
 
 ```
 tests/e2e/
-├── {number}_{name}.yaml          # Top-level test suites
-├── cases/                         # Complete test scenarios
+├── config.yaml                    # Test orchestration and execution order
+├── {feature}/                     # Feature-organized test cases
+│   └── {test_name}.yaml          # Individual test cases (one per test)
+├── cases/                         # Reusable test scenarios
 │   ├── {feature}/                # Feature-specific test cases
-│   │   └── {action}.yaml         # Individual test case
+│   │   └── {action}.yaml         # Individual test case logic
 ├── flows/                         # Reusable action sequences
 │   ├── {feature}/                # Feature-specific flows
 │   │   └── {action}.yaml         # Reusable flow
@@ -74,32 +87,69 @@ tests/e2e/
 
 ### Design Principles
 
-1. **Separation of Concerns**: Test suites orchestrate cases, cases use flows,
-   flows use asserts
-2. **Reusability**: Common actions and assertions are extracted into separate
+1. **Isolated Test Cases**: Each test case runs independently with its own app
+   launch
+2. **Feature Organization**: Tests grouped by feature in subdirectories
+3. **Configured Execution**: `config.yaml` controls test order and discovery
+4. **Separation of Concerns**: Test cases orchestrate reusable cases, flows, and
+   assertions
+5. **Reusability**: Common actions and assertions are extracted into separate
    files
-3. **Language Independence**: Language-specific assertions are separated
-4. **Platform Awareness**: Android and iOS implementations are conditionally
+6. **Language Independence**: Language-specific assertions are separated
+7. **Platform Awareness**: Android and iOS implementations are conditionally
    executed
+8. **Tag-Based Filtering**: Tests tagged by feature for selective execution
 
 ## Directory Structure
 
-### Test Suites (Root Level)
+### config.yaml (Root Level)
 
-Top-level numbered YAML files that define complete test suites. Each suite tests
-a specific feature area.
+The `config.yaml` file orchestrates test execution, defining which tests run and
+in what order.
 
-**Example**: `4_recipeRendering.yaml`
+**Example**: `config.yaml`
 
 ```yaml
-appId: 'com.recipedia'
-name: 'Recipe screen test suite'
+appId: com.recipedia.app
+
+flows:
+  # App Initialization
+  - app-init/01_onboarding.yaml
+  - app-init/02_bottom_tabs.yaml
+
+  # Search & Discovery
+  - search/04_open_close.yaml
+  - search/05_scroll_independence.yaml
+
+  # Additional test groups...
+
+excludeFlows:
+  - flows/**
+  - asserts/**
+  - cases/**
+```
+
+### Test Case Files (Feature Directories)
+
+Individual test cases in feature-organized subdirectories. Each test case:
+
+- Starts with `launchApp` for isolation
+- Has feature tags for filtering
+- Uses consistent label patterns
+
+**Example**: `search/open_close.yaml`
+
+```yaml
+appId: com.recipedia.app
+tags:
+  - search
 ---
-- launchApp
+- launchApp:
+    label: 'Search::OpenClose::Launch'
 
 - runFlow:
-    file: 'cases/recipeRendering/readOnlyFromSearch.yaml'
-    label: 'Test recipe read-only view from Search screen'
+    file: '../cases/searchBar/openAndClose.yaml'
+    label: 'Search::OpenClose::TestSearchBarDropdown'
 ```
 
 ### Cases Directory
@@ -335,32 +385,39 @@ appId: 'com.recipedia'
 
 ## Adding New Tests
 
-### Adding a New Test Suite
+### Adding a New Test Case
 
-1. **Create the test suite file** at root level with next number
-2. **Define test metadata**
-3. **Add launchApp** to reset state
-4. **Add test cases** using runFlow
+1. **Choose appropriate feature directory** or create a new one
+2. **Create test case file** with descriptive name: `{test_name}.yaml`
+3. **Add to config.yaml** in appropriate position
+4. **Structure the test**: LaunchApp → RunFlow → Tags
+5. **Use consistent label pattern**: `{Feature}::{TestName}::{Action}`
 
-**Example**: Creating `10_favorites.yaml`
+**Example**: Creating a new favorites test in `favorites/add_to_favorites.yaml`
 
 ```yaml
-appId: 'com.recipedia'
-name: 'Favorites functionality test suite'
+appId: com.recipedia.app
+tags:
+  - favorites
 ---
-- launchApp
+- launchApp:
+    label: 'Favorites::AddToFavorites::Launch'
 
 - runFlow:
-    file: 'cases/favorites/addToFavorites.yaml'
-    label: 'Test adding recipe to favorites'
+    file: '../cases/favorites/addToFavorites.yaml'
+    label: 'Favorites::AddToFavorites::Execute'
+```
 
-- runFlow:
-    file: 'cases/favorites/removeFromFavorites.yaml'
-    label: 'Test removing recipe from favorites'
+**Then add to config.yaml**:
 
-- runFlow:
-    file: 'cases/favorites/viewFavoritesList.yaml'
-    label: 'Test viewing favorites list'
+```yaml
+flows:
+  # ... existing tests ...
+
+  # Favorites
+  - favorites/add_to_favorites.yaml
+  - favorites/remove_from_favorites.yaml
+  - favorites/view_list.yaml
 ```
 
 ### Adding a New Test Case
@@ -1196,5 +1253,12 @@ file: "../../flows/feature/flow.yaml"  # Relative from current location
 
 ---
 
-**Last Updated**: 2025-01-12 **Maintainer**: Development Team **Questions**:
-Refer to CLAUDE.md for additional project conventions
+**Last Updated**: 2025-10-28
+
+**Key Changes**: Restructured test suite from 12 numbered files to
+feature-organized subdirectories with `config.yaml` orchestration, following
+Maestro best practices for isolated test execution and clear failure reporting.
+
+**Maintainer**: Development Team
+
+**Questions**: Refer to CLAUDE.md for additional project conventions
