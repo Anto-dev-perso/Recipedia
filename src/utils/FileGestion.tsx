@@ -177,21 +177,18 @@ export class FileGestion {
   }
 
   /**
-   * Saves a recipe image from cache to permanent storage
+   * Determines if an image URI points to a temporary location
    *
-   * Takes a temporary image file and saves it to the main app directory with
-   * a standardized naming convention. The recipe name is sanitized and used
-   * as the filename with the original file extension preserved.
+   * Returns true when the URI does not reside inside the app's permanent storage
+   * directory (documents/Recipedia). Useful to know whether an image still lives
+   * in a cache (ImageManipulator, camera, etc.) and needs to be persisted.
    *
-   * @param cacheFileUri - URI of the temporary image file
-   * @param recName - Recipe name to use for the filename
-   * @returns Promise resolving to the saved filename, or empty string if failed
+   * @param uri - Image URI to check
+   * @returns True if the URI is temporary (cache/manipulator/camera), false if stored permanently
    *
    * @example
    * ```typescript
-   * const tempImageUri = "file:///cache/temp-image.jpg";
-   * const imageName = await fileManager.saveRecipeImage(tempImageUri, "Chocolate Cake");
-   * // Returns: "chocolate_cake.jpg"
+   * const isTemp = fileManager.isTemporaryImageUri('file:///cache/ImageManipulator/123.jpg');
    * ```
    */
   public isTemporaryImageUri(uri: string): boolean {
@@ -208,6 +205,24 @@ export class FileGestion {
     return isTemporary;
   }
 
+  /**
+   * Saves a recipe image from cache to permanent storage
+   *
+   * Takes a temporary image file and saves it to the main app directory with
+   * a standardized naming convention. The recipe name is sanitized and used
+   * as the filename with the original file extension preserved.
+   *
+   * @param cacheFileUri - URI of the temporary image file
+   * @param recName - Recipe name to use for the filename
+   * @returns Promise resolving to the saved image URI, or empty string if failed
+   *
+   * @example
+   * ```typescript
+   * const tempImageUri = "file:///cache/temp-image.jpg";
+   * const savedUri = await fileManager.saveRecipeImage(tempImageUri, "Chocolate Cake");
+   * // Returns something like: "file:///documents/Recipedia/chocolate_cake.jpg"
+   * ```
+   */
   public async saveRecipeImage(cacheFileUri: string, recName: string): Promise<string> {
     filesystemLogger.info('Starting image save operation', {
       sourceUri: cacheFileUri,
