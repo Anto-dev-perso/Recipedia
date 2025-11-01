@@ -494,7 +494,21 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         ing => ing.name.toLowerCase() === newName.toLowerCase()
       );
       if (exactMatch) {
-        updateIngredient(exactMatch);
+        const isDuplicate = recipeIngredients.some(
+          (existing, idx) =>
+            idx !== oldIngredientId &&
+            (existing.name.toLowerCase() === exactMatch.name.toLowerCase() ||
+              (existing.id && exactMatch.id && existing.id === exactMatch.id))
+        );
+
+        if (!isDuplicate) {
+          updateIngredient(exactMatch);
+        } else {
+          validationLogger.debug('Duplicate ingredient detected - not adding', {
+            ingredientName: exactMatch.name,
+          });
+          setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
+        }
         return;
       }
 
@@ -519,6 +533,11 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             ingredientType: chosenIngredient.type,
           });
           updateIngredient(chosenIngredient);
+        } else {
+          validationLogger.debug('Duplicate ingredient detected - not adding', {
+            ingredientName: chosenIngredient.name,
+          });
+          setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
         }
       };
 

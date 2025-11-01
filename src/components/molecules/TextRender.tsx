@@ -138,7 +138,17 @@ export function TextRender(props: TextRenderProps) {
     const [unitAndQuantity, ingName] = item.split(textSeparator);
     const [quantity, unit] = unitAndQuantity.split(unitySeparator);
 
-    const ingredientsList = ingredients.map(ingredient => ingredient.name).sort();
+    const usedIngredientNames = props.text
+      .map(textItem => {
+        const [, name] = (textItem as string).split(textSeparator);
+        return name;
+      })
+      .filter((name, idx) => idx !== index && name && name.trim().length > 0);
+
+    const ingredientsList = ingredients
+      .map(ingredient => ingredient.name)
+      .filter(dbIngredient => !usedIngredientNames.includes(dbIngredient))
+      .sort();
 
     return (
       <View key={index}>
