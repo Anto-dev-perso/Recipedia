@@ -1,3 +1,9 @@
+## [0.18.2](https://github.com/Anto-dev-perso/Recipedia/compare/v0.18.1...v0.18.2) (2025-11-01)
+
+### Bug Fixes
+
+* **Recipe:** improve duplicate ingredient detection and handling ([f85ac28](https://github.com/Anto-dev-perso/Recipedia/commit/f85ac282c95811553c6d31a06153f851fe4bbd45))
+
 ## [0.18.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.18.0...v0.18.1) (2025-11-01)
 
 ### Bug Fixes
