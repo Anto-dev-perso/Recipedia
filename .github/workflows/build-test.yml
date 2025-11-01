@@ -341,6 +341,10 @@ jobs:
           arch: x86_64
           disable-animations: 'true'
           script: |
+            echo "🔄 Waiting for device..."
+            adb wait-for-device 
+            
+            echo "🚀 Running E2E tests..."
             npm run install:android
             npm run test:e2e:android
 
