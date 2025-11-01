@@ -54,8 +54,8 @@ tags:
     label: "Action - Open type dropdown"
 
 - tapOn:
-    text: "Fruit"
-    label: "Action - Change type from vegetable to fruit"
+    text: "Meat"
+    label: "Action - Change type from vegetable to Meat"
 
 - tapOn:
     id: "IngredientsSettings::ItemDialog::EditModal::Unit::CustomTextInput"

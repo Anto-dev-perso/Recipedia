@@ -15,9 +15,6 @@ appId: "com.recipedia"
     id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
     label: "Focus on ingredient name input field"
 
-- eraseText:
-    label: "Erase existing ingredient name"
-
 - inputText:
     text: "RecipeIngredient"
     label: "Enter new ingredient name"
@@ -37,39 +34,12 @@ appId: "com.recipedia"
     id: "IngredientsSettings::ItemDialog::AddModal::Unit::CustomTextInput"
     label: "Focus on unit input field"
 
-- eraseText:
-    label: "Clear existing unit"
-
 - inputText:
     text: "g"
     label: "Enter unit"
 
 - hideKeyboard:
     label: "Dismiss keyboard"
-
-- tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::5"
-    label: "Unselect may"
-
-- tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::6"
-    label: "Unselect june"
-
-- tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::7"
-    label: "Unselect july"
-
-- tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::8"
-    label: "Unselect august"
-
-- tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::9"
-    label: "Unselect september"
-
-- tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::SeasonalityCalendar::10"
-    label: "Unselect october"
 
 - tapOn:
     id: "IngredientsSettings::ItemDialog::AddModal::ConfirmButton"

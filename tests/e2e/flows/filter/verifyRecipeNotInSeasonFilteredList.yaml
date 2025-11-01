@@ -8,7 +8,6 @@ appId: "com.recipedia"
     text: "E2E Test Recipe"
     label: "E2E Test Recipe is NOT visible when season filter is ON (ingredient has no seasonality)"
 
-
 - assertVisible:
     id: "SearchScreen::TextWhenEmpty"
     text: "No recipes found matching your filters"

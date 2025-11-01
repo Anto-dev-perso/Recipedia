@@ -9,7 +9,12 @@ import {
 
 // Mock components with proper TypeScript types
 export const Button: React.FC<any> = props => (
-  <TouchableOpacity testID={props.testID} onPress={props.onPress} style={props.style}>
+  <TouchableOpacity
+    testID={props.testID}
+    onPress={props.onPress}
+    style={props.style}
+    {...{ disabled: props.disabled }}
+  >
     <RNText>{props.children}</RNText>
   </TouchableOpacity>
 );

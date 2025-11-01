@@ -23,7 +23,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Menu::Button-text"
-    text: "Undefined"
+    text: "Select type"
     label: "Type dropdown menu button is visible"
 
 - assertVisible:

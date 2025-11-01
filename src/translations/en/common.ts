@@ -24,6 +24,9 @@ export default {
   confirmDelete: 'Are you sure you want to delete ',
   interrogationMark: ' ?',
 
+  // Selection prompts
+  selectType: 'Select type',
+
   // Error messages
   errorOccurred: 'An error occurred',
   tryAgain: 'Please try again',
