@@ -350,6 +350,17 @@ jobs:
             npm run install:android
             npm run test:e2e:android
 
+      - name: Prepare Maestro test results
+        if: always()
+        run: |
+          # Preview
+          find . -type f -name '*:*' -print
+          # Remove colons from filenames
+          while IFS= read -r -d '' file; do
+            newname="${file//:/}"   # remove colons; use "${file//:/_}" to replace with underscore
+            mv "$file" "$newname"
+          done < <(find . -type f -name '*:*' -print0)
+
       - name: Upload Maestro test results
         if: always()
         uses: actions/upload-artifact@v5
