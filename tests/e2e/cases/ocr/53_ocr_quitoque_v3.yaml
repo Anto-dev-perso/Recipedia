@@ -1,4 +1,4 @@
-name: "48: OCR HelloFresh Gallery Flow"
+name: "53: OCR Quitoque V3 Camera Flow"
 appId: "com.recipedia"
 tags:
   - recipe-create
@@ -8,25 +8,44 @@ tags:
     label: "Setup - Launch app"
 
 - evalScript: ${output.isDescriptionToOCR = true}
-- evalScript: ${output.isTagsToOCR = true}
-- evalScript: ${output.isPersons = false}
-- evalScript: ${output.isTime = false}
+- evalScript: ${output.isTagsToOCR = false}
+- evalScript: ${output.isTime = true}
 - evalScript: ${output.isNutritionToOCR = false}
 
-- tapOn:
-    id: "ExpandButton::RoundButton"
-    label: "Setup - Expand FAB menu"
+- runFlow:
+    file: "../../flows/recipe/adding/ocr/camera/openOCRCamera.yaml"
+    label: "Setup - Open OCR from camera"
 
 - runFlow:
-    file: "../../flows/recipe/adding/ocr/gallery/addRecipeFromGallery.yaml"
+    file: "../../asserts/recipe/ocr/emptyScreen.yaml"
+    label: "Assert - Verify empty recipe screen"
+
+- runFlow:
+    file: "../../flows/recipe/adding/ocr/camera/addRecipeFromCamera.yaml"
     env:
-      RECIPE_NAME: hellofresh
-    label: "Action - Add recipe from gallery using OCR"
+      RECIPE_NAME: quitoqueV3
+    label: "Action - Add recipe from camera using OCR"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage::Image"
+    direction: UP
+    speed: 80
+    centerElement: true
+    label: "Action - Scroll back to top"
+
+- runFlow:
+    file: "../../asserts/recipe/ocr/curryPoisChiche.yaml"
+    label: "Assert - Verify OCR extracted recipe data"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate the recipe"
 
 - runFlow:
     file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
     env:
-      RECIPE_NAME: "Aiguillettes de poulet façon teriyaki avec des légumes poêlés & du riz basmati"
+      RECIPE_NAME: "CURRY DE POIS CHICHES ET POIREAU AUX ÉPICES CACHEMIRE"
     label: "Assert - Verify recipe added successfully"
 
 - tapOn:
@@ -42,7 +61,7 @@ tags:
     label: "Verification - Focus on search bar"
 
 - inputText:
-    text: "teriyaki"
+    text: "CURRY"
     label: "Verification - Search for new recipe"
 
 - pressKey: enter
@@ -52,7 +71,7 @@ tags:
     label: "Verification - Open newly created recipe"
 
 - runFlow:
-    file: "../../asserts/recipe/readonly/en/aiguillettesTeriyaki.yaml"
+    file: "../../asserts/recipe/readonly/en/curryPoisChiche.yaml"
     label: "Assert - Verify recipe content in read-only mode"
 
 - tapOn:

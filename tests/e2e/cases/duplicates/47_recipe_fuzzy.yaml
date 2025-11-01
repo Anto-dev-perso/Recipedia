@@ -1,4 +1,4 @@
-name: "45: Duplicate Recipe Fuzzy Detection Flow"
+name: "47: Duplicate Recipe Fuzzy Detection Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
