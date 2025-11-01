@@ -745,12 +745,22 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const missingElem = validateRecipeData();
 
     if (missingElem.length == 0) {
-      // @ts-ignore No need to wait for clearCache
-      FileGestion.getInstance().clearCache();
+      recipeLogger.info('Saving edited recipe to database', {
+        recipeTitle,
+      });
 
       await editRecipe(createRecipeFromStates());
       setStackMode(recipeStateType.readOnly);
+
+      recipeLogger.info('Recipe edit completed successfully', {
+        recipeTitle,
+      });
+      // @ts-ignore No need to wait for clearCache
+      FileGestion.getInstance().clearCache();
     } else {
+      recipeLogger.warn('Validation failed, missing elements', {
+        missingElements: missingElem,
+      });
       showValidationErrorDialog(missingElem);
     }
   }
@@ -809,11 +819,6 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
       const addRecipeToDatabase = async () => {
         try {
-          recipeToAdd.image_Source = await FileGestion.getInstance().saveRecipeImage(
-            recipeImage,
-            recipeTitle
-          );
-
           // @ts-ignore No need to wait
           FileGestion.getInstance().clearCache();
 
@@ -829,7 +834,16 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             recipeToAdd.persons = defaultPersons;
           }
 
+          recipeLogger.info('Saving new recipe to database', {
+            recipeTitle,
+          });
+
           await addRecipe(recipeToAdd);
+
+          recipeLogger.info('Recipe add completed successfully', {
+            recipeTitle,
+          });
+
           dialogProp.title = t('addAnyway');
           dialogProp.content = t('addedToDatabase', { recipeName: recipeToAdd.title });
           dialogProp.confirmText = t('understood');
