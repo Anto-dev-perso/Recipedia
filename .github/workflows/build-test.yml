@@ -340,6 +340,7 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
+          profile: pixel_6
           disable-animations: 'true'
           script: |
             echo "🔄 Waiting for device..."
@@ -349,12 +350,18 @@ jobs:
             npm run install:android
             npm run test:e2e:android
 
+      - name: Prepare Maestro test results
+        if: always()
+        run: find . -type f -name '*:*' -exec rename 's/:/_/g' {} +
+
       - name: Upload Maestro test results
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: maestro-test-results
-          path: maestro_logs/.maestro/tests
+          path: |
+            maestro_logs/.maestro/tests/**/*.log
+            maestro_logs/.maestro/tests/**/*.png
           retention-days: 7
 
       - name: E2E tests summary
