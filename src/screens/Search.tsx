@@ -107,7 +107,7 @@ export function Search() {
   // Handle season filter synchronization with global context
   useEffect(() => {
     const seasonFilterKey = listFilter.inSeason;
-    const seasonFilterValue = t(listFilter.inSeason);
+    const seasonFilterValue = listFilter.inSeason;
 
     setFiltersState(prevState => {
       const newState = new Map(prevState);
@@ -126,7 +126,7 @@ export function Search() {
 
       return prevState;
     });
-  }, [seasonFilter, t]);
+  }, [seasonFilter]);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {

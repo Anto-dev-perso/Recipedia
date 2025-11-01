@@ -51,7 +51,7 @@ import React from 'react';
 import { FlatList, ListRenderItemInfo, View } from 'react-native';
 import { Checkbox, Divider, List, useTheme } from 'react-native-paper';
 import { ingredientTableElement } from '@customTypes/DatabaseElementTypes';
-import { FiltersAppliedToDatabase, TListFilter } from '@customTypes/RecipeFiltersTypes';
+import { FiltersAppliedToDatabase, listFilter, TListFilter } from '@customTypes/RecipeFiltersTypes';
 import { useI18n } from '@utils/i18n';
 import { padding } from '@styles/spacing';
 import { selectFilterCategoriesValuesToDisplay } from '@utils/FilterFunctions';
@@ -93,8 +93,7 @@ export function FilterAccordion({
 
   const ingredientSections = selectFilterCategoriesValuesToDisplay(
     tagsList,
-    ingredientsList,
-    t
+    ingredientsList
   ).filter(section => section.data.length > 0);
 
   /**
@@ -165,11 +164,14 @@ export function FilterAccordion({
 
     const renderItems = ({ item, index }: ListRenderItemInfo<string>) => {
       const testId = filterId + `::Item::${index}`;
+      const shouldTranslate = filter === listFilter.prepTime || filter === listFilter.inSeason;
+      const displayText = shouldTranslate ? t(item) : item;
+
       return (
         <View key={item} style={{ width: '50%' }}>
           <List.Item
             testID={testId}
-            title={item}
+            title={displayText}
             titleNumberOfLines={2}
             style={{ paddingHorizontal: padding.verySmall }}
             onPress={() => handlePress(filter, item)}
