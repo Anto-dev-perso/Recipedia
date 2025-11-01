@@ -337,10 +337,15 @@ jobs:
       - name: Setup Android Emulator and run E2E tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: 35
+          api-level: 34
+          target: google_apis
           arch: x86_64
           disable-animations: 'true'
           script: |
+            echo "🔄 Waiting for device..."
+            adb wait-for-device 
+            
+            echo "🚀 Running E2E tests..."
             npm run install:android
             npm run test:e2e:android
 
