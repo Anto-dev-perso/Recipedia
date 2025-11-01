@@ -1745,4 +1745,173 @@ describe('RecipeDatabase', () => {
       });
     });
   });
+
+  describe('Image URI handling', () => {
+    let db: RecipeDatabase = RecipeDatabase.getInstance();
+    const FileGestion = require('@utils/FileGestion');
+    const fileGestionInstance = FileGestion.getInstance();
+
+    beforeEach(async () => {
+      await db.init();
+      jest.clearAllMocks();
+      fileGestionInstance.get_directoryUri.mockReturnValue('file:///documents/Recipedia/');
+    });
+
+    describe('addRecipe', () => {
+      it('saves temporary image to permanent storage when adding recipe', async () => {
+        fileGestionInstance.saveRecipeImage.mockResolvedValue(
+          'file:///documents/Recipedia/test_recipe.jpg'
+        );
+
+        const recipeWithTempImage = {
+          ...testRecipes[0],
+          id: undefined,
+          image_Source: 'file:///cache/ImageManipulator/temp-image.jpg',
+        };
+
+        await db.addRecipe(recipeWithTempImage);
+
+        expect(fileGestionInstance.saveRecipeImage).toHaveBeenCalledWith(
+          'file:///cache/ImageManipulator/temp-image.jpg',
+          testRecipes[0].title
+        );
+      });
+
+      it('does not save permanent URI image when adding recipe', async () => {
+        const initialCallCount = fileGestionInstance.saveRecipeImage.mock.calls.length;
+
+        const recipeWithPermanentImage = {
+          ...testRecipes[0],
+          id: undefined,
+          image_Source: 'file:///documents/Recipedia/existing_image.jpg',
+        };
+
+        await db.addRecipe(recipeWithPermanentImage);
+
+        const finalCallCount = fileGestionInstance.saveRecipeImage.mock.calls.length;
+        expect(finalCallCount).toBe(initialCallCount);
+      });
+    });
+
+    describe('editRecipe', () => {
+      it('saves temporary image to permanent storage when editing recipe', async () => {
+        await db.addRecipe({ ...testRecipes[0], id: undefined });
+        const addedRecipe = db.get_recipes()[0];
+
+        jest.clearAllMocks();
+        fileGestionInstance.saveRecipeImage.mockResolvedValue(
+          'file:///documents/Recipedia/edited_recipe.jpg'
+        );
+
+        const editedRecipe = {
+          ...addedRecipe,
+          image_Source: 'file:///cache/ImageManipulator/new-image.jpg',
+        };
+
+        await db.editRecipe(editedRecipe);
+
+        expect(fileGestionInstance.saveRecipeImage).toHaveBeenCalledWith(
+          'file:///cache/ImageManipulator/new-image.jpg',
+          editedRecipe.title
+        );
+      });
+
+      it('does not save permanent URI image when editing recipe', async () => {
+        await db.addRecipe({ ...testRecipes[0], id: undefined });
+        const addedRecipe = db.get_recipes()[0];
+
+        jest.clearAllMocks();
+        const initialCallCount = fileGestionInstance.saveRecipeImage.mock.calls.length;
+
+        const editedRecipe = {
+          ...addedRecipe,
+          description: 'Updated description',
+        };
+
+        await db.editRecipe(editedRecipe);
+
+        const finalCallCount = fileGestionInstance.saveRecipeImage.mock.calls.length;
+        expect(finalCallCount).toBe(initialCallCount);
+      });
+    });
+
+    describe('Recipe search by image', () => {
+      beforeEach(async () => {
+        jest.clearAllMocks();
+        fileGestionInstance.saveRecipeImage.mockReset();
+        fileGestionInstance.saveRecipeImage.mockResolvedValue('/mock/directory/saved_image.jpg');
+        await db.addMultipleIngredients(testIngredients);
+        await db.addMultipleTags(testTags);
+      });
+
+      afterEach(async () => {
+        await db.reset();
+      });
+
+      it('deletes recipe correctly when image URI is provided as full path', async () => {
+        const recipeToAdd = {
+          ...testRecipes[0],
+          id: undefined,
+        };
+        await db.addRecipe(recipeToAdd);
+
+        const addedRecipe = db.get_recipes()[0];
+        expect(addedRecipe).toBeDefined();
+        expect(addedRecipe.image_Source).toContain('file:///');
+
+        const initialRecipeCount = db.get_recipes().length;
+        const deleteSuccess = await db.deleteRecipe(addedRecipe);
+
+        expect(deleteSuccess).toBe(true);
+        expect(db.get_recipes().length).toBe(initialRecipeCount - 1);
+      });
+
+      it('deletes recipe correctly when searching with filename instead of full URI', async () => {
+        const recipeToAdd = {
+          ...testRecipes[0],
+          id: undefined,
+        };
+        await db.addRecipe(recipeToAdd);
+
+        const addedRecipe = db.get_recipes()[0];
+        const initialRecipeCount = db.get_recipes().length;
+
+        const recipeWithFilename = {
+          ...addedRecipe,
+          image_Source: testRecipes[0].image_Source,
+        };
+
+        const deleteSuccess = await db.deleteRecipe(recipeWithFilename);
+
+        expect(deleteSuccess).toBe(true);
+        expect(db.get_recipes().length).toBe(initialRecipeCount - 1);
+      });
+
+      it('correctly handles image search when recipe has full URI in memory', async () => {
+        fileGestionInstance.saveRecipeImage
+          .mockResolvedValueOnce('file:///documents/Recipedia/recipe1.jpg')
+          .mockResolvedValueOnce('file:///documents/Recipedia/recipe2.jpg');
+
+        const recipe1 = { ...testRecipes[0], id: undefined };
+        const recipe2 = { ...testRecipes[1], id: undefined };
+
+        await db.addRecipe(recipe1);
+        await db.addRecipe(recipe2);
+
+        const recipes = db.get_recipes();
+        expect(recipes.length).toBe(2);
+        expect(recipes[0].image_Source).toContain('file:///');
+        expect(recipes[1].image_Source).toContain('file:///');
+
+        const recipeToDelete = recipes[0];
+        const deleteSuccess = await db.deleteRecipe(recipeToDelete);
+
+        expect(deleteSuccess).toBe(true);
+        const remainingRecipes = db.get_recipes();
+        expect(remainingRecipes.length).toBe(1);
+        expect(remainingRecipes[0].title).toBe(recipe2.title);
+        expect(remainingRecipes[0].image_Source).not.toBe(recipeToDelete.image_Source);
+      });
+    });
+  });
 });
