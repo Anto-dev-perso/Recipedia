@@ -1,0 +1,88 @@
+name: "52: OCR Quitoque V2 French Flow"
+appId: "com.recipedia"
+tags:
+  - recipe-create
+  - ocr
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- evalScript: ${output.isDescriptionToOCR = true}
+- evalScript: ${output.isTagsToOCR = false}
+- evalScript: ${output.isPersons = true}
+- evalScript: ${output.isTime = false}
+- evalScript: ${output.isNutritionToOCR = true}
+
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Setup - Navigate to Parameters screen"
+
+- runFlow:
+    file: "../../flows/parameters/language/switchToFrench.yaml"
+    label: "Setup - Switch to French for OCR"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Setup - Navigate to Home screen"
+
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Setup - Expand FAB menu"
+
+- runFlow:
+    file: "../../flows/recipe/adding/ocr/gallery/addRecipeFromGallery.yaml"
+    env:
+      RECIPE_NAME: quitoqueV2
+    label: "Action - Add recipe from gallery using OCR"
+
+- runFlow:
+    file: "../../asserts/alerts/fr/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
+    label: "Assert - Verify recipe added successfully (French)"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Collapse FAB menu"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Verification - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Verification - Focus on search bar"
+
+- inputText:
+    text: "SATAY"
+    label: "Verification - Search for new recipe"
+
+- pressKey: enter
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0"
+    label: "Verification - Open newly created recipe"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/fr/pouletSatay.yaml"
+    label: "Assert - Verify recipe content in read-only mode (French UI)"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Cleanup - Return to search results"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Cleanup - Clear search filter"
+
+- tapOn:
+    id: "BottomTabs::Parameters"
+    label: "Cleanup - Navigate to Parameters screen"
+
+- runFlow:
+    file: "../../flows/parameters/language/switchToEnglish.yaml"
+    label: "Cleanup - Switch back to English"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to home screen"

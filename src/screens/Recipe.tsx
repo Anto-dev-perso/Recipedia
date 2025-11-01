@@ -383,6 +383,11 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       return;
     }
 
+    const addToStateIfNotDuplicate = (tag: tagTableElement) => {
+      if (!recipeTags.some(existing => existing.name.toLowerCase() === tag.name.toLowerCase())) {
+        setRecipeTags([...recipeTags, tag]);
+      }
+    };
     // Show similarity dialog for new tags or similar matches
     setSimilarityDialog({
       isVisible: true,
@@ -390,12 +395,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         type: 'Tag',
         newItemName: newTag,
         similarItem: similarTags.length > 0 ? similarTags[0] : undefined,
-        onConfirm: (tag: tagTableElement) => {
-          setRecipeTags([...recipeTags, tag]);
-        },
-        onUseExisting: (tag: tagTableElement) => {
-          setRecipeTags([...recipeTags, tag]);
-        },
+        onConfirm: addToStateIfNotDuplicate,
+        onUseExisting: addToStateIfNotDuplicate,
       },
     });
   }
@@ -493,7 +494,21 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         ing => ing.name.toLowerCase() === newName.toLowerCase()
       );
       if (exactMatch) {
-        updateIngredient(exactMatch);
+        const isDuplicate = recipeIngredients.some(
+          (existing, idx) =>
+            idx !== oldIngredientId &&
+            (existing.name.toLowerCase() === exactMatch.name.toLowerCase() ||
+              (existing.id && exactMatch.id && existing.id === exactMatch.id))
+        );
+
+        if (!isDuplicate) {
+          updateIngredient(exactMatch);
+        } else {
+          validationLogger.debug('Duplicate ingredient detected - not adding', {
+            ingredientName: exactMatch.name,
+          });
+          setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
+        }
         return;
       }
 
@@ -503,11 +518,27 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       };
 
       const onCloseCallback = (chosenIngredient: ingredientTableElement) => {
-        validationLogger.debug('Updating ingredient with validated data', {
-          ingredientName: chosenIngredient.name,
-          ingredientType: chosenIngredient.type,
-        });
-        updateIngredient(chosenIngredient);
+        const isDuplicate = recipeIngredients.some(
+          (existing, idx) =>
+            (idx !== oldIngredientId &&
+              existing.id &&
+              chosenIngredient.id &&
+              existing.id === chosenIngredient.id) ||
+            existing.name.toLowerCase() === chosenIngredient.name.toLowerCase()
+        );
+
+        if (!isDuplicate) {
+          validationLogger.debug('Updating ingredient with validated data', {
+            ingredientName: chosenIngredient.name,
+            ingredientType: chosenIngredient.type,
+          });
+          updateIngredient(chosenIngredient);
+        } else {
+          validationLogger.debug('Duplicate ingredient detected - not adding', {
+            ingredientName: chosenIngredient.name,
+          });
+          setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
+        }
       };
 
       setSimilarityDialog({

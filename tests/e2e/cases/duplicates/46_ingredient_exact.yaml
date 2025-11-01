@@ -1,0 +1,72 @@
+name: "46: Duplicate Ingredient Exact Prevention Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Action - Expand FAB menu"
+
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Action - Open manual recipe creation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Action - Scroll to ingredients section"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Action - Add ingredient to recipe"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- inputText:
+    text: "Butter"
+    label: "Action - Enter existing ingredient name"
+
+- pressKey: "ENTER"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    text: "Butter"
+    label: "Assert - Verify Butter ingredient added to first row"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Action - Add another ingredient row"
+
+- tapOn:
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    label: "Action - Focus on second ingredient name input"
+
+- inputText:
+    text: "Butter"
+    label: "Action - Try to add same ingredient again"
+
+- pressKey: "ENTER"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    text: "Butter"
+    label: "Assert - Verify Butter still in first row"
+
+- assertNotVisible:
+    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    label: "Assert - Verify duplicate ingredient row was not added"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Cleanup - Exit recipe creation without saving"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Close FAB buttons"
