@@ -57,7 +57,7 @@ tags:
 
 - runFlow:
     file: "../../asserts/recipe/edit/chocolateCakeFor2Persons.yaml"
-    label: "Assert - Verify immediate scaling: 2 persons, scaled quantities (66,67g, 16,67g, 50g, 33,34g)"
+    label: "Assert - Verify UI scaling: 2 persons, UI shows scaled quantities (66,67g, 16,67g, 50g, 33,34g)"
 
 - tapOn:
     id: "RecipeValidate"
@@ -71,8 +71,8 @@ tags:
     label: "Action - Scroll back to top"
 
 - runFlow:
-    file: "../../asserts/recipe/readonly/en/chocolateCakeFor2Persons.yaml"
-    label: "Assert - Verify read-only after edit: 2 persons, scaled quantities"
+    file: "../../asserts/recipe/readonly/en/chocolateCakeFor4Persons.yaml"
+    label: "Assert - Verify read-only after edit: scaled back to 4 persons (default)"
 
 - tapOn:
     id: "BackButton::RoundButton"
