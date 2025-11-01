@@ -51,6 +51,7 @@ import { Button } from 'react-native-paper';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
 import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
+import { listFilter, prepTimeValues } from '@customTypes/RecipeFiltersTypes';
 
 /**
  * Props for the FiltersSelection component
@@ -92,6 +93,16 @@ export function FiltersSelection({
 
   const stepOrder = TUTORIAL_STEPS.Search.order;
   const selectionTestID = testId + '::FiltersSelection';
+
+  const getDisplayText = useCallback(
+    (filterValue: string): string => {
+      if (prepTimeValues.includes(filterValue) || filterValue === listFilter.inSeason) {
+        return t(filterValue);
+      }
+      return filterValue;
+    },
+    [t]
+  );
 
   const triggerToggle = useCallback(() => {
     setAddingAFilter(prev => !prev);
@@ -182,7 +193,7 @@ export function FiltersSelection({
         renderItem={({ item, index }) => (
           <TagButton
             key={index}
-            text={item}
+            text={getDisplayText(item)}
             testID={selectionTestID + '::' + index}
             rightIcon={Icons.crossIcon}
             onPressFunction={() => onRemoveFilter(item)}
