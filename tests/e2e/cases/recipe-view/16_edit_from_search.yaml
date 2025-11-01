@@ -73,7 +73,7 @@ tags:
     element:
       id: "SearchScreen::SearchBar"
     direction: UP
-    speed: 99
+    speed: 95
     label: "Cleanup - Scroll back to top of Search screen"
 
 - tapOn:

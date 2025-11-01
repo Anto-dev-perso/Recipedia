@@ -23,6 +23,14 @@ appId: "com.recipedia"
     id: "RecipeTags::ElementText"
     text: "Les étiquettes représentent une façon d'identifier une recette afin d'en faciliter la recherche.\nVoici certains exemples d'étiquettes que vous pouvez utiliser : .*, .*, .*"
     label: "Explanation text for the recipe tags is displayed in French"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to persons part"
+
 - assertVisible:
     id: "RecipePersons::PrefixText"
     text: "Cette recette est pour : "

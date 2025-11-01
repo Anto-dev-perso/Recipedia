@@ -28,7 +28,7 @@ tags:
     element:
       id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton"
     direction: DOWN
-    speed: 99
+    speed: 95
     centerElement: true
     label: "Action - Scroll to nutrition section"
 
@@ -93,7 +93,7 @@ tags:
       id: "RecipeImage"
     direction: UP
     centerElement: true
-    speed: 99
+    speed: 95
     label: "Action - Scroll back to top"
 
 - runFlow:

@@ -318,7 +318,7 @@ appId: "com.recipedia"
     element:
       id: "RecipeImage"
     direction: UP
-    speed: 99
+    speed: 95
     centerElement: true
 
 - assertVisible:

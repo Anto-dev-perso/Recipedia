@@ -14,7 +14,7 @@ tags:
     element:
       id: "RecipeImage"
     direction: UP
-    speed: 99
+    speed: 95
     label: "Action - Scroll back to top"
 
 - runFlow:

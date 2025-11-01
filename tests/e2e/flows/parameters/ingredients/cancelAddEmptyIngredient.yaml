@@ -4,7 +4,7 @@ appId: "com.recipedia"
     element:
       id: "IngredientsSettings::AddButton"
     direction: DOWN
-    speed: 99
+    speed: 95
     label: "Scroll down to find Add button"
 
 - tapOn:
@@ -19,7 +19,7 @@ appId: "com.recipedia"
     element:
       id: "IngredientsSettings::0::EditButton"
     direction: UP
-    speed: 99
+    speed: 95
     centerElement: true
     label: "Scroll up to top of Ingredients Settings screen"
 

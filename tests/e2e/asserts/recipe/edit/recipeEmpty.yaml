@@ -40,7 +40,7 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeTags::ElementText"
     text: "Tags are a way to identify a recipe and make easier its search.\n\
-    Here are some examples of tags you can have : .*, .*, .*"
+      Here are some examples of tags you can have : .*, .*, .*"
     label: "Explanation text id for the tags is displayed with the empty text"
 
 - assertNotVisible:
@@ -50,6 +50,13 @@ appId: "com.recipedia"
 - assertNotVisible:
     text: "󰅖"
     label: "Tag's icon is not displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to person section"
 
 - assertVisible:
     text: "This recipe is for : "
@@ -149,5 +156,5 @@ appId: "com.recipedia"
     element:
       id: "RecipeImage"
     direction: UP
-    speed: 99
+    speed: 95
     centerElement: true
