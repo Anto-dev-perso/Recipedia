@@ -350,6 +350,10 @@ jobs:
             npm run install:android
             npm run test:e2e:android
 
+      - name: Prepare Maestro test results
+        if: always()
+        run: find . -type f -name '*:*' -exec rename 's/:/_/g' {} +
+
       - name: Upload Maestro test results
         if: always()
         uses: actions/upload-artifact@v5
