@@ -151,27 +151,36 @@ describe('FileGestion Utility', () => {
     const sourceUri = '/temp/recipe-photo.jpg';
     const recipeName = 'Chocolate Cake';
     const expectedImageName = 'chocolate_cake.jpg';
-    const expectedDestination = defaultDocumentsPath + 'chocolate_cake.jpg';
+    const expectedDestination = defaultDocumentsPath + expectedImageName;
 
     setupImageSavingMocks();
 
     const result = await fileGestion.saveRecipeImage(sourceUri, recipeName);
 
-    expect(result).toBe(expectedImageName);
+    expect(result).toBe(expectedDestination);
     expect(mockCopyAsync).toHaveBeenCalledWith({ from: sourceUri, to: expectedDestination });
     expect(mockCopyAsync).toHaveBeenCalledTimes(1);
   });
 
   test('sanitizes recipe names correctly for filename generation', async () => {
     const testCases = [
-      { input: 'Simple Recipe', expected: 'simple_recipe.jpg' },
+      { input: 'Simple Recipe', expected: defaultDocumentsPath + 'simple_recipe.jpg' },
       {
         input: 'Recipe with Special@#$%Characters',
-        expected: 'recipe_with_special@#$%characters.jpg',
+        expected: defaultDocumentsPath + 'recipe_with_special@#$%characters.jpg',
       },
-      { input: '   Spaced   Recipe   ', expected: '___spaced___recipe___.jpg' },
-      { input: 'Recipe/With\\Slashes', expected: 'recipe/with\\slashes.jpg' },
-      { input: 'Recipe:With;Colons,And<More>', expected: 'recipe:with;colons,and<more>.jpg' },
+      {
+        input: '   Spaced   Recipe   ',
+        expected: defaultDocumentsPath + '___spaced___recipe___.jpg',
+      },
+      {
+        input: 'Recipe/With\\Slashes',
+        expected: defaultDocumentsPath + 'recipe/with\\slashes.jpg',
+      },
+      {
+        input: 'Recipe:With;Colons,And<More>',
+        expected: defaultDocumentsPath + 'recipe:with;colons,and<more>.jpg',
+      },
     ];
 
     setupImageSavingMocks();
@@ -211,7 +220,7 @@ describe('FileGestion Utility', () => {
     mockCopyAsync.mockRejectedValue(new Error('Copy operation failed'));
 
     const result = await fileGestion.saveRecipeImage(sourceUri, recipeName);
-    expect(result).toBe('test_recipe.jpg');
+    expect(result).toBe('');
     expect(mockCopyAsync).toHaveBeenCalledWith({
       from: sourceUri,
       to: defaultDocumentsPath + 'test_recipe.jpg',
@@ -258,8 +267,8 @@ describe('FileGestion Utility', () => {
 
     const results = await Promise.all([initPromise, savePromise1, savePromise2]);
 
-    expect(results[1]).toBe('recipe_1.jpg');
-    expect(results[2]).toBe('recipe_2.jpg');
+    expect(results[1]).toBe(defaultDocumentsPath + 'recipe_1.jpg');
+    expect(results[2]).toBe(defaultDocumentsPath + 'recipe_2.jpg');
     expect(mockCopyAsync).toHaveBeenCalledTimes(2);
   });
 
@@ -272,12 +281,15 @@ describe('FileGestion Utility', () => {
 
   test('handles edge cases in recipe name sanitization', async () => {
     const edgeCases = [
-      { input: '', expected: '.jpg' },
-      { input: '   ', expected: '___.jpg' },
-      { input: '!@#$%^&*()', expected: '!@#$%^&*().jpg' },
-      { input: 'Recipe.with.dots', expected: 'recipe.with.dots.jpg' },
-      { input: 'Recipe\nwith\nnewlines', expected: 'recipe\nwith\nnewlines.jpg' },
-      { input: 'Recipe\twith\ttabs', expected: 'recipe\twith\ttabs.jpg' },
+      { input: '', expected: defaultDocumentsPath + '.jpg' },
+      { input: '   ', expected: defaultDocumentsPath + '___.jpg' },
+      { input: '!@#$%^&*()', expected: defaultDocumentsPath + '!@#$%^&*().jpg' },
+      { input: 'Recipe.with.dots', expected: defaultDocumentsPath + 'recipe.with.dots.jpg' },
+      {
+        input: 'Recipe\nwith\nnewlines',
+        expected: defaultDocumentsPath + 'recipe\nwith\nnewlines.jpg',
+      },
+      { input: 'Recipe\twith\ttabs', expected: defaultDocumentsPath + 'recipe\twith\ttabs.jpg' },
     ];
 
     setupImageSavingMocks();
