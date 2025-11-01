@@ -12,6 +12,7 @@ export default {
   success: 'Succès',
   addedToDatabase: 'La recette "{{recipeName}}" ajoutée avec succès à la base de donnée',
   addedToShoppingList: 'La recette "{{recipeName}}" ajoutée avec succès à la liste de courses',
+  deletedFromDatabase: 'La recette "{{recipeName}}" a été supprimée avec succès',
   addFilter: 'Ajouter un filtre',
   seeFilterResult: 'Voir les recettes filtrées',
 
@@ -20,6 +21,7 @@ export default {
 
   // Confirmation messages
   confirmDelete: 'Êtes-vous sûr de vouloir supprimer ceci ?',
+  interrogationMark: ' ?',
 
   // Error messages
   errorOccurred: 'Une erreur est survenue',

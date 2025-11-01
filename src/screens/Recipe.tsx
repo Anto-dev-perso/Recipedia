@@ -308,7 +308,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             if (!(await deleteRecipe(props.recipe))) {
               dialogProps.content = `${t('errorOccurred')} ${t('deleteRecipe')} ${recipeTitle}`;
             } else {
-              dialogProps.content = `${t('recipe')} ${recipeTitle} ${t('delete')} ${t('success')}`;
+              dialogProps.content = t('deletedFromDatabase', { recipeName: recipeTitle });
             }
             setValidationDialogProp(dialogProps);
             setIsValidationDialogOpen(true);
@@ -995,7 +995,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const descriptionTestID = 'RecipeDescription';
     const descriptionRootText: TextProp = {
       style: stackMode == recipeStateType.readOnly ? 'paragraph' : 'title',
-      value: stackMode == recipeStateType.readOnly ? recipeDescription : t('Description') + ':',
+      value: stackMode == recipeStateType.readOnly ? recipeDescription : t('description') + ':',
     };
     switch (stackMode) {
       case recipeStateType.readOnly:
