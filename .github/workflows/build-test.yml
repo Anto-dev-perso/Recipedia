@@ -350,25 +350,16 @@ jobs:
             npm run install:android
             npm run test:e2e:android
 
-      - name: Prepare Maestro test results
+      - name: Zip Maestro test results
         if: always()
-        run: |
-          # Preview
-          find . -type f -name '*:*' -print
-          # Remove colons from filenames
-          while IFS= read -r -d '' file; do
-            newname="${file//:/}"   # remove colons; use "${file//:/_}" to replace with underscore
-            mv "$file" "$newname"
-          done < <(find . -type f -name '*:*' -print0)
+        run: zip -r maestro_test_results.zip maestro_logs/.maestro/tests -i '*.png' '*.log'
 
       - name: Upload Maestro test results
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: maestro-test-results
-          path: |
-            maestro_logs/.maestro/tests/**/*.log
-            maestro_logs/.maestro/tests/**/*.png
+          path: maestro_test_results.zip
           retention-days: 7
 
       - name: E2E tests summary
