@@ -352,7 +352,7 @@ jobs:
 
       - name: Zip Maestro test results
         if: always()
-        run: zip -r maestro_test_results.zip maestro_logs/.maestro/tests -i '*.png' '*.log'
+        run: zip -r maestro_test_results.zip maestro_logs/.maestro/tests
 
       - name: Upload Maestro test results
         if: always()
