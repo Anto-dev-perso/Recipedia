@@ -359,7 +359,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: maestro-test-results
-          path: maestro_test_results.zip
+          path: maestro_logs/.maestro/tests
           retention-days: 7
 
       - name: E2E tests summary

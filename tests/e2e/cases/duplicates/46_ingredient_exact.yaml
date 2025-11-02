@@ -1,4 +1,4 @@
-name: "46: Duplicate Ingredient Exact Prevention Flow"
+name: "46 - Duplicate Ingredient Exact Prevention Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
