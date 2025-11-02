@@ -704,7 +704,8 @@ describe('Recipe Component tests', () => {
     checkDescription(mockRouteAddOCR, getByTestId, queryByTestId);
     checkTags(mockRouteAddOCR, getByTestId, queryByTestId);
     checkIngredients(mockRouteAddOCR, getByTestId, queryByTestId);
-    checkPersons(mockRouteAddOCR, getByTestId, queryByTestId, defaultValueNumber);
+    // In OCR mode, default persons loads asynchronously (4), so it shows edit mode UI
+    checkPersons(mockRouteAddOCR, getByTestId, queryByTestId, 4);
     checkTime(mockRouteAddOCR, getByTestId, queryByTestId);
     checkPreparation(mockRouteAddOCR, getByTestId, queryByTestId);
     checkNutrition(mockRouteAddOCR, getByTestId, queryByTestId);

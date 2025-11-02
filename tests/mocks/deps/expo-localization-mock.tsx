@@ -1,5 +1,17 @@
 export function expoLocalizationMock() {
-    return {
-        locale: 'en-US',
-    }
+  return {
+    getLocales: () => [
+      {
+        languageCode: 'en',
+        languageTag: 'en-US',
+        regionCode: 'US',
+        currencyCode: 'USD',
+        currencySymbol: '$',
+        decimalSeparator: '.',
+        digitGroupingSeparator: ',',
+        textDirection: 'ltr',
+      },
+    ],
+    locale: 'en-US',
+  };
 }
