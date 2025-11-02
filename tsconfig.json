@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "strictPropertyInitialization": false,
+    "noImplicitOverride": true,
     "target": "es2015",
     "moduleResolution": "bundler",
     "jsx": "react",

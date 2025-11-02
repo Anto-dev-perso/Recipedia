@@ -1086,7 +1086,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           };
         }
       // Else return the same props as edit or addManual
-      // falls through
+      // fallthrough
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
@@ -1333,7 +1333,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           };
         }
       // Else return the same props as edit or addManual
-      // falls through
+      // fallthrough
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
