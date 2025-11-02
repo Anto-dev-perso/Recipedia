@@ -124,12 +124,10 @@ export const getLanguage = async (): Promise<string> => {
     if (value && value.length > 0) {
       return value;
     }
-    // Default to device locale if no language is set
-    return Localization.locale.split('-')[0];
   } catch (error) {
     settingsLogger.error('Failed to get language setting', { error });
-    return Localization.locale.split('-')[0];
   }
+  return Localization.getLocales()[0].languageCode ?? 'en';
 };
 
 /**
