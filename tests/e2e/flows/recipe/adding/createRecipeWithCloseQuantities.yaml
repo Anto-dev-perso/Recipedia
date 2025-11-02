@@ -37,6 +37,11 @@ appId: "com.recipedia"
       QUANTITY: "99"
     label: "Add Tomatoes ingredient"
 
+- runFlow:
+    file: "addRecipeTimeToPrepare.yaml"
+    env:
+      PERSONS_VALUE: "15"
+    label: "Add time to prepare the recipe"
 
 - runFlow:
     file: "addRecipePreparationStep.yaml"

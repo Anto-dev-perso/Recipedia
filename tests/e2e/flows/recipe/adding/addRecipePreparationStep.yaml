@@ -27,4 +27,4 @@ appId: "com.recipedia"
     label: "Enter preparation step"
 
 - hideKeyboard:
-    label: "Hide keyboard"
+    label: "Close the keyboard"

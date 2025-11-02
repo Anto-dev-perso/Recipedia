@@ -13,7 +13,6 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 
-
 - scrollUntilVisible:
     element:
       id: "RecipeIngredients::AddButton::RoundButton"
@@ -36,6 +35,23 @@ appId: "com.recipedia"
 - inputText:
     text: "Avocado"
     label: "Write an ingredient name in the input text"
+- hideKeyboard:
+    label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll until preparation time is visible"
+
+- tapOn:
+    id: "RecipeTime::NumericTextInput"
+    label: "Focus on the preparation time text input"
+
+- inputText:
+    text: "5"
+    label: "Write a time in the input text"
 - hideKeyboard:
     label: "Close the keyboard"
 

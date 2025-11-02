@@ -71,7 +71,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- complete nutrition information"
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time\n\t- complete nutrition information"
     label: "Assert - Verify validation error still includes nutrition (missing portion weight)"
 
 - runFlow:
