@@ -1,0 +1,19 @@
+appId: "com.recipedia"
+---
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to time to prepare part"
+
+- tapOn:
+    id: "RecipeTime::NumericTextInput"
+    label: "Focus on time text input"
+
+- inputText:
+    text: "${PERSONS_VALUE}"
+    label: "Enter the time to prepare to ${PERSONS_VALUE}"
+
+- hideKeyboard:
+    label: "Close the keyboard"

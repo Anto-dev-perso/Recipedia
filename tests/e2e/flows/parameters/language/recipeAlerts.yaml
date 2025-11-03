@@ -10,7 +10,7 @@ appId: "com.recipedia"
     file: "../../../asserts/alerts/fr/recipeValidationError.yaml"
     label: "Check that alert for empty recipe is translated in French"
     env:
-      MISSING_ELEMENTS: "\n\t- une image\n\t- un titre\n\t- des ingrédients\n\t- des instructions pour la préparation"
+      MISSING_ELEMENTS: "\n\t- une image\n\t- un titre\n\t- des ingrédients\n\t- des instructions pour la préparation\n\t- un temps de préparation"
 - runFlow:
     file: "./fillRecipe.yaml"
     label: "Fill the mandatory fields of the recipe adding screen"
@@ -22,5 +22,4 @@ appId: "com.recipedia"
     label: "Check that alert for added recipe is translated in French"
     env:
       RECIPE_NAME: "Titre"
-
 # TODO delete recipe alert

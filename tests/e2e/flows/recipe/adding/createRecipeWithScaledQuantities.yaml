@@ -37,6 +37,12 @@ appId: "com.recipedia"
     label: "Set persons to 4"
 
 - runFlow:
+    file: "addRecipeTimeToPrepare.yaml"
+    env:
+      PERSONS_VALUE: "15"
+    label: "Add time to prepare the recipe"
+
+- runFlow:
     file: "addRecipePreparationStep.yaml"
     env:
       INDEX: "0"

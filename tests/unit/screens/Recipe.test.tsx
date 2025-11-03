@@ -1164,6 +1164,25 @@ describe('Recipe Component tests', () => {
     );
   });
 
+  test('shows validation error when time is missing in add mode', async () => {
+    const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
+
+    fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'Test Recipe');
+    fireEvent.press(getByTestId('RecipeIngredients::AddNewText'));
+    fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
+    fireEvent.press(getByTestId('RecipePreparation::AddNewText'));
+
+    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+
+    expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
+    expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
+      'alerts.missingElements.titlePlural'
+    );
+    expect(getByTestId('Recipe::Alert::Content').props.children).toContain(
+      'alerts.missingElements.titleTime'
+    );
+  });
+
   test('edit mode validates comprehensively like add mode', async () => {
     const mockRouteEditWithoutImage = {
       mode: 'edit' as const,

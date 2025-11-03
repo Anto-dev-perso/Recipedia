@@ -16,6 +16,7 @@ export default {
     titleIngredients: 'des ingrédients',
     titlePreparation: 'des instructions pour la préparation',
     titlePersons: 'le nombre de personnes',
+    titleTime: 'un temps de préparation',
     ingredientQuantities: 'des quantités pour tous les ingrédients',
     ingredientNames: 'des noms pour tous les ingrédients',
     nutrition: 'informations nutritionnelles complètes',

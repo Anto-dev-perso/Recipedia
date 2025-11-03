@@ -21,7 +21,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation"
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time"
     label: "Assert - Verify validation error for all missing elements"
 
 - scrollUntilVisible:
@@ -43,7 +43,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- complete nutrition information"
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time\n\t- complete nutrition information"
     label: "Assert - Verify validation error includes nutrition"
 
 - runFlow:
@@ -57,7 +57,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- complete nutrition information"
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time\n\t- complete nutrition information"
     label: "Assert - Verify validation error includes nutrition"
 
 - runFlow:
@@ -71,7 +71,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- complete nutrition information"
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time\n\t- complete nutrition information"
     label: "Assert - Verify validation error still includes nutrition (missing portion weight)"
 
 - runFlow:
@@ -85,7 +85,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation"
+      MISSING_ELEMENTS: "\n\t- an image\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time"
     label: "Assert - Verify validation error NO LONGER includes nutrition"
 
 - scrollUntilVisible:
@@ -107,7 +107,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation"
+      MISSING_ELEMENTS: "\n\t- a title\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time"
     label: "Assert - Verify validation error for missing elements"
 
 - runFlow:
@@ -121,7 +121,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
+      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time"
     label: "Assert - Verify validation error for missing elements"
 
 - runFlow:
@@ -135,7 +135,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
+      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time"
     label: "Assert - Verify validation error (same as title only)"
 
 - runFlow:
@@ -149,7 +149,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
+      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time"
     label: "Assert - Verify validation error (same as title only)"
 
 - runFlow:
@@ -163,7 +163,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation"
+      MISSING_ELEMENTS: "\n\t- some ingredients\n\t- some instructions for the preparation\n\t- a preparation time"
     label: "Assert - Verify validation error for missing ingredients and preparation"
 
 - runFlow:
@@ -177,7 +177,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENTS: "\n\t- names for all ingredients\n\t- some instructions for the preparation"
+      MISSING_ELEMENTS: "\n\t- names for all ingredients\n\t- some instructions for the preparation\n\t- a preparation time"
     label: "Assert - Verify validation error for missing name on ingredient and preparation"
 
 - runFlow:
@@ -189,10 +189,10 @@ tags:
     label: "Action - Validate the recipe"
 
 - runFlow:
-    file: "../../asserts/alerts/en/recipeValidationErrorSingle.yaml"
+    file: "../../asserts/alerts/en/recipeValidationError.yaml"
     env:
-      MISSING_ELEMENT: "some instructions for the preparation"
-    label: "Assert - Verify validation error for missing preparation only"
+      MISSING_ELEMENTS: "\n\t- some instructions for the preparation\n\t- a preparation time"
+    label: "Assert - Verify validation error for missing preparation and time"
 
 - runFlow:
     file: "../../flows/recipe/adding/manual/en/tryAddOnlyImageTitleDescriptionTagPersonIngredientTime.yaml"
@@ -206,7 +206,7 @@ tags:
     file: "../../asserts/alerts/en/recipeValidationErrorSingle.yaml"
     env:
       MISSING_ELEMENT: "some instructions for the preparation"
-    label: "Assert - Verify validation error (same as without time)"
+    label: "Assert - Verify validation error for missing preparation only"
 
 - runFlow:
     file: "../../flows/recipe/adding/manual/en/tryAddFull.yaml"

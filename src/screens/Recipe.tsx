@@ -698,6 +698,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     if (recipePersons === defaultValueNumber) {
       missingElem.push(t(translatedMissingElemPrefix + 'titlePersons'));
     }
+    if (recipeTime === defaultValueNumber) {
+      missingElem.push(t(translatedMissingElemPrefix + 'titleTime'));
+    }
     if (
       recipeNutrition &&
       Object.values(recipeNutrition).some(value => value === defaultValueNumber)
