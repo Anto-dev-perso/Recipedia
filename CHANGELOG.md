@@ -1,3 +1,10 @@
+## [0.19.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.18.3...v0.19.0) (2025-11-03)
+
+### Features
+
+* **Recipe:** add missing preparation time validation and translations ([7b3395d](https://github.com/Anto-dev-perso/Recipedia/commit/7b3395df4cb7d886b96d60ce99808f32dab9742a))
+* **Recipe:** time is now mandatory ([#111](https://github.com/Anto-dev-perso/Recipedia/issues/111)) ([8fac897](https://github.com/Anto-dev-perso/Recipedia/commit/8fac89762c4b3f6f4eb19ba1c3a0f989851f8dd9))
+
 ## [0.18.3](https://github.com/Anto-dev-perso/Recipedia/compare/v0.18.2...v0.18.3) (2025-11-03)
 
 ### Bug Fixes
