@@ -1,3 +1,10 @@
+## [0.18.3](https://github.com/Anto-dev-perso/Recipedia/compare/v0.18.2...v0.18.3) (2025-11-03)
+
+### Bug Fixes
+
+* recipe image disappeared sometimes ([#108](https://github.com/Anto-dev-perso/Recipedia/issues/108)) ([78c7dbe](https://github.com/Anto-dev-perso/Recipedia/commit/78c7dbeed0e4d1ba8dbe13df0cd00235b145a9fd))
+* **RecipeDatabase:** correct img source mapping with filename extraction ([1aeff32](https://github.com/Anto-dev-perso/Recipedia/commit/1aeff329a81bc58cbfbbff372dcd8d5391598035))
+
 ## [0.18.2](https://github.com/Anto-dev-perso/Recipedia/compare/v0.18.1...v0.18.2) (2025-11-01)
 
 ### Bug Fixes
