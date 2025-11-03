@@ -341,6 +341,7 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
+          profile: Nexus 5
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -wipe-data -memory 1024
           script: |
             echo "🔄 Waiting for device..."
