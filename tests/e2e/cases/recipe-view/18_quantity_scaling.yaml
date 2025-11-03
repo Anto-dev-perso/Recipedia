@@ -71,8 +71,8 @@ tags:
     label: "Action - Scroll back to top"
 
 - runFlow:
-    file: "../../asserts/recipe/readonly/en/chocolateCakeFor4Persons.yaml"
-    label: "Assert - Verify read-only after edit: scaled back to 4 persons (default)"
+    file: "../../asserts/recipe/readonly/en/chocolateCakeFor2Persons.yaml"
+    label: "Assert - Verify read-only after edit: still showing 2 persons"
 
 - tapOn:
     id: "BackButton::RoundButton"
@@ -92,9 +92,18 @@ tags:
 
 - pressKey: "ENTER"
 
+- assertVisible:
+    id: "SearchScreen::RecipeCards::0::Persons"
+    text: "4 persons"
+    label: "Assert - Card is showing a 4 persons (default value) recipe"
+
 - tapOn:
     id: "SearchScreen::RecipeCards::0::Cover"
     label: "Action - Open Chocolate Cake recipe from search"
+
+- runFlow:
+    file: "../../asserts/recipe/readonly/en/chocolateCakeFor4Persons.yaml"
+    label: "Assert - Verify that recipe came back to default number of persons and is strictly identical as what it were before"
 
 - tapOn:
     id: "BackButton::RoundButton"
