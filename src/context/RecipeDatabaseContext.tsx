@@ -54,6 +54,7 @@
 
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { RecipeDatabase } from '@utils/RecipeDatabase';
+import FileGestion from '@utils/FileGestion';
 import {
   ingredientTableElement,
   ingredientType,
@@ -174,7 +175,9 @@ const RecipeDatabaseContext = createContext<RecipeDatabaseContextType | undefine
  * </RecipeDatabaseProvider>
  * ```
  */
-export const RecipeDatabaseProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const RecipeDatabaseProvider: React.FC<{
+  children: ReactNode;
+}> = ({ children }) => {
   const db = RecipeDatabase.getInstance();
 
   const [recipes, setRecipes] = useState<recipeTableElement[]>([]);
@@ -186,6 +189,10 @@ export const RecipeDatabaseProvider: React.FC<{ children: ReactNode }> = ({ chil
   useEffect(() => {
     const initializeDatabase = async () => {
       try {
+        databaseLogger.debug('Initializing file system');
+        await FileGestion.getInstance().init();
+        databaseLogger.debug('File system initialized');
+
         databaseLogger.info('Initializing database');
         await db.init();
 
@@ -238,7 +245,7 @@ export const RecipeDatabaseProvider: React.FC<{ children: ReactNode }> = ({ chil
       }
     };
     initializeDatabase();
-  }, []);
+  }, [db]);
 
   const refreshRecipes = () => {
     setRecipes([...db.get_recipes()]);

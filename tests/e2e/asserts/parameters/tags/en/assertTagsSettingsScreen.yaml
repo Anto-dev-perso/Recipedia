@@ -263,6 +263,13 @@ appId: "com.recipedia"
     text: "Delete"
     label: "Delete button for Tag with space is displayed"
 
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::AddButton"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to Add button"
+
 - assertVisible:
     id: "TagsSettings::15::TagName"
     text: "Vegetarian"
@@ -278,12 +285,6 @@ appId: "com.recipedia"
     text: "Delete"
     label: "Delete button for Vegetarian is displayed"
 
-- scrollUntilVisible:
-    element:
-      id: "TagsSettings::AddButton"
-    direction: DOWN
-    speed: 60
-    label: "Scroll to Add button"
 
 - assertVisible:
     id: "TagsSettings::AddButton"

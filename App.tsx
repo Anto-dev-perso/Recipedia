@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import FileGestion from '@utils/FileGestion';
 import {PaperProvider} from 'react-native-paper';
 import {darkTheme, lightTheme} from '@styles/theme';
 import AppWrapper from '@components/organisms/AppWrapper';
@@ -43,10 +42,6 @@ function AppContent() {
                 const isDarkMode = await getDarkMode();
                 setDarkMode(isDarkMode);
                 appLogger.debug('Dark mode setting loaded', {isDarkMode});
-
-                appLogger.debug('Initializing file system');
-                await FileGestion.getInstance().init();
-                appLogger.debug('File system initialized');
 
                 appLogger.info('App initialization completed successfully');
                 setIsAppInitialized(true);

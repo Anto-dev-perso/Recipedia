@@ -4,7 +4,7 @@ appId: "com.recipedia"
     element:
       id: "TagsSettings::AddButton"
     direction: DOWN
-    speed: 99
+    speed: 95
     label: "Scroll down to find Add button"
 
 - tapOn:

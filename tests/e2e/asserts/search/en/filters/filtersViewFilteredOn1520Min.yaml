@@ -62,6 +62,7 @@ appId: "com.recipedia"
     element:
       text: "Sauce"
     direction: DOWN
+    centerElement: true
     label: "Scroll to Sauce category"
 
 - runFlow:

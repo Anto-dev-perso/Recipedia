@@ -5,7 +5,7 @@ appId: "com.recipedia"
 
 
 - tapOn:
-    id: "com.android.providers.media.module:id/icon_thumbnail"
+    id: "icon_thumbnail"
     index: 0
     label: "Select most recent picture from Android gallery"
 

@@ -17,6 +17,13 @@ appId: "com.recipedia"
     text: "Ingredients (4 persons)"
     label: "Recipe is for 4 persons"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to end of ingredients section"
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::IngredientName"
     text: "Pasta"

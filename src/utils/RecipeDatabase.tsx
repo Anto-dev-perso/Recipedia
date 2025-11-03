@@ -350,6 +350,8 @@ export class RecipeDatabase {
     recipe.tags = await this.verifyTagsExist(rec.tags);
     recipe.ingredients = await this.verifyIngredientsExist(rec.ingredients);
 
+    recipe.image_Source = await this.prepareRecipeImage(recipe.image_Source, recipe.title);
+
     const recipeConverted = this.encodeRecipe(recipe);
 
     databaseLogger.debug('Adding recipe to database', {
@@ -385,19 +387,25 @@ export class RecipeDatabase {
     }
   }
 
-  public async editRecipe(rec: recipeTableElement) {
-    if (rec.id === undefined) {
-      databaseLogger.warn('Cannot edit recipe - missing ID', { recipeTitle: rec.title });
+  public async editRecipe(recipe: recipeTableElement) {
+    if (recipe.id === undefined) {
+      databaseLogger.warn('Cannot edit recipe - missing ID', { recipeTitle: recipe.title });
       return false;
     }
 
-    const oldRecipe = this._recipes.find(r => r.id === rec.id);
+    const oldRecipe = this._recipes.find(r => r.id === recipe.id);
 
-    const updateMap = this.constructUpdateRecipeStructure(this.encodeRecipe(rec));
-    databaseLogger.debug('Editing recipe', { recipeId: rec.id, recipeTitle: rec.title });
-    const success = await this._recipesTable.editElementById(rec.id, updateMap, this._dbConnection);
+    recipe.image_Source = await this.prepareRecipeImage(recipe.image_Source, recipe.title);
+
+    const updateMap = this.constructUpdateRecipeStructure(this.encodeRecipe(recipe));
+    databaseLogger.debug('Editing recipe', { recipeId: recipe.id, recipeTitle: recipe.title });
+    const success = await this._recipesTable.editElementById(
+      recipe.id!,
+      updateMap,
+      this._dbConnection
+    );
     if (success) {
-      this.update_recipe(rec);
+      this.update_recipe(recipe);
 
       if (oldRecipe) {
         const isInShopping = this._shopping.some(shop =>
@@ -406,13 +414,16 @@ export class RecipeDatabase {
 
         if (isInShopping) {
           await this.removeRecipeFromShopping(oldRecipe);
-          await this.addRecipeToShopping(rec);
+          await this.addRecipeToShopping(recipe);
         }
       }
 
-      databaseLogger.debug('Recipe edited successfully', { recipeId: rec.id });
+      databaseLogger.debug('Recipe edited successfully', { recipeId: recipe.id });
     } else {
-      databaseLogger.warn('Failed to edit recipe', { recipeId: rec.id, recipeTitle: rec.title });
+      databaseLogger.warn('Failed to edit recipe', {
+        recipeId: recipe.id,
+        recipeTitle: recipe.title,
+      });
     }
     return success;
   }
@@ -1311,42 +1322,42 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-                                                                                    if (newIngredients.length > 0) {
-                                                                                        let alertTitle: string;
-                                                                                        let alertMessage = "Do you want to add or edit it before  ?";
-                                                                                        const alertOk = "OK";
-                                                                                        const alertCancel = "Cancel";
-                                                                                        const alertEdit = "Edit before add";
-                                                                                        if (newIngredients.length > 1) {
-                                                                                            // Plural
-                                                                                            alertTitle = "INGREDIENTS NOT FOUND";
-                                                                                            alertMessage = `Following ingredients were not found in database :  \n`;
-                                                                                            newIngredients.forEach(ing => {
-                                                                                                alertMessage += "\t- " + ing.ingName + "\n";
-                                                                                            });
-                                                                                            alertMessage += `Do you want to add these as is or edit them before adding ?`;
+                                                                                                if (newIngredients.length > 0) {
+                                                                                                    let alertTitle: string;
+                                                                                                    let alertMessage = "Do you want to add or edit it before  ?";
+                                                                                                    const alertOk = "OK";
+                                                                                                    const alertCancel = "Cancel";
+                                                                                                    const alertEdit = "Edit before add";
+                                                                                                    if (newIngredients.length > 1) {
+                                                                                                        // Plural
+                                                                                                        alertTitle = "INGREDIENTS NOT FOUND";
+                                                                                                        alertMessage = `Following ingredients were not found in database :  \n`;
+                                                                                                        newIngredients.forEach(ing => {
+                                                                                                            alertMessage += "\t- " + ing.ingName + "\n";
+                                                                                                        });
+                                                                                                        alertMessage += `Do you want to add these as is or edit them before adding ?`;
 
-                                                                                        } else {
-                                                                                            alertTitle = `INGREDIENT NOT FOUND`;
-                                                                                            alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                                                                                        }
+                                                                                                    } else {
+                                                                                                        alertTitle = `INGREDIENT NOT FOUND`;
+                                                                                                        alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                                                                                                    }
 
 
-                                                                                        switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                                                                                            case alertUserChoice.neutral:
-                                                                                                // TODO edit before add
-                                                                                                break;
-                                                                                            case alertUserChoice.ok:
-                                                                                                await this.addMultipleIngredients(newIngredients);
-                                                                                                result = result.concat(newIngredients);
-                                                                                                break;
-                                                                                            case alertUserChoice.cancel:
-                                                                                            default:
-                                                                                                databaseLogger.debug("User canceled adding ingredient");
-                                                                                                break;
-                                                                                        }
-                                                                                    }
-                                                                                     */
+                                                                                                    switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                                                                                                        case alertUserChoice.neutral:
+                                                                                                            // TODO edit before add
+                                                                                                            break;
+                                                                                                        case alertUserChoice.ok:
+                                                                                                            await this.addMultipleIngredients(newIngredients);
+                                                                                                            result = result.concat(newIngredients);
+                                                                                                            break;
+                                                                                                        case alertUserChoice.cancel:
+                                                                                                        default:
+                                                                                                            databaseLogger.debug("User canceled adding ingredient");
+                                                                                                            break;
+                                                                                                    }
+                                                                                                }
+                                                                                                 */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);
@@ -1367,7 +1378,7 @@ export class RecipeDatabase {
     return new Map<string, string | number>([
       [recipeColumnsNames.title, recipe.title],
       [recipeColumnsNames.description, recipe.description],
-      [recipeColumnsNames.image, recipe.image_Source],
+      [recipeColumnsNames.image, this.extractFilenameFromUri(recipe.image_Source)],
     ]);
   }
 
@@ -1419,7 +1430,7 @@ export class RecipeDatabase {
   private encodeRecipe(recToEncode: recipeTableElement): encodedRecipeElement {
     return {
       ID: recToEncode.id ? recToEncode.id : 0,
-      IMAGE_SOURCE: recToEncode.image_Source,
+      IMAGE_SOURCE: this.extractFilenameFromUri(recToEncode.image_Source),
       TITLE: recToEncode.title,
       DESCRIPTION: recToEncode.description,
       TAGS: recToEncode.tags.map(tag => this.encodeTag(tag)).join(EncodingSeparator),
@@ -1433,6 +1444,69 @@ export class RecipeDatabase {
       TIME: recToEncode.time,
       NUTRITION: recToEncode.nutrition ? this.encodeNutrition(recToEncode.nutrition) : '',
     };
+  }
+
+  /**
+   * Extracts filename from a full image URI
+   *
+   * Takes a full image URI and extracts just the filename by removing the directory prefix.
+   * If the URI doesn't contain the directory prefix, returns it unchanged (assumes it's already a filename).
+   *
+   * @private
+   * @param imageUri - The full image URI (e.g., "file:///documents/Recipedia/pasta.jpg")
+   * @returns Just the filename (e.g., "pasta.jpg")
+   */
+  private extractFilenameFromUri(imageUri: string): string {
+    const directoryUri = FileGestion.getInstance().get_directoryUri();
+    if (imageUri.startsWith(directoryUri)) {
+      return imageUri.substring(directoryUri.length);
+    }
+    return imageUri;
+  }
+
+  /**
+   * Constructs full image URI from filename
+   *
+   * Takes a filename (e.g., "pasta.jpg") and combines it with the FileGestion
+   * directory URI to create a full file:// URI that can be used by image components.
+   *
+   * @private
+   * @param imageFilename - The image filename (e.g., "pasta.jpg")
+   * @returns Full image URI (e.g., "file:///documents/Recipedia/pasta.jpg")
+   */
+  private constructImageUri(imageFilename: string): string {
+    return FileGestion.getInstance().get_directoryUri() + imageFilename;
+  }
+
+  /**
+   * Prepares recipe image URI for database storage
+   *
+   * Handles temporary image URIs by saving them to permanent storage.
+   * If the image URI is already in permanent storage, returns it unchanged.
+   * This encapsulates all image preparation logic within the database layer.
+   *
+   * @private
+   * @param imageUri - The image URI from the recipe (temporary or permanent)
+   * @param recipeTitle - The recipe title used for filename generation
+   * @returns Promise resolving to the permanent image URI
+   */
+  private async prepareRecipeImage(imageUri: string, recipeTitle: string): Promise<string> {
+    if (FileGestion.getInstance().isTemporaryImageUri(imageUri)) {
+      databaseLogger.info('Recipe image is temporary, saving to permanent storage', {
+        temporaryUri: imageUri,
+        recipeTitle,
+      });
+      const permanentUri = await FileGestion.getInstance().saveRecipeImage(imageUri, recipeTitle);
+      databaseLogger.info('Recipe image saved to permanent storage', {
+        permanentUri,
+      });
+      return permanentUri;
+    }
+
+    databaseLogger.debug('Recipe image already in permanent storage', {
+      imageUri,
+    });
+    return imageUri;
   }
 
   /**
@@ -1452,7 +1526,7 @@ export class RecipeDatabase {
     );
     return {
       id: encodedRecipe.ID,
-      image_Source: FileGestion.getInstance().get_directoryUri() + encodedRecipe.IMAGE_SOURCE,
+      image_Source: this.constructImageUri(encodedRecipe.IMAGE_SOURCE),
       title: encodedRecipe.TITLE,
       description: encodedRecipe.DESCRIPTION,
       tags: await this.decodeTagFromRecipe(encodedRecipe.TAGS),

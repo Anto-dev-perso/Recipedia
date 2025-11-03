@@ -36,7 +36,7 @@ tags:
     element:
       id: "RecipeImage::Image"
     direction: UP
-    speed: 99
+    speed: 95
 
 - runFlow:
     file: "../../flows/recipe/adding/setRecipeTitle.yaml"

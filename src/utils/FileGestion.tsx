@@ -173,11 +173,36 @@ export class FileGestion {
    * ```
    */
   public async copyFile(oldUri: string, newUri: string) {
-    try {
-      await FileSystem.copyAsync({ from: oldUri, to: newUri });
-    } catch (error) {
-      filesystemLogger.warn('Failed to copy file', { from: oldUri, to: newUri, error });
-    }
+    await FileSystem.copyAsync({ from: oldUri, to: newUri });
+  }
+
+  /**
+   * Determines if an image URI points to a temporary location
+   *
+   * Returns true when the URI does not reside inside the app's permanent storage
+   * directory (documents/Recipedia). Useful to know whether an image still lives
+   * in a cache (ImageManipulator, camera, etc.) and needs to be persisted.
+   *
+   * @param uri - Image URI to check
+   * @returns True if the URI is temporary (cache/manipulator/camera), false if stored permanently
+   *
+   * @example
+   * ```typescript
+   * const isTemp = fileManager.isTemporaryImageUri('file:///cache/ImageManipulator/123.jpg');
+   * ```
+   */
+  public isTemporaryImageUri(uri: string): boolean {
+    const isTemporary = !uri.includes(this._directoryUri);
+
+    filesystemLogger.debug('Checking if image URI is temporary', {
+      imageUri: uri,
+      permanentStorageUri: this._directoryUri,
+      isTemporary,
+      containsCache: uri.includes('cache'),
+      containsImageManipulator: uri.includes('ImageManipulator'),
+    });
+
+    return isTemporary;
   }
 
   /**
@@ -189,60 +214,51 @@ export class FileGestion {
    *
    * @param cacheFileUri - URI of the temporary image file
    * @param recName - Recipe name to use for the filename
-   * @returns Promise resolving to the saved filename, or empty string if failed
+   * @returns Promise resolving to the saved image URI, or empty string if failed
    *
    * @example
    * ```typescript
    * const tempImageUri = "file:///cache/temp-image.jpg";
-   * const imageName = await fileManager.saveRecipeImage(tempImageUri, "Chocolate Cake");
-   * // Returns: "chocolate_cake.jpg"
+   * const savedUri = await fileManager.saveRecipeImage(tempImageUri, "Chocolate Cake");
+   * // Returns something like: "file:///documents/Recipedia/chocolate_cake.jpg"
    * ```
    */
   public async saveRecipeImage(cacheFileUri: string, recName: string): Promise<string> {
-    filesystemLogger.debug('Saving recipe image', { cacheFileUri, recipeName: recName });
+    filesystemLogger.info('Starting image save operation', {
+      sourceUri: cacheFileUri,
+      recipeName: recName,
+      permanentStorageDir: this._directoryUri,
+    });
 
     const extension = cacheFileUri.split('.');
     const imgName =
       recName.replace(/ /g, '_').toLowerCase() + '.' + extension[extension.length - 1];
     const imgUri: string = this._directoryUri + imgName;
+
+    filesystemLogger.info('Generated filename and destination', {
+      originalRecipeName: recName,
+      sanitizedFilename: imgName,
+      fullDestinationUri: imgUri,
+      fileExtension: extension[extension.length - 1],
+    });
+
     try {
       await this.copyFile(cacheFileUri, imgUri);
-      filesystemLogger.debug('Recipe image saved successfully', {
-        imageName: imgName,
-        imageUri: imgUri,
+      filesystemLogger.info('Image copied successfully to permanent storage', {
+        sourceUri: cacheFileUri,
+        destinationUri: imgUri,
+        filenameStoredInDb: imgName,
       });
-      return imgName;
+      return imgUri;
     } catch (error) {
-      filesystemLogger.warn('Failed to save recipe image', {
-        cacheFileUri,
+      filesystemLogger.error('Failed to save recipe image', {
+        sourceUri: cacheFileUri,
+        destinationUri: imgUri,
         recipeName: recName,
         error,
       });
       return '';
     }
-  }
-
-  /**
-   * Creates a backup copy of a file in the cache directory
-   *
-   * Copies a file to the cache directory, preserving the original filename.
-   * Useful for creating temporary backups before file modifications.
-   *
-   * @param uriToBackUp - URI of the file to backup
-   * @returns Promise resolving to the backup file URI
-   *
-   * @example
-   * ```typescript
-   * const backupUri = await fileManager.backUpFile('/documents/recipe-image.jpg');
-   * console.log(`Backup created at: ${backupUri}`);
-   * ```
-   */
-  public async backUpFile(uriToBackUp: string): Promise<string> {
-    const oldUriSplit = uriToBackUp.split('/');
-    const backUpUri = this.get_cacheUri() + oldUriSplit[oldUriSplit.length - 1];
-
-    await this.copyFile(uriToBackUp, backUpUri);
-    return backUpUri;
   }
 
   /**
@@ -320,4 +336,5 @@ export class FileGestion {
 
   /* PROTECTED METHODS */
 }
+
 export default FileGestion;

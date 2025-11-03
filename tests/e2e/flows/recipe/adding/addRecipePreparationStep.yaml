@@ -18,7 +18,6 @@ appId: "com.recipedia"
     speed: 60
     label: "Scroll to preparation step input"
 
-
 - tapOn:
     id: "RecipePreparation::TextRender::${INDEX}::TextInputContent::CustomTextInput"
     label: "Focus on preparation step content"

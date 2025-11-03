@@ -9,7 +9,7 @@ appId: "com.recipedia"
       id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton"
     direction: DOWN
     centerElement: true
-    speed: 99
+    speed: 95
     label: "Scroll to bottom of the screen for nutrition"
 
 

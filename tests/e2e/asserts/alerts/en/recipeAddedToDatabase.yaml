@@ -1,7 +1,5 @@
 appId: "com.recipedia"
-
 ---
-
 - assertVisible:
     id: "Recipe::Dialog::Title"
     text: "Add"
@@ -9,7 +7,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "Recipe::Dialog::Content"
-    text: "Recipe \"${RECIPE_NAME}\" has been successfully added to the database"
+    text: 'Recipe "${RECIPE_NAME}" has been successfully added to the database'
     label: "Alert message is rendered"
 
 - assertVisible:
