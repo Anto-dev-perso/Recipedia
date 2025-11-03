@@ -1,4 +1,4 @@
-name: "41: Duplicate Tag Unique Detection Flow"
+name: "41 - Duplicate Tag Unique Detection Flow"
 appId: "com.recipedia"
 tags:
   - duplicates

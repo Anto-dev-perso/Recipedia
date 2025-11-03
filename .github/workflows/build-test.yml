@@ -352,14 +352,14 @@ jobs:
 
       - name: Zip Maestro test results
         if: always()
-        run: zip -r maestro_test_results.zip maestro_logs/.maestro/tests -i '*.png' '*.log'
+        run: zip -r maestro_test_results.zip maestro_logs/.maestro/tests
 
       - name: Upload Maestro test results
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: maestro-test-results
-          path: maestro_test_results.zip
+          path: maestro_logs/.maestro/tests
           retention-days: 7
 
       - name: E2E tests summary

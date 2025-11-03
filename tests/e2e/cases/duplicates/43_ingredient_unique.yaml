@@ -1,4 +1,4 @@
-name: "43: Duplicate Ingredient Unique Detection Flow"
+name: "43 - Duplicate Ingredient Unique Detection Flow"
 appId: "com.recipedia"
 tags:
   - duplicates

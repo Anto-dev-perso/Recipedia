@@ -1,4 +1,4 @@
-name: "49: Duplicate Recipe Confirm Flow"
+name: "49 - Duplicate Recipe Confirm Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
