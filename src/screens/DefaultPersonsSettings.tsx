@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Button, Text, useTheme } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 import { useI18n } from '@utils/i18n';
 import { padding, screenWidth } from '@styles/spacing';
@@ -11,14 +11,12 @@ import { useDefaultPersons } from '@context/DefaultPersonsContext';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 // TODO missing a back button on screen
-// TODO: Implement background sync solution for better UX - current implementation blocks UI during scaling
 export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsProp) {
   const { t } = useI18n();
   const { colors } = useTheme();
   const { defaultPersons, setDefaultPersons: setDefaultPersonsContext } = useDefaultPersons();
   const { scaleAllRecipesForNewDefaultPersons } = useRecipeDatabase();
   const [persons, setPersons] = useState(defaultPersons);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     defaultPersonsSettingsLogger.debug('Loaded default persons from context', {
@@ -34,17 +32,24 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
       newPersons: persons,
     });
 
-    setIsLoading(true);
-
     await setDefaultPersonsContext(persons);
-    defaultPersonsSettingsLogger.info('Starting recipe scaling for new default persons', {
-      persons,
-    });
-    await scaleAllRecipesForNewDefaultPersons(persons);
-
-    defaultPersonsSettingsLogger.info('Recipe scaling completed');
-    setIsLoading(false);
     navigation.goBack();
+
+    defaultPersonsSettingsLogger.info(
+      'Starting recipe scaling for new default persons in background',
+      {
+        persons,
+      }
+    );
+
+    scaleAllRecipesForNewDefaultPersons(persons).then(() =>
+      defaultPersonsSettingsLogger.info(
+        'Finished recipe scaling for new default persons in background',
+        {
+          persons,
+        }
+      )
+    );
   };
 
   const screenTestId = 'DefaultPersonSettings';
@@ -89,22 +94,12 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
         </View>
       </View>
 
-      {isLoading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator testID={screenTestId + '::Loading'} size='large' />
-          <Text testID={screenTestId + '::LoadingText'} style={{ marginTop: padding.small }}>
-            {t('updating_recipes')}
-          </Text>
-        </View>
-      )}
-
       <View style={styles.buttonContainer}>
         <Button
           testID={screenTestId + '::Cancel'}
           mode='outlined'
           onPress={() => navigation.goBack()}
           style={styles.button}
-          disabled={isLoading}
         >
           {t('cancel')}
         </Button>
@@ -114,7 +109,6 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
           mode='contained'
           onPress={handleSave}
           style={styles.button}
-          disabled={isLoading}
         >
           {t('save')}
         </Button>
@@ -136,10 +130,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: padding.small,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    marginTop: padding.medium,
   },
   buttonContainer: {
     flexDirection: 'row',
