@@ -30,8 +30,7 @@ tags:
     element:
       id: "RecipeImage::Image"
     direction: UP
-    speed: 80
-    centerElement: true
+    speed: 95
     label: "Action - Scroll back to top"
 
 - runFlow:

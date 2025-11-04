@@ -27,7 +27,8 @@ appId: "com.recipedia"
     element:
       id: "RecipeTags::RoundButton"
     direction: DOWN
-    speed: 80
+    speed: 60
+    centerElement: true
     label: "Scroll down to find add tag button"
 
 - tapOn:

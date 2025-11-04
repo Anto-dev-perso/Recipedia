@@ -1,6 +1,13 @@
 appId: "com.recipedia"
 ---
 # Route to appropriate flow based on STATE
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::5"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to meat accordion"
 
 # STATE="filtered": Some items visible (filter applied)
 - runFlow:

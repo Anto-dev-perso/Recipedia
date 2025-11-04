@@ -50,10 +50,11 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePersons"
+      id: "RecipePersons::NumericTextInput"
     direction: DOWN
     speed: 60
     centerElement: true
+    label: "Scroll down to persons part"
 
 - assertVisible:
     id: "RecipePersons::PrefixText"
@@ -300,7 +301,6 @@ appId: "com.recipedia"
     id: "RecipePreparation::TextRender::0::Step"
     text: "Preparation: step 1"
     label: "Preparation section for first step is rendered"
-
 
 - scrollUntilVisible:
     element:
