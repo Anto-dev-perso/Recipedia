@@ -20,8 +20,7 @@ describe('FilterAccordion Component', () => {
 
   const sampleFilteredIngredients = selectFilterCategoriesValuesToDisplay(
     sampleTags,
-    sampleIngredients,
-    t
+    sampleIngredients
   ).filter(section => section.data.length > 0);
 
   const mockAddFilter = jest.fn();
@@ -51,7 +50,12 @@ describe('FilterAccordion Component', () => {
       expect(getByTestId(`${accordionTestId}::Title`).props.children).toEqual(expected[i].title);
       for (let j = 0; j < expected[i].data.length; ++j) {
         const itemTestId = `${accordionTestId}::Item::${j}`;
-        expect(getByTestId(itemTestId + '::Title').props.children).toEqual(expected[i].data[j]);
+        const filterType = expected[i].title;
+        const shouldTranslate =
+          filterType === nonIngredientFilters.prepTime ||
+          filterType === nonIngredientFilters.inSeason;
+        const expectedText = shouldTranslate ? t(expected[i].data[j]) : expected[i].data[j];
+        expect(getByTestId(itemTestId + '::Title').props.children).toEqual(expectedText);
         expect(getByTestId(itemTestId + '::CheckBox::Status').props.children).toEqual('unchecked');
       }
     }

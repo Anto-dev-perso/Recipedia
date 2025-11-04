@@ -29,26 +29,24 @@ import { homeLogger, searchLogger } from '@utils/logger';
  * Creates filter categories with available values for UI display
  *
  * Processes different filter types (tags, ingredients by type, prep time, seasonal)
- * and returns structured data for filter UI components.
+ * and returns structured data for filter UI components. Returns raw values (translation
+ * keys for translatable filters, user data for others) without translation.
  *
  * @param tagsList - Array of available tag names
  * @param ingredientsList - Array of available ingredients
- * @param t - Translation function for internationalization
- * @returns Array of filter categories with their available values
+ * @returns Array of filter categories with their available values (untranslated)
  *
  * @example
  * ```typescript
  * const filters = selectFilterCategoriesValuesToDisplay(
  *   ["Dessert", "Main Course"],
- *   ingredients,
- *   t
+ *   ingredients
  * );
  * ```
  */
 export function selectFilterCategoriesValuesToDisplay(
   tagsList: Array<string>,
-  ingredientsList: Array<ingredientTableElement>,
-  t: TFunction<'translation', undefined>
+  ingredientsList: Array<ingredientTableElement>
 ): Array<FiltersAppliedToDatabase> {
   return filtersCategories.map(category => {
     const filterApplyToDatabase: FiltersAppliedToDatabase = {
@@ -57,13 +55,13 @@ export function selectFilterCategoriesValuesToDisplay(
     };
     switch (category) {
       case listFilter.inSeason:
-        filterApplyToDatabase.data = new Array<string>(t(listFilter.inSeason));
+        filterApplyToDatabase.data = new Array<string>(listFilter.inSeason);
         break;
       case listFilter.tags:
         filterApplyToDatabase.data = tagsList;
         break;
       case listFilter.prepTime:
-        filterApplyToDatabase.data = prepTimeValues.map(time => t(time));
+        filterApplyToDatabase.data = prepTimeValues;
         break;
       case listFilter.recipeTitleInclude:
       case listFilter.purchased:
