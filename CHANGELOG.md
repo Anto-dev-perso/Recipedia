@@ -1,3 +1,9 @@
+## [0.19.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.19.0...v0.19.1) (2025-11-04)
+
+### Bug Fixes
+
+* **Filters:** remove redundant translation calls for filter values ([5909692](https://github.com/Anto-dev-perso/Recipedia/commit/59096921d23967fdbf6581cc36f99d863ed01dff))
+
 ## [0.19.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.18.3...v0.19.0) (2025-11-03)
 
 ### Features
