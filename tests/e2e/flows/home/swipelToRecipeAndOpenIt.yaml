@@ -4,9 +4,10 @@ appId: "com.recipedia"
     while:
       notVisible:
         text: ${recipeName}
+    times: 10
     commands:
       - swipe:
-          start: "80%,25%"
+          start: "75%,25%"
           end: "25%,25%"
           label: "Scroll random carousel until ${recipeName} is visible"
 

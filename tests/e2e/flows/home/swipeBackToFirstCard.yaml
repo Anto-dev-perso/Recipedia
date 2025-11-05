@@ -4,10 +4,11 @@ appId: "com.recipedia"
     while:
       notVisible:
         id: "Home::RecipeRecommendation::random::Carousel::Card::0"
+    times: 10
     commands:
       - swipe:
-          start: "1%,25%"
-          end: "99%,25%"
+          start: "5%,25%"
+          end: "95%,25%"
           label: "Scroll random carousel back to initial position"
 
 - swipe:
