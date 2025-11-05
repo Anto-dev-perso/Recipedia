@@ -13,3 +13,8 @@ appId: "com.recipedia"
 - tapOn:
     id: "DefaultPersonSettings::Save"
     label: "Save the new default persons value"
+
+- extendedWaitUntil:
+    visible: "MAESTRO_DELAY_WORKAROUND"
+    optional: true
+    timeout: 1000
