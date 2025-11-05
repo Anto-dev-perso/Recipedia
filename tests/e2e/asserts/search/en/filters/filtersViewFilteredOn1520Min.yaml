@@ -126,7 +126,6 @@ appId: "com.recipedia"
       STATE: "filtered"
       VISIBLE_ITEMS: "Olive Oil"
 
-
 - runFlow:
     file: "accordions/nutsAndSeeds.yaml"
     env:

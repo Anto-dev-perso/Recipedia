@@ -1,6 +1,13 @@
 appId: "com.recipedia"
 ---
-# Assert accordion is displayed
+- scrollUntilVisible:
+    element:
+      text: "Sauce"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to sauce accordion"
+
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Sauce accordion is displayed"

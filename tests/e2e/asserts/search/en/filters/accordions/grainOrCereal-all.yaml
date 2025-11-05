@@ -1,6 +1,13 @@
 appId: "com.recipedia"
 ---
-# Assert accordion is displayed
+- scrollUntilVisible:
+    element:
+      text: "Grain or Cereal"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to Grain or Cereal accordion"
+
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Grain or Cereal accordion is displayed"
@@ -9,12 +16,12 @@ appId: "com.recipedia"
     text: "Grain or Cereal"
     label: "Grain or Cereal accordion title is displayed"
 
-# Expand the accordion
+
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Expand Grain or Cereal accordion"
 
-# Assert all items are visible - reuse item flows
+
 - runFlow:
     file: "grainOrCereal-items/spaghetti-visible.yaml"
     env:
@@ -50,10 +57,10 @@ appId: "com.recipedia"
     env:
       ITEM_INDEX: "6"
 
-# Collapse the accordion back
+
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Collapse Grain or Cereal accordion"
 
-# Increment accordion index for next accordion
+
 - evalScript: ${output.accordionIndex = output.accordionIndex + 1}

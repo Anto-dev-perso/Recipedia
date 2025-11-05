@@ -1,7 +1,13 @@
 appId: "com.recipedia"
-
-
 ---
+- scrollUntilVisible:
+    element:
+      text: "Sauce"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to sauce accordion"
+
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Sauce accordion is displayed"
@@ -14,7 +20,6 @@ appId: "com.recipedia"
 - tapOn:
     text: "Sauce"
     label: "Expand Sauce accordion"
-
 
 # Initialize counter for visible items
 - evalScript: ${output.itemIndex = 0}
@@ -66,7 +71,6 @@ appId: "com.recipedia"
     when:
       true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Tomato Sauce')=== undefined}
     file: "sauce-items/tomatoSauce-hidden.yaml"
-
 
 # Collapse the accordion back
 - tapOn:

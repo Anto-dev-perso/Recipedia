@@ -92,7 +92,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+      id: "RecipeIngredients::PrefixText"
     direction: DOWN
     speed: 60
 
@@ -112,6 +112,13 @@ appId: "com.recipedia"
     id: "RecipeIngredients::Column3"
     text: "Name"
     label: "Column Ingredient name is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
     id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
     text: "400"
@@ -184,6 +191,7 @@ appId: "com.recipedia"
     element:
       id: "RecipePreparation::TextRender::0::Step"
     direction: DOWN
+    centerElement: true
     speed: 60
 
 - assertVisible:
@@ -223,6 +231,14 @@ appId: "com.recipedia"
     id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
     text: "Cook pasta"
     label: "First preparation step title is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll down to see the content of the step 1"
+
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Content"
     text: "Content of step 1 : "
@@ -236,6 +252,7 @@ appId: "com.recipedia"
       id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 60
+    centerElement: true
 
 - assertVisible:
     id: "RecipePreparation::TextRender::1::Step"
@@ -294,7 +311,6 @@ appId: "com.recipedia"
       text: "󰐕"
     direction: DOWN
     speed: 60
-
 
 - assertVisible:
     id: "RecipePreparation::AddButton::RoundButton"

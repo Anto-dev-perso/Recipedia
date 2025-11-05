@@ -1,5 +1,4 @@
 appId: "com.recipedia"
-
 ---
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
@@ -13,6 +12,14 @@ appId: "com.recipedia"
 - tapOn:
     text: "Grain or Cereal"
     label: "Expand Grain or Cereal accordion"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::${1+output.accordionIndex}"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to the next accordion to ensure all elements are displayed"
+
 
 # Initialize counter for visible items
 - evalScript: ${output.itemIndex = 0}
@@ -77,7 +84,6 @@ appId: "com.recipedia"
     env:
       ITEM_INDEX: ${output.itemIndex}
 
-
 - runFlow:
     when:
       true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Pizza Dough')=== undefined}
@@ -91,7 +97,6 @@ appId: "com.recipedia"
     env:
       ITEM_INDEX: ${output.itemIndex}
 
-
 - runFlow:
     when:
       true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Pasta')=== undefined}
@@ -104,7 +109,6 @@ appId: "com.recipedia"
     file: "grainOrCereal-items/sushiRice-visible.yaml"
     env:
       ITEM_INDEX: ${output.itemIndex}
-
 
 - runFlow:
     when:
