@@ -38,6 +38,7 @@ import Constants from 'expo-constants';
 import pkg from '@app/package.json';
 import { initialRecipesImages } from '@utils/Constants';
 import { filesystemLogger } from '@utils/logger';
+import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
 export class FileGestion {
   static #instance: FileGestion;
@@ -335,6 +336,38 @@ export class FileGestion {
   }
 
   /* PROTECTED METHODS */
+}
+
+/**
+ * Transforms dataset recipe images from bare filenames to full URIs
+ *
+ * Converts recipe image sources from simple filenames (e.g., 'spaghetti_bolognese.png')
+ * to full file system URIs (e.g., 'file:///documents/Recipedia/spaghetti_bolognese.png').
+ * This is used during dataset initialization to ensure dataset recipes use the same
+ * URI format as user-created recipes.
+ *
+ * @param recipes - Array of recipes with bare filename image sources
+ * @param directoryUri - Base directory URI to prepend to filenames
+ * @returns New array of recipes with transformed image URIs
+ *
+ * @example
+ * ```typescript
+ * const dataset = getDataset('en');
+ * const transformed = transformDatasetRecipeImages(
+ *   dataset.recipes,
+ *   FileGestion.getInstance().get_directoryUri()
+ * );
+ * // Recipe with image_Source: 'pasta.png' becomes 'file:///documents/Recipedia/pasta.png'
+ * ```
+ */
+export function transformDatasetRecipeImages(
+  recipes: recipeTableElement[],
+  directoryUri: string
+): recipeTableElement[] {
+  return recipes.map(recipe => ({
+    ...recipe,
+    image_Source: directoryUri + recipe.image_Source,
+  }));
 }
 
 export default FileGestion;
