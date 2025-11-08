@@ -12,6 +12,14 @@ function toSlug(name: string): string {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+function versionToCode(version: string): number {
+    const parts = version.split('.').map(Number);
+    const major = parts[0] || 0;
+    const minor = parts[1] || 0;
+    const patch = parts[2] || 0;
+    return major * 10000 + minor * 100 + patch;
+}
+
 const configuredName = toSlug(pkg.name);
 const appId = `com.${toIdentifierSegment(pkg.name)}`;
 
@@ -44,11 +52,13 @@ export default ({config}: ConfigContext): ExpoConfig => {
         ios: {
             supportsTablet: true,
             bundleIdentifier: appId,
+            buildNumber: pkg.version,
             infoPlist: {
                 "ITSAppUsesNonExemptEncryption": false
             }
         },
         android: {
+            versionCode: versionToCode(pkg.version),
             adaptiveIcon: {
                 foregroundImage: './src/assets/app/adaptative_icon.png',
                 backgroundColor: primaryColorLight,
