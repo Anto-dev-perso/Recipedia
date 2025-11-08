@@ -25,3 +25,9 @@ appId: "com.recipedia"
     when:
       platform: Android
 # TODO iOS
+
+- extendedWaitUntil:
+    visible:
+      id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    timeout: 10000
+    label: "Wait for first ingredient to be populated by OCR"

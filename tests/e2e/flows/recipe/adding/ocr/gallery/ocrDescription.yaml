@@ -5,6 +5,7 @@ appId: "com.recipedia"
       id: "RecipeDescription::OpenModal::RoundButton"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll to description section"
 
 - tapOn:
@@ -25,3 +26,9 @@ appId: "com.recipedia"
     when:
       platform: Android
 # TODO iOS
+
+- extendedWaitUntil:
+    visible:
+      id: "RecipeDescription::CustomTextInput"
+    timeout: 10000
+    label: "Wait for description to be populated by OCR"
