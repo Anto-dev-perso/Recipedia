@@ -1,3 +1,13 @@
+## [0.20.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.19.1...v0.20.0) (2025-11-08)
+
+### Features
+
+* **RecipeDatabase:** transform dataset image filenames to full URIs ([95c2550](https://github.com/Anto-dev-perso/Recipedia/commit/95c2550aee6ec1d73f5ad0f35878c6dc3e780be2))
+
+### Bug Fixes
+
+* dataset image store in database ([#116](https://github.com/Anto-dev-perso/Recipedia/issues/116)) ([8a377cf](https://github.com/Anto-dev-perso/Recipedia/commit/8a377cf29c0e6887db02313184c621000d7eaa25))
+
 ## [0.19.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.19.0...v0.19.1) (2025-11-04)
 
 ### Bug Fixes
