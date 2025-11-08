@@ -9,7 +9,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -47,7 +47,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -83,7 +83,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -121,7 +121,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -157,7 +157,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -193,7 +193,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Classic Pancakes'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -231,7 +231,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -267,7 +267,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -303,7 +303,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Classic Pancakes'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -348,7 +348,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '50',
       recipesTitle: ['Caesar Salad'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -368,7 +368,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -404,7 +404,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -440,7 +440,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Classic Pancakes'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -485,7 +485,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '50',
       recipesTitle: ['Caesar Salad'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -503,7 +503,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '250',
       recipesTitle: ['Margherita Pizza'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -532,7 +532,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -568,7 +568,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -604,7 +604,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Classic Pancakes'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -649,7 +649,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '50',
       recipesTitle: ['Caesar Salad'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -667,7 +667,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '250',
       recipesTitle: ['Margherita Pizza'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -732,7 +732,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -768,7 +768,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -804,7 +804,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '400',
       recipesTitle: ['Classic Pancakes', 'Chocolate Cake'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -849,7 +849,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '50',
       recipesTitle: ['Caesar Salad'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -867,7 +867,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '250',
       recipesTitle: ['Margherita Pizza'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -950,7 +950,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -986,7 +986,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -1022,7 +1022,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '400',
       recipesTitle: ['Classic Pancakes', 'Chocolate Cake'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1067,7 +1067,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '50',
       recipesTitle: ['Caesar Salad'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1085,7 +1085,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '250',
       recipesTitle: ['Margherita Pizza'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1166,7 +1166,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Pesto Pasta'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1195,7 +1195,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1231,7 +1231,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -1267,7 +1267,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '400',
       recipesTitle: ['Classic Pancakes', 'Chocolate Cake'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1312,7 +1312,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '50',
       recipesTitle: ['Caesar Salad'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1330,7 +1330,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '250',
       recipesTitle: ['Margherita Pizza'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1411,7 +1411,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Pesto Pasta'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1438,7 +1438,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '250',
       recipesTitle: ['Sushi Rolls'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1485,7 +1485,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Spaghetti Bolognese'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1521,7 +1521,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '6',
       recipesTitle: ['Chicken Tacos'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'pieces',
     },
     {
@@ -1557,7 +1557,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '400',
       recipesTitle: ['Classic Pancakes', 'Chocolate Cake'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1602,7 +1602,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '50',
       recipesTitle: ['Caesar Salad'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1620,7 +1620,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '250',
       recipesTitle: ['Margherita Pizza'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1701,7 +1701,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '200',
       recipesTitle: ['Pesto Pasta'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {
@@ -1728,7 +1728,7 @@ export const testShopping: Array<Array<shoppingListTableElement>> = [
       purchased: false,
       quantity: '250',
       recipesTitle: ['Sushi Rolls'],
-      type: listFilter.grainOrCereal,
+      type: listFilter.cereal,
       unit: 'g',
     },
     {

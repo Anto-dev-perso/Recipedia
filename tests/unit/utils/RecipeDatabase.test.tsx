@@ -274,7 +274,7 @@ describe('RecipeDatabase', () => {
           purchased: false,
           quantity: '200',
           recipesTitle: ['Pesto Pasta'],
-          type: listFilter.grainOrCereal,
+          type: listFilter.cereal,
           unit: 'g',
         },
         {
@@ -319,7 +319,7 @@ describe('RecipeDatabase', () => {
           purchased: false,
           quantity: '6',
           recipesTitle: ['Chicken Tacos'],
-          type: listFilter.grainOrCereal,
+          type: listFilter.cereal,
           unit: 'pieces',
         },
         {
@@ -364,7 +364,7 @@ describe('RecipeDatabase', () => {
           purchased: false,
           quantity: '50',
           recipesTitle: ['Caesar Salad'],
-          type: listFilter.grainOrCereal,
+          type: listFilter.cereal,
           unit: 'g',
         },
         {
@@ -1333,11 +1333,11 @@ describe('RecipeDatabase', () => {
     // TODO implement and test cases where we verify an ingredient but it doesn't exist (yet)
 
     test('getRandomIngredientsByType returns correct number of ingredients', () => {
-      const grainIngredients = db.getRandomIngredientsByType(ingredientType.grainOrCereal, 2);
+      const grainIngredients = db.getRandomIngredientsByType(ingredientType.cereal, 2);
       expect(grainIngredients.length).toBeLessThanOrEqual(2);
 
       grainIngredients.forEach(ingredient => {
-        expect(ingredient.type).toBe(ingredientType.grainOrCereal);
+        expect(ingredient.type).toBe(ingredientType.cereal);
       });
 
       const uniqueIngredients = new Set(grainIngredients.map(ingredient => ingredient.id));
@@ -1345,7 +1345,7 @@ describe('RecipeDatabase', () => {
     });
 
     test('getRandomIngredientsByType handles edge cases', () => {
-      const zeroIngredients = db.getRandomIngredientsByType(ingredientType.grainOrCereal, 0);
+      const zeroIngredients = db.getRandomIngredientsByType(ingredientType.cereal, 0);
       expect(zeroIngredients).toEqual([]);
 
       const meatIngredients = db.getRandomIngredientsByType(ingredientType.meat, 1000);

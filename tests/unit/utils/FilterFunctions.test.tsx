@@ -278,7 +278,7 @@ describe('FilterFunctions', () => {
 
     expect(filterFromRecipe(testRecipes, filtersIngredientType, t)).toEqual(expectedArr);
 
-    addValueToMultimap(filtersIngredientType, listFilter.grainOrCereal, 'Taco Shells');
+    addValueToMultimap(filtersIngredientType, listFilter.cereal, 'Taco Shells');
     expectedArr = new Array<recipeTableElement>(testRecipes[1]);
 
     expect(filterFromRecipe(testRecipes, filtersIngredientType, t)).toEqual(expectedArr);
@@ -325,7 +325,7 @@ describe('FilterFunctions', () => {
     const filtersMixed = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
       [listFilter.tags, ['Quick Meal']],
     ]);
 
@@ -345,7 +345,7 @@ describe('FilterFunctions', () => {
     let expectedMultiMap = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
     ]);
     expect(workingFilters).toEqual(expectedMultiMap);
 
@@ -353,22 +353,22 @@ describe('FilterFunctions', () => {
     expectedMultiMap = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3]]],
       [listFilter.purchased, ['true']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
     ]);
     expect(workingFilters).toEqual(expectedMultiMap);
 
     removeValueToMultimap(workingFilters, listFilter.purchased, 'true');
     expectedMultiMap = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3]]],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
     ]);
     expect(workingFilters).toEqual(expectedMultiMap);
 
     removeValueToMultimap(workingFilters, listFilter.prepTime, prepTimeValues[3]);
-    expectedMultiMap = new Map<TListFilter, Array<string>>([[listFilter.grainOrCereal, ['Pasta']]]);
+    expectedMultiMap = new Map<TListFilter, Array<string>>([[listFilter.cereal, ['Pasta']]]);
     expect(workingFilters).toEqual(expectedMultiMap);
 
-    removeValueToMultimap(workingFilters, listFilter.grainOrCereal, 'Pasta');
+    removeValueToMultimap(workingFilters, listFilter.cereal, 'Pasta');
     expect(workingFilters.size).toEqual(0);
     expect(workingFilters).toEqual(new Map<TListFilter, Array<string>>());
   });
@@ -377,7 +377,7 @@ describe('FilterFunctions', () => {
     const filtersMixed = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
       [listFilter.tags, ['Quick Meal']],
     ]);
     const expectedResult = new Array<string>(
@@ -409,13 +409,13 @@ describe('FilterFunctions', () => {
     filtersMixed = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
       [listFilter.tags, ['Quick Meal']],
     ]);
     expectedResult = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
       [listFilter.tags, ['Quick Meal']],
       [listFilter.recipeTitleInclude, ['New title']],
     ]);
@@ -426,7 +426,7 @@ describe('FilterFunctions', () => {
     filtersMixed = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
       [listFilter.tags, ['Quick Meal']],
       [listFilter.recipeTitleInclude, ['A recipe title']],
     ]);
@@ -439,13 +439,13 @@ describe('FilterFunctions', () => {
     let filtersMixed = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
       [listFilter.tags, ['Quick Meal']],
     ]);
     let expectedResult = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
       [listFilter.tags, ['Quick Meal']],
     ]);
 
@@ -455,7 +455,7 @@ describe('FilterFunctions', () => {
     filtersMixed = new Map<TListFilter, Array<string>>([
       [listFilter.prepTime, [prepTimeValues[3], prepTimeValues[3]]],
       [listFilter.purchased, ['true', 'false']],
-      [listFilter.grainOrCereal, ['Pasta']],
+      [listFilter.cereal, ['Pasta']],
       [listFilter.tags, ['Quick Meal']],
       [listFilter.recipeTitleInclude, ['A recipe title']],
     ]);
@@ -731,7 +731,7 @@ describe('FilterFunctions', () => {
       const nonExistingGrain: ingredientTableElement = {
         name: 'NonExistentGrainCandidate',
         unit: 'g',
-        type: ingredientType.grainOrCereal,
+        type: ingredientType.cereal,
         season: ['*'],
       };
 

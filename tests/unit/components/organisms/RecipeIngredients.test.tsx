@@ -34,7 +34,7 @@ jest.mock('@expo/vector-icons', () => require('@mocks/deps/expo-vector-icons-moc
 
 describe('RecipeIngredients Component', () => {
   const sampleIngredients: ingredientTableElement[] = [
-    { quantity: '2', unit: 'cups', name: 'flour', type: ingredientType.grainOrCereal, season: [] },
+    { quantity: '2', unit: 'cups', name: 'flour', type: ingredientType.cereal, season: [] },
     { quantity: '1', unit: 'tsp', name: 'salt', type: ingredientType.condiment, season: [] },
     { quantity: '3', unit: 'tbsp', name: 'sugar', type: ingredientType.condiment, season: [] },
   ];

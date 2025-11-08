@@ -962,7 +962,7 @@ describe('Recipe Component tests', () => {
           purchased: false,
           quantity: '6',
           recipesTitle: ['Chicken Tacos'],
-          type: listFilter.grainOrCereal,
+          type: listFilter.cereal,
           unit: 'pieces',
         },
         {

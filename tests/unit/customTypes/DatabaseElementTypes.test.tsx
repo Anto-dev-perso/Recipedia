@@ -27,14 +27,14 @@ describe('DatabaseElementTypes Helper Functions', () => {
         name: 'Flour',
         unit: 'g',
         quantity: '200',
-        type: ingredientType.grainOrCereal,
+        type: ingredientType.cereal,
         season: ['*'],
       },
       {
         name: 'Spaghetti',
         unit: 'g',
         quantity: '200',
-        type: ingredientType.grainOrCereal,
+        type: ingredientType.cereal,
         season: ['*'],
       },
     ];
@@ -44,7 +44,7 @@ describe('DatabaseElementTypes Helper Functions', () => {
     expect(result.length).toBe(1);
     expect(result[0]).toEqual(ingredients[0]);
 
-    filter = ingredientType.grainOrCereal;
+    filter = ingredientType.cereal;
     result = arrayOfType(ingredients, filter);
     expect(result).toBeInstanceOf(Array);
     expect(result.length).toBe(2);
@@ -73,14 +73,14 @@ describe('DatabaseElementTypes Helper Functions', () => {
         name: 'Flour',
         unit: 'g',
         quantity: '200',
-        type: ingredientType.grainOrCereal,
+        type: ingredientType.cereal,
         season: ['*'],
       },
       {
         name: 'Spaghetti',
         unit: 'g',
         quantity: '200',
-        type: ingredientType.grainOrCereal,
+        type: ingredientType.cereal,
         season: ['*'],
       }
     );

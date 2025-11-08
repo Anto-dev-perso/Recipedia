@@ -17,7 +17,7 @@ tags:
 
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::3"
-    label: "Action - Expand Grain or Cereal accordion"
+    label: "Action - Expand Cereal accordion"
 
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::3::Item::0"

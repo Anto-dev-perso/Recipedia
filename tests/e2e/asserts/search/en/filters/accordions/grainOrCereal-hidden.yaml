@@ -2,5 +2,5 @@ appId: "com.recipedia"
 ---
 # Assert accordion is NOT displayed
 - assertNotVisible:
-    text: "Grain or Cereal"
-    label: "Grain or Cereal accordion is not displayed"
+    text: "Cereal"
+    label: "Cereal accordion is not displayed"

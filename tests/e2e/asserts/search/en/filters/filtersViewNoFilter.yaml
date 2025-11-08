@@ -35,12 +35,12 @@ appId: "com.recipedia"
       STATE: "all"
     label: "Assert Tags accordion with all items visible"
 
-# Accordion 3: Grain or Cereal
+# Accordion 3: Cereal
 - runFlow:
     file: "accordions/grainOrCereal.yaml"
     env:
       STATE: "all"
-    label: "Assert Grain or Cereal accordion with all items visible"
+    label: "Assert Cereal accordion with all items visible"
 
 # Accordion 4: Legumes
 - runFlow:

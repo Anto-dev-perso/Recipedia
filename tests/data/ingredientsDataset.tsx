@@ -5,7 +5,7 @@ export const testIngredients: ingredientTableElement[] = [
     id: 1,
     name: 'Spaghetti',
     unit: 'g',
-    type: ingredientType.grainOrCereal,
+    type: ingredientType.cereal,
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   },
   {
@@ -33,7 +33,7 @@ export const testIngredients: ingredientTableElement[] = [
     id: 5,
     name: 'Taco Shells',
     unit: 'pieces',
-    type: ingredientType.grainOrCereal,
+    type: ingredientType.cereal,
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   },
   {
@@ -61,7 +61,7 @@ export const testIngredients: ingredientTableElement[] = [
     id: 9,
     name: 'Flour',
     unit: 'g',
-    type: ingredientType.grainOrCereal,
+    type: ingredientType.cereal,
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   },
   {
@@ -96,7 +96,7 @@ export const testIngredients: ingredientTableElement[] = [
     id: 14,
     name: 'Croutons',
     unit: 'g',
-    type: ingredientType.grainOrCereal,
+    type: ingredientType.cereal,
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   },
   {
@@ -166,7 +166,7 @@ export const testIngredients: ingredientTableElement[] = [
     id: 24,
     name: 'Sushi Rice',
     unit: 'g',
-    type: ingredientType.grainOrCereal,
+    type: ingredientType.cereal,
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   },
   {
@@ -230,14 +230,14 @@ export const testIngredients: ingredientTableElement[] = [
     id: 33,
     name: 'Pizza Dough',
     unit: 'g',
-    type: ingredientType.grainOrCereal,
+    type: ingredientType.cereal,
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   },
   {
     id: 34,
     name: 'Pasta',
     unit: 'g',
-    type: ingredientType.grainOrCereal,
+    type: ingredientType.cereal,
     season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   },
   {
