@@ -1,4 +1,4 @@
-name: "47 - Duplicate Recipe Fuzzy Detection Flow"
+name: "50 - Duplicate Recipe Ingredients Detection Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
@@ -34,62 +34,6 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: "RecipeImage::Image"
-    direction: UP
-    speed: 95
-
-- runFlow:
-    file: "../../flows/recipe/adding/setRecipeTitle.yaml"
-    env:
-      TITLE: "Test Recip"
-    label: "Action - Change title to fuzzy match"
-
-- tapOn:
-    id: "RecipeValidate"
-    label: "Action - Validate recipe"
-
-- runFlow:
-    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
-    label: "Assert - Verify duplicate alert appears"
-
-- tapOn:
-    id: "Recipe::Dialog::Cancel"
-    label: "Action - Cancel adding duplicate recipe"
-
-- tapOn:
-    id: "BackButton::RoundButton"
-    label: "Action - Close recipe screen"
-
-- runFlow:
-    file: "../../flows/recipe/adding/createRecipeWithScaledQuantities.yaml"
-    label: "Action - Create recipe with scaled quantities"
-
-- runFlow:
-    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
-    label: "Assert - Verify duplicate alert appears"
-
-- tapOn:
-    id: "Recipe::Dialog::Cancel"
-    label: "Action - Cancel adding duplicate recipe"
-
-- tapOn:
-    id: "BackButton::RoundButton"
-    label: "Action - Close recipe screen"
-
-- runFlow:
-    file: "../../flows/recipe/adding/createRecipeWithCloseQuantities.yaml"
-    label: "Action - Create recipe with close quantities"
-
-- runFlow:
-    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
-    label: "Assert - Verify duplicate alert appears"
-
-- tapOn:
-    id: "Recipe::Dialog::Cancel"
-    label: "Action - Cancel adding duplicate recipe"
-
-- scrollUntilVisible:
-    element:
       id: "RecipeIngredients::PrefixText"
     direction: UP
     speed: 60
@@ -112,11 +56,11 @@ tags:
 
 - tapOn:
     id: "RecipeValidate"
-    label: "Action - Validate recipe"
+    label: "Action - Validate recipe with extra ingredient"
 
 - runFlow:
     file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
-    label: "Assert - Verify duplicate alert appears"
+    label: "Assert - Verify duplicate alert appears (extra ingredient ignored)"
 
 - tapOn:
     id: "Recipe::Dialog::Cancel"
@@ -124,7 +68,17 @@ tags:
 
 - tapOn:
     id: "BackButton::RoundButton"
-    label: "Cleanup - Return to home screen"
+    label: "Action - Go back to home"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createRecipeWithDifferentIngredients.yaml"
+    label: "Action - Create recipe with different ingredients"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert - Verify recipe added successfully (no duplicate)"
 
 - tapOn:
     id: "ReduceButton::RoundButton"

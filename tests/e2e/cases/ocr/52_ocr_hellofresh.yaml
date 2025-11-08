@@ -1,4 +1,4 @@
-name: "52 - OCR Quitoque V2 French Flow"
+name: "52 - OCR HelloFresh Gallery Flow"
 appId: "com.recipedia"
 tags:
   - recipe-create
@@ -8,22 +8,10 @@ tags:
     label: "Setup - Launch app"
 
 - evalScript: ${output.isDescriptionToOCR = true}
-- evalScript: ${output.isTagsToOCR = false}
-- evalScript: ${output.isPersons = true}
+- evalScript: ${output.isTagsToOCR = true}
+- evalScript: ${output.isPersons = false}
 - evalScript: ${output.isTime = false}
-- evalScript: ${output.isNutritionToOCR = true}
-
-- tapOn:
-    id: "BottomTabs::Parameters"
-    label: "Setup - Navigate to Parameters screen"
-
-- runFlow:
-    file: "../../flows/parameters/language/switchToFrench.yaml"
-    label: "Setup - Switch to French for OCR"
-
-- tapOn:
-    id: "BottomTabs::Home"
-    label: "Setup - Navigate to Home screen"
+- evalScript: ${output.isNutritionToOCR = false}
 
 - tapOn:
     id: "ExpandButton::RoundButton"
@@ -32,14 +20,14 @@ tags:
 - runFlow:
     file: "../../flows/recipe/adding/ocr/gallery/addRecipeFromGallery.yaml"
     env:
-      RECIPE_NAME: quitoqueV2
+      RECIPE_NAME: hellofresh
     label: "Action - Add recipe from gallery using OCR"
 
 - runFlow:
-    file: "../../asserts/alerts/fr/recipeAddedToDatabase.yaml"
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
     env:
-      RECIPE_NAME: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
-    label: "Assert - Verify recipe added successfully (French)"
+      RECIPE_NAME: "Aiguillettes de poulet façon teriyaki avec des légumes poêlés & du riz basmati"
+    label: "Assert - Verify recipe added successfully"
 
 - tapOn:
     id: "ReduceButton::RoundButton"
@@ -54,7 +42,7 @@ tags:
     label: "Verification - Focus on search bar"
 
 - inputText:
-    text: "SATAY"
+    text: "teriyaki"
     label: "Verification - Search for new recipe"
 
 - pressKey: enter
@@ -64,8 +52,8 @@ tags:
     label: "Verification - Open newly created recipe"
 
 - runFlow:
-    file: "../../asserts/recipe/readonly/fr/pouletSatay.yaml"
-    label: "Assert - Verify recipe content in read-only mode (French UI)"
+    file: "../../asserts/recipe/readonly/en/aiguillettesTeriyaki.yaml"
+    label: "Assert - Verify recipe content in read-only mode"
 
 - tapOn:
     id: "BackButton::RoundButton"
@@ -74,14 +62,6 @@ tags:
 - tapOn:
     id: "SearchScreen::SearchBar::RightIcon"
     label: "Cleanup - Clear search filter"
-
-- tapOn:
-    id: "BottomTabs::Parameters"
-    label: "Cleanup - Navigate to Parameters screen"
-
-- runFlow:
-    file: "../../flows/parameters/language/switchToEnglish.yaml"
-    label: "Cleanup - Switch back to English"
 
 - tapOn:
     id: "BottomTabs::Home"
