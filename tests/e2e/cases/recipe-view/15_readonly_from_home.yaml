@@ -8,10 +8,6 @@ env:
 - launchApp:
     label: "Setup - Launch app"
 
-- tapOn:
-    id: "BottomTabs::Home"
-    label: "Action - Navigate to Home screen"
-
 - runFlow:
     file: "../../flows/home/swipelToRecipeAndOpenIt.yaml"
     env:

@@ -115,6 +115,12 @@ appId: "com.recipedia"
       \ a la sauce satay."
     label: "Preparation #1 paragraph input text id is displayed with the correct text"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Title"
+    direction: UP
+    speed: 40
+
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Title"
     text: "Title of step 1 : "
