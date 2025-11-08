@@ -54,7 +54,7 @@
 
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { RecipeDatabase } from '@utils/RecipeDatabase';
-import FileGestion from '@utils/FileGestion';
+import FileGestion, { transformDatasetRecipeImages } from '@utils/FileGestion';
 import {
   ingredientTableElement,
   ingredientType,
@@ -205,7 +205,12 @@ export const RecipeDatabaseProvider: React.FC<{
 
             await db.addMultipleIngredients(dataset.ingredients);
             await db.addMultipleTags(dataset.tags);
-            await db.addMultipleRecipes(dataset.recipes);
+
+            const recipesWithFullImageUris = transformDatasetRecipeImages(
+              dataset.recipes,
+              FileGestion.getInstance().get_directoryUri()
+            );
+            await db.addMultipleRecipes(recipesWithFullImageUris);
 
             databaseLogger.info('Dataset loaded successfully', {
               ingredientsCount: dataset.ingredients.length,
