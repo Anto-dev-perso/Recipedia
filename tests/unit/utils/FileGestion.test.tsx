@@ -1,7 +1,8 @@
-import { FileGestion } from '@utils/FileGestion';
+import { FileGestion, transformDatasetRecipeImages } from '@utils/FileGestion';
 import * as FileSystem from 'expo-file-system';
 import Constants from 'expo-constants';
 import { Asset } from 'expo-asset';
+import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
 jest.mock('expo-file-system', () =>
   require('@mocks/deps/expo-file-system-mock').expoFileSystemMock()
@@ -299,5 +300,167 @@ describe('FileGestion Utility', () => {
       expect(result).toBe(expected);
       jest.clearAllMocks();
     }
+  });
+});
+
+describe('transformDatasetRecipeImages', () => {
+  const directoryUri = 'file:///documents/Recipedia/';
+
+  test('transforms bare filename to full URI', () => {
+    const recipes: recipeTableElement[] = [
+      {
+        id: 1,
+        title: 'Spaghetti Bolognese',
+        description: 'A classic Italian pasta dish',
+        image_Source: 'spaghetti_bolognese.png',
+        preparation: [],
+        ingredients: [],
+        tags: [],
+        season: [],
+        time: 30,
+        persons: 4,
+      },
+    ];
+
+    const result = transformDatasetRecipeImages(recipes, directoryUri);
+
+    expect(result[0].image_Source).toBe('file:///documents/Recipedia/spaghetti_bolognese.png');
+  });
+
+  test('transforms multiple recipes', () => {
+    const recipes: recipeTableElement[] = [
+      {
+        id: 1,
+        title: 'Recipe 1',
+        description: 'First recipe',
+        image_Source: 'image1.png',
+        preparation: [],
+        ingredients: [],
+        tags: [],
+        season: [],
+        time: 20,
+        persons: 4,
+      },
+      {
+        id: 2,
+        title: 'Recipe 2',
+        description: 'Second recipe',
+        image_Source: 'image2.jpg',
+        preparation: [],
+        ingredients: [],
+        tags: [],
+        season: [],
+        time: 15,
+        persons: 2,
+      },
+    ];
+
+    const result = transformDatasetRecipeImages(recipes, directoryUri);
+
+    expect(result[0].image_Source).toBe('file:///documents/Recipedia/image1.png');
+    expect(result[1].image_Source).toBe('file:///documents/Recipedia/image2.jpg');
+  });
+
+  test('preserves all other recipe properties', () => {
+    const recipes: recipeTableElement[] = [
+      {
+        id: 1,
+        title: 'Test Recipe',
+        description: 'Test description',
+        image_Source: 'test.png',
+        preparation: [{ title: 'Step 1', description: 'Test step' }],
+        ingredients: [],
+        tags: [{ id: 1, name: 'Test Tag' }],
+        season: ['1', '2', '3'],
+        time: 45,
+        nutrition: {
+          energyKcal: 200,
+          energyKj: 840,
+          fat: 5,
+          saturatedFat: 2,
+          carbohydrates: 30,
+          sugars: 5,
+          fiber: 3,
+          protein: 10,
+          salt: 1,
+          portionWeight: 100,
+        },
+        persons: 4,
+      },
+    ];
+
+    const result = transformDatasetRecipeImages(recipes, directoryUri);
+
+    expect(result[0].id).toBe(1);
+    expect(result[0].title).toBe('Test Recipe');
+    expect(result[0].description).toBe('Test description');
+    expect(result[0].preparation).toEqual([{ title: 'Step 1', description: 'Test step' }]);
+    expect(result[0].tags).toEqual([{ id: 1, name: 'Test Tag' }]);
+    expect(result[0].season).toEqual(['1', '2', '3']);
+    expect(result[0].time).toBe(45);
+    expect(result[0].nutrition).toEqual({
+      energyKcal: 200,
+      energyKj: 840,
+      fat: 5,
+      saturatedFat: 2,
+      carbohydrates: 30,
+      sugars: 5,
+      fiber: 3,
+      protein: 10,
+      salt: 1,
+      portionWeight: 100,
+    });
+    expect(result[0].persons).toBe(4);
+  });
+
+  test('handles empty array', () => {
+    const recipes: recipeTableElement[] = [];
+
+    const result = transformDatasetRecipeImages(recipes, directoryUri);
+
+    expect(result).toEqual([]);
+  });
+
+  test('handles empty image_Source', () => {
+    const recipes: recipeTableElement[] = [
+      {
+        id: 1,
+        title: 'Recipe without image',
+        description: 'Recipe without an image',
+        image_Source: '',
+        preparation: [],
+        ingredients: [],
+        tags: [],
+        season: [],
+        time: 10,
+        persons: 4,
+      },
+    ];
+
+    const result = transformDatasetRecipeImages(recipes, directoryUri);
+
+    expect(result[0].image_Source).toBe('file:///documents/Recipedia/');
+  });
+
+  test('does not mutate original recipes array', () => {
+    const recipes: recipeTableElement[] = [
+      {
+        id: 1,
+        title: 'Test Recipe',
+        description: 'Test description',
+        image_Source: 'test.png',
+        preparation: [],
+        ingredients: [],
+        tags: [],
+        season: [],
+        time: 25,
+        persons: 4,
+      },
+    ];
+
+    const originalImageSource = recipes[0].image_Source;
+    transformDatasetRecipeImages(recipes, directoryUri);
+
+    expect(recipes[0].image_Source).toBe(originalImageSource);
   });
 });
