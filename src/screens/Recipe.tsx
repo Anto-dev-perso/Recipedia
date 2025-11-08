@@ -1506,7 +1506,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           onSelectFunction={async (imgSelected: string) => {
             const croppedUri = await cropImage(imgSelected, colors);
             if (croppedUri.length > 0) {
-              fillOneField(croppedUri, modalField);
+              await fillOneField(croppedUri, modalField);
               setModalField(undefined);
             }
           }}
