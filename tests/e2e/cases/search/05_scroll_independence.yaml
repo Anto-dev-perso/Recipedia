@@ -31,11 +31,11 @@ tags:
 - pressKey: "BACK"
 
 - assertVisible:
-    id: "SearchScreen::RecipeCards::0"
+    id: "SearchScreen::RecipeCards::0::Spaghetti Bolognese"
     label: "Assert - Verify first recipe card is visible (scroll independence verified)"
 
 - assertVisible:
-    id: "SearchScreen::RecipeCards::1"
+    id: "SearchScreen::RecipeCards::1::Chicken Tacos"
     label: "Assert - Verify second recipe card is visible"
 
 - tapOn:

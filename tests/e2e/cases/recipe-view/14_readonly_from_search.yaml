@@ -11,7 +11,7 @@ tags:
     label: "Action - Navigate to Search screen"
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::1"
+    id: "SearchScreen::RecipeCards::1::Chicken Tacos"
     label: "Action - Open Chicken Tacos recipe"
 
 - runFlow:

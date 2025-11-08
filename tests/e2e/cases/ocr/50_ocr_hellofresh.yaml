@@ -48,7 +48,7 @@ tags:
 - pressKey: enter
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::0"
+    id: "SearchScreen::RecipeCards::0::.*"
     label: "Verification - Open newly created recipe"
 
 - runFlow:

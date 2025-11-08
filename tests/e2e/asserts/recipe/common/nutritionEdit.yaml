@@ -28,17 +28,17 @@ appId: "com.recipedia"
     text: "${ENERGY_KJ}"
     label: "Energy kJ input is displayed with correct value"
 
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
+    text: "${FAT}"
+    label: "Fat input is displayed with correct value"
+
 - scrollUntilVisible:
     element:
       id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::NumericTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to end of nutrition table"
-
-- assertVisible:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
-    text: "${FAT}"
-    label: "Fat input is displayed with correct value"
 
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
@@ -81,8 +81,6 @@ appId: "com.recipedia"
     id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightNumericTextInput"
     text: "${PORTION_WEIGHT}"
     label: "Portion weight input is displayed with correct value"
-
-
 
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::EditForm::RemoveButton"

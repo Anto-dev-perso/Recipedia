@@ -22,7 +22,7 @@ appId: "com.recipedia"
     id: "Home::RecipeRecommendation::seasonal::SubHeader"
     label: "Seasonal recommendation section is displayed"
 - assertVisible:
-    id: "Home::RecipeRecommendation::seasonal::Carousel::Card::0"
+    id: "Home::RecipeRecommendation::seasonal::Carousel::Card::0::.*"
     label: "Seasonal recommendation has its first card"
 
 - scrollUntilVisible:
@@ -40,7 +40,6 @@ appId: "com.recipedia"
 - assertVisible:
     id: "Home::RecipeRecommendation::grain-1::Carousel::Card::0::.*"
     label: "First grain recommendation has its first card"
-
 
 - scrollUntilVisible:
     element:
@@ -105,7 +104,6 @@ appId: "com.recipedia"
 - assertVisible:
     id: "Home::RecipeRecommendation::tag-3::Carousel::Card::0::.*"
     label: "Third tag recommendation has its first card"
-
 
 - scrollUntilVisible:
     element:

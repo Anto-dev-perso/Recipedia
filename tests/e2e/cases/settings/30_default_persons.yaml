@@ -29,13 +29,13 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: "SearchScreen::RecipeCards::7"
+      id: "SearchScreen::RecipeCards::7::.*"
     direction: DOWN
     speed: 60
     label: "Action - Scroll to Pesto Pasta recipe"
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::7"
+    id: "SearchScreen::RecipeCards::7::.*"
     label: "Action - Open Pesto Pasta recipe"
 
 - runFlow:
@@ -59,7 +59,7 @@ tags:
     label: "Verification - Return to Search screen"
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::7"
+    id: "SearchScreen::RecipeCards::7::.*"
     label: "Verification - Open Pesto Pasta recipe"
 
 - runFlow:

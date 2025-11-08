@@ -43,7 +43,7 @@ tags:
 - pressKey: enter
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::0"
+    id: "SearchScreen::RecipeCards::0::.*"
     label: "Action - Open newly created recipe (first result)"
 
 - runFlow:

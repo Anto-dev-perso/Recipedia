@@ -27,7 +27,7 @@ tags:
     label: "Action - Scroll to Classic Pancakes recipe"
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::2"
+    id: "SearchScreen::RecipeCards::2::.*"
     label: "Action - Open Classic Pancakes recipe"
 
 - tapOn:
