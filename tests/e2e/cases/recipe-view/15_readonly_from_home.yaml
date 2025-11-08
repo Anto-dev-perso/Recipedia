@@ -5,8 +5,9 @@ tags:
 env:
   recipeName: "Vegetable Soup"
 ---
-- launchApp:
-    label: "Setup - Launch app"
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
 
 - runFlow:
     file: "../../flows/home/swipelToRecipeAndOpenIt.yaml"
