@@ -12,10 +12,10 @@ appId: "com.recipedia"
     id: "Home::RecipeRecommendation::random::SubHeader"
     label: "Random recommendation section is displayed"
 - assertVisible:
-    id: "Home::RecipeRecommendation::random::Carousel::Card::0"
+    id: "Home::RecipeRecommendation::random::Carousel::Card::0::.*"
     label: "Random recommendation has its first card"
 - assertVisible:
-    id: "Home::RecipeRecommendation::random::Carousel::Card::1"
+    id: "Home::RecipeRecommendation::random::Carousel::Card::1::.*"
     label: "Random recommendation has its second card"
 
 - assertVisible:
@@ -38,7 +38,7 @@ appId: "com.recipedia"
     text: "^.+-based$"
     label: "First grain-based recommendation is displayed"
 - assertVisible:
-    id: "Home::RecipeRecommendation::grain-1::Carousel::Card::0"
+    id: "Home::RecipeRecommendation::grain-1::Carousel::Card::0::.*"
     label: "First grain recommendation has its first card"
 
 
@@ -55,7 +55,7 @@ appId: "com.recipedia"
     text: "^.+-based$"
     label: "Second grain-based recommendation is displayed"
 - assertVisible:
-    id: "Home::RecipeRecommendation::grain-2::Carousel::Card::0"
+    id: "Home::RecipeRecommendation::grain-2::Carousel::Card::0::.*"
     label: "Second grain recommendation has its first card"
 
 - scrollUntilVisible:
@@ -71,7 +71,7 @@ appId: "com.recipedia"
     text: "^Tagged .+$"
     label: "First tag-based recommendation is displayed"
 - assertVisible:
-    id: "Home::RecipeRecommendation::tag-1::Carousel::Card::0"
+    id: "Home::RecipeRecommendation::tag-1::Carousel::Card::0::.*"
     label: "First tag recommendation has its first card"
 
 - scrollUntilVisible:
@@ -87,7 +87,7 @@ appId: "com.recipedia"
     text: "^Tagged .+$"
     label: "Second tag-based recommendation is displayed"
 - assertVisible:
-    id: "Home::RecipeRecommendation::tag-2::Carousel::Card::0"
+    id: "Home::RecipeRecommendation::tag-2::Carousel::Card::0::.*"
     label: "Second tag recommendation has its first card"
 
 - scrollUntilVisible:
@@ -103,7 +103,7 @@ appId: "com.recipedia"
     text: "^Tagged .+$"
     label: "Third tag-based recommendation is displayed"
 - assertVisible:
-    id: "Home::RecipeRecommendation::tag-3::Carousel::Card::0"
+    id: "Home::RecipeRecommendation::tag-3::Carousel::Card::0::.*"
     label: "Third tag recommendation has its first card"
 
 

@@ -3,7 +3,7 @@ appId: "com.recipedia"
 - repeat:
     while:
       notVisible:
-        id: "Home::RecipeRecommendation::random::Carousel::Card::0"
+        id: "Home::RecipeRecommendation::random::Carousel::Card::0::.*"
     times: 10
     commands:
       - swipe:
@@ -14,4 +14,4 @@ appId: "com.recipedia"
 - swipe:
     start: "20%,25%"
     end: "60%,25%"
-    label: "Ensure first card is visible"
+    label: "Ensure first card is visible by scrolling once more"

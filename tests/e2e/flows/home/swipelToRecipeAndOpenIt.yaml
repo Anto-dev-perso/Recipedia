@@ -3,7 +3,7 @@ appId: "com.recipedia"
 - repeat:
     while:
       notVisible:
-        text: ${recipeName}
+        id: "Home::RecipeRecommendation::random::Carousel::Card::.*::${recipeName}"
     times: 10
     commands:
       - swipe:
@@ -12,5 +12,5 @@ appId: "com.recipedia"
           label: "Scroll random carousel until ${recipeName} is visible"
 
 - tapOn:
-    text: ${recipeName}
+    id: "Home::RecipeRecommendation::random::Carousel::Card::.*::${recipeName}"
     label: "Open ${recipeName} recipe from random carousel"
