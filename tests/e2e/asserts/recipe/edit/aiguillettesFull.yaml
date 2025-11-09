@@ -8,6 +8,35 @@ appId: "com.recipedia"
     text: "󰐕"
     label: "Add tag button icons is displayed"
 
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::Content"
+    text: "Content of step 3 : "
+    label: "Preparation #3 content text is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
+    text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
+      \ ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson\
+      \ a feu moyen a vif."
+    label: "Preparation #3 paragraph input text id is displayed with the correct text"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::2::Title"
+    direction: UP
+    speed: 40
+    label: "Scroll to third preparation title"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::Title"
+    text: "Title of step 3 : "
+    label: "Preparation #3 title text is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
+    text: "LA CUISSON DU POULET"
+    label: "Preparation #3 paragraph title input text id is displayed with the correct text"
+
 - scrollUntilVisible:
     element:
       id: "RecipePreparation::TextRender::2::Step"
@@ -20,27 +49,41 @@ appId: "com.recipedia"
     text: "Preparation: step 3"
     label: "Preparation #3 step is displayed"
 
-- assertVisible:
-    id: "RecipePreparation::TextRender::2::Title"
-    text: "Title of step 3 : "
-    label: "Preparation #3 title text is displayed"
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::Content"
+    direction: UP
+    speed: 40
+    label: "Scroll to second preparation content"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
-    text: "LA CUISSON DU POULET"
-    label: "Preparation #3 paragraph title input text id is displayed with the correct text"
+    id: "RecipePreparation::TextRender::1::Content"
+    text: "Content of step 2 : "
+    label: "Preparation #2 content text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Content"
-    text: "Content of step 3 : "
-    label: "Preparation #3 content text is displayed"
+    id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+    text:
+      "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez\
+      \ et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\n\
+      Salez, poivrez. Mixez jusqu'a obtenir une texture homogene."
+    label: "Preparation #2 paragraph input text id is displayed with the correct text"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::Title"
+    direction: UP
+    speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
-    text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
-    \ ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson\
-    \ a feu moyen a vif."
-    label: "Preparation #3 paragraph input text id is displayed with the correct text"
+    id: "RecipePreparation::TextRender::1::Title"
+    text: "Title of step 2 : "
+    label: "Preparation #2 title text is displayed"
+
+- assertVisible:
+    id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
+    text: "La sauce"
+    label: "Preparation #2 paragraph title input text id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
@@ -53,38 +96,30 @@ appId: "com.recipedia"
     text: "Preparation: step 2"
     label: "Preparation #2 step is displayed"
 
-- assertVisible:
-    id: "RecipePreparation::TextRender::1::Title"
-    text: "Title of step 2 : "
-    label: "Preparation #2 title text is displayed"
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Content"
+    direction: UP
+    speed: 40
+    label: "Scroll to first preparation content"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
-    text: "La sauce"
-    label: "Preparation #2 paragraph title input text id is displayed with the correct text"
+    id: "RecipePreparation::TextRender::0::Content"
+    text: "Content of step 1 : "
+    label: "Preparation #1 content text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Content"
-    text: "Content of step 2 : "
-    label: "Preparation #2 content text is displayed"
-
-- assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
-    text: "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez\
-    \ et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\n\
-    Salez, poivrez. Mixez jusqu'a obtenir une texture homogene."
-    label: "Preparation #2 paragraph input text id is displayed with the correct text"
+    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz\
+      \ selon les indications du paquet.Pendant ce temps, preparez les filets de poulet\
+      \ a la sauce satay."
+    label: "Preparation #1 paragraph input text id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Step"
+      id: "RecipePreparation::TextRender::0::Title"
     direction: UP
-    speed: 60
-
-- assertVisible:
-    id: "RecipePreparation::TextRender::0::Step"
-    text: "Preparation: step 1"
-    label: "Preparation #1 step is displayed"
+    speed: 40
 
 - assertVisible:
     id: "RecipePreparation::TextRender::0::Title"
@@ -96,17 +131,16 @@ appId: "com.recipedia"
     text: "Le riz"
     label: "Preparation #1 paragraph title input text id is displayed with the correct text"
 
-- assertVisible:
-    id: "RecipePreparation::TextRender::0::Content"
-    text: "Content of step 1 : "
-    label: "Preparation #1 content text is displayed"
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Step"
+    direction: UP
+    speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
-    text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz\
-    \ selon les indications du paquet.Pendant ce temps, preparez les filets de poulet\
-    \ a la sauce satay."
-    label: "Preparation #1 paragraph input text id is displayed with the correct text"
+    id: "RecipePreparation::TextRender::0::Step"
+    text: "Preparation: step 1"
+    label: "Preparation #1 step is displayed"
 
 - scrollUntilVisible:
     element:
@@ -289,7 +323,7 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeTags::ElementText"
     text: "Tags are a way to identify a recipe and make easier its search.\n\
-    Here are some examples of tags you can have : .*, .*, .*"
+      Here are some examples of tags you can have : .*, .*, .*"
     label: "Explanation text id for the tags is displayed with the correct text"
 
 - assertVisible:
@@ -306,8 +340,8 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeDescription::CustomTextInput"
     text: "Cuisinez nos filets de poulet francais avec du riz basmati bio et\
-    \ une sauce satay maison: un condiment asiatique a base de cacahuetes et gingembre\
-    \ !"
+      \ une sauce satay maison: un condiment asiatique a base de cacahuetes et gingembre\
+      \ !"
     label: "Description TextInput is displayed with the correct text"
 
 - assertVisible:

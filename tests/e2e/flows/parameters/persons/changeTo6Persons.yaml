@@ -13,3 +13,9 @@ appId: "com.recipedia"
 - tapOn:
     id: "DefaultPersonSettings::Save"
     label: "Save the new default persons value"
+
+- extendedWaitUntil:
+    visible:
+      id: "BottomTabs::Parameters"
+    timeout: 5000
+    label: "Wait for modal to dismiss and return to Parameters screen"

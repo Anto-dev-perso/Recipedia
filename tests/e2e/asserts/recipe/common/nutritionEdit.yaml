@@ -23,10 +23,34 @@ appId: "com.recipedia"
     text: "${ENERGY_KCAL}"
     label: "Energy kcal input is displayed with correct value"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to energy kj section"
+
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
     text: "${ENERGY_KJ}"
     label: "Energy kJ input is displayed with correct value"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
+    text: "${FAT}"
+    label: "Fat input is displayed with correct value"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to middle of nutrition table"
+
+- assertVisible:
+    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
+    text: "${SATURATED_FAT}"
+    label: "Saturated fat input is displayed with correct value"
 
 - scrollUntilVisible:
     element:
@@ -34,16 +58,6 @@ appId: "com.recipedia"
     direction: DOWN
     speed: 60
     label: "Scroll to end of nutrition table"
-
-- assertVisible:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
-    text: "${FAT}"
-    label: "Fat input is displayed with correct value"
-
-- assertVisible:
-    id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
-    text: "${SATURATED_FAT}"
-    label: "Saturated fat input is displayed with correct value"
 
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::NumericTextInput"
@@ -81,8 +95,6 @@ appId: "com.recipedia"
     id: "Recipe::RecipeNutrition::NutritionTable::EditForm::PortionWeightNumericTextInput"
     text: "${PORTION_WEIGHT}"
     label: "Portion weight input is displayed with correct value"
-
-
 
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::EditForm::RemoveButton"

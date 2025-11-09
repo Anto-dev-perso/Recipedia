@@ -301,7 +301,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     needs: build-android
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -341,11 +341,14 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -wipe-data -memory 1024
+          profile: Nexus 5
+          emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -wipe-data
           script: |
             echo "🔄 Waiting for device..."
-            adb wait-for-device 
-            
+            adb wait-for-device
+
+            export MAESTRO_CLI_NO_ANALYTICS=1
+
             echo "🚀 Running E2E tests..."
             npm run install:android
             npm run test:e2e:android

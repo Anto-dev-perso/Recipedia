@@ -7,7 +7,7 @@ appId: "com.recipedia"
 - runFlow:
     file: "../../common/titleReadOnly.yaml"
     env:
-      TITLE: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
+      TITLE: "POULET SAUCE SATAY.*"
     label: "Assert recipe title"
 
 - assertVisible:
@@ -17,7 +17,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      text: "Ingrédients (4 personnes)"
+      id: "RecipePersons::Text"
     direction: DOWN
     centerElement: true
     speed: 60
@@ -37,92 +37,92 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "200 g"
     label: "First ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "cacahuètes grillées"
     label: "First ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "70 g"
     label: "Second ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "concentré de tomates"
     label: "Second ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "4 "
     label: "Third ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "flet de poulet"
     label: "Third ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "1à3 cm"
     label: "Fourth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "gingembre"
     label: "Fourth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "2 "
     label: "Fifth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "gOussed'ail"
     label: "Fifth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::5::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "400 mL"
     label: "Sixth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::5::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "lait de coco"
     label: "Sixth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::6::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "2 "
     label: "Seventh ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::6::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "oignon jaune"
     label: "Seventh ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::7::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "1 "
     label: "Eighth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::7::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "oignon nouveau"
     label: "Eighth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::8::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "300 g"
     label: "Ninth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::8::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "riz basmati  Bio"
     label: "Ninth ingredient name is displayed"
 

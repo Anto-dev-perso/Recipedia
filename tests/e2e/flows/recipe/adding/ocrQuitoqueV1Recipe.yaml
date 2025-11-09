@@ -41,7 +41,7 @@ appId: "com.recipedia"
 - pressKey: enter
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::0"
+    id: "SearchScreen::RecipeCards::0::.*"
     label: "Open newly created recipe (first result)"
 
 - runFlow:

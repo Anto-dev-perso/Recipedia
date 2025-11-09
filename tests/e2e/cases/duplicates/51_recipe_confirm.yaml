@@ -1,10 +1,11 @@
-name: "49 - Duplicate Recipe Confirm Flow"
+name: "51 - Duplicate Recipe Confirm Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
 ---
-- launchApp:
-    label: "Setup - Launch app"
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
 
 - runFlow:
     file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
@@ -15,6 +16,12 @@ tags:
     env:
       RECIPE_NAME: ".*"
     label: "Assert - Verify recipe added to database"
+
+- runFlow:
+    file: "../../flows/recipe/verifyRecipeExistsInSearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Verify - Confirm recipe is searchable before duplicate test"
 
 - tapOn:
     id: "ReduceButton::RoundButton"

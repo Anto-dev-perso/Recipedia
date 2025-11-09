@@ -3,15 +3,16 @@ appId: "com.recipedia"
 tags:
   - shopping
 ---
-- launchApp:
-    label: "Setup - Launch app"
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
 
 - tapOn:
     id: "BottomTabs::Search"
     label: "Action - Navigate to Search screen"
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::0"
+    id: "SearchScreen::RecipeCards::0::.*"
     label: "Action - Open Spaghetti Bolognese recipe"
 
 - tapOn:
@@ -45,7 +46,7 @@ tags:
     label: "Action - Scroll to Caesar Salad recipe"
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::3"
+    id: "SearchScreen::RecipeCards::3::.*"
     label: "Action - Open Caesar Salad recipe"
 
 - tapOn:
@@ -83,7 +84,7 @@ tags:
     label: "Action - Scroll to Margherita Pizza recipe"
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::4"
+    id: "SearchScreen::RecipeCards::4::.*"
     label: "Action - Open Margherita Pizza recipe"
 
 - tapOn:

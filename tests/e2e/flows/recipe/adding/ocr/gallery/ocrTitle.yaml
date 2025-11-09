@@ -18,3 +18,9 @@ appId: "com.recipedia"
     when:
       platform: Android
 # TODO iOS
+
+- extendedWaitUntil:
+    visible:
+      id: "RecipeTitle::CustomTextInput"
+    timeout: 10000
+    label: "Wait for title to be populated by OCR"

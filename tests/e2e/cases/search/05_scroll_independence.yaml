@@ -3,8 +3,9 @@ appId: "com.recipedia"
 tags:
   - search
 ---
-- launchApp:
-    label: "Setup - Launch app"
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
 
 - tapOn:
     id: "BottomTabs::Search"
@@ -31,11 +32,11 @@ tags:
 - pressKey: "BACK"
 
 - assertVisible:
-    id: "SearchScreen::RecipeCards::0"
+    id: "SearchScreen::RecipeCards::0::Spaghetti Bolognese"
     label: "Assert - Verify first recipe card is visible (scroll independence verified)"
 
 - assertVisible:
-    id: "SearchScreen::RecipeCards::1"
+    id: "SearchScreen::RecipeCards::1::Chicken Tacos"
     label: "Assert - Verify second recipe card is visible"
 
 - tapOn:

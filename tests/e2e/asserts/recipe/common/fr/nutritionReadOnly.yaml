@@ -21,6 +21,14 @@ appId: "com.recipedia"
     text: "par portion"
     label: "Per portion text is displayed"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::Value"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to energy section"
+
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKcal::Value"
     text: "${ENERGY_KCAL} kcal"

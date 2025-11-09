@@ -67,7 +67,7 @@ export function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
 
   return (
     <Card
-      testID={testId}
+      testID={testId + `::${recipe.title}`}
       mode={'outlined'}
       style={{
         flex: 1,

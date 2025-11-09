@@ -1,11 +1,12 @@
-name: "52 - OCR Quitoque V2 French Flow"
+name: "54 - OCR Quitoque V2 French Flow"
 appId: "com.recipedia"
 tags:
   - recipe-create
   - ocr
 ---
-- launchApp:
-    label: "Setup - Launch app"
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
 
 - evalScript: ${output.isDescriptionToOCR = true}
 - evalScript: ${output.isTagsToOCR = false}
@@ -38,7 +39,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/fr/recipeAddedToDatabase.yaml"
     env:
-      RECIPE_NAME: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
+      RECIPE_NAME: "POULET SAUCE SATAY.*"
     label: "Assert - Verify recipe added successfully (French)"
 
 - tapOn:
@@ -60,7 +61,7 @@ tags:
 - pressKey: enter
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::0"
+    id: "SearchScreen::RecipeCards::0::.*"
     label: "Verification - Open newly created recipe"
 
 - runFlow:

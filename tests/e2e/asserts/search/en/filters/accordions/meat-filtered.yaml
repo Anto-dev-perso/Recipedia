@@ -1,7 +1,13 @@
 appId: "com.recipedia"
-
-
 ---
+- scrollUntilVisible:
+    element:
+      text: "Meat"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to meat accordion"
+
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Meat accordion is displayed"
@@ -29,7 +35,6 @@ appId: "com.recipedia"
     when:
       true: ${VISIBLE_ITEMS.split(',').find(item => item === 'Beef')=== undefined}
     file: "meat-items/beef-hidden.yaml"
-
 
 # Collapse the accordion back
 - tapOn:

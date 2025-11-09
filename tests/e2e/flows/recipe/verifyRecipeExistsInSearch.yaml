@@ -1,0 +1,27 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Focus on search bar"
+
+- inputText:
+    text: "${SEARCH_TEXT}"
+    label: "Search for recipe"
+
+- pressKey: "enter"
+
+- assertVisible:
+    id: "SearchScreen::RecipeCards::0::.*"
+    label: "Verify recipe is found in search results"
+
+- tapOn:
+    id: "SearchScreen::SearchBar::RightIcon"
+    label: "Clear search filter"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Return to Home screen"

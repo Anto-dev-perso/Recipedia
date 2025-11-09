@@ -39,3 +39,8 @@ appId: "com.recipedia"
       - runFlow:
           file: ../android/selectMostRecentFromModal.yaml
           label: "Select time from modal for OCR"
+      - extendedWaitUntil:
+          visible:
+            id: "RecipeTime::NumericTextInput"
+          timeout: 10000
+          label: "Wait for time to be populated by OCR"

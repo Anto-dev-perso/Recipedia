@@ -26,3 +26,9 @@ appId: "com.recipedia"
     when:
       platform: Android
 # TODO iOS
+
+- extendedWaitUntil:
+    visible:
+      id: "RecipeTags::0::Chip"
+    timeout: 10000
+    label: "Wait for first tag to be populated by OCR"

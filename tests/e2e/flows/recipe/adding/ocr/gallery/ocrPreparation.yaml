@@ -25,3 +25,9 @@ appId: "com.recipedia"
     when:
       platform: Android
 # TODO iOS
+
+- extendedWaitUntil:
+    visible:
+      id: "RecipePreparation::TextRender::0::Step"
+    timeout: 10000
+    label: "Wait for first preparation step to be populated by OCR"

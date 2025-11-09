@@ -90,7 +90,6 @@ appId: "com.recipedia"
     centerElement: true
     speed: 60
 
-
 - assertVisible:
     id: "RecipePreparation::TextRender::0::SectionTitle"
     text: "1) Cook pasta"
@@ -105,7 +104,6 @@ appId: "com.recipedia"
       id: "RecipePreparation::TextRender::2::SectionTitle"
     direction: DOWN
     speed: 60
-
 
 - assertVisible:
     id: "RecipePreparation::TextRender::2::SectionTitle"
@@ -146,6 +144,5 @@ appId: "com.recipedia"
     element:
       id: "RecipeImage"
     direction: UP
-    centerElement: true
-    speed: 80
+    speed: 95
     label: "Scroll back to top"

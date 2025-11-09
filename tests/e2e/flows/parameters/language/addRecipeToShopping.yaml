@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Go to Search screen via bottom tab"
 
 - tapOn:
-    id: "SearchScreen::RecipeCards::1"
+    id: "SearchScreen::RecipeCards::1::.*"
     label: "Open a recipe"
 
 - tapOn:

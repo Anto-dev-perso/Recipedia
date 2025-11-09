@@ -87,5 +87,5 @@ appId: "com.recipedia"
     element:
       id: "SearchScreen::SearchBar"
     direction: UP
-    speed: 80
+    speed: 95
     label: "Scroll back to top of Search screen"

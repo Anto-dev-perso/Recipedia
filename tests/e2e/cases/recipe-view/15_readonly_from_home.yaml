@@ -5,12 +5,9 @@ tags:
 env:
   recipeName: "Vegetable Soup"
 ---
-- launchApp:
-    label: "Setup - Launch app"
-
-- tapOn:
-    id: "BottomTabs::Home"
-    label: "Action - Navigate to Home screen"
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
 
 - runFlow:
     file: "../../flows/home/swipelToRecipeAndOpenIt.yaml"
