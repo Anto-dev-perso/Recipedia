@@ -5,6 +5,22 @@ appId: "com.recipedia"
 
 - extendedWaitUntil:
     visible:
+      id: "WelcomeScreen::SkipButton"
+    timeout: 5000
+    optional: true
+    label: "Check if onboarding appears"
+
+- runFlow:
+    when:
+      visible:
+        id: "WelcomeScreen::SkipButton"
+    commands:
+      - tapOn:
+          id: "WelcomeScreen::SkipButton"
+          label: "Skip onboarding"
+
+- extendedWaitUntil:
+    visible:
       id: "BottomTabs::Home"
-    timeout: 10000
-    label: "Wait for app to be ready (bottom tabs visible)"
+    timeout: 3000
+    label: "Wait for app to be ready"
