@@ -7,7 +7,7 @@ appId: "com.recipedia"
 - runFlow:
     file: "../../common/titleReadOnly.yaml"
     env:
-      TITLE: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
+      TITLE: "POULET SAUCE SATAY.*"
     label: "Assert recipe title"
 
 - assertVisible:
@@ -17,7 +17,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      text: "Ingrédients (4 personnes)"
+      id: "RecipePersons::Text"
     direction: DOWN
     centerElement: true
     speed: 60

@@ -71,6 +71,13 @@ appId: "com.recipedia"
     text: " persons"
     label: "Outro text for the number of persons is rendered"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+
 - assertVisible:
     id: "RecipeIngredients::PrefixText"
     text: "Ingredients: "

@@ -17,7 +17,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      text: "RecipePersons::Text"
+      id: "RecipePersons::Text"
     direction: DOWN
     centerElement: true
     speed: 60

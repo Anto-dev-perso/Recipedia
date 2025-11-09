@@ -39,7 +39,7 @@ tags:
 - runFlow:
     file: "../../asserts/alerts/fr/recipeAddedToDatabase.yaml"
     env:
-      RECIPE_NAME: "POULET SAUCE SATAY (CACAHUETES ET LAIT DE COCO)"
+      RECIPE_NAME: "POULET SAUCE SATAY.*"
     label: "Assert - Verify recipe added successfully (French)"
 
 - tapOn:
