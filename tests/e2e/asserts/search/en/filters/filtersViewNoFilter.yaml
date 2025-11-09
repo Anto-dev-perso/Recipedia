@@ -77,7 +77,6 @@ appId: "com.recipedia"
     direction: DOWN
     label: "Scroll to Dairy accordion"
 
-
 # Accordion 8: Sauce
 - runFlow:
     file: "accordions/sauce.yaml"
@@ -158,8 +157,9 @@ appId: "com.recipedia"
 # Scroll down to see more accordions
 - scrollUntilVisible:
     element:
-      id: "SearchScreen::FilterAccordion::Accordion::18"
+      text: "Nuts and Seeds"
     direction: DOWN
+    speed: 40
     label: "Scroll to Nuts and Seeds accordion"
 
 # Accordion 18: Nuts and Seeds
