@@ -1,0 +1,10 @@
+flows:
+  - cases/recipe-view/*
+
+executionOrder:
+  flowsOrder:
+    - "14 - Recipe Read-Only From Search Flow"
+    - "15 - Recipe Read-Only From Home Flow"
+    - "16 - Recipe Edit From Search Flow"
+    - "17 - Recipe Edit From Home Flow"
+    - "18 - Recipe Quantity Scaling Flow"

@@ -1,0 +1,8 @@
+flows:
+  - cases/app-init/*
+
+executionOrder:
+  flowsOrder:
+    - "1 - Onboarding Tutorial Flow"
+    - "2 - Bottom Tabs Navigation Flow"
+    - "3 - FAB Menu Toggle Flow"

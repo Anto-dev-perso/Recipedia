@@ -1,0 +1,10 @@
+flows:
+  - cases/ingredients-db/*
+
+executionOrder:
+  flowsOrder:
+    - "36 - Add New Ingredient Flow"
+    - "37 - Delete Ingredient Flow"
+    - "38 - Edit Existing Ingredient Flow"
+    - "39 - Add Ingredient And Use In Recipe Flow"
+    - "40 - Ingredient Edge Cases Flow"
