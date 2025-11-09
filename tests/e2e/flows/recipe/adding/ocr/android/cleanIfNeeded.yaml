@@ -1,0 +1,33 @@
+appId: com.recipedia
+---
+- swipe:
+    direction: UP
+    label: "See all the apps available in the device"
+
+- tapOn:
+    text: "Files"
+    label: "Open files on the device"
+
+- tapOn:
+    text: "Show roots"
+    label: "Open the burger menu to find the pictures"
+
+- tapOn:
+    text: Images
+    index: 1
+    label: "Press images category"
+
+- runFlow:
+    file: "cleanupPictures.yaml"
+    when:
+      visible: "Pictures"
+    label: "Clean up pictures files if any"
+
+- tapOn:
+    id: "recent_apps"
+    label: "Open the recent apps part"
+
+- swipe:
+    start: "50%,70%"
+    end: "50%,5%"
+    label: "Close the files app"
