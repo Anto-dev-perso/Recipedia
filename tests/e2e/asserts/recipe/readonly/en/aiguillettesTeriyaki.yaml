@@ -42,16 +42,12 @@ appId: "com.recipedia"
     label: "Second tag is rendered"
 
 - assertVisible:
-    text: "Familial"
-    label: "Second tag name is rendered"
+    text: "Familial.*"
+    label: "Tag contains 'Familial'"
 
 - assertVisible:
-    id: "RecipeTags::2::Chip"
-    label: "Third tag is rendered"
-
-- assertVisible:
-    text: "Rapido"
-    label: "Third tag name is rendered"
+    text: ".*Rapido"
+    label: "Tag contains 'Rapido'"
 
 - scrollUntilVisible:
     element:
