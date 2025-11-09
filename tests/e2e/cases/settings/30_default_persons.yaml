@@ -24,6 +24,12 @@ tags:
     file: "../../flows/parameters/persons/changeTo6Persons.yaml"
     label: "Action - Change default persons to 6"
 
+- extendedWaitUntil:
+    visible:
+      id: "BottomTabs::Parameters"
+    timeout: 5000
+    label: "Wait for scaling to end"
+
 - tapOn:
     id: "BottomTabs::Search"
     label: "Action - Return to Search screen"
@@ -54,6 +60,12 @@ tags:
 - runFlow:
     file: "../../flows/parameters/persons/changeTo4Persons.yaml"
     label: "Cleanup - Restore default persons to 4"
+
+- extendedWaitUntil:
+    visible:
+      id: "BottomTabs::Parameters"
+    timeout: 5000
+    label: "Wait for scaling to end"
 
 - tapOn:
     id: "BottomTabs::Search"
