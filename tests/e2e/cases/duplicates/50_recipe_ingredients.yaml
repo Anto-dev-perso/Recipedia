@@ -17,6 +17,12 @@ tags:
       RECIPE_NAME: ".*"
     label: "Assert - Verify recipe added to database"
 
+- runFlow:
+    file: "../../flows/recipe/verifyRecipeExistsInSearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Verify - Confirm recipe is searchable before duplicate test"
+
 - tapOn:
     id: "ReduceButton::RoundButton"
     label: "Action - Close FAB buttons"
