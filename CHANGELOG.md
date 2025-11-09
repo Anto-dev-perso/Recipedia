@@ -1,3 +1,10 @@
+## [0.20.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.20.0...v0.20.1) (2025-11-09)
+
+### Bug Fixes
+
+* **Recipe:** await `fillOneField` to ensure modal state is cleared ([f1826e6](https://github.com/Anto-dev-perso/Recipedia/commit/f1826e6ead38fd35d3b201d967d476973f6e9055))
+* **RecipeCard:** add recipe title in testId of the card ([18dfcff](https://github.com/Anto-dev-perso/Recipedia/commit/18dfcff9770fd8c4d62a251b13df5424bc1423a1))
+
 ## [0.20.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.19.1...v0.20.0) (2025-11-08)
 
 ### Features
