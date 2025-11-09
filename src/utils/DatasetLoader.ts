@@ -17,6 +17,8 @@ import { frenchIngredients } from '@assets/datasets/fr/ingredients';
 import { frenchTags } from '@assets/datasets/fr/tags';
 import { frenchRecipes } from '@assets/datasets/fr/recipes';
 
+export type DatasetType = 'test' | 'production';
+
 export interface DatasetCollection {
   ingredients: ingredientTableElement[];
   tags: tagTableElement[];
@@ -57,13 +59,24 @@ function loadProductionDataset(language: SupportedLanguage): DatasetCollection {
   }
 }
 
+/**
+ * Determines the current dataset type based on NODE_ENV
+ *
+ * @returns 'production' if NODE_ENV is 'production', otherwise 'test'
+ */
+export function getDatasetType(): DatasetType {
+  return process.env.NODE_ENV === 'production' ? 'production' : 'test';
+}
+
 export function getDataset(language: SupportedLanguage): DatasetCollection {
   try {
-    const nodeEnv = process.env.NODE_ENV;
-    const dataset = nodeEnv === 'production' ? loadProductionDataset(language) : loadTestDataset();
+    const datasetType = getDatasetType();
+    const dataset =
+      datasetType === 'production' ? loadProductionDataset(language) : loadTestDataset();
 
     appLogger.info('Loaded dataset', {
-      nodeEnv,
+      datasetType,
+      nodeEnv: process.env.NODE_ENV,
       language,
       ingredientsCount: dataset.ingredients.length,
       tagsCount: dataset.tags.length,

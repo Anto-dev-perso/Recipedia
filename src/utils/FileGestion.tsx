@@ -36,7 +36,8 @@ import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
 import Constants from 'expo-constants';
 import pkg from '@app/package.json';
-import { initialRecipesImages } from '@utils/Constants';
+import { productionRecipesImages, testRecipesImages } from '@utils/Constants';
+import { getDatasetType } from '@utils/DatasetLoader';
 import { filesystemLogger } from '@utils/logger';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
@@ -263,19 +264,16 @@ export class FileGestion {
   }
 
   /**
-   * Initializes the file system and copies bundled assets
+   * Initializes the file system directories
    *
-   * Creates necessary directories and copies initial recipe images from the app bundle
-   * to the file system. This method should be called during app startup.
-   *
-   * Assets are only copied if they don't already exist, making this operation
-   * safe to call multiple times.
+   * Creates necessary directories for the app's permanent storage and cache.
+   * This method should be called during app startup before any file operations.
    *
    * @example
    * ```typescript
    * const fileManager = FileGestion.getInstance();
    * await fileManager.init();
-   * console.log('File system initialized and assets loaded');
+   * console.log('File system initialized');
    * ```
    */
   public async init() {
@@ -286,30 +284,80 @@ export class FileGestion {
     try {
       await this.ensureDirExists(this._directoryUri);
       await this.ensureDirExists(this._cacheUri);
+      filesystemLogger.info('File system initialized successfully');
+    } catch (error) {
+      filesystemLogger.error('FileGestion initialization failed', { error });
+    }
+  }
 
-      const assetModules = await Asset.loadAsync(initialRecipesImages);
-      if (assetModules.length !== initialRecipesImages.length) {
+  /**
+   * Copies dataset recipe images from bundled assets to file system
+   *
+   * Determines the current dataset type (test or production) and loads the appropriate
+   * image assets, then copies them to the app's permanent storage.
+   *
+   * @example
+   * ```typescript
+   * await fileManager.copyDatasetImages();
+   * // Copies all test or production images based on NODE_ENV
+   * ```
+   */
+  public async copyDatasetImages(): Promise<void> {
+    console.log('🔍 DEBUG: copyDatasetImages called');
+    filesystemLogger.info('Starting dataset image copy operation', {
+      directoryUri: this._directoryUri,
+    });
+
+    const datasetType = getDatasetType();
+    const imageSet = datasetType === 'production' ? productionRecipesImages : testRecipesImages;
+
+    filesystemLogger.info('Selected image set based on dataset type', {
+      datasetType,
+      imageCount: imageSet.length,
+    });
+
+    try {
+      const assetModules = await Asset.loadAsync(imageSet);
+      if (assetModules.length !== imageSet.length) {
         throw new Error(
-          'Some assets could not be loaded, please check the list of assets in Constants.tsx and make sure they are all listed in the AppAssets object. Missing assets: '
+          `Failed to load all ${datasetType} assets. Expected ${imageSet.length}, loaded ${assetModules.length}`
         );
       }
+
+      filesystemLogger.info('Assets loaded successfully', {
+        datasetType,
+        assetCount: assetModules.length,
+      });
 
       for (const asset of assetModules) {
         const destinationUri = this._directoryUri + asset.name + '.' + asset.type;
         const fileInfo = await FileSystem.getInfoAsync(destinationUri);
 
         if (fileInfo.exists) {
-          filesystemLogger.debug('Asset file already exists, skipping', { assetName: asset.name });
+          filesystemLogger.debug('Asset file already exists, skipping', {
+            assetName: asset.name,
+            destinationUri,
+          });
           continue;
         }
+
         await FileSystem.copyAsync({ from: asset.localUri as string, to: destinationUri });
         filesystemLogger.debug('Asset file copied successfully', {
           assetName: asset.name,
           destinationUri,
         });
       }
+
+      filesystemLogger.info('Dataset images copied successfully', {
+        datasetType,
+        imageCount: imageSet.length,
+      });
     } catch (error) {
-      filesystemLogger.error('FileGestion initialization failed', { error });
+      filesystemLogger.error('Failed to copy dataset images', {
+        datasetType,
+        error,
+      });
+      throw error;
     }
   }
 
