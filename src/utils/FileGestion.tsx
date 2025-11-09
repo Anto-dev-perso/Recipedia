@@ -38,7 +38,7 @@ import Constants from 'expo-constants';
 import pkg from '@app/package.json';
 import { productionRecipesImages, testRecipesImages } from '@utils/Constants';
 import { getDatasetType } from '@utils/DatasetLoader';
-import { filesystemLogger } from '@utils/logger';
+import { fileSystemLogger } from '@utils/logger';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
 export class FileGestion {
@@ -109,12 +109,12 @@ export class FileGestion {
    * ```
    */
   public async clearCache() {
-    filesystemLogger.info('Clearing cache directories');
+    fileSystemLogger.info('Clearing cache directories');
     try {
       await FileSystem.deleteAsync(this._imageManipulatorCacheUri);
       await FileSystem.makeDirectoryAsync(this._imageManipulatorCacheUri);
     } catch (error) {
-      filesystemLogger.warn('Failed to clear image manipulator cache', {
+      fileSystemLogger.warn('Failed to clear image manipulator cache', {
         cacheUri: this._imageManipulatorCacheUri,
         error,
       });
@@ -123,7 +123,7 @@ export class FileGestion {
       await FileSystem.deleteAsync(this._cameraCacheUri);
       await FileSystem.makeDirectoryAsync(this._cameraCacheUri);
     } catch (error) {
-      filesystemLogger.warn('Failed to clear camera cache', {
+      fileSystemLogger.warn('Failed to clear camera cache', {
         cacheUri: this._cameraCacheUri,
         error,
       });
@@ -153,7 +153,7 @@ export class FileGestion {
       await FileSystem.deleteAsync(newUri, { idempotent: true });
       await FileSystem.moveAsync({ from: oldUri, to: newUri });
     } catch (error) {
-      filesystemLogger.warn('Failed to move file', { from: oldUri, to: newUri, error });
+      fileSystemLogger.warn('Failed to move file', { from: oldUri, to: newUri, error });
     }
   }
 
@@ -196,7 +196,7 @@ export class FileGestion {
   public isTemporaryImageUri(uri: string): boolean {
     const isTemporary = !uri.includes(this._directoryUri);
 
-    filesystemLogger.debug('Checking if image URI is temporary', {
+    fileSystemLogger.debug('Checking if image URI is temporary', {
       imageUri: uri,
       permanentStorageUri: this._directoryUri,
       isTemporary,
@@ -226,7 +226,7 @@ export class FileGestion {
    * ```
    */
   public async saveRecipeImage(cacheFileUri: string, recName: string): Promise<string> {
-    filesystemLogger.info('Starting image save operation', {
+    fileSystemLogger.info('Starting image save operation', {
       sourceUri: cacheFileUri,
       recipeName: recName,
       permanentStorageDir: this._directoryUri,
@@ -237,7 +237,7 @@ export class FileGestion {
       recName.replace(/ /g, '_').toLowerCase() + '.' + extension[extension.length - 1];
     const imgUri: string = this._directoryUri + imgName;
 
-    filesystemLogger.info('Generated filename and destination', {
+    fileSystemLogger.info('Generated filename and destination', {
       originalRecipeName: recName,
       sanitizedFilename: imgName,
       fullDestinationUri: imgUri,
@@ -246,14 +246,14 @@ export class FileGestion {
 
     try {
       await this.copyFile(cacheFileUri, imgUri);
-      filesystemLogger.info('Image copied successfully to permanent storage', {
+      fileSystemLogger.info('Image copied successfully to permanent storage', {
         sourceUri: cacheFileUri,
         destinationUri: imgUri,
         filenameStoredInDb: imgName,
       });
       return imgUri;
     } catch (error) {
-      filesystemLogger.error('Failed to save recipe image', {
+      fileSystemLogger.error('Failed to save recipe image', {
         sourceUri: cacheFileUri,
         destinationUri: imgUri,
         recipeName: recName,
@@ -277,16 +277,16 @@ export class FileGestion {
    * ```
    */
   public async init() {
-    filesystemLogger.info('Initializing file system', {
+    fileSystemLogger.info('Initializing file system', {
       directoryUri: this._directoryUri,
       cacheUri: this._cacheUri,
     });
     try {
       await this.ensureDirExists(this._directoryUri);
       await this.ensureDirExists(this._cacheUri);
-      filesystemLogger.info('File system initialized successfully');
+      fileSystemLogger.info('File system initialized successfully');
     } catch (error) {
-      filesystemLogger.error('FileGestion initialization failed', { error });
+      fileSystemLogger.error('FileGestion initialization failed', { error });
     }
   }
 
@@ -304,14 +304,14 @@ export class FileGestion {
    */
   public async copyDatasetImages(): Promise<void> {
     console.log('🔍 DEBUG: copyDatasetImages called');
-    filesystemLogger.info('Starting dataset image copy operation', {
+    fileSystemLogger.info('Starting dataset image copy operation', {
       directoryUri: this._directoryUri,
     });
 
     const datasetType = getDatasetType();
     const imageSet = datasetType === 'production' ? productionRecipesImages : testRecipesImages;
 
-    filesystemLogger.info('Selected image set based on dataset type', {
+    fileSystemLogger.info('Selected image set based on dataset type', {
       datasetType,
       imageCount: imageSet.length,
     });
@@ -324,7 +324,7 @@ export class FileGestion {
         );
       }
 
-      filesystemLogger.info('Assets loaded successfully', {
+      fileSystemLogger.info('Assets loaded successfully', {
         datasetType,
         assetCount: assetModules.length,
       });
@@ -334,7 +334,7 @@ export class FileGestion {
         const fileInfo = await FileSystem.getInfoAsync(destinationUri);
 
         if (fileInfo.exists) {
-          filesystemLogger.debug('Asset file already exists, skipping', {
+          fileSystemLogger.debug('Asset file already exists, skipping', {
             assetName: asset.name,
             destinationUri,
           });
@@ -342,18 +342,18 @@ export class FileGestion {
         }
 
         await FileSystem.copyAsync({ from: asset.localUri as string, to: destinationUri });
-        filesystemLogger.debug('Asset file copied successfully', {
+        fileSystemLogger.debug('Asset file copied successfully', {
           assetName: asset.name,
           destinationUri,
         });
       }
 
-      filesystemLogger.info('Dataset images copied successfully', {
+      fileSystemLogger.info('Dataset images copied successfully', {
         datasetType,
         imageCount: imageSet.length,
       });
     } catch (error) {
-      filesystemLogger.error('Failed to copy dataset images', {
+      fileSystemLogger.error('Failed to copy dataset images', {
         datasetType,
         error,
       });
@@ -375,11 +375,11 @@ export class FileGestion {
 
     if (!dirInfo.exists) {
       await FileSystem.makeDirectoryAsync(dirUri, { intermediates: true });
-      filesystemLogger.info('Directory created', { directory: dirUri });
+      fileSystemLogger.info('Directory created', { directory: dirUri });
     } else if (!dirInfo.isDirectory) {
       throw new Error(`${dirUri} exists but is not a directory`);
     } else {
-      filesystemLogger.debug('Directory already exists', { directory: dirUri });
+      fileSystemLogger.debug('Directory already exists', { directory: dirUri });
     }
   }
 
