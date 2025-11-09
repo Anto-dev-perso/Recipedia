@@ -35,15 +35,22 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::NumericTextInput"
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
     direction: DOWN
     speed: 60
-    label: "Scroll to end of nutrition table"
+    label: "Scroll to middle of nutrition table"
 
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
     text: "${SATURATED_FAT}"
     label: "Saturated fat input is displayed with correct value"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to end of nutrition table"
 
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::NumericTextInput"

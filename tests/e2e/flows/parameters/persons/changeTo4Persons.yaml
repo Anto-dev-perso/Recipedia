@@ -15,6 +15,7 @@ appId: "com.recipedia"
     label: "Save the new default persons value"
 
 - extendedWaitUntil:
-    visible: "MAESTRO_DELAY_WORKAROUND"
-    optional: true
-    timeout: 1000
+    visible:
+      id: "BottomTabs::Parameters"
+    timeout: 5000
+    label: "Wait for modal to dismiss and return to Parameters screen"

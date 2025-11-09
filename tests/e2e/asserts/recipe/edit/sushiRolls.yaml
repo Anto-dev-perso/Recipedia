@@ -359,6 +359,14 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipePreparation::TextRender::3::TextInputContent::CustomTextInput"
     label: "Fourth step input is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+
 - assertVisible:
     text: "󰐕"
     label: "Add button of the preparation is rendered"
