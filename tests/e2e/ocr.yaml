@@ -5,5 +5,5 @@ executionOrder:
   flowsOrder:
     - "52 - OCR HelloFresh Gallery Flow"
     - "53 - OCR Quitoque V1 Gallery Flow"
-    - "54 - OCR Quitoque V2 French Flow"
-    - "55 - OCR Quitoque V3 Camera Flow"
+    - "54 - OCR Quitoque V3 Camera Flow"
+    - "53 - OCR Quitoque V2 French Flow"
