@@ -23,6 +23,13 @@ appId: "com.recipedia"
     text: "${ENERGY_KCAL}"
     label: "Energy kcal input is displayed with correct value"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to energy kj section"
+
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
     text: "${ENERGY_KJ}"
