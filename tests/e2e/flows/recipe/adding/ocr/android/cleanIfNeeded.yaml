@@ -1,5 +1,7 @@
 appId: com.recipedia
 ---
+- pressKey: "home"
+
 - swipe:
     direction: UP
     label: "See all the apps available in the device"
@@ -23,11 +25,5 @@ appId: com.recipedia
       visible: "Pictures"
     label: "Clean up pictures files if any"
 
-- tapOn:
-    id: "recent_apps"
-    label: "Open the recent apps part"
-
-- swipe:
-    start: "50%,70%"
-    end: "50%,5%"
-    label: "Close the files app"
+- pressKey: "BACK"
+- pressKey: "BACK"
