@@ -11,9 +11,9 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTags::HeaderText"
+      id: "RecipeTags::ElementText"
     direction: DOWN
-    speed: 70
+    speed: 60
 
 - assertVisible:
     id: "RecipeTags::HeaderText"
