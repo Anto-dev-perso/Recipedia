@@ -30,6 +30,13 @@ appId: "com.recipedia"
     speed: 60
     label: "Scroll to energy kj section"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to middle of nutrition table"
+
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
     text: "${ENERGY_KJ}"
@@ -39,13 +46,6 @@ appId: "com.recipedia"
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
     text: "${FAT}"
     label: "Fat input is displayed with correct value"
-
-- scrollUntilVisible:
-    element:
-      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"
-    direction: DOWN
-    speed: 60
-    label: "Scroll to middle of nutrition table"
 
 - assertVisible:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::SaturatedFat::NumericTextInput"

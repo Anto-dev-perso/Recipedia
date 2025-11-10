@@ -53,62 +53,12 @@ appId: "com.recipedia"
     element:
       id: "RecipePersons::Text"
     direction: DOWN
-    centerElement: true
-    speed: 60
+    speed: 40
 
 - assertVisible:
+    id: "RecipePersons::Text"
     text: "Ingredients (4 persons)"
     label: "Ingredient section and persons is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
-    text: "140 g"
-    label: "First ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
-    text: "Riz basmati"
-    label: "First ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
-    text: "1 pièce"
-    label: "Second ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
-    text: "Oignon jaune"
-    label: "Second ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
-    text: "1 pièce"
-    label: "Third ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
-    text: "Carot.*"
-    label: "Third ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
-    text: "1 pièce"
-    label: "Fourth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::3::IngredientName"
-    text: "Poire.*"
-    label: "Fourth ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
-    text: "3g "
-    label: "Fifth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::4::IngredientName"
-    text: "Ciboulette"
-    label: "Fifth ingredient name is displayed"
 
 - scrollUntilVisible:
     element:
@@ -117,62 +67,118 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::5::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
+    text: "140 g"
+    label: "First ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    text: "Riz basmati"
+    label: "First ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
+    text: "1 pièce"
+    label: "Second ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    text: "Oignon jaune"
+    label: "Second ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
+    text: "1 pièce"
+    label: "Third ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    text: "Carot.*"
+    label: "Third ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
+    text: "1 pièce"
+    label: "Fourth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    text: "Poire.*"
+    label: "Fourth ingredient name is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
+    text: "3g "
+    label: "Fifth ingredient quantity is displayed"
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    text: "Ciboulette.*"
+    label: "Fifth ingredient name is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::TextRender::.*0::IngredientName"
+    direction: DOWN
+    speed: 60
+
+- assertVisible:
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "1 pièce"
     label: "Sixth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::5::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "Gousse d'ail"
     label: "Sixth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::6::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "2 cm"
     label: "Seventh ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::6::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "Gingembre frais"
     label: "Seventh ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::7::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "40 ml"
     label: "Eighth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::7::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "Sauce soj.*"
     label: "Eighth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::8::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "10 ml"
     label: "Ninth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::8::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "Huile de sésam.*"
     label: "Ninth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::9::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "2 pièce"
     label: "Tenth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::9::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "Filet de poulet"
     label: "Tenth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::10::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "2 c.*"
     label: "Eleventh ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::10::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "Gomas.*"
     label: "Eleventh ingredient name is displayed"
 

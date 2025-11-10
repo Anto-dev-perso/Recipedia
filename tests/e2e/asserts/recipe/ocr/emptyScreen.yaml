@@ -81,7 +81,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::OpenModal::RoundButton"
+      id: "RecipeIngredients::OpenModal::RoundButton"
     direction: DOWN
     speed: 60
 
@@ -94,6 +94,12 @@ appId: "com.recipedia"
     id: "RecipeIngredients::OpenModal::RoundButton"
     label: "OCR button for the ingredients is rendered"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
     id: "RecipeTime::PrefixText"
     text: "Prep time (minutes):"
@@ -102,6 +108,12 @@ appId: "com.recipedia"
 - assertVisible:
     id: "RecipeTime::OpenModal::RoundButton"
     label: "OCR button for the time is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::OpenModal::RoundButton"
+    direction: DOWN
+    speed: 60
 
 - assertVisible:
     id: "RecipePreparation::PrefixText"

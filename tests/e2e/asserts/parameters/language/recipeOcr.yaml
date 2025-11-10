@@ -43,6 +43,7 @@ appId: "com.recipedia"
       id: "RecipePreparation::PrefixText"
     direction: DOWN
     speed: 60
+    centerElement: true
 
 - assertVisible:
     id: "RecipeTime::PrefixText"

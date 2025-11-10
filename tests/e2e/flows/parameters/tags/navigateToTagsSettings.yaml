@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    text: "Parameters"
+    id: "BottomTabs::Parameters"
     label: "Navigate to Parameters screen"
 
 - scrollUntilVisible:

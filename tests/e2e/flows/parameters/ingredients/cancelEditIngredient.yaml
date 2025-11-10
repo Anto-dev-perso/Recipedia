@@ -4,8 +4,13 @@ appId: "com.recipedia"
     element:
       id: "IngredientsSettings::30::EditButton"
     direction: UP
-    speed: 80
+    speed: 70
+    centerElement: true
     label: "Scroll up to find Spaghetti ingredient for edit test"
+
+- assertVisible:
+    text: "Spaghetti"
+    label: "Verify Spaghetti ingredient exists in database"
 
 - tapOn:
     id: "IngredientsSettings::30::EditButton"
