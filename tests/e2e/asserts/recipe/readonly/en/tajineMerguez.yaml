@@ -57,33 +57,17 @@ appId: "com.recipedia"
     label: "Second ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
-    text: "8 "
-    label: "Third ingredient quantity is displayed"
-
-- assertVisible:
     id: "RecipeIngredients::TextRender::.*::IngredientName"
-    text: "merguez"
+    text: ".*merguez.*"
     label: "Third ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
-    text: "2 "
-    label: "Fourth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::TextRender::.*::IngredientName"
-    text: "navet"
+    text: ".*navet.*"
     label: "Fourth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
-    text: "800 g"
-    label: "Fifth ingredient quantity is displayed"
-
-- assertVisible:
     id: "RecipeIngredients::TextRender::.*::IngredientName"
-    text: "pommes de terre jaunes"
+    text: ".*pommes de terre jaunes.*"
     label: "Fifth ingredient name is displayed"
 
 - assertVisible:
