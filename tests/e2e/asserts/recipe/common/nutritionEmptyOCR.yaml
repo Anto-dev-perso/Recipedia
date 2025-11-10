@@ -2,7 +2,7 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      id: "Recipe::RecipeNutrition::NutritionEmptyState::Title"
+      id: "Recipe::RecipeNutrition::NutritionEmptyState::OCRButton::RoundButton"
     direction: DOWN
     speed: 60
     centerElement: true

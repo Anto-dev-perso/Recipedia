@@ -51,13 +51,20 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
+      id: "RecipePersons::Text"
+    direction: DOWN
+    speed: 40
+
+- assertVisible:
+    id: "RecipePersons::Text"
+    text: "Ingredients (4 persons)"
+    label: "Ingredient section and persons is displayed"
+
+- scrollUntilVisible:
+    element:
       id: "RecipeIngredients::TextRender::10::IngredientName"
     direction: DOWN
     speed: 60
-
-- assertVisible:
-    text: "Ingredients (4 persons)"
-    label: "Ingredient section and persons is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
