@@ -122,7 +122,7 @@ appId: "com.recipedia"
 # Scroll down to see more accordions
 - scrollUntilVisible:
     element:
-      id: "SearchScreen::FilterAccordion::Accordion::18"
+      text: "Noix et Graines"
     direction: DOWN
     label: "Scroll to Nuts and Seeds accordion"
 
