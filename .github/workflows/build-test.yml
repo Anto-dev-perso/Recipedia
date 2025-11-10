@@ -298,10 +298,14 @@ jobs:
           retention-days: 7
 
   e2e-tests:
-    name: E2E Tests
+    name: E2E Tests (${{ matrix.suite }})
     runs-on: ubuntu-latest
     needs: build-android
-    timeout-minutes: 180
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ 'app-init', 'search', 'recipe-view', 'recipe-create', 'shopping', 'settings', 'tags-db', 'ingredients-db', 'duplicates', 'ocr' ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -342,48 +346,119 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: Nexus 5
-          emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -wipe-data
+          emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -wipe-data -memory 1024
           script: |
+            sleep 10
             echo "🔄 Waiting for device..."
             adb wait-for-device
 
-            export MAESTRO_CLI_NO_ANALYTICS=1
-
-            echo "🚀 Running E2E tests..."
+            echo "🚀 Running E2E tests on suite: ${{ matrix.suite }} ..."
             npm run install:android
-            npm run test:e2e:android
+            cd tests/e2e/ 
+            maestro test tests/e2e/ --config=tests/e2e/${{ matrix.suite }}.yaml --debug-output=maestro_logs_${{ matrix.suite }} --format junit -s 1 
 
-      - name: Zip Maestro test results
+      - name: Prepare suite logs
         if: always()
-        run: zip -r maestro_test_results.zip maestro_logs/.maestro/tests
+        run: |
+          cd maestro_logs_${{ matrix.suite }}
+          mv .maestro/tests/*/maestro.log .
+          mv .maestro/tests/*/*.png . || true
+          rm -rf .maestro/*
+          cd ..
+          zip -r maestro_logs_${{ matrix.suite }}.zip maestro_logs_${{ matrix.suite }}/
 
-      - name: Upload Maestro test results
+      - name: Upload test suite logs
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: maestro-test-results
-          path: maestro_logs/.maestro/tests
+          name: maestro-logs-${{ matrix.suite }}
+          path: maestro_logs_${{ matrix.suite }}.zip
+          retention-days: 1
+
+      - name: Upload JUnit report for suite
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: junit-e2e-${{ matrix.suite }}
+          path: report.xml
+          retention-days: 1
+
+  merge-test-artifacts:
+    name: Merge E2E Test Artifacts
+    if: always()
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Restore node modules
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
+      - name: Download all E2E JUnit reports
+        if: always()
+        uses: actions/download-artifact@v6
+        with:
+          pattern: junit-e2e-*
+          path: junit-reports
+          merge-multiple: false
+
+      - name: Download all Maestro logs
+        if: always()
+        uses: actions/download-artifact@v6
+        with:
+          pattern: maestro-logs-*
+          path: maestro-logs
+          merge-multiple: false
+
+      - name: Delete individual suite artifacts
+        if: always()
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: |
+            junit-e2e-*
+            maestro-logs-*
+          failOnError: false
+
+
+      - name: Merge JUnit reports
+        if: always()
+        run: |
+          mkdir -p merged-reports
+          npx jrm merged-reports/report.xml "junit-reports/**/*.xml"
+
+      - name: Merge Maestro logs
+        if: always()
+        run: bash .github/scripts/merge-maestro-logs.sh maestro-logs maestro-logs-all-suites.zip
+
+      - name: Upload merged JUnit report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: e2e-junit-merged
+          path: merged-reports/report.xml
           retention-days: 7
 
-      - name: E2E tests summary
-        uses: test-summary/action@v2
-        with:
-          paths: report.xml
-          output: e2e-test-summary.md
+      - name: Upload merged Maestro logs
         if: always()
-
-      - name: Upload unit tests summary
         uses: actions/upload-artifact@v5
         with:
-          name: e2e-test-summary
-          path: e2e-test-summary.md
-        if: always()
+          name: maestro-logs-merged
+          path: maestro-logs-all-suites.zip
+          retention-days: 7
 
   test-result-summary:
     name: Generate Test Result Summary
     if: always()
     runs-on: ubuntu-latest
-    needs: [ e2e-tests, unit-tests-and-coverage ]
+    needs: [ merge-test-artifacts, unit-tests-and-coverage ]
     steps:
       - name: Download unit test results
         if: always()
@@ -391,11 +466,18 @@ jobs:
         with:
           name: unit-test-summary
 
-      - name: Download E2E test results
+      - name: Download merged E2E JUnit report
         if: always()
         uses: actions/download-artifact@v6
         with:
-          name: e2e-test-summary
+          name: e2e-junit-merged
+
+      - name: Generate E2E test summary from merged report
+        uses: test-summary/action@v2
+        with:
+          paths: report.xml
+          output: e2e-test-summary.md
+        if: always()
 
       - name: Combine test summaries
         if: always()
@@ -409,11 +491,12 @@ jobs:
           cat unit-test-summary.md >> full-summary.md
           echo "" >> full-summary.md
           echo "" >> full-summary.md
-          echo "#### 📱 E2E Tests" >> full-summary.md
+          echo "#### 📱 E2E Tests (All Suites)" >> full-summary.md
           echo "" >> full-summary.md
           echo "" >> full-summary.md
           cat e2e-test-summary.md >> full-summary.md
-          echo "_View logs and coverage artifacts in the Actions tab._" >> full-summary.md
+          echo "" >> full-summary.md
+          echo "_View merged logs and coverage artifacts in the Actions tab._" >> full-summary.md
 
       - name: Comment test summary on PR
         uses: marocchino/sticky-pull-request-comment@v2

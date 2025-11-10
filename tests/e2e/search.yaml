@@ -1,0 +1,15 @@
+flows:
+  - cases/search/*
+
+executionOrder:
+  flowsOrder:
+    - "4 - Search Bar Open/Close Flow"
+    - "5 - Search Scroll Independence Flow"
+    - "6 - Search Multiple Results Flow"
+    - "7 - Search Direct Click Flow"
+    - "8 - Search Backspace Correction Flow"
+    - "9 - Search Filter Removal Flow"
+    - "10 - Filter Page Toggle Flow"
+    - "11 - Single Filter Application Flow"
+    - "12 - Multiple Filters Application Flow"
+    - "13 - Filters With Text Search Flow"

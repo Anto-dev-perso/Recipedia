@@ -1,0 +1,25 @@
+appId: com.recipedia
+---
+- tapOn:
+    text: "Pictures"
+    label: "Select the pictures directory"
+
+- longPressOn:
+    id: "icon_thumb"
+    label: "Stay pressed on the first icon to select it"
+
+- tapOn:
+    text: "More options"
+    label: "Press on the more options menu"
+
+- tapOn:
+    text: "Select all"
+    label: "Select all pictures in the directory"
+
+- tapOn:
+    id: "action_menu_delete"
+    label: "Delete the selected pictures"
+
+- tapOn:
+    text: "OK"
+    label: "Confirm the deletion"

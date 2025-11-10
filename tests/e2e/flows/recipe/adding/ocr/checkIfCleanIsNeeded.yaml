@@ -1,0 +1,14 @@
+appId: com.recipedia
+---
+- stopApp
+
+- runFlow:
+    file: "android/cleanIfNeeded.yaml"
+    when:
+      platform: Android
+
+# TODO iOS
+#- runFlow:
+#    file: "iOS/cleanIfNeeded.yaml"
+#    when:
+#      platform: iOS

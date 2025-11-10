@@ -1,0 +1,10 @@
+flows:
+  - cases/settings/*
+
+executionOrder:
+  flowsOrder:
+    - "26 - Dark Mode Toggle Flow"
+    - "27 - Language Switch Flow"
+    - "28 - Season Filter Toggle Flow"
+    - "29 - Season Filter Edge Cases Flow"
+    - "30 - Default Persons Setting Flow"

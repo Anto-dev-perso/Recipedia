@@ -1,0 +1,8 @@
+flows:
+  - cases/shopping/*
+
+executionOrder:
+  flowsOrder:
+    - "23 - Add Single Recipe To Shopping Flow"
+    - "24 - Add Multiple Recipes To Shopping Flow"
+    - "25 - Delete Recipe From Shopping Flow"

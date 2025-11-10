@@ -1,0 +1,10 @@
+flows:
+  - cases/tags-db/*
+
+executionOrder:
+  flowsOrder:
+    - "31 - Add New Tag Flow"
+    - "32 - Edit Existing Tag Flow"
+    - "33 - Delete Tag Flow"
+    - "34 - Add Tag And Use In Recipe Flow"
+    - "35 - Tag Edge Cases Flow"

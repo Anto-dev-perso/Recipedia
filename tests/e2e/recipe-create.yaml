@@ -1,0 +1,9 @@
+flows:
+  - cases/recipe-create/*
+
+executionOrder:
+  flowsOrder:
+    - "19 - Manual Recipe Creation Complete Flow"
+    - "20 - Manual Recipe Creation Cancel Flow"
+    - "21 - Manual Recipe Quantity Scaling Flow"
+    - "22 - Recipe Validation All Fields Flow"
