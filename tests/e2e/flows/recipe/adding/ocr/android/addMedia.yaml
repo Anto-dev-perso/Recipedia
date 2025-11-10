@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 # Adds media file to device gallery
-# Uses 500ms delay to ensure Android MediaStore indexes the new file
+# MediaStore indexing is verified by waitAndVerifyGalleryReady.yaml with retry logic
 # Uses conditionals to select hardcoded path since addMedia doesn't support variables
 
 # HelloFresh recipe paths
@@ -175,8 +175,3 @@ appId: "com.recipedia"
     commands:
       - addMedia:
           - "../../../../../../assets/curryPoisChiches/preparation.jpg"
-
-- extendedWaitUntil:
-    visible: "MAESTRO_DELAY_WORKAROUND"
-    optional: true
-    timeout: 3000
