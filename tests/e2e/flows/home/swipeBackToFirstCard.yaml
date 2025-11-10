@@ -7,8 +7,8 @@ appId: "com.recipedia"
     times: 10
     commands:
       - swipe:
-          start: "5%,25%"
-          end: "95%,25%"
+          start: "15%,25%"
+          end: "85%,25%"
           label: "Scroll random carousel back to initial position"
 
 - swipe:
