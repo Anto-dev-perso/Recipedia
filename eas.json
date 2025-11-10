@@ -32,7 +32,8 @@
         ]
       },
       "env": {
-        "NODE_OPTIONS": "--max-old-space-size=4096"
+        "NODE_OPTIONS": "--max-old-space-size=4096",
+        "EXPO_PUBLIC_DATASET_TYPE": "test"
       }
     },
     "production": {
@@ -56,6 +57,9 @@
       },
       "ios": {
         "buildConfiguration": "Release"
+      },
+      "env": {
+        "EXPO_PUBLIC_DATASET_TYPE": "production"
       }
     }
   }
