@@ -34,9 +34,23 @@ appId: "com.recipedia"
           text: "Cancel"
           label: "Close the gallery picker"
 
-      - tapOn:
-          id: "Modal::Gallery::RoundButton"
-          label: "Reopen gallery "
+      - runFlow:
+          when:
+            visible:
+              id: "Modal::Gallery::RoundButton"
+          commands:
+            - tapOn:
+                id: "Modal::Gallery::RoundButton"
+                label: "Reopen gallery"
+
+      - runFlow:
+          when:
+            visible:
+              id: "GalleryButton::RoundButton"
+          commands:
+            - tapOn:
+                id: "GalleryButton::RoundButton"
+                label: "Reopen gallery"
 
       - runFlow:
           when:
