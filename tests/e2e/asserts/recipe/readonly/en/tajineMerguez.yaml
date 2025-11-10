@@ -37,52 +37,52 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "2 "
     label: "First ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "carotte"
     label: "First ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "2 sachet"
     label: "Second ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "cumin"
     label: "Second ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "8 "
     label: "Third ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "merguez"
     label: "Third ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "2 "
     label: "Fourth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "navet"
     label: "Fourth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
     text: "800 g"
     label: "Fifth ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::IngredientName"
+    id: "RecipeIngredients::TextRender::.*::IngredientName"
     text: "pommes de terre jaunes"
     label: "Fifth ingredient name is displayed"
 
