@@ -1,0 +1,20 @@
+appId: "com.recipedia"
+---
+- launchApp:
+    label: "Setup - Launch app"
+
+- extendedWaitUntil:
+    visible:
+      id: "WelcomeScreen::SkipButton"
+    timeout: 5000
+    label: "Check if onboarding appears"
+
+- tapOn:
+    id: "WelcomeScreen::SkipButton"
+    label: "Skip onboarding"
+
+- extendedWaitUntil:
+    visible:
+      id: "BottomTabs::Home"
+    timeout: 5000
+    label: "Wait for app to be ready"
