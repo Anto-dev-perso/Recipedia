@@ -418,16 +418,6 @@ jobs:
           path: maestro-logs
           merge-multiple: false
 
-      - name: Delete individual suite artifacts
-        if: always()
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: |
-            junit-e2e-*
-            maestro-logs-*
-          failOnError: false
-
-
       - name: Merge JUnit reports
         if: always()
         run: |
@@ -437,6 +427,15 @@ jobs:
       - name: Merge Maestro logs
         if: always()
         run: bash .github/scripts/merge-maestro-logs.sh maestro-logs maestro-logs-all-suites.zip
+
+      - name: Delete individual suite artifacts
+        if: always()
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: |
+            junit-e2e-*
+            maestro-logs-*
+          failOnError: false
 
       - name: Upload merged JUnit report
         if: always()
