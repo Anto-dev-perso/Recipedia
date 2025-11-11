@@ -2,11 +2,11 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      text: "Grain or Cereal"
+      text: "Cereal"
     direction: DOWN
     speed: 60
     centerElement: true
-    label: "Scroll to Grain or Cereal accordion"
+    label: "Scroll to Cereal accordion"
 
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
