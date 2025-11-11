@@ -63,6 +63,10 @@ export type CustomTextInputProps = {
   multiline?: boolean;
   /** Type of keyboard to display (default: 'default') */
   keyboardType?: 'default' | 'number-pad' | 'email-address' | 'phone-pad' | 'numeric' | 'url';
+  /** Display mode: outlined or flat (default: 'outlined') */
+  mode?: 'flat' | 'outlined';
+  /** Whether to use dense styling (default: false) */
+  dense?: boolean;
   /** Custom styles for the container view */
   style?: StyleProp<ViewStyle>;
   /** Custom styles for the text content */
@@ -92,6 +96,8 @@ export function CustomTextInput({
   value,
   multiline = false,
   keyboardType = 'default',
+  mode = 'outlined',
+  dense = false,
   style,
   contentStyle,
   onFocus,
@@ -155,7 +161,8 @@ export function CustomTextInput({
         onFocus={handleOnFocus}
         onChangeText={handleOnChangeText}
         onEndEditing={handleOnEndEditing}
-        mode={'outlined'}
+        mode={mode}
+        dense={dense}
         multiline={multiline}
         editable={editable}
         keyboardType={keyboardType}
