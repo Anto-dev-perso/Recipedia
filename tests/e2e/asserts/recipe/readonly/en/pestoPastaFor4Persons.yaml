@@ -25,51 +25,51 @@ appId: "com.recipedia"
     label: "Scroll to end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "Pasta"
     label: "Ingredient Pasta is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::0::QuantityAndUnit"
     text: "400 g"
     label: "Pasta quantity is 400g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::1::IngredientName"
     text: "Basil Leaves"
     label: "Ingredient Basil Leaves is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::1::QuantityAndUnit"
     text: "100 g"
     label: "Basil Leaves quantity is 100g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
+    id: "RecipeIngredients::2::IngredientName"
     text: "Parmesan"
     label: "Ingredient Parmesan is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    id: "RecipeIngredients::2::QuantityAndUnit"
     text: "60 g"
     label: "Parmesan quantity is 60g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::IngredientName"
+    id: "RecipeIngredients::3::IngredientName"
     text: "Olive Oil"
     label: "Ingredient Olive Oil is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    id: "RecipeIngredients::3::QuantityAndUnit"
     text: "100 ml"
     label: "Olive Oil quantity is 100ml"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::IngredientName"
+    id: "RecipeIngredients::4::IngredientName"
     text: "Pine Nuts"
     label: "Ingredient Pine Nuts is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    id: "RecipeIngredients::4::QuantityAndUnit"
     text: "40 g"
     label: "Pine Nuts quantity is 40g"

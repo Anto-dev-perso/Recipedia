@@ -82,7 +82,7 @@ appId: "com.recipedia"
     label: "Press the round button of first ingredient"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     label: "Press the TextInput of first ingredient's quantity"
 
 - inputText:
@@ -90,7 +90,7 @@ appId: "com.recipedia"
     label: "Enter text for recipe first ingredient quantity"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Press the TextInput of first ingredient's name"
 
 - inputText:
@@ -110,13 +110,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+      id: "RecipeIngredients::1::QuantityInput"
     direction: DOWN
     speed: 60
     label: "Scroll to second ingredient quantity input"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::1::QuantityInput"
     label: "Press the TextInput of second ingredient's quantity"
 
 - inputText:
@@ -124,7 +124,7 @@ appId: "com.recipedia"
     label: "Enter text for recipe second ingredient quantity"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
     label: "Press the TextInput of second ingredient's name"
 
 - inputText:
@@ -142,13 +142,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+      id: "RecipeIngredients::2::NameInput::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to third ingredient name input"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::2::NameInput::CustomTextInput"
     label: "Press the TextInput of third ingredient's name"
 
 - swipe:
@@ -161,7 +161,7 @@ appId: "com.recipedia"
     label: "Press the ingredient from the dropdown"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::2::QuantityInput"
     label: "Press the TextInput of third ingredient's quantity"
 
 - inputText:

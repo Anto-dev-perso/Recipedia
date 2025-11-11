@@ -106,7 +106,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::10::Dropdown::CustomTextInput"
+      id: "RecipeIngredients::10::NameInput::CustomTextInput"
     direction: DOWN
     centerElement: true
     speed: 60
@@ -114,15 +114,15 @@ appId: "com.recipedia"
 
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::10::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::10::QuantityInput::NumericTextInput"
     label: "Expected to have the right number of ingredients quantities"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::10::Unit::CustomTextInput"
+    id: "RecipeIngredients::10::Unit::CustomTextInput"
     label: "Expected to have the right number of ingredients units"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::10::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::10::NameInput::CustomTextInput"
     label: "Expected to have the right number of ingredients names"
 
 - scrollUntilVisible:

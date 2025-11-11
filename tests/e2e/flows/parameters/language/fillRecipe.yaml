@@ -24,13 +24,13 @@ appId: "com.recipedia"
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Tap on recipe ingredients button to add ingredient"
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     label: "Tap on recipe ingredients quantity text input"
 - inputText:
     text: "200"
     label: "Write an ingredient quantity in the input text"
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Tap on recipe ingredient name text input"
 - inputText:
     text: "Avocado"

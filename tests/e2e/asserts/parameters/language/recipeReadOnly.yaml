@@ -4,13 +4,21 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTime::Text"
+      id: "RecipePersons::Text"
     direction: DOWN
     speed: 60
+    centerElement: true
 - assertVisible:
     id: "RecipePersons::Text"
     text: "Ingrédients (4 personnes)"
     label: "Persons text is displayed in French"
+
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 60
 - assertVisible:
     id: "RecipeTime::Text"
     text: "Préparation (20 min)"

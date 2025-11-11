@@ -39,43 +39,43 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "Sushi Rice"
     label: "Ingredient Sushi Rice is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::0::QuantityAndUnit"
     text: "250 g"
     label: "Quantity of Sushi Rice is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::1::IngredientName"
     text: "Nori Sheets"
     label: "Ingredient Nori Sheets is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::1::QuantityAndUnit"
     text: "5 pieces"
     label: "Quantity of Nori Sheets is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
+    id: "RecipeIngredients::2::IngredientName"
     text: "Salmon"
     label: "Ingredient Salmon is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    id: "RecipeIngredients::2::QuantityAndUnit"
     text: "200 g"
     label: "Quantity of Salmon is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::IngredientName"
+    id: "RecipeIngredients::3::IngredientName"
     text: "Avocado"
     label: "Ingredient Avocado is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    id: "RecipeIngredients::3::QuantityAndUnit"
     text: "100 g"
     label: "Quantity of Avocado is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::IngredientName"
+    id: "RecipeIngredients::4::IngredientName"
     text: "Soy Sauce"
     label: "Ingredient Soy Sauce is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::QuantityAndUnit"
+    id: "RecipeIngredients::4::QuantityAndUnit"
     text: "50 ml"
     label: "Quantity of Soy Sauce is rendered"
 - assertVisible:

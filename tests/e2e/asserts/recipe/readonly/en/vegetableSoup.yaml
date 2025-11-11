@@ -45,42 +45,42 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "Carrots"
     label: "Ingredient Carrots is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::0::QuantityAndUnit"
     text: "150 g"
     label: "Quantity of Carrots is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::1::IngredientName"
     text: "Celery"
     label: "Ingredient Celery is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::1::QuantityAndUnit"
     text: "100 g"
     label: "Quantity of Celery is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
+    id: "RecipeIngredients::2::IngredientName"
     text: "Potatoes"
     label: "Ingredient Potatoes is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    id: "RecipeIngredients::2::QuantityAndUnit"
     text: "200 g"
     label: "Quantity of Potatoes is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::IngredientName"
+    id: "RecipeIngredients::3::IngredientName"
     text: "Vegetable Broth"
     label: "Ingredient Vegetable Broth is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    id: "RecipeIngredients::3::QuantityAndUnit"
     text: "500 ml"
     label: "Quantity of Vegetable Broth is rendered"
 

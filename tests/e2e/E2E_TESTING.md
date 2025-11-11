@@ -269,7 +269,7 @@ id: "RecipeTitle::CustomTextInput"
 id: "RecipeTitle::OpenModal::RoundButton"
 
 # Indexed elements (for lists)
-id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+id: "RecipeIngredients::0::QuantityInput::NumericTextInput"
 id: "Modal::List#2::SquareButton::Image"
 
 # Button types

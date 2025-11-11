@@ -20,13 +20,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::2::IngredientName"
+      id: "RecipePersons::Text"
     direction: DOWN
     speed: 60
     label: "Scroll to ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
+    id: "RecipeIngredients::2::IngredientName"
     text: "Lettuce Edited"
     label: "Verify ingredient name changed to 'Lettuce Edited' in recipe"
 

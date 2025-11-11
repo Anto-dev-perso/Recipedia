@@ -37,27 +37,27 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
+    id: "RecipeIngredients::.*::QuantityAndUnit"
     text: "2 "
     label: "First ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    id: "RecipeIngredients::.*::IngredientName"
     text: "carotte"
     label: "First ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::QuantityAndUnit"
+    id: "RecipeIngredients::.*::QuantityAndUnit"
     text: "2 sachet"
     label: "Second ingredient quantity is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    id: "RecipeIngredients::.*::IngredientName"
     text: "cumin"
     label: "Second ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    id: "RecipeIngredients::.*::IngredientName"
     text: ".*merguez.*"
     label: "Third ingredient name is displayed"
 
@@ -66,7 +66,7 @@ appId: "com.recipedia"
     label: "Fourth ingredient name is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::.*::IngredientName"
+    id: "RecipeIngredients::.*::IngredientName"
     text: ".*pommes de terre jaunes.*"
     label: "Fifth ingredient name is displayed"
 

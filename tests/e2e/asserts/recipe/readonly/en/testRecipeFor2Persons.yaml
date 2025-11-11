@@ -18,22 +18,22 @@ appId: "com.recipedia"
     label: "Recipe is for 2 persons"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "Pasta"
     label: "First ingredient is Pasta"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::0::QuantityAndUnit"
     text: "200 g"
     label: "Pasta quantity is 200g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::1::IngredientName"
     text: "Tomatoes"
     label: "Second ingredient is Tomatoes"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::1::QuantityAndUnit"
     text: "100 g"
     label: "Tomatoes quantity is 100g"
 

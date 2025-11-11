@@ -34,55 +34,55 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+      id: "RecipeIngredients::1::QuantityInput"
     direction: DOWN
     speed: 60
     label: "Scroll to see more ingredients"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     text: "66.67"
     label: "Flour quantity is scaled to 66.67g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     text: "Flour"
     label: "First ingredient is Flour"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::1::QuantityInput"
     text: "16.67"
     label: "Cocoa Powder quantity is scaled to 16.67g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
     text: "Cocoa Powder"
     label: "Second ingredient is Cocoa Powder"
 
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
+      id: "RecipeIngredients::3::QuantityInput"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::2::QuantityInput"
     text: "50"
     label: "Sugar quantity is scaled to 50g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::2::NameInput::CustomTextInput"
     text: "Sugar"
     label: "Third ingredient is Sugar"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::3::QuantityInput"
     text: "33.34"
     label: "Butter quantity is scaled to 33.34g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::3::NameInput::CustomTextInput"
     text: "Butter"
     label: "Fourth ingredient is Butter"

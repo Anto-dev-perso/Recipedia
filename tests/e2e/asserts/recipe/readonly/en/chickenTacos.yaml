@@ -43,42 +43,42 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "Taco Shells"
     label: "Ingredient Taco Shells is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::0::QuantityAndUnit"
     text: "12 pieces"
     label: "Quantity of Taco Shells is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::1::IngredientName"
     text: "Chicken Breast"
     label: "Ingredient Chicken Breast is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::1::QuantityAndUnit"
     text: "600 g"
     label: "Quantity of Chicken Breast is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
+    id: "RecipeIngredients::2::IngredientName"
     text: "Lettuce"
     label: "Ingredient Lettuce is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    id: "RecipeIngredients::2::QuantityAndUnit"
     text: "100 g"
     label: "Quantity of Lettuce is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::IngredientName"
+    id: "RecipeIngredients::3::IngredientName"
     text: "Cheddar"
     label: "Ingredient Cheddar is rendered"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    id: "RecipeIngredients::3::QuantityAndUnit"
     text: "100 g"
     label: "Quantity of Cheddar is rendered"
 
