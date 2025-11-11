@@ -1,3 +1,14 @@
+## [0.21.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.20.1...v0.21.0) (2025-11-11)
+
+### Features
+
+* **Recipe:** optimize saving logic and add recipe comparison ([64e2e45](https://github.com/Anto-dev-perso/Recipedia/commit/64e2e457b28f71883da05a0be1bd26ff6b4c29e8))
+
+### Bug Fixes
+
+* edit persons only ([#113](https://github.com/Anto-dev-perso/Recipedia/issues/113)) ([ad83e07](https://github.com/Anto-dev-perso/Recipedia/commit/ad83e07b684d9aba09d1d1fb1a0816717abbd02d))
+* **workflow:** reorder suite artifact deletion step for proper timing ([87ed075](https://github.com/Anto-dev-perso/Recipedia/commit/87ed0751cfb38a4589dff8fabca5bf7d4b05d8e6))
+
 ## [0.20.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.20.0...v0.20.1) (2025-11-09)
 
 ### Bug Fixes
