@@ -40,6 +40,9 @@ tags:
     text: " Cuisine"
     label: "Action - Append Cuisine to tag name"
 
+- hideKeyboard:
+    label: "Hide the keyboard"
+
 - tapOn:
     id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
     label: "Action - Save edited tag"
