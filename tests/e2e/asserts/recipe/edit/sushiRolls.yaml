@@ -23,10 +23,9 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTags::HeaderText"
+      id: "RecipeDescription::CustomTextInput"
     direction: DOWN
     speed: 60
-    centerElement: true
 
 - assertVisible:
     id: "RecipeDescription::Text"
@@ -36,16 +35,17 @@ appId: "com.recipedia"
     id: "RecipeDescription::CustomTextInput"
     text: "CLASSIC SUSHI ROLLS WITH NORI, RICE, AND FILLINGS."
     label: "Description of the recipe is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::RoundButton"
+    direction: DOWN
+    speed: 60
+
 - assertVisible:
     id: "RecipeTags::HeaderText"
     text: "Tags:"
     label: "Intro text for the tags is rendered"
-
-- scrollUntilVisible:
-    element:
-      id: "RecipeTags::ElementText"
-    direction: DOWN
-    speed: 60
 
 - assertVisible:
     id: "RecipeTags::ElementText"

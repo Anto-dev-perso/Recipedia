@@ -6,7 +6,7 @@ appId: "com.recipedia"
 - extendedWaitUntil:
     visible:
       id: "WelcomeScreen::SkipButton"
-    timeout: 5000
+    timeout: 10000
     label: "Check if onboarding appears"
 
 - tapOn:

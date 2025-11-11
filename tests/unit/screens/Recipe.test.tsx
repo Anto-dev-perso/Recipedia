@@ -1271,6 +1271,39 @@ describe('Recipe Component tests', () => {
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(false);
   });
 
+  test('scales recipe back to default persons when editing', async () => {
+    const editRecipeSpy = jest.spyOn(dbInstance, 'editRecipe');
+
+    const mockRecipeForEdit = {
+      mode: 'edit' as const,
+      recipe: {
+        ...testRecipes[0],
+      },
+    };
+
+    const { getByTestId } = await renderRecipe(createMockRoute(mockRecipeForEdit));
+
+    fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'Modified Title');
+    const newPersons = '8';
+    fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPersons);
+
+    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+
+    await waitFor(() => {
+      expect(editRecipeSpy).toHaveBeenCalled();
+    });
+
+    const savedRecipe = editRecipeSpy.mock.calls[0][0];
+    expect(savedRecipe.title).toBe('Modified Title');
+    expect(savedRecipe.persons).toBe(4);
+    expect(savedRecipe.ingredients[0].quantity).toBe('200');
+    expect(savedRecipe.ingredients[1].quantity).toBe('300');
+    expect(savedRecipe.ingredients[2].quantity).toBe('250');
+    expect(savedRecipe.ingredients[3].quantity).toBe('50');
+
+    editRecipeSpy.mockRestore();
+  });
+
   test('toggles stackMode between readOnly and edit', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteReadOnly));
     const paramEdit: editRecipeManually = { ...mockRouteReadOnly, mode: 'edit' };

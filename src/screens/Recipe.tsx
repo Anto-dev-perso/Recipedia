@@ -71,6 +71,7 @@ import {
   extractTagsName,
   ingredientTableElement,
   ingredientType,
+  isRecipeEqual,
   nutritionTableElement,
   preparationStepElement,
   recipeColumnsNames,
@@ -751,8 +752,29 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       recipeLogger.info('Saving edited recipe to database', {
         recipeTitle,
       });
+      const recipeToEdit = createRecipeFromStates();
+      const originalRecipe = props.mode === 'edit' ? props.recipe : recipeToEdit;
 
-      await editRecipe(createRecipeFromStates());
+      // Scale recipe to default persons count before saving to database
+      const defaultPersons = await getDefaultPersons();
+      if (recipeToEdit.persons !== defaultPersons && recipeToEdit.persons > 0) {
+        recipeToEdit.ingredients = recipeToEdit.ingredients.map(ingredient => ({
+          ...ingredient,
+          quantity: ingredient.quantity
+            ? scaleQuantityForPersons(ingredient.quantity, recipeToEdit.persons, defaultPersons)
+            : ingredient.quantity,
+        }));
+        recipeToEdit.persons = defaultPersons;
+      }
+
+      // Only update database if the recipe actually changed
+      if (!isRecipeEqual(originalRecipe, recipeToEdit)) {
+        // @ts-ignore No need to wait for clearCache
+        FileGestion.getInstance().clearCache();
+
+        await editRecipe(recipeToEdit);
+      }
+
       setStackMode(recipeStateType.readOnly);
 
       recipeLogger.info('Recipe edit completed successfully', {
