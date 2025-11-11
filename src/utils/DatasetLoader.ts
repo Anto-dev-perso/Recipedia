@@ -60,12 +60,17 @@ function loadProductionDataset(language: SupportedLanguage): DatasetCollection {
 }
 
 /**
- * Determines the current dataset type based on EXPO_PUBLIC_DATASET_TYPE
+ * Determines the current dataset type based on EXPO_PUBLIC_DATASET_TYPE or NODE_ENV
  *
- * @returns 'production' if EXPO_PUBLIC_DATASET_TYPE is 'production', otherwise 'test'
+ * Priority: EXPO_PUBLIC_DATASET_TYPE takes precedence if set, otherwise falls back to NODE_ENV
+ *
+ * @returns 'production' if the active variable is 'production', otherwise 'test'
  */
 export function getDatasetType(): DatasetType {
-  return process.env.EXPO_PUBLIC_DATASET_TYPE === 'production' ? 'production' : 'test';
+  if (process.env.EXPO_PUBLIC_DATASET_TYPE !== undefined) {
+    return process.env.EXPO_PUBLIC_DATASET_TYPE === 'production' ? 'production' : 'test';
+  }
+  return process.env.NODE_ENV === 'production' ? 'production' : 'test';
 }
 
 export function getDataset(language: SupportedLanguage): DatasetCollection {
@@ -76,7 +81,8 @@ export function getDataset(language: SupportedLanguage): DatasetCollection {
 
     appLogger.info('Loaded dataset', {
       datasetType,
-      datasetEnv: process.env.EXPO_PUBLIC_DATASET_TYPE,
+      expoPublicDatasetType: process.env.EXPO_PUBLIC_DATASET_TYPE,
+      nodeEnv: process.env.NODE_ENV,
       language,
       ingredientsCount: dataset.ingredients.length,
       tagsCount: dataset.tags.length,
@@ -86,7 +92,8 @@ export function getDataset(language: SupportedLanguage): DatasetCollection {
     return dataset;
   } catch (error) {
     appLogger.error('Failed to load dataset, falling back to test data', {
-      datasetEnv: process.env.EXPO_PUBLIC_DATASET_TYPE,
+      expoPublicDatasetType: process.env.EXPO_PUBLIC_DATASET_TYPE,
+      nodeEnv: process.env.NODE_ENV,
       language,
       error,
     });
