@@ -247,6 +247,29 @@ jobs:
           env.BUILD_FALLBACK == 'true'
         uses: android-actions/setup-android@v3
 
+      - name: Setup Gradle with caching
+        if: |
+          steps.filter.outputs.build_required == 'true' ||
+          github.ref == 'refs/heads/main' ||
+          startsWith(github.ref, 'refs/tags/') ||
+          env.BUILD_FALLBACK == 'true'
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+
+      - name: Cache global Expo artifacts
+        if: |
+          steps.filter.outputs.build_required == 'true' ||
+          github.ref == 'refs/heads/main' ||
+          startsWith(github.ref, 'refs/tags/') ||
+          env.BUILD_FALLBACK == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.expo
+          key: ${{ runner.os }}-expo-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-expo-
+
       - name: Setup EAS
         if: |
           steps.filter.outputs.build_required == 'true' ||
