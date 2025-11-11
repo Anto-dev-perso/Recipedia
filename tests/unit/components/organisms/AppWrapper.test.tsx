@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { cleanup, fireEvent, render, waitFor } from '@testing-library/react-native';
 import AppWrapper from '@components/organisms/AppWrapper';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { testIngredients } from '@test-data/ingredientsDataset';
@@ -36,6 +36,8 @@ describe('AppWrapper Component', () => {
   });
 
   afterEach(async () => {
+    cleanup();
+    jest.clearAllTimers();
     await database.reset();
   });
 
@@ -163,7 +165,13 @@ describe('AppWrapper Component', () => {
 
     await waitFor(() => {
       expect(getByTestId('RootNavigator')).toBeTruthy();
+    });
+
+    await waitFor(() => {
       expect(queryByTestId('WelcomeScreen')).toBeNull();
+    });
+
+    await waitFor(() => {
       expect(queryByTestId('TutorialProvider')).toBeNull();
     });
 
@@ -222,7 +230,14 @@ describe('AppWrapper Component', () => {
     fireEvent.press(skipButton);
 
     await waitFor(() => {
+      expect(getByTestId('RootNavigator')).toBeTruthy();
+    });
+
+    await waitFor(() => {
       expect(queryByTestId('WelcomeScreen')).toBeNull();
+    });
+
+    await waitFor(() => {
       expect(queryByTestId('TutorialProvider')).toBeNull();
     });
 
