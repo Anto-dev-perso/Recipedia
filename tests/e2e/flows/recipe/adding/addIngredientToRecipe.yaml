@@ -12,14 +12,14 @@ appId: "com.recipedia"
     label: "Add ingredient"
 
 - tapOn:
-    id: "RecipeIngredients::${INDEX}::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::${INDEX}::QuantityInput"
     label: "Focus on ingredient quantity"
 
 - runFlow:
     when:
       visible:
-        id: 'RecipeIngredients::${INDEX}::QuantityInput::NumericTextInput'
-        text: '.+'
+        id: "RecipeIngredients::${INDEX}::QuantityInput"
+        text: ".+"
     commands:
       - eraseText:
           label: "Erase the existing ingredient quantity"
@@ -38,8 +38,8 @@ appId: "com.recipedia"
 - runFlow:
     when:
       visible:
-        id: 'RecipeIngredients::${INDEX}::NameInput::CustomTextInput'
-        text: '.+'
+        id: "RecipeIngredients::${INDEX}::NameInput::CustomTextInput"
+        text: ".+"
     commands:
       - eraseText:
           label: "Erase the existing ingredient name"

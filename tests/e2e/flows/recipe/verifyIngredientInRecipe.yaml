@@ -11,13 +11,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::Header::IngredientName"
+      id: "RecipeIngredients::0::IngredientName"
     direction: DOWN
     speed: 60
     label: "Scroll to ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::Header::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "RecipeIngredient"
     label: "Verify ingredient appears in the recipe"
 

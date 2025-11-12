@@ -34,7 +34,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTime::Text"
+      id: "RecipeIngredients::4::IngredientName"
     direction: DOWN
     speed: 60
 
@@ -78,6 +78,13 @@ appId: "com.recipedia"
     id: "RecipeIngredients::4::QuantityAndUnit"
     text: "40 g"
     label: "Quantity of Pine Nuts is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::Text"
+    direction: DOWN
+    speed: 40
+
 - assertVisible:
     id: "RecipeTime::Text"
     text: "Preparation (20 min)"

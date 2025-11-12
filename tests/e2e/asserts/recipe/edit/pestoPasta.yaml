@@ -101,15 +101,15 @@ appId: "com.recipedia"
     text: "Ingredients: "
     label: "Section Ingredients is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column1"
+    id: "RecipeIngredients::Header::Quantity"
     text: "Quantity"
     label: "Column Quantity is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column2"
+    id: "RecipeIngredients::Header::Unit"
     text: "Unit"
     label: "Column Unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column3"
+    id: "RecipeIngredients::Header::IngredientName"
     text: "Name"
     label: "Column Ingredient name is rendered"
 
@@ -189,10 +189,10 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Step"
+      id: "RecipeIngredients::AddButton::RoundButton"
     direction: DOWN
     centerElement: true
-    speed: 60
+    speed: 40
 
 - assertVisible:
     id: "RecipeIngredients::AddButton::RoundButton"
@@ -200,6 +200,14 @@ appId: "com.recipedia"
 - assertVisible:
     text: "󰐕"
     label: "Add button of the ingredients has the correct icon"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::Step"
+    direction: DOWN
+    centerElement: true
+    speed: 40
+
 - assertVisible:
     id: "RecipeTime::PrefixText"
     text: "Time to prepare the recipe :"

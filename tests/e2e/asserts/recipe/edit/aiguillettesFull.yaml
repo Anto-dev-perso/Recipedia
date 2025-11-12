@@ -239,17 +239,17 @@ appId: "com.recipedia"
     label: "Ingredient #1 quantity text is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::Column3"
+    id: "RecipeIngredients::Header::IngredientName"
     text: "Name"
     label: "Ingredient name column is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::Column2"
+    id: "RecipeIngredients::Header::Unit"
     text: "Unit"
     label: "Unit column is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::Column1"
+    id: "RecipeIngredients::Header::Quantity"
     text: "Quantity"
     label: "Quantity column is displayed"
 

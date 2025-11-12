@@ -20,7 +20,6 @@ appId: "com.recipedia"
     text: "Delete"
     label: "Delete button for Breakfast is displayed"
 
-
 - assertVisible:
     id: "TagsSettings::1::TagName"
     text: "Chocolate"
@@ -68,7 +67,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "TagsSettings::4::EditButton"
+      id: "TagsSettings::4::TagName"
     direction: DOWN
     speed: 60
     centerElement: true
@@ -159,7 +158,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "TagsSettings::9::EditButton"
+      id: "TagsSettings::9::TagName"
     direction: DOWN
     speed: 60
     centerElement: true
@@ -212,7 +211,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "TagsSettings::12::EditButton"
+      id: "TagsSettings::12::TagName"
     direction: DOWN
     speed: 60
     centerElement: true
@@ -284,7 +283,6 @@ appId: "com.recipedia"
     id: "TagsSettings::15::DeleteButton-text"
     text: "Delete"
     label: "Delete button for Vegetarian is displayed"
-
 
 - assertVisible:
     id: "TagsSettings::AddButton"

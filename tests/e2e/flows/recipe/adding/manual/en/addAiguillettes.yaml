@@ -131,10 +131,8 @@ appId: "com.recipedia"
     text: "Oni"
     label: "Enter text for recipe second ingredient name (partial)"
 
-- swipe:
-    start: "50%,40%"
-    end: "50%,30%"
-    label: "Swipe down to see other items"
+- hideKeyboard:
+    label: "Hide the keyboard"
 
 - tapOn:
     id: "TextInputWithDropDown::List::Onions"
@@ -151,10 +149,8 @@ appId: "com.recipedia"
     id: "RecipeIngredients::2::NameInput::CustomTextInput"
     label: "Press the TextInput of third ingredient's name"
 
-- swipe:
-    start: "50%,40%"
-    end: "50%,30%"
-    label: "Swipe down to see dropdown items"
+- hideKeyboard:
+    label: "Hide the keyboard"
 
 - tapOn:
     id: "TextInputWithDropDown::List::Avocado"

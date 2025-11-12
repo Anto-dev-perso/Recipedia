@@ -96,7 +96,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::Column1"
+      id: "RecipeIngredients::Header::Quantity"
     direction: DOWN
     speed: 60
 
@@ -105,15 +105,15 @@ appId: "com.recipedia"
     text: "Ingredients: "
     label: "Section Ingredients is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column1"
+    id: "RecipeIngredients::Header::Quantity"
     text: "Quantity"
     label: "Column Quantity is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column2"
+    id: "RecipeIngredients::Header::Unit"
     text: "Unit"
     label: "Column Unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column3"
+    id: "RecipeIngredients::Header::IngredientName"
     text: "Name"
     label: "Column Ingredient name is rendered"
 - assertVisible:

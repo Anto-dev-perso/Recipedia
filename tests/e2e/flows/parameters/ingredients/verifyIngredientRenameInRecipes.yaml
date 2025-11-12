@@ -23,6 +23,7 @@ appId: "com.recipedia"
       id: "RecipePersons::Text"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll to ingredients section"
 
 - assertVisible:
@@ -37,7 +38,6 @@ appId: "com.recipedia"
 - tapOn:
     id: "BackButton::RoundButton"
     label: "Close the recipe"
-
 
 - tapOn:
     id: "SearchScreen::SearchBar::RightIcon"

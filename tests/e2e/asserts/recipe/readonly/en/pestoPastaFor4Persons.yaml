@@ -19,7 +19,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTime::Text"
+      id: "RecipeIngredients::4::IngredientName"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
