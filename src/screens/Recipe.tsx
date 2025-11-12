@@ -673,10 +673,10 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const missingElem = new Array<string>();
     const translatedMissingElemPrefix = 'alerts.missingElements.';
 
-    if (recipeImage.length == 0) {
+    if (!recipeImage || recipeImage.trim().length === 0) {
       missingElem.push(t(translatedMissingElemPrefix + 'image'));
     }
-    if (recipeTitle.length == 0) {
+    if (!recipeTitle || recipeTitle.trim().length === 0) {
       missingElem.push(t(translatedMissingElemPrefix + 'titleRecipe'));
     }
     if (recipeIngredients.length == 0) {
@@ -1033,7 +1033,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           rootText: titleRootText,
         };
       case recipeStateType.addOCR:
-        if (recipeTitle.length == 0) {
+        if (!recipeTitle || recipeTitle.trim().length === 0) {
           return {
             testID: titleTestID,
             rootText: titleRootText,
@@ -1074,7 +1074,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       case recipeStateType.readOnly:
         return { rootText: descriptionRootText, testID: descriptionTestID };
       case recipeStateType.addOCR:
-        if (recipeDescription.length == 0) {
+        if (!recipeDescription || recipeDescription.trim().length === 0) {
           return {
             rootText: descriptionRootText,
             testID: descriptionTestID,

@@ -150,7 +150,7 @@ function PrefixTextWrapper({
  * Helper to parse ingredient quantity string to number
  */
 function parseIngredientQuantity(quantityStr: string | undefined): number {
-  if (!quantityStr) return defaultValueNumber;
+  if (!quantityStr || quantityStr.trim().length === 0) return defaultValueNumber;
   const parsed = parseFloat(quantityStr.replace(',', '.'));
   return isNaN(parsed) ? defaultValueNumber : parsed;
 }
