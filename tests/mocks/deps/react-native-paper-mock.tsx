@@ -338,3 +338,40 @@ export const ActivityIndicator: React.FC<any> = props => (
     <RNText testID={props.testID + '::Size'}>{props.size}</RNText>
   </View>
 );
+
+export const DataTable: React.FC<any> & {
+  Header: React.FC<any>;
+  Title: React.FC<any>;
+  Row: React.FC<any>;
+  Cell: React.FC<any>;
+} = props => (
+  <View testID={props.testID} style={props.style}>
+    {props.children}
+  </View>
+);
+
+DataTable.Header = props => (
+  <View testID={props.testID} style={props.style}>
+    {props.children}
+  </View>
+);
+
+DataTable.Title = props => (
+  <View testID={props.testID} style={props.style}>
+    <RNText testID={props.testID + '::Text'} style={props.textStyle}>
+      {props.children}
+    </RNText>
+  </View>
+);
+
+DataTable.Row = props => (
+  <View testID={props.testID} style={props.style}>
+    {props.children}
+  </View>
+);
+
+DataTable.Cell = props => (
+  <View testID={props.testID} style={props.style}>
+    {props.children}
+  </View>
+);
