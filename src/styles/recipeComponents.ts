@@ -187,10 +187,7 @@ export const recipeTableBorderWidth = 1;
  * Note: borderColor and fontSize should be applied from theme in the component
  */
 export const recipeTableStyles = StyleSheet.create({
-  container: {
-    paddingHorizontal: padding.medium,
-    paddingVertical: padding.small,
-  } as ViewStyle,
+  container: recipeMargins.padding,
   prefixText: {
     marginVertical: padding.verySmall,
   } as TextStyle,

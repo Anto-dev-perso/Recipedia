@@ -114,13 +114,6 @@ export type AddProps = EditableBaseProps & {
 export type RecipeIngredientsProps = ReadOnlyProps | EditableProps | AddProps;
 
 /**
- * Wrapper component for container only
- */
-function ContainerWrapper({ children }: { children: React.ReactNode }) {
-  return <View style={recipeTableStyles.container}>{children}</View>;
-}
-
-/**
  * Wrapper component with prefix text and container
  */
 function PrefixTextWrapper({
@@ -168,7 +161,7 @@ function formatIngredientChange(quantity: number, unit: string, name: string): s
  */
 function ReadOnlyIngredients({ testID, ingredients }: ReadOnlyProps) {
   return (
-    <ContainerWrapper>
+    <View style={{ paddingHorizontal: 10 }}>
       <DataTable>
         <FlatList
           data={ingredients}
@@ -198,7 +191,7 @@ function ReadOnlyIngredients({ testID, ingredients }: ReadOnlyProps) {
           scrollEnabled={false}
         />
       </DataTable>
-    </ContainerWrapper>
+    </View>
   );
 }
 
