@@ -36,39 +36,40 @@ appId: "com.recipedia"
     direction: DOWN
     speed: 60
 
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "2 "
-    label: "First ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "carotte"
+      INGREDIENT_QUANTITY_AND_UNIT: "2"
+    label: "Assert carotte ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "carotte"
-    label: "First ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "cumin"
+      INGREDIENT_QUANTITY_AND_UNIT: "2 sachet"
+    label: "Assert cumin ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "2 sachet"
-    label: "Second ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: ".*merguez.*"
+      INGREDIENT_QUANTITY_AND_UNIT: ".*"
+    label: "Assert merguez ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "cumin"
-    label: "Second ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: ".*navet.*"
+      INGREDIENT_QUANTITY_AND_UNIT: ".*"
+    label: "Assert navet ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: ".*merguez.*"
-    label: "Third ingredient name is displayed"
-
-- assertVisible:
-    text: ".*navet.*"
-    label: "Fourth ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: ".*pommes de terre jaunes.*"
-    label: "Fifth ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: ".*pommes de terre jaunes.*"
+      INGREDIENT_QUANTITY_AND_UNIT: ".*"
+    label: "Assert pommes de terre jaunes ingredient"
 
 - assertVisible:
     id: "RecipeTime::Text"

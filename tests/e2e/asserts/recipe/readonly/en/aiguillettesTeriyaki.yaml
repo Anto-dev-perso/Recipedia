@@ -60,127 +60,75 @@ appId: "com.recipedia"
     text: "Ingredients (4 persons)"
     label: "Ingredient section and persons is displayed"
 
-- scrollUntilVisible:
-    element:
-      id: "RecipeIngredients::10::IngredientName"
-    direction: DOWN
-    speed: 60
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Riz basmati"
+      INGREDIENT_QUANTITY_AND_UNIT: "140 g"
+    label: "Assert riz basmati ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "140 g"
-    label: "First ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Oignon jaune"
+      INGREDIENT_QUANTITY_AND_UNIT: "1 pièce"
+    label: "Assert riz basmati ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Riz basmati"
-    label: "First ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Carotte"
+      INGREDIENT_QUANTITY_AND_UNIT: "1 pièce"
+    label: "Assert Carotte ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "1 pièce"
-    label: "Second ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Poireau"
+      INGREDIENT_QUANTITY_AND_UNIT: "1 pièce"
+    label: "Assert Poireau ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Oignon jaune"
-    label: "Second ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Ciboulette"
+      INGREDIENT_QUANTITY_AND_UNIT: "3g"
+    label: "Assert Ciboulette ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "1 pièce"
-    label: "Third ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Gingembre frais"
+      INGREDIENT_QUANTITY_AND_UNIT: "2 cm"
+    label: "Assert Gingembre frais ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Carot.*"
-    label: "Third ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Sauce soja"
+      INGREDIENT_QUANTITY_AND_UNIT: "40 mL"
+    label: "Assert Sauce soja ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "1 pièce"
-    label: "Fourth ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Huile de sésame"
+      INGREDIENT_QUANTITY_AND_UNIT: "10 mL"
+    label: "Assert Huile de sésame ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Poire.*"
-    label: "Fourth ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Filet de poulet"
+      INGREDIENT_QUANTITY_AND_UNIT: "2 pièce"
+    label: "Assert Filet de poulet ingredient"
 
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "3g "
-    label: "Fifth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Ciboulette.*"
-    label: "Fifth ingredient name is displayed"
-
-- scrollUntilVisible:
-    element:
-      id: "RecipeIngredients::.*0::IngredientName"
-    direction: DOWN
-    speed: 60
-
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "1 pièce"
-    label: "Sixth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Gousse d'ail"
-    label: "Sixth ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "2 cm"
-    label: "Seventh ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Gingembre frais"
-    label: "Seventh ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "40 ml"
-    label: "Eighth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Sauce soj.*"
-    label: "Eighth ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "10 ml"
-    label: "Ninth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Huile de sésam.*"
-    label: "Ninth ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "2 pièce"
-    label: "Tenth ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Filet de poulet"
-    label: "Tenth ingredient name is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::QuantityAndUnit"
-    text: "2 c.*"
-    label: "Eleventh ingredient quantity is displayed"
-
-- assertVisible:
-    id: "RecipeIngredients::.*::IngredientName"
-    text: "Gomas.*"
-    label: "Eleventh ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "Gomasio"
+      INGREDIENT_QUANTITY_AND_UNIT: "2 cC"
+    label: "Assert Gomasio ingredient"
 
 - scrollUntilVisible:
     element:
