@@ -165,9 +165,16 @@ appId: "com.recipedia"
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Add ingredient button is displayed with the correct text"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: UP
+    speed: 40
+    centerElement: true
+
 - assertVisible:
     text: "󰐕"
-    label: "Add tag button icons is displayed"
+    label: "Add ingredient button icon is displayed"
 
 - scrollUntilVisible:
     element:

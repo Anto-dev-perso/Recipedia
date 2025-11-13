@@ -5,6 +5,6 @@ appId: "com.recipedia"
 
 - extendedWaitUntil:
     visible:
-      id: "BottomTabs::Home"
+      id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
     timeout: 10000
     label: "Wait for app to be ready"
