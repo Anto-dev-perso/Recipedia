@@ -1,5 +1,13 @@
 appId: "com.recipedia"
 ---
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::RoundButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tags's adding button"
+
 - tapOn:
     id: "RecipeTags::RoundButton-content"
     label: "Add a new tag"

@@ -23,9 +23,10 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTags::RoundButton"
+      id: "RecipeDescription::Text"
     direction: DOWN
     speed: 60
+    centerElement: true
 
 - assertVisible:
     id: "RecipeDescription::Text"
@@ -35,6 +36,14 @@ appId: "com.recipedia"
     id: "RecipeDescription::CustomTextInput"
     text: "Pasta tossed with fresh basil pesto."
     label: "Description of the recipe is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::HeaderText"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+
 - assertVisible:
     id: "RecipeTags::HeaderText"
     text: "Tags:"
@@ -63,6 +72,14 @@ appId: "com.recipedia"
     text: "󰅖"
     index: 1
     label: "Cross icon of the second tag is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::RoundButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+
 - assertVisible:
     id: "RecipeTags::RoundButton"
     label: "Add button for the tag is rendered"

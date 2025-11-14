@@ -2,7 +2,7 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::OpenModal::RoundButton"
+      id: "RecipeTime::OpenModal::RoundButton"
     direction: DOWN
     speed: 60
     centerElement: true

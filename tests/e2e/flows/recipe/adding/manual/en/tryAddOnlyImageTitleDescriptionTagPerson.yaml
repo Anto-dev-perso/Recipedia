@@ -1,5 +1,13 @@
 appId: "com.recipedia"
 ---
+- scrollUntilVisible:
+    element:
+      id: "RecipePersons::NumericTextInput"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to person section"
+
 - tapOn:
     id: "RecipePersons::NumericTextInput"
     label: "Press person input"

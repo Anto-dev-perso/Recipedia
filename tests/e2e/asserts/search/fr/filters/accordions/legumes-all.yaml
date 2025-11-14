@@ -1,25 +1,30 @@
 appId: "com.recipedia"
 ---
-# Assert accordion is displayed
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
-    label: "Legumes accordion is displayed"
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to legumes accordion"
+
 
 - assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     text: "Légumineuses"
     label: "Legumes accordion title is displayed in French"
 
-# Expand the accordion
+
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Expand Legumes accordion"
 
-# Assert all items are visible
+
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::0"
-    label: "Black Beans filter is visible"
+    label: "Lettuce filter is visible"
 
-# Collapse the accordion back
+
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Collapse Legumes accordion"

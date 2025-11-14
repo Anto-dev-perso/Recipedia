@@ -35,6 +35,7 @@ appId: "com.recipedia"
       id: "RecipeTags::RoundButton"
     direction: DOWN
     speed: 60
+    centerElement: true
 
 - assertVisible:
     id: "RecipeTags::HeaderText"

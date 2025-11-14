@@ -9,6 +9,7 @@ appId: "com.recipedia"
       id: "RecipePreparation::TextRender::0::Content"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll to preparation step"
 
 - tapOn:
@@ -21,6 +22,14 @@ appId: "com.recipedia"
 
 - hideKeyboard:
     label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to preparation content"
 
 - tapOn:
     id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"

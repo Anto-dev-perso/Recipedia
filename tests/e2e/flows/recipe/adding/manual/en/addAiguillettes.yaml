@@ -15,6 +15,14 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeDescription::CustomTextInput"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to description text input"
+
 - tapOn:
     id: "RecipeDescription::CustomTextInput"
     label: "Press the TextInput of description"
@@ -26,8 +34,16 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::RoundButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tags's adding button"
+
 - tapOn:
-    id: "RecipeTags::RoundButton-content"
+    id: "RecipeTags::RoundButton"
     label: "Press the round button of first tags"
 
 - tapOn:
@@ -48,23 +64,23 @@ appId: "com.recipedia"
     id: "RecipeTags::List::1::CustomTextInput"
     label: "Press the TextInput of second tags"
 
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
-
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
-
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
-
 - hideKeyboard:
     label: "Close the keyboard"
+
+- swipe:
+    start: "50%,40%"
+    end: "50%,25%"
+    label: "Swipe down to see dropdown items"
+
+- swipe:
+    start: "50%,40%"
+    end: "50%,25%"
+    label: "Swipe down to see dropdown items"
+
+- swipe:
+    start: "50%,40%"
+    end: "50%,25%"
+    label: "Swipe down to see dropdown items"
 
 - tapOn:
     text: "Italian"
@@ -89,6 +105,9 @@ appId: "com.recipedia"
     text: "200"
     label: "Enter text for recipe first ingredient quantity"
 
+- hideKeyboard:
+    label: "Close the keyboard"
+
 - tapOn:
     id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Press the TextInput of first ingredient's name"
@@ -97,8 +116,7 @@ appId: "com.recipedia"
     text: "Chicken Breast"
     label: "Enter text for recipe first ingredient name"
 
-- hideKeyboard:
-    label: "Close the keyboard"
+- pressKey: Enter
 
 - tapOn:
     id: "RecipeIngredients::AddButton::RoundButton"
@@ -123,6 +141,8 @@ appId: "com.recipedia"
     text: "2"
     label: "Enter text for recipe second ingredient quantity"
 
+- pressKey: Enter
+
 - tapOn:
     id: "RecipeIngredients::1::NameInput::CustomTextInput"
     label: "Press the TextInput of second ingredient's name"
@@ -142,7 +162,8 @@ appId: "com.recipedia"
     element:
       id: "RecipeIngredients::2::NameInput::CustomTextInput"
     direction: DOWN
-    speed: 60
+    speed: 40
+    centerElement: true
     label: "Scroll to third ingredient name input"
 
 - tapOn:
@@ -150,7 +171,7 @@ appId: "com.recipedia"
     label: "Press the TextInput of third ingredient's name"
 
 - hideKeyboard:
-    label: "Hide the keyboard"
+    label: "Hide the keyboard "
 
 - tapOn:
     id: "TextInputWithDropDown::List::Avocado"
@@ -164,8 +185,15 @@ appId: "com.recipedia"
     text: "5"
     label: "Enter text for recipe third ingredient quantity"
 
-- hideKeyboard:
-    label: "Close the keyboard"
+- pressKey: Enter
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::NumericTextInput"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to persons section"
 
 - tapOn:
     id: "RecipeTime::NumericTextInput"
@@ -175,14 +203,14 @@ appId: "com.recipedia"
     text: "20"
     label: "Enter text for recipe time"
 
-- hideKeyboard:
-    label: "Close the keyboard"
+- pressKey: Enter
 
 - scrollUntilVisible:
     element:
       id: "RecipePreparation::AddButton::RoundButton"
     direction: DOWN
-    speed: 60
+    speed: 40
+    centerElement: true
     label: "Scroll to preparation section"
 
 - tapOn:
@@ -194,6 +222,7 @@ appId: "com.recipedia"
       id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll to first preparation title input"
 
 - tapOn:
@@ -218,6 +247,14 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to see the add button of second preparation"
+
 - tapOn:
     id: "RecipePreparation::AddButton::RoundButton"
     label: "Press the round button of second preparation"
@@ -239,6 +276,14 @@ appId: "com.recipedia"
 
 - hideKeyboard:
     label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to preparation section"
 
 - tapOn:
     id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
@@ -268,6 +313,14 @@ appId: "com.recipedia"
 
 - hideKeyboard:
     label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to second preparation title input"
 
 - tapOn:
     id: "RecipePreparation::AddButton::RoundButton"
@@ -303,3 +356,10 @@ appId: "com.recipedia"
 
 - hideKeyboard:
     label: "Close the keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton-content"
+    direction: DOWN
+    speed: 40
+    label: "Scroll to see the nutrition add button"

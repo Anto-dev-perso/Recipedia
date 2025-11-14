@@ -178,9 +178,10 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::PrefixText"
+      id: "RecipeIngredients::2::NameInput::CustomTextInput"
     direction: UP
-    speed: 60
+    speed: 40
+    centerElement: true
 
 - assertVisible:
     id: "RecipeIngredients::2::NameInput::CustomTextInput"
@@ -189,6 +190,13 @@ appId: "com.recipedia"
 - assertVisible:
     text: "Avocado"
     label: "Ingredient #3 name text is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::1::NameInput::CustomTextInput"
+    direction: UP
+    speed: 40
+    centerElement: true
 
 - assertVisible:
     id: "RecipeIngredients::2::Unit::CustomTextInput"
@@ -199,9 +207,16 @@ appId: "com.recipedia"
     id: "RecipeIngredients::2::QuantityInput"
     label: "Ingredient #3 quantity TextInput is displayed"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::1::NameInput::CustomTextInput"
+    direction: UP
+    speed: 40
+    centerElement: true
+
 - assertVisible:
     text: "5"
-    label: "Ingredient #3 quantity text is displayed"
+    label: "Ingredient #2 quantity text is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::1::NameInput::CustomTextInput"
@@ -209,41 +224,55 @@ appId: "com.recipedia"
 
 - assertVisible:
     text: "Onions"
-    label: "Ingredient #2 name text is displayed"
+    label: "Ingredient #1 name text is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::1::Unit::CustomTextInput"
     text: "g"
-    label: "Ingredient #2 unit text is displayed"
+    label: "Ingredient #1 unit text is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::1::QuantityInput"
-    label: "Ingredient #2 quantity TextInput is displayed"
+    label: "Ingredient #1 quantity TextInput is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::0::NameInput::CustomTextInput"
+    direction: UP
+    speed: 40
+    centerElement: true
 
 - assertVisible:
     text: "5"
-    label: "Ingredient #2 quantity text is displayed"
+    label: "Ingredient #0 quantity text is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::0::NameInput::CustomTextInput"
-    label: "Ingredient #1 name TextInput is displayed"
+    label: "Ingredient #0 name TextInput is displayed"
 
 - assertVisible:
     text: "Chicken Breast"
-    label: "Ingredient #1 name text is displayed"
+    label: "Ingredient #0 name text is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::0::Unit::CustomTextInput"
     text: "g"
-    label: "Ingredient #1 unit text is displayed"
+    label: "Ingredient #0 unit text is displayed"
 
 - assertVisible:
     id: "RecipeIngredients::0::QuantityInput"
-    label: "Ingredient #1 quantity TextInput is displayed"
+    label: "Ingredient #0 quantity TextInput is displayed"
 
 - assertVisible:
     text: "2"
-    label: "Ingredient #1 quantity text is displayed"
+    label: "Ingredient #0 quantity text is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: UP
+    speed: 40
+    centerElement: true
 
 - assertVisible:
     id: "RecipeIngredients::Header::IngredientName"
@@ -289,9 +318,11 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeTags::HeaderText"
+      id: "RecipeTags::RoundButton"
     direction: UP
     speed: 60
+    centerElement: true
+    label: "Scroll to add button of tags"
 
 - assertVisible:
     id: "RecipeTags::RoundButton"
@@ -305,6 +336,13 @@ appId: "com.recipedia"
     text: "󰅖"
     index: 1
     label: "Second tag's icon is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeTags::HeaderText"
+    direction: UP
+    speed: 60
+    label: "Scroll to header text of tags"
 
 - assertVisible:
     id: "RecipeTags::1::Chip"
@@ -357,10 +395,9 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeImage"
+      id: "RecipeImage::RoundButton"
     direction: UP
-    speed: 95
-    centerElement: true
+    speed: 60
 
 - assertVisible:
     id: "RecipeTitle::CustomTextInput"
