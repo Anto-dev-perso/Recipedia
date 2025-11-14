@@ -67,7 +67,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { RecipeScreenProp } from '@customTypes/ScreenTypes';
 import {
-  extractIngredientsNameWithQuantity,
   extractTagsName,
   ingredientTableElement,
   ingredientType,
@@ -91,6 +90,10 @@ import RecipeImage, { RecipeImageProps } from '@components/organisms/RecipeImage
 import { Icons } from '@assets/Icons';
 import RecipeTextRender, { RecipeTextRenderProps } from '@components/organisms/RecipeTextRender';
 import RecipeText, { RecipeTextProps, TextProp } from '@components/organisms/RecipeText';
+import RecipeIngredients, {
+  EditableBaseProps,
+  RecipeIngredientsProps,
+} from '@components/organisms/RecipeIngredients';
 import { textSeparator, typoRender, unitySeparator } from '@styles/typography';
 import RecipeTags, { RecipeTagProps } from '@components/organisms/RecipeTags';
 import FileGestion from '@utils/FileGestion';
@@ -670,10 +673,10 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const missingElem = new Array<string>();
     const translatedMissingElemPrefix = 'alerts.missingElements.';
 
-    if (recipeImage.length == 0) {
+    if (!recipeImage || recipeImage.trim().length === 0) {
       missingElem.push(t(translatedMissingElemPrefix + 'image'));
     }
-    if (recipeTitle.length == 0) {
+    if (!recipeTitle || recipeTitle.trim().length === 0) {
       missingElem.push(t(translatedMissingElemPrefix + 'titleRecipe'));
     }
     if (recipeIngredients.length == 0) {
@@ -1030,7 +1033,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           rootText: titleRootText,
         };
       case recipeStateType.addOCR:
-        if (recipeTitle.length == 0) {
+        if (!recipeTitle || recipeTitle.trim().length === 0) {
           return {
             testID: titleTestID,
             rootText: titleRootText,
@@ -1071,7 +1074,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       case recipeStateType.readOnly:
         return { rootText: descriptionRootText, testID: descriptionTestID };
       case recipeStateType.addOCR:
-        if (recipeDescription.length == 0) {
+        if (!recipeDescription || recipeDescription.trim().length === 0) {
           return {
             rootText: descriptionRootText,
             testID: descriptionTestID,
@@ -1261,55 +1264,48 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     }
   }
 
-  function recipeIngredientsProp(): RecipeTextRenderProps {
+  function recipeIngredientsProp(): RecipeIngredientsProps {
     const ingredientPrefixText = t('ingredients') + ': ';
-    const ingredientRender: typoRender = typoRender.ARRAY;
-    const extractedIngredients = extractIngredientsNameWithQuantity(recipeIngredients);
     const ingredientTestID = 'RecipeIngredients';
+
+    const baseEditProps: EditableBaseProps = {
+      testID: ingredientTestID,
+      ingredients: recipeIngredients,
+      prefixText: ingredientPrefixText,
+      columnTitles: {
+        column1: t('quantity'),
+        column2: t('unit'),
+        column3: t('ingredientName'),
+      },
+      onIngredientChange: editIngredients,
+      onAddIngredient: addNewIngredient,
+    };
+
     switch (stackMode) {
       case recipeStateType.readOnly:
         return {
           testID: ingredientTestID,
-          type: 'readOnly',
-          text: extractedIngredients,
-          render: ingredientRender,
+          ingredients: recipeIngredients,
+          mode: 'readOnly',
         };
       case recipeStateType.addOCR:
-        if (recipeIngredients.length == 0) {
-          return {
-            testID: ingredientTestID,
-            type: 'addOrEdit',
-            editType: 'add',
-            prefixText: ingredientPrefixText,
-            openModal: () => openModalForField(recipeColumnsNames.ingredients),
-          };
-        }
-      // Else return the same props as edit or addManual
-      // falls through
+        return {
+          mode: 'add',
+          openModal: () => openModalForField(recipeColumnsNames.ingredients),
+          ...baseEditProps,
+        };
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
-          testID: ingredientTestID,
-          type: 'addOrEdit',
-          editType: 'editable',
-          prefixText: ingredientPrefixText,
-          columnTitles: {
-            column1: t('quantity'),
-            column2: t('unit'),
-            column3: t('ingredientName'),
-          },
-          renderType: typoRender.ARRAY,
-          textEditable: extractedIngredients,
-          textEdited: editIngredients,
-          addNewText: addNewIngredient,
+          mode: 'editable',
+          ...baseEditProps,
         };
       default:
         recipeLogger.warn('Unknown stack mode in recipeIngredientsProp', { stackMode });
         return {
           testID: ingredientTestID,
-          type: 'readOnly',
-          text: [],
-          render: typoRender.LIST,
+          ingredients: [],
+          mode: 'readOnly',
         };
     }
   }
@@ -1452,7 +1448,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         <RecipeNumber {...recipePersonsProp()} />
 
         {/*Ingredients*/}
-        <RecipeTextRender {...recipeIngredientsProp()} />
+        <RecipeIngredients {...recipeIngredientsProp()} />
 
         {/* TODO let the possibility to add another time in picture */}
         {/*Time*/}

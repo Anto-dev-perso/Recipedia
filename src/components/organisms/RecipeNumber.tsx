@@ -115,7 +115,7 @@ export function RecipeNumber({ testID, numberProps }: RecipeNumberProps) {
   return (
     <View style={recipeTextStyles.containerSection}>
       {numberProps.editType === 'read' ? (
-        <Text testID={testID + '::Text'} variant={'headlineMedium'} style={{ marginVertical: 20 }}>
+        <Text testID={testID + '::Text'} variant={'headlineMedium'}>
           {numberProps.text}
         </Text>
       ) : (

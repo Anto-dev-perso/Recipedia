@@ -11,18 +11,18 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::0::IngredientName"
+      id: "RecipeIngredients::0::IngredientName"
     direction: DOWN
     speed: 60
     label: "Scroll to ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "RecipeIngredient"
     label: "Verify ingredient appears in the recipe"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::0::QuantityAndUnit"
     text: "100 g"
     label: "Verify that unit is correctly displayed"
 

@@ -43,7 +43,7 @@ tags:
     label: "Action - Scroll up to ingredients"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     label: "Action - Focus on Pasta quantity input"
 
 - eraseText:
@@ -57,7 +57,7 @@ tags:
     label: "Action - Hide keyboard"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::1::QuantityInput"
     label: "Action - Focus on Tomatoes quantity input"
 
 - eraseText:

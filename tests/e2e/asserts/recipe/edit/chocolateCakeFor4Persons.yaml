@@ -29,47 +29,47 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
+      id: "RecipeIngredients::3::QuantityInput"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     text: "133.33"
     label: "Flour quantity is 133.33"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     text: "Flour"
     label: "First ingredient is Flour"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::1::QuantityInput"
     text: "33.33"
     label: "Cocoa Powder quantity is 33.33"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
     text: "Cocoa Powder"
     label: "Second ingredient is Cocoa Powder"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::2::QuantityInput"
     text: "100"
     label: "Sugar quantity is 100"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::2::NameInput::CustomTextInput"
     text: "Sugar"
     label: "Third ingredient is Sugar"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::3::QuantityInput"
     text: "66.67"
     label: "Butter quantity is 66.67"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::3::NameInput::CustomTextInput"
     text: "Butter"
     label: "Fourth ingredient is Butter"

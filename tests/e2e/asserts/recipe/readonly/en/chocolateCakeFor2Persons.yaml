@@ -19,47 +19,47 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::3::IngredientName"
+      id: "RecipeIngredients::3::IngredientName"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "Flour"
     label: "First ingredient is Flour"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::0::QuantityAndUnit"
     text: "66,67 g"
     label: "Flour quantity is scaled to 66,67g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::1::IngredientName"
     text: "Cocoa Powder"
     label: "Second ingredient is Cocoa Powder"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::1::QuantityAndUnit"
     text: "16,67 g"
     label: "Cocoa Powder quantity is scaled to 16,67g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::IngredientName"
+    id: "RecipeIngredients::2::IngredientName"
     text: "Sugar"
     label: "Third ingredient is Sugar"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityAndUnit"
+    id: "RecipeIngredients::2::QuantityAndUnit"
     text: "50 g"
     label: "Sugar quantity is scaled to 50g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::IngredientName"
+    id: "RecipeIngredients::3::IngredientName"
     text: "Butter"
     label: "Fourth ingredient is Butter"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityAndUnit"
+    id: "RecipeIngredients::3::QuantityAndUnit"
     text: "33,34 g"
     label: "Butter quantity is scaled to 33,34g"

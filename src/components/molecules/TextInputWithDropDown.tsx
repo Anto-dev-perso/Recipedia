@@ -82,6 +82,10 @@ export type TextInputWithDropDownType = {
   label?: string;
   /** Whether the input is editable (default: true) */
   editable?: boolean;
+  /** Display mode: outlined or flat (default: 'outlined') */
+  mode?: 'flat' | 'outlined';
+  /** Whether to use dense styling (default: false) */
+  dense?: boolean;
   /** Callback fired when text is validated (submitted or selected) */
   onValidate?: (newText: string) => void;
   /** Unique identifier for testing and accessibility */
@@ -249,6 +253,8 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
         value={textInput}
         style={props.style}
         contentStyle={props.contentStyle}
+        mode={props.mode}
+        dense={props.dense}
         onFocus={() => setShowDropdown(true)}
         onChangeText={handleSearch}
         onEndEditing={handleSubmitEditing}

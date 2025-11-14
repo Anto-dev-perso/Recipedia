@@ -96,7 +96,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::Column1"
+      id: "RecipeIngredients::Header::Quantity"
     direction: DOWN
     speed: 60
 
@@ -105,77 +105,77 @@ appId: "com.recipedia"
     text: "Ingredients: "
     label: "Section Ingredients is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column1"
+    id: "RecipeIngredients::Header::Quantity"
     text: "Quantity"
     label: "Column Quantity is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column2"
+    id: "RecipeIngredients::Header::Unit"
     text: "Unit"
     label: "Column Unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::Column3"
+    id: "RecipeIngredients::Header::IngredientName"
     text: "Name"
     label: "Column Ingredient name is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     text: "250"
     label: "Quantity of first ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Unit::CustomTextInput"
+    id: "RecipeIngredients::0::Unit::CustomTextInput"
     text: "g"
     label: "First occurrence of the g unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     text: "Sushi Rice"
     label: "Ingredient Sushi Rice is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+      id: "RecipeIngredients::2::NameInput::CustomTextInput"
     direction: DOWN
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::1::QuantityInput"
     text: "5"
     label: "Quantity of second ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Unit::CustomTextInput"
+    id: "RecipeIngredients::1::Unit::CustomTextInput"
     text: "pieces"
     label: "Pieces unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
     text: "Nori Sheets"
     label: "Ingredient Nori Sheets is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::2::QuantityInput"
     text: "200"
     label: "Quantity of third ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::Unit::CustomTextInput"
+    id: "RecipeIngredients::2::Unit::CustomTextInput"
     text: "g"
     label: "Second occurrence of the g unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::2::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::2::NameInput::CustomTextInput"
     text: "Salmon"
     label: "Ingredient Salmon is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
+      id: "RecipeIngredients::4::QuantityInput"
     direction: DOWN
     speed: 60
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::3::QuantityInput"
     text: "100"
     label: "Quantity of fourth ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::Unit::CustomTextInput"
+    id: "RecipeIngredients::3::Unit::CustomTextInput"
     text: "g"
     label: "Third occurrence of the g unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::3::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::3::NameInput::CustomTextInput"
     text: "Avocado"
     label: "Ingredient Avocado is rendered"
 
@@ -188,15 +188,15 @@ appId: "com.recipedia"
     label: "Scroll down to the end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::4::QuantityInput"
     text: "50"
     label: "Quantity of fifth ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::Unit::CustomTextInput"
+    id: "RecipeIngredients::4::Unit::CustomTextInput"
     text: "ml"
     label: "ml unit is rendered"
 - assertVisible:
-    id: "RecipeIngredients::TextRender::4::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::4::NameInput::CustomTextInput"
     text: "Soy Sauce"
     label: "Ingredient Soy Sauce is rendered"
 - assertVisible:

@@ -44,27 +44,27 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+      id: "RecipeIngredients::1::QuantityInput"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     text: "200"
     label: "Pasta quantity is 200"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     text: "Pasta"
     label: "First ingredient is Pasta"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::1::QuantityInput"
     text: "100"
     label: "Tomatoes quantity is 100"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
     text: "Tomatoes"
     label: "Second ingredient is Tomatoes"

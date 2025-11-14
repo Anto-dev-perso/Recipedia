@@ -47,7 +47,7 @@ tags:
     label: "Action - Scroll up for adding ingredient"
 
 - tapOn:
-    id: RecipeIngredients::TextRender::1::Dropdown::CustomTextInput
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
     label: "Action - Focus on ingredient input"
 
 - hideKeyboard:

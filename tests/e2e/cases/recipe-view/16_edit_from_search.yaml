@@ -40,7 +40,7 @@ tags:
     element:
       id: "Recipe::RecipeNutrition::NutritionTable::Title"
     direction: DOWN
-    speed: 60
+    speed: 70
     label: "Action - Scroll back to top of nutrition part"
 
 - runFlow:

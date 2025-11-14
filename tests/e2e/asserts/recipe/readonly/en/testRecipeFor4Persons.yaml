@@ -19,28 +19,28 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::TextRender::1::IngredientName"
+      id: "RecipeIngredients::1::IngredientName"
     direction: DOWN
     speed: 60
     label: "Scroll to end of ingredients section"
 
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::IngredientName"
+    id: "RecipeIngredients::0::IngredientName"
     text: "Pasta"
     label: "First ingredient is Pasta"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::QuantityAndUnit"
+    id: "RecipeIngredients::0::QuantityAndUnit"
     text: "400 g"
     label: "Pasta quantity is scaled to 400g"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::IngredientName"
+    id: "RecipeIngredients::1::IngredientName"
     text: "Tomatoes"
     label: "Second ingredient is Tomatoes"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::1::QuantityAndUnit"
+    id: "RecipeIngredients::1::QuantityAndUnit"
     text: "200 g"
     label: "Tomatoes quantity is scaled to 200g"

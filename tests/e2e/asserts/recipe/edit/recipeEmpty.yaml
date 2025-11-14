@@ -96,7 +96,7 @@ appId: "com.recipedia"
     label: "Ingredient name column is displayed"
 
 - assertNotVisible:
-    id: "RecipeIngredients::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     label: "Ingredient #1 quantity TextInput is not displayed"
 
 - assertNotVisible:
@@ -104,7 +104,7 @@ appId: "com.recipedia"
     label: "Ingredient #1 unit text is not displayed"
 
 - assertNotVisible:
-    id: "RecipeIngredients::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Ingredient #1 name TextInput is not displayed"
 
 - assertVisible:

@@ -94,6 +94,10 @@ appId: "com.recipedia"
     id: "RecipeIngredients::OpenModal::RoundButton"
     label: "OCR button for the ingredients is rendered"
 
+- assertVisible:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "OCR button for manually adding the ingredients is rendered"
+
 - scrollUntilVisible:
     element:
       id: "RecipeTime::OpenModal::RoundButton"

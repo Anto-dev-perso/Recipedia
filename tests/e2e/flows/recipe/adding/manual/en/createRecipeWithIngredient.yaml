@@ -35,7 +35,7 @@ appId: "com.recipedia"
     label: "Add an ingredient"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::QuantityInput::NumericTextInput"
+    id: "RecipeIngredients::0::QuantityInput"
     label: "Focus on ingredient quantity"
 
 - inputText:
@@ -43,7 +43,7 @@ appId: "com.recipedia"
     label: "Enter ingredient quantity"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Focus on ingredient name"
 
 - inputText:

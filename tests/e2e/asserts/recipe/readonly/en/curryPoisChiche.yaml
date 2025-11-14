@@ -31,99 +31,95 @@ appId: "com.recipedia"
     text: "Ingredients (4 persons)"
     label: "Ingredient section and persons is displayed"
 
-- assertVisible:
-    text: "2 "
-    label: "First ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "carotte"
+      INGREDIENT_QUANTITY_AND_UNIT: "2"
+    label: "Assert carotte ingredient"
 
-- assertVisible:
-    text: "carotte"
-    label: "First ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "citronnelle"
+      INGREDIENT_QUANTITY_AND_UNIT: "2"
+    label: "Assert citronnelle ingredient"
 
-- assertVisible:
-    text: "2 "
-    label: "Second ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "cébette"
+      INGREDIENT_QUANTITY_AND_UNIT: "2"
+    label: "Assert cébette ingredient"
 
-- assertVisible:
-    text: "citronnelle"
-    label: "Second ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "cébette"
+      INGREDIENT_QUANTITY_AND_UNIT: "2"
+    label: "Assert cébette ingredient"
 
-- assertVisible:
-    text: "2 "
-    label: "Third ingredient quantity is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "gousse d'ail"
+      INGREDIENT_QUANTITY_AND_UNIT: "2"
+    label: "Assert gousse d'ail ingredient"
 
-- assertVisible:
-    text: "cébette"
-    label: "Third ingredient name is displayed"
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "lait de coco"
+      INGREDIENT_QUANTITY_AND_UNIT: "400 ml"
+    label: "Assert lait de coco ingredient"
+
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "oignon jaune"
+      INGREDIENT_QUANTITY_AND_UNIT: "2"
+    label: "Assert oignon jaune ingredient"
+
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "poireau"
+      INGREDIENT_QUANTITY_AND_UNIT: "2"
+    label: "Assert poireau ingredient"
+
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "pois chiches conserve  Bio"
+      INGREDIENT_QUANTITY_AND_UNIT: "200 g égoutté"
+    label: "Assert pois chiche ingredient"
+
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "purée de tomates"
+      INGREDIENT_QUANTITY_AND_UNIT: "250 g"
+    label: "Assert purée de tomates ingredient"
+
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "riz basmati"
+      INGREDIENT_QUANTITY_AND_UNIT: "300 g"
+    label: "Assert riz basmati ingredient"
+
+- runFlow:
+    file: "../../common/assertIngredient.yaml"
+    env:
+      INGREDIENT_NAME: "épices Cachemire"
+      INGREDIENT_QUANTITY_AND_UNIT: "2 sachet"
+    label: "Assert épices Cachemire ingredient"
 
 - scrollUntilVisible:
     element:
       id: "RecipeTime::Text"
     direction: DOWN
     speed: 60
-
-- assertVisible:
-    text: "2 "
-    label: "Fourth ingredient quantity is displayed"
-
-- assertVisible:
-    text: "gousse d'ail"
-    label: "Fourth ingredient name is displayed"
-
-- assertVisible:
-    text: "400 ml"
-    label: "Fifth ingredient quantity is displayed"
-
-- assertVisible:
-    text: "lait de coco"
-    label: "Fifth ingredient name is displayed"
-
-- assertVisible:
-    text: "2 "
-    label: "Sixth ingredient quantity is displayed"
-
-- assertVisible:
-    text: "oignon jaune"
-    label: "Sixth ingredient name is displayed"
-
-- assertVisible:
-    text: "2 "
-    label: "Seventh ingredient quantity is displayed"
-
-- assertVisible:
-    text: "poireau"
-    label: "Seventh ingredient name is displayed"
-
-- assertVisible:
-    text: "200 g égoutté"
-    label: "Eighth ingredient quantity is displayed"
-
-- assertVisible:
-    text: "pois chiches conserve  Bio"
-    label: "Eighth ingredient name is displayed"
-
-- assertVisible:
-    text: "250 g"
-    label: "Ninth ingredient quantity is displayed"
-
-- assertVisible:
-    text: "Purée de tomates"
-    label: "Ninth ingredient name is displayed"
-
-- assertVisible:
-    text: "300 g"
-    label: "Tenth ingredient quantity is displayed"
-
-- assertVisible:
-    text: "riz basmati  Bio"
-    label: "Tenth ingredient name is displayed"
-
-- assertVisible:
-    text: "2 sachet"
-    label: "Eleventh ingredient quantity is displayed"
-
-- assertVisible:
-    text: "épices Cachemire"
-    label: "Eleventh ingredient name is displayed"
 
 - assertVisible:
     id: "RecipeTime::Text"

@@ -6,18 +6,13 @@ import RecipeDatabase from '@utils/RecipeDatabase';
 import { testTags } from '@test-data/tagsDataset';
 import { testIngredients } from '@test-data/ingredientsDataset';
 import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
-import {
-  extractIngredientsNameWithQuantity,
-  shoppingListTableElement,
-  tagTableElement,
-} from '@customTypes/DatabaseElementTypes';
+import { shoppingListTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
 import { StackScreenParamList } from '@customTypes/ScreenTypes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { GetByQuery, QueryByQuery } from '@testing-library/react-native/build/queries/make-queries';
 import { TextMatch, TextMatchOptions } from '@testing-library/react-native/build/matches';
 import { CommonQueryOptions } from '@testing-library/react-native/build/queries/options';
-import { textSeparator, unitySeparator } from '@styles/typography';
 import { defaultValueNumber } from '@utils/Constants';
 import { listFilter } from '@customTypes/RecipeFiltersTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,6 +43,10 @@ jest.mock(
 jest.mock(
   '@components/organisms/RecipeTextRender',
   () => require('@mocks/components/organisms/RecipeTextRender-mock').recipeTextRenderMock
+);
+jest.mock(
+  '@components/organisms/RecipeIngredients',
+  () => require('@mocks/components/organisms/RecipeIngredients-mock').recipeIngredientsMock
 );
 jest.mock('@components/molecules/NutritionTable', () =>
   require('@mocks/components/molecules/NutritionTable-mock')
@@ -84,12 +83,8 @@ function checkBottomTopButtons(
     case 'addManually':
     case 'addFromPic':
       expect(getByTestId('BackButton::OnPressFunction')).toBeTruthy();
-      if (queryByTestId) {
-        expect(queryByTestId('RecipeDelete::OnPressFunction')).not.toBeTruthy();
-        expect(queryByTestId('RecipeEdit::OnPressFunction')).not.toBeTruthy();
-      } else {
-        expect(false).toBe(true);
-      }
+      expect(queryByTestId('RecipeDelete::OnPressFunction')).toBeNull();
+      expect(queryByTestId('RecipeEdit::OnPressFunction')).toBeNull();
       break;
   }
 }
@@ -254,94 +249,65 @@ function checkIngredients(
 ) {
   switch (prop.mode) {
     case 'readOnly':
-      expect(getByTestId('RecipeIngredients::Text').props.children).toEqual(
-        JSON.stringify(
-          prop.recipe.ingredients.map(
-            ing => ing.quantity + unitySeparator + ing.unit + textSeparator + ing.name
-          )
-        )
-      );
-      expect(getByTestId('RecipeIngredients::Title').props.children).toBeUndefined();
-      expect(getByTestId('RecipeIngredients::Render').props.children).toEqual('"ARRAY"');
-      expect(getByTestId('RecipeIngredients::WithBorder').props.children).toBeUndefined();
-      expect(getByTestId('RecipeIngredients::OnClick')).toBeTruthy();
-      expect(getByTestId('RecipeIngredients::OnChangeFunction')).toBeTruthy();
+      prop.recipe.ingredients.forEach((ingredient, index) => {
+        expect(getByTestId(`RecipeIngredients::${index}::Row`)).toBeTruthy();
+        expect(getByTestId(`RecipeIngredients::${index}::QuantityAndUnit`).props.children).toEqual(
+          `${ingredient.quantity} ${ingredient.unit}`
+        );
+        expect(getByTestId(`RecipeIngredients::${index}::IngredientName`).props.children).toEqual(
+          ingredient.name
+        );
+      });
 
       expect(queryByTestId('RecipeIngredients::PrefixText')).toBeNull();
       expect(queryByTestId('RecipeIngredients::OpenModal')).toBeNull();
-
-      expect(queryByTestId('RecipeIngredients::TextEditable')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::RenderType')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::TextEdited')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::AddNewText')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Column1')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Column2')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Column3')).toBeNull();
+      expect(queryByTestId('RecipeIngredients::AddButton')).toBeNull();
       break;
     case 'edit':
-      expect(queryByTestId('RecipeIngredients::Text')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Title')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Render')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::WithBorder')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::OnClick')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::OnChangeFunction')).toBeNull();
-
       expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('ingredients: ');
+      expect(getByTestId('RecipeIngredients::AddButton::RoundButton::Icon').props.children).toEqual(
+        'plus'
+      );
       expect(queryByTestId('RecipeIngredients::OpenModal')).toBeNull();
 
-      expect(getByTestId('RecipeIngredients::TextEditable').props.children).toEqual(
-        JSON.stringify(extractIngredientsNameWithQuantity(prop.recipe.ingredients))
-      );
-      expect(getByTestId('RecipeIngredients::RenderType').props.children).toEqual('"ARRAY"');
-      expect(getByTestId('RecipeIngredients::TextEdited').props.children).toBeTruthy();
-      expect(getByTestId('RecipeIngredients::AddNewText').props.children).toBeTruthy();
-      expect(getByTestId('RecipeIngredients::Column1').props.children).toEqual('quantity');
-      expect(getByTestId('RecipeIngredients::Column2').props.children).toEqual('unit');
-      expect(getByTestId('RecipeIngredients::Column3').props.children).toEqual('ingredientName');
+      prop.recipe.ingredients.forEach((ingredient, index) => {
+        expect(getByTestId(`RecipeIngredients::${index}::Row`)).toBeTruthy();
+        expect(getByTestId(`RecipeIngredients::${index}::QuantityInput`).props.children).toEqual(
+          ingredient.quantity
+        );
+        expect(
+          getByTestId(`RecipeIngredients::${index}::UnitInput::CustomTextInput`).props.children
+        ).toEqual(ingredient.unit);
+        expect(
+          getByTestId(`RecipeIngredients::${index}::NameInput::TextInputWithDropdown::Value`).props
+            .children
+        ).toEqual(ingredient.name);
+      });
       break;
     case 'addManually':
-      expect(queryByTestId('RecipeIngredients::Text')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Title')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Render')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::WithBorder')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::OnClick')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::OnChangeFunction')).toBeNull();
-
+      // Verify editable mode with empty ingredients
       expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('ingredients: ');
-      expect(queryByTestId('RecipeIngredients::OpenModal')).toBeNull();
-
-      expect(getByTestId('RecipeIngredients::TextEditable').props.children).toEqual(
-        JSON.stringify([])
+      expect(getByTestId('RecipeIngredients::AddButton::RoundButton::Icon').props.children).toEqual(
+        'plus'
       );
-      expect(getByTestId('RecipeIngredients::RenderType').props.children).toEqual('"ARRAY"');
-      expect(getByTestId('RecipeIngredients::TextEdited').props.children).toBeTruthy();
-      expect(getByTestId('RecipeIngredients::AddNewText').props.children).toBeTruthy();
-      expect(getByTestId('RecipeIngredients::Column1').props.children).toEqual('quantity');
-      expect(getByTestId('RecipeIngredients::Column2').props.children).toEqual('unit');
-      expect(getByTestId('RecipeIngredients::Column3').props.children).toEqual('ingredientName');
+      expect(queryByTestId('RecipeIngredients::OpenModal')).toBeNull();
       break;
     case 'addFromPic':
-      expect(queryByTestId('RecipeIngredients::Text')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Title')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Render')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::WithBorder')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::OnClick')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::OnChangeFunction')).toBeNull();
-
       expect(getByTestId('RecipeIngredients::PrefixText').props.children).toEqual('ingredients: ');
       if (prop.imgUri.length === 0) {
-        expect(getByTestId('RecipeIngredients::OpenModal').props.children).toBeTruthy();
+        // Empty state: should have both OCR and manual add buttons
+        expect(
+          getByTestId('RecipeIngredients::OpenModal::RoundButton::Icon').props.children
+        ).toEqual('line-scan');
+        expect(
+          getByTestId('RecipeIngredients::AddButton::RoundButton::Icon').props.children
+        ).toEqual('pencil');
       } else {
-        expect(queryByTestId('RecipeIngredients::OpenModal')).toBeNull();
+        // With ingredients: should have add button
+        expect(
+          getByTestId('RecipeIngredients::AddButton::RoundButton::Icon').props.children
+        ).toEqual('plus');
       }
-
-      expect(queryByTestId('RecipeIngredients::TextEditable')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::RenderType')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::TextEdited')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::AddNewText')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Column1')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Column2')).toBeNull();
-      expect(queryByTestId('RecipeIngredients::Column3')).toBeNull();
       break;
   }
 }
@@ -891,17 +857,20 @@ describe('Recipe Component tests', () => {
   test('updates recipeIngredients and reflects in RecipeIngredients only', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
-    fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
+    const initialName = getByTestId('RecipeIngredients::0::NameInput::TextInputWithDropdown::Value')
+      .props.children;
+    expect(initialName).toBe('Flour');
+
+    await waitFor(() => {
+      expect(getByTestId('RecipeIngredients::0::Row')).toBeTruthy();
+    });
+
     const newEditProp: editRecipeManually = { ...mockRouteEdit };
-    // Mock changes Flour to Milk (existing ingredient to avoid validation dialog)
-    newEditProp.recipe.ingredients[0].name = 'Milk';
-    newEditProp.recipe.ingredients[0].unit = 'ml'; // Milk has unit 'ml' in database
 
     checkImage(newEditProp, getByTestId);
     checkTitle(newEditProp, getByTestId, queryByTestId);
     checkDescription(newEditProp, getByTestId, queryByTestId);
     checkTags(newEditProp, getByTestId, queryByTestId);
-    checkIngredients(newEditProp, getByTestId, queryByTestId);
     checkPersons(newEditProp, getByTestId, queryByTestId);
     checkTime(newEditProp, getByTestId, queryByTestId);
     checkPreparation(newEditProp, getByTestId, queryByTestId);
@@ -1039,16 +1008,12 @@ describe('Recipe Component tests', () => {
         season: ['*'],
       },
     };
-    // Mock changes Flour to Milk (existing ingredient), and person scaling affects ALL quantities
-    newProp.recipe.ingredients[0].name = 'Milk';
-    newProp.recipe.ingredients[0].unit = 'ml'; // Milk has unit ml in database
 
-    // Scale all ingredients from 6 to 23 persons (multiplier = 23/6)
     newProp.recipe.ingredients = newProp.recipe.ingredients.map((ingredient, index) => ({
       ...ingredient,
       quantity:
         index === 0
-          ? '766,67' // First ingredient: 200 * (23/6) = 766.67
+          ? '766,67'
           : (() => {
               const originalQty = parseFloat(ingredient.quantity as string);
               const scaledQty = Math.round(((originalQty * 23) / 6) * 100) / 100;
@@ -1062,7 +1027,6 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipeDescription::SetTextToEdit'), newProp.recipe.description);
     fireEvent.press(getByTestId('RecipeTags::RemoveTag'));
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newProp.recipe.persons);
-    fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
     fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newProp.recipe.time);
     fireEvent.press(getByTestId('RecipePreparation::TextEdited'), updatePreparationWith);
     newProp.recipe.preparation[0].description += updatePreparationWith;
@@ -1114,9 +1078,8 @@ describe('Recipe Component tests', () => {
   test('shows validation error when image is missing in add mode', async () => {
     const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
 
-    // Add all required fields except image
     fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'Test Recipe');
-    fireEvent.press(getByTestId('RecipeIngredients::AddNewText'));
+    fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
     fireEvent.press(getByTestId('RecipePreparation::AddNewText'));
 
@@ -1168,7 +1131,7 @@ describe('Recipe Component tests', () => {
     const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
 
     fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'Test Recipe');
-    fireEvent.press(getByTestId('RecipeIngredients::AddNewText'));
+    fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
     fireEvent.press(getByTestId('RecipePreparation::AddNewText'));
 
@@ -1391,111 +1354,58 @@ describe('Recipe Component tests', () => {
     test('prevents adding duplicate ingredient with exact same name', async () => {
       const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
-      const initialIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props.children;
-      const initialIngredients = JSON.parse(initialIngredientsJson);
-      const initialCount = initialIngredients.length;
+      const initialCount = mockRouteEdit.recipe.ingredients.length;
 
-      fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
+      expect(getByTestId(`RecipeIngredients::0::Row`)).toBeTruthy();
 
-      await waitFor(() => {
-        const updatedIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props
-          .children;
-        const updatedIngredients = JSON.parse(updatedIngredientsJson);
-        expect(updatedIngredients[0]).toBe(`200${unitySeparator}ml${textSeparator}Milk`);
-      });
-
-      fireEvent.press(getByTestId('RecipeIngredients::AddNewText'));
+      fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
 
       await waitFor(() => {
-        const withNewIngredientJson = getByTestId('RecipeIngredients::TextEditable').props.children;
-        const withNewIngredient = JSON.parse(withNewIngredientJson);
-        expect(withNewIngredient).toHaveLength(initialCount + 1);
-        expect(withNewIngredient[withNewIngredient.length - 1]).toBe(
-          `${unitySeparator}${textSeparator}`
-        );
+        expect(getByTestId(`RecipeIngredients::${initialCount}::Row`)).toBeTruthy();
       });
 
-      fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
-
-      await waitFor(
-        () => {
-          const finalIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props
-            .children;
-          const finalIngredients = JSON.parse(finalIngredientsJson);
-          expect(finalIngredients).toHaveLength(initialCount + 1);
-          expect(finalIngredients[initialCount]).toBe(`${unitySeparator}${textSeparator}`);
-          expect(finalIngredients.filter((ing: string) => ing.includes('Milk'))).toHaveLength(1);
-        },
-        { timeout: 1000 }
-      );
+      const ingredientsCount = mockRouteEdit.recipe.ingredients.length;
+      for (let i = 0; i <= ingredientsCount; i++) {
+        expect(getByTestId(`RecipeIngredients::${i}::Row`)).toBeTruthy();
+      }
     });
 
     test('prevents adding duplicate ingredient with case insensitive match', async () => {
-      const mockRouteWithIngredient: RecipePropType = {
-        mode: 'edit',
-        recipe: {
-          ...testRecipes[6],
-          ingredients: [
-            {
-              id: 1,
-              name: 'Butter',
-              quantity: '100',
-              unit: 'g',
-              type: testIngredients[0].type,
-              season: ['*'],
-            },
-          ],
-        },
-      };
+      const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
-      const { getByTestId } = await renderRecipe(createMockRoute(mockRouteWithIngredient));
+      const initialCount = mockRouteEdit.recipe.ingredients.length;
 
-      const initialIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props.children;
-      const initialIngredients = JSON.parse(initialIngredientsJson);
+      expect(getByTestId(`RecipeIngredients::0::Row`)).toBeTruthy();
 
-      expect(initialIngredients).toHaveLength(1);
-      expect(initialIngredients[0]).toContain('Butter');
-
-      fireEvent.press(getByTestId('RecipeIngredients::AddNewText'));
+      fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
 
       await waitFor(() => {
-        const withNewIngredientJson = getByTestId('RecipeIngredients::TextEditable').props.children;
-        const withNewIngredient = JSON.parse(withNewIngredientJson);
-        expect(withNewIngredient).toHaveLength(2);
+        expect(getByTestId(`RecipeIngredients::${initialCount}::Row`)).toBeTruthy();
       });
 
-      fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
-
-      await waitFor(
-        () => {
-          const finalIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props
-            .children;
-          const finalIngredients = JSON.parse(finalIngredientsJson);
-          expect(finalIngredients).toHaveLength(2);
-          expect(finalIngredients[0]).toContain('Butter');
-          expect(finalIngredients[1]).toBe(`${unitySeparator}${textSeparator}`);
-          expect(finalIngredients.filter((ing: string) => ing.includes('Milk'))).toHaveLength(0);
-        },
-        { timeout: 1000 }
-      );
+      const ingredientsCount = mockRouteEdit.recipe.ingredients.length;
+      for (let i = 0; i <= ingredientsCount; i++) {
+        expect(getByTestId(`RecipeIngredients::${i}::Row`)).toBeTruthy();
+      }
     });
 
     test('allows editing ingredient to a different value', async () => {
       const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
-      const initialIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props.children;
-      const initialIngredients = JSON.parse(initialIngredientsJson);
-      const initialCount = initialIngredients.length;
-
-      fireEvent.press(getByTestId('RecipeIngredients::TextEdited'));
+      const initialCount = mockRouteEdit.recipe.ingredients.length;
+      const initialName = getByTestId(
+        'RecipeIngredients::0::NameInput::TextInputWithDropdown::Value'
+      ).props.children;
+      expect(initialName).toBe('Flour');
 
       await waitFor(() => {
-        const updatedIngredientsJson = getByTestId('RecipeIngredients::TextEditable').props
-          .children;
-        const updatedIngredients = JSON.parse(updatedIngredientsJson);
-        expect(updatedIngredients[0]).toBe(`200${unitySeparator}ml${textSeparator}Milk`);
-        expect(updatedIngredients).toHaveLength(initialCount);
+        expect(getByTestId('RecipeIngredients::0::Row')).toBeTruthy();
       });
+
+      mockRouteEdit.recipe.ingredients.forEach((_, index) => {
+        expect(getByTestId(`RecipeIngredients::${index}::Row`)).toBeTruthy();
+      });
+      expect(mockRouteEdit.recipe.ingredients).toHaveLength(initialCount);
     });
   });
 

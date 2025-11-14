@@ -24,10 +24,6 @@ describe('CustomTextInput', () => {
     const { getByTestId } = render(<CustomTextInput {...baseProps} onChangeText={handleChange} />);
 
     const input = getByTestId('custom-input::CustomTextInput');
-    const touchable = getByTestId('custom-input::TouchableOpacity');
-    fireEvent.press(touchable);
-
-    fireEvent(input, 'onFocus');
     fireEvent.changeText(input, 'hello');
     expect(handleChange).toHaveBeenCalledWith('hello');
   });
@@ -39,8 +35,6 @@ describe('CustomTextInput', () => {
       <CustomTextInput {...baseProps} onFocus={onFocus} onBlur={onBlur} />
     );
     const input = getByTestId('custom-input::CustomTextInput');
-    const touchable = getByTestId('custom-input::TouchableOpacity');
-    fireEvent.press(touchable);
 
     fireEvent(input, 'onFocus');
     expect(onFocus).toHaveBeenCalled();
@@ -52,9 +46,6 @@ describe('CustomTextInput', () => {
     const onEndEditing = jest.fn();
     const { getByTestId } = render(<CustomTextInput {...baseProps} onEndEditing={onEndEditing} />);
     const input = getByTestId('custom-input::CustomTextInput');
-    const touchable = getByTestId('custom-input::TouchableOpacity');
-    fireEvent.press(touchable);
-    fireEvent(input, 'onFocus');
 
     fireEvent(input, 'onEndEditing');
     expect(onEndEditing).toHaveBeenCalled();
@@ -77,12 +68,22 @@ describe('CustomTextInput', () => {
     // Optionally: re-render and check height if desired, or snapshot
   });
 
-  test('focuses input when TouchableOpacity is pressed (if editable)', () => {
+  test('is editable by default when editable prop is true', () => {
     const { getByTestId } = render(<CustomTextInput {...baseProps} editable />);
-    const touchable = getByTestId('custom-input::TouchableOpacity');
     const input = getByTestId('custom-input::CustomTextInput');
 
-    fireEvent.press(touchable);
+    expect(input.props.editable).toBe(true);
+  });
+
+  test('allows direct text input without any pre-interaction', () => {
+    const handleChange = jest.fn();
+    const { getByTestId } = render(
+      <CustomTextInput {...baseProps} onChangeText={handleChange} editable />
+    );
+
+    const input = getByTestId('custom-input::CustomTextInput');
+    fireEvent.changeText(input, 'TestTag');
+    expect(handleChange).toHaveBeenCalledWith('TestTag');
     expect(input.props.editable).toBe(true);
   });
 });

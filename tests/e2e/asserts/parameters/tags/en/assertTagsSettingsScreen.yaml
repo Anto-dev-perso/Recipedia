@@ -20,7 +20,6 @@ appId: "com.recipedia"
     text: "Delete"
     label: "Delete button for Breakfast is displayed"
 
-
 - assertVisible:
     id: "TagsSettings::1::TagName"
     text: "Chocolate"
@@ -68,9 +67,9 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "TagsSettings::4::EditButton"
+      id: "TagsSettings::4::TagName"
     direction: DOWN
-    speed: 60
+    speed: 40
     centerElement: true
     label: "Scroll to tag Healthy"
 
@@ -88,6 +87,14 @@ appId: "com.recipedia"
     id: "TagsSettings::4::DeleteButton-text"
     text: "Delete"
     label: "Delete button for Healthy is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::5::EditButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tag Indian"
 
 - assertVisible:
     id: "TagsSettings::5::TagName"
@@ -108,7 +115,7 @@ appId: "com.recipedia"
     element:
       id: "TagsSettings::6::EditButton"
     direction: DOWN
-    speed: 60
+    speed: 40
     centerElement: true
     label: "Scroll to tag Italian"
 
@@ -127,6 +134,14 @@ appId: "com.recipedia"
     text: "Delete"
     label: "Delete button for Italian is displayed"
 
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::7::EditButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tag Japanese"
+
 - assertVisible:
     id: "TagsSettings::7::TagName"
     text: "Japanese"
@@ -141,6 +156,14 @@ appId: "com.recipedia"
     id: "TagsSettings::7::DeleteButton-text"
     text: "Delete"
     label: "Delete button for Japanese is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::8::EditButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tag Lunch"
 
 - assertVisible:
     id: "TagsSettings::8::TagName"
@@ -159,9 +182,9 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "TagsSettings::9::EditButton"
+      id: "TagsSettings::9::TagName"
     direction: DOWN
-    speed: 60
+    speed: 40
     centerElement: true
     label: "Scroll to tag Mexican"
 
@@ -180,6 +203,14 @@ appId: "com.recipedia"
     text: "Delete"
     label: "Delete button for Mexican is displayed"
 
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::10::EditButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tag Quick Meal"
+
 - assertVisible:
     id: "TagsSettings::10::TagName"
     text: "Quick Meal"
@@ -194,6 +225,14 @@ appId: "com.recipedia"
     id: "TagsSettings::10::DeleteButton-text"
     text: "Delete"
     label: "Delete button for Quick Meal is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::11::EditButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tag Salad"
 
 - assertVisible:
     id: "TagsSettings::11::TagName"
@@ -214,7 +253,7 @@ appId: "com.recipedia"
     element:
       id: "TagsSettings::12::EditButton"
     direction: DOWN
-    speed: 60
+    speed: 40
     centerElement: true
     label: "Scroll to tag Seafood"
 
@@ -233,6 +272,14 @@ appId: "com.recipedia"
     text: "Delete"
     label: "Delete button for Seafood is displayed"
 
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::13::TagName"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to tag Soup"
+
 - assertVisible:
     id: "TagsSettings::13::TagName"
     text: "Soup"
@@ -250,10 +297,11 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "TagsSettings::AddButton"
+      id: "TagsSettings::14::EditButton"
     direction: DOWN
-    speed: 60
-    label: "Scroll to Add button"
+    speed: 40
+    centerElement: true
+    label: "Scroll to tag Tag with space"
 
 - assertVisible:
     id: "TagsSettings::14::TagName"
@@ -264,6 +312,13 @@ appId: "com.recipedia"
     id: "TagsSettings::14::EditButton-text"
     text: "Edit"
     label: "Edit button for Tag with space is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::AddButton"
+    direction: DOWN
+    speed: 40
+    label: "Scroll to Add button"
 
 - assertVisible:
     id: "TagsSettings::14::DeleteButton-text"
@@ -284,7 +339,6 @@ appId: "com.recipedia"
     id: "TagsSettings::15::DeleteButton-text"
     text: "Delete"
     label: "Delete button for Vegetarian is displayed"
-
 
 - assertVisible:
     id: "TagsSettings::AddButton"

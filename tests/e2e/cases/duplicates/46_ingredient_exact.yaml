@@ -27,7 +27,7 @@ tags:
     label: "Action - Add ingredient to recipe"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Action - Focus on ingredient name input"
 
 - inputText:
@@ -37,7 +37,7 @@ tags:
 - pressKey: "ENTER"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     text: "Butter"
     label: "Assert - Verify Butter ingredient added to first row"
 
@@ -46,7 +46,7 @@ tags:
     label: "Action - Add another ingredient row"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
     label: "Action - Focus on second ingredient name input"
 
 - inputText:
@@ -56,12 +56,12 @@ tags:
 - pressKey: "ENTER"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     text: "Butter"
     label: "Assert - Verify Butter still in first row"
 
 - assertNotVisible:
-    id: "RecipeIngredients::TextRender::1::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
     label: "Assert - Verify duplicate ingredient row was not added"
 
 - tapOn:

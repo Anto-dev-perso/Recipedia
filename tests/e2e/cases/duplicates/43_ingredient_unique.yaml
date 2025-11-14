@@ -27,7 +27,7 @@ tags:
     label: "Action - Add ingredient to recipe"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Action - Focus on ingredient name input"
 
 - inputText:
@@ -53,7 +53,7 @@ tags:
     label: "Action - Add ingredient to recipe again"
 
 - tapOn:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Action - Focus on ingredient name input"
 
 - inputText:
@@ -100,12 +100,12 @@ tags:
     label: "Action - Confirm adding new ingredient"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Dropdown::CustomTextInput"
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
     text: "AUniqueIngredient"
     label: "Assert - Verify ingredient name appears in recipe"
 
 - assertVisible:
-    id: "RecipeIngredients::TextRender::0::Unit::CustomTextInput"
+    id: "RecipeIngredients::0::Unit::CustomTextInput"
     text: "MyUnit"
     label: "Assert - Verify ingredient unit appears in recipe"
 

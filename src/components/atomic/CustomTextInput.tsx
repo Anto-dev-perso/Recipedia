@@ -1,18 +1,17 @@
 /**
- * CustomTextInput - Enhanced text input component with improved editing behavior
+ * CustomTextInput - Enhanced text input component
  *
- * A wrapper around React Native Paper's TextInput that provides enhanced editing behavior.
- * Features include tap-to-edit functionality, automatic height adjustment for multiline inputs,
- * and proper theme integration. Designed to provide a consistent and user-friendly input
- * experience throughout the app.
+ * A wrapper around React Native Paper's TextInput that provides enhanced functionality.
+ * Features include automatic height adjustment for multiline inputs and proper theme integration.
+ * Designed to provide a consistent and accessible input experience throughout the app.
  *
  * Key Features:
- * - Tap-to-edit behavior for better UX
  * - Automatic height adjustment for multiline text
  * - Full React Native Paper theme integration
  * - Comprehensive keyboard type support
  * - Enhanced accessibility with proper test IDs
  * - Visual feedback for non-editable states
+ * - Compatible with accessibility tools like Maestro
  *
  * @example
  * ```typescript
@@ -40,10 +39,8 @@ import {
   LayoutChangeEvent,
   NativeSyntheticEvent,
   StyleProp,
-  StyleSheet,
   TextInputContentSizeChangeEventData,
   TextStyle,
-  TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native';
@@ -66,6 +63,10 @@ export type CustomTextInputProps = {
   multiline?: boolean;
   /** Type of keyboard to display (default: 'default') */
   keyboardType?: 'default' | 'number-pad' | 'email-address' | 'phone-pad' | 'numeric' | 'url';
+  /** Display mode: outlined or flat (default: 'outlined') */
+  mode?: 'flat' | 'outlined';
+  /** Whether to use dense styling (default: false) */
+  dense?: boolean;
   /** Custom styles for the container view */
   style?: StyleProp<ViewStyle>;
   /** Custom styles for the text content */
@@ -95,6 +96,8 @@ export function CustomTextInput({
   value,
   multiline = false,
   keyboardType = 'default',
+  mode = 'outlined',
+  dense = false,
   style,
   contentStyle,
   onFocus,
@@ -103,23 +106,12 @@ export function CustomTextInput({
   onBlur,
   onLayout,
 }: CustomTextInputProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [inputHeight, setInputHeight] = React.useState(screenHeight * 0.08);
+  const [inputHeight, setInputHeight] = useState(screenHeight * 0.08);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const inputRef = useRef<any>(null);
 
-  function handlePress() {
-    if (editable && !isEditing) {
-      setIsEditing(true);
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 0);
-    }
-  }
-
   function handleOnFocus() {
-    setIsEditing(true);
     onFocus?.();
   }
 
@@ -128,12 +120,10 @@ export function CustomTextInput({
   }
 
   function handleOnEndEditing() {
-    setIsEditing(false);
     onEndEditing?.();
   }
 
   function handleOnBlur() {
-    setIsEditing(false);
     onBlur?.();
   }
 
@@ -171,22 +161,15 @@ export function CustomTextInput({
         onFocus={handleOnFocus}
         onChangeText={handleOnChangeText}
         onEndEditing={handleOnEndEditing}
-        mode={'outlined'}
+        mode={mode}
+        dense={dense}
         multiline={multiline}
-        editable={isEditing}
+        editable={editable}
         keyboardType={keyboardType}
         onBlur={handleOnBlur}
         onLayout={handleOnLayout}
         onContentSizeChange={handleOnContentSizeChange}
       />
-      {!isEditing ? (
-        <TouchableOpacity
-          testID={testID + '::TouchableOpacity'}
-          style={StyleSheet.absoluteFill}
-          activeOpacity={1}
-          onPress={handlePress}
-        />
-      ) : null}
     </View>
   );
 }
