@@ -1,3 +1,15 @@
+## [0.22.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.21.0...v0.22.0) (2025-11-14)
+
+### Features
+
+* **Recipe:** replace RecipeTextRender with dedicated component ([4416b35](https://github.com/Anto-dev-perso/Recipedia/commit/4416b35937aefff735106485ba01ee1e29094ce6))
+* **TextInput:** add dense and mode in text inputs ([d3ef302](https://github.com/Anto-dev-perso/Recipedia/commit/d3ef3026f8c3b5dff19764937abf7bd291a8596b))
+
+### Bug Fixes
+
+* **CustomTextInput:** remove tap-to-edit behavior ([b18271d](https://github.com/Anto-dev-perso/Recipedia/commit/b18271d17944830fb0a69d19fde09bd26b8ac810))
+* **Recipe:** minor fixes ([13387b2](https://github.com/Anto-dev-perso/Recipedia/commit/13387b20099c07d161b451cd9dee77fb63e37fa9))
+
 ## [0.21.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.20.1...v0.21.0) (2025-11-11)
 
 ### Features
