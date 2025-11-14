@@ -10,11 +10,15 @@ appId: "com.recipedia"
 
 - tapOn:
     id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::CustomTextInput"
+    point: "95%,50%"
     label: "Focus on tag name input field"
 
 - inputText:
     text: "${EDIT_SUFFIX}"
     label: "Edit the tag name"
+
+- hideKeyboard:
+    label: "Hide the keyboard"
 
 - tapOn:
     id: "RecipeTagSimilarity::ItemDialog::AddModal::ConfirmButton"
