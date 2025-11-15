@@ -1,3 +1,11 @@
+## [0.22.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.22.0...v0.22.1) (2025-11-15)
+
+### Bug Fixes
+
+* **context:** handle errors in `getSeasonFilter` ([e864e27](https://github.com/Anto-dev-perso/Recipedia/commit/e864e27046d91abe6459b943e8cef58a1387eee3))
+* **Recipe:** add explicit Fuse.js typing for search results ([488e3a3](https://github.com/Anto-dev-perso/Recipedia/commit/488e3a35572e8654264544cddd972dc35502ee74))
+* **utils:** improve locale retrieval for language settings ([e3f9544](https://github.com/Anto-dev-perso/Recipedia/commit/e3f95442a3625ac756bcf1a701f07f77e92ad7b6))
+
 ## [0.22.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.21.0...v0.22.0) (2025-11-14)
 
 ### Features
