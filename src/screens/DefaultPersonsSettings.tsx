@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Button, Text, useTheme } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 import { useI18n } from '@utils/i18n';
 import { padding, screenWidth } from '@styles/spacing';
@@ -9,14 +9,14 @@ import { BottomScreenTitle } from '@styles/typography';
 import { defaultPersonsSettingsLogger } from '@utils/logger';
 import { useDefaultPersons } from '@context/DefaultPersonsContext';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
+import LoadingOverlay from '@components/dialogs/LoadingOverlay';
 
 // TODO missing a back button on screen
-// TODO: Implement background sync solution for better UX - current implementation blocks UI during scaling
 export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsProp) {
   const { t } = useI18n();
   const { colors } = useTheme();
   const { defaultPersons, setDefaultPersons: setDefaultPersonsContext } = useDefaultPersons();
-  const { scaleAllRecipesForNewDefaultPersons } = useRecipeDatabase();
+  const { scaleAllRecipesForNewDefaultPersons, scalingProgress } = useRecipeDatabase();
   const [persons, setPersons] = useState(defaultPersons);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,6 +40,7 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
     defaultPersonsSettingsLogger.info('Starting recipe scaling for new default persons', {
       persons,
     });
+
     await scaleAllRecipesForNewDefaultPersons(persons);
 
     defaultPersonsSettingsLogger.info('Recipe scaling completed');
@@ -89,15 +90,6 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
         </View>
       </View>
 
-      {isLoading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator testID={screenTestId + '::Loading'} size='large' />
-          <Text testID={screenTestId + '::LoadingText'} style={{ marginTop: padding.small }}>
-            {t('updating_recipes')}
-          </Text>
-        </View>
-      )}
-
       <View style={styles.buttonContainer}>
         <Button
           testID={screenTestId + '::Cancel'}
@@ -119,6 +111,13 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
           {t('save')}
         </Button>
       </View>
+
+      <LoadingOverlay
+        visible={isLoading}
+        message={t('updating_recipes')}
+        progress={scalingProgress}
+        testID={screenTestId + '::LoadingOverlay'}
+      />
     </View>
   );
 }
@@ -136,10 +135,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: padding.small,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    marginTop: padding.medium,
   },
   buttonContainer: {
     flexDirection: 'row',
