@@ -126,6 +126,53 @@ export class RecipeDatabase {
   }
 
   /**
+   * Scales a recipe's ingredient quantities to a different number of persons
+   *
+   * Creates a new recipe object with ingredient quantities adjusted proportionally
+   * for the target number of persons. If the recipe doesn't have a valid person count
+   * or already matches the target, returns the recipe unchanged.
+   *
+   * @param recipe - The recipe to scale
+   * @param targetPersons - The target number of persons to scale for
+   * @returns New recipe object with scaled ingredient quantities
+   *
+   * @example
+   * ```typescript
+   * const originalRecipe = {
+   *   title: "Pasta",
+   *   persons: 4,
+   *   ingredients: [{ name: "Pasta", quantity: "400", unit: "g" }]
+   * };
+   *
+   * const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(originalRecipe, 2);
+   * // scaledRecipe.persons === 2
+   * // scaledRecipe.ingredients[0].quantity === "200"
+   * ```
+   */
+  public static scaleRecipeToPersons(
+    recipe: recipeTableElement,
+    targetPersons: number
+  ): recipeTableElement {
+    if (!recipe.persons || recipe.persons <= 0 || recipe.persons === targetPersons) {
+      return recipe;
+    }
+
+    const oldPersons = recipe.persons;
+    const scaledIngredients = recipe.ingredients.map(ingredient => ({
+      ...ingredient,
+      quantity: ingredient.quantity
+        ? scaleQuantityForPersons(ingredient.quantity, oldPersons, targetPersons)
+        : ingredient.quantity,
+    }));
+
+    return {
+      ...recipe,
+      persons: targetPersons,
+      ingredients: scaledIngredients,
+    };
+  }
+
+  /**
    * Resets the database by deleting all tables and clearing local cache
    *
    * This operation completely removes all data and recreates empty tables.
@@ -930,81 +977,52 @@ export class RecipeDatabase {
   }
 
   /**
-   * Updates all recipes in the database to use a new default persons count,
-   * scaling ingredient quantities proportionally.
-   * This operation runs asynchronously and does not block the caller.
+   * Scales and updates a single recipe in the database
+   *
+   * Takes a pre-scaled recipe object and updates it in the database.
+   * This method is used for individual recipe updates during progressive scaling operations.
+   *
+   * @param scaledRecipe - The recipe object that has already been scaled to target persons
+   * @throws Error if recipe doesn't have an ID or update fails
+   *
+   * @example
+   * ```typescript
+   * const recipe = db.get_recipes()[0];
+   * const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(recipe, 4);
+   * await db.scaleAndUpdateRecipe(scaledRecipe);
+   * ```
    */
-  public async scaleAllRecipesForNewDefaultPersons(newDefaultPersons: number): Promise<void> {
-    try {
-      databaseLogger.info('Starting to scale all recipes for new default persons', {
-        newDefaultPersons,
-        totalRecipes: this.get_recipes().length,
+  public async scaleAndUpdateRecipe(scaledRecipe: recipeTableElement): Promise<void> {
+    if (!scaledRecipe.id) {
+      databaseLogger.error('Cannot update recipe without ID', {
+        recipeTitle: scaledRecipe.title,
       });
-      const updatedRecipes: Array<recipeTableElement> = [];
-
-      for (const recipe of this.get_recipes()) {
-        if (recipe.persons && recipe.persons > 0 && recipe.id !== undefined) {
-          // Skip recipes that already have the target persons count
-          if (recipe.persons === newDefaultPersons) {
-            continue;
-          }
-
-          const oldPersons = recipe.persons;
-
-          const updatedIngredients = recipe.ingredients.map(ingredient => ({
-            ...ingredient,
-            quantity: ingredient.quantity
-              ? scaleQuantityForPersons(ingredient.quantity, oldPersons, newDefaultPersons)
-              : ingredient.quantity,
-          }));
-
-          updatedRecipes.push({
-            ...recipe,
-            persons: newDefaultPersons,
-            ingredients: updatedIngredients,
-          });
-        } else {
-          databaseLogger.error('Cannot scale recipe - invalid data', {
-            recipeId: recipe.id,
-            persons: recipe.persons,
-            title: recipe.title,
-          });
-        }
-      }
-
-      if (updatedRecipes.length > 0) {
-        databaseLogger.info('Batch updating scaled recipes', {
-          recipesToUpdate: updatedRecipes.length,
-          newDefaultPersons,
-        });
-        const batchUpdates = updatedRecipes.map(recipe => ({
-          id: recipe.id!,
-          elementToUpdate: this.constructUpdateRecipeStructure(this.encodeRecipe(recipe)),
-        }));
-
-        const success = await this._recipesTable.batchUpdateElementsById(
-          batchUpdates,
-          this._dbConnection
-        );
-
-        if (success) {
-          this.update_multiple_recipes(updatedRecipes);
-          databaseLogger.info('Recipe scaling completed successfully', {
-            updatedCount: updatedRecipes.length,
-            newDefaultPersons,
-          });
-        } else {
-          databaseLogger.error('Failed to update scaled recipes', {
-            recipesToUpdate: updatedRecipes.length,
-            newDefaultPersons,
-          });
-        }
-      } else {
-        databaseLogger.info('No recipes needed scaling', { newDefaultPersons });
-      }
-    } catch (error) {
-      databaseLogger.error('Failed to update recipes for new default persons count', { error });
+      throw new Error('Recipe must have an ID to update');
     }
+
+    const updateMap = this.constructUpdateRecipeStructure(this.encodeRecipe(scaledRecipe));
+    databaseLogger.debug('Updating scaled recipe', {
+      recipeId: scaledRecipe.id,
+      recipeTitle: scaledRecipe.title,
+      persons: scaledRecipe.persons,
+    });
+
+    const success = await this._recipesTable.editElementById(
+      scaledRecipe.id,
+      updateMap,
+      this._dbConnection
+    );
+
+    if (!success) {
+      databaseLogger.error('Failed to update scaled recipe', {
+        recipeId: scaledRecipe.id,
+        recipeTitle: scaledRecipe.title,
+      });
+      throw new Error(`Failed to update recipe ${scaledRecipe.id}`);
+    }
+
+    this.update_recipe(scaledRecipe);
+    databaseLogger.debug('Recipe updated successfully', { recipeId: scaledRecipe.id });
   }
 
   /**
@@ -1330,42 +1348,42 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-                                                                                                if (newIngredients.length > 0) {
-                                                                                                    let alertTitle: string;
-                                                                                                    let alertMessage = "Do you want to add or edit it before  ?";
-                                                                                                    const alertOk = "OK";
-                                                                                                    const alertCancel = "Cancel";
-                                                                                                    const alertEdit = "Edit before add";
-                                                                                                    if (newIngredients.length > 1) {
-                                                                                                        // Plural
-                                                                                                        alertTitle = "INGREDIENTS NOT FOUND";
-                                                                                                        alertMessage = `Following ingredients were not found in database :  \n`;
-                                                                                                        newIngredients.forEach(ing => {
-                                                                                                            alertMessage += "\t- " + ing.ingName + "\n";
-                                                                                                        });
-                                                                                                        alertMessage += `Do you want to add these as is or edit them before adding ?`;
+                                                                                                            if (newIngredients.length > 0) {
+                                                                                                                let alertTitle: string;
+                                                                                                                let alertMessage = "Do you want to add or edit it before  ?";
+                                                                                                                const alertOk = "OK";
+                                                                                                                const alertCancel = "Cancel";
+                                                                                                                const alertEdit = "Edit before add";
+                                                                                                                if (newIngredients.length > 1) {
+                                                                                                                    // Plural
+                                                                                                                    alertTitle = "INGREDIENTS NOT FOUND";
+                                                                                                                    alertMessage = `Following ingredients were not found in database :  \n`;
+                                                                                                                    newIngredients.forEach(ing => {
+                                                                                                                        alertMessage += "\t- " + ing.ingName + "\n";
+                                                                                                                    });
+                                                                                                                    alertMessage += `Do you want to add these as is or edit them before adding ?`;
 
-                                                                                                    } else {
-                                                                                                        alertTitle = `INGREDIENT NOT FOUND`;
-                                                                                                        alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                                                                                                    }
+                                                                                                                } else {
+                                                                                                                    alertTitle = `INGREDIENT NOT FOUND`;
+                                                                                                                    alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                                                                                                                }
 
 
-                                                                                                    switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                                                                                                        case alertUserChoice.neutral:
-                                                                                                            // TODO edit before add
-                                                                                                            break;
-                                                                                                        case alertUserChoice.ok:
-                                                                                                            await this.addMultipleIngredients(newIngredients);
-                                                                                                            result = result.concat(newIngredients);
-                                                                                                            break;
-                                                                                                        case alertUserChoice.cancel:
-                                                                                                        default:
-                                                                                                            databaseLogger.debug("User canceled adding ingredient");
-                                                                                                            break;
-                                                                                                    }
-                                                                                                }
-                                                                                                 */
+                                                                                                                switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                                                                                                                    case alertUserChoice.neutral:
+                                                                                                                        // TODO edit before add
+                                                                                                                        break;
+                                                                                                                    case alertUserChoice.ok:
+                                                                                                                        await this.addMultipleIngredients(newIngredients);
+                                                                                                                        result = result.concat(newIngredients);
+                                                                                                                        break;
+                                                                                                                    case alertUserChoice.cancel:
+                                                                                                                    default:
+                                                                                                                        databaseLogger.debug("User canceled adding ingredient");
+                                                                                                                        break;
+                                                                                                                }
+                                                                                                            }
+                                                                                                             */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);
