@@ -865,92 +865,73 @@ describe('RecipeDatabase', () => {
       });
     });
 
-    describe('scaleAllRecipesForNewDefaultPersons', () => {
-      test('should scale all recipe quantities and update persons count', async () => {
-        const originalRecipes = [...db.get_recipes()];
+    describe('scaleRecipeToPersons (static method)', () => {
+      test('should scale recipe quantities and update persons count', () => {
+        const originalRecipe = testRecipes[0];
         const newPersonsCount = 6;
 
-        await db.scaleAllRecipesForNewDefaultPersons(newPersonsCount);
+        const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(originalRecipe, newPersonsCount);
 
-        const scaledRecipes = db.get_recipes();
+        expect(scaledRecipe.persons).toEqual(newPersonsCount);
+        expect(scaledRecipe.ingredients.length).toEqual(originalRecipe.ingredients.length);
 
-        expect(scaledRecipes.length).toBe(originalRecipes.length);
+        for (let j = 0; j < scaledRecipe.ingredients.length; j++) {
+          const originalIng = originalRecipe.ingredients[j];
+          const scaledIng = scaledRecipe.ingredients[j];
 
-        for (let i = 0; i < scaledRecipes.length; i++) {
-          const original = originalRecipes[i];
-          const scaled = scaledRecipes[i];
+          expect(scaledIng.id).toEqual(originalIng.id);
+          expect(scaledIng.name).toEqual(originalIng.name);
+          expect(scaledIng.unit).toEqual(originalIng.unit);
+          expect(scaledIng.type).toEqual(originalIng.type);
 
-          expect(scaled.persons).toEqual(newPersonsCount);
-          expect(scaled.ingredients.length).toEqual(original.ingredients.length);
-
-          for (let j = 0; j < scaled.ingredients.length; j++) {
-            const originalIng = original.ingredients[j];
-            const scaledIng = scaled.ingredients[j];
-
-            expect(scaledIng.id).toEqual(originalIng.id);
-            expect(scaledIng.name).toEqual(originalIng.name);
-            expect(scaledIng.unit).toEqual(originalIng.unit);
-            expect(scaledIng.type).toEqual(originalIng.type);
-
-            const scaleFactor = newPersonsCount / original.persons;
-            const expectedQuantity = (parseFloat(originalIng.quantity as string) * scaleFactor)
-              .toString()
-              .replace('.', ',');
-            expect(scaledIng.quantity).toBe(expectedQuantity);
-          }
-
-          expect(scaled.id).toBe(original.id);
-          expect(scaled.title).toBe(original.title);
-          expect(scaled.description).toBe(original.description);
-          expect(scaled.tags).toEqual(original.tags);
-          expect(scaled.season).toEqual(original.season);
-          expect(scaled.preparation).toEqual(original.preparation);
-          expect(scaled.time).toBe(original.time);
+          const scaleFactor = newPersonsCount / originalRecipe.persons;
+          const expectedQuantity = (parseFloat(originalIng.quantity as string) * scaleFactor)
+            .toString()
+            .replace('.', ',');
+          expect(scaledIng.quantity).toBe(expectedQuantity);
         }
+
+        expect(scaledRecipe.id).toBe(originalRecipe.id);
+        expect(scaledRecipe.title).toBe(originalRecipe.title);
+        expect(scaledRecipe.description).toBe(originalRecipe.description);
+        expect(scaledRecipe.tags).toEqual(originalRecipe.tags);
+        expect(scaledRecipe.season).toEqual(originalRecipe.season);
+        expect(scaledRecipe.preparation).toEqual(originalRecipe.preparation);
+        expect(scaledRecipe.time).toBe(originalRecipe.time);
       });
 
-      test(' should skip recipes with invalid persons count', async () => {
-        const invalidRecipe = {
-          ...testRecipes[0],
-          id: 100,
-          persons: 0,
-          title: 'Invalid Recipe',
-        };
+      test('should return unchanged recipe if persons is 0', () => {
+        const recipe = { ...testRecipes[0], persons: 0 };
 
-        db.add_recipes(invalidRecipe);
-        const originalCount = db.get_recipes().length;
+        const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(recipe, 4);
 
-        await db.scaleAllRecipesForNewDefaultPersons(4);
-
-        const recipes = db.get_recipes();
-        expect(recipes.length).toBe(originalCount);
-
-        const invalidRecipeAfter = recipes.find(r => r.id === 100);
-        expect(invalidRecipeAfter).toEqual(invalidRecipe);
+        expect(scaledRecipe).toEqual(recipe);
       });
 
-      test(' should handle recipes without ingredients', async () => {
-        const noIngredientsRecipe = {
+      test('should return unchanged recipe if target persons equals current persons', () => {
+        const recipe = testRecipes[0];
+
+        const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(recipe, recipe.persons);
+
+        expect(scaledRecipe).toEqual(recipe);
+      });
+
+      test('should handle recipes without ingredients', () => {
+        const recipe = {
           ...testRecipes[0],
-          id: 101,
           persons: 2,
           ingredients: [],
-          title: 'No Ingredients Recipe',
         };
 
-        db.add_recipes(noIngredientsRecipe);
+        const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(recipe, 4);
 
-        await db.scaleAllRecipesForNewDefaultPersons(4);
-
-        const updatedRecipe = db.get_recipes().find(r => r.id === 101);
-        expect(updatedRecipe?.persons).toBe(4);
-        expect(updatedRecipe?.ingredients).toEqual([]);
+        expect(scaledRecipe.persons).toBe(4);
+        expect(scaledRecipe.ingredients).toEqual([]);
       });
 
-      test('should handle non-numeric quantities', async () => {
-        const nonNumericRecipe = {
+      test('should handle non-numeric quantities', () => {
+        const recipe = {
           ...testRecipes[0],
-          id: 102,
           persons: 2,
           ingredients: [
             {
@@ -958,44 +939,85 @@ describe('RecipeDatabase', () => {
               quantity: 'a pinch',
             },
           ],
-          title: 'Non-numeric Quantity Recipe',
         };
 
-        db.add_recipes(nonNumericRecipe);
+        const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(recipe, 4);
 
-        await db.scaleAllRecipesForNewDefaultPersons(4);
+        expect(scaledRecipe.persons).toBe(4);
+        expect(scaledRecipe.ingredients[0].quantity).toBe('a pinch');
+      });
+    });
 
-        const updatedRecipe = db.get_recipes().find(r => r.id === 102);
-        expect(updatedRecipe?.persons).toBe(4);
-        expect(updatedRecipe?.ingredients[0].quantity).toBe('a pinch');
+    describe('scaleAndUpdateRecipe', () => {
+      test('should scale and update a single recipe', async () => {
+        const originalRecipe = db.get_recipes()[0];
+        const newPersons = 6;
+
+        const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(originalRecipe, newPersons);
+        await db.scaleAndUpdateRecipe(scaledRecipe);
+
+        const updatedRecipe = db.get_recipes().find(r => r.id === originalRecipe.id);
+
+        expect(updatedRecipe).toBeDefined();
+        expect(updatedRecipe?.persons).toBe(newPersons);
+        expect(updatedRecipe?.ingredients.length).toBe(originalRecipe.ingredients.length);
+
+        for (let i = 0; i < updatedRecipe!.ingredients.length; i++) {
+          const originalIng = originalRecipe.ingredients[i];
+          const updatedIng = updatedRecipe!.ingredients[i];
+
+          const scaleFactor = newPersons / originalRecipe.persons;
+          const expectedQuantity = (parseFloat(originalIng.quantity as string) * scaleFactor)
+            .toString()
+            .replace('.', ',');
+
+          expect(updatedIng.quantity).toBe(expectedQuantity);
+        }
       });
 
-      test('should skip recipes that already have the target persons count', async () => {
-        const targetPersons = 4;
+      test('should throw error when recipe has no ID', async () => {
+        const recipeWithoutId = { ...testRecipes[0], id: undefined };
 
-        const alreadyCorrectRecipe = {
+        await expect(db.scaleAndUpdateRecipe(recipeWithoutId)).rejects.toThrow(
+          'Recipe must have an ID to update'
+        );
+      });
+
+      test('should update recipe in internal state', async () => {
+        const originalRecipe = db.get_recipes()[0];
+        const recipesBefore = [...db.get_recipes()];
+
+        const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(originalRecipe, 8);
+        await db.scaleAndUpdateRecipe(scaledRecipe);
+
+        const recipesAfter = db.get_recipes();
+
+        expect(recipesAfter).not.toBe(recipesBefore);
+        expect(recipesAfter.length).toBe(recipesBefore.length);
+
+        const updated = recipesAfter.find(r => r.id === originalRecipe.id);
+        expect(updated?.persons).toBe(8);
+      });
+
+      test('should handle recipe with no ingredients', async () => {
+        const recipeWithNoIngredients = {
           ...testRecipes[0],
-          id: 103,
-          persons: targetPersons,
-          title: 'Already Correct Recipe',
+          id: undefined,
+          ingredients: [],
+          persons: 2,
         };
 
-        db.add_recipes(alreadyCorrectRecipe);
-        const originalRecipe = { ...alreadyCorrectRecipe };
+        await db.addRecipe(recipeWithNoIngredients);
 
-        await db.scaleAllRecipesForNewDefaultPersons(targetPersons);
+        const addedRecipe = db.get_recipes().find(r => r.ingredients.length === 0);
+        expect(addedRecipe).toBeDefined();
 
-        const unchangedRecipe = db.get_recipes().find(r => r.id === 103);
-        expect(unchangedRecipe).toEqual(originalRecipe);
-      });
+        const scaledRecipe = RecipeDatabase.scaleRecipeToPersons(addedRecipe!, 4);
+        await db.scaleAndUpdateRecipe(scaledRecipe);
 
-      test('scaleAllRecipesForNewDefaultPersons should handle empty database gracefully', async () => {
-        await db.reset();
-        await db.init();
-
-        await db.scaleAllRecipesForNewDefaultPersons(4);
-
-        expect(db.get_recipes()).toEqual([]);
+        const updated = db.get_recipes().find(r => r.id === addedRecipe!.id);
+        expect(updated?.persons).toBe(4);
+        expect(updated?.ingredients).toEqual([]);
       });
     });
 

@@ -163,4 +163,17 @@ describe('DefaultPersonsSettings Screen', () => {
     expect(scaledIngredient).toBeDefined();
     expect(scaledIngredient?.quantity).toBe('250');
   });
+
+  test('shows loading overlay while scaling recipes', async () => {
+    const { getByTestId, queryByTestId } = await renderDefaultPersonsSettings();
+
+    expect(queryByTestId('DefaultPersonSettings::LoadingOverlay::Overlay')).toBeNull();
+
+    fireEvent.press(getByTestId('DefaultPersonSettings::Slider'));
+    fireEvent.press(getByTestId('DefaultPersonSettings::Save'));
+
+    await waitFor(() => {
+      expect(mockNavigationFunctions.goBack).toHaveBeenCalled();
+    });
+  });
 });

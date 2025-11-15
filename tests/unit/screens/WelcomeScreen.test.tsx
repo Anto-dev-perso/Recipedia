@@ -1,6 +1,11 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import WelcomeScreen from '@screens/WelcomeScreen';
+import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
+import RecipeDatabase from '@utils/RecipeDatabase';
+import { testRecipes } from '@test-data/recipesDataset';
+import { testTags } from '@test-data/tagsDataset';
+import { testIngredients } from '@test-data/ingredientsDataset';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
@@ -12,31 +17,50 @@ jest.mock('expo-asset', () => require('@mocks/deps/expo-asset-mock').expoAssetMo
 
 jest.mock('expo-constants', () => require('@mocks/deps/expo-constants-mock').expoConstantsMock());
 
+jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqliteMock());
+
+jest.mock('@utils/FileGestion', () => require('@mocks/utils/FileGestion-mock').fileGestionMock());
+
 describe('WelcomeScreen Component', () => {
   const mockOnStartTutorial = jest.fn();
   const mockOnSkip = jest.fn();
+  let database: RecipeDatabase;
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('renders branded header with app icon, title and subtitle', () => {
-    const { getByTestId } = render(
-      <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
+  const renderWelcomeScreen = () =>
+    render(
+      <RecipeDatabaseProvider>
+        <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
+      </RecipeDatabaseProvider>
     );
 
-    expect(getByTestId('WelcomeScreen::AppIcon')).toBeTruthy();
+  beforeEach(async () => {
+    jest.clearAllMocks();
+    database = RecipeDatabase.getInstance();
+    await database.init();
+  });
+
+  afterEach(async () => {
+    await database.reset();
+  });
+
+  test('renders branded header with app icon, title and subtitle', async () => {
+    const { getByTestId } = renderWelcomeScreen();
+
+    await waitFor(() => {
+      expect(getByTestId('WelcomeScreen::AppIcon')).toBeTruthy();
+    });
+
     expect(getByTestId('WelcomeScreen::AppIcon::Uri')).toHaveTextContent('mocked-app-icon-uri');
     expect(getByTestId('WelcomeScreen::Title')).toHaveTextContent('Test Recipedia');
     expect(getByTestId('WelcomeScreen::Subtitle')).toHaveTextContent('welcome.subtitle');
   });
 
-  test('renders features card with title and all feature items', () => {
-    const { getByTestId } = render(
-      <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
-    );
+  test('renders features card with title and all feature items', async () => {
+    const { getByTestId } = renderWelcomeScreen();
 
-    expect(getByTestId('WelcomeScreen::Card::Title')).toHaveTextContent('welcome.valueTitle');
+    await waitFor(() => {
+      expect(getByTestId('WelcomeScreen::Card::Title')).toHaveTextContent('welcome.valueTitle');
+    });
 
     expect(getByTestId('WelcomeScreen::Card::FeaturesList::0::Icon::Icon')).toHaveTextContent(
       'magnify'
@@ -58,19 +82,26 @@ describe('WelcomeScreen Component', () => {
     );
   });
 
-  test('renders action buttons with correct text', () => {
-    const { getByTestId } = render(
-      <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
-    );
+  test('renders action buttons with correct text', async () => {
+    const { getByTestId } = renderWelcomeScreen();
 
-    expect(getByTestId('WelcomeScreen::StartTourButton')).toHaveTextContent('welcome.startTour');
+    await waitFor(() => {
+      expect(getByTestId('WelcomeScreen::StartTourButton')).toHaveTextContent('welcome.startTour');
+    });
+
     expect(getByTestId('WelcomeScreen::SkipButton')).toHaveTextContent('welcome.skip');
   });
 
-  test('handles button interactions correctly', () => {
-    const { getByTestId } = render(
-      <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
-    );
+  test('handles button interactions correctly', async () => {
+    await database.addMultipleIngredients(testIngredients);
+    await database.addMultipleTags(testTags);
+    await database.addMultipleRecipes(testRecipes);
+
+    const { getByTestId } = renderWelcomeScreen();
+
+    await waitFor(() => {
+      expect(getByTestId('WelcomeScreen::StartTourButton')).toBeTruthy();
+    });
 
     fireEvent.press(getByTestId('WelcomeScreen::StartTourButton'));
     expect(mockOnStartTutorial).toHaveBeenCalledTimes(1);
@@ -79,12 +110,13 @@ describe('WelcomeScreen Component', () => {
     expect(mockOnSkip).toHaveBeenCalledTimes(1);
   });
 
-  test('renders proper component structure with all required elements', () => {
-    const { getByTestId } = render(
-      <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
-    );
+  test('renders proper component structure with all required elements', async () => {
+    const { getByTestId } = renderWelcomeScreen();
 
-    expect(getByTestId('WelcomeScreen::AppIcon')).toBeTruthy();
+    await waitFor(() => {
+      expect(getByTestId('WelcomeScreen::AppIcon')).toBeTruthy();
+    });
+
     expect(getByTestId('WelcomeScreen::AppIcon::Uri')).toHaveTextContent('mocked-app-icon-uri');
     expect(getByTestId('WelcomeScreen::Title')).toHaveTextContent('Test Recipedia');
     expect(getByTestId('WelcomeScreen::Subtitle')).toHaveTextContent('welcome.subtitle');
@@ -98,15 +130,15 @@ describe('WelcomeScreen Component', () => {
     expect(getByTestId('WelcomeScreen::Card::FeaturesList::2::Icon')).toBeTruthy();
   });
 
-  test('handles missing expo config gracefully', () => {
+  test('handles missing expo config gracefully', async () => {
     const originalConstant = require('expo-constants').default;
     require('expo-constants').default = { expoConfig: null };
 
-    const { getByTestId } = render(
-      <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
-    );
+    const { getByTestId } = renderWelcomeScreen();
 
-    expect(getByTestId('WelcomeScreen::Title')).toBeTruthy();
+    await waitFor(() => {
+      expect(getByTestId('WelcomeScreen::Title')).toBeTruthy();
+    });
 
     require('expo-constants').default = originalConstant;
   });

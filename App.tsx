@@ -29,7 +29,7 @@ SplashScreen.preventAutoHideAsync();
 function AppContent() {
     const [isAppInitialized, setIsAppInitialized] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
-    const {isDatabaseInitialized} = useRecipeDatabase();
+    const {isDatabaseReady} = useRecipeDatabase();
 
     useEffect(() => {
         const initialize = async () => {
@@ -65,13 +65,14 @@ function AppContent() {
     const theme = darkMode ? darkTheme : lightTheme;
 
     const onLayoutRootView = useCallback(async () => {
-        if (isAppInitialized && isDatabaseInitialized) {
+        if (isAppInitialized && isDatabaseReady) {
             appLogger.debug('Hiding splash screen - app and database ready');
             await SplashScreen.hideAsync();
         }
-    }, [isAppInitialized, isDatabaseInitialized]);
+    }, [isAppInitialized, isDatabaseReady]);
 
-    if (!isAppInitialized || !isDatabaseInitialized) {
+    if (!isAppInitialized || !isDatabaseReady) {
+        appLogger.debug('Showing splash screen', {isAppInitialized, isDatabaseReady});
         return null;
     }
 

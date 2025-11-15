@@ -45,7 +45,7 @@
  * ```
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, StatusBar, View } from 'react-native';
 import { Button, Card, IconButton, Text, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
@@ -55,6 +55,8 @@ import { Asset } from 'expo-asset';
 import { padding, screenWidth } from '@styles/spacing';
 import { IconName, Icons } from '@assets/Icons';
 import Constants from 'expo-constants';
+import LoadingOverlay from '@components/dialogs/LoadingOverlay';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /**
  * Props for the WelcomeScreen component
@@ -75,6 +77,43 @@ export type WelcomeScreenProps = {
 export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreenProps) {
   const { colors, fonts } = useTheme();
   const { t } = useI18n();
+  const { recipes } = useRecipeDatabase();
+  const [pendingAction, setPendingAction] = useState<'tutorial' | 'skip' | null>(null);
+
+  const isDataLoaded = recipes.length > 0;
+
+  useEffect(() => {
+    if (isDataLoaded && pendingAction) {
+      if (pendingAction === 'tutorial') {
+        tutorialLogger.info('Data loaded - proceeding with tutorial');
+        onStartTutorial();
+      } else if (pendingAction === 'skip') {
+        tutorialLogger.info('Data loaded - proceeding to main app');
+        onSkip();
+      }
+      setPendingAction(null);
+    }
+  }, [isDataLoaded, pendingAction, onStartTutorial, onSkip]);
+
+  const handleStartTutorial = () => {
+    if (isDataLoaded) {
+      tutorialLogger.info('User started tutorial from welcome screen');
+      onStartTutorial();
+    } else {
+      tutorialLogger.info('User requested tutorial - waiting for data to load');
+      setPendingAction('tutorial');
+    }
+  };
+
+  const handleSkip = () => {
+    if (isDataLoaded) {
+      tutorialLogger.info('User skipped tutorial from welcome screen');
+      onSkip();
+    } else {
+      tutorialLogger.info('User requested skip - waiting for data to load');
+      setPendingAction('skip');
+    }
+  };
 
   type Feature = { icon: IconName; text: string };
   const featuresList = new Array<Feature>(
@@ -188,10 +227,7 @@ export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreen
             <Button
               testID={testId + '::StartTourButton'}
               mode='contained'
-              onPress={() => {
-                tutorialLogger.info('User started tutorial from welcome screen');
-                onStartTutorial();
-              }}
+              onPress={handleStartTutorial}
               style={{ backgroundColor: colors.secondary, paddingVertical: padding.medium }}
               labelStyle={{
                 fontSize: startTourFont.fontSize,
@@ -204,10 +240,7 @@ export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreen
             <Button
               testID={testId + '::SkipButton'}
               mode='text'
-              onPress={() => {
-                tutorialLogger.info('User skipped tutorial from welcome screen');
-                onSkip();
-              }}
+              onPress={handleSkip}
               style={{ alignSelf: 'center' }}
               textColor={colors.onPrimary}
             >
@@ -216,6 +249,11 @@ export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreen
           </View>
         </View>
       </View>
+      <LoadingOverlay
+        visible={pendingAction !== null}
+        message={t('welcome.loadingData')}
+        testID={testId + '::LoadingOverlay'}
+      />
     </SafeAreaView>
   );
 }
