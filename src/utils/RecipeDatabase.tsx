@@ -35,7 +35,7 @@ import { EncodingSeparator, textSeparator } from '@styles/typography';
 import { TListFilter } from '@customTypes/RecipeFiltersTypes';
 import FileGestion from '@utils/FileGestion';
 import { isNumber, subtractNumberInString, sumNumberInString } from '@utils/TypeCheckingFunctions';
-import Fuse from 'fuse.js/dist/fuse.js';
+import Fuse, { FuseResult } from 'fuse.js';
 import { scaleQuantityForPersons } from '@utils/Quantity';
 import { databaseLogger } from '@utils/logger';
 import { fisherYatesShuffle } from './FilterFunctions';
@@ -1073,7 +1073,9 @@ export class RecipeDatabase {
       keys: ['title'],
       threshold: 0.6,
     });
-    return fuse.search(recipeToCompare.title).map(fuseResult => fuseResult.item);
+    return fuse
+      .search(recipeToCompare.title)
+      .map((fuseResult: FuseResult<recipeTableElement>) => fuseResult.item);
   }
 
   /**
@@ -1105,8 +1107,11 @@ export class RecipeDatabase {
 
     return fuse
       .search(tagName)
-      .sort((a, b) => (a.score || 0) - (b.score || 0))
-      .map(result => result.item);
+      .sort(
+        (a: FuseResult<tagTableElement>, b: FuseResult<tagTableElement>) =>
+          (a.score || 0) - (b.score || 0)
+      )
+      .map((result: FuseResult<tagTableElement>) => result.item);
   }
 
   /**
@@ -1141,7 +1146,7 @@ export class RecipeDatabase {
       keys: [
         {
           name: 'name',
-          getFn: ingredient => this.cleanIngredientName(ingredient.name),
+          getFn: (ingredient: ingredientTableElement) => this.cleanIngredientName(ingredient.name),
         },
       ],
       threshold: 0.6,
@@ -1150,8 +1155,11 @@ export class RecipeDatabase {
 
     return fuse
       .search(cleanedName)
-      .sort((a, b) => (a.score || 0) - (b.score || 0))
-      .map(result => result.item);
+      .sort(
+        (a: FuseResult<ingredientTableElement>, b: FuseResult<ingredientTableElement>) =>
+          (a.score || 0) - (b.score || 0)
+      )
+      .map((result: FuseResult<ingredientTableElement>) => result.item);
   }
 
   /**

@@ -92,9 +92,13 @@ export const SeasonFilterProvider = ({ children }: { children: React.ReactNode }
   const [seasonFilter, setSeasonFilterState] = useState(true);
 
   useEffect(() => {
-    getSeasonFilter().then(value => {
-      setSeasonFilterState(value);
-    });
+    getSeasonFilter()
+      .then(value => {
+        setSeasonFilterState(value);
+      })
+      .catch(() => {
+        setSeasonFilterState(true);
+      });
   }, []);
 
   const setSeasonFilterContext = () => {

@@ -2,13 +2,6 @@ import type {ConfigContext, ExpoConfig} from "expo/config";
 
 const pkg = require("./package.json");
 
-function getAndroidVersionCode(version: string): number {
-    // Map SemVer X.Y.Z -> versionCode = X*1_000_000 + Y*1_000 + Z
-    // Supports up to 999 minors/patches and keeps monotonic increase across major bumps.
-    const [major, minor, patch] = version.split("-")[0].split(".").map((n) => parseInt(n, 10) || 0);
-    return major * 1_000_000 + minor * 1_000 + patch;
-}
-
 function toIdentifierSegment(slug: string): string {
     // Convert slug to a valid identifier segment: lowercase, remove non-alphanumerics, start with a letter
     const compact = slug.toLowerCase().replace(/[^a-z0-9]+/g, "");
@@ -19,7 +12,14 @@ function toSlug(name: string): string {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-const version = pkg.version;
+function versionToCode(version: string): number {
+    const parts = version.split('.').map(Number);
+    const major = parts[0] || 0;
+    const minor = parts[1] || 0;
+    const patch = parts[2] || 0;
+    return major * 10000 + minor * 100 + patch;
+}
+
 const configuredName = toSlug(pkg.name);
 const appId = `com.${toIdentifierSegment(pkg.name)}`;
 
@@ -52,18 +52,20 @@ export default ({config}: ConfigContext): ExpoConfig => {
         ios: {
             supportsTablet: true,
             bundleIdentifier: appId,
+            buildNumber: pkg.version,
             infoPlist: {
                 "ITSAppUsesNonExemptEncryption": false
             }
         },
         android: {
+            versionCode: versionToCode(pkg.version),
             adaptiveIcon: {
                 foregroundImage: './src/assets/app/adaptative_icon.png',
                 backgroundColor: primaryColorLight,
             },
             package: appId,
             permissions: ['android.permission.CAMERA'],
-            versionCode: getAndroidVersionCode(version)
+            edgeToEdgeEnabled: true,
         },
         plugins: [
             'expo-localization',
@@ -75,6 +77,16 @@ export default ({config}: ConfigContext): ExpoConfig => {
                 },
             ],
             'expo-font',
+            [
+                'expo-build-properties',
+                {
+                    android: {
+                        compileSdkVersion: 35,
+                        targetSdkVersion: 35,
+                        buildToolsVersion: '35.0.0',
+                    },
+                },
+            ],
         ],
         extra: {
             eas: {

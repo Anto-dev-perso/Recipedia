@@ -1,5 +1,14 @@
 appId: "com.recipedia"
 ---
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to ingredients section"
+
+
 - tapOn:
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Press new ingredient button"

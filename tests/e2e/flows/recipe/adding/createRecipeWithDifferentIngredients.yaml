@@ -15,6 +15,12 @@ appId: "com.recipedia"
     label: "Set completely different title"
 
 - runFlow:
+    file: "setRecipePersons.yaml"
+    env:
+      PERSONS: "2"
+    label: "Set 2 persons"
+
+- runFlow:
     file: "addIngredientToRecipe.yaml"
     env:
       INDEX: "0"
@@ -29,12 +35,6 @@ appId: "com.recipedia"
       NAME: "Sushi rice"
       QUANTITY: "150"
     label: "Add sushi rice"
-
-- runFlow:
-    file: "setRecipePersons.yaml"
-    env:
-      PERSONS: "2"
-    label: "Set 2 persons"
 
 - runFlow:
     file: "addRecipeTimeToPrepare.yaml"

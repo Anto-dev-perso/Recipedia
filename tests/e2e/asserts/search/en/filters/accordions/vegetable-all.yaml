@@ -1,20 +1,30 @@
 appId: "com.recipedia"
 ---
-# Assert accordion is displayed
-- assertVisible:
-    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
-    label: "Vegetable accordion is displayed"
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to vegetable accordion"
 
 - assertVisible:
+    id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     text: "Vegetable"
     label: "Vegetable accordion title is displayed"
 
-# Expand the accordion
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Expand Vegetable accordion"
 
-# Assert all items are visible
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::6"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to last  vegetable item"
+
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::0"
     label: "Lettuce filter is visible"

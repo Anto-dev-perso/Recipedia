@@ -568,6 +568,8 @@ describe('Recipe Component tests', () => {
   const mockNavigation = {
     goBack: jest.fn(),
     navigate: jest.fn(),
+    navigateDeprecated: jest.fn(),
+    preload: jest.fn(),
     setOptions: jest.fn(),
     dispatch: jest.fn(),
     canGoBack: jest.fn(),
@@ -576,9 +578,11 @@ describe('Recipe Component tests', () => {
     isFocused: jest.fn(),
     reset: jest.fn(),
     setParams: jest.fn(),
+    replaceParams: jest.fn(),
     replace: jest.fn(),
     push: jest.fn(),
     pop: jest.fn(),
+    popTo: jest.fn(),
     popToTop: jest.fn(),
     addListener: jest.fn(),
     removeListener: jest.fn(),
@@ -700,7 +704,8 @@ describe('Recipe Component tests', () => {
     checkDescription(mockRouteAddOCR, getByTestId, queryByTestId);
     checkTags(mockRouteAddOCR, getByTestId, queryByTestId);
     checkIngredients(mockRouteAddOCR, getByTestId, queryByTestId);
-    checkPersons(mockRouteAddOCR, getByTestId, queryByTestId, defaultValueNumber);
+    // In OCR mode, default persons loads asynchronously (4), so it shows edit mode UI
+    checkPersons(mockRouteAddOCR, getByTestId, queryByTestId, 4);
     checkTime(mockRouteAddOCR, getByTestId, queryByTestId);
     checkPreparation(mockRouteAddOCR, getByTestId, queryByTestId);
     checkNutrition(mockRouteAddOCR, getByTestId, queryByTestId);

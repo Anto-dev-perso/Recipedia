@@ -16,13 +16,21 @@ tags:
     element:
       id: "IngredientsSettings::15::IngredientName"
     direction: DOWN
-    speed: 80
+    speed: 70
+    timeout: 30000
     label: "Action - Scroll to Lettuce ingredient"
 
 - assertVisible:
     id: "IngredientsSettings::15::IngredientName"
     text: "Lettuce"
     label: "Assert - Verify Lettuce ingredient exists"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::15::EditButton"
+    direction: DOWN
+    speed: 40
+    label: "Action - Scroll to Lettuce edit button"
 
 - scrollUntilVisible:
     element:

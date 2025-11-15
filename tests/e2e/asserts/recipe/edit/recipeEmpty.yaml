@@ -30,6 +30,7 @@ appId: "com.recipedia"
       id: "RecipeTags::HeaderText"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll to tags section"
 
 - assertVisible:
@@ -56,6 +57,7 @@ appId: "com.recipedia"
       id: "RecipePersons::NumericTextInput"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll to person section"
 
 - assertVisible:
@@ -123,6 +125,14 @@ appId: "com.recipedia"
 - assertVisible:
     text: "min"
     label: "Minute text is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to preparation add button"
 
 - assertNotVisible:
     text: "Preparation: step 1"

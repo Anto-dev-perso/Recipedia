@@ -29,6 +29,9 @@ appId: "com.recipedia"
 - inputText:
     text: "200"
     label: "Write an ingredient quantity in the input text"
+- hideKeyboard:
+    label: "Hide the keyboard"
+
 - tapOn:
     id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Tap on recipe ingredient name text input"

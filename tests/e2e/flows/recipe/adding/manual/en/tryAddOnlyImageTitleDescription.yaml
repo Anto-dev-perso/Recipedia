@@ -1,5 +1,13 @@
 appId: "com.recipedia"
 ---
+- scrollUntilVisible:
+    element:
+      id: "RecipeDescription::CustomTextInput"
+    direction: DOWN
+    speed: 40
+    centerElement: true
+    label: "Scroll to description text input"
+
 - tapOn:
     id: "RecipeDescription::CustomTextInput"
     label: "Tap on Description's TextInput"

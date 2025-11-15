@@ -35,7 +35,7 @@ i18n
     })
   )
   .init({
-    lng: Localization.locale.split('-')[0], // Use device locale by default
+    lng: Localization.getLocales()[0].languageCode ?? 'en', // Use device locale by default
     fallbackLng: 'en',
     debug: __DEV__, // Enable debug in development
     keySeparator: '.',

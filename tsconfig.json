@@ -3,8 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "strictPropertyInitialization": false,
+    "noImplicitOverride": true,
     "target": "es2015",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "jsx": "react",
     "esModuleInterop": true,
     "resolveJsonModule": true,

@@ -20,6 +20,14 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to energy kj field"
+
 - tapOn:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::EnergyKj::NumericTextInput"
     label: "Tap energy kj input"
@@ -30,6 +38,15 @@ appId: "com.recipedia"
 
 - hideKeyboard:
     label: "Close keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to fat field"
+
 
 - tapOn:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fat::NumericTextInput"
@@ -42,6 +59,14 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to carbohydrates field"
+
 - tapOn:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Carbohydrates::NumericTextInput"
     label: "Tap carbohydrates input"
@@ -52,6 +77,14 @@ appId: "com.recipedia"
 
 - hideKeyboard:
     label: "Close keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to sugar field"
 
 - tapOn:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Sugars::NumericTextInput"
@@ -64,6 +97,14 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to fiber field"
+
 - tapOn:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Fiber::NumericTextInput"
     label: "Tap fiber input"
@@ -75,6 +116,14 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to protein field"
+
 - tapOn:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Protein::NumericTextInput"
     label: "Tap protein input"
@@ -85,6 +134,14 @@ appId: "com.recipedia"
 
 - hideKeyboard:
     label: "Close keyboard"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to salt field"
 
 - tapOn:
     id: "Recipe::RecipeNutrition::NutritionTable::NutritionRow::Salt::NumericTextInput"

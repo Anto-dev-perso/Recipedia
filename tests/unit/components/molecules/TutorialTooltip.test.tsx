@@ -60,7 +60,13 @@ describe('TutorialTooltip Component', () => {
         }
         break;
     }
-    expect(getByTestId('TutorialTooltip::Text').props.children).toEqual(`${expectedString} step`);
+    expect(
+      (
+        getByTestId('TutorialTooltip::Text').props as {
+          children: string;
+        }
+      ).children
+    ).toEqual(`${expectedString} step`);
 
     if (currentStep === 1) {
       expect(queryByTestId('TutorialTooltip::Previous')).toBeNull();

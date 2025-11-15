@@ -27,7 +27,8 @@
         "paths": [
           "node_modules",
           ".expo",
-          "android/.gradle"
+          "android/.gradle",
+          "android/build"
         ]
       },
       "env": {
@@ -37,8 +38,21 @@
     "production": {
       "autoIncrement": true,
       "distribution": "store",
+      "cache": {
+        "disabled": false,
+        "paths": [
+          "node_modules",
+          ".expo",
+          "android/.gradle",
+          "android/build"
+        ]
+      },
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=4096"
+      },
       "android": {
-        "buildType": "app-bundle"
+        "buildType": "app-bundle",
+        "image": "latest"
       },
       "ios": {
         "buildConfiguration": "Release"

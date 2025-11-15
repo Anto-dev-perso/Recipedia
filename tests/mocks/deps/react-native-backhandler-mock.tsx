@@ -1,7 +1,10 @@
+const mockRemove = jest.fn();
+const mockAddEventListener = jest.fn(() => ({
+  remove: mockRemove,
+}));
+
 const mockBackHandler = {
-  addEventListener: jest.fn(() => ({
-    remove: jest.fn(),
-  })),
+  addEventListener: mockAddEventListener,
   removeEventListener: jest.fn(),
 };
 

@@ -16,13 +16,21 @@ tags:
     element:
       id: "TagsSettings::6::TagName"
     direction: DOWN
-    speed: 80
+    speed: 70
+    centerElement: true
     label: "Action - Scroll to Italian tag"
 
 - assertVisible:
     id: "TagsSettings::6::TagName"
     text: "Italian"
     label: "Assert - Verify Italian tag exists"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::6::EditButton"
+    direction: DOWN
+    speed: 40
+    label: "Action - Scroll to Italian tag edit button"
 
 - tapOn:
     id: "TagsSettings::6::EditButton"
@@ -39,6 +47,9 @@ tags:
 - inputText:
     text: " Cuisine"
     label: "Action - Append Cuisine to tag name"
+
+- hideKeyboard:
+    label: "Hide the keyboard"
 
 - tapOn:
     id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"

@@ -19,6 +19,9 @@ appId: "com.recipedia"
     text: "RecipeTag"
     label: "Enter new tag name"
 
+- hideKeyboard:
+    label: "Hide the keyboard"
+
 - tapOn:
     id: "TagsSettings::ItemDialog::AddModal::ConfirmButton"
     label: "Confirm adding the new tag"

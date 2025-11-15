@@ -32,6 +32,9 @@ tags:
     text: "TestTag"
     label: "Action - Enter new tag name"
 
+- hideKeyboard:
+    label: "Hide the keyboard"
+
 - tapOn:
     id: "TagsSettings::ItemDialog::AddModal::ConfirmButton"
     label: "Action - Confirm adding new tag"

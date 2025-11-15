@@ -51,8 +51,7 @@ tags:
     label: "Assert - Verify tutorial Step 3 (Shopping screen) again"
 
 - stopApp
-- launchApp:
-    label: "Setup - Launch app for first time"
+- launchApp
 
 - runFlow:
     file: "../../asserts/onboarding/en/assertWelcomeScreen.yaml"

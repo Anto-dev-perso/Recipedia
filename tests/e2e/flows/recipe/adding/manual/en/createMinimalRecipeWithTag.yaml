@@ -77,6 +77,9 @@ appId: "com.recipedia"
     text: "100"
     label: "Enter ingredient quantity"
 
+- hideKeyboard:
+    label: "Dismiss keyboard"
+
 - tapOn:
     id: "RecipeIngredients::0::NameInput::CustomTextInput"
     label: "Focus on ingredient name"
