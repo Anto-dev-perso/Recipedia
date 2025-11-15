@@ -18,7 +18,7 @@ ZIP_COUNT=0
 for zip_file in "$INPUT_DIR"/*/*.zip; do
   if [ -f "$zip_file" ]; then
     echo "   Extracting $(basename "$zip_file")..."
-    unzip -q "$zip_file" -d "$TEMP_DIR"
+    unzip -qo "$zip_file" -d "$TEMP_DIR"
     ZIP_COUNT=$((ZIP_COUNT + 1))
   fi
 done
