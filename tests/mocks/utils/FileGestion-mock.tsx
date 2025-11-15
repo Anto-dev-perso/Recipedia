@@ -20,5 +20,11 @@ export function fileGestionMock() {
   mockInstance.isTemporaryImageUri = mockInstance.isTemporaryImageUri.bind(mockInstance);
   return {
     getInstance: jest.fn(() => mockInstance),
+    transformDatasetRecipeImages: jest.fn((recipes: any[], directoryUri: string) =>
+      recipes.map(recipe => ({
+        ...recipe,
+        image_Source: directoryUri + recipe.image_Source,
+      }))
+    ),
   };
 }
