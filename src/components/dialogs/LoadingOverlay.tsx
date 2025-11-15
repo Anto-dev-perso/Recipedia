@@ -50,8 +50,6 @@ export function LoadingOverlay({
 }: LoadingOverlayProps) {
   const { colors } = useTheme();
 
-  console.log('ScreenWidth: ', screenWidth);
-
   if (!visible) {
     return null;
   }
