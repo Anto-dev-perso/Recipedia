@@ -339,6 +339,16 @@ export const ActivityIndicator: React.FC<any> = props => (
   </View>
 );
 
+export const ProgressBar: React.FC<any> = props => (
+  <View
+    testID={props.testID}
+    style={props.style}
+    {...{ progress: props.progress, color: props.color }}
+  >
+    <RNText testID={props.testID + '::Progress'}>{props.progress}</RNText>
+  </View>
+);
+
 export const DataTable: React.FC<any> & {
   Header: React.FC<any>;
   Title: React.FC<any>;
