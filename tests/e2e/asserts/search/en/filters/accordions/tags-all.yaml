@@ -1,6 +1,5 @@
 appId: "com.recipedia"
 ---
-# Assert accordion is displayed
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Tags accordion is displayed"
@@ -9,12 +8,10 @@ appId: "com.recipedia"
     text: "Tags"
     label: "Tags accordion title is displayed"
 
-# Expand the accordion
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Expand Tags accordion"
 
-# Assert all items are visible - use item flows
 - runFlow:
     file: "tags-items/breakfast-visible.yaml"
     env:
@@ -45,17 +42,17 @@ appId: "com.recipedia"
     env:
       ITEM_INDEX: "5"
 
-- runFlow:
-    file: "tags-items/italian-visible.yaml"
-    env:
-      ITEM_INDEX: "6"
-
-# Scroll down to see remaining tags
 - scrollUntilVisible:
     element:
       id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::14"
     direction: DOWN
     label: "Scroll to see remaining tags"
+
+- runFlow:
+    file: "tags-items/italian-visible.yaml"
+    env:
+      ITEM_INDEX: "6"
+
 
 - runFlow:
     file: "tags-items/japanese-visible.yaml"
@@ -97,7 +94,6 @@ appId: "com.recipedia"
     env:
       ITEM_INDEX: "14"
 
-# Scroll back up to see accordion header
 - scrollUntilVisible:
     element:
       id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"

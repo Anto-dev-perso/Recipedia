@@ -241,6 +241,7 @@ appId: "com.recipedia"
       id: "RecipePreparation::AddButton::RoundButton"
     direction: DOWN
     speed: 60
+    centerElement: true
 
 - assertVisible:
     id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
