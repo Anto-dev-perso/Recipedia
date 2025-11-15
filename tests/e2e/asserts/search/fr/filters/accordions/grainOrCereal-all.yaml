@@ -3,16 +3,16 @@ appId: "com.recipedia"
 # Assert accordion is displayed
 - assertVisible:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
-    label: "Grain or Cereal accordion is displayed"
+    label: "Cereal accordion is displayed"
 
 - assertVisible:
-    text: "Céréales et Grains"
-    label: "Grain or Cereal accordion title is displayed in French"
+    text: "Céréales"
+    label: "Cereal accordion title is displayed in French"
 
 # Expand the accordion
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
-    label: "Expand Grain or Cereal accordion"
+    label: "Expand Cereal accordion"
 
 # Initialize counter for visible items
 - evalScript: ${output.itemIndex = 0}
@@ -56,7 +56,7 @@ appId: "com.recipedia"
 # Collapse the accordion back
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
-    label: "Collapse Grain or Cereal accordion"
+    label: "Collapse Cereal accordion"
 
 # Increment accordion index for next accordion
 - evalScript: ${output.accordionIndex = output.accordionIndex + 1}

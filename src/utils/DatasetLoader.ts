@@ -17,6 +17,8 @@ import { frenchIngredients } from '@assets/datasets/fr/ingredients';
 import { frenchTags } from '@assets/datasets/fr/tags';
 import { frenchRecipes } from '@assets/datasets/fr/recipes';
 
+export type DatasetType = 'test' | 'production';
+
 export interface DatasetCollection {
   ingredients: ingredientTableElement[];
   tags: tagTableElement[];
@@ -57,13 +59,30 @@ function loadProductionDataset(language: SupportedLanguage): DatasetCollection {
   }
 }
 
+/**
+ * Determines the current dataset type based on EXPO_PUBLIC_DATASET_TYPE or NODE_ENV
+ *
+ * Priority: EXPO_PUBLIC_DATASET_TYPE takes precedence if set, otherwise falls back to NODE_ENV
+ *
+ * @returns 'production' if the active variable is 'production', otherwise 'test'
+ */
+export function getDatasetType(): DatasetType {
+  if (process.env.EXPO_PUBLIC_DATASET_TYPE !== undefined) {
+    return process.env.EXPO_PUBLIC_DATASET_TYPE === 'production' ? 'production' : 'test';
+  }
+  return process.env.NODE_ENV === 'production' ? 'production' : 'test';
+}
+
 export function getDataset(language: SupportedLanguage): DatasetCollection {
   try {
-    const nodeEnv = process.env.NODE_ENV;
-    const dataset = nodeEnv === 'production' ? loadProductionDataset(language) : loadTestDataset();
+    const datasetType = getDatasetType();
+    const dataset =
+      datasetType === 'production' ? loadProductionDataset(language) : loadTestDataset();
 
     appLogger.info('Loaded dataset', {
-      nodeEnv,
+      datasetType,
+      expoPublicDatasetType: process.env.EXPO_PUBLIC_DATASET_TYPE,
+      nodeEnv: process.env.NODE_ENV,
       language,
       ingredientsCount: dataset.ingredients.length,
       tagsCount: dataset.tags.length,
@@ -73,6 +92,7 @@ export function getDataset(language: SupportedLanguage): DatasetCollection {
     return dataset;
   } catch (error) {
     appLogger.error('Failed to load dataset, falling back to test data', {
+      expoPublicDatasetType: process.env.EXPO_PUBLIC_DATASET_TYPE,
       nodeEnv: process.env.NODE_ENV,
       language,
       error,

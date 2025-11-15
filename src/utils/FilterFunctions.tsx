@@ -65,7 +65,7 @@ export function selectFilterCategoriesValuesToDisplay(
         break;
       case listFilter.recipeTitleInclude:
       case listFilter.purchased:
-      case listFilter.grainOrCereal:
+      case listFilter.cereal:
       case listFilter.legumes:
       case listFilter.vegetable:
       case listFilter.plantProtein:
@@ -192,7 +192,7 @@ export function filterFromRecipe(
           case listFilter.purchased:
             // Nothing to do so break
             break;
-          case listFilter.grainOrCereal:
+          case listFilter.cereal:
           case listFilter.legumes:
           case listFilter.vegetable:
           case listFilter.plantProtein:
@@ -637,7 +637,7 @@ export function generateHomeRecommendations(
     });
   }
 
-  const grainIngredients = ingredients.filter(ing => ing.type === ingredientType.grainOrCereal);
+  const grainIngredients = ingredients.filter(ing => ing.type === ingredientType.cereal);
   const shuffledGrainIngredients = fisherYatesShuffle(grainIngredients);
   let grainCount = 0;
   for (const ingredient of shuffledGrainIngredients) {

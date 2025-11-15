@@ -29,10 +29,10 @@ appId: "com.recipedia"
     file: "accordions/tags-all.yaml"
     label: "Assert Tags accordion with all items visible"
 
-# Accordion 3: Grain or Cereal
+# Accordion 3: Cereal
 - runFlow:
     file: "accordions/grainOrCereal-all.yaml"
-    label: "Assert Grain or Cereal accordion with all items visible"
+    label: "Assert Cereal accordion with all items visible"
 
 # Accordion 4: Legumes
 - runFlow:

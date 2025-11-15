@@ -19,21 +19,16 @@
  *
  * @example
  * ```typescript
- * import { defaultValueNumber, initialRecipesImages } from '@utils/Constants';
+ * import { defaultValueNumber, testRecipesImages, productionRecipesImages } from '@utils/Constants';
  *
  * // Using default values in forms
  * const [servings, setServings] = useState(defaultValueNumber);
  *
- * // Accessing initial recipe images
- * const recipeImage = initialRecipesImages[0]; // spaghetti_bolognese.png
+ * // Accessing test recipe images
+ * const recipeImage = testRecipesImages[0]; // spaghetti_bolognese.png
  *
- * // Using in recipe initialization
- * const newRecipe = {
- *   id: generateId(),
- *   servings: defaultValueNumber,
- *   image: initialRecipesImages[Math.floor(Math.random() * initialRecipesImages.length)],
- *   // ... other recipe properties
- * };
+ * // Accessing production recipe images
+ * const prodImage = productionRecipesImages[0]; // spaghetti_bolognaise.png
  * ```
  */
 
@@ -58,11 +53,11 @@ export const TUTORIAL_STEPS = {
 export const TUTORIAL_VERTICAL_OFFSET = 20;
 
 /**
- * Array of initial recipe images for app demonstration and onboarding
+ * Array of test recipe images used in development and testing
  * Contains require() statements for bundled image assets representing
  * a diverse collection of popular international recipes
  */
-export const initialRecipesImages = [
+export const testRecipesImages = [
   require('../assets/images/spaghetti_bolognese.png'),
   require('../assets/images/taco_shell.png'),
   require('../assets/images/classic_pancakes.png'),
@@ -73,4 +68,22 @@ export const initialRecipesImages = [
   require('../assets/images/pesto_pasta.png'),
   require('../assets/images/sushi_rolls.png'),
   require('../assets/images/lentil_curry.png'),
+];
+
+/**
+ * Array of production recipe images for the production dataset
+ * Contains require() statements for bundled image assets representing
+ * the curated production recipe collection
+ */
+export const productionRecipesImages = [
+  require('../assets/images/spaghetti_bolognaise.png'),
+  require('../assets/images/soupe_legumes_hiver.png'),
+  require('../assets/images/curry_lentilles_corail.png'),
+  require('../assets/images/salade_cesar_poulet.png'),
+  require('../assets/images/risotto_champignons.png'),
+  require('../assets/images/tacos_poulet.png'),
+  require('../assets/images/quiche_lorraine.png'),
+  require('../assets/images/poelee_legumes_mediterraneens.png'),
+  require('../assets/images/saumon_grille_brocoli.png'),
+  require('../assets/images/butternut_rotie.png'),
 ];

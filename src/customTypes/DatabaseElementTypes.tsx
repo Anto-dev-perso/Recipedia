@@ -383,8 +383,8 @@ export function isShoppingEqual(
  * Values map to translation keys for internationalization
  */
 export enum ingredientType {
-  /** Grains, cereals, rice, pasta, bread */
-  grainOrCereal = 'ingredientTypes.grainOrCereal',
+  /** Cereals, rice, pasta, bread */
+  cereal = 'ingredientTypes.cereal',
   /** Beans, lentils, chickpeas, peas */
   legumes = 'ingredientTypes.legumes',
   /** Fresh and preserved vegetables */

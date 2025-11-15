@@ -200,12 +200,13 @@ export const RecipeDatabaseProvider: React.FC<{
         if (isFirst) {
           if (db.isDatabaseEmpty()) {
             databaseLogger.info('First launch detected - loading complete dataset');
+            await FileGestion.getInstance().copyDatasetImages();
+
             const currentLanguage = i18n.language as SupportedLanguage;
             const dataset = getDataset(currentLanguage);
 
             await db.addMultipleIngredients(dataset.ingredients);
             await db.addMultipleTags(dataset.tags);
-
             const recipesWithFullImageUris = transformDatasetRecipeImages(
               dataset.recipes,
               FileGestion.getInstance().get_directoryUri()

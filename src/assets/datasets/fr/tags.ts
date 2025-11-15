@@ -1,5 +1,22 @@
 import { tagTableElement } from '@customTypes/DatabaseElementTypes';
-import { testTags } from '@test-data/tagsDataset';
 
-// TODO: add tags for production
-export const frenchTags: tagTableElement[] = testTags;
+export const frenchTags: tagTableElement[] = [
+  { name: 'Petit-déjeuner' },
+  { name: 'Déjeuner' },
+  { name: 'Dîner' },
+  { name: 'Apéritif' },
+  { name: 'Dessert' },
+  { name: 'Français' },
+  { name: 'Italien' },
+  { name: 'Asiatique' },
+  { name: 'Mexicain' },
+  { name: 'Indien' },
+  { name: 'Méditerranéen' },
+  { name: 'Végétarien' },
+  { name: 'Vegan' },
+  { name: 'Sans gluten' },
+  { name: 'Soupe' },
+  { name: 'Salade' },
+  { name: 'Rapide' },
+  { name: 'Santé' },
+];

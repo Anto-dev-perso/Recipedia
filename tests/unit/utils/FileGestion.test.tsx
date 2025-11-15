@@ -3,6 +3,7 @@ import * as FileSystem from 'expo-file-system';
 import Constants from 'expo-constants';
 import { Asset } from 'expo-asset';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
+import { setMockDatasetType } from '@mocks/utils/DatasetLoader-mock';
 
 jest.mock('expo-file-system', () =>
   require('@mocks/deps/expo-file-system-mock').expoFileSystemMock()
@@ -15,6 +16,8 @@ jest.mock('expo-asset', () => require('@mocks/deps/expo-asset-mock').expoAssetMo
 jest.mock('@app/package.json', () => require('@mocks/app/package-json-mock').packageJsonMock());
 
 jest.mock('@utils/Constants', () => require('@mocks/utils/Constants-mock').constantsMock());
+
+jest.mock('@utils/DatasetLoader', () => require('@mocks/utils/DatasetLoader-mock'));
 
 describe('FileGestion Utility', () => {
   let fileGestion: FileGestion;
@@ -126,26 +129,13 @@ describe('FileGestion Utility', () => {
     expect(mockMakeDirectoryAsync).not.toHaveBeenCalled();
   });
 
-  test('copies initial recipe images during initialization', async () => {
+  test('init does not copy images anymore', async () => {
     setupInitializationMocks(false);
-    mockFileExists(false);
-
-    const mockAssets = [
-      { name: 'image1', type: 'jpg', localUri: '/asset/path/image1.jpg' },
-      { name: 'image2', type: 'jpg', localUri: '/asset/path/image2.jpg' },
-      { name: 'image3', type: 'jpg', localUri: '/asset/path/image3.jpg' },
-    ];
-    mockAssetLoadAsync.mockResolvedValue(mockAssets);
-    mockCopyAsync.mockResolvedValue(undefined);
 
     await fileGestion.init();
 
-    expect(mockAssetLoadAsync).toHaveBeenCalledTimes(1);
-    expect(mockCopyAsync).toHaveBeenCalledTimes(3);
-    expect(mockCopyAsync).toHaveBeenCalledWith({
-      from: '/asset/path/image1.jpg',
-      to: defaultDocumentsPath + 'image1.jpg',
-    });
+    expect(mockAssetLoadAsync).not.toHaveBeenCalled();
+    expect(mockCopyAsync).not.toHaveBeenCalled();
   });
 
   test('saves recipe image with proper naming and file operations', async () => {
@@ -300,6 +290,123 @@ describe('FileGestion Utility', () => {
       expect(result).toBe(expected);
       jest.clearAllMocks();
     }
+  });
+});
+
+describe('copyDatasetImages', () => {
+  let fileGestion: FileGestion;
+
+  const mockGetInfoAsync = FileSystem.getInfoAsync as jest.Mock;
+  const mockCopyAsync = FileSystem.copyAsync as jest.Mock;
+  const mockAssetLoadAsync = Asset.loadAsync as jest.Mock;
+
+  const defaultDocumentsPath = '/documents/Test Recipedia/';
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (FileGestion as any).instance = undefined;
+    fileGestion = FileGestion.getInstance();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('copies test dataset images', async () => {
+    setMockDatasetType('test');
+
+    const mockAssets = [
+      { name: 'image1', type: 'jpg', localUri: '/asset/path/image1.jpg' },
+      { name: 'image2', type: 'jpg', localUri: '/asset/path/image2.jpg' },
+      { name: 'image3', type: 'jpg', localUri: '/asset/path/image3.jpg' },
+    ];
+
+    mockAssetLoadAsync.mockResolvedValue(mockAssets);
+    mockGetInfoAsync.mockResolvedValue({ exists: false });
+    mockCopyAsync.mockResolvedValue(undefined);
+
+    await fileGestion.copyDatasetImages();
+
+    expect(mockAssetLoadAsync).toHaveBeenCalledTimes(1);
+    expect(mockCopyAsync).toHaveBeenCalledTimes(3);
+    expect(mockCopyAsync).toHaveBeenCalledWith({
+      from: '/asset/path/image1.jpg',
+      to: defaultDocumentsPath + 'image1.jpg',
+    });
+  });
+
+  test('copies production dataset images', async () => {
+    setMockDatasetType('production');
+
+    const mockAssets = [
+      {
+        name: 'spaghetti_bolognaise',
+        type: 'png',
+        localUri: '/asset/path/spaghetti_bolognaise.png',
+      },
+      { name: 'soupe_legumes_hiver', type: 'png', localUri: '/asset/path/soupe_legumes_hiver.png' },
+      {
+        name: 'curry_lentilles_corail',
+        type: 'png',
+        localUri: '/asset/path/curry_lentilles_corail.png',
+      },
+    ];
+
+    mockAssetLoadAsync.mockResolvedValue(mockAssets);
+    mockGetInfoAsync.mockResolvedValue({ exists: false });
+    mockCopyAsync.mockResolvedValue(undefined);
+
+    await fileGestion.copyDatasetImages();
+
+    expect(mockAssetLoadAsync).toHaveBeenCalledTimes(1);
+    expect(mockCopyAsync).toHaveBeenCalledTimes(3);
+    expect(mockCopyAsync).toHaveBeenCalledWith({
+      from: '/asset/path/spaghetti_bolognaise.png',
+      to: defaultDocumentsPath + 'spaghetti_bolognaise.png',
+    });
+  });
+
+  test('skips copying images that already exist', async () => {
+    setMockDatasetType('test');
+
+    const mockAssets = [
+      { name: 'image1', type: 'jpg', localUri: '/asset/path/image1.jpg' },
+      { name: 'image2', type: 'jpg', localUri: '/asset/path/image2.jpg' },
+      { name: 'image3', type: 'jpg', localUri: '/asset/path/image3.jpg' },
+    ];
+
+    mockAssetLoadAsync.mockResolvedValue(mockAssets);
+    mockGetInfoAsync
+      .mockResolvedValueOnce({ exists: true })
+      .mockResolvedValueOnce({ exists: false })
+      .mockResolvedValueOnce({ exists: true });
+    mockCopyAsync.mockResolvedValue(undefined);
+
+    await fileGestion.copyDatasetImages();
+
+    expect(mockCopyAsync).toHaveBeenCalledTimes(1);
+    expect(mockCopyAsync).toHaveBeenCalledWith({
+      from: '/asset/path/image2.jpg',
+      to: defaultDocumentsPath + 'image2.jpg',
+    });
+  });
+
+  test('throws error when asset loading fails', async () => {
+    setMockDatasetType('test');
+
+    mockAssetLoadAsync.mockRejectedValue(new Error('Asset loading failed'));
+
+    await expect(fileGestion.copyDatasetImages()).rejects.toThrow('Asset loading failed');
+  });
+
+  test('throws error when asset count mismatch', async () => {
+    setMockDatasetType('test');
+
+    const mockAssets = [{ name: 'image1', type: 'jpg', localUri: '/asset/path/image1.jpg' }];
+
+    mockAssetLoadAsync.mockResolvedValue(mockAssets);
+
+    await expect(fileGestion.copyDatasetImages()).rejects.toThrow();
   });
 });
 

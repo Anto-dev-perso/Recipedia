@@ -1,5 +1,1052 @@
-import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
-import { testRecipes } from '@test-data/recipesDataset';
+import { ingredientType, recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
-// TODO: add english version of recipes
-export const englishRecipes: recipeTableElement[] = testRecipes;
+export const englishRecipes: recipeTableElement[] = [
+  {
+    image_Source: 'spaghetti_bolognaise.png',
+    title: 'Spaghetti Bolognese',
+    description: 'A classic Italian dish with a savory meat sauce.',
+    tags: [{ name: 'Italian' }, { name: 'Dinner' }],
+    persons: 4,
+    ingredients: [
+      {
+        name: 'Spaghetti',
+        quantity: '400',
+        unit: 'g',
+        type: ingredientType.cereal,
+        season: ['*'],
+      },
+      {
+        name: 'Ground Beef',
+        quantity: '500',
+        unit: 'g',
+        type: ingredientType.meat,
+        season: ['*'],
+      },
+      {
+        name: 'Tomato',
+        quantity: '6',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['5', '6', '7', '8', '9'],
+      },
+      {
+        name: 'Yellow Onion',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Garlic',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Olive Oil',
+        quantity: '30',
+        unit: 'mL',
+        type: ingredientType.oilAndFat,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Pepper',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['5', '6', '7', '8', '9'],
+    preparation: [
+      {
+        title: 'Prepare the sauce',
+        description:
+          'Mince the onion and garlic. In a large pan, heat the olive oil and sauté the onion until translucent.',
+      },
+      {
+        title: 'Cook the meat',
+        description:
+          'Add the ground beef and brown it, breaking it up with a wooden spoon. Add the minced garlic and cook for 1 minute.',
+      },
+      {
+        title: 'Add the tomatoes',
+        description:
+          'Dice the tomatoes and add them to the meat. Season with salt and pepper, then simmer for 20 minutes over low heat.',
+      },
+      {
+        title: 'Cook the pasta',
+        description:
+          'Meanwhile, cook the spaghetti in a large pot of salted boiling water according to package instructions.',
+      },
+      {
+        title: 'Serve',
+        description:
+          'Drain the pasta and mix with the Bolognese sauce. Serve hot with grated Parmesan.',
+      },
+    ],
+    time: 30,
+    nutrition: {
+      energyKcal: 385,
+      energyKj: 1612,
+      fat: 12.5,
+      saturatedFat: 3.8,
+      carbohydrates: 48.2,
+      sugars: 5.6,
+      fiber: 3.8,
+      protein: 22.4,
+      salt: 0.8,
+      portionWeight: 350,
+    },
+  },
+  {
+    image_Source: 'soupe_legumes_hiver.png',
+    title: 'Winter Vegetable Soup',
+    description: 'A comforting seasonal vegetable soup, perfect for cold days.',
+    tags: [{ name: 'French' }, { name: 'Soup' }, { name: 'Healthy' }, { name: 'Vegetarian' }],
+    persons: 4,
+    ingredients: [
+      {
+        name: 'Carrot',
+        quantity: '3',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['*'],
+      },
+      {
+        name: 'Leek',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['1', '2', '3', '4', '5', '10', '11', '12'],
+      },
+      {
+        name: 'Potato',
+        quantity: '400',
+        unit: 'g',
+        type: ingredientType.vegetable,
+        season: ['*'],
+      },
+      {
+        name: 'Celeriac',
+        quantity: '200',
+        unit: 'g',
+        type: ingredientType.vegetable,
+        season: ['1', '2', '3', '10', '11', '12'],
+      },
+      {
+        name: 'Turnip',
+        quantity: '200',
+        unit: 'g',
+        type: ingredientType.vegetable,
+        season: ['1', '2', '3', '4', '5', '10', '11', '12'],
+      },
+      {
+        name: 'Vegetable Stock',
+        quantity: '1.5',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Pepper',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['1', '2', '3', '10', '11', '12'],
+    preparation: [
+      {
+        title: 'Prepare the vegetables',
+        description: 'Peel and cut all vegetables into medium-sized cubes.',
+      },
+      {
+        title: 'Cook the vegetables',
+        description:
+          'In a large pot, add all vegetables and cover with 1.5L of water. Add the vegetable stock, salt, and pepper.',
+      },
+      {
+        title: 'Simmer',
+        description:
+          'Bring to a boil, then simmer for 30-35 minutes over medium heat until the vegetables are tender.',
+      },
+      {
+        title: 'Blend (optional)',
+        description:
+          'For a smooth soup, blend half of the soup and mix with the rest. Adjust seasoning.',
+      },
+    ],
+    time: 45,
+    nutrition: {
+      energyKcal: 98,
+      energyKj: 410,
+      fat: 0.8,
+      saturatedFat: 0.2,
+      carbohydrates: 18.5,
+      sugars: 6.2,
+      fiber: 4.5,
+      protein: 3.2,
+      salt: 1.2,
+      portionWeight: 400,
+    },
+  },
+  {
+    image_Source: 'curry_lentilles_corail.png',
+    title: 'Red Lentil Curry',
+    description: 'A flavorful and spicy vegetarian dish with red lentils and coconut milk.',
+    tags: [{ name: 'Indian' }, { name: 'Vegetarian' }, { name: 'Quick' }, { name: 'Healthy' }],
+    persons: 4,
+    ingredients: [
+      {
+        name: 'Red Lentils',
+        quantity: '300',
+        unit: 'g',
+        type: ingredientType.legumes,
+        season: ['*'],
+      },
+      {
+        name: 'Coconut Milk',
+        quantity: '400',
+        unit: 'mL',
+        type: ingredientType.dairy,
+        season: ['*'],
+      },
+      {
+        name: 'Yellow Curry',
+        quantity: '3',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Tomato',
+        quantity: '3',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['5', '6', '7', '8', '9'],
+      },
+      {
+        name: 'Spinach',
+        quantity: '200',
+        unit: 'g',
+        type: ingredientType.vegetable,
+        season: ['1', '2', '3', '4', '5', '6', '10', '11', '12'],
+      },
+      {
+        name: 'Yellow Onion',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Garlic',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Ginger',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['9', '10', '11', '12', '1', '2'],
+      },
+      {
+        name: 'Olive Oil',
+        quantity: '20',
+        unit: 'mL',
+        type: ingredientType.oilAndFat,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['*'],
+    preparation: [
+      {
+        title: 'Prepare the aromatics',
+        description: 'Mince the onion and garlic, and grate the fresh ginger.',
+      },
+      {
+        title: 'Sauté',
+        description:
+          'In a pot, heat the oil and sauté the onion, garlic, and ginger for 3 minutes. Add the curry and cook for 1 minute.',
+      },
+      {
+        title: 'Cook the lentils',
+        description:
+          'Rinse the red lentils. Add the diced tomatoes, lentils, and 500mL of water. Bring to a boil and cook for 15 minutes.',
+      },
+      {
+        title: 'Finish',
+        description:
+          'Add the coconut milk and spinach. Cook for 5 more minutes. Season with salt and serve with basmati rice.',
+      },
+    ],
+    time: 25,
+    nutrition: {
+      energyKcal: 245,
+      energyKj: 1026,
+      fat: 11.2,
+      saturatedFat: 8.5,
+      carbohydrates: 25.8,
+      sugars: 4.2,
+      fiber: 6.8,
+      protein: 11.5,
+      salt: 0.6,
+      portionWeight: 320,
+    },
+  },
+  {
+    image_Source: 'salade_cesar_poulet.png',
+    title: 'Chicken Caesar Salad',
+    description: 'A fresh and crunchy salad with grilled chicken and Parmesan.',
+    tags: [{ name: 'Salad' }, { name: 'Lunch' }, { name: 'Quick' }],
+    persons: 2,
+    ingredients: [
+      {
+        name: 'Butter Lettuce',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['7', '8', '9', '10'],
+      },
+      {
+        name: 'Chicken Breast',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.poultry,
+        season: ['*'],
+      },
+      {
+        name: 'Parmesan',
+        quantity: '50',
+        unit: 'g',
+        type: ingredientType.cheese,
+        season: ['*'],
+      },
+      {
+        name: 'Lemon',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.fruit,
+        season: ['*'],
+      },
+      {
+        name: 'Olive Oil',
+        quantity: '60',
+        unit: 'mL',
+        type: ingredientType.oilAndFat,
+        season: ['*'],
+      },
+      {
+        name: 'Garlic',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Pepper',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['7', '8', '9', '10'],
+    preparation: [
+      {
+        title: 'Cook the chicken',
+        description:
+          'Season the chicken breasts with salt and pepper. Cook them in a pan with a drizzle of olive oil for 6-7 minutes on each side.',
+      },
+      {
+        title: 'Prepare the dressing',
+        description:
+          'Mix the remaining olive oil with lemon juice, crushed garlic, salt, and pepper to make the vinaigrette.',
+      },
+      {
+        title: 'Assemble the salad',
+        description: 'Wash and cut the lettuce. Slice the chicken. Arrange the lettuce on plates.',
+      },
+      {
+        title: 'Serve',
+        description:
+          'Add the sliced chicken, drizzle with vinaigrette, and top with Parmesan shavings.',
+      },
+    ],
+    time: 20,
+    nutrition: {
+      energyKcal: 368,
+      energyKj: 1540,
+      fat: 26.5,
+      saturatedFat: 6.2,
+      carbohydrates: 3.8,
+      sugars: 2.1,
+      fiber: 2.5,
+      protein: 32.5,
+      salt: 1.1,
+      portionWeight: 280,
+    },
+  },
+  {
+    image_Source: 'risotto_champignons.png',
+    title: 'Mushroom Risotto',
+    description: 'A creamy risotto with button mushrooms and Parmesan.',
+    tags: [{ name: 'Italian' }, { name: 'Vegetarian' }, { name: 'Dinner' }],
+    persons: 4,
+    ingredients: [
+      {
+        name: 'Arborio Rice',
+        quantity: '320',
+        unit: 'g',
+        type: ingredientType.cereal,
+        season: ['*'],
+      },
+      {
+        name: 'Button Mushrooms',
+        quantity: '400',
+        unit: 'g',
+        type: ingredientType.vegetable,
+        season: ['*'],
+      },
+      {
+        name: 'Parmesan',
+        quantity: '80',
+        unit: 'g',
+        type: ingredientType.cheese,
+        season: ['*'],
+      },
+      {
+        name: 'White Wine',
+        quantity: '100',
+        unit: 'mL',
+        type: ingredientType.sauce,
+        season: ['*'],
+      },
+      {
+        name: 'Vegetable Stock',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Shallots',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Olive Oil',
+        quantity: '30',
+        unit: 'mL',
+        type: ingredientType.oilAndFat,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Pepper',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['*'],
+    preparation: [
+      {
+        title: 'Prepare the ingredients',
+        description:
+          'Mince the shallots and slice the mushrooms. Prepare 1L of hot vegetable stock.',
+      },
+      {
+        title: 'Toast the rice',
+        description:
+          'In a pot, heat the olive oil and sauté the shallots. Add the rice and toast for 2 minutes while stirring.',
+      },
+      {
+        title: 'Cook the risotto',
+        description:
+          'Deglaze with white wine. Add a ladle of hot stock and stir until absorbed. Repeat for 18-20 minutes.',
+      },
+      {
+        title: 'Add the mushrooms',
+        description:
+          'Halfway through cooking, sauté the mushrooms in a separate pan, then add them to the risotto.',
+      },
+      {
+        title: 'Finish',
+        description:
+          'Remove from heat, stir in the grated Parmesan, season with salt and pepper, and serve immediately.',
+      },
+    ],
+    time: 35,
+    nutrition: {
+      energyKcal: 342,
+      energyKj: 1432,
+      fat: 10.8,
+      saturatedFat: 4.2,
+      carbohydrates: 48.5,
+      sugars: 2.8,
+      fiber: 2.2,
+      protein: 12.8,
+      salt: 1.4,
+      portionWeight: 320,
+    },
+  },
+  {
+    image_Source: 'tacos_poulet.png',
+    title: 'Chicken Tacos',
+    description: 'Colorful and flavorful tacos with marinated chicken and crunchy vegetables.',
+    tags: [{ name: 'Mexican' }, { name: 'Quick' }, { name: 'Dinner' }],
+    persons: 4,
+    ingredients: [
+      {
+        name: 'Chicken Breast',
+        quantity: '500',
+        unit: '',
+        type: ingredientType.poultry,
+        season: ['*'],
+      },
+      {
+        name: 'Red Bell Pepper',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['6', '7', '8', '9'],
+      },
+      {
+        name: 'Yellow Bell Pepper',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['6', '7', '8', '9'],
+      },
+      {
+        name: 'Tomato',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['5', '6', '7', '8', '9'],
+      },
+      {
+        name: 'Avocado',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['*'],
+      },
+      {
+        name: 'Lime',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.fruit,
+        season: ['*'],
+      },
+      {
+        name: 'Paprika',
+        quantity: '2',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Cumin',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Olive Oil',
+        quantity: '30',
+        unit: 'mL',
+        type: ingredientType.oilAndFat,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['6', '7', '8', '9'],
+    preparation: [
+      {
+        title: 'Marinate the chicken',
+        description:
+          'Cut the chicken into strips. Mix with olive oil, paprika, cumin, and salt. Let marinate for 10 minutes.',
+      },
+      {
+        title: 'Cook the chicken',
+        description: 'Cook the marinated chicken in a hot pan for 8-10 minutes until well browned.',
+      },
+      {
+        title: 'Prepare the vegetables',
+        description:
+          'Slice the peppers and sauté quickly. Dice the tomatoes and mash the avocado with lime juice.',
+      },
+      {
+        title: 'Assemble',
+        description:
+          'Fill tortillas with chicken, peppers, tomatoes, and avocado guacamole. Serve immediately.',
+      },
+    ],
+    time: 25,
+    nutrition: {
+      energyKcal: 285,
+      energyKj: 1193,
+      fat: 14.5,
+      saturatedFat: 2.8,
+      carbohydrates: 12.8,
+      sugars: 5.2,
+      fiber: 5.8,
+      protein: 28.5,
+      salt: 0.7,
+      portionWeight: 280,
+    },
+  },
+  {
+    image_Source: 'quiche_lorraine.png',
+    title: 'Quiche Lorraine',
+    description: 'Traditional French quiche with bacon and cream.',
+    tags: [{ name: 'French' }, { name: 'Lunch' }, { name: 'Appetizer' }],
+    persons: 6,
+    ingredients: [
+      {
+        name: 'Egg',
+        quantity: '4',
+        unit: '',
+        type: ingredientType.dairy,
+        season: ['*'],
+      },
+      {
+        name: 'Whole Milk',
+        quantity: '200',
+        unit: 'mL',
+        type: ingredientType.dairy,
+        season: ['*'],
+      },
+      {
+        name: 'Grated Emmental',
+        quantity: '100',
+        unit: 'g',
+        type: ingredientType.cheese,
+        season: ['*'],
+      },
+      {
+        name: 'Pork Belly',
+        quantity: '200',
+        unit: 'g',
+        type: ingredientType.meat,
+        season: ['*'],
+      },
+      {
+        name: 'Yellow Onion',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Nutmeg',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Pepper',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['*'],
+    preparation: [
+      {
+        title: 'Prepare the filling',
+        description:
+          'Cut the pork belly into bacon pieces and dice the onion. Sauté the bacon in a pan, add the onion, and cook for 5 minutes.',
+      },
+      {
+        title: 'Prepare the custard',
+        description:
+          'In a bowl, beat the eggs with the milk. Add nutmeg, salt, and pepper. Stir in the grated Emmental.',
+      },
+      {
+        title: 'Assemble',
+        description:
+          'Roll out a pie crust in a tart pan. Spread the bacon and onion. Pour the egg mixture on top.',
+      },
+      {
+        title: 'Bake',
+        description:
+          'Bake at 180°C for 35-40 minutes until the quiche is golden and firm. Let cool slightly before serving.',
+      },
+    ],
+    time: 50,
+    nutrition: {
+      energyKcal: 298,
+      energyKj: 1248,
+      fat: 18.5,
+      saturatedFat: 8.2,
+      carbohydrates: 18.2,
+      sugars: 2.8,
+      fiber: 0.8,
+      protein: 15.8,
+      salt: 1.5,
+      portionWeight: 180,
+    },
+  },
+  {
+    image_Source: 'poelee_legumes_mediterraneens.png',
+    title: 'Mediterranean Vegetable Pan',
+    description: 'A colorful mix of sun-kissed vegetables, perfect as a side dish or main course.',
+    tags: [
+      { name: 'Mediterranean' },
+      { name: 'Vegetarian' },
+      { name: 'Healthy' },
+      { name: 'Vegan' },
+    ],
+    persons: 4,
+    ingredients: [
+      {
+        name: 'Eggplant',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['6', '7', '8', '9'],
+      },
+      {
+        name: 'Zucchini',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['5', '6', '7', '8', '9'],
+      },
+      {
+        name: 'Red Bell Pepper',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['6', '7', '8', '9'],
+      },
+      {
+        name: 'Tomato',
+        quantity: '4',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['5', '6', '7', '8', '9'],
+      },
+      {
+        name: 'Garlic',
+        quantity: '3',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Olive Oil',
+        quantity: '50',
+        unit: 'mL',
+        type: ingredientType.oilAndFat,
+        season: ['*'],
+      },
+      {
+        name: 'Herbes de Provence',
+        quantity: '2',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Pepper',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['6', '7', '8', '9'],
+    preparation: [
+      {
+        title: 'Prepare the vegetables',
+        description:
+          'Wash all vegetables. Cut the eggplant and zucchini into rounds, the peppers into strips, and the tomatoes into quarters.',
+      },
+      {
+        title: 'Cook the eggplant',
+        description:
+          'In a large pan, heat half the olive oil and sauté the eggplant for 5 minutes. Set aside.',
+      },
+      {
+        title: 'Cook the remaining vegetables',
+        description:
+          'In the same pan, add the remaining oil and sauté the zucchini and peppers for 5 minutes.',
+      },
+      {
+        title: 'Mix and finish',
+        description:
+          'Return the eggplant, add the tomatoes, minced garlic, and herbes de Provence. Cook for 10 minutes over low heat. Season and serve.',
+      },
+    ],
+    time: 30,
+    nutrition: {
+      energyKcal: 152,
+      energyKj: 636,
+      fat: 10.8,
+      saturatedFat: 1.5,
+      carbohydrates: 12.5,
+      sugars: 8.2,
+      fiber: 5.8,
+      protein: 2.8,
+      salt: 0.4,
+      portionWeight: 300,
+    },
+  },
+  {
+    image_Source: 'saumon_grille_brocoli.png',
+    title: 'Grilled Salmon with Broccoli',
+    description: 'A healthy and balanced dish with grilled salmon and steamed broccoli.',
+    tags: [{ name: 'Healthy' }, { name: 'Quick' }, { name: 'Dinner' }],
+    persons: 2,
+    ingredients: [
+      {
+        name: 'Salmon',
+        quantity: '2',
+        unit: '',
+        type: ingredientType.fish,
+        season: ['*'],
+      },
+      {
+        name: 'Broccoli',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.vegetable,
+        season: ['6', '7', '8', '9', '10', '11'],
+      },
+      {
+        name: 'Lemon',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.fruit,
+        season: ['*'],
+      },
+      {
+        name: 'Olive Oil',
+        quantity: '30',
+        unit: 'mL',
+        type: ingredientType.oilAndFat,
+        season: ['*'],
+      },
+      {
+        name: 'Garlic',
+        quantity: '1',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Pepper',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['6', '7', '8', '9', '10', '11'],
+    preparation: [
+      {
+        title: 'Prepare the broccoli',
+        description:
+          'Cut the broccoli into florets. Steam for 8-10 minutes until tender but still crisp.',
+      },
+      {
+        title: 'Cook the salmon',
+        description:
+          'Brush the salmon fillets with olive oil, season with salt and pepper. Cook in a hot pan for 4-5 minutes on each side.',
+      },
+      {
+        title: 'Prepare the dressing',
+        description: 'Mix lemon juice with olive oil and crushed garlic to make a vinaigrette.',
+      },
+      {
+        title: 'Serve',
+        description:
+          'Arrange the salmon and broccoli on plates. Drizzle with lemon-garlic vinaigrette and serve immediately.',
+      },
+    ],
+    time: 20,
+    nutrition: {
+      energyKcal: 358,
+      energyKj: 1498,
+      fat: 24.5,
+      saturatedFat: 4.2,
+      carbohydrates: 5.2,
+      sugars: 2.8,
+      fiber: 3.5,
+      protein: 32.8,
+      salt: 0.8,
+      portionWeight: 280,
+    },
+  },
+  {
+    image_Source: 'butternut_rotie.png',
+    title: 'Roasted Butternut Squash',
+    description: 'Oven-roasted butternut squash with aromatic herbs.',
+    tags: [{ name: 'Vegetarian' }, { name: 'Healthy' }, { name: 'Vegan' }],
+    persons: 4,
+    ingredients: [
+      {
+        name: 'Butternut Squash',
+        quantity: '1000',
+        unit: 'g',
+        type: ingredientType.vegetable,
+        season: ['1', '9', '10', '11', '12'],
+      },
+      {
+        name: 'Olive Oil',
+        quantity: '40',
+        unit: 'mL',
+        type: ingredientType.oilAndFat,
+        season: ['*'],
+      },
+      {
+        name: 'Rosemary',
+        quantity: '2',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Garlic',
+        quantity: '3',
+        unit: '',
+        type: ingredientType.condiment,
+        season: ['*'],
+      },
+      {
+        name: 'Paprika',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Salt',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+      {
+        name: 'Pepper',
+        quantity: '1',
+        unit: 'pinch',
+        type: ingredientType.spice,
+        season: ['*'],
+      },
+    ],
+    season: ['1', '9', '10', '11', '12'],
+    preparation: [
+      {
+        title: 'Prepare the butternut',
+        description:
+          'Preheat the oven to 200°C. Peel the butternut, remove the seeds, and cut into 3cm cubes.',
+      },
+      {
+        title: 'Season',
+        description:
+          'In a bowl, toss the butternut cubes with olive oil, rosemary, crushed garlic, paprika, salt, and pepper.',
+      },
+      {
+        title: 'Roast in the oven',
+        description:
+          'Spread the butternut cubes on a baking sheet. Bake for 35-40 minutes, turning halfway through.',
+      },
+      {
+        title: 'Serve',
+        description:
+          'The butternut is ready when golden and tender. Serve hot as a side dish or with a green salad.',
+      },
+    ],
+    time: 40,
+    nutrition: {
+      energyKcal: 125,
+      energyKj: 523,
+      fat: 8.5,
+      saturatedFat: 1.2,
+      carbohydrates: 12.8,
+      sugars: 3.5,
+      fiber: 2.8,
+      protein: 1.5,
+      salt: 0.5,
+      portionWeight: 250,
+    },
+  },
+];

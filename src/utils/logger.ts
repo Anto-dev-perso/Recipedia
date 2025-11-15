@@ -60,7 +60,7 @@ const log = logger.createLogger({
   enabled: true,
   enabledExtensions: [
     'Database',
-    'Filesystem',
+    'FileSystem',
     'OCR',
     'UI',
     'Home',
@@ -86,7 +86,7 @@ const log = logger.createLogger({
 export const databaseLogger = log.extend('Database');
 
 /** Logger for file system operations, image storage, and asset management */
-export const filesystemLogger = log.extend('FileSystem');
+export const fileSystemLogger = log.extend('FileSystem');
 
 /** Logger for OCR text recognition and image processing */
 export const ocrLogger = log.extend('OCR');
@@ -155,7 +155,7 @@ export const tutorialLogger = log.extend('Tutorial');
  */
 export default {
   database: databaseLogger,
-  filesystem: filesystemLogger,
+  filesystem: fileSystemLogger,
   ocr: ocrLogger,
   ui: uiLogger,
   home: homeLogger,
