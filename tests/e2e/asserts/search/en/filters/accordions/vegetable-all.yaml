@@ -22,7 +22,6 @@ appId: "com.recipedia"
       id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::6"
     direction: DOWN
     speed: 40
-    centerElement: true
     label: "Scroll to last  vegetable item"
 
 - assertVisible:
@@ -53,10 +52,15 @@ appId: "com.recipedia"
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}::Item::6"
     label: "Tomatoes filter is visible"
 
-# Collapse the accordion back
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
+    direction: UP
+    speed: 40
+    label: "Scroll to up to accordion"
+
 - tapOn:
     id: "SearchScreen::FilterAccordion::Accordion::${output.accordionIndex}"
     label: "Collapse Vegetable accordion"
 
-# Increment accordion index for next accordion
 - evalScript: ${output.accordionIndex = output.accordionIndex + 1}

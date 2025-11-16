@@ -53,7 +53,7 @@ filters.
 ```yaml
 - runFlow:
     file: 'accordions/grainOrCereal.yaml'
-    label: 'Assert Grain or Cereal accordion with all items visible'
+    label: 'Assert Cereal accordion with all items visible'
 ```
 
 **What happens**:
@@ -76,9 +76,7 @@ ingredients.
     env:
       STATE: 'filtered'
       VISIBLE_ITEMS: 'Taco Shells,Croutons,Pizza Dough,Pasta'
-    label:
-      'Assert Grain or Cereal accordion shows only items matching 15-20 min
-      filter'
+    label: 'Assert Cereal accordion shows only items matching 15-20 min filter'
 ```
 
 **What happens**:
@@ -98,7 +96,7 @@ ingredients.
     file: 'accordions/grainOrCereal.yaml'
     env:
       STATE: 'hidden'
-    label: 'Assert Grain or Cereal accordion is not displayed'
+    label: 'Assert Cereal accordion is not displayed'
 ```
 
 **What happens**:
@@ -124,13 +122,13 @@ ingredients.
 **Scenario**: Test filter page with mixed states across accordions.
 
 ```yaml
-# Grain or Cereal: Some items visible
+# Cereal: Some items visible
 - runFlow:
     file: 'accordions/grainOrCereal.yaml'
     env:
       STATE: 'filtered'
       VISIBLE_ITEMS: 'Pasta,Croutons'
-    label: 'Assert Grain or Cereal filtered state'
+    label: 'Assert Cereal filtered state'
 
 # Vegetable: All items visible (default)
 - runFlow:
@@ -149,7 +147,7 @@ ingredients.
 
 | Index | Accordion Name             | File Name            | Status |
 | ----- | -------------------------- | -------------------- | ------ |
-| 0     | Grain or Cereal            | grainOrCereal.yaml   | ✅     |
+| 0     | Cereal                     | grainOrCereal.yaml   | ✅     |
 | 1     | Legumes                    | legumes.yaml         | 📝     |
 | 2     | Vegetable                  | vegetable.yaml       | ✅     |
 | 3     | Plant Protein              | plantProtein.yaml    | 📝     |
@@ -184,13 +182,13 @@ appId: 'com.recipedia'
     id: 'SearchScreen::FiltersToggleButtons'
     label: 'Filter toggle button is displayed'
 
-# Check Grain or Cereal accordion (filtered)
+# Check Cereal accordion (filtered)
 - runFlow:
     file: 'accordions/grainOrCereal.yaml'
     env:
       STATE: 'some'
       VISIBLE_ITEMS: 'Taco Shells,Croutons,Pizza Dough,Pasta'
-    label: 'Assert filtered Grain or Cereal accordion'
+    label: 'Assert filtered Cereal accordion'
 
 # Check Vegetable accordion (filtered)
 - runFlow:

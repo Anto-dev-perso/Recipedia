@@ -1,12 +1,12 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "ShoppingScreen::SectionList::ingredientTypes.grainOrCereal::SubHeader"
-    label: "Grain or Cereales subheader is displayed"
+    id: "ShoppingScreen::SectionList::ingredientTypes.cereal::SubHeader"
+    label: "Cereales subheader is displayed"
 
 - assertVisible:
-    text: "Céréales et Grains"
-    label: "Grain or Cereales subheader shows French text"
+    text: "Céréales"
+    label: "Cereales subheader shows French text"
 
 - assertVisible:
     id: "ShoppingScreen::SectionList::Taco Shells"

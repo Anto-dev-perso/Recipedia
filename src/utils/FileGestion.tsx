@@ -36,8 +36,9 @@ import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
 import Constants from 'expo-constants';
 import pkg from '@app/package.json';
-import { initialRecipesImages } from '@utils/Constants';
-import { filesystemLogger } from '@utils/logger';
+import { productionRecipesImages, testRecipesImages } from '@utils/Constants';
+import { getDatasetType } from '@utils/DatasetLoader';
+import { fileSystemLogger } from '@utils/logger';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
 export class FileGestion {
@@ -108,12 +109,12 @@ export class FileGestion {
    * ```
    */
   public async clearCache() {
-    filesystemLogger.info('Clearing cache directories');
+    fileSystemLogger.info('Clearing cache directories');
     try {
       await FileSystem.deleteAsync(this._imageManipulatorCacheUri);
       await FileSystem.makeDirectoryAsync(this._imageManipulatorCacheUri);
     } catch (error) {
-      filesystemLogger.warn('Failed to clear image manipulator cache', {
+      fileSystemLogger.warn('Failed to clear image manipulator cache', {
         cacheUri: this._imageManipulatorCacheUri,
         error,
       });
@@ -122,7 +123,7 @@ export class FileGestion {
       await FileSystem.deleteAsync(this._cameraCacheUri);
       await FileSystem.makeDirectoryAsync(this._cameraCacheUri);
     } catch (error) {
-      filesystemLogger.warn('Failed to clear camera cache', {
+      fileSystemLogger.warn('Failed to clear camera cache', {
         cacheUri: this._cameraCacheUri,
         error,
       });
@@ -152,7 +153,7 @@ export class FileGestion {
       await FileSystem.deleteAsync(newUri, { idempotent: true });
       await FileSystem.moveAsync({ from: oldUri, to: newUri });
     } catch (error) {
-      filesystemLogger.warn('Failed to move file', { from: oldUri, to: newUri, error });
+      fileSystemLogger.warn('Failed to move file', { from: oldUri, to: newUri, error });
     }
   }
 
@@ -195,7 +196,7 @@ export class FileGestion {
   public isTemporaryImageUri(uri: string): boolean {
     const isTemporary = !uri.includes(this._directoryUri);
 
-    filesystemLogger.debug('Checking if image URI is temporary', {
+    fileSystemLogger.debug('Checking if image URI is temporary', {
       imageUri: uri,
       permanentStorageUri: this._directoryUri,
       isTemporary,
@@ -225,7 +226,7 @@ export class FileGestion {
    * ```
    */
   public async saveRecipeImage(cacheFileUri: string, recName: string): Promise<string> {
-    filesystemLogger.info('Starting image save operation', {
+    fileSystemLogger.info('Starting image save operation', {
       sourceUri: cacheFileUri,
       recipeName: recName,
       permanentStorageDir: this._directoryUri,
@@ -236,7 +237,7 @@ export class FileGestion {
       recName.replace(/ /g, '_').toLowerCase() + '.' + extension[extension.length - 1];
     const imgUri: string = this._directoryUri + imgName;
 
-    filesystemLogger.info('Generated filename and destination', {
+    fileSystemLogger.info('Generated filename and destination', {
       originalRecipeName: recName,
       sanitizedFilename: imgName,
       fullDestinationUri: imgUri,
@@ -245,14 +246,14 @@ export class FileGestion {
 
     try {
       await this.copyFile(cacheFileUri, imgUri);
-      filesystemLogger.info('Image copied successfully to permanent storage', {
+      fileSystemLogger.info('Image copied successfully to permanent storage', {
         sourceUri: cacheFileUri,
         destinationUri: imgUri,
         filenameStoredInDb: imgName,
       });
       return imgUri;
     } catch (error) {
-      filesystemLogger.error('Failed to save recipe image', {
+      fileSystemLogger.error('Failed to save recipe image', {
         sourceUri: cacheFileUri,
         destinationUri: imgUri,
         recipeName: recName,
@@ -263,53 +264,100 @@ export class FileGestion {
   }
 
   /**
-   * Initializes the file system and copies bundled assets
+   * Initializes the file system directories
    *
-   * Creates necessary directories and copies initial recipe images from the app bundle
-   * to the file system. This method should be called during app startup.
-   *
-   * Assets are only copied if they don't already exist, making this operation
-   * safe to call multiple times.
+   * Creates necessary directories for the app's permanent storage and cache.
+   * This method should be called during app startup before any file operations.
    *
    * @example
    * ```typescript
    * const fileManager = FileGestion.getInstance();
    * await fileManager.init();
-   * console.log('File system initialized and assets loaded');
+   * console.log('File system initialized');
    * ```
    */
   public async init() {
-    filesystemLogger.info('Initializing file system', {
+    fileSystemLogger.info('Initializing file system', {
       directoryUri: this._directoryUri,
       cacheUri: this._cacheUri,
     });
     try {
       await this.ensureDirExists(this._directoryUri);
       await this.ensureDirExists(this._cacheUri);
+      fileSystemLogger.info('File system initialized successfully');
+    } catch (error) {
+      fileSystemLogger.error('FileGestion initialization failed', { error });
+    }
+  }
 
-      const assetModules = await Asset.loadAsync(initialRecipesImages);
-      if (assetModules.length !== initialRecipesImages.length) {
+  /**
+   * Copies dataset recipe images from bundled assets to file system
+   *
+   * Determines the current dataset type (test or production) and loads the appropriate
+   * image assets, then copies them to the app's permanent storage.
+   *
+   * @example
+   * ```typescript
+   * await fileManager.copyDatasetImages();
+   * // Copies all test or production images based on NODE_ENV
+   * ```
+   */
+  public async copyDatasetImages(): Promise<void> {
+    console.log('🔍 DEBUG: copyDatasetImages called');
+    fileSystemLogger.info('Starting dataset image copy operation', {
+      directoryUri: this._directoryUri,
+    });
+
+    const datasetType = getDatasetType();
+    const imageSet = datasetType === 'production' ? productionRecipesImages : testRecipesImages;
+
+    fileSystemLogger.info('Selected image set based on dataset type', {
+      datasetType,
+      imageCount: imageSet.length,
+    });
+
+    try {
+      const assetModules = await Asset.loadAsync(imageSet);
+      if (assetModules.length !== imageSet.length) {
         throw new Error(
-          'Some assets could not be loaded, please check the list of assets in Constants.tsx and make sure they are all listed in the AppAssets object. Missing assets: '
+          `Failed to load all ${datasetType} assets. Expected ${imageSet.length}, loaded ${assetModules.length}`
         );
       }
+
+      fileSystemLogger.info('Assets loaded successfully', {
+        datasetType,
+        assetCount: assetModules.length,
+      });
 
       for (const asset of assetModules) {
         const destinationUri = this._directoryUri + asset.name + '.' + asset.type;
         const fileInfo = await FileSystem.getInfoAsync(destinationUri);
 
         if (fileInfo.exists) {
-          filesystemLogger.debug('Asset file already exists, skipping', { assetName: asset.name });
+          fileSystemLogger.debug('Asset file already exists, skipping', {
+            assetName: asset.name,
+            destinationUri,
+          });
           continue;
         }
+
         await FileSystem.copyAsync({ from: asset.localUri as string, to: destinationUri });
-        filesystemLogger.debug('Asset file copied successfully', {
+        fileSystemLogger.debug('Asset file copied successfully', {
           assetName: asset.name,
           destinationUri,
         });
       }
+
+      fileSystemLogger.info('Dataset images copied successfully', {
+        datasetType,
+        imageCount: imageSet.length,
+      });
     } catch (error) {
-      filesystemLogger.error('FileGestion initialization failed', { error });
+      fileSystemLogger.error('Failed to copy dataset images', {
+        datasetType,
+        error,
+      });
+      throw error;
     }
   }
 
@@ -327,11 +375,11 @@ export class FileGestion {
 
     if (!dirInfo.exists) {
       await FileSystem.makeDirectoryAsync(dirUri, { intermediates: true });
-      filesystemLogger.info('Directory created', { directory: dirUri });
+      fileSystemLogger.info('Directory created', { directory: dirUri });
     } else if (!dirInfo.isDirectory) {
       throw new Error(`${dirUri} exists but is not a directory`);
     } else {
-      filesystemLogger.debug('Directory already exists', { directory: dirUri });
+      fileSystemLogger.debug('Directory already exists', { directory: dirUri });
     }
   }
 

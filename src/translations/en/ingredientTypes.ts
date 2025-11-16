@@ -1,5 +1,5 @@
 export default {
-  grainOrCereal: 'Grain or Cereal',
+  cereal: 'Cereal',
   legumes: 'Legumes',
   vegetable: 'Vegetable',
   plantProtein: 'Plant Protein',
