@@ -1,3 +1,29 @@
+## [1.0.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.22.1...v1.0.0) (2025-11-16)
+
+### ⚠ BREAKING CHANGES
+
+* **RecipeDataset:** recipes production dataset ready to go
+* **Dataset:** tags production dataset ready to go
+* **Dataset:** English's ingredients production dataset ready to go
+* **Dataset:** French's ingredients production dataset ready to go
+
+### Features
+
+* **Assets:** add French localization images for store screens ([0903419](https://github.com/Anto-dev-perso/Recipedia/commit/0903419041d6e2ab02b788957e9dfac0db0ed99c))
+* **Dataset:** fil the French ingredients database ([5fcf086](https://github.com/Anto-dev-perso/Recipedia/commit/5fcf086956fe6f723098f7aaa09c95bed37eca57))
+* **Dataset:** fill the English ingredients database ([5a55240](https://github.com/Anto-dev-perso/Recipedia/commit/5a55240764a52ea9491e676bd77f783c274ea075))
+* **Dataset:** populate English and French tags databases ([ecb19d4](https://github.com/Anto-dev-perso/Recipedia/commit/ecb19d4d3b3d2995db9da5a63a4239765f702a42))
+* **env:** add a fallback with the `NODE_ENV` variable ([4f778d6](https://github.com/Anto-dev-perso/Recipedia/commit/4f778d623cfa5cc5df91835d65a122aadbc3a76a))
+* **env:** update dataset type to use `EXPO_PUBLIC_DATASET_TYPE` ([1f6e320](https://github.com/Anto-dev-perso/Recipedia/commit/1f6e3200428d41f8fcef38768e786d274fe2b0f5))
+* **FileGestion:** add handling for test and production dataset images ([3b56d38](https://github.com/Anto-dev-perso/Recipedia/commit/3b56d380a2ac4fb18e7534433643cecfb22d44e9))
+* production datasets up and ready ([#117](https://github.com/Anto-dev-perso/Recipedia/issues/117)) ([989ed69](https://github.com/Anto-dev-perso/Recipedia/commit/989ed6993a639de13853d332b63574ac9442ae47))
+* **RecipeDataset:** add production recipes images ([fe8f132](https://github.com/Anto-dev-perso/Recipedia/commit/fe8f132a626c75cbe55c1bae2d6555719082f65a))
+* **RecipeDataset:** populate English and French recipe databases ([9e1ad2c](https://github.com/Anto-dev-perso/Recipedia/commit/9e1ad2cc8166f3d11754e167022be58b84b52b58))
+
+### Bug Fixes
+
+* **translations:** update French ingredient type key for consistency ([d5b9856](https://github.com/Anto-dev-perso/Recipedia/commit/d5b98564d7bd103477bd870e890cdd1a5068e7da))
+
 ## [0.22.1](https://github.com/Anto-dev-perso/Recipedia/compare/v0.22.0...v0.22.1) (2025-11-15)
 
 ### Bug Fixes
