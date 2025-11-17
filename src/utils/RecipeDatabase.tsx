@@ -280,13 +280,7 @@ export class RecipeDatabase {
   public async addIngredient(
     ingredient: ingredientTableElement
   ): Promise<ingredientTableElement | undefined> {
-    const ingToAdd: encodedIngredientElement = {
-      ID: ingredient.id ? ingredient.id : 0,
-      INGREDIENT: ingredient.name,
-      UNIT: ingredient.unit,
-      TYPE: ingredient.type,
-      SEASON: ingredient.season.join(EncodingSeparator),
-    };
+    const ingToAdd = this.encodeIngredientForDb(ingredient);
     databaseLogger.debug('Adding ingredient to database', {
       ingredientName: ingredient.name,
       type: ingredient.type,
@@ -329,7 +323,7 @@ export class RecipeDatabase {
    * ```
    */
   public async addTag(newTag: tagTableElement) {
-    const tagToAdd: encodedTagElement = { ID: newTag.id ? newTag.id : 0, NAME: newTag.name };
+    const tagToAdd = this.encodeTagForDb(newTag);
     databaseLogger.debug('Adding tag to database', { tagName: newTag.name });
     const dbRes = await this._tagsTable.insertElement(tagToAdd, this._dbConnection);
     if (dbRes === undefined) {
@@ -353,17 +347,116 @@ export class RecipeDatabase {
     }
   }
 
-  // TODO make a single call to SQL
+  /**
+   * Adds multiple ingredients to the database in a single batch operation
+   *
+   * Performs a batch insert for improved performance when adding multiple ingredients.
+   * Uses a database transaction to ensure atomicity and efficiency.
+   *
+   * @param ingredients - Array of ingredient objects to add
+   *
+   * @example
+   * ```typescript
+   * await db.addMultipleIngredients([
+   *   {
+   *     name: "Flour",
+   *     unit: "cups",
+   *     type: ingredientType.grain,
+   *     season: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+   *   },
+   *   {
+   *     name: "Sugar",
+   *     unit: "cups",
+   *     type: ingredientType.sweetener,
+   *     season: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+   *   }
+   * ]);
+   * ```
+   */
   public async addMultipleIngredients(ingredients: Array<ingredientTableElement>) {
-    for (const ing of ingredients) {
-      await this.addIngredient(ing);
+    if (ingredients.length === 0) return;
+
+    const encodedIngredients = ingredients.map(ing => this.encodeIngredientForDb(ing));
+    databaseLogger.debug('Batch adding ingredients to database', {
+      count: ingredients.length,
+    });
+
+    const success = await this._ingredientsTable.insertArrayOfElement(
+      encodedIngredients,
+      this._dbConnection
+    );
+    if (!success) {
+      databaseLogger.error('Failed to batch insert ingredients');
+      return;
+    }
+
+    const names = ingredients.map(ing => ing.name);
+    const searchCriteria = new Map<string, Array<string>>([['INGREDIENT', names]]);
+    const insertedIngredients =
+      await this._ingredientsTable.searchElement<encodedIngredientElement>(
+        this._dbConnection,
+        searchCriteria
+      );
+
+    if (!insertedIngredients || !Array.isArray(insertedIngredients)) {
+      databaseLogger.error('Failed to retrieve inserted ingredients');
+      return;
+    }
+
+    for (const encodedIng of insertedIngredients) {
+      const decodedIng = this.decodeIngredient(encodedIng);
+      this.add_ingredient(decodedIng);
     }
   }
 
-  // TODO make a single call to SQL
+  /**
+   * Adds multiple tags to the database in a single batch operation
+   *
+   * Performs a batch insert for improved performance when adding multiple tags.
+   * Uses a database transaction to ensure atomicity and efficiency.
+   *
+   * @param tags - Array of tag objects to add
+   *
+   * @example
+   * ```typescript
+   * await db.addMultipleTags([
+   *   { name: "Dessert" },
+   *   { name: "Quick & Easy" },
+   *   { name: "Vegetarian" }
+   * ]);
+   * ```
+   */
   public async addMultipleTags(tags: Array<tagTableElement>) {
-    for (const tag of tags) {
-      await this.addTag(tag);
+    if (tags.length === 0) {
+      return;
+    }
+
+    const encodedTags = tags.map(tag => this.encodeTagForDb(tag));
+    databaseLogger.debug('Batch adding tags to database', {
+      count: tags.length,
+    });
+
+    const success = await this._tagsTable.insertArrayOfElement(encodedTags, this._dbConnection);
+    if (!success) {
+      databaseLogger.error('Failed to batch insert tags');
+      return;
+    }
+
+    const names = tags.map(tag => tag.name);
+    const searchCriteria = new Map<string, Array<string>>([['NAME', names]]);
+    const insertedTags = await this._tagsTable.searchElement<encodedTagElement>(
+      this._dbConnection,
+      searchCriteria
+    );
+
+    if (!insertedTags || !Array.isArray(insertedTags)) {
+      databaseLogger.error('Failed to retrieve inserted tags');
+      return;
+    }
+
+    for (const encodedTag of insertedTags) {
+      const decodedTag = this.decodeTag(encodedTag);
+      this.add_tags(decodedTag);
     }
   }
 
@@ -427,10 +520,52 @@ export class RecipeDatabase {
     }
   }
 
-  // TODO make a single call to SQL
   public async addMultipleRecipes(recs: Array<recipeTableElement>) {
-    for (const recipe of recs) {
-      await this.addRecipe(recipe);
+    if (recs.length === 0) return;
+
+    const processedRecipes = await Promise.all(
+      recs.map(async rec => {
+        const recipe = { ...rec };
+        recipe.tags = await this.verifyTagsExist(rec.tags);
+        recipe.ingredients = await this.verifyIngredientsExist(rec.ingredients);
+        recipe.image_Source = await this.prepareRecipeImage(recipe.image_Source, recipe.title);
+        return recipe;
+      })
+    );
+
+    const encodedRecipes = processedRecipes.map(recipe => this.encodeRecipe(recipe));
+    databaseLogger.debug('Batch adding recipes to database', {
+      count: recs.length,
+    });
+
+    const success = await this._recipesTable.insertArrayOfElement(
+      encodedRecipes,
+      this._dbConnection
+    );
+
+    if (!success) {
+      databaseLogger.error('Failed to batch insert recipes');
+      return;
+    }
+
+    const titles = processedRecipes.map(r => r.title);
+    const searchCriteria = new Map<string, Array<string>>([['TITLE', titles]]);
+    const insertedRecipes = await this._recipesTable.searchElement<encodedRecipeElement>(
+      this._dbConnection,
+      searchCriteria
+    );
+
+    if (!insertedRecipes || !Array.isArray(insertedRecipes)) {
+      databaseLogger.error('Failed to retrieve inserted recipes');
+      return;
+    }
+
+    const decodedRecipes = await Promise.all(
+      insertedRecipes.map(encoded => this.decodeRecipe(encoded))
+    );
+
+    for (const recipe of decodedRecipes) {
+      this.add_recipes(recipe);
     }
   }
 
@@ -1348,42 +1483,42 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-                                                                                                            if (newIngredients.length > 0) {
-                                                                                                                let alertTitle: string;
-                                                                                                                let alertMessage = "Do you want to add or edit it before  ?";
-                                                                                                                const alertOk = "OK";
-                                                                                                                const alertCancel = "Cancel";
-                                                                                                                const alertEdit = "Edit before add";
-                                                                                                                if (newIngredients.length > 1) {
-                                                                                                                    // Plural
-                                                                                                                    alertTitle = "INGREDIENTS NOT FOUND";
-                                                                                                                    alertMessage = `Following ingredients were not found in database :  \n`;
-                                                                                                                    newIngredients.forEach(ing => {
-                                                                                                                        alertMessage += "\t- " + ing.ingName + "\n";
-                                                                                                                    });
-                                                                                                                    alertMessage += `Do you want to add these as is or edit them before adding ?`;
+                                                                                                                                    if (newIngredients.length > 0) {
+                                                                                                                                        let alertTitle: string;
+                                                                                                                                        let alertMessage = "Do you want to add or edit it before  ?";
+                                                                                                                                        const alertOk = "OK";
+                                                                                                                                        const alertCancel = "Cancel";
+                                                                                                                                        const alertEdit = "Edit before add";
+                                                                                                                                        if (newIngredients.length > 1) {
+                                                                                                                                            // Plural
+                                                                                                                                            alertTitle = "INGREDIENTS NOT FOUND";
+                                                                                                                                            alertMessage = `Following ingredients were not found in database :  \n`;
+                                                                                                                                            newIngredients.forEach(ing => {
+                                                                                                                                                alertMessage += "\t- " + ing.ingName + "\n";
+                                                                                                                                            });
+                                                                                                                                            alertMessage += `Do you want to add these as is or edit them before adding ?`;
 
-                                                                                                                } else {
-                                                                                                                    alertTitle = `INGREDIENT NOT FOUND`;
-                                                                                                                    alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                                                                                                                }
+                                                                                                                                        } else {
+                                                                                                                                            alertTitle = `INGREDIENT NOT FOUND`;
+                                                                                                                                            alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                                                                                                                                        }
 
 
-                                                                                                                switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                                                                                                                    case alertUserChoice.neutral:
-                                                                                                                        // TODO edit before add
-                                                                                                                        break;
-                                                                                                                    case alertUserChoice.ok:
-                                                                                                                        await this.addMultipleIngredients(newIngredients);
-                                                                                                                        result = result.concat(newIngredients);
-                                                                                                                        break;
-                                                                                                                    case alertUserChoice.cancel:
-                                                                                                                    default:
-                                                                                                                        databaseLogger.debug("User canceled adding ingredient");
-                                                                                                                        break;
-                                                                                                                }
-                                                                                                            }
-                                                                                                             */
+                                                                                                                                        switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                                                                                                                                            case alertUserChoice.neutral:
+                                                                                                                                                // TODO edit before add
+                                                                                                                                                break;
+                                                                                                                                            case alertUserChoice.ok:
+                                                                                                                                                await this.addMultipleIngredients(newIngredients);
+                                                                                                                                                result = result.concat(newIngredients);
+                                                                                                                                                break;
+                                                                                                                                            case alertUserChoice.cancel:
+                                                                                                                                            default:
+                                                                                                                                                databaseLogger.debug("User canceled adding ingredient");
+                                                                                                                                                break;
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                     */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);
@@ -1459,7 +1594,7 @@ export class RecipeDatabase {
       IMAGE_SOURCE: this.extractFilenameFromUri(recToEncode.image_Source),
       TITLE: recToEncode.title,
       DESCRIPTION: recToEncode.description,
-      TAGS: recToEncode.tags.map(tag => this.encodeTag(tag)).join(EncodingSeparator),
+      TAGS: recToEncode.tags.map(tag => this.encodeTagForRecipe(tag)).join(EncodingSeparator),
       PERSONS: recToEncode.persons,
       INGREDIENTS: recToEncode.ingredients
         .map(ing => this.encodeIngredient(ing))
@@ -1578,13 +1713,10 @@ export class RecipeDatabase {
   private async decodeArrayOfRecipe(
     queryResult: Array<encodedRecipeElement>
   ): Promise<Array<recipeTableElement>> {
-    const returnRecipes = new Array<recipeTableElement>();
-    if (queryResult.length > 0) {
-      for (const recipeEncoded of queryResult) {
-        returnRecipes.push(await this.decodeRecipe(recipeEncoded));
-      }
+    if (queryResult.length === 0) {
+      return [];
     }
-    return returnRecipes;
+    return await Promise.all(queryResult.map(recipeEncoded => this.decodeRecipe(recipeEncoded)));
   }
 
   /**
@@ -1692,6 +1824,52 @@ export class RecipeDatabase {
   }
 
   /**
+   * Encodes a single ingredient for database storage
+   *
+   * Converts an ingredient element from application format into the encoded
+   * format required for database insertion. Joins seasonal data into a string
+   * representation using the encoding separator.
+   *
+   * @private
+   * @param ingredient - The ingredient object in application format
+   * @returns Encoded ingredient ready for database storage
+   *
+   * @example
+   * Input: {id: 1, name: "Flour", unit: "g", type: "grain", season: ["1","2","3","12"]}
+   * Output: {"ID":1,"INGREDIENT":"Flour","UNIT":"g", "TYPE":"grain", "SEASON":"1__2__3__12"}
+   */
+  private encodeIngredientForDb(ingredient: ingredientTableElement): encodedIngredientElement {
+    return {
+      ID: ingredient.id ? ingredient.id : 0,
+      INGREDIENT: ingredient.name,
+      UNIT: ingredient.unit,
+      TYPE: ingredient.type,
+      SEASON: ingredient.season.join(EncodingSeparator),
+    };
+  }
+
+  /**
+   * Encodes a single tag for database storage
+   *
+   * Converts a tag element from application format into the encoded
+   * format required for database insertion.
+   *
+   * @private
+   * @param tag - The tag object in application format
+   * @returns Encoded tag ready for database storage
+   *
+   * @example
+   * Input: {id: 1, name: "Dessert"}
+   * Output: {"ID":1,"NAME":"Dessert"}
+   */
+  private encodeTagForDb(tag: tagTableElement): encodedTagElement {
+    return {
+      ID: tag.id ? tag.id : 0,
+      NAME: tag.name,
+    };
+  }
+
+  /**
    * Decodes a single ingredient from database storage format
    *
    * Converts an encoded ingredient element from the database into the application
@@ -1768,7 +1946,7 @@ export class RecipeDatabase {
    * @param tag - The tag object to encode
    * @returns String representation of the tag's database ID, or error message if not found
    */
-  private encodeTag(tag: tagTableElement): string {
+  private encodeTagForRecipe(tag: tagTableElement): string {
     if (tag.id === undefined) {
       const foundedTag = this.find_tag(tag);
       if (foundedTag && foundedTag.id) {
