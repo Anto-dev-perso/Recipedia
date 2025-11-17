@@ -117,6 +117,11 @@ import { scaleQuantityForPersons } from '@utils/Quantity';
 import SimilarityDialog, { SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
 import RecipeNutrition, { RecipeNutritionProps } from '@components/organisms/RecipeNutrition';
 import { ocrLogger, recipeLogger, validationLogger } from '@utils/logger';
+import LoadingOverlay from '@components/dialogs/LoadingOverlay';
+import ValidationQueue, {
+  IngredientValidationProps,
+  TagValidationProps,
+} from '@components/dialogs/ValidationQueue';
 
 /** Enum defining the four possible recipe interaction modes */
 export enum recipeStateType {
@@ -196,9 +201,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     deleteRecipe,
     addRecipeToShopping,
     findSimilarRecipes,
-    findSimilarIngredients,
-    findSimilarTags,
     searchRandomlyTags,
+    findSimilarTags,
+    findSimilarIngredients,
   } = useRecipeDatabase();
 
   const recipeTestId = 'Recipe';
@@ -247,6 +252,12 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   const [similarityDialog, setSimilarityDialog] = useState<SimilarityDialogPropsPicked>(
     defaultSimilarityDialogPropsPicked
   );
+
+  const [isProcessingOcrExtraction, setIsProcessingOcrExtraction] = useState(false);
+
+  const [validationQueue, setValidationQueue] = useState<
+    TagValidationProps | IngredientValidationProps | null
+  >(null);
 
   const previousPersonsRef = useRef<number>(recipePersons);
 
@@ -373,6 +384,58 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
    * - Async operation to prevent UI blocking
    * - Efficient database similarity search
    */
+
+  /**
+   * Adds a tag to the recipe, skipping if it's a duplicate
+   *
+   * @param tag - Tag to add
+   */
+  const addTagIfNotDuplicate = (tag: tagTableElement) => {
+    const isDuplicate = recipeTags.some(
+      existing => existing.name.toLowerCase() === tag.name.toLowerCase()
+    );
+    if (!isDuplicate) {
+      setRecipeTags(prev => [...prev, tag]);
+    }
+  };
+
+  /**
+   * Adds or merges an ingredient into the recipe
+   *
+   * If ingredient exists, merges quantities when units match.
+   * If units differ, replaces the existing ingredient.
+   *
+   * @param ingredient - Ingredient to add or merge
+   */
+  const addOrMergeIngredient = (ingredient: ingredientTableElement) => {
+    const existingIndex = recipeIngredients.findIndex(
+      existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
+    );
+
+    if (existingIndex === -1) {
+      setRecipeIngredients(prev => [...prev, ingredient]);
+    } else {
+      setRecipeIngredients(prev => {
+        const updated = [...prev];
+        const existing = updated[existingIndex];
+
+        if (!existing) {
+          return prev;
+        }
+
+        if (existing.unit === ingredient.unit) {
+          updated[existingIndex] = {
+            ...existing,
+            quantity: String(Number(existing.quantity || 0) + Number(ingredient.quantity || 0)),
+          };
+        } else {
+          updated[existingIndex] = ingredient;
+        }
+        return updated;
+      });
+    }
+  };
+
   async function addTag(newTag: string) {
     if (!newTag || newTag.trim().length === 0) {
       return;
@@ -383,30 +446,17 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     }
 
     const similarTags = findSimilarTags(newTag);
-
-    // Check for exact match in database - if found, add it directly without showing dialog
     const exactMatch = similarTags.find(tag => tag.name.toLowerCase() === newTag.toLowerCase());
-    if (exactMatch) {
-      setRecipeTags([...recipeTags, exactMatch]);
-      return;
-    }
 
-    const addToStateIfNotDuplicate = (tag: tagTableElement) => {
-      if (!recipeTags.some(existing => existing.name.toLowerCase() === tag.name.toLowerCase())) {
-        setRecipeTags([...recipeTags, tag]);
-      }
-    };
-    // Show similarity dialog for new tags or similar matches
-    setSimilarityDialog({
-      isVisible: true,
-      item: {
+    if (exactMatch) {
+      addTagIfNotDuplicate(exactMatch);
+    } else {
+      setValidationQueue({
         type: 'Tag',
-        newItemName: newTag,
-        similarItem: similarTags.length > 0 ? similarTags[0] : undefined,
-        onConfirm: addToStateIfNotDuplicate,
-        onUseExisting: addToStateIfNotDuplicate,
-      },
-    });
+        items: [{ name: newTag }],
+        onItemValidated: addTagIfNotDuplicate,
+      });
+    }
   }
 
   /**
@@ -466,6 +516,10 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         }));
       const foundIngredient = ingredientCopy[oldIngredientId];
 
+      if (!foundIngredient) {
+        return;
+      }
+
       if (ingredient.id && foundIngredient.id !== ingredient.id) {
         foundIngredient.id = ingredient.id;
       }
@@ -496,72 +550,38 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     if (
       newName &&
       newName.trim().length > 0 &&
+      recipeIngredients[oldIngredientId] &&
       recipeIngredients[oldIngredientId].name !== newName
     ) {
-      const similarIngredients = findSimilarIngredients(newName);
+      setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
 
+      const similarIngredients = findSimilarIngredients(newName);
       const exactMatch = similarIngredients.find(
         ing => ing.name.toLowerCase() === newName.toLowerCase()
       );
+
       if (exactMatch) {
-        const isDuplicate = recipeIngredients.some(
-          (existing, idx) =>
-            idx !== oldIngredientId &&
-            (existing.name?.toLowerCase() === exactMatch.name.toLowerCase() ||
-              (existing.id && exactMatch.id && existing.id === exactMatch.id))
-        );
-
-        if (!isDuplicate) {
-          updateIngredient(exactMatch);
-        } else {
-          validationLogger.debug('Duplicate ingredient detected - not adding', {
-            ingredientName: exactMatch.name,
-          });
-          setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
-        }
-        return;
-      }
-
-      const dismissCallback = () => {
-        validationLogger.debug('Ingredient validation cancelled - removing ingredient');
-        setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
-      };
-
-      const onCloseCallback = (chosenIngredient: ingredientTableElement) => {
-        const isDuplicate = recipeIngredients.some(
-          (existing, idx) =>
-            (idx !== oldIngredientId &&
-              existing.id &&
-              chosenIngredient.id &&
-              existing.id === chosenIngredient.id) ||
-            existing.name?.toLowerCase() === chosenIngredient.name.toLowerCase()
-        );
-
-        if (!isDuplicate) {
-          validationLogger.debug('Updating ingredient with validated data', {
-            ingredientName: chosenIngredient.name,
-            ingredientType: chosenIngredient.type,
-          });
-          updateIngredient(chosenIngredient);
-        } else {
-          validationLogger.debug('Duplicate ingredient detected - not adding', {
-            ingredientName: chosenIngredient.name,
-          });
-          setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
-        }
-      };
-
-      setSimilarityDialog({
-        isVisible: true,
-        item: {
+        const mergedIngredient: ingredientTableElement = {
+          ...exactMatch,
+          quantity: newQuantity || exactMatch.quantity,
+          unit: newUnit || exactMatch.unit,
+        };
+        addOrMergeIngredient(mergedIngredient);
+      } else {
+        setValidationQueue({
           type: 'Ingredient',
-          newItemName: newName,
-          similarItem: similarIngredients.length > 0 ? similarIngredients[0] : undefined,
-          onConfirm: onCloseCallback,
-          onUseExisting: onCloseCallback,
-          onDismiss: dismissCallback,
-        },
-      });
+          items: [
+            {
+              name: newName,
+              unit: newUnit,
+              quantity: newQuantity,
+              season: [],
+              type: ingredientType.undefined,
+            },
+          ],
+          onItemValidated: addOrMergeIngredient,
+        });
+      }
     } else {
       updateIngredient({
         name: newName,
@@ -913,6 +933,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   async function fillOneField(uri: string, field: recipeColumnsNames) {
+    setIsProcessingOcrExtraction(true);
+
     const newFieldData = await extractFieldFromImage(
       uri,
       field,
@@ -926,6 +948,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         ocrLogger.warn('OCR processing warning', { message: msg });
       }
     );
+
     if (newFieldData.recipeImage) {
       setRecipeImage(newFieldData.recipeImage);
     }
@@ -935,8 +958,18 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     if (newFieldData.recipeDescription) {
       setRecipeDescription(newFieldData.recipeDescription);
     }
-    if (newFieldData.recipeTags) {
-      setRecipeTags(newFieldData.recipeTags);
+    if (newFieldData.recipeTags && newFieldData.recipeTags.length > 0) {
+      const filteredTags = newFieldData.recipeTags.filter(
+        newTag =>
+          !recipeTags.some(existing => existing.name.toLowerCase() === newTag.name.toLowerCase())
+      );
+      if (filteredTags.length > 0) {
+        setValidationQueue({
+          type: 'Tag',
+          items: filteredTags,
+          onItemValidated: addTagIfNotDuplicate,
+        });
+      }
     }
     if (newFieldData.recipePreparation) {
       setRecipePreparation(newFieldData.recipePreparation);
@@ -947,8 +980,12 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     if (newFieldData.recipeTime) {
       setRecipeTime(newFieldData.recipeTime);
     }
-    if (newFieldData.recipeIngredients) {
-      setRecipeIngredients(newFieldData.recipeIngredients);
+    if (newFieldData.recipeIngredients && newFieldData.recipeIngredients.length > 0) {
+      setValidationQueue({
+        type: 'Ingredient',
+        items: newFieldData.recipeIngredients,
+        onItemValidated: addOrMergeIngredient,
+      });
     }
     if (newFieldData.recipeNutrition) {
       const newNutrition: nutritionTableElement = {
@@ -972,6 +1009,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
       setRecipeNutrition(newNutrition);
     }
+    setIsProcessingOcrExtraction(false);
   }
 
   function openModalForField(field: recipeColumnsNames) {
@@ -1530,6 +1568,20 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           item={similarityDialog.item}
         />
       )}
+
+      {validationQueue && (
+        <ValidationQueue
+          {...validationQueue}
+          onComplete={() => setValidationQueue(null)}
+          testId='RecipeValidation'
+        />
+      )}
+      {/* LoadingOverlay for OCR extraction */}
+      <LoadingOverlay
+        visible={isProcessingOcrExtraction}
+        message={t('extractingRecipeData')}
+        testID='RecipeOcrLoading'
+      />
     </SafeAreaView>
   );
 }
