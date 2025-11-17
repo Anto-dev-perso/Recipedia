@@ -11,6 +11,7 @@ import {SeasonFilterProvider} from '@context/SeasonFilterContext';
 import {DefaultPersonsProvider} from '@context/DefaultPersonsContext';
 import {RecipeDatabaseProvider, useRecipeDatabase} from '@context/RecipeDatabaseContext';
 import {appLogger} from '@utils/logger';
+import {isFirstLaunch} from '@utils/firstLaunch';
 
 // TODO manage horizontal mode
 
@@ -29,6 +30,7 @@ SplashScreen.preventAutoHideAsync();
 function AppContent() {
     const [isAppInitialized, setIsAppInitialized] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
+    const [isFirstLaunchFlag, setIsFirstLaunchFlag] = useState<boolean | null>(null);
     const {isDatabaseReady} = useRecipeDatabase();
 
     useEffect(() => {
@@ -38,6 +40,10 @@ function AppContent() {
 
                 appLogger.debug('Initializing settings');
                 await initSettings();
+
+                const isFirst = await isFirstLaunch();
+                setIsFirstLaunchFlag(isFirst);
+                appLogger.debug('First launch check completed', {isFirst});
 
                 const isDarkMode = await getDarkMode();
                 setDarkMode(isDarkMode);
@@ -64,15 +70,25 @@ function AppContent() {
 
     const theme = darkMode ? darkTheme : lightTheme;
 
+    const shouldHideSplash = isAppInitialized && (isFirstLaunchFlag === true || isDatabaseReady);
+
     const onLayoutRootView = useCallback(async () => {
-        if (isAppInitialized && isDatabaseReady) {
-            appLogger.debug('Hiding splash screen - app and database ready');
+        if (shouldHideSplash) {
+            if (isFirstLaunchFlag) {
+                appLogger.debug('Hiding splash screen - first launch, WelcomeScreen ready');
+            } else {
+                appLogger.debug('Hiding splash screen - database data ready');
+            }
             await SplashScreen.hideAsync();
         }
-    }, [isAppInitialized, isDatabaseReady]);
+    }, [shouldHideSplash, isFirstLaunchFlag]);
 
-    if (!isAppInitialized || !isDatabaseReady) {
-        appLogger.debug('Showing splash screen', {isAppInitialized, isDatabaseReady});
+    if (!shouldHideSplash) {
+        appLogger.debug('Showing splash screen', {
+            isAppInitialized,
+            isFirstLaunchFlag,
+            isDatabaseReady,
+        });
         return null;
     }
 

@@ -205,7 +205,7 @@ export const RecipeDatabaseProvider: React.FC<{
         if (isFirst) {
           if (db.isDatabaseEmpty()) {
             databaseLogger.info('First launch detected - loading complete dataset');
-            databaseLogger.info('Database schema ready - UI can render immediately');
+            databaseLogger.info('Database schema ready - WelcomeScreen can render immediately');
             setIsDatabaseReady(true);
 
             InteractionManager.runAfterInteractions(async () => {
@@ -263,14 +263,13 @@ export const RecipeDatabaseProvider: React.FC<{
           }
         } else {
           databaseLogger.debug('Not first launch - loading existing data from database');
-          databaseLogger.info('Database data loaded - app ready to render');
         }
+
         setRecipes([...db.get_recipes()]);
         setIngredients([...db.get_ingredients()]);
         setTags([...db.get_tags()]);
         setShopping([...db.get_shopping()]);
         setIsDatabaseReady(true);
-
         databaseLogger.info('Database initialization phase completed');
       } catch (error) {
         databaseLogger.error('Database initialization failed', { error });
