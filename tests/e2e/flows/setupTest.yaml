@@ -7,4 +7,13 @@ appId: "com.recipedia"
     visible:
       id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
     timeout: 10000
+    optional: true
     label: "Wait for app to be ready"
+
+- runFlow:
+    file: "handleAnr.yaml"
+    label: "Handle ANR dialog if it appears during initialization"
+
+- assertVisible:
+    id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
+    label: "Verify app is ready"

@@ -6,15 +6,21 @@ appId: "com.recipedia"
 - extendedWaitUntil:
     visible:
       id: "WelcomeScreen::SkipButton"
-    timeout: 10000
+    timeout: 5000
+    optional: true
     label: "Check if onboarding appears"
+
+- runFlow:
+    file: "handleAnr.yaml"
+    label: "Handle ANR dialog if it appears during initialization"
 
 - tapOn:
     id: "WelcomeScreen::SkipButton"
     label: "Skip onboarding"
 
+
 - extendedWaitUntil:
     visible:
       id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
-    timeout: 10000
+    timeout: 30000
     label: "Wait for app to be ready"
