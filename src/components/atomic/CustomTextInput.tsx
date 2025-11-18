@@ -67,6 +67,8 @@ export type CustomTextInputProps = {
   mode?: 'flat' | 'outlined';
   /** Whether to use dense styling (default: false) */
   dense?: boolean;
+  /** Whether the input has an error (displays error styling) */
+  error?: boolean;
   /** Custom styles for the container view */
   style?: StyleProp<ViewStyle>;
   /** Custom styles for the text content */
@@ -98,6 +100,7 @@ export function CustomTextInput({
   keyboardType = 'default',
   mode = 'outlined',
   dense = false,
+  error = false,
   style,
   contentStyle,
   onFocus,
@@ -169,6 +172,7 @@ export function CustomTextInput({
         onBlur={handleOnBlur}
         onLayout={handleOnLayout}
         onContentSizeChange={handleOnContentSizeChange}
+        error={error}
       />
     </View>
   );
