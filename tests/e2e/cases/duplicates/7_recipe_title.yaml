@@ -1,0 +1,94 @@
+name: "7 - Duplicate Recipe Title Detection Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create base recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert - Verify recipe added to database"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Action - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create identical recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage::Image"
+    direction: UP
+    speed: 95
+
+- runFlow:
+    file: "../../flows/recipe/adding/setRecipeTitle.yaml"
+    env:
+      TITLE: "Test Recip"
+    label: "Action - Change title to fuzzy match"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify fuzzy title duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- runFlow:
+    file: "../../flows/recipe/adding/setRecipeTitle.yaml"
+    env:
+      TITLE: "Completely Different Recipe Name"
+    label: "Action - Change to completely different title"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate recipe with different title"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert - Verify recipe added successfully (no duplicate)"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Cleanup - Delete Test Recipe"
+
+- runFlow:
+    file: "../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Completely Different Recipe Name"
+    label: "Cleanup - Delete different recipe"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to Home screen"

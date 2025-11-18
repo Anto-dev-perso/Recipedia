@@ -1,0 +1,47 @@
+name: "2 - Delete Ingredient Flow"
+appId: "com.recipedia"
+tags:
+  - database
+  - ingredients-db
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Action - Navigate to Ingredients Settings"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::AddButton"
+    direction: DOWN
+    speed: 95
+    label: "Action - Scroll to bottom of screen"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::34::DeleteButton"
+    direction: UP
+    speed: 60
+    label: "Action - Scroll to ingredient to delete"
+
+- tapOn:
+    id: "IngredientsSettings::34::DeleteButton"
+    label: "Action - Open delete confirmation dialog"
+
+- runFlow:
+    file: "../../asserts/parameters/ingredients/en/assertDeleteModalOpen.yaml"
+    label: "Assert - Verify Delete confirmation modal displayed"
+
+- assertVisible:
+    text: ".*TestIngredient.*"
+    label: "Assert - Verify ingredient name appears in confirmation"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::DeleteModal::ConfirmButton"
+    label: "Action - Confirm deleting ingredient"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

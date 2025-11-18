@@ -3,8 +3,8 @@ flows:
 
 executionOrder:
   flowsOrder:
-    - "31 - Add New Tag Flow"
-    - "32 - Edit Existing Tag Flow"
-    - "33 - Delete Tag Flow"
-    - "34 - Add Tag And Use In Recipe Flow"
-    - "35 - Tag Edge Cases Flow"
+    - "1 - Add New Tag Flow"
+    - "2 - Edit Existing Tag Flow"
+    - "3 - Delete Tag Flow"
+    - "4 - Add Tag And Use In Recipe Flow"
+    - "5 - Tag Edge Cases Flow"
