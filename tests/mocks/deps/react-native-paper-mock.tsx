@@ -385,3 +385,14 @@ DataTable.Cell = props => (
     {props.children}
   </View>
 );
+
+export const HelperText: React.FC<any> = props => {
+  if (!props.visible) {
+    return null;
+  }
+  return (
+    <RNText testID={props.testID} {...{ type: props.type, visible: props.visible }}>
+      {props.children}
+    </RNText>
+  );
+};
