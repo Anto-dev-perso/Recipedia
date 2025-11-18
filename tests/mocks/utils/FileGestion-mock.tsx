@@ -16,9 +16,16 @@ export function fileGestionMock() {
     flipImageVertically: jest.fn().mockResolvedValue({ uri: './flipped-vertical.jpg' }),
     cropImage: jest.fn().mockResolvedValue({ uri: './cropped.jpg' }),
     init: jest.fn().mockResolvedValue(undefined),
+    copyDatasetImages: jest.fn().mockResolvedValue(undefined),
   };
   mockInstance.isTemporaryImageUri = mockInstance.isTemporaryImageUri.bind(mockInstance);
   return {
     getInstance: jest.fn(() => mockInstance),
+    transformDatasetRecipeImages: jest.fn((recipes: any[], directoryUri: string) =>
+      recipes.map(recipe => ({
+        ...recipe,
+        image_Source: directoryUri + recipe.image_Source,
+      }))
+    ),
   };
 }

@@ -105,6 +105,12 @@ export const padding = {
 };
 
 /**
+ * Progress bar height - 1% of screen height for responsive design
+ * Ensures consistent progress indicator sizing across different devices
+ */
+export const progressBarHeight = screenHeight * 0.01;
+
+/**
  * Standard screen and section view styles for consistent layout
  * Provides common container styles used throughout the application
  */

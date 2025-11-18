@@ -24,7 +24,7 @@
  * ```
  */
 
-import { SQLiteDatabase, SQLiteRunResult } from 'expo-sqlite';
+import { SQLiteBindValue, SQLiteDatabase, SQLiteRunResult } from 'expo-sqlite';
 import { databaseColumnType } from '@customTypes/DatabaseElementTypes';
 import { databaseLogger } from '@utils/logger';
 
@@ -167,17 +167,21 @@ export class TableManipulation {
 
   public async deleteElement(
     db: SQLiteDatabase,
-    elementToSearch?: Map<string, number | string>
+    elementToSearch?: Map<string, number | string | Array<string | number>>
   ): Promise<boolean> {
     let deleteQuery = `DELETE
                            FROM "${this.m_tableName}"`;
 
+    let params: SQLiteBindValue[] = [];
+
     if (elementToSearch) {
-      deleteQuery += ' WHERE ' + this.prepareQueryFromMap(elementToSearch, `AND`) + ';';
+      const [whereClause, queryParams] = this.prepareQueryFromMap(elementToSearch, `AND`);
+      deleteQuery += ' WHERE ' + whereClause + ';';
+      params = queryParams;
     }
 
     try {
-      const runRes = await db.runAsync(deleteQuery);
+      const runRes = await db.runAsync(deleteQuery, params);
       if (runRes.changes == 0) {
         databaseLogger.error("deleteElement: Can't delete element with search: ", elementToSearch);
         return false;
@@ -267,14 +271,16 @@ export class TableManipulation {
                            SET `;
     // SET column1 = value1, column2 = value2...., columnN = valueN
     // WHERE [condition];
-    const queryFromMap = this.prepareQueryFromMap(elementToUpdate, ',');
-    if (queryFromMap.length === 0) {
+    const [setClause, params] = this.prepareQueryFromMap(elementToUpdate, ',');
+    if (setClause.length === 0) {
       return false;
     }
 
-    updateQuery += queryFromMap + ` WHERE ID = ${id};`;
+    updateQuery += setClause + ` WHERE ID = ?;`;
+    params.push(id);
+
     try {
-      const result = await db.runAsync(updateQuery);
+      const result = await db.runAsync(updateQuery, params);
       return result.changes > 0;
     } catch (error: unknown) {
       databaseLogger.error('editElement: \nQuery: "', updateQuery, '"\nReceived error : ', error);
@@ -315,15 +321,16 @@ export class TableManipulation {
     try {
       await db.withTransactionAsync(async () => {
         for (const update of updates) {
-          const queryFromMap = this.prepareQueryFromMap(update.elementToUpdate, ',');
-          if (queryFromMap.length === 0) {
+          const [setClause, params] = this.prepareQueryFromMap(update.elementToUpdate, ',');
+          if (setClause.length === 0) {
             continue;
           }
 
           const updateQuery = `UPDATE "${this.m_tableName}"
-                                         SET ${queryFromMap}
-                                         WHERE ID = ${update.id};`;
-          await db.runAsync(updateQuery);
+                                         SET ${setClause}
+                                         WHERE ID = ?;`;
+          params.push(update.id);
+          await db.runAsync(updateQuery, params);
         }
       });
       return true;
@@ -421,33 +428,39 @@ export class TableManipulation {
   /**
    * Searches for elements matching specified criteria
    *
+   * Supports both simple equality (e.g., `{name: "John"}`) and WHERE IN clauses
+   * (e.g., `{name: ["John", "Jane"]}`). Array values automatically generate IN clauses.
+   *
    * @param db - SQLite database connection
-   * @param elementToSearch - Optional map of column-value pairs for filtering
+   * @param elementToSearch - Optional map of column-value pairs. Values can be arrays for IN clauses
    * @returns Promise resolving to matching element(s) or undefined if failed
    *
    * @example
    * ```typescript
-   * // Get all elements
-   * const allUsers = await table.searchElement<User>(db);
+   * // Simple equality search
+   * const users = await table.searchElement<User>(db, new Map([["age", 25]]));
    *
-   * // Search with criteria
-   * const searchCriteria = new Map([["age", 25], ["city", "New York"]]);
-   * const filteredUsers = await table.searchElement<User>(db, searchCriteria);
+   * // WHERE IN search with array
+   * const users = await table.searchElement<User>(db, new Map([["name", ["Alice", "Bob"]]]));
    * ```
    */
   public async searchElement<T>(
     db: SQLiteDatabase,
-    elementToSearch?: Map<string, number | string>
+    elementToSearch?: Map<string, number | string | Array<string | number>>
   ): Promise<T | Array<T> | undefined> {
     let searchQuery = `SELECT *
                            FROM "${this.m_tableName}"`;
 
+    let params: SQLiteBindValue[] = [];
+
     if (elementToSearch) {
-      searchQuery += ' WHERE ' + this.prepareQueryFromMap(elementToSearch, `AND`) + ';';
+      const [whereClause, queryParams] = this.prepareQueryFromMap(elementToSearch, `AND`);
+      searchQuery += ' WHERE ' + whereClause + ';';
+      params = queryParams;
     }
 
     try {
-      return await db.getAllAsync<T>(searchQuery);
+      return await db.getAllAsync<T>(searchQuery, params);
     } catch (error: unknown) {
       databaseLogger.warn('searchElement: \nQuery: "', searchQuery, '"\nReceived error : ', error);
       return undefined;
@@ -456,18 +469,51 @@ export class TableManipulation {
 
   /* PROTECTED METHODS */
 
-  // TODO update this method to return query and params
-  protected prepareQueryFromMap(map: Map<string, number | string>, separator?: string) {
+  /**
+   * Prepares WHERE clause from a Map, supporting both equality and IN clauses
+   *
+   * Generates SQL WHERE conditions from a Map of column-value pairs. Supports:
+   * - Simple values: generates equality conditions (column = ?)
+   * - Array values: generates IN clauses (column IN (?, ?, ?))
+   * Returns both the WHERE clause string and parameter array for safe parameterized queries.
+   *
+   * @param map - Map of column names to values (can be single values or arrays)
+   * @param separator - Separator between conditions (typically "AND" or "OR")
+   * @returns Tuple of [whereClause, parameters]
+   *
+   * @example
+   * ```typescript
+   * // Simple equality
+   * prepareQueryFromMap(new Map([["age", 25]]), "AND")
+   * // Returns: ['"age" = ?', [25]]
+   *
+   * // WHERE IN with array
+   * prepareQueryFromMap(new Map([["name", ["Alice", "Bob"]]]), "AND")
+   * // Returns: ['"name" IN (?, ?)', ["Alice", "Bob"]]
+   * ```
+   */
+  protected prepareQueryFromMap(
+    map: Map<string, number | string | Array<string | number>>,
+    separator?: string
+  ): [string, SQLiteBindValue[]] {
     let result = '';
     let sepLen = 0;
+    const params: SQLiteBindValue[] = [];
 
     if (map.size <= this.m_columnsTable.length) {
       for (const [key, value] of map) {
-        if (typeof value === 'string') {
-          result += `"${key}" = '${value}' `;
+        if (Array.isArray(value)) {
+          if (value.length === 0) {
+            continue;
+          }
+          const placeholders = value.map(() => '?').join(',');
+          result += `"${key}" IN (${placeholders}) `;
+          params.push(...value);
         } else {
-          result += `"${key}" = ${value} `;
+          result += `"${key}" = ? `;
+          params.push(value);
         }
+
         if (separator) {
           result += `${separator} `;
           sepLen = separator.length;
@@ -486,7 +532,7 @@ export class TableManipulation {
       );
     }
 
-    return result;
+    return [result, params];
   }
 
   protected verifyLengthOfElement<TElement extends string>(element: Array<TElement>) {

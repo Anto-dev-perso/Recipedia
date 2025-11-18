@@ -1,5 +1,12 @@
 appId: "com.recipedia"
 ---
+- scrollUntilVisible:
+    element:
+      id: "Parameters::Section::About::Version::Item-content"
+    direction: DOWN
+    speed: 60
+    label: "Scroll to see the entire version items"
+
 - assertVisible:
     id: "Parameters::Section::About::SubHeader"
     label: "About section header is displayed"

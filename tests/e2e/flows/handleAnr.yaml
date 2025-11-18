@@ -1,0 +1,14 @@
+appId: "com.recipedia"
+---
+# Handle Android ANR (Application Not Responding) dialog if it appears
+# Android shows this dialog when an app takes too long to respond to user input
+# This flow will check if the ANR dialog is visible and tap "Wait" to dismiss it
+
+- runFlow:
+    when:
+      visible:
+        text: ".*isn't responding.*"
+    commands:
+      - tapOn:
+          text: "Wait"
+          label: "Dismiss ANR dialog by tapping Wait"

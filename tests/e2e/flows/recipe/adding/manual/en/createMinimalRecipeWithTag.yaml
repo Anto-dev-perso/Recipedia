@@ -91,6 +91,14 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Dismiss keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to time part"
+
 - tapOn:
     id: "RecipeTime::NumericTextInput"
     label: "Focus on time input"
