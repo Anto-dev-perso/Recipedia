@@ -1,3 +1,17 @@
+## [1.1.0](https://github.com/Anto-dev-perso/Recipedia/compare/v1.0.0...v1.1.0) (2025-11-18)
+
+### Features
+
+* **Database:** do insert in 1 query ([beee764](https://github.com/Anto-dev-perso/Recipedia/commit/beee764ca88e233230a79938faaab2ef69e93f26))
+* **database:** enhance dataset loading with scalable recipes ([a95db62](https://github.com/Anto-dev-perso/Recipedia/commit/a95db62a92516f053046aed9d317da9099bb6ce8))
+* running async database ([#125](https://github.com/Anto-dev-perso/Recipedia/issues/125)) ([7e5fb30](https://github.com/Anto-dev-perso/Recipedia/commit/7e5fb3073b01ca8cbceb5bc51fd1745cbdbf4846))
+* **ui:** add reusable `LoadingOverlay` component ([7b90e78](https://github.com/Anto-dev-perso/Recipedia/commit/7b90e783ccfc90cb0c23a3bb95f991c2f3698523))
+* **ui:** use `LoadingOverlay` in Welcome and PersonsSettings screens ([c882fdc](https://github.com/Anto-dev-perso/Recipedia/commit/c882fdc0f961ea53543fcc72d378f72e4ccd22d2))
+
+### Bug Fixes
+
+* initialization on first launch ([3cabe97](https://github.com/Anto-dev-perso/Recipedia/commit/3cabe97060e9671d6896f3a1f921d57610d6a702))
+
 ## [1.0.0](https://github.com/Anto-dev-perso/Recipedia/compare/v0.22.1...v1.0.0) (2025-11-16)
 
 ### ⚠ BREAKING CHANGES
