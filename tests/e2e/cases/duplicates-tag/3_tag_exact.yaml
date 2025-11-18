@@ -1,4 +1,4 @@
-name: "5 - Duplicate Tag Exact Prevention Flow"
+name: "3 - Duplicate Tag Exact Prevention Flow"
 appId: "com.recipedia"
 tags:
   - duplicates

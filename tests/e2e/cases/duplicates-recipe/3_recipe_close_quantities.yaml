@@ -1,4 +1,4 @@
-name: "11 - Duplicate Recipe Confirm Flow"
+name: "3 - Duplicate Recipe Close Quantities Detection Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
@@ -23,25 +23,48 @@ tags:
       SEARCH_TEXT: "Test Recipe"
     label: "Verify - Confirm recipe is searchable before duplicate test"
 
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Action - Close FAB buttons"
-
 - runFlow:
-    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
-    label: "Action - Create duplicate recipe"
+    file: "../../flows/recipe/adding/createRecipeWithCloseQuantities.yaml"
+    label: "Action - Create recipe with close quantities"
 
 - runFlow:
     file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
-    label: "Assert - Verify duplicate alert appears"
+    label: "Assert - Verify close quantities duplicate alert appears"
 
 - tapOn:
-    id: "Recipe::Dialog::Confirm"
-    label: "Action - Confirm adding recipe despite duplicate"
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: UP
+    speed: 60
+    label: "Action - Scroll up to ingredients"
 
 - tapOn:
-    id: "Recipe::Dialog::Confirm"
-    label: "Action - Confirm success message"
+    id: "RecipeIngredients::0::QuantityInput"
+    label: "Action - Focus on Pasta quantity input"
+
+- eraseText:
+    label: "Action - Clear Pasta quantity"
+
+- inputText:
+    text: "260"
+    label: "Action - Change Pasta to 260g (30% difference)"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate recipe with far quantities"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert - Verify recipe added successfully (no duplicate)"
 
 - tapOn:
     id: "ReduceButton::RoundButton"

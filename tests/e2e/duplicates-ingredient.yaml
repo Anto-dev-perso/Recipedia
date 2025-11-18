@@ -1,0 +1,8 @@
+flows:
+  - cases/duplicates-ingredient/*
+
+executionOrder:
+  flowsOrder:
+    - "1 - Duplicate Ingredient Unique Detection Flow"
+    - "2 - Duplicate Ingredient Fuzzy Detection Flow"
+    - "3 - Duplicate Ingredient Exact Prevention Flow"

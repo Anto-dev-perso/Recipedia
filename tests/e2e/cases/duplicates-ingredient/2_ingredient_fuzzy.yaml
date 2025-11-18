@@ -1,4 +1,4 @@
-name: "4 - Duplicate Ingredient Fuzzy Detection Flow"
+name: "2 - Duplicate Ingredient Fuzzy Detection Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
