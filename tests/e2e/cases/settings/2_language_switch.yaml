@@ -1,0 +1,48 @@
+name: "2 - Language Switch Flow"
+appId: "com.recipedia"
+tags:
+  - settings
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- tapOn:
+    text: "Parameters"
+    label: "Action - Navigate to Parameters screen"
+
+- runFlow:
+    file: "../../flows/parameters/language/switchToFrench.yaml"
+    label: "Action - Switch language to French"
+
+- runFlow:
+    file: "../../asserts/parameters/fr/assertParametersScreen.yaml"
+    label: "Assert - Verify Parameters screen in French"
+
+- runFlow:
+    file: "../../flows/parameters/language/shoppingIsTranslated.yaml"
+    label: "Verification - Verify Shopping screen translated to French"
+
+- runFlow:
+    file: "../../flows/parameters/language/homeIsTranslated.yaml"
+    label: "Verification - Verify Home screen translated to French"
+
+- runFlow:
+    file: "../../flows/parameters/language/recipeIsTranslated.yaml"
+    label: "Verification - Verify Recipe screen translated to French"
+
+- runFlow:
+    file: "../../flows/parameters/language/searchIsTranslated.yaml"
+    label: "Verification - Verify Search screen translated to French"
+
+- tapOn:
+    text: "Paramètres"
+    label: "Action - Navigate back to Parameters screen"
+
+- runFlow:
+    file: "../../flows/parameters/language/switchToEnglish.yaml"
+    label: "Cleanup - Restore language to English"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to Home screen"

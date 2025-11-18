@@ -3,8 +3,8 @@ flows:
 
 executionOrder:
   flowsOrder:
-    - "36 - Add New Ingredient Flow"
-    - "37 - Delete Ingredient Flow"
-    - "38 - Edit Existing Ingredient Flow"
-    - "39 - Add Ingredient And Use In Recipe Flow"
-    - "40 - Ingredient Edge Cases Flow"
+    - "1 - Add New Ingredient Flow"
+    - "2 - Delete Ingredient Flow"
+    - "3 - Edit Existing Ingredient Flow"
+    - "4 - Add Ingredient And Use In Recipe Flow"
+    - "5 - Ingredient Edge Cases Flow"
