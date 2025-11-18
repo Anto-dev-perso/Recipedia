@@ -35,7 +35,7 @@ import { EncodingSeparator, textSeparator } from '@styles/typography';
 import { TListFilter } from '@customTypes/RecipeFiltersTypes';
 import FileGestion from '@utils/FileGestion';
 import { isNumber, subtractNumberInString, sumNumberInString } from '@utils/TypeCheckingFunctions';
-import Fuse, { FuseResult } from 'fuse.js';
+import { cleanIngredientName, FuzzyMatchLevel, fuzzySearch } from '@utils/FuzzySearch';
 import { scaleQuantityForPersons } from '@utils/Quantity';
 import { databaseLogger } from '@utils/logger';
 import { fisherYatesShuffle } from './FilterFunctions';
@@ -49,7 +49,7 @@ import { fisherYatesShuffle } from './FilterFunctions';
  *
  * Key Features:
  * - Recipe CRUD operations with ingredient and tag relationships
- * - Fuzzy search capabilities using Fuse.js
+ * - Fuzzy search capabilities using FuzzySearch utility
  * - Shopping list generation from recipes
  * - Quantity scaling for different serving sizes
  * - Similar recipe detection
@@ -1222,13 +1222,14 @@ export class RecipeDatabase {
       return [];
     }
 
-    const fuse = new Fuse(recipesWithSimilarIngredients, {
-      keys: ['title'],
-      threshold: 0.6,
-    });
-    return fuse
-      .search(recipeToCompare.title)
-      .map((fuseResult: FuseResult<recipeTableElement>) => fuseResult.item);
+    const result = fuzzySearch<recipeTableElement>(
+      recipesWithSimilarIngredients,
+      recipeToCompare.title,
+      recipe => recipe.title,
+      FuzzyMatchLevel.PERMISSIVE
+    );
+
+    return result.exact ? [result.exact] : result.similar;
   }
 
   /**
@@ -1243,28 +1244,18 @@ export class RecipeDatabase {
    * ```
    */
   public findSimilarTags(tagName: string): tagTableElement[] {
-    if (!tagName || tagName.trim().length === 0) {
+    const trimmedName = tagName.trim();
+    if (!trimmedName) {
       return [];
     }
 
-    const exactMatch = this._tags.find(tag => tag.name.toLowerCase() === tagName.toLowerCase());
-    if (exactMatch) {
-      return [exactMatch];
-    }
-
-    const fuse = new Fuse(this._tags, {
-      keys: ['name'],
-      threshold: 0.4,
-      includeScore: true,
-    });
-
-    return fuse
-      .search(tagName)
-      .sort(
-        (a: FuseResult<tagTableElement>, b: FuseResult<tagTableElement>) =>
-          (a.score || 0) - (b.score || 0)
-      )
-      .map((result: FuseResult<tagTableElement>) => result.item);
+    const result = fuzzySearch<tagTableElement>(
+      this._tags,
+      trimmedName,
+      t => t.name,
+      FuzzyMatchLevel.MODERATE
+    );
+    return result.exact ? [result.exact] : result.similar;
   }
 
   /**
@@ -1282,37 +1273,20 @@ export class RecipeDatabase {
    * ```
    */
   public findSimilarIngredients(ingredientName: string): ingredientTableElement[] {
-    if (!ingredientName || ingredientName.trim().length === 0) {
+    const trimmedName = ingredientName.trim();
+    if (!trimmedName) {
       return [];
     }
 
-    const exactMatch = this._ingredients.find(
-      ingredient => ingredient.name.toLowerCase() === ingredientName.toLowerCase()
+    const cleanedSearchName = cleanIngredientName(trimmedName);
+    const result = fuzzySearch<ingredientTableElement>(
+      this._ingredients,
+      cleanedSearchName,
+      ingredient => cleanIngredientName(ingredient.name),
+      FuzzyMatchLevel.PERMISSIVE
     );
-    if (exactMatch) {
-      return [exactMatch];
-    }
 
-    const cleanedName = this.cleanIngredientName(ingredientName);
-
-    const fuse = new Fuse(this._ingredients, {
-      keys: [
-        {
-          name: 'name',
-          getFn: (ingredient: ingredientTableElement) => this.cleanIngredientName(ingredient.name),
-        },
-      ],
-      threshold: 0.6,
-      includeScore: true,
-    });
-
-    return fuse
-      .search(cleanedName)
-      .sort(
-        (a: FuseResult<ingredientTableElement>, b: FuseResult<ingredientTableElement>) =>
-          (a.score || 0) - (b.score || 0)
-      )
-      .map((result: FuseResult<ingredientTableElement>) => result.item);
+    return result.exact ? [result.exact] : result.similar;
   }
 
   /**
@@ -1483,42 +1457,42 @@ export class RecipeDatabase {
 
     // TODO what to do when ingredients doesn't exist ?
     /*
-                                                                                                                                    if (newIngredients.length > 0) {
-                                                                                                                                        let alertTitle: string;
-                                                                                                                                        let alertMessage = "Do you want to add or edit it before  ?";
-                                                                                                                                        const alertOk = "OK";
-                                                                                                                                        const alertCancel = "Cancel";
-                                                                                                                                        const alertEdit = "Edit before add";
-                                                                                                                                        if (newIngredients.length > 1) {
-                                                                                                                                            // Plural
-                                                                                                                                            alertTitle = "INGREDIENTS NOT FOUND";
-                                                                                                                                            alertMessage = `Following ingredients were not found in database :  \n`;
-                                                                                                                                            newIngredients.forEach(ing => {
-                                                                                                                                                alertMessage += "\t- " + ing.ingName + "\n";
-                                                                                                                                            });
-                                                                                                                                            alertMessage += `Do you want to add these as is or edit them before adding ?`;
+                                                                                                                                                                                            if (newIngredients.length > 0) {
+                                                                                                                                                                                                let alertTitle: string;
+                                                                                                                                                                                                let alertMessage = "Do you want to add or edit it before  ?";
+                                                                                                                                                                                                const alertOk = "OK";
+                                                                                                                                                                                                const alertCancel = "Cancel";
+                                                                                                                                                                                                const alertEdit = "Edit before add";
+                                                                                                                                                                                                if (newIngredients.length > 1) {
+                                                                                                                                                                                                    // Plural
+                                                                                                                                                                                                    alertTitle = "INGREDIENTS NOT FOUND";
+                                                                                                                                                                                                    alertMessage = `Following ingredients were not found in database :  \n`;
+                                                                                                                                                                                                    newIngredients.forEach(ing => {
+                                                                                                                                                                                                        alertMessage += "\t- " + ing.ingName + "\n";
+                                                                                                                                                                                                    });
+                                                                                                                                                                                                    alertMessage += `Do you want to add these as is or edit them before adding ?`;
 
-                                                                                                                                        } else {
-                                                                                                                                            alertTitle = `INGREDIENT NOT FOUND`;
-                                                                                                                                            alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                                                                                                                                        }
+                                                                                                                                                                                                } else {
+                                                                                                                                                                                                    alertTitle = `INGREDIENT NOT FOUND`;
+                                                                                                                                                                                                    alertMessage = `Do you want to add this as is or edit it before adding ?`;
+                                                                                                                                                                                                }
 
 
-                                                                                                                                        switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                                                                                                                                            case alertUserChoice.neutral:
-                                                                                                                                                // TODO edit before add
-                                                                                                                                                break;
-                                                                                                                                            case alertUserChoice.ok:
-                                                                                                                                                await this.addMultipleIngredients(newIngredients);
-                                                                                                                                                result = result.concat(newIngredients);
-                                                                                                                                                break;
-                                                                                                                                            case alertUserChoice.cancel:
-                                                                                                                                            default:
-                                                                                                                                                databaseLogger.debug("User canceled adding ingredient");
-                                                                                                                                                break;
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                     */
+                                                                                                                                                                                                switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
+                                                                                                                                                                                                    case alertUserChoice.neutral:
+                                                                                                                                                                                                        // TODO edit before add
+                                                                                                                                                                                                        break;
+                                                                                                                                                                                                    case alertUserChoice.ok:
+                                                                                                                                                                                                        await this.addMultipleIngredients(newIngredients);
+                                                                                                                                                                                                        result = result.concat(newIngredients);
+                                                                                                                                                                                                        break;
+                                                                                                                                                                                                    case alertUserChoice.cancel:
+                                                                                                                                                                                                    default:
+                                                                                                                                                                                                        databaseLogger.debug("User canceled adding ingredient");
+                                                                                                                                                                                                        break;
+                                                                                                                                                                                                }
+                                                                                                                                                                                            }
+                                                                                                                                                                                             */
     // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
     result.push(...newIngredients);
@@ -2397,34 +2371,6 @@ export class RecipeDatabase {
     }
 
     this._shopping = await this.getAllShopping();
-  }
-
-  /**
-   * Cleans ingredient names for fuzzy matching
-   *
-   * Removes parenthetical content and extra whitespace from ingredient names
-   * to improve fuzzy search accuracy by focusing on the core ingredient name.
-   *
-   * @private
-   * @param name - The ingredient name to clean
-   * @returns Cleaned ingredient name suitable for fuzzy matching
-   *
-   * @example
-   * Input: "Tomatoes (canned, diced)   extra spaces"
-   * Output: "Tomatoes extra spaces"
-   */
-  private cleanIngredientName(name: string): string {
-    if (!name) {
-      return '';
-    }
-
-    // Remove content in parentheses
-    let cleaned = name.replace(/\([^)]*\)/g, '').trim();
-
-    // Remove extra whitespace
-    cleaned = cleaned.replace(/\s+/g, ' ').trim();
-
-    return cleaned;
   }
 
   /**
