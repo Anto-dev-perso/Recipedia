@@ -1,4 +1,4 @@
-name: "9 - Duplicate Recipe Close Quantities Detection Flow"
+name: "1 - Duplicate Recipe Title Detection Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
@@ -17,19 +17,17 @@ tags:
       RECIPE_NAME: ".*"
     label: "Assert - Verify recipe added to database"
 
-- runFlow:
-    file: "../../flows/recipe/verifyRecipeExistsInSearch.yaml"
-    env:
-      SEARCH_TEXT: "Test Recipe"
-    label: "Verify - Confirm recipe is searchable before duplicate test"
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Action - Close FAB buttons"
 
 - runFlow:
-    file: "../../flows/recipe/adding/createRecipeWithCloseQuantities.yaml"
-    label: "Action - Create recipe with close quantities"
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create identical recipe"
 
 - runFlow:
     file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
-    label: "Assert - Verify close quantities duplicate alert appears"
+    label: "Assert - Verify duplicate alert appears"
 
 - tapOn:
     id: "Recipe::Dialog::Cancel"
@@ -37,28 +35,37 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::PrefixText"
+      id: "RecipeImage::Image"
     direction: UP
-    speed: 60
-    label: "Action - Scroll up to ingredients"
+    speed: 95
 
-- tapOn:
-    id: "RecipeIngredients::0::QuantityInput"
-    label: "Action - Focus on Pasta quantity input"
-
-- eraseText:
-    label: "Action - Clear Pasta quantity"
-
-- inputText:
-    text: "260"
-    label: "Action - Change Pasta to 260g (30% difference)"
-
-- hideKeyboard:
-    label: "Action - Hide keyboard"
+- runFlow:
+    file: "../../flows/recipe/adding/setRecipeTitle.yaml"
+    env:
+      TITLE: "Test Recip"
+    label: "Action - Change title to fuzzy match"
 
 - tapOn:
     id: "RecipeValidate"
-    label: "Action - Validate recipe with far quantities"
+    label: "Action - Validate recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify fuzzy title duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- runFlow:
+    file: "../../flows/recipe/adding/setRecipeTitle.yaml"
+    env:
+      TITLE: "Completely Different Recipe Name"
+    label: "Action - Change to completely different title"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate recipe with different title"
 
 - runFlow:
     file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
@@ -74,13 +81,13 @@ tags:
     file: "../../flows/recipe/deleteRecipeBySearch.yaml"
     env:
       SEARCH_TEXT: "Test Recipe"
-    label: "Cleanup - Delete first Test Recipe"
+    label: "Cleanup - Delete Test Recipe"
 
 - runFlow:
     file: "../../flows/recipe/deleteRecipeBySearch.yaml"
     env:
-      SEARCH_TEXT: "Test Recipe"
-    label: "Cleanup - Delete second Test Recipe"
+      SEARCH_TEXT: "Completely Different Recipe Name"
+    label: "Cleanup - Delete different recipe"
 
 - tapOn:
     id: "BottomTabs::Home"

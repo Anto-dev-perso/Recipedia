@@ -1,4 +1,4 @@
-name: "8 - Duplicate Recipe Scaled Quantities Detection Flow"
+name: "4 - Duplicate Recipe Ingredients Detection Flow"
 appId: "com.recipedia"
 tags:
   - duplicates
@@ -23,13 +23,17 @@ tags:
       SEARCH_TEXT: "Test Recipe"
     label: "Verify - Confirm recipe is searchable before duplicate test"
 
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Action - Close FAB buttons"
+
 - runFlow:
-    file: "../../flows/recipe/adding/createRecipeWithScaledQuantities.yaml"
-    label: "Action - Create recipe with scaled quantities (2x)"
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create identical recipe"
 
 - runFlow:
     file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
-    label: "Assert - Verify scaled duplicate alert appears"
+    label: "Assert - Verify duplicate alert appears"
 
 - tapOn:
     id: "Recipe::Dialog::Cancel"
@@ -40,39 +44,42 @@ tags:
       id: "RecipeIngredients::PrefixText"
     direction: UP
     speed: 60
-    label: "Action - Scroll up to ingredients"
+    label: "Action - Scroll up for adding ingredient"
 
 - tapOn:
-    id: "RecipeIngredients::0::QuantityInput"
-    label: "Action - Focus on Pasta quantity input"
-
-- eraseText:
-    label: "Action - Clear Pasta quantity"
-
-- inputText:
-    text: "1000"
-    label: "Action - Change Pasta to 1000g (far from scaled)"
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
+    label: "Action - Focus on ingredient input"
 
 - hideKeyboard:
     label: "Action - Hide keyboard"
 
-- tapOn:
-    id: "RecipeIngredients::1::QuantityInput"
-    label: "Action - Focus on Tomatoes quantity input"
-
-- eraseText:
-    label: "Action - Clear Tomatoes quantity"
-
-- inputText:
-    text: "500"
-    label: "Action - Change Tomatoes to 500g"
-
-- hideKeyboard:
-    label: "Action - Hide keyboard"
+- runFlow:
+    file: "../../flows/recipe/adding/addIngredientToRecipe.yaml"
+    env:
+      INDEX: "2"
+      NAME: "Olive Oil"
+      QUANTITY: "5"
+    label: "Action - Add Olive Oil ingredient"
 
 - tapOn:
     id: "RecipeValidate"
-    label: "Action - Validate recipe with far quantities"
+    label: "Action - Validate recipe with extra ingredient"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears (extra ingredient ignored)"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Go back to home"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createRecipeWithDifferentIngredients.yaml"
+    label: "Action - Create recipe with different ingredients"
 
 - runFlow:
     file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
@@ -88,13 +95,7 @@ tags:
     file: "../../flows/recipe/deleteRecipeBySearch.yaml"
     env:
       SEARCH_TEXT: "Test Recipe"
-    label: "Cleanup - Delete first Test Recipe"
-
-- runFlow:
-    file: "../../flows/recipe/deleteRecipeBySearch.yaml"
-    env:
-      SEARCH_TEXT: "Test Recipe"
-    label: "Cleanup - Delete second Test Recipe"
+    label: "Cleanup - Delete Test Recipe"
 
 - tapOn:
     id: "BottomTabs::Home"

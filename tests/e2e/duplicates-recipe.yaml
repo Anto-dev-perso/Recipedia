@@ -1,0 +1,10 @@
+flows:
+  - cases/duplicates-recipe/*
+
+executionOrder:
+  flowsOrder:
+    - "1 - Duplicate Recipe Title Detection Flow"
+    - "2 - Duplicate Recipe Scaled Quantities Detection Flow"
+    - "3 - Duplicate Recipe Close Quantities Detection Flow"
+    - "4 - Duplicate Recipe Ingredients Detection Flow"
+    - "5 - Duplicate Recipe Confirm Flow"
