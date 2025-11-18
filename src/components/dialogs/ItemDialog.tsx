@@ -72,9 +72,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Dialog, Menu, Portal, Text } from 'react-native-paper';
+import { Button, Dialog,HelperText, Menu, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import CustomTextInput from '@components/atomic/CustomTextInput';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
+import { cleanIngredientName, FuzzyMatchLevel, fuzzySearch } from '@utils/FuzzySearch';
 import {
   FormIngredientElement,
   ingredientTableElement,
@@ -131,8 +133,13 @@ export type ItemDialogProps = {
  */
 export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialogProps) {
   const { t } = useI18n();
+  const { tags, ingredients } = useRecipeDatabase();
+
+  type ValidationState = 'none' | 'duplicate' | 'similar';
 
   const [typeMenuVisible, setTypeMenuVisible] = useState(false);
+  const [validationState, setValidationState] = useState<ValidationState>('none');
+  const [helperMessage, setHelperMessage] = useState('');
 
   const [itemName, setItemName] = useState(item.value.name ?? '');
   const [ingType, setIngType] = useState<ingredientType | undefined>(
@@ -153,6 +160,64 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
       }
     }
   }, [item.value.name, item.type, item.value, isVisible]);
+
+  useEffect(() => {
+    if (!isVisible || mode === 'delete') {
+      setValidationState('none');
+      setHelperMessage('');
+      return;
+    }
+
+    const trimmedName = itemName.trim();
+    if (!trimmedName) {
+      setValidationState('none');
+      setHelperMessage('');
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      const messageKeys =
+        item.type === 'Tag'
+          ? { duplicate: 'tag_already_exists', similar: 'similar_tags_exist' }
+          : { duplicate: 'ingredient_already_exists', similar: 'similar_ingredients_exist' };
+
+      const result =
+        item.type === 'Tag'
+          ? fuzzySearch<tagTableElement>(tags, trimmedName, t => t.name, FuzzyMatchLevel.MODERATE)
+          : fuzzySearch<ingredientTableElement>(
+              ingredients,
+              cleanIngredientName(trimmedName),
+              ing => cleanIngredientName(ing.name),
+              FuzzyMatchLevel.MODERATE
+            );
+
+      if (result.exact) {
+        const isSameElement = item.value.id !== undefined && result.exact.id === item.value.id;
+        if (isSameElement) {
+          setValidationState('none');
+          setHelperMessage('');
+        } else {
+          setValidationState('duplicate');
+          setHelperMessage(t(messageKeys.duplicate));
+        }
+      } else {
+        const otherSimilar = result.similar.filter(
+          similarItem => !item.value.id || similarItem.id !== item.value.id
+        );
+
+        if (otherSimilar.length > 0) {
+          const names = otherSimilar.map(similarItem => similarItem.name).join(', ');
+          setValidationState('similar');
+          setHelperMessage(`${t(messageKeys.similar)}: ${names}`);
+        } else {
+          setValidationState('none');
+          setHelperMessage('');
+        }
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [itemName, item.type, item.value.id, isVisible, mode, tags, ingredients, t]);
 
   const handleDismiss = () => {
     onClose();
@@ -189,6 +254,10 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
 
     if (mode === 'delete') {
       return false;
+    }
+
+    if (validationState === 'duplicate') {
+      return true;
     }
 
     if (item.type === 'Ingredient') {
@@ -257,7 +326,15 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
                 value={itemName}
                 onChangeText={setItemName}
                 testID={modalTestId + '::Name'}
+                error={validationState === 'duplicate'}
               />
+              <HelperText
+                type={validationState === 'duplicate' ? 'error' : 'info'}
+                visible={validationState !== 'none'}
+                testID={modalTestId + '::HelperText'}
+              >
+                {helperMessage}
+              </HelperText>
               {item.type === 'Ingredient' ? (
                 <View>
                   <View style={styles.inputRow}>
