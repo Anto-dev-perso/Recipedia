@@ -6,3 +6,6 @@ executionOrder:
     - "1 - Duplicate Ingredient Unique Detection Flow"
     - "2 - Duplicate Ingredient Fuzzy Detection Flow"
     - "3 - Duplicate Ingredient Exact Prevention Flow"
+    - "4 - Ingredient Real-Time Validation Flow"
+    - "5 - Ingredient Edit Same Name Flow"
+    - "6 - Ingredient Parenthetical Matching Flow"

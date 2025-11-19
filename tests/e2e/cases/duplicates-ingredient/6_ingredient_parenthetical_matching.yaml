@@ -1,0 +1,92 @@
+name: "6 - Ingredient Parenthetical Matching Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Action - Navigate to Ingredients Settings"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::AddButton"
+    direction: DOWN
+    speed: 98
+    label: "Action - Scroll to find add tag button"
+
+- tapOn:
+    id: "IngredientsSettings::AddButton"
+    label: "Action - Open add ingredient dialog"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Menu::Button"
+    label: "Action - Open type menu"
+
+- tapOn:
+    text: "Vegetable"
+    label: "Action - Select Vegetables type"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Unit::CustomTextInput"
+    label: "Action - Focus on unit input"
+
+- inputText:
+    text: "can"
+    label: "Action - Enter unit"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- inputText:
+    text: "Tomatoes (canned)"
+    label: "Action - Enter ingredient with parenthetical"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- extendedWaitUntil:
+    visible:
+      id: "IngredientsSettings::ItemDialog::AddModal::ConfirmButton"
+    timeout: 500
+    label: "Wait - Debounce validation"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
+    text: "This ingredient name already exists"
+    label: "Assert - Helper text visible for exact duplicate"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Menu::Button"
+    label: "Action - Open type menu"
+
+- extendedWaitUntil:
+    visible:
+      id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
+    timeout: 1000
+    label: "Wait - Helper text appears after debounce"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
+    text: "This ingredient name already exists"
+    label: "Assert - Helper text visible for similar match"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::AddModal::ConfirmButton"
+    enabled: false
+    label: "Assert - Confirm button disabled (missing type and unit)"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::CancelButton"
+    label: "Cleanup - Cancel add ingredient dialog"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

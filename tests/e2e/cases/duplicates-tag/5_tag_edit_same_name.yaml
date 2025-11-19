@@ -1,0 +1,132 @@
+name: "5 - Tag Edit Same Name Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- runFlow:
+    file: "../../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Action - Navigate to Tags Settings"
+
+- scrollUntilVisible:
+    element:
+      text: "Dessert"
+    direction: DOWN
+    speed: 60
+    label: "Action - Scroll to find Dessert tag"
+
+- assertVisible:
+    id: "TagsSettings::2::TagName"
+    text: "Dessert"
+    label: "Assert - Verify Dessert tag exists in database"
+
+- tapOn:
+    id: "TagsSettings::2::EditButton"
+    label: "Action - Open edit tag dialog for Dessert"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    text: "Dessert"
+    label: "Assert - Name input shows current tag name"
+
+- assertNotVisible:
+    id: "TagsSettings::ItemDialog::EditModal::HelperText"
+    label: "Assert - No helper text shown when editing with same name"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
+    enabled: true
+    label: "Assert - Confirm button enabled with same name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    label: "Action - Focus on tag name input"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Sweet"
+    label: "Action - Change to different unique name"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- extendedWaitUntil:
+    visible:
+      id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
+    timeout: 500
+    label: "Wait - Debounce validation"
+
+- assertNotVisible:
+    id: "TagsSettings::ItemDialog::EditModal::HelperText"
+    label: "Assert - No helper text for unique name"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
+    enabled: true
+    label: "Assert - Confirm button enabled for unique name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    label: "Action - Focus on tag name input again"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Dessert"
+    label: "Action - Change back to original name"
+
+- extendedWaitUntil:
+    visible:
+      id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
+    timeout: 500
+    label: "Wait - Debounce validation"
+
+- assertNotVisible:
+    id: "TagsSettings::ItemDialog::EditModal::HelperText"
+    label: "Assert - No duplicate error when using same tag's original name"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
+    enabled: true
+    label: "Assert - Confirm button enabled with original name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    label: "Action - Focus on tag name input again"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Chocolate"
+    label: "Action - Enter the name of another tag"
+
+- extendedWaitUntil:
+    visible:
+      id: "TagsSettings::ItemDialog::EditModal::HelperText"
+    timeout: 500
+    label: "Wait - Helper text"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::HelperText"
+    text: "This tag already exists"
+    label: "Assert - No duplicate error when using same tag's original name"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::EditModal::ConfirmButton"
+    enabled: false
+    label: "Assert - Confirm button enabled with original name"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::EditModal::CancelButton"
+    label: "Cleanup - Cancel edit tag dialog"
+
+- runFlow:
+    file: "../../flows/parameters/tags/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

@@ -1,0 +1,116 @@
+name: "5 - Ingredient Edit Same Name Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Action - Navigate to Ingredients Settings"
+
+- scrollUntilVisible:
+    element:
+      text: "Butter"
+    direction: DOWN
+    speed: 60
+    label: "Action - Scroll to find Butter ingredient"
+
+- assertVisible:
+    id: "IngredientsSettings::2::IngredientName"
+    text: "Butter"
+    label: "Assert - Verify Butter ingredient exists in database"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::2::EditButton"
+    direction: DOWN
+    speed: 40
+    label: "Action - Scroll to find Butter edit button"
+
+- tapOn:
+    id: "IngredientsSettings::2::EditButton"
+    label: "Action - Open edit ingredient dialog for Butter"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    text: "Butter"
+    label: "Assert - Name input shows current ingredient name"
+
+- assertNotVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::HelperText"
+    label: "Assert - No helper text shown when editing with same name"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::ConfirmButton"
+    enabled: true
+    label: "Assert - Confirm button enabled with same name"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Margarine"
+    label: "Action - Change to different unique name"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- extendedWaitUntil:
+    visible:
+      id: "IngredientsSettings::ItemDialog::EditModal::ConfirmButton"
+    timeout: 500
+    label: "Wait - Debounce validation"
+
+- assertNotVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::HelperText"
+    label: "Assert - No helper text for unique name"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::ConfirmButton"
+    enabled: true
+    label: "Assert - Confirm button enabled for unique name"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::Name::CustomTextInput"
+    label: "Action - Focus on ingredient name input again"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Eggs"
+    label: "Action - Change to another existing ingredient name"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- extendedWaitUntil:
+    visible:
+      id: "IngredientsSettings::ItemDialog::EditModal::ConfirmButton"
+    timeout: 500
+    label: "Wait - Debounce validation"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::HelperText"
+    text: "This ingredient name already exists"
+    label: "Assert - No duplicate error when using same ingredient's original name"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::EditModal::ConfirmButton"
+    enabled: false
+    label: "Assert - Confirm button enabled with original name"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::EditModal::CancelButton"
+    label: "Cleanup - Cancel edit ingredient dialog"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"
