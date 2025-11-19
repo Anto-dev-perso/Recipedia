@@ -1,20 +1,20 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "RecipeIngredientSimilarity::SimilarityDialog::AddButton"
+    id: "RecipeValidation::ValidationQueue::Ingredient::SimilarityDialog::AddButton"
     label: "Add ingredient to recipe"
 
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::ConfirmButton"
     label: "Try to confirm adding the new ingredient"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::ConfirmButton"
     label: "Button is still there meaning the adding didn't worked"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Menu::Button"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::Menu::Button"
     label: "Open the dropdown of the type"
 
 - tapOn:
@@ -22,7 +22,7 @@ appId: "com.recipedia"
     label: "Select Plant Protein type"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::CustomTextInput"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::Unit::CustomTextInput"
     label: "Focus on unit input"
 
 - inputText:
@@ -33,9 +33,9 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::5"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::5"
     label: "Select may for seasonality"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::ConfirmButton"
     label: "Confirm adding the new ingredient"

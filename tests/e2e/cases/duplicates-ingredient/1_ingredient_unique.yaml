@@ -41,7 +41,7 @@ tags:
     label: "Assert - Verify ingredient not found alert"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::SimilarityDialog::CancelButton"
+    id: "RecipeValidation::ValidationQueue::Ingredient::SimilarityDialog::CancelButton"
     label: "Action - Cancel similarity alert"
 
 - assertNotVisible:
@@ -63,7 +63,7 @@ tags:
 - pressKey: "ENTER"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::SimilarityDialog::AddButton"
+    id: "RecipeValidation::ValidationQueue::Ingredient::SimilarityDialog::AddButton"
     label: "Action - Confirm adding ingredient"
 
 - runFlow:
@@ -73,7 +73,7 @@ tags:
     label: "Assert - Verify adding modal appears"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Menu::Button"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::Menu::Button"
     label: "Action - Open type dropdown"
 
 - tapOn:
@@ -81,7 +81,7 @@ tags:
     label: "Action - Select Fish type"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::Unit::CustomTextInput"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::Unit::CustomTextInput"
     label: "Action - Focus on unit input"
 
 - inputText:
@@ -92,11 +92,11 @@ tags:
     label: "Action - Hide keyboard"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::2"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::2"
     label: "Action - Select february for seasonality"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::ConfirmButton"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::ConfirmButton"
     label: "Action - Confirm adding new ingredient"
 
 - assertVisible:

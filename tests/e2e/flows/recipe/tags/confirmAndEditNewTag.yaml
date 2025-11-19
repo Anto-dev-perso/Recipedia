@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "RecipeTagSimilarity::SimilarityDialog::AddButton"
+    id: "RecipeValidation::ValidationQueue::Tag::SimilarityDialog::AddButton"
     label: "Add tag to recipe"
 
 - runFlow:
@@ -9,7 +9,7 @@ appId: "com.recipedia"
     label: "Check that adding modal appears"
 
 - tapOn:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::CustomTextInput"
+    id: "RecipeValidation::ValidationQueue::Tag::ItemDialog::AddModal::Name::CustomTextInput"
     point: "95%,50%"
     label: "Focus on tag name input field"
 
@@ -21,5 +21,5 @@ appId: "com.recipedia"
     label: "Hide the keyboard"
 
 - tapOn:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::ConfirmButton"
+    id: "RecipeValidation::ValidationQueue::Tag::ItemDialog::AddModal::ConfirmButton"
     label: "Confirm adding the new tag"
