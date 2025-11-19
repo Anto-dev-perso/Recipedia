@@ -1,22 +1,21 @@
 appId: "com.recipedia"
 ---
-
 - assertVisible:
-    id: "RecipeIngredientSimilarity::SimilarityDialog::Title"
+    id: "RecipeValidation::ValidationQueue::Ingredient::SimilarityDialog::Title"
     text: "Ingredient not found"
     label: "Alert title is rendered"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::SimilarityDialog::Content"
-    text: "The ingredient \".*\" doesn't exist. You can modify it before adding."
+    id: "RecipeValidation::ValidationQueue::Ingredient::SimilarityDialog::Content"
+    text: 'The ingredient ".*" doesn''t exist. You can modify it before adding.'
     label: "Alert message is rendered"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::SimilarityDialog::CancelButton-text"
+    id: "RecipeValidation::ValidationQueue::Ingredient::SimilarityDialog::CancelButton-text"
     text: "Cancel"
     label: "Alert cancel button is rendered"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::SimilarityDialog::AddButton-text"
+    id: "RecipeValidation::ValidationQueue::Ingredient::SimilarityDialog::AddButton-text"
     text: "Add"
     label: "Alert add button is rendered"

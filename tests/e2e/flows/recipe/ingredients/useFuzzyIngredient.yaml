@@ -5,5 +5,5 @@ appId: "com.recipedia"
     label: "Check that fuzzy alert appears"
 
 - tapOn:
-    id: "RecipeIngredientSimilarity::SimilarityDialog::UseButton"
+    id: "RecipeValidation::ValidationQueue::Ingredient::SimilarityDialog::UseButton"
     label: "Use the existing ingredient"

@@ -2,25 +2,25 @@ appId: "com.recipedia"
 ---
 
 - assertVisible:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::Title"
+    id: "RecipeValidation::ValidationQueue::Tag::ItemDialog::AddModal::Title"
     text: "Add Tag"
     label: "Alert title is rendered"
 
 - assertVisible:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::CustomTextInput-label-inactive"
+    id: "RecipeValidation::ValidationQueue::Tag::ItemDialog::AddModal::Name::CustomTextInput-label-inactive"
     text: "Tag name"
     label: "Alert text input is rendered"
 
 - assertVisible:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::Name::CustomTextInput"
+    id: "RecipeValidation::ValidationQueue::Tag::ItemDialog::AddModal::Name::CustomTextInput"
     label: "Alert text input is rendered"
 
 - assertVisible:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::CancelButton-text"
+    id: "RecipeValidation::ValidationQueue::Tag::ItemDialog::AddModal::CancelButton-text"
     text: "Cancel"
     label: "Alert cancel button is rendered"
 
 - assertVisible:
-    id: "RecipeTagSimilarity::ItemDialog::AddModal::ConfirmButton-text"
+    id: "RecipeValidation::ValidationQueue::Tag::ItemDialog::AddModal::ConfirmButton-text"
     text: "Add"
     label: "Alert add button is rendered"

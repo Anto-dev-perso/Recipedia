@@ -169,11 +169,15 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::2::NameInput::CustomTextInput"
+      id: "RecipeIngredients::AddButton::RoundButton"
     direction: DOWN
     speed: 40
     centerElement: true
-    label: "Scroll to third ingredient name input"
+    label: "Scroll to ensure add button is visible"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Press the round button of third ingredient"
 
 - tapOn:
     id: "RecipeIngredients::2::NameInput::CustomTextInput"
