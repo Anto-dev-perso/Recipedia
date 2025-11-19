@@ -410,6 +410,14 @@ appId: "com.recipedia"
       id: "RecipeImage::RoundButton"
     direction: UP
     speed: 60
+    label: "Scroll until the image button is displayed"
+
+- scrollUntilVisible:
+    element:
+      text: "󰄀"
+    direction: UP
+    speed: 60
+    label: "Scroll until icon of the image button is displayed"
 
 - assertVisible:
     id: "RecipeTitle::CustomTextInput"
