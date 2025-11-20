@@ -74,18 +74,19 @@ jobs:
           path: coverage/
           retention-days: 30
 
-      - name: Coverage check
-        uses: irongut/CodeCoverageSummary@v1.3.0
+      - name: Coverage report for changed files
+        uses: 5monkeys/cobertura-action@master
         with:
-          filename: coverage/cobertura-coverage.xml
-          badge: true
-          fail_below_min: false
-          format: markdown
-          hide_branch_rate: false
-          hide_complexity: true
-          indicators: true
-          output: both
-          thresholds: '75 90'
+          path: coverage/cobertura-coverage.xml
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          minimum_coverage: 75
+          fail_below_threshold: false
+          show_missing: false
+          show_line: true
+          show_branch: true
+          show_class_names: false
+          only_changed_files: true
+        if: github.event_name == 'pull_request'
 
   build-android:
     if: github.actor != 'dependabot[bot]'
@@ -518,7 +519,7 @@ jobs:
           echo "" >> full-summary.md
           cat e2e-test-summary.md >> full-summary.md
           echo "" >> full-summary.md
-          echo "_View merged logs and coverage artifacts in the Actions tab._" >> full-summary.md
+          echo "_📊 Coverage for changed files is posted in a separate comment. View merged logs in the Actions tab._" >> full-summary.md
 
       - name: Comment test summary on PR
         uses: marocchino/sticky-pull-request-comment@v2
