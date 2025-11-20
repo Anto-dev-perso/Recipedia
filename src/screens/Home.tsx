@@ -47,7 +47,8 @@
 import RecipeRecommendation from '@components/organisms/RecipeRecommendation';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, SafeAreaView, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, useTheme } from 'react-native-paper';
 import { generateHomeRecommendations } from '@utils/FilterFunctions';
 import { RecommendationType } from '@customTypes/RecipeFiltersTypes';

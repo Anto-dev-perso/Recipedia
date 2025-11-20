@@ -31,7 +31,7 @@
  */
 
 import React, { useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { tagTableElement } from '@customTypes/DatabaseElementTypes';
 import SettingsItemList from '@components/organisms/SettingsItemList';
 import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
@@ -117,7 +117,7 @@ export function TagsSettings() {
 
   // TODO add a counter of how many recipes use this element before deleting it
   return (
-    <View>
+    <SafeAreaView style={{ flex: 1 }}>
       <SettingsItemList
         items={tagsSortedAlphabetically}
         testIdPrefix={testId}
@@ -139,7 +139,7 @@ export function TagsSettings() {
           onConfirmTag: handleDialogConfirm,
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {PaperProvider} from 'react-native-paper';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {darkTheme, lightTheme} from '@styles/theme';
 import AppWrapper from '@components/organisms/AppWrapper';
 import {getDarkMode, initSettings, setDarkMode as setDarkModeSetting,} from '@utils/settings';
@@ -102,9 +103,11 @@ function AppContent() {
                     }}
                 >
                     <PaperProvider theme={theme}>
-                        <NavigationContainer onReady={onLayoutRootView}>
-                            <AppWrapper/>
-                        </NavigationContainer>
+                        <SafeAreaProvider>
+                            <NavigationContainer onReady={onLayoutRootView}>
+                                <AppWrapper/>
+                            </NavigationContainer>
+                        </SafeAreaProvider>
                     </PaperProvider>
                 </DarkModeContext.Provider>
             </SeasonFilterProvider>

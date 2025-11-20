@@ -46,8 +46,9 @@
 
 import { Icon, useTheme } from 'react-native-paper';
 import { Icons, iconsSize } from '@assets/Icons';
-import React from 'react';
+import React, { useContext } from 'react';
 import { StatusBar, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Home from '@screens/Home';
 import Shopping from '@screens/Shopping';
 import Parameters from '@screens/Parameters';
@@ -55,6 +56,7 @@ import { padding, screenHeight } from '@styles/spacing';
 import { useI18n } from '@utils/i18n';
 import Search from '@screens/Search';
 import { Tab } from '@customTypes/ScreenTypes';
+import { DarkModeContext } from '@context/DarkModeContext';
 
 const testId = 'BottomTabs';
 
@@ -65,7 +67,9 @@ const testId = 'BottomTabs';
  */
 export function BottomTabs() {
   const { colors, fonts } = useTheme();
+  const { isDarkMode } = useContext(DarkModeContext);
   const { t } = useI18n();
+  const insets = useSafeAreaInsets();
 
   /**
    * Returns the appropriate icon for active (selected) tab states
@@ -116,7 +120,10 @@ export function BottomTabs() {
 
   return (
     <>
-      <StatusBar backgroundColor={colors.primaryContainer} />
+      <StatusBar
+        backgroundColor={colors.primaryContainer}
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+      />
       <Tab.Navigator
         initialRouteName='Home'
         screenOptions={({ route }) => ({
@@ -150,11 +157,12 @@ export function BottomTabs() {
           tabBarActiveTintColor: colors.onPrimaryContainer,
           tabBarInactiveTintColor: colors.onPrimaryContainer,
           tabBarStyle: {
-            height: screenHeight / 9,
+            height: screenHeight / 9 + insets.bottom,
             backgroundColor: colors.surface,
             elevation: 2,
             shadowOpacity: 0.1,
             borderTopWidth: 0,
+            paddingBottom: insets.bottom,
           },
           tabBarItemStyle: {
             paddingVertical: padding.small,

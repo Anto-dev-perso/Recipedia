@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Text, useTheme } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 import { useI18n } from '@utils/i18n';
@@ -50,7 +51,7 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
 
   const screenTestId = 'DefaultPersonSettings';
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background, height: '100%' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background, height: '100%' }}>
       <Text
         testID={screenTestId + '::Title'}
         variant={BottomScreenTitle}
@@ -118,7 +119,7 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
         progress={scalingProgress}
         testID={screenTestId + '::LoadingOverlay'}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

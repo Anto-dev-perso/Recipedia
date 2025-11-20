@@ -387,6 +387,7 @@ export function Shopping() {
           position={bottomTopPosition.top_right}
           size={'medium'}
           icon={Icons.trashIcon}
+          applyInsets={true}
           onPressFunction={showClearConfirmation}
         />
       )}

@@ -32,6 +32,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Divider, List, RadioButton, Text, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { getLanguage, setLanguage } from '@utils/settings';
@@ -70,7 +71,7 @@ export function LanguageSettings({ navigation }: LanguageSettingsProp) {
 
   const languageTestId = 'LanguageSettings';
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <Text
         testID={languageTestId + '::Title'}
         variant={BottomScreenTitle}
@@ -98,7 +99,7 @@ export function LanguageSettings({ navigation }: LanguageSettingsProp) {
           />
         </List.Section>
       </RadioButton.Group>
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -52,10 +52,10 @@ import {
   FlatList,
   Keyboard,
   ListRenderItemInfo,
-  SafeAreaView,
   ScrollView,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { listFilter, TListFilter } from '@customTypes/RecipeFiltersTypes';
 import {
