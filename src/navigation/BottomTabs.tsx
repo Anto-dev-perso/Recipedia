@@ -115,7 +115,9 @@ export function BottomTabs() {
     }
   }
 
-  // Disable lazy loading for instant tab switching and reliable tutorial
+  // Disable lazy loading to ensure all tutorial steps are registered before copilot starts.
+  // The tutorial is a one-time first-launch experience, so the performance impact is acceptable.
+  // Performance optimizations in Search/Home screens prevent ANR on slower devices.
   const shouldRenderLazy = false;
 
   return (
