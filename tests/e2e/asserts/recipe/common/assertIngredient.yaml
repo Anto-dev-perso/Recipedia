@@ -2,7 +2,7 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      text: "${INGREDIENT_NAME}.*"
+      text: ".*${INGREDIENT_NAME}.*"
     direction: DOWN
     speed: 40
     label: "Scroll to searched ingredient"
