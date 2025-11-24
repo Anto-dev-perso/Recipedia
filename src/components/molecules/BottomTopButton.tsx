@@ -54,6 +54,7 @@
 
 import React from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   bottomCenterButton,
   bottomFullButton,
@@ -78,6 +79,8 @@ export type BottomTopButtonProps<T extends React.ElementType> = {
   position: bottomTopPosition;
   /** Optional vertical offset in pixels for fine-tuning */
   buttonOffset?: number;
+  /** Whether to apply safe area insets for edge-to-edge support */
+  applyInsets?: boolean;
   /** Function called when button is pressed */
   onPressFunction(): void;
   /** Unique identifier for testing and accessibility */
@@ -94,37 +97,39 @@ export function BottomTopButton<T extends React.ElementType>({
   as,
   position,
   buttonOffset,
+  applyInsets = false,
   ...restProps
 }: BottomTopButtonProps<T>) {
   const Button = as;
+  const insets = useSafeAreaInsets();
+  const safeInsets = applyInsets ? insets : undefined;
   let buttonStyle: StyleProp<ViewStyle>;
-  // Bottom buttons can have a vertical offset. In this case, use the prop else set the offset to 0
   const offset = buttonOffset ? buttonOffset : 0;
 
   switch (position) {
     case bottomTopPosition.top_left:
-      buttonStyle = topLeftButton(offset);
+      buttonStyle = topLeftButton(offset, safeInsets);
       break;
     case bottomTopPosition.top_right:
-      buttonStyle = topRightButton(offset);
+      buttonStyle = topRightButton(offset, safeInsets);
       break;
     case bottomTopPosition.top_center:
-      buttonStyle = topCenterButton(offset);
+      buttonStyle = topCenterButton(offset, safeInsets);
       break;
     case bottomTopPosition.top_full:
-      buttonStyle = topFullButton(offset);
+      buttonStyle = topFullButton(offset, safeInsets);
       break;
     case bottomTopPosition.bottom_left:
-      buttonStyle = bottomLeftButton(offset);
+      buttonStyle = bottomLeftButton(offset, safeInsets);
       break;
     case bottomTopPosition.bottom_right:
-      buttonStyle = bottomRightButton(offset);
+      buttonStyle = bottomRightButton(offset, safeInsets);
       break;
     case bottomTopPosition.bottom_center:
-      buttonStyle = bottomCenterButton(offset);
+      buttonStyle = bottomCenterButton(offset, safeInsets);
       break;
     case bottomTopPosition.bottom_full:
-      buttonStyle = bottomFullButton(offset);
+      buttonStyle = bottomFullButton(offset, safeInsets);
       break;
     default:
       uiLogger.error('Unreachable code in BottomTopButton', { position });

@@ -46,7 +46,8 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, StatusBar, View } from 'react-native';
+import { FlatList, StatusBar, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, IconButton, Text, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { tutorialLogger } from '@utils/logger';

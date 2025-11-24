@@ -58,6 +58,7 @@
 
 import React, { useContext } from 'react';
 import { ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Divider, List, Switch, useTheme } from 'react-native-paper';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
 import { useSafeCopilot } from '@hooks/useSafeCopilot';
@@ -163,7 +164,7 @@ export function Parameters() {
   }
 
   return (
-    <View style={{ backgroundColor: colors.background }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <ScrollView>
         {/* Appearance Section */}
         <List.Section>
@@ -239,7 +240,7 @@ export function Parameters() {
           />
         </List.Section>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 

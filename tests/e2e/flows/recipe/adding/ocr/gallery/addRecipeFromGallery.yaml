@@ -28,7 +28,6 @@ appId: "com.recipedia"
     file: "ocrTime.yaml"
     label: "OCR time"
 
-
 - runFlow:
     file: "ocrPreparation.yaml"
     label: "OCR preparation"

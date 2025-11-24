@@ -78,7 +78,8 @@ import {
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 import BottomTopButton from '@components/molecules/BottomTopButton';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   BottomTopButtonOffset,
   bottomTopPosition,
@@ -1424,7 +1425,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: colors.background }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <ScrollView
         horizontal={false}
         showsVerticalScrollIndicator={false}

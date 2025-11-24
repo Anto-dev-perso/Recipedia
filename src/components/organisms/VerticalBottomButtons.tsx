@@ -28,6 +28,7 @@
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomTopButton from '@components/molecules/BottomTopButton';
 import { BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter } from '@styles/buttons';
 import { View } from 'react-native';
@@ -55,6 +56,7 @@ export function VerticalBottomButtons() {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
   const { t } = useI18n();
+  const insets = useSafeAreaInsets();
 
   const copilotData = useSafeCopilot();
   const copilotEvents = copilotData?.copilotEvents;
@@ -141,7 +143,7 @@ export function VerticalBottomButtons() {
               testID={'HomeTutorial'}
               style={{
                 position: 'absolute',
-                bottom: -padding.large + TUTORIAL_VERTICAL_OFFSET,
+                bottom: -padding.large + TUTORIAL_VERTICAL_OFFSET + insets.bottom,
                 right: padding.small,
                 width: LargeButtonDiameter + padding.small,
                 height: BottomTopButtonOffset * 4,
@@ -159,6 +161,7 @@ export function VerticalBottomButtons() {
             position={bottomTopPosition.bottom_right}
             size={'medium'}
             icon={Icons.minusIcon}
+            applyInsets={true}
             onPressFunction={() => {
               setMultipleLayout(false);
             }}
@@ -171,6 +174,7 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={BottomTopButtonOffset}
             icon={Icons.pencilIcon}
+            applyInsets={true}
             onPressFunction={() => {
               navigate('Recipe', {
                 mode: 'addManually',
@@ -185,6 +189,7 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={2 * BottomTopButtonOffset}
             icon={Icons.galleryIcon}
+            applyInsets={true}
             onPressFunction={() => {
               pickImageAndOpenNewRecipe();
             }}
@@ -197,6 +202,7 @@ export function VerticalBottomButtons() {
             size={'medium'}
             buttonOffset={3 * BottomTopButtonOffset}
             icon={Icons.cameraIcon}
+            applyInsets={true}
             onPressFunction={() => {
               takePhotoAndOpenNewRecipe();
             }}
@@ -209,6 +215,7 @@ export function VerticalBottomButtons() {
           position={bottomTopPosition.bottom_right}
           size={'medium'}
           icon={Icons.plusIcon}
+          applyInsets={true}
           onPressFunction={() => {
             setMultipleLayout(true);
           }}

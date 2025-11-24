@@ -63,6 +63,7 @@
 import { palette } from './colors';
 import { padding, remValue } from './spacing';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import type { EdgeInsets } from 'react-native-safe-area-context';
 
 /** Border width for button shapes */
 const shapeWidth: number = 1;
@@ -168,16 +169,16 @@ export const viewInsideButtonCentered = EStyleSheet.flatten([
   viewButtonStyles.centeredView,
 ]);
 
-const viewBottomTopButton = (offset: number) =>
+const viewBottomTopButton = (offset: number, insets?: EdgeInsets) =>
   EStyleSheet.create({
     bottomButton: {
       position: 'absolute',
-      bottom: offset,
+      bottom: offset + (insets?.bottom ?? 0),
       padding: padding.small,
     },
     topButton: {
       position: 'absolute',
-      top: -offset,
+      top: -offset + (insets?.top ?? 0),
       padding: padding.small,
     },
   });
@@ -204,19 +205,22 @@ export const viewPosition = EStyleSheet.create({
   },
 });
 
-export const bottomLeftButton = (offset: number) =>
-  EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.leftButton]);
-export const bottomRightButton = (offset: number) =>
-  EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.rightButton]);
-export const bottomCenterButton = (offset: number) =>
-  EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.centerButton]);
-export const bottomFullButton = (offset: number) =>
-  EStyleSheet.flatten([viewBottomTopButton(offset).bottomButton, viewPosition.fullButton]);
-export const topLeftButton = (offset: number) =>
-  EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.leftButton]);
-export const topRightButton = (offset: number) =>
-  EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.rightButton]);
-export const topCenterButton = (offset: number) =>
-  EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.centerButton]);
-export const topFullButton = (offset: number) =>
-  EStyleSheet.flatten([viewBottomTopButton(offset).topButton, viewPosition.fullButton]);
+export const bottomLeftButton = (offset: number, insets?: EdgeInsets) =>
+  EStyleSheet.flatten([viewBottomTopButton(offset, insets).bottomButton, viewPosition.leftButton]);
+export const bottomRightButton = (offset: number, insets?: EdgeInsets) =>
+  EStyleSheet.flatten([viewBottomTopButton(offset, insets).bottomButton, viewPosition.rightButton]);
+export const bottomCenterButton = (offset: number, insets?: EdgeInsets) =>
+  EStyleSheet.flatten([
+    viewBottomTopButton(offset, insets).bottomButton,
+    viewPosition.centerButton,
+  ]);
+export const bottomFullButton = (offset: number, insets?: EdgeInsets) =>
+  EStyleSheet.flatten([viewBottomTopButton(offset, insets).bottomButton, viewPosition.fullButton]);
+export const topLeftButton = (offset: number, insets?: EdgeInsets) =>
+  EStyleSheet.flatten([viewBottomTopButton(offset, insets).topButton, viewPosition.leftButton]);
+export const topRightButton = (offset: number, insets?: EdgeInsets) =>
+  EStyleSheet.flatten([viewBottomTopButton(offset, insets).topButton, viewPosition.rightButton]);
+export const topCenterButton = (offset: number, insets?: EdgeInsets) =>
+  EStyleSheet.flatten([viewBottomTopButton(offset, insets).topButton, viewPosition.centerButton]);
+export const topFullButton = (offset: number, insets?: EdgeInsets) =>
+  EStyleSheet.flatten([viewBottomTopButton(offset, insets).topButton, viewPosition.fullButton]);
