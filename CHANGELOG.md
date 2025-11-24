@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/Anto-dev-perso/Recipedia/compare/v1.1.0...v1.2.0) (2025-11-24)
+
+### Features
+
+* allow the edge-to-edge ([c955d34](https://github.com/Anto-dev-perso/Recipedia/commit/c955d3405ba345536f35e1225f8cc9c33d2dc7ea))
+* edge to edge ([#129](https://github.com/Anto-dev-perso/Recipedia/issues/129)) ([372d21a](https://github.com/Anto-dev-perso/Recipedia/commit/372d21a5090fc1beca38fddb7359785546b3b245))
+
 ## [1.1.0](https://github.com/Anto-dev-perso/Recipedia/compare/v1.0.0...v1.1.0) (2025-11-18)
 
 ### Features
