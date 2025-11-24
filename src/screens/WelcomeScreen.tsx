@@ -88,14 +88,15 @@ export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreen
       if (pendingAction === 'tutorial') {
         tutorialLogger.info('Data loaded - proceeding with tutorial');
         onStartTutorial();
-        setTimeout(() => setPendingAction(null), 100);
+        setPendingAction(null);
       } else if (pendingAction === 'skip') {
         tutorialLogger.info('Data loaded - proceeding to main app');
         onSkip();
-        setTimeout(() => setPendingAction(null), 100);
+        setPendingAction(null);
       }
     }
-  }, [isDataLoaded, pendingAction, onStartTutorial, onSkip]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDataLoaded, pendingAction]);
 
   const handleStartTutorial = () => {
     if (isDataLoaded) {
