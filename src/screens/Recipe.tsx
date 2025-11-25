@@ -89,13 +89,16 @@ import {
 import { scrollView } from '@styles/spacing';
 import RecipeImage, { RecipeImageProps } from '@components/organisms/RecipeImage';
 import { Icons } from '@assets/Icons';
-import RecipeTextRender, { RecipeTextRenderProps } from '@components/organisms/RecipeTextRender';
 import RecipeText, { RecipeTextProps, TextProp } from '@components/organisms/RecipeText';
 import RecipeIngredients, {
-  EditableBaseProps,
+  EditableBaseProps as IngredientsEditableBaseProps,
   RecipeIngredientsProps,
 } from '@components/organisms/RecipeIngredients';
-import { textSeparator, typoRender, unitySeparator } from '@styles/typography';
+import RecipePreparation, {
+  EditableBaseProps as PreparationEditableBaseProps,
+  RecipePreparationProps,
+} from '@components/organisms/RecipePreparation';
+import { textSeparator, unitySeparator } from '@styles/typography';
 import RecipeTags, { RecipeTagProps } from '@components/organisms/RecipeTags';
 import FileGestion from '@utils/FileGestion';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
@@ -1269,7 +1272,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const ingredientPrefixText = t('ingredients') + ': ';
     const ingredientTestID = 'RecipeIngredients';
 
-    const baseEditProps: EditableBaseProps = {
+    const baseEditProps: IngredientsEditableBaseProps = {
       testID: ingredientTestID,
       ingredients: recipeIngredients,
       prefixText: ingredientPrefixText,
@@ -1311,25 +1314,28 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     }
   }
 
-  function recipePreparationProp(): RecipeTextRenderProps {
-    const preparationRender: typoRender = typoRender.SECTION;
-    const preparationTestID = 'RecipePreparation';
+  function recipePreparationProp(): RecipePreparationProps {
+    const editableProps: PreparationEditableBaseProps = {
+      steps: recipePreparation,
+      prefixText: t('preparationReadOnly'),
+      onStepChange: (index: number, title: string, description: string) => {
+        editPreparationTitle(index, title);
+        editPreparationDescription(index, description);
+      },
+      onAddStep: addNewPreparationStep,
+    };
 
     switch (stackMode) {
       case recipeStateType.readOnly:
         return {
-          testID: preparationTestID,
-          type: 'readOnly',
-          text: recipePreparation,
-          render: preparationRender,
+          steps: recipePreparation,
+          mode: 'readOnly',
         };
       case recipeStateType.addOCR:
         if (recipePreparation.length == 0) {
           return {
-            testID: preparationTestID,
-            type: 'addOrEdit',
-            editType: 'add',
-            prefixText: t('preparationReadOnly'),
+            ...editableProps,
+            mode: 'add',
             openModal: () => openModalForField(recipeColumnsNames.preparation),
           };
         }
@@ -1338,29 +1344,14 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       case recipeStateType.edit:
       case recipeStateType.addManual:
         return {
-          testID: preparationTestID,
-          type: 'addOrEdit',
-          editType: 'editable',
-          renderType: preparationRender,
-          textEditable: recipePreparation,
-          textEdited: (stepIndex: number, combinedText: string) => {
-            //   TODO refactor/remove RecipeTextRender so that we don't have this callback
-            // Fallback for legacy string-based editing (shouldn't be used with new callbacks)
-            const [title, description] = combinedText.split(textSeparator);
-            editPreparationTitle(stepIndex, title || '');
-            editPreparationDescription(stepIndex, description || '');
-          },
-          addNewText: addNewPreparationStep,
-          onTitleEdit: editPreparationTitle,
-          onDescriptionEdit: editPreparationDescription,
+          ...editableProps,
+          mode: 'editable',
         };
       default:
         recipeLogger.warn('Unknown stack mode in recipePreparationProp', { stackMode });
         return {
-          testID: preparationTestID,
-          type: 'readOnly',
-          text: [],
-          render: typoRender.LIST,
+          mode: 'readOnly',
+          steps: [],
         };
     }
   }
@@ -1456,7 +1447,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         <RecipeNumber {...recipeTimeProp()} />
 
         {/*Preparation*/}
-        <RecipeTextRender {...recipePreparationProp()} />
+        <RecipePreparation {...recipePreparationProp()} />
 
         {/*Nutrition*/}
         <RecipeNutrition {...recipeNutritionProp()} />

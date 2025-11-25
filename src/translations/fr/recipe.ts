@@ -19,7 +19,7 @@ export default {
   ingredientName: 'Nom',
 
   preparationReadOnly: 'Préparation : ',
-  preparationOCRStep: 'Préparation: étape',
+  preparationOCRStep: 'Étape',
   preparationOCRStepTitle: "Titre de l'étape",
   preparationOCRStepContent: "Contenu de l'étape",
 
