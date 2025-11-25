@@ -152,7 +152,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "RecipePreparation::PrefixText"
-    text: "Preparation : "
+    text: "Preparation :"
     label: "Preparation prefix text is displayed"
 
 - assertVisible:

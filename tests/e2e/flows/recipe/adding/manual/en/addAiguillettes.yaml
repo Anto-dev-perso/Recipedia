@@ -118,9 +118,23 @@ appId: "com.recipedia"
 
 - pressKey: Enter
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 40
+    label: "Scroll to ensure add button is still visible"
+
 - tapOn:
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Press the round button of second ingredient"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 40
+    label: "Scroll to ensure add button is still visible"
 
 - tapOn:
     id: "RecipeIngredients::AddButton::RoundButton"

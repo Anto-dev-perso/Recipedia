@@ -41,12 +41,12 @@ jest.mock(
   () => require('@mocks/components/organisms/RecipeNumber-mock').recipeNumberMock
 );
 jest.mock(
-  '@components/organisms/RecipeTextRender',
-  () => require('@mocks/components/organisms/RecipeTextRender-mock').recipeTextRenderMock
-);
-jest.mock(
   '@components/organisms/RecipeIngredients',
   () => require('@mocks/components/organisms/RecipeIngredients-mock').recipeIngredientsMock
+);
+jest.mock(
+  '@components/organisms/RecipePreparation',
+  () => require('@mocks/components/organisms/RecipePreparation-mock').recipePreparationMock
 );
 jest.mock('@components/molecules/NutritionTable', () =>
   require('@mocks/components/molecules/NutritionTable-mock')
@@ -426,91 +426,106 @@ function checkPreparation(
 ) {
   switch (prop.mode) {
     case 'readOnly':
-      expect(getByTestId('RecipePreparation::Text').props.children).toEqual(
+      expect(getByTestId('RecipePreparation::Mode').props.children).toEqual('readOnly');
+      expect(getByTestId('RecipePreparation::Steps').props.children).toEqual(
         JSON.stringify(prop.recipe.preparation)
       );
-      expect(getByTestId('RecipePreparation::Title').props.children).toBeUndefined();
-      expect(getByTestId('RecipePreparation::Render').props.children).toEqual('"SECTION"');
-      expect(getByTestId('RecipePreparation::WithBorder').props.children).toBeUndefined();
-      expect(getByTestId('RecipePreparation::OnClick')).toBeTruthy();
-      expect(getByTestId('RecipePreparation::OnChangeFunction')).toBeTruthy();
 
       expect(queryByTestId('RecipePreparation::PrefixText')).toBeNull();
-      expect(queryByTestId('RecipePreparation::OpenModal')).toBeNull();
+      expect(
+        queryByTestId('RecipePreparation::OpenModal::RoundButton::OnPressFunction')
+      ).toBeNull();
+      expect(queryByTestId('RecipePreparation::OpenModal::RoundButton::Icon')).toBeNull();
+      expect(
+        queryByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction')
+      ).toBeNull();
+      expect(queryByTestId('RecipePreparation::AddButton::RoundButton::Icon')).toBeNull();
 
-      expect(queryByTestId('RecipePreparation::TextEditable')).toBeNull();
-      expect(queryByTestId('RecipePreparation::RenderType')).toBeNull();
-      expect(queryByTestId('RecipePreparation::TextEdited')).toBeNull();
-      expect(queryByTestId('RecipePreparation::AddNewText')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column1')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column2')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column3')).toBeNull();
+      prop.recipe.preparation.forEach((_, index) => {
+        expect(getByTestId(`RecipePreparation::ReadOnlyStep::${index}::SectionTitle`)).toBeTruthy();
+        expect(
+          getByTestId(`RecipePreparation::ReadOnlyStep::${index}::SectionParagraph`)
+        ).toBeTruthy();
+      });
       break;
     case 'edit':
-      expect(queryByTestId('RecipePreparation::Text')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Title')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Render')).toBeNull();
-      expect(queryByTestId('RecipePreparation::WithBorder')).toBeNull();
-      expect(queryByTestId('RecipePreparation::OnClick')).toBeNull();
-      expect(queryByTestId('RecipePreparation::OnChangeFunction')).toBeNull();
-
-      expect(getByTestId('RecipePreparation::PrefixText').props.children).toBeUndefined();
-      expect(queryByTestId('RecipePreparation::OpenModal')).toBeNull();
-
-      expect(getByTestId('RecipePreparation::TextEditable').props.children).toEqual(
-        JSON.stringify(prop.recipe.preparation)
-      );
-      expect(getByTestId('RecipePreparation::RenderType').props.children).toEqual('"SECTION"');
-      expect(getByTestId('RecipePreparation::TextEdited').props.children).toBeTruthy();
-      expect(getByTestId('RecipePreparation::AddNewText').props.children).toBeTruthy();
-      expect(queryByTestId('RecipePreparation::Column1')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column2')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column3')).toBeNull();
-      break;
-    case 'addManually':
-      expect(queryByTestId('RecipePreparation::Text')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Title')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Render')).toBeNull();
-      expect(queryByTestId('RecipePreparation::WithBorder')).toBeNull();
-      expect(queryByTestId('RecipePreparation::OnClick')).toBeNull();
-      expect(queryByTestId('RecipePreparation::OnChangeFunction')).toBeNull();
-
-      expect(getByTestId('RecipePreparation::PrefixText').props.children).toBeUndefined();
-      expect(queryByTestId('RecipePreparation::OpenModal')).toBeNull();
-
-      expect(getByTestId('RecipePreparation::TextEditable').props.children).toEqual(
-        JSON.stringify([])
-      );
-      expect(getByTestId('RecipePreparation::RenderType').props.children).toEqual('"SECTION"');
-      expect(getByTestId('RecipePreparation::TextEdited').props.children).toBeTruthy();
-      expect(getByTestId('RecipePreparation::AddNewText').props.children).toBeTruthy();
-      expect(queryByTestId('RecipePreparation::Column1')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column2')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column3')).toBeNull();
-      break;
-    case 'addFromPic':
-      expect(queryByTestId('RecipePreparation::Text')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Title')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Render')).toBeNull();
-      expect(queryByTestId('RecipePreparation::WithBorder')).toBeNull();
-      expect(queryByTestId('RecipePreparation::OnClick')).toBeNull();
-      expect(queryByTestId('RecipePreparation::OnChangeFunction')).toBeNull();
-
+      expect(getByTestId('RecipePreparation::Mode').props.children).toEqual('editable');
       expect(getByTestId('RecipePreparation::PrefixText').props.children).toEqual(
         'preparationReadOnly'
       );
+
+      expect(
+        queryByTestId('RecipePreparation::OpenModal::RoundButton::OnPressFunction')
+      ).toBeNull();
+      expect(queryByTestId('RecipePreparation::OpenModal::RoundButton::Icon')).toBeNull();
+
+      expect(
+        queryByTestId('RecipePreparation::OpenModal::RoundButton::OnPressFunction')
+      ).toBeNull();
+      expect(queryByTestId('RecipePreparation::OpenModal::RoundButton::Icon')).toBeNull();
+
+      prop.recipe.preparation.forEach((step, index) => {
+        expect(getByTestId(`RecipePreparation::EditableStep::${index}::Step`)).toBeTruthy();
+        expect(getByTestId(`RecipePreparation::EditableStep::${index}::Title`)).toBeTruthy();
+        const titleInput = getByTestId(
+          `RecipePreparation::EditableStep::${index}::TextInputTitle::CustomTextInput`
+        );
+        expect(titleInput.props.value).toEqual(step.title);
+        expect(getByTestId(`RecipePreparation::EditableStep::${index}::Content`)).toBeTruthy();
+        const descriptionInput = getByTestId(
+          `RecipePreparation::EditableStep::${index}::TextInputContent::CustomTextInput`
+        );
+        expect(descriptionInput.props.value).toEqual(step.description);
+      });
+      break;
+    case 'addManually':
+      expect(getByTestId('RecipePreparation::Mode').props.children).toEqual('editable');
+      expect(getByTestId('RecipePreparation::Steps').props.children).toEqual(JSON.stringify([]));
+      expect(getByTestId('RecipePreparation::PrefixText').props.children).toEqual(
+        'preparationReadOnly'
+      );
+
+      expect(
+        getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction')
+      ).toBeTruthy();
+      expect(getByTestId('RecipePreparation::AddButton::RoundButton::Icon').props.children).toEqual(
+        'plus'
+      );
+
+      expect(
+        getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction')
+      ).toBeTruthy();
+      expect(getByTestId('RecipePreparation::AddButton::RoundButton::Icon').props.children).toEqual(
+        'plus'
+      );
+      break;
+    case 'addFromPic':
+      expect(getByTestId('RecipePreparation::Mode').props.children).toEqual('add');
+      expect(getByTestId('RecipePreparation::Steps').props.children).toEqual(JSON.stringify([]));
+      expect(getByTestId('RecipePreparation::PrefixText').props.children).toEqual(
+        'preparationReadOnly'
+      );
+
+      expect(
+        getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction')
+      ).toBeTruthy();
+      expect(getByTestId('RecipePreparation::AddButton::RoundButton::Icon').props.children).toEqual(
+        'pencil'
+      );
+
       if (prop.imgUri.length === 0) {
-        expect(getByTestId('RecipePreparation::OpenModal').props.children).toBeTruthy();
+        expect(
+          getByTestId('RecipePreparation::OpenModal::RoundButton::OnPressFunction')
+        ).toBeTruthy();
+        expect(
+          getByTestId('RecipePreparation::OpenModal::RoundButton::Icon').props.children
+        ).toEqual('line-scan');
       } else {
-        expect(queryByTestId('RecipePreparation::OpenModal')).toBeNull();
+        expect(
+          queryByTestId('RecipePreparation::OpenModal::RoundButton::OnPressFunction')
+        ).toBeNull();
+        expect(queryByTestId('RecipePreparation::OpenModal::RoundButton::Icon')).toBeNull();
       }
-      expect(queryByTestId('RecipePreparation::RenderType')).toBeNull();
-      expect(queryByTestId('RecipePreparation::TextEdited')).toBeNull();
-      expect(queryByTestId('RecipePreparation::AddNewText')).toBeNull();
-      expect(queryByTestId('RecipePreparation::TextEditable')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column1')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column2')).toBeNull();
-      expect(queryByTestId('RecipePreparation::Column3')).toBeNull();
       break;
   }
 }
@@ -922,7 +937,6 @@ describe('Recipe Component tests', () => {
   test('updates recipePreparation and reflects in RecipePreparation only', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
-    fireEvent.press(getByTestId('RecipePreparation::TextEdited'));
     const newEditProp: editRecipeManually = {
       ...mockRouteEdit,
       recipe: {
@@ -932,6 +946,16 @@ describe('Recipe Component tests', () => {
     };
     newEditProp.recipe.preparation[0].description += '.New part of a paragraph';
 
+    const descriptionInput = getByTestId(
+      'RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput'
+    );
+    fireEvent.changeText(descriptionInput, newEditProp.recipe.preparation[0].description);
+    fireEvent(descriptionInput, 'endEditing');
+
+    await waitFor(() => {
+      checkPreparation(newEditProp, getByTestId, queryByTestId);
+    });
+
     checkImage(newEditProp, getByTestId);
     checkTitle(newEditProp, getByTestId, queryByTestId);
     checkDescription(newEditProp, getByTestId, queryByTestId);
@@ -939,7 +963,6 @@ describe('Recipe Component tests', () => {
     checkIngredients(newEditProp, getByTestId, queryByTestId);
     checkPersons(newEditProp, getByTestId, queryByTestId);
     checkTime(newEditProp, getByTestId, queryByTestId);
-    checkPreparation(newEditProp, getByTestId, queryByTestId);
   });
 
   test('validates button on read only mode', async () => {
@@ -999,8 +1022,8 @@ describe('Recipe Component tests', () => {
   test('validates button on edit mode', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
-    const newProp: RecipePropType = {
-      mode: 'readOnly',
+    const newPropEdit: editRecipeManually = {
+      ...mockRouteEdit,
       recipe: {
         image_Source: mockRouteEdit.recipe.image_Source,
         title: 'New Recipe Title',
@@ -1014,7 +1037,7 @@ describe('Recipe Component tests', () => {
       },
     };
 
-    newProp.recipe.ingredients = newProp.recipe.ingredients.map((ingredient, index) => ({
+    newPropEdit.recipe.ingredients = newPropEdit.recipe.ingredients.map((ingredient, index) => ({
       ...ingredient,
       quantity:
         index === 0
@@ -1027,27 +1050,43 @@ describe('Recipe Component tests', () => {
     }));
 
     const updatePreparationWith = '.New part of a paragraph';
+    newPropEdit.recipe.preparation[0].description += updatePreparationWith;
 
-    fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), newProp.recipe.title);
-    fireEvent.press(getByTestId('RecipeDescription::SetTextToEdit'), newProp.recipe.description);
+    fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), newPropEdit.recipe.title);
+    fireEvent.press(
+      getByTestId('RecipeDescription::SetTextToEdit'),
+      newPropEdit.recipe.description
+    );
     fireEvent.press(getByTestId('RecipeTags::RemoveTag'));
-    fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newProp.recipe.persons);
-    fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newProp.recipe.time);
-    fireEvent.press(getByTestId('RecipePreparation::TextEdited'), updatePreparationWith);
-    newProp.recipe.preparation[0].description += updatePreparationWith;
+    fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPropEdit.recipe.persons);
+    fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newPropEdit.recipe.time);
+
+    const descriptionInput = getByTestId(
+      'RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput'
+    );
+    fireEvent.changeText(descriptionInput, newPropEdit.recipe.preparation[0].description);
+    fireEvent(descriptionInput, 'endEditing');
+
+    await waitFor(() => {
+      checkPreparation(newPropEdit, getByTestId, queryByTestId);
+    });
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 
+    const newPropReadOnly: RecipePropType = {
+      mode: 'readOnly',
+      recipe: newPropEdit.recipe,
+    };
+
     await waitFor(() => {
-      checkTitle(newProp, getByTestId, queryByTestId);
+      checkTitle(newPropReadOnly, getByTestId, queryByTestId);
     });
-    checkImage(newProp, getByTestId);
-    checkDescription(newProp, getByTestId, queryByTestId);
-    checkTags(newProp, getByTestId, queryByTestId);
-    checkIngredients(newProp, getByTestId, queryByTestId);
-    checkPersons(newProp, getByTestId, queryByTestId);
-    checkTime(newProp, getByTestId, queryByTestId);
-    checkPreparation(newProp, getByTestId, queryByTestId);
+    checkImage(newPropReadOnly, getByTestId);
+    checkDescription(newPropReadOnly, getByTestId, queryByTestId);
+    checkTags(newPropReadOnly, getByTestId, queryByTestId);
+    checkIngredients(newPropReadOnly, getByTestId, queryByTestId);
+    checkPersons(newPropReadOnly, getByTestId, queryByTestId);
+    checkTime(newPropReadOnly, getByTestId, queryByTestId);
   });
   //TODO change expected results when recipe edition will be implemented
   // TODO  a validation that new recipe is well inserted in the database
@@ -1086,7 +1125,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'Test Recipe');
     fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
-    fireEvent.press(getByTestId('RecipePreparation::AddNewText'));
+    fireEvent.press(getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction'));
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 
@@ -1138,7 +1177,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipeTitle::SetTextToEdit'), 'Test Recipe');
     fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
-    fireEvent.press(getByTestId('RecipePreparation::AddNewText'));
+    fireEvent.press(getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction'));
 
     fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
 

@@ -74,8 +74,12 @@ appId: "com.recipedia"
     speed: 60
 
 - assertVisible:
+    id: "RecipePreparation::PrefixText"
+    text: "Préparation : "
+    label: "Preparation prefix text is rendered"
+- assertVisible:
     id: "RecipePreparation::EditableStep::0::Step"
-    text: "Préparation: étape 1"
+    text: "Étape 1"
     label: "Recipe preparation section is displayed in French"
 - assertVisible:
     id: "RecipePreparation::EditableStep::0::Title"
