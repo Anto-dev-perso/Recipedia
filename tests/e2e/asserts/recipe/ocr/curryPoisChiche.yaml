@@ -128,7 +128,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Step"
+      id: "RecipePreparation::EditableStep::0::Step"
     direction: DOWN
     speed: 60
 
@@ -156,83 +156,88 @@ appId: "com.recipedia"
     label: "Outro text for the time to prepare is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Step"
-    text: "Preparation: step 1"
+    id: "RecipePreparation::PrefixText"
+    text: "Preparation :"
+    label: "Preparation prefix text is rendered"
+
+- assertVisible:
+    id: "RecipePreparation::EditableStep::0::Step"
+    text: "Step 1"
     label: "Preparation section for first step is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
+      id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Title"
+    id: "RecipePreparation::EditableStep::0::Title"
     text: "Title of step 1 : "
     label: "Intro text for the title of first step is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
     text: "La préparation"
     label: "First preparation step title is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Content"
+    id: "RecipePreparation::EditableStep::0::Content"
     text: "Content of step 1 : "
     label: "Intro text for first step is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput"
     text: "[\\s\\S]+"
     label: "First step is rendered and not empty"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
+      id: "RecipePreparation::EditableStep::1::TextInputTitle::CustomTextInput"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Title"
+    id: "RecipePreparation::EditableStep::1::Title"
     text: "Title of step 2 : "
     label: "Intro text for the title of second step is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::1::TextInputTitle::CustomTextInput"
     text: "Le curry"
     label: "Second preparation step title is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Content"
+    id: "RecipePreparation::EditableStep::1::Content"
     text: "Content of step 2 : "
     label: "Intro text for second step is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::1::TextInputContent::CustomTextInput"
     text: "[\\s\\S]+"
     label: "Second step is rendered and not empty"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
+      id: "RecipePreparation::EditableStep::2::TextInputTitle::CustomTextInput"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Title"
+    id: "RecipePreparation::EditableStep::2::Title"
     text: "Title of step 3 : "
     label: "Intro text for the title of third step is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::2::TextInputTitle::CustomTextInput"
     text: "Le riz"
     label: "Third preparation step title is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Content"
+    id: "RecipePreparation::EditableStep::2::Content"
     text: "Content of step 3 : "
     label: "Intro text for third step is rendered"
 
@@ -244,7 +249,7 @@ appId: "com.recipedia"
     centerElement: true
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::2::TextInputContent::CustomTextInput"
     text: "[\\s\\S]+"
     label: "Third step is rendered and not empty"
 

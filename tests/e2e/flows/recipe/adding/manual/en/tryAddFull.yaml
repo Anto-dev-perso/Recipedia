@@ -6,14 +6,14 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Content"
+      id: "RecipePreparation::EditableStep::0::Content"
     direction: DOWN
     speed: 60
     centerElement: true
     label: "Scroll to preparation step"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
     label: "Press preparation step title"
 
 - inputText:
@@ -25,14 +25,14 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+      id: "RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 60
     centerElement: true
     label: "Scroll to preparation content"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput"
     label: "Press preparation step paragraph"
 
 - inputText:

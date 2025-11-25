@@ -91,22 +91,22 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     direction: DOWN
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     text: "1) Prepare vegetables"
     label: "First section of the preparation is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     text: "2) Cook soup"
     label: "Second section of the preparation is rendered"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     text: "3) Serve"
     label: "Third section of the preparation is rendered"
 

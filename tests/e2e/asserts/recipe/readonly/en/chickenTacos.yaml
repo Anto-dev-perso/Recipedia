@@ -89,34 +89,34 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::SectionParagraph"
+      id: "RecipePreparation::ReadOnlyStep::0::SectionParagraph"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     text: "1) Prepare chicken"
     label: "First section of the preparation is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::SectionParagraph"
+      id: "RecipePreparation::ReadOnlyStep::1::SectionParagraph"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     text: "2) Assemble tacos"
     label: "Second section of the preparation is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::SectionParagraph"
+      id: "RecipePreparation::ReadOnlyStep::2::SectionParagraph"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     text: "3) Serve"
     label: "Third section of the preparation is rendered"
 

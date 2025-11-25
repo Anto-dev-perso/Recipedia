@@ -9,12 +9,12 @@ appId: "com.recipedia"
     label: "Add tag button icons is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Content"
+    id: "RecipePreparation::EditableStep::2::Content"
     text: "Content of step 3 : "
     label: "Preparation #3 content text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::2::TextInputContent::CustomTextInput"
     text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
       \ ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson\
       \ a feu moyen a vif."
@@ -22,47 +22,47 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::Title"
+      id: "RecipePreparation::EditableStep::2::Title"
     direction: UP
     speed: 40
     label: "Scroll to third preparation title"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Title"
+    id: "RecipePreparation::EditableStep::2::Title"
     text: "Title of step 3 : "
     label: "Preparation #3 title text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::2::TextInputTitle::CustomTextInput"
     text: "LA CUISSON DU POULET"
     label: "Preparation #3 paragraph title input text id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::Step"
+      id: "RecipePreparation::EditableStep::2::Step"
     direction: UP
     speed: 40
     label: "Scroll to third preparation step"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Step"
-    text: "Preparation: step 3"
+    id: "RecipePreparation::EditableStep::2::Step"
+    text: "Step 3"
     label: "Preparation #3 step is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::Content"
+      id: "RecipePreparation::EditableStep::1::Content"
     direction: UP
     speed: 40
     label: "Scroll to second preparation content"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Content"
+    id: "RecipePreparation::EditableStep::1::Content"
     text: "Content of step 2 : "
     label: "Preparation #2 content text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::1::TextInputContent::CustomTextInput"
     text:
       "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez\
       \ et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\n\
@@ -71,45 +71,45 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::Title"
+      id: "RecipePreparation::EditableStep::1::Title"
     direction: UP
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Title"
+    id: "RecipePreparation::EditableStep::1::Title"
     text: "Title of step 2 : "
     label: "Preparation #2 title text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::1::TextInputTitle::CustomTextInput"
     text: "La sauce"
     label: "Preparation #2 paragraph title input text id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::Step"
+      id: "RecipePreparation::EditableStep::1::Step"
     direction: UP
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Step"
-    text: "Preparation: step 2"
+    id: "RecipePreparation::EditableStep::1::Step"
+    text: "Step 2"
     label: "Preparation #2 step is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Content"
+      id: "RecipePreparation::EditableStep::0::Content"
     direction: UP
     speed: 40
     label: "Scroll to first preparation content"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Content"
+    id: "RecipePreparation::EditableStep::0::Content"
     text: "Content of step 1 : "
     label: "Preparation #1 content text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput"
     text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz\
       \ selon les indications du paquet.Pendant ce temps, preparez les filets de poulet\
       \ a la sauce satay."
@@ -117,30 +117,42 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Title"
+      id: "RecipePreparation::EditableStep::0::Title"
     direction: UP
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Title"
+    id: "RecipePreparation::EditableStep::0::Title"
     text: "Title of step 1 : "
     label: "Preparation #1 title text is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
     text: "Le riz"
     label: "Preparation #1 paragraph title input text id is displayed with the correct text"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Step"
+      id: "RecipePreparation::EditableStep::0::Step"
     direction: UP
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Step"
-    text: "Preparation: step 1"
+    id: "RecipePreparation::EditableStep::0::Step"
+    text: "Step 1"
     label: "Preparation #1 step is displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::PrefixText"
+    direction: UP
+    speed: 40
+    label: "Scroll to preparation prefix text"
+
+- assertVisible:
+    id: "RecipePreparation::PrefixText"
+    text: "Preparation :"
+    label: "Preparation prefix text is rendered"
 
 - scrollUntilVisible:
     element:

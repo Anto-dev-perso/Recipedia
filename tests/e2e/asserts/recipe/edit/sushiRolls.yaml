@@ -230,134 +230,139 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Title"
+      id: "RecipePreparation::EditableStep::0::Title"
     direction: DOWN
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Step"
-    text: "Preparation: step 1"
+    id: "RecipePreparation::PrefixText"
+    text: "Preparation :"
+    label: "Preparation prefix text is rendered"
+
+- assertVisible:
+    id: "RecipePreparation::EditableStep::0::Step"
+    text: "Step 1"
     label: "Preparation section for first step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Title"
+    id: "RecipePreparation::EditableStep::0::Title"
     text: "Title of step 1 : "
     label: "Intro text for the title of first step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
     text: "Prepare rice"
     label: "First preparation step title is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+      id: "RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::Content"
+    id: "RecipePreparation::EditableStep::0::Content"
     text: "Content of step 1 : "
     label: "Intro text for first step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput"
     label: "First step input is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+      id: "RecipePreparation::EditableStep::1::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Step"
-    text: "Preparation: step 2"
+    id: "RecipePreparation::EditableStep::1::Step"
+    text: "Step 2"
     label: "Preparation section for second step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Title"
+    id: "RecipePreparation::EditableStep::1::Title"
     text: "Title of step 2 : "
     label: "Intro text for the title of second step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::1::TextInputTitle::CustomTextInput"
     text: "Spread rice"
     label: "Second preparation step title is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+      id: "RecipePreparation::EditableStep::1::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::Content"
+    id: "RecipePreparation::EditableStep::1::Content"
     text: "Content of step 2 : "
     label: "Intro text for second step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::1::TextInputContent::CustomTextInput"
     label: "Second step input is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
+      id: "RecipePreparation::EditableStep::2::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Step"
-    text: "Preparation: step 3"
+    id: "RecipePreparation::EditableStep::2::Step"
+    text: "Step 3"
     label: "Preparation section for third step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Title"
+    id: "RecipePreparation::EditableStep::2::Title"
     text: "Title of step 3 : "
     label: "Intro text for the title of third step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::2::TextInputTitle::CustomTextInput"
     text: "Add fillings and roll"
     label: "Third preparation step title is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
+      id: "RecipePreparation::EditableStep::2::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::Content"
+    id: "RecipePreparation::EditableStep::2::Content"
     text: "Content of step 3 : "
     label: "Intro text for third step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::2::TextInputContent::CustomTextInput"
     label: "Third step input is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::3::TextInputTitle::CustomTextInput"
+      id: "RecipePreparation::EditableStep::3::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::Step"
-    text: "Preparation: step 4"
+    id: "RecipePreparation::EditableStep::3::Step"
+    text: "Step 4"
     label: "Preparation section for Fourth step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::Title"
+    id: "RecipePreparation::EditableStep::3::Title"
     text: "Title of step 4 : "
     label: "Intro text for the title of Fourth step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::3::TextInputTitle::CustomTextInput"
     text: "Serve"
     label: "Fourth preparation step title is rendered"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::3::TextInputContent::CustomTextInput"
+      id: "RecipePreparation::EditableStep::3::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::Content"
+    id: "RecipePreparation::EditableStep::3::Content"
     text: "Content of step 4 : "
     label: "Intro text for Fourth step is rendered"
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::3::TextInputContent::CustomTextInput"
     label: "Fourth step input is rendered"
 
 - scrollUntilVisible:

@@ -89,55 +89,55 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
     label: "Scroll to first preparation step"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     text: "1) Le riz"
     label: "First preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionParagraph"
     text: "Portez a ebullition une casserole d'eau salee.Faites cuire le riz selon les indications du paquet.Pendant ce temps, preparez les filets de poulet a la sauce satay."
     label: "First preparation paragraph is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
     label: "Scroll to second preparation step"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     text: "2) La sauce"
     label: "Second preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::1::SectionParagraph"
     text: "Dans le bol d'un mixeur, deposez les ingredients suivants :\nepluchez et hachez le gingembre.\nAjoutez les cacahuetes, le sucre et le lait de coco.\nSalez, poivrez. Mixez jusqu'a obtenir une texture homogene."
     label: "Second preparation paragraph is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     direction: DOWN
     speed: 60
     centerElement: true
     label: "Scroll to third preparation step"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     text: "3) LA CUISSON DU POULET"
     label: "Third preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::2::SectionParagraph"
     text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson a feu moyen a vif."
     label: "Third preparation paragraph is displayed"
 

@@ -70,12 +70,12 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::Content"
+      id: "RecipePreparation::EditableStep::0::Content"
     direction: DOWN
     speed: 60
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
     label: "Tap on recipe preparation title text input"
 - inputText:
     text: "Titre de preparation"
@@ -83,7 +83,7 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput"
     label: "Tap on recipe preparation content text input"
 - inputText:
     text: "Etape de la preparation"
