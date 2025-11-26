@@ -67,20 +67,15 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
-
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
-
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
+- repeat:
+    while:
+      notVisible:
+        text: "Italian"
+    commands:
+      - swipe:
+          start: "50%,40%"
+          end: "50%,25%"
+          label: "Swipe down to see dropdown items"
 
 - tapOn:
     text: "Italian"
