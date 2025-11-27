@@ -76,8 +76,10 @@ export type ReadOnlyProps = BaseProps & {
 export type EditableBaseProps = BaseProps & {
   /** Prefix text displayed above the steps */
   prefixText: string;
-  /** Callback fired when a step is edited */
-  onStepChange: (index: number, title: string, description: string) => void;
+  /** Callback fired when a step title editing is finished */
+  onTitleEdited: (index: number, title: string) => void;
+  /** Callback fired when a step description editing is finished */
+  onDescriptionEdited: (index: number, description: string) => void;
   /** Callback fired to add a new step */
   onAddStep: () => void;
 };
@@ -173,12 +175,14 @@ function EditableStep({
   testID,
   index,
   item,
-  onStepChange,
+  onTitleEdited,
+  onDescriptionEdited,
 }: {
   testID: string;
   index: number;
   item: preparationStepElement;
-  onStepChange: (index: number, title: string, description: string) => void;
+  onTitleEdited: (index: number, title: string) => void;
+  onDescriptionEdited: (index: number, description: string) => void;
 }) {
   const testId = testID + `::EditableStep::${index}`;
 
@@ -193,13 +197,13 @@ function EditableStep({
 
   const handleTitleEndEditing = () => {
     if (localTitle !== item.title) {
-      onStepChange(index, localTitle, item.description);
+      onTitleEdited(index, localTitle);
     }
   };
 
   const handleDescriptionEndEditing = () => {
     if (localDescription !== item.description) {
-      onStepChange(index, item.title, localDescription);
+      onDescriptionEdited(index, localDescription);
     }
   };
 
@@ -252,7 +256,13 @@ function EditableStep({
 /**
  * Editable preparation steps component
  */
-function EditablePreparation({ steps, prefixText, onStepChange, onAddStep }: EditableProps) {
+function EditablePreparation({
+  steps,
+  prefixText,
+  onTitleEdited,
+  onDescriptionEdited,
+  onAddStep,
+}: EditableProps) {
   return (
     <PrefixTextWrapper testID={testID} prefixText={prefixText}>
       <FlatList
@@ -264,7 +274,8 @@ function EditablePreparation({ steps, prefixText, onStepChange, onAddStep }: Edi
             testID={testID}
             index={index}
             item={item}
-            onStepChange={onStepChange}
+            onTitleEdited={onTitleEdited}
+            onDescriptionEdited={onDescriptionEdited}
           />
         )}
         scrollEnabled={false}

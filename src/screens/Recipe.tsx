@@ -1318,10 +1318,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const editableProps: PreparationEditableBaseProps = {
       steps: recipePreparation,
       prefixText: t('preparationReadOnly'),
-      onStepChange: (index: number, title: string, description: string) => {
-        editPreparationTitle(index, title);
-        editPreparationDescription(index, description);
-      },
+      onTitleEdited: editPreparationTitle,
+      onDescriptionEdited: editPreparationDescription,
       onAddStep: addNewPreparationStep,
     };
 
