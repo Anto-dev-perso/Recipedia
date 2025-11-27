@@ -4,8 +4,7 @@ appId: "com.recipedia"
     element:
       id: "RecipeIngredients::OpenModal::RoundButton"
     direction: UP
-    centerElement: true
-    speed: 60
+    speed: 40
 
 - tapOn:
     id: "RecipeIngredients::OpenModal::RoundButton"
