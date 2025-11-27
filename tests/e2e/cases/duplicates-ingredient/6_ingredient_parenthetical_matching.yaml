@@ -63,10 +63,6 @@ tags:
     text: "This ingredient name already exists"
     label: "Assert - Helper text visible for exact duplicate"
 
-- tapOn:
-    id: "IngredientsSettings::ItemDialog::AddModal::Menu::Button"
-    label: "Action - Open type menu"
-
 - extendedWaitUntil:
     visible:
       id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
@@ -86,6 +82,7 @@ tags:
 - tapOn:
     id: "IngredientsSettings::ItemDialog::AddModal::CancelButton"
     label: "Cleanup - Cancel add ingredient dialog"
+
 
 - runFlow:
     file: "../../flows/parameters/ingredients/returnToHome.yaml"
