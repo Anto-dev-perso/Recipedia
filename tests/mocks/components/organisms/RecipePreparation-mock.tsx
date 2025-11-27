@@ -1,5 +1,5 @@
 import { Button, Text, TextInput, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { RecipePreparationProps } from '@components/organisms/RecipePreparation';
 import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
 
@@ -9,22 +9,26 @@ function EditableStepMock({
   step,
   index,
   mode,
-  onTitleEdited,
-  onDescriptionEdited,
+  onTitleChange,
+  onDescriptionChange,
 }: {
   step: preparationStepElement;
   index: number;
   mode: 'readOnly' | 'editable' | 'add';
-  onTitleEdited?: (index: number, title: string) => void;
-  onDescriptionEdited?: (index: number, description: string) => void;
+  onTitleChange?: (index: number, title: string) => void;
+  onDescriptionChange?: (index: number, description: string) => void;
 }) {
-  const [localTitle, setLocalTitle] = useState(step.title);
-  const [localDescription, setLocalDescription] = useState(step.description);
+  const handleTitleChange = (newTitle: string) => {
+    if (onTitleChange) {
+      onTitleChange(index, newTitle);
+    }
+  };
 
-  useEffect(() => {
-    setLocalTitle(step.title);
-    setLocalDescription(step.description);
-  }, [step.title, step.description]);
+  const handleDescriptionChange = (newDescription: string) => {
+    if (onDescriptionChange) {
+      onDescriptionChange(index, newDescription);
+    }
+  };
 
   return (
     <View key={index}>
@@ -45,26 +49,16 @@ function EditableStepMock({
           </Text>
           <TextInput
             testID={`${testID}::EditableStep::${index}::TextInputTitle::CustomTextInput`}
-            value={localTitle}
-            onChangeText={setLocalTitle}
-            onEndEditing={() => {
-              if (onTitleEdited && localTitle !== step.title) {
-                onTitleEdited(index, localTitle);
-              }
-            }}
+            value={step.title}
+            onChangeText={handleTitleChange}
           />
           <Text testID={`${testID}::EditableStep::${index}::Content`}>
             Content of step {index + 1} :{' '}
           </Text>
           <TextInput
             testID={`${testID}::EditableStep::${index}::TextInputContent::CustomTextInput`}
-            value={localDescription}
-            onChangeText={setLocalDescription}
-            onEndEditing={() => {
-              if (onDescriptionEdited && localDescription !== step.description) {
-                onDescriptionEdited(index, localDescription);
-              }
-            }}
+            value={step.description}
+            onChangeText={handleDescriptionChange}
           />
         </>
       )}
@@ -86,9 +80,9 @@ export function recipePreparationMock(props: RecipePreparationProps) {
           step={step}
           index={index}
           mode={mode}
-          onTitleEdited={'onTitleEdited' in props ? props.onTitleEdited : undefined}
-          onDescriptionEdited={
-            'onDescriptionEdited' in props ? props.onDescriptionEdited : undefined
+          onTitleChange={'onTitleChange' in props ? props.onTitleChange : undefined}
+          onDescriptionChange={
+            'onDescriptionChange' in props ? props.onDescriptionChange : undefined
           }
         />
       ))}

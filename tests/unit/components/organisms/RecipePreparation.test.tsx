@@ -68,16 +68,16 @@ describe('RecipePreparation Component', () => {
   });
 
   describe('editable mode', () => {
-    const mockOnTitleEdited = jest.fn();
-    const mockOnDescriptionEdited = jest.fn();
+    const mockOnTitleChange = jest.fn();
+    const mockOnDescriptionChange = jest.fn();
     const mockOnAddStep = jest.fn();
 
     const editableProps: RecipePreparationProps = {
       mode: 'editable',
       steps: sampleSteps,
       prefixText: 'Preparation :',
-      onTitleEdited: mockOnTitleEdited,
-      onDescriptionEdited: mockOnDescriptionEdited,
+      onTitleChange: mockOnTitleChange,
+      onDescriptionChange: mockOnDescriptionChange,
       onAddStep: mockOnAddStep,
     };
 
@@ -135,47 +135,43 @@ describe('RecipePreparation Component', () => {
       expect(mockOnAddStep).toHaveBeenCalledTimes(1);
     });
 
-    it('calls onTitleEdited when title input ends editing', async () => {
+    it('calls onTitleChange when title changes', async () => {
       const { getByTestId } = await renderRecipePreparation(editableProps);
 
       const titleInput = getByTestId(
         'RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput'
       );
       fireEvent.changeText(titleInput, 'Updated title');
-      fireEvent(titleInput, 'endEditing');
 
-      await waitFor(() => {
-        expect(mockOnTitleEdited).toHaveBeenCalledWith(0, 'Updated title');
-      });
+      expect(mockOnTitleChange).toHaveBeenCalledWith(0, 'Updated title');
     });
 
-    it('calls onDescriptionEdited when description input ends editing', async () => {
+    it('calls onDescriptionChange when description changes', async () => {
       const { getByTestId } = await renderRecipePreparation(editableProps);
 
       const descriptionInput = getByTestId(
         'RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput'
       );
       fireEvent.changeText(descriptionInput, 'Updated description');
-      fireEvent(descriptionInput, 'endEditing');
 
-      await waitFor(() => {
-        expect(mockOnDescriptionEdited).toHaveBeenCalledWith(0, 'Updated description');
-      });
+      expect(mockOnDescriptionChange).toHaveBeenCalledWith(0, 'Updated description');
     });
 
-    it('does not call callbacks if value unchanged on end editing', async () => {
+    it('does not call callbacks if value unchanged', async () => {
       const { getByTestId } = await renderRecipePreparation(editableProps);
 
       const titleInput = getByTestId(
         'RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput'
       );
-      fireEvent(titleInput, 'endEditing');
 
-      expect(mockOnTitleEdited).not.toHaveBeenCalled();
-      expect(mockOnDescriptionEdited).not.toHaveBeenCalled();
+      // Change to same value - callback should not be called
+      fireEvent.changeText(titleInput, sampleSteps[0].title);
+
+      expect(mockOnTitleChange).not.toHaveBeenCalled();
+      expect(mockOnDescriptionChange).not.toHaveBeenCalled();
     });
 
-    it('updates local state as user types without calling callback', async () => {
+    it('calls callback immediately when user types', async () => {
       const { getByTestId } = await renderRecipePreparation(editableProps);
 
       const titleInput = getByTestId(
@@ -183,12 +179,11 @@ describe('RecipePreparation Component', () => {
       );
       fireEvent.changeText(titleInput, 'Typing...');
 
-      expect(mockOnTitleEdited).not.toHaveBeenCalled();
-      expect(mockOnDescriptionEdited).not.toHaveBeenCalled();
-      expect(titleInput.props.value).toEqual('Typing...');
+      // Callback should be called immediately on change
+      expect(mockOnTitleChange).toHaveBeenCalledWith(0, 'Typing...');
     });
 
-    it('preserves title changes when description is edited', async () => {
+    it('calls both callbacks when both fields are edited', async () => {
       const { getByTestId } = await renderRecipePreparation(editableProps);
 
       const titleInput = getByTestId(
@@ -200,38 +195,15 @@ describe('RecipePreparation Component', () => {
 
       fireEvent.changeText(titleInput, 'Modified title');
       fireEvent.changeText(descriptionInput, 'Modified description');
-      fireEvent(descriptionInput, 'endEditing');
 
-      await waitFor(() => {
-        expect(mockOnDescriptionEdited).toHaveBeenCalledWith(0, 'Modified description');
-      });
-      expect(titleInput.props.value).toEqual('Modified title');
-    });
-
-    it('preserves description changes when title is edited', async () => {
-      const { getByTestId } = await renderRecipePreparation(editableProps);
-
-      const titleInput = getByTestId(
-        'RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput'
-      );
-      const descriptionInput = getByTestId(
-        'RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput'
-      );
-
-      fireEvent.changeText(descriptionInput, 'Modified description');
-      fireEvent.changeText(titleInput, 'Modified title');
-      fireEvent(titleInput, 'endEditing');
-
-      await waitFor(() => {
-        expect(mockOnTitleEdited).toHaveBeenCalledWith(0, 'Modified title');
-      });
-      expect(descriptionInput.props.value).toEqual('Modified description');
+      expect(mockOnTitleChange).toHaveBeenCalledWith(0, 'Modified title');
+      expect(mockOnDescriptionChange).toHaveBeenCalledWith(0, 'Modified description');
     });
   });
 
   describe('add mode', () => {
-    const mockOnTitleEdited = jest.fn();
-    const mockOnDescriptionEdited = jest.fn();
+    const mockOnTitleChange = jest.fn();
+    const mockOnDescriptionChange = jest.fn();
     const mockOnAddStep = jest.fn();
     const mockOpenModal = jest.fn();
 
@@ -239,8 +211,8 @@ describe('RecipePreparation Component', () => {
       mode: 'add',
       steps: sampleSteps,
       prefixText: 'Preparation :',
-      onTitleEdited: mockOnTitleEdited,
-      onDescriptionEdited: mockOnDescriptionEdited,
+      onTitleChange: mockOnTitleChange,
+      onDescriptionChange: mockOnDescriptionChange,
       onAddStep: mockOnAddStep,
       openModal: mockOpenModal,
     };
@@ -249,8 +221,8 @@ describe('RecipePreparation Component', () => {
       mode: 'add',
       steps: [],
       prefixText: 'Preparation :',
-      onTitleEdited: mockOnTitleEdited,
-      onDescriptionEdited: mockOnDescriptionEdited,
+      onTitleChange: mockOnTitleChange,
+      onDescriptionChange: mockOnDescriptionChange,
       onAddStep: mockOnAddStep,
       openModal: mockOpenModal,
     };
@@ -304,17 +276,17 @@ describe('RecipePreparation Component', () => {
     });
   });
 
-  describe('local state management', () => {
-    const mockOnTitleEdited = jest.fn();
-    const mockOnDescriptionEdited = jest.fn();
+  describe('prop updates', () => {
+    const mockOnTitleChange = jest.fn();
+    const mockOnDescriptionChange = jest.fn();
     const mockOnAddStep = jest.fn();
 
     const editableProps: RecipePreparationProps = {
       mode: 'editable',
       steps: sampleSteps,
       prefixText: 'Preparation :',
-      onTitleEdited: mockOnTitleEdited,
-      onDescriptionEdited: mockOnDescriptionEdited,
+      onTitleChange: mockOnTitleChange,
+      onDescriptionChange: mockOnDescriptionChange,
       onAddStep: mockOnAddStep,
     };
 
@@ -322,7 +294,7 @@ describe('RecipePreparation Component', () => {
       jest.clearAllMocks();
     });
 
-    it('syncs local state when prop changes', async () => {
+    it('updates display when prop changes', async () => {
       const { getByTestId, rerender } = await renderRecipePreparation(editableProps);
 
       const updatedSteps = [{ title: 'New title', description: 'New description' }];
@@ -347,15 +319,15 @@ describe('RecipePreparation Component', () => {
         mode: 'editable',
         steps: [],
         prefixText: 'Test',
-        onTitleEdited: jest.fn(),
-        onDescriptionEdited: jest.fn(),
+        onTitleChange: jest.fn(),
+        onDescriptionChange: jest.fn(),
         onAddStep: jest.fn(),
       };
 
       expect(editableProps.mode).toEqual('editable');
       expect(editableProps.prefixText).toBeDefined();
-      expect(editableProps.onTitleEdited).toBeDefined();
-      expect(editableProps.onDescriptionEdited).toBeDefined();
+      expect(editableProps.onTitleChange).toBeDefined();
+      expect(editableProps.onDescriptionChange).toBeDefined();
       expect(editableProps.onAddStep).toBeDefined();
     });
 
@@ -364,8 +336,8 @@ describe('RecipePreparation Component', () => {
         mode: 'add',
         steps: [],
         prefixText: 'Test',
-        onTitleEdited: jest.fn(),
-        onDescriptionEdited: jest.fn(),
+        onTitleChange: jest.fn(),
+        onDescriptionChange: jest.fn(),
         onAddStep: jest.fn(),
         openModal: jest.fn(),
       };
@@ -382,8 +354,8 @@ describe('RecipePreparation Component', () => {
 
       expect(readOnlyProps.mode).toEqual('readOnly');
       expect('prefixText' in readOnlyProps).toBeFalsy();
-      expect('onTitleEdited' in readOnlyProps).toBeFalsy();
-      expect('onDescriptionEdited' in readOnlyProps).toBeFalsy();
+      expect('onTitleChange' in readOnlyProps).toBeFalsy();
+      expect('onDescriptionChange' in readOnlyProps).toBeFalsy();
     });
   });
 });

@@ -45,7 +45,7 @@
  * ```
  */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FlatList, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
@@ -76,10 +76,10 @@ export type ReadOnlyProps = BaseProps & {
 export type EditableBaseProps = BaseProps & {
   /** Prefix text displayed above the steps */
   prefixText: string;
-  /** Callback fired when a step title editing is finished */
-  onTitleEdited: (index: number, title: string) => void;
-  /** Callback fired when a step description editing is finished */
-  onDescriptionEdited: (index: number, description: string) => void;
+  /** Callback fired when a step title changes */
+  onTitleChange: (index: number, title: string) => void;
+  /** Callback fired when a step description changes */
+  onDescriptionChange: (index: number, description: string) => void;
   /** Callback fired to add a new step */
   onAddStep: () => void;
 };
@@ -175,35 +175,28 @@ function EditableStep({
   testID,
   index,
   item,
-  onTitleEdited,
-  onDescriptionEdited,
+  onTitleChange,
+  onDescriptionChange,
 }: {
   testID: string;
   index: number;
   item: preparationStepElement;
-  onTitleEdited: (index: number, title: string) => void;
-  onDescriptionEdited: (index: number, description: string) => void;
+  onTitleChange: (index: number, title: string) => void;
+  onDescriptionChange: (index: number, description: string) => void;
 }) {
   const testId = testID + `::EditableStep::${index}`;
 
   const { t } = useI18n();
-  const [localTitle, setLocalTitle] = useState(item.title);
-  const [localDescription, setLocalDescription] = useState(item.description);
 
-  useEffect(() => {
-    setLocalTitle(item.title);
-    setLocalDescription(item.description);
-  }, [item.title, item.description]);
-
-  const handleTitleEndEditing = () => {
-    if (localTitle !== item.title) {
-      onTitleEdited(index, localTitle);
+  const handleTitleChange = (newTitle: string) => {
+    if (newTitle !== item.title) {
+      onTitleChange(index, newTitle);
     }
   };
 
-  const handleDescriptionEndEditing = () => {
-    if (localDescription !== item.description) {
-      onDescriptionEdited(index, localDescription);
+  const handleDescriptionChange = (newDescription: string) => {
+    if (newDescription !== item.description) {
+      onDescriptionChange(index, newDescription);
     }
   };
 
@@ -227,10 +220,9 @@ function EditableStep({
         </Text>
         <CustomTextInput
           testID={testId + `::TextInputTitle`}
-          value={localTitle}
+          value={item.title}
           style={recipeTextRenderStyles.containerElement}
-          onChangeText={setLocalTitle}
-          onEndEditing={handleTitleEndEditing}
+          onChangeText={handleTitleChange}
           multiline={true}
         />
         <Text
@@ -243,9 +235,8 @@ function EditableStep({
         <CustomTextInput
           testID={testId + `::TextInputContent`}
           style={recipeTextRenderStyles.containerElement}
-          value={localDescription}
-          onChangeText={setLocalDescription}
-          onEndEditing={handleDescriptionEndEditing}
+          value={item.description}
+          onChangeText={handleDescriptionChange}
           multiline={true}
         />
       </View>
@@ -259,8 +250,8 @@ function EditableStep({
 function EditablePreparation({
   steps,
   prefixText,
-  onTitleEdited,
-  onDescriptionEdited,
+  onTitleChange,
+  onDescriptionChange,
   onAddStep,
 }: EditableProps) {
   return (
@@ -274,8 +265,8 @@ function EditablePreparation({
             testID={testID}
             index={index}
             item={item}
-            onTitleEdited={onTitleEdited}
-            onDescriptionEdited={onDescriptionEdited}
+            onTitleChange={onTitleChange}
+            onDescriptionChange={onDescriptionChange}
           />
         )}
         scrollEnabled={false}

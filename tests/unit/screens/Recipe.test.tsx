@@ -950,7 +950,6 @@ describe('Recipe Component tests', () => {
       'RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput'
     );
     fireEvent.changeText(descriptionInput, newEditProp.recipe.preparation[0].description);
-    fireEvent(descriptionInput, 'endEditing');
 
     await waitFor(() => {
       checkPreparation(newEditProp, getByTestId, queryByTestId);
