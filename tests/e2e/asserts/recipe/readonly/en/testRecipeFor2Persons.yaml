@@ -39,12 +39,12 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     direction: DOWN
     speed: 60
     label: "Scroll to preparation section"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     text: "1) Cook pasta and mix with tomatoes"
     label: "Preparation step is displayed"

@@ -67,20 +67,15 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
-
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
-
-- swipe:
-    start: "50%,40%"
-    end: "50%,25%"
-    label: "Swipe down to see dropdown items"
+- repeat:
+    while:
+      notVisible:
+        text: "Italian"
+    commands:
+      - swipe:
+          start: "50%,40%"
+          end: "50%,25%"
+          label: "Swipe down to see dropdown items"
 
 - tapOn:
     text: "Italian"
@@ -118,9 +113,23 @@ appId: "com.recipedia"
 
 - pressKey: Enter
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 40
+    label: "Scroll to ensure add button is still visible"
+
 - tapOn:
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Press the round button of second ingredient"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 40
+    label: "Scroll to ensure add button is still visible"
 
 - tapOn:
     id: "RecipeIngredients::AddButton::RoundButton"
@@ -219,14 +228,14 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
+      id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 60
     centerElement: true
     label: "Scroll to first preparation title input"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
     label: "Press the TextInput of first preparation title"
 
 - inputText:
@@ -237,7 +246,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::0::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::0::TextInputContent::CustomTextInput"
     label: "Press the TextInput of first preparation paragraph"
 
 - inputText:
@@ -261,13 +270,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
+      id: "RecipePreparation::EditableStep::1::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to second preparation title input"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::1::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::1::TextInputTitle::CustomTextInput"
     label: "Press the TextInput of second preparation title"
 
 - inputText:
@@ -279,14 +288,14 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+      id: "RecipePreparation::EditableStep::1::TextInputContent::CustomTextInput"
     direction: DOWN
     speed: 40
     centerElement: true
     label: "Scroll to preparation section"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::1::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::1::TextInputContent::CustomTextInput"
     label: "Press the TextInput of second preparation paragraph"
 
 - inputText:
@@ -330,13 +339,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
+      id: "RecipePreparation::EditableStep::2::TextInputTitle::CustomTextInput"
     direction: DOWN
     speed: 60
     label: "Scroll to third preparation title input"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::2::TextInputTitle::CustomTextInput"
+    id: "RecipePreparation::EditableStep::2::TextInputTitle::CustomTextInput"
     label: "Press the TextInput of third preparation title"
 
 - inputText:
@@ -347,7 +356,7 @@ appId: "com.recipedia"
     label: "Close the keyboard"
 
 - tapOn:
-    id: "RecipePreparation::TextRender::2::TextInputContent::CustomTextInput"
+    id: "RecipePreparation::EditableStep::2::TextInputContent::CustomTextInput"
     label: "Press the TextInput of third preparation paragraph"
 
 - inputText:

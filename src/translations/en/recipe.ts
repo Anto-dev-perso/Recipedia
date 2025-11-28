@@ -25,7 +25,7 @@ export default {
   timeSuffixEdit: 'min',
 
   preparationReadOnly: 'Preparation :',
-  preparationOCRStep: 'Preparation: step',
+  preparationOCRStep: 'Step',
   preparationOCRStepTitle: 'Title of step',
   preparationOCRStepContent: 'Content of step',
 

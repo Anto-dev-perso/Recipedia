@@ -100,9 +100,10 @@ export const recipeTextStyles = StyleSheet.create({
  * Used in recipe viewing and presentation interfaces
  */
 export const recipeTextRenderStyles = StyleSheet.create({
-  containerSection: { ...recipeMargins.padding } as ViewStyle,
-  headlineElement: { ...recipeMargins.mediumVerticalMargin } as TextStyle,
-  containerElement: { ...recipeMargins.smallVerticalMargin },
+  containerSection: recipeMargins.padding as ViewStyle,
+  headlineElement: { ...recipeMargins.smallVerticalMargin, padding: padding.small },
+  readOnlyElement: { ...recipeMargins.padding, marginLeft: padding.medium } as TextStyle,
+  containerElement: { padding: padding.small },
   tagView: screenViews.tabView as ViewStyle,
   firstColumn: { flex: 2, textAlign: 'center', width: '100%' } as ViewStyle,
   secondColumn: { flex: 2, textAlign: 'center', width: '100%' } as ViewStyle,

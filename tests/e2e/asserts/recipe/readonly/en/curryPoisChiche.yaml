@@ -128,52 +128,52 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     text: "1) La préparation"
     label: "First preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionParagraph"
     text: "[\\s\\S]+"
     label: "First preparation paragraph is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     text: "2) Le curry"
     label: "Second preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::1::SectionParagraph"
     text: "[\\s\\S]+"
     label: "Second preparation paragraph is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     text: "3) Le riz"
     label: "Third preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::2::SectionParagraph"
     text: "[\\s\\S]+"
     label: "Third preparation paragraph is displayed"
 

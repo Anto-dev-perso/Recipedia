@@ -133,68 +133,68 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::0::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     text: "1) Le poulet"
     label: "First preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::0::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::0::SectionParagraph"
     text: "[\\s\\S]+"
     label: "First preparation paragraph is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::1::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     text: "2) La sauce satay"
     label: "Second preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::1::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::1::SectionParagraph"
     text: "[\\s\\S]+"
     label: "Second preparation paragraph is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::2::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     text: "3) Le poulet sauce satay"
     label: "Third preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::2::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::2::SectionParagraph"
     text: "[\\s\\S]+"
     label: "Third preparation paragraph is displayed"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::TextRender::3::SectionParagraph"
+      id: "RecipePreparation::ReadOnlyStep::3::SectionParagraph"
     direction: DOWN
     speed: 60
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::SectionTitle"
+    id: "RecipePreparation::ReadOnlyStep::3::SectionTitle"
     text: "4) Le riz"
     label: "Fourth preparation title is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::TextRender::3::SectionParagraph"
+    id: "RecipePreparation::ReadOnlyStep::3::SectionParagraph"
     text: "Portez une casserole d'eau salée à ébullition.\nFaites cuire le riz selon les indications du paquet.\nRetirez la base de l'oignon nouveau et émincez-le.\nDégustez sans attendre votre poulet sauce satay accompagné du riz!\nParsemez-le d'oignon nouveau."
     label: "Fourth preparation paragraph is displayed"
 

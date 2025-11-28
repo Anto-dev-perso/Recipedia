@@ -134,8 +134,12 @@ appId: "com.recipedia"
     centerElement: true
     label: "Scroll to preparation add button"
 
+- assertVisible:
+    id: "RecipePreparation::PrefixText"
+    text: "Preparation :"
+    label: "Preparation prefix text is rendered"
 - assertNotVisible:
-    text: "Preparation: step 1"
+    text: "Step 1"
     label: "Preparation #1 text is not displayed"
 
 - assertNotVisible:
@@ -143,20 +147,17 @@ appId: "com.recipedia"
     label: "Preparation #1 title text is not displayed"
 
 - assertNotVisible:
-    id: "RecipePreparation::0::InputParagraph"
-    label: "Preparation #1 paragraph input text id is not displayed"
-
-- assertNotVisible:
     text: "Content of step 1 : "
     label: "Preparation #1 content text is not displayed"
 
-- assertNotVisible:
-    id: "RecipePreparation::0::InputTitle"
-    label: "Preparation #1 paragraph title input text id is not displayed"
+- assertVisible:
+    id: "RecipePreparation::PrefixText"
+    text: "Preparation :"
+    label: "Preparation prefix text is displayed"
 
 - assertVisible:
     id: "RecipePreparation::AddButton::RoundButton"
-    label: "New preparation id is displayed with the correct icon"
+    label: "New preparation button is displayed with the correct icon"
 
 - runFlow:
     file: "../common/nutritionEmptyEdit.yaml"
