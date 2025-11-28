@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/Anto-dev-perso/Recipedia/compare/v1.2.0...v1.2.1) (2025-11-28)
+
+### Bug Fixes
+
+* **RecipePreparation:** on end doesn't works so goback to on change ([052a492](https://github.com/Anto-dev-perso/Recipedia/commit/052a4929486a58f6def168840ad67c5ee2aabce4))
+
 ## [1.2.0](https://github.com/Anto-dev-perso/Recipedia/compare/v1.1.0...v1.2.0) (2025-11-24)
 
 ### Features
