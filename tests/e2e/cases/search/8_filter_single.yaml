@@ -19,8 +19,14 @@ tags:
     id: "SearchScreen::FilterAccordion::Accordion::3"
     label: "Action - Expand Cereal accordion"
 
+- scrollUntilVisible:
+    element:
+      text: "Spaghetti"
+    direction: DOWN
+    label: "Action - Scroll to Spaghetti item"
+
 - tapOn:
-    id: "SearchScreen::FilterAccordion::Accordion::3::Item::0"
+    text: "Spaghetti"
     label: "Action - Select Spaghetti as filter"
 
 - runFlow:
