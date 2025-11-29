@@ -24,7 +24,7 @@ jest.mock('@components/dialogs/SimilarityDialog', () =>
 describe('ValidationQueue', () => {
   const database = RecipeDatabase.getInstance();
 
-  const mockOnItemValidated = jest.fn();
+  const mockOnValidated = jest.fn();
   const mockOnComplete = jest.fn();
 
   const sampleTags: tagTableElement[] = [
@@ -78,7 +78,7 @@ describe('ValidationQueue', () => {
         <ValidationQueue
           type={'Tag'}
           items={items}
-          onItemValidated={mockOnItemValidated}
+          onValidated={mockOnValidated}
           onComplete={mockOnComplete}
           testId={testID}
         />
@@ -92,7 +92,7 @@ describe('ValidationQueue', () => {
         <ValidationQueue
           type={'Ingredient'}
           items={items}
-          onItemValidated={mockOnItemValidated}
+          onValidated={mockOnValidated}
           onComplete={mockOnComplete}
           testId='test-validation'
         />
@@ -123,7 +123,7 @@ describe('ValidationQueue', () => {
     test('calls onComplete immediately when items array is empty', () => {
       renderQueueTags([]);
       expect(mockOnComplete).toHaveBeenCalledTimes(1);
-      expect(mockOnItemValidated).not.toHaveBeenCalled();
+      expect(mockOnValidated).not.toHaveBeenCalled();
     });
   });
 
@@ -141,14 +141,14 @@ describe('ValidationQueue', () => {
       ).toBe('Vegetarian');
     });
 
-    test('calls onItemValidated when tag is confirmed', () => {
+    test('calls onValidated when tag is confirmed', () => {
       const { getByTestId } = renderQueueTags([sampleTags[0]]);
 
       fireEvent.press(
         getByTestId('test-validation::ValidationQueue::Tag::SimilarityDialog::Mock::item.onConfirm')
       );
 
-      expect(mockOnItemValidated).toHaveBeenCalledTimes(1);
+      expect(mockOnValidated).toHaveBeenCalledTimes(1);
     });
 
     test('moves to next tag after validation', async () => {
@@ -211,8 +211,8 @@ describe('ValidationQueue', () => {
         )
       );
 
-      expect(mockOnItemValidated).toHaveBeenCalledTimes(1);
-      const validatedIngredient = mockOnItemValidated.mock.calls[0][0];
+      expect(mockOnValidated).toHaveBeenCalledTimes(1);
+      const validatedIngredient = mockOnValidated.mock.calls[0][0];
       expect(validatedIngredient.quantity).toBe('100');
       expect(validatedIngredient.unit).toBe('g');
     });
@@ -307,7 +307,7 @@ describe('ValidationQueue', () => {
       }
 
       await waitFor(() => {
-        expect(mockOnItemValidated).toHaveBeenCalledTimes(3);
+        expect(mockOnValidated).toHaveBeenCalledTimes(3);
         expect(mockOnComplete).toHaveBeenCalledTimes(1);
       });
     });
@@ -335,7 +335,7 @@ describe('ValidationQueue', () => {
         ).toBe('Quick');
       });
 
-      expect(mockOnItemValidated).not.toHaveBeenCalled();
+      expect(mockOnValidated).not.toHaveBeenCalled();
     });
 
     test('passes correct testId to SimilarityDialog', () => {
@@ -355,7 +355,7 @@ describe('ValidationQueue', () => {
         )
       );
 
-      expect(mockOnItemValidated).toHaveBeenCalledTimes(1);
+      expect(mockOnValidated).toHaveBeenCalledTimes(1);
     });
 
     test('handles onUseExisting callback for ingredients', () => {
@@ -367,7 +367,7 @@ describe('ValidationQueue', () => {
         )
       );
 
-      expect(mockOnItemValidated).toHaveBeenCalledTimes(1);
+      expect(mockOnValidated).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -418,7 +418,7 @@ describe('ValidationQueue', () => {
           <ValidationQueue
             type='Tag'
             items={[sampleTags[1]]}
-            onItemValidated={mockOnItemValidated}
+            onValidated={mockOnValidated}
             onComplete={mockOnComplete}
             testId='test-validation'
           />
@@ -463,7 +463,7 @@ describe('ValidationQueue', () => {
 
       await waitFor(() => {
         expect(mockOnComplete).toHaveBeenCalledTimes(1);
-        expect(mockOnItemValidated).not.toHaveBeenCalled();
+        expect(mockOnValidated).not.toHaveBeenCalled();
       });
     });
   });

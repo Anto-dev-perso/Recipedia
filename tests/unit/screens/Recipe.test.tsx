@@ -1512,7 +1512,7 @@ describe('Recipe Component tests', () => {
       });
     });
 
-    test('adds tag when ValidationQueue calls onItemValidated', async () => {
+    test('adds tag when ValidationQueue calls onValidated', async () => {
       const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
 
       const initialTagsJson = getByTestId('RecipeTags::TagsList').props.children;
@@ -1525,7 +1525,7 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeValidation::ValidationQueue::Mock')).toBeTruthy();
       });
 
-      fireEvent.press(getByTestId('RecipeValidation::ValidationQueue::Mock::onItemValidated'));
+      fireEvent.press(getByTestId('RecipeValidation::ValidationQueue::Mock::onValidated'));
 
       await waitFor(() => {
         const finalTagsJson = getByTestId('RecipeTags::TagsList').props.children;
@@ -1692,6 +1692,140 @@ describe('Recipe Component tests', () => {
         },
         { timeout: 2000 }
       );
+    });
+
+    test('ValidationQueue callback preserves previously added tags from state', async () => {
+      const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
+
+      const initialTags = JSON.parse(getByTestId('RecipeTags::TagsList').props.children);
+      expect(initialTags.length).toBe(0);
+
+      fireEvent.press(getByTestId('RecipeTags::AddNewTag'));
+
+      await waitFor(() => {
+        expect(getByTestId('RecipeValidation::ValidationQueue::Mock')).toBeTruthy();
+      });
+
+      fireEvent.press(getByTestId('RecipeValidation::ValidationQueue::Mock::onValidated'));
+
+      await waitFor(() => {
+        const tagsAfterFirst = JSON.parse(getByTestId('RecipeTags::TagsList').props.children);
+        expect(tagsAfterFirst).toContain('mockTag');
+        expect(tagsAfterFirst.length).toBe(1);
+      });
+
+      fireEvent.press(getByTestId('RecipeTags::AddNewTag'));
+
+      await waitFor(() => {
+        expect(getByTestId('RecipeValidation::ValidationQueue::Mock')).toBeTruthy();
+      });
+
+      fireEvent.press(getByTestId('RecipeValidation::ValidationQueue::Mock::onValidated'));
+
+      await waitFor(() => {
+        const finalTags = JSON.parse(getByTestId('RecipeTags::TagsList').props.children);
+        expect(finalTags).toContain('mockTag');
+        expect(finalTags.length).toBe(1);
+      });
+    });
+
+    test('ValidationQueue callback preserves previously auto-added exact match ingredients', async () => {
+      const { getByTestId, queryByTestId } = await renderRecipe(
+        createMockRoute(mockRouteAddManually)
+      );
+
+      fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
+
+      await waitFor(() => {
+        expect(getByTestId('RecipeIngredients::0::Row')).toBeTruthy();
+      });
+
+      let ingredientsList = JSON.parse(
+        getByTestId('RecipeIngredients::Ingredients').props.children
+      );
+      expect(ingredientsList).toHaveLength(1);
+      expect(ingredientsList[0].name).toBe('');
+
+      fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
+
+      await waitFor(() => {
+        expect(getByTestId('RecipeIngredients::1::Row')).toBeTruthy();
+      });
+
+      ingredientsList = JSON.parse(getByTestId('RecipeIngredients::Ingredients').props.children);
+      expect(ingredientsList).toHaveLength(2);
+      expect(ingredientsList[0].name).toBe('');
+      expect(ingredientsList[1].name).toBe('');
+    });
+
+    test('ValidationQueue prevents duplicate tags using latest state', async () => {
+      const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
+
+      const initialTags = JSON.parse(getByTestId('RecipeTags::TagsList').props.children);
+      expect(initialTags).toHaveLength(0);
+
+      fireEvent.press(getByTestId('RecipeTags::AddNewTag'));
+
+      await waitFor(() => {
+        expect(getByTestId('RecipeValidation::ValidationQueue::Mock')).toBeTruthy();
+      });
+
+      fireEvent.press(getByTestId('RecipeValidation::ValidationQueue::Mock::onValidated'));
+
+      await waitFor(() => {
+        const tags = JSON.parse(getByTestId('RecipeTags::TagsList').props.children);
+        expect(tags).toHaveLength(1);
+        expect(tags[0]).toBe('mockTag');
+      });
+
+      fireEvent.press(getByTestId('RecipeTags::AddNewTag'));
+
+      await waitFor(() => {
+        expect(getByTestId('RecipeValidation::ValidationQueue::Mock')).toBeTruthy();
+      });
+
+      fireEvent.press(getByTestId('RecipeValidation::ValidationQueue::Mock::onValidated'));
+
+      await waitFor(() => {
+        const finalTags = JSON.parse(getByTestId('RecipeTags::TagsList').props.children);
+        expect(finalTags).toHaveLength(1);
+        expect(finalTags[0]).toBe('mockTag');
+      });
+    });
+
+    test('exact match ingredient auto-added then new ingredient validated both persist', async () => {
+      await dbInstance.addIngredient({
+        name: 'PreExisting',
+        type: ingredientType.vegetable,
+        unit: 'g',
+        season: [],
+      });
+
+      const { getByTestId, queryByTestId } = await renderRecipe(
+        createMockRoute(mockRouteAddManually)
+      );
+
+      const initialIngredients = JSON.parse(
+        getByTestId('RecipeIngredients::Ingredients').props.children
+      );
+      expect(initialIngredients).toHaveLength(0);
+
+      fireEvent.press(getByTestId('RecipeIngredients::AddButton::RoundButton::OnPressFunction'));
+
+      await waitFor(() => {
+        const ingredients = JSON.parse(
+          getByTestId('RecipeIngredients::Ingredients').props.children
+        );
+        expect(ingredients).toHaveLength(1);
+        expect(ingredients[0].name).toBe('');
+      });
+
+      expect(queryByTestId('RecipeValidation::ValidationQueue::Mock')).toBeNull();
+
+      const finalIngredients = JSON.parse(
+        getByTestId('RecipeIngredients::Ingredients').props.children
+      );
+      expect(finalIngredients).toHaveLength(1);
     });
   });
 

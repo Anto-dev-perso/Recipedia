@@ -203,7 +203,6 @@ export function SimilarityDialog({ testId, isVisible, onClose, item }: Similarit
       }
     }
     setShowItemDialog(false);
-    onClose();
   };
 
   const modalTestId = `${testId}::SimilarityDialog`;
