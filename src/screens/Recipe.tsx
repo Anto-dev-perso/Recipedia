@@ -64,8 +64,12 @@
  * ```
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RecipeScreenProp } from '@customTypes/ScreenTypes';
+import {
+  processIngredientsForValidation,
+  processTagsForValidation,
+} from '@utils/RecipeValidationHelpers';
 import {
   extractTagsName,
   FormIngredientElement,
@@ -390,14 +394,17 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
    *
    * @param tag - Tag to add
    */
-  const addTagIfNotDuplicate = (tag: tagTableElement) => {
-    const isDuplicate = recipeTags.some(
-      existing => existing.name.toLowerCase() === tag.name.toLowerCase()
-    );
-    if (!isDuplicate) {
-      setRecipeTags(prev => [...prev, tag]);
-    }
-  };
+  const addTagIfNotDuplicate = useCallback(
+    (tag: tagTableElement) => {
+      const isDuplicate = recipeTags.some(
+        existing => existing.name.toLowerCase() === tag.name.toLowerCase()
+      );
+      if (!isDuplicate) {
+        setRecipeTags(prev => [...prev, tag]);
+      }
+    },
+    [recipeTags]
+  );
 
   /**
    * Adds or merges an ingredient into the recipe
@@ -407,34 +414,37 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
    *
    * @param ingredient - Ingredient to add or merge
    */
-  const addOrMergeIngredient = (ingredient: ingredientTableElement) => {
-    const existingIndex = recipeIngredients.findIndex(
-      existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
-    );
+  const addOrMergeIngredient = useCallback(
+    (ingredient: ingredientTableElement) => {
+      const existingIndex = recipeIngredients.findIndex(
+        existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
+      );
 
-    if (existingIndex === -1) {
-      setRecipeIngredients(prev => [...prev, ingredient]);
-    } else {
-      setRecipeIngredients(prev => {
-        const updated = [...prev];
-        const existing = updated[existingIndex];
+      if (existingIndex === -1) {
+        setRecipeIngredients(prev => [...prev, ingredient]);
+      } else {
+        setRecipeIngredients(prev => {
+          const updated = [...prev];
+          const existing = updated[existingIndex];
 
-        if (!existing) {
-          return prev;
-        }
+          if (!existing) {
+            return prev;
+          }
 
-        if (existing.unit === ingredient.unit) {
-          updated[existingIndex] = {
-            ...existing,
-            quantity: String(Number(existing.quantity || 0) + Number(ingredient.quantity || 0)),
-          };
-        } else {
-          updated[existingIndex] = ingredient;
-        }
-        return updated;
-      });
-    }
-  };
+          if (existing.unit === ingredient.unit) {
+            updated[existingIndex] = {
+              ...existing,
+              quantity: String(Number(existing.quantity || 0) + Number(ingredient.quantity || 0)),
+            };
+          } else {
+            updated[existingIndex] = ingredient;
+          }
+          return updated;
+        });
+      }
+    },
+    [recipeIngredients]
+  );
 
   async function addTag(newTag: string) {
     if (!newTag || newTag.trim().length === 0) {
@@ -445,15 +455,15 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       return;
     }
 
-    const similarTags = findSimilarTags(newTag);
-    const exactMatch = similarTags.find(tag => tag.name.toLowerCase() === newTag.toLowerCase());
-
-    if (exactMatch) {
-      addTagIfNotDuplicate(exactMatch);
-    } else {
+    const itemsToValidate = processTagsForValidation(
+      [{ name: newTag }],
+      findSimilarTags,
+      addTagIfNotDuplicate
+    );
+    if (itemsToValidate.length > 0) {
       setValidationQueue({
         type: 'Tag',
-        items: [{ name: newTag }],
+        items: itemsToValidate,
         onItemValidated: addTagIfNotDuplicate,
       });
     }
@@ -555,30 +565,24 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     ) {
       setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
 
-      const similarIngredients = findSimilarIngredients(newName);
-      const exactMatch = similarIngredients.find(
-        ing => ing.name.toLowerCase() === newName.toLowerCase()
+      const itemsToValidate = processIngredientsForValidation(
+        [
+          {
+            name: newName,
+            unit: newUnit,
+            quantity: newQuantity,
+            season: [],
+            type: ingredientType.undefined,
+          },
+        ],
+        findSimilarIngredients,
+        addOrMergeIngredient
       );
 
-      if (exactMatch) {
-        const mergedIngredient: ingredientTableElement = {
-          ...exactMatch,
-          quantity: newQuantity || exactMatch.quantity,
-          unit: newUnit || exactMatch.unit,
-        };
-        addOrMergeIngredient(mergedIngredient);
-      } else {
+      if (itemsToValidate.length > 0) {
         setValidationQueue({
           type: 'Ingredient',
-          items: [
-            {
-              name: newName,
-              unit: newUnit,
-              quantity: newQuantity,
-              season: [],
-              type: ingredientType.undefined,
-            },
-          ],
+          items: itemsToValidate,
           onItemValidated: addOrMergeIngredient,
         });
       }
@@ -963,10 +967,15 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         newTag =>
           !recipeTags.some(existing => existing.name.toLowerCase() === newTag.name.toLowerCase())
       );
-      if (filteredTags.length > 0) {
+      const itemsToValidate = processTagsForValidation(
+        filteredTags,
+        findSimilarTags,
+        addTagIfNotDuplicate
+      );
+      if (itemsToValidate.length > 0) {
         setValidationQueue({
           type: 'Tag',
-          items: filteredTags,
+          items: itemsToValidate,
           onItemValidated: addTagIfNotDuplicate,
         });
       }
@@ -981,11 +990,18 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       setRecipeTime(newFieldData.recipeTime);
     }
     if (newFieldData.recipeIngredients && newFieldData.recipeIngredients.length > 0) {
-      setValidationQueue({
-        type: 'Ingredient',
-        items: newFieldData.recipeIngredients,
-        onItemValidated: addOrMergeIngredient,
-      });
+      const itemsToValidate = processIngredientsForValidation(
+        newFieldData.recipeIngredients,
+        findSimilarIngredients,
+        addOrMergeIngredient
+      );
+      if (itemsToValidate.length > 0) {
+        setValidationQueue({
+          type: 'Ingredient',
+          items: itemsToValidate,
+          onItemValidated: addOrMergeIngredient,
+        });
+      }
     }
     if (newFieldData.recipeNutrition) {
       const newNutrition: nutritionTableElement = {
