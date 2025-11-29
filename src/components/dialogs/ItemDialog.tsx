@@ -76,9 +76,9 @@ import { Button, Dialog, Menu, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import CustomTextInput from '@components/atomic/CustomTextInput';
 import {
+  FormIngredientElement,
   ingredientTableElement,
   ingredientType,
-  PartialIngredientElement,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 import { shoppingCategories } from '@customTypes/RecipeFiltersTypes';
@@ -92,8 +92,8 @@ export type DialogMode = 'add' | 'edit' | 'delete';
 /** Configuration for ingredient dialogs */
 export type ItemIngredientType = {
   type: 'Ingredient';
-  /** Current ingredient data (may have optional type for new/unvalidated ingredients) */
-  value: PartialIngredientElement;
+  /** Current ingredient data (may have optional fields for new/incomplete ingredients) */
+  value: FormIngredientElement;
   /** Callback fired when ingredient operation is confirmed */
   onConfirmIngredient: (mode: DialogMode, newItem: ingredientTableElement) => void;
 };
@@ -134,20 +134,22 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
 
   const [typeMenuVisible, setTypeMenuVisible] = useState(false);
 
-  const [itemName, setItemName] = useState(item.value.name);
+  const [itemName, setItemName] = useState(item.value.name ?? '');
   const [ingType, setIngType] = useState<ingredientType | undefined>(
     item.type === 'Ingredient' ? item.value.type : undefined
   );
-  const [ingUnit, setIngUnit] = useState(item.type === 'Ingredient' ? item.value.unit : '');
-  const [ingSeason, setIngSeason] = useState(item.type === 'Ingredient' ? item.value.season : []);
+  const [ingUnit, setIngUnit] = useState(item.type === 'Ingredient' ? (item.value.unit ?? '') : '');
+  const [ingSeason, setIngSeason] = useState(
+    item.type === 'Ingredient' ? (item.value.season ?? []) : []
+  );
 
   useEffect(() => {
     if (isVisible) {
-      setItemName(item.value.name);
+      setItemName(item.value.name ?? '');
       if (item.type === 'Ingredient') {
         setIngType(item.value.type);
-        setIngUnit(item.value.unit);
-        setIngSeason(item.value.season);
+        setIngUnit(item.value.unit ?? '');
+        setIngSeason(item.value.season ?? []);
       }
     }
   }, [item.value.name, item.type, item.value, isVisible]);

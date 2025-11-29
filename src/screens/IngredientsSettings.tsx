@@ -27,10 +27,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  ingredientTableElement,
-  PartialIngredientElement,
-} from '@customTypes/DatabaseElementTypes';
+import { FormIngredientElement, ingredientTableElement } from '@customTypes/DatabaseElementTypes';
 import SettingsItemList from '@components/organisms/SettingsItemList';
 import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
 import { ingredientsSettingsLogger } from '@utils/logger';
@@ -126,12 +123,7 @@ export function IngredientsSettings() {
   };
 
   const getDialogIngredientValue = () => {
-    const emptyIngredientTemplate: PartialIngredientElement = {
-      name: '',
-      unit: '',
-      type: undefined,
-      season: [],
-    };
+    const emptyIngredientTemplate: FormIngredientElement = {};
     if (dialogMode === 'add') {
       return emptyIngredientTemplate;
     }

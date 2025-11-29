@@ -171,13 +171,11 @@ export type ingredientTableElement = {
 };
 
 /**
- * Temporary ingredient state for UI forms and OCR before type assignment
- * Use this for new/incomplete ingredients that haven't been validated yet
+ * Incomplete ingredient used in UI forms before all fields are filled
+ * All fields are optional to represent work-in-progress state
+ * When confirmed/validated, convert to ingredientTableElement
  */
-export type PartialIngredientElement = Omit<ingredientTableElement, 'type'> & {
-  /** Optional type for temporary/unvalidated ingredients */
-  type?: ingredientType;
-};
+export type FormIngredientElement = Partial<ingredientTableElement>;
 
 export type coreIngredientElement = Pick<ingredientTableElement, 'name'> & {
   quantityPerPerson: number | undefined;
@@ -364,8 +362,8 @@ export function isRecipeEqual(recipe1: recipeTableElement, recipe2: recipeTableE
 }
 
 export function isIngredientEqual(
-  ingredient1: ingredientTableElement | PartialIngredientElement,
-  ingredient2: ingredientTableElement | PartialIngredientElement
+  ingredient1: ingredientTableElement | FormIngredientElement,
+  ingredient2: ingredientTableElement | FormIngredientElement
 ): boolean {
   return (
     ingredient1.name == ingredient2.name &&
@@ -390,7 +388,7 @@ export function isShoppingEqual(
  * @throws Error if type is undefined
  */
 export function assertIngredientType(
-  ingredient: PartialIngredientElement
+  ingredient: FormIngredientElement
 ): asserts ingredient is ingredientTableElement {
   if (!ingredient.type) {
     throw new Error(`Ingredient "${ingredient.name}" must have a type before saving`);

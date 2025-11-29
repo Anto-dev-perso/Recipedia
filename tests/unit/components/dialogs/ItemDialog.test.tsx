@@ -2,9 +2,9 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import ItemDialog, { ItemDialogProps } from '@components/dialogs/ItemDialog';
 import {
+  FormIngredientElement,
   ingredientTableElement,
   ingredientType,
-  PartialIngredientElement,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 
@@ -416,7 +416,7 @@ describe('ItemDialog Component', () => {
 
   describe('validation for ingredients', () => {
     test('disables confirm button when ingredient has undefined type in add mode', () => {
-      const invalidIngredient: PartialIngredientElement = {
+      const invalidIngredient: FormIngredientElement = {
         name: 'Test Ingredient',
         type: undefined,
         unit: 'kg',
