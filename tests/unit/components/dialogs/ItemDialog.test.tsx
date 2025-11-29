@@ -4,6 +4,7 @@ import ItemDialog, { ItemDialogProps } from '@components/dialogs/ItemDialog';
 import {
   ingredientTableElement,
   ingredientType,
+  PartialIngredientElement,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 
@@ -415,9 +416,9 @@ describe('ItemDialog Component', () => {
 
   describe('validation for ingredients', () => {
     test('disables confirm button when ingredient has undefined type in add mode', () => {
-      const invalidIngredient: ingredientTableElement = {
+      const invalidIngredient: PartialIngredientElement = {
         name: 'Test Ingredient',
-        type: ingredientType.undefined,
+        type: undefined,
         unit: 'kg',
         season: [],
       };
@@ -525,7 +526,7 @@ describe('ItemDialog Component', () => {
     test('enables confirm button in delete mode regardless of type or unit', () => {
       const invalidIngredient: ingredientTableElement = {
         name: 'Test Ingredient',
-        type: ingredientType.undefined,
+        type: ingredientType.cereal,
         unit: '',
         season: [],
       };

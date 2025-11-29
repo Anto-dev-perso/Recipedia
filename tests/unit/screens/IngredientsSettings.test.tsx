@@ -5,6 +5,7 @@ import {
   ingredientTableElement,
   ingredientType,
   isIngredientEqual,
+  PartialIngredientElement,
 } from '@customTypes/DatabaseElementTypes';
 import { mockNavigationFunctions } from '@mocks/deps/react-navigation-mock';
 import RecipeDatabase from '@utils/RecipeDatabase';
@@ -129,10 +130,10 @@ describe('IngredientsSettings Screen', () => {
       expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
     });
 
-    const emptyTemplate: ingredientTableElement = {
+    const emptyTemplate: PartialIngredientElement = {
       name: '',
       unit: '',
-      type: ingredientType.undefined,
+      type: undefined,
       season: [],
     };
 

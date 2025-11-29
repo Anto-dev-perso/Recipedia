@@ -127,7 +127,7 @@ describe('DatabaseElementTypes Helper Functions', () => {
         {
           name: 'New Ingredient',
           season: ['never mind'],
-          type: ingredientType.undefined,
+          type: ingredientType.cereal,
           quantity: '0',
           unit: 'unit',
         },
@@ -145,7 +145,7 @@ describe('DatabaseElementTypes Helper Functions', () => {
         {
           name: 'New Ingredient',
           season: ['never mind'],
-          type: ingredientType.undefined,
+          type: ingredientType.cereal,
           quantity: '0',
           unit: 'unit',
         },
@@ -209,7 +209,7 @@ describe('DatabaseElementTypes Helper Functions', () => {
         {
           name: 'New Ingredient',
           season: ['never mind'],
-          type: ingredientType.undefined,
+          type: ingredientType.cereal,
           quantity: '0',
           unit: 'unit',
         },
@@ -227,7 +227,7 @@ describe('DatabaseElementTypes Helper Functions', () => {
         {
           name: 'New Ingredient',
           season: ['never mind'],
-          type: ingredientType.undefined,
+          type: ingredientType.cereal,
           quantity: '0',
           unit: 'unit',
         },
