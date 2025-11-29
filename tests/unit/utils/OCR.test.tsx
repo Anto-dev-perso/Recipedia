@@ -8,8 +8,7 @@ import {
 } from '@utils/OCR';
 import { nutritionObject } from '@customTypes/OCRTypes';
 import {
-  ingredientTableElement,
-  ingredientType,
+  FormIngredientElement,
   recipeColumnsNames,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
@@ -3121,68 +3120,50 @@ describe('OCR Utility Functions', () => {
           mockWarn
         );
         expect(result).toEqual({
-          recipeIngredients: new Array<ingredientTableElement>(
+          recipeIngredients: new Array<FormIngredientElement>(
             {
               name: 'cacahuètes grillées',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '200',
             },
             {
               name: 'concentré de tomates',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '70',
             },
             {
               name: 'filet de poulet',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '4',
             },
             {
               name: 'gingembre',
               unit: 'cm',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '1à3',
             },
             {
               name: "goussed'ail",
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '2',
             },
             {
               name: 'lait de coco',
               unit: 'mL',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '400',
             },
             {
               name: 'oignon jaune',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '2',
             },
             {
               name: 'oignon nouveau',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '1',
             },
             {
               name: 'riz basmati  Bio',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '300',
             }
           ),
@@ -3205,68 +3186,50 @@ describe('OCR Utility Functions', () => {
         expect(mockWarn).toHaveBeenCalledWith(expect.stringContaining('Using 2 and scaling to 6'));
 
         expect(result).toEqual({
-          recipeIngredients: new Array<ingredientTableElement>(
+          recipeIngredients: new Array<FormIngredientElement>(
             {
               name: 'cacahuètes grillées',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '300',
             },
             {
               name: 'concentré de tomates',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '105',
             },
             {
               name: 'filet de poulet',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '6',
             },
             {
               name: 'gingembre',
               unit: 'cm',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '1à3',
             },
             {
               name: "goussed'ail",
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '3',
             },
             {
               name: 'lait de coco',
               unit: 'mL',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '600',
             },
             {
               name: 'oignon jaune',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '3',
             },
             {
               name: 'oignon nouveau',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '1,5',
             },
             {
               name: 'riz basmati  Bio',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '450',
             }
           ),
@@ -3289,68 +3252,50 @@ describe('OCR Utility Functions', () => {
         expect(mockWarn).toHaveBeenCalledWith(expect.stringContaining('Using 2 and scaling to 1'));
 
         expect(result).toEqual({
-          recipeIngredients: new Array<ingredientTableElement>(
+          recipeIngredients: new Array<FormIngredientElement>(
             {
               name: 'cacahuètes grillées',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '50',
             },
             {
               name: 'concentré de tomates',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '17,5',
             },
             {
               name: 'filet de poulet',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '1',
             },
             {
               name: 'gingembre',
               unit: 'cm',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '1à3',
             },
             {
               name: "goussed'ail",
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '0,5',
             },
             {
               name: 'lait de coco',
               unit: 'mL',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '100',
             },
             {
               name: 'oignon jaune',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '0,5',
             },
             {
               name: 'oignon nouveau',
               unit: '',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '0,25',
             },
             {
               name: 'riz basmati  Bio',
               unit: 'g',
-              season: [],
-              type: ingredientType.undefined,
               quantity: '75',
             }
           ),

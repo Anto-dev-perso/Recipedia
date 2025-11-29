@@ -83,7 +83,6 @@ export function selectFilterCategoriesValuesToDisplay(
       case listFilter.oilAndFat:
       case listFilter.nutsAndSeeds:
       case listFilter.sweetener:
-      case listFilter.undefined:
         filterApplyToDatabase.data = arrayOfType(ingredientsList, category).map(ing => ing.name);
         break;
       default:
@@ -217,7 +216,6 @@ export function filterFromRecipe(
                 value
               );
             break;
-          case listFilter.undefined:
           default:
             searchLogger.error('filterFromRecipe:: Impossible to reach');
             break;

@@ -170,6 +170,13 @@ export type ingredientTableElement = {
   season: Array<string>;
 };
 
+/**
+ * Incomplete ingredient used in UI forms before all fields are filled
+ * All fields are optional to represent work-in-progress state
+ * When confirmed/validated, convert to ingredientTableElement
+ */
+export type FormIngredientElement = Partial<ingredientTableElement>;
+
 export type coreIngredientElement = Pick<ingredientTableElement, 'name'> & {
   quantityPerPerson: number | undefined;
 };
@@ -355,15 +362,13 @@ export function isRecipeEqual(recipe1: recipeTableElement, recipe2: recipeTableE
 }
 
 export function isIngredientEqual(
-  ingredient1: ingredientTableElement,
-  ingredient2: ingredientTableElement
+  ingredient1: ingredientTableElement | FormIngredientElement,
+  ingredient2: ingredientTableElement | FormIngredientElement
 ): boolean {
   return (
     ingredient1.name == ingredient2.name &&
     ingredient1.unit == ingredient2.unit &&
-    (ingredient1.type == ingredientType.undefined ||
-      ingredient2.type == ingredientType.undefined ||
-      ingredient1.type == ingredient2.type)
+    (!ingredient1.type || !ingredient2.type || ingredient1.type == ingredient2.type)
   );
 }
 
@@ -376,6 +381,18 @@ export function isShoppingEqual(
   shop2: shoppingListTableElement
 ): boolean {
   return shop1.type == shop2.type && shop1.name == shop2.name && shop1.unit == shop2.unit;
+}
+
+/**
+ * Asserts ingredient has a valid type before database operations
+ * @throws Error if type is undefined
+ */
+export function assertIngredientType(
+  ingredient: FormIngredientElement
+): asserts ingredient is ingredientTableElement {
+  if (!ingredient.type) {
+    throw new Error(`Ingredient "${ingredient.name}" must have a type before saving`);
+  }
 }
 
 /**
@@ -419,6 +436,4 @@ export enum ingredientType {
   nutsAndSeeds = 'ingredientTypes.nutsAndSeeds',
   /** Honey, maple syrup, artificial sweeteners */
   sweetener = 'ingredientTypes.sweetener',
-  /** Fallback category for uncategorized ingredients */
-  undefined = 'ingredientTypes.undefined',
 }

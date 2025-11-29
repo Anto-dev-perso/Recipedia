@@ -114,14 +114,10 @@ describe('FilterFunctions', () => {
     );
   });
 
-  test('filterFromRecipe with undefined filters return the array given in input', () => {
-    expect(
-      filterFromRecipe(
-        testRecipes,
-        new Map<TListFilter, Array<string>>([[listFilter.undefined, ['*']]]),
-        t
-      )
-    ).toEqual(testRecipes);
+  test('filterFromRecipe with empty filters return the array given in input', () => {
+    expect(filterFromRecipe(testRecipes, new Map<TListFilter, Array<string>>(), t)).toEqual(
+      testRecipes
+    );
   });
 
   test('filterFromRecipe with only preparation time filters', () => {

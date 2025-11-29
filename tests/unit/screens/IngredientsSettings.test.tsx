@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import IngredientsSettings from '@screens/IngredientsSettings';
 import {
+  FormIngredientElement,
   ingredientTableElement,
   ingredientType,
   isIngredientEqual,
@@ -70,7 +71,11 @@ function dialogIsNotOpen(getByTestId: QueryByIdType) {
   expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
 }
 
-function dialogIsOpen(item: ingredientTableElement, mode: DialogMode, getByTestId: QueryByIdType) {
+function dialogIsOpen(
+  item: ingredientTableElement | FormIngredientElement,
+  mode: DialogMode,
+  getByTestId: QueryByIdType
+) {
   expect(getByTestId('IngredientsSettings::ItemDialog::IsVisible').props.children).toEqual(true);
   expect(getByTestId('IngredientsSettings::ItemDialog::Mode').props.children).toEqual(mode);
   expect(getByTestId('IngredientsSettings::ItemDialog::OnClose')).toBeTruthy();
@@ -129,12 +134,7 @@ describe('IngredientsSettings Screen', () => {
       expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
     });
 
-    const emptyTemplate: ingredientTableElement = {
-      name: '',
-      unit: '',
-      type: ingredientType.undefined,
-      season: [],
-    };
+    const emptyTemplate: FormIngredientElement = {};
 
     dialogIsOpen(emptyTemplate, 'add', getByTestId);
   });

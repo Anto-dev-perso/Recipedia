@@ -637,7 +637,7 @@ describe('RecipeDatabase', () => {
         await db.deleteIngredient({
           ...testIngredients[11],
           id: undefined,
-          type: ingredientType.undefined,
+          type: ingredientType.cereal,
         })
       ).toEqual(false);
       expect(
@@ -646,7 +646,7 @@ describe('RecipeDatabase', () => {
           id: undefined,
           name: '',
           unit: '',
-          type: ingredientType.undefined,
+          type: ingredientType.cereal,
         })
       ).toEqual(false);
       // Ingredient should still be in the list since delete returned false

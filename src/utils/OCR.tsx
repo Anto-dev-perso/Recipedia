@@ -26,8 +26,7 @@
  */
 
 import {
-  ingredientTableElement,
-  ingredientType,
+  FormIngredientElement,
   preparationStepElement,
   recipeColumnsNames,
   tagTableElement,
@@ -766,7 +765,7 @@ export async function extractFieldFromImage(
     recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTags: tagTableElement[];
-    recipeIngredients: ingredientTableElement[];
+    recipeIngredients: Array<FormIngredientElement>;
   },
   onWarn: WarningHandler = msg => ocrLogger.warn('OCR extraction warning', { message: msg })
 ): Promise<
@@ -778,7 +777,7 @@ export async function extractFieldFromImage(
     recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTime: number;
-    recipeIngredients: ingredientTableElement[];
+    recipeIngredients: Array<FormIngredientElement>;
     recipeNutrition: nutritionObject;
   }>
 > {
@@ -881,15 +880,13 @@ export async function extractFieldFromImage(
             ...(ocrResult as Array<ingredientObject>).map(ingredient => {
               return {
                 name: ingredient.name,
-                season: [],
-                type: ingredientType.undefined,
                 unit: ingredient.unit,
                 quantity: scaleQuantityForPersons(
                   ingredient.quantityPerPersons[idQuantityToSearch].quantity,
                   ocrPersonsCount,
                   targetPersonsCount
                 ),
-              } as ingredientTableElement;
+              };
             }),
           ],
         };
