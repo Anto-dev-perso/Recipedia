@@ -46,7 +46,8 @@ import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 export type ValidationQueuePropsBase<T extends 'Tag' | 'Ingredient', ItemType> = {
   type: T;
   items: ItemType[];
-  onItemValidated: (item: ItemType) => void;
+  onValidated: (item: ItemType) => void;
+  onDismissed?: (item: ItemType) => void;
 };
 
 export type TagValidationProps = ValidationQueuePropsBase<'Tag', tagTableElement>;
@@ -63,7 +64,8 @@ export type ValidationQueueProps = { testId: string; onComplete: () => void } & 
 export function ValidationQueue({
   type,
   items,
-  onItemValidated,
+  onValidated,
+  onDismissed,
   onComplete,
   testId,
 }: ValidationQueueProps) {
@@ -113,9 +115,18 @@ export function ValidationQueue({
         quantity: originalIngredient?.quantity || validatedIngredient.quantity,
         unit: originalIngredient?.unit || validatedIngredient.unit,
       };
-      onItemValidated(mergedIngredient);
+      onValidated(mergedIngredient);
     } else {
-      onItemValidated(item);
+      onValidated(item);
+    }
+    moveToNext();
+  };
+
+  const handleDismiss = () => {
+    if (type === 'Ingredient') {
+      onDismissed?.(currentItem as ingredientTableElement);
+    } else {
+      onDismissed?.(currentItem as tagTableElement);
     }
     moveToNext();
   };
@@ -143,7 +154,7 @@ export function ValidationQueue({
               similarItem: similarItem as tagTableElement,
               onConfirm: handleItemValidated,
               onUseExisting: handleItemValidated,
-              onDismiss: moveToNext,
+              onDismiss: handleDismiss,
             }
           : {
               type: 'Ingredient',
@@ -151,7 +162,7 @@ export function ValidationQueue({
               similarItem: similarItem as ingredientTableElement,
               onConfirm: handleItemValidated,
               onUseExisting: handleItemValidated,
-              onDismiss: moveToNext,
+              onDismiss: handleDismiss,
             }
       }
     />

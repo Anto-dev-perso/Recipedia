@@ -395,12 +395,15 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
    * @param tag - Tag to add
    */
   const addTagIfNotDuplicate = (tag: tagTableElement) => {
-    const isDuplicate = recipeTags.some(
-      existing => existing.name.toLowerCase() === tag.name.toLowerCase()
-    );
-    if (!isDuplicate) {
-      setRecipeTags(prev => [...prev, tag]);
-    }
+    setRecipeTags(prev => {
+      const isDuplicate = prev.some(
+        existing => existing.name.toLowerCase() === tag.name.toLowerCase()
+      );
+      if (!isDuplicate) {
+        return [...prev, tag];
+      }
+      return prev;
+    });
   };
 
   /**
@@ -412,14 +415,14 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
    * @param ingredient - Ingredient to add or merge
    */
   const addOrMergeIngredient = (ingredient: ingredientTableElement) => {
-    const existingIndex = recipeIngredients.findIndex(
-      existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
-    );
+    setRecipeIngredients(prev => {
+      const existingIndex = prev.findIndex(
+        existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
+      );
 
-    if (existingIndex === -1) {
-      setRecipeIngredients(prev => [...prev, ingredient]);
-    } else {
-      setRecipeIngredients(prev => {
+      if (existingIndex === -1) {
+        return [...prev, ingredient];
+      } else {
         const updated = [...prev];
         const existing = updated[existingIndex];
 
@@ -436,8 +439,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           updated[existingIndex] = ingredient;
         }
         return updated;
-      });
-    }
+      }
+    });
   };
 
   async function addTag(newTag: string) {
@@ -458,7 +461,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       setValidationQueue({
         type: 'Tag',
         items: itemsToValidate,
-        onItemValidated: addTagIfNotDuplicate,
+        onValidated: addTagIfNotDuplicate,
       });
     }
   }
@@ -577,7 +580,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         setValidationQueue({
           type: 'Ingredient',
           items: itemsToValidate,
-          onItemValidated: addOrMergeIngredient,
+          onValidated: addOrMergeIngredient,
         });
       }
     } else {
@@ -970,7 +973,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         setValidationQueue({
           type: 'Tag',
           items: itemsToValidate,
-          onItemValidated: addTagIfNotDuplicate,
+          onValidated: addTagIfNotDuplicate,
         });
       }
     }
@@ -993,7 +996,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         setValidationQueue({
           type: 'Ingredient',
           items: itemsToValidate,
-          onItemValidated: addOrMergeIngredient,
+          onValidated: addOrMergeIngredient,
         });
       }
     }

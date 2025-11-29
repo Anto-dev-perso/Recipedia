@@ -12,12 +12,12 @@ export function ValidationQueue(props: ValidationQueueProps) {
       <Text testID={`${mockTestId}::items`}>{JSON.stringify(props.items)}</Text>
       <Button testID={`${mockTestId}::onComplete`} title='onComplete' onPress={props.onComplete} />
       <Button
-        testID={`${mockTestId}::onItemValidated`}
-        title='onItemValidated'
+        testID={`${mockTestId}::onValidated`}
+        title='onValidated'
         onPress={() =>
           props.type === 'Tag'
-            ? props.onItemValidated({ id: 1, name: 'mockTag' })
-            : props.onItemValidated({
+            ? props.onValidated({ id: 1, name: 'mockTag' })
+            : props.onValidated({
                 id: 1,
                 name: 'mockIngredient',
                 type: ingredientType.undefined,
@@ -27,6 +27,24 @@ export function ValidationQueue(props: ValidationQueueProps) {
               })
         }
       />
+      {props.onDismissed && (
+        <Button
+          testID={`${mockTestId}::onDismissed`}
+          title='onDismissed'
+          onPress={() =>
+            props.type === 'Tag'
+              ? props.onDismissed?.({ id: 1, name: 'mockTag' })
+              : props.onDismissed?.({
+                  id: 1,
+                  name: 'mockIngredient',
+                  type: ingredientType.undefined,
+                  unit: 'g',
+                  quantity: '100',
+                  season: [],
+                })
+          }
+        />
+      )}
     </View>
   );
 }
