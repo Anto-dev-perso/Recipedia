@@ -562,7 +562,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     ) {
       setRecipeIngredients(recipeIngredients.filter((_, index) => index !== oldIngredientId));
 
-      const itemsToValidate = processIngredientsForValidation(
+      const { exactMatches, needsValidation } = processIngredientsForValidation(
         [
           {
             name: newName,
@@ -572,14 +572,17 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             type: ingredientType.undefined,
           },
         ],
-        findSimilarIngredients,
-        addOrMergeIngredient
+        findSimilarIngredients
       );
 
-      if (itemsToValidate.length > 0) {
+      if (exactMatches.length > 0) {
+        exactMatches.forEach(addOrMergeIngredient);
+      }
+
+      if (needsValidation.length > 0) {
         setValidationQueue({
           type: 'Ingredient',
-          items: itemsToValidate,
+          items: needsValidation,
           onValidated: addOrMergeIngredient,
         });
       }
@@ -987,15 +990,43 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       setRecipeTime(newFieldData.recipeTime);
     }
     if (newFieldData.recipeIngredients && newFieldData.recipeIngredients.length > 0) {
-      const itemsToValidate = processIngredientsForValidation(
+      const { exactMatches, needsValidation } = processIngredientsForValidation(
         newFieldData.recipeIngredients,
-        findSimilarIngredients,
-        addOrMergeIngredient
+        findSimilarIngredients
       );
-      if (itemsToValidate.length > 0) {
+
+      if (exactMatches.length > 0) {
+        setRecipeIngredients(prev => {
+          const updated = [...prev];
+          for (const ingredient of exactMatches) {
+            const existingIndex = updated.findIndex(
+              existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
+            );
+
+            if (existingIndex === -1) {
+              updated.push(ingredient);
+            } else {
+              const existing = updated[existingIndex];
+              if (existing.unit === ingredient.unit) {
+                updated[existingIndex] = {
+                  ...existing,
+                  quantity: String(
+                    Number(existing.quantity || 0) + Number(ingredient.quantity || 0)
+                  ),
+                };
+              } else {
+                updated[existingIndex] = ingredient;
+              }
+            }
+          }
+          return updated;
+        });
+      }
+
+      if (needsValidation.length > 0) {
         setValidationQueue({
           type: 'Ingredient',
-          items: itemsToValidate,
+          items: needsValidation,
           onValidated: addOrMergeIngredient,
         });
       }

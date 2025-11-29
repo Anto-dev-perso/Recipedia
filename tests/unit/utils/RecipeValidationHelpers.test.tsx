@@ -11,7 +11,6 @@ import {
 describe('RecipeValidationHelpers', () => {
   describe('processTagsForValidation', () => {
     const mockFindSimilarTags = jest.fn();
-    const mockOnExactMatch = jest.fn();
 
     const dbTags: tagTableElement[] = [
       { id: 1, name: 'Vegetarian' },
@@ -23,26 +22,25 @@ describe('RecipeValidationHelpers', () => {
       jest.clearAllMocks();
     });
 
-    test('returns empty array and calls onExactMatch for exact match tag', () => {
+    test('returns exact match in exactMatches and empty needsValidation for exact match tag', () => {
       mockFindSimilarTags.mockReturnValue([dbTags[0]]);
 
       const inputTags: tagTableElement[] = [{ name: 'Vegetarian' }];
-      const result = processTagsForValidation(inputTags, mockFindSimilarTags, mockOnExactMatch);
+      const result = processTagsForValidation(inputTags, mockFindSimilarTags);
 
-      expect(result).toEqual([]);
-      expect(mockOnExactMatch).toHaveBeenCalledTimes(1);
-      expect(mockOnExactMatch).toHaveBeenCalledWith(dbTags[0]);
+      expect(result.exactMatches).toEqual([dbTags[0]]);
+      expect(result.needsValidation).toEqual([]);
       expect(mockFindSimilarTags).toHaveBeenCalledWith('Vegetarian');
     });
 
-    test('returns tag in array and does not call onExactMatch for non-exact match', () => {
+    test('returns tag in needsValidation and empty exactMatches for non-exact match', () => {
       mockFindSimilarTags.mockReturnValue([dbTags[0]]);
 
       const inputTags: tagTableElement[] = [{ name: 'Vegan' }];
-      const result = processTagsForValidation(inputTags, mockFindSimilarTags, mockOnExactMatch);
+      const result = processTagsForValidation(inputTags, mockFindSimilarTags);
 
-      expect(result).toEqual(inputTags);
-      expect(mockOnExactMatch).not.toHaveBeenCalled();
+      expect(result.exactMatches).toEqual([]);
+      expect(result.needsValidation).toEqual(inputTags);
       expect(mockFindSimilarTags).toHaveBeenCalledWith('Vegan');
     });
 
@@ -50,10 +48,10 @@ describe('RecipeValidationHelpers', () => {
       mockFindSimilarTags.mockReturnValue([dbTags[0]]);
 
       const inputTags: tagTableElement[] = [{ name: 'VEGETARIAN' }];
-      const result = processTagsForValidation(inputTags, mockFindSimilarTags, mockOnExactMatch);
+      const result = processTagsForValidation(inputTags, mockFindSimilarTags);
 
-      expect(result).toEqual([]);
-      expect(mockOnExactMatch).toHaveBeenCalledWith(dbTags[0]);
+      expect(result.exactMatches).toEqual([dbTags[0]]);
+      expect(result.needsValidation).toEqual([]);
     });
 
     test('correctly filters mixed tags (exact and non-exact)', () => {
@@ -68,18 +66,17 @@ describe('RecipeValidationHelpers', () => {
         { name: 'Gluten-Free' },
       ];
 
-      const result = processTagsForValidation(inputTags, mockFindSimilarTags, mockOnExactMatch);
+      const result = processTagsForValidation(inputTags, mockFindSimilarTags);
 
-      expect(result).toEqual([{ name: 'Vegan' }, { name: 'Gluten-Free' }]);
-      expect(mockOnExactMatch).toHaveBeenCalledTimes(1);
-      expect(mockOnExactMatch).toHaveBeenCalledWith(dbTags[0]);
+      expect(result.exactMatches).toEqual([dbTags[0]]);
+      expect(result.needsValidation).toEqual([{ name: 'Vegan' }, { name: 'Gluten-Free' }]);
     });
 
-    test('returns empty array for empty input', () => {
-      const result = processTagsForValidation([], mockFindSimilarTags, mockOnExactMatch);
+    test('returns empty arrays for empty input', () => {
+      const result = processTagsForValidation([], mockFindSimilarTags);
 
-      expect(result).toEqual([]);
-      expect(mockOnExactMatch).not.toHaveBeenCalled();
+      expect(result.exactMatches).toEqual([]);
+      expect(result.needsValidation).toEqual([]);
       expect(mockFindSimilarTags).not.toHaveBeenCalled();
     });
 
@@ -87,16 +84,15 @@ describe('RecipeValidationHelpers', () => {
       mockFindSimilarTags.mockReturnValue([]);
 
       const inputTags: tagTableElement[] = [{ name: 'NewTag' }];
-      const result = processTagsForValidation(inputTags, mockFindSimilarTags, mockOnExactMatch);
+      const result = processTagsForValidation(inputTags, mockFindSimilarTags);
 
-      expect(result).toEqual(inputTags);
-      expect(mockOnExactMatch).not.toHaveBeenCalled();
+      expect(result.exactMatches).toEqual([]);
+      expect(result.needsValidation).toEqual(inputTags);
     });
   });
 
   describe('processIngredientsForValidation', () => {
     const mockFindSimilarIngredients = jest.fn();
-    const mockOnExactMatch = jest.fn();
 
     const dbIngredients: ingredientTableElement[] = [
       {
@@ -121,7 +117,7 @@ describe('RecipeValidationHelpers', () => {
       jest.clearAllMocks();
     });
 
-    test('returns empty array and calls onExactMatch for exact match ingredient', () => {
+    test('returns exact match in exactMatches with merged quantity/unit', () => {
       mockFindSimilarIngredients.mockReturnValue([dbIngredients[0]]);
 
       const inputIngredients: ingredientTableElement[] = [
@@ -134,19 +130,16 @@ describe('RecipeValidationHelpers', () => {
         },
       ];
 
-      const result = processIngredientsForValidation(
-        inputIngredients,
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+      const result = processIngredientsForValidation(inputIngredients, mockFindSimilarIngredients);
 
-      expect(result).toEqual([]);
-      expect(mockOnExactMatch).toHaveBeenCalledTimes(1);
-      expect(mockOnExactMatch).toHaveBeenCalledWith({
-        ...dbIngredients[0],
-        quantity: '300',
-        unit: 'ml',
-      });
+      expect(result.exactMatches).toEqual([
+        {
+          ...dbIngredients[0],
+          quantity: '300',
+          unit: 'ml',
+        },
+      ]);
+      expect(result.needsValidation).toEqual([]);
     });
 
     test('preserves OCR quantity and unit for exact match', () => {
@@ -162,20 +155,19 @@ describe('RecipeValidationHelpers', () => {
         },
       ];
 
-      processIngredientsForValidation(
-        inputIngredients,
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+      const result = processIngredientsForValidation(inputIngredients, mockFindSimilarIngredients);
 
-      expect(mockOnExactMatch).toHaveBeenCalledWith({
-        id: 2,
-        name: 'Parmesan',
-        type: ingredientType.cheese,
-        unit: 'g',
-        quantity: '100',
-        season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-      });
+      expect(result.exactMatches).toEqual([
+        {
+          id: 2,
+          name: 'Parmesan',
+          type: ingredientType.cheese,
+          unit: 'g',
+          quantity: '100',
+          season: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        },
+      ]);
+      expect(result.needsValidation).toEqual([]);
     });
 
     test('uses database defaults when OCR quantity/unit are missing', () => {
@@ -191,20 +183,19 @@ describe('RecipeValidationHelpers', () => {
         },
       ];
 
-      processIngredientsForValidation(
-        inputIngredients,
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+      const result = processIngredientsForValidation(inputIngredients, mockFindSimilarIngredients);
 
-      expect(mockOnExactMatch).toHaveBeenCalledWith({
-        ...dbIngredients[1],
-        quantity: '50',
-        unit: 'g',
-      });
+      expect(result.exactMatches).toEqual([
+        {
+          ...dbIngredients[1],
+          quantity: '50',
+          unit: 'g',
+        },
+      ]);
+      expect(result.needsValidation).toEqual([]);
     });
 
-    test('returns ingredient in array and does not call onExactMatch for non-exact match', () => {
+    test('returns ingredient in needsValidation for non-exact match', () => {
       mockFindSimilarIngredients.mockReturnValue([dbIngredients[0]]);
 
       const inputIngredients: ingredientTableElement[] = [
@@ -217,14 +208,10 @@ describe('RecipeValidationHelpers', () => {
         },
       ];
 
-      const result = processIngredientsForValidation(
-        inputIngredients,
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+      const result = processIngredientsForValidation(inputIngredients, mockFindSimilarIngredients);
 
-      expect(result).toEqual(inputIngredients);
-      expect(mockOnExactMatch).not.toHaveBeenCalled();
+      expect(result.exactMatches).toEqual([]);
+      expect(result.needsValidation).toEqual(inputIngredients);
     });
 
     test('handles exact match case-insensitively', () => {
@@ -240,18 +227,16 @@ describe('RecipeValidationHelpers', () => {
         },
       ];
 
-      const result = processIngredientsForValidation(
-        inputIngredients,
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+      const result = processIngredientsForValidation(inputIngredients, mockFindSimilarIngredients);
 
-      expect(result).toEqual([]);
-      expect(mockOnExactMatch).toHaveBeenCalledWith({
-        ...dbIngredients[0],
-        quantity: '250',
-        unit: 'ml',
-      });
+      expect(result.exactMatches).toEqual([
+        {
+          ...dbIngredients[0],
+          quantity: '250',
+          unit: 'ml',
+        },
+      ]);
+      expect(result.needsValidation).toEqual([]);
     });
 
     test('correctly filters mixed ingredients (exact and non-exact)', () => {
@@ -284,30 +269,23 @@ describe('RecipeValidationHelpers', () => {
         },
       ];
 
-      const result = processIngredientsForValidation(
-        inputIngredients,
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+      const result = processIngredientsForValidation(inputIngredients, mockFindSimilarIngredients);
 
-      expect(result).toEqual([inputIngredients[1], inputIngredients[2]]);
-      expect(mockOnExactMatch).toHaveBeenCalledTimes(1);
-      expect(mockOnExactMatch).toHaveBeenCalledWith({
-        ...dbIngredients[0],
-        quantity: '150',
-        unit: 'ml',
-      });
+      expect(result.exactMatches).toEqual([
+        {
+          ...dbIngredients[0],
+          quantity: '150',
+          unit: 'ml',
+        },
+      ]);
+      expect(result.needsValidation).toEqual([inputIngredients[1], inputIngredients[2]]);
     });
 
-    test('returns empty array for empty input', () => {
-      const result = processIngredientsForValidation(
-        [],
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+    test('returns empty arrays for empty input', () => {
+      const result = processIngredientsForValidation([], mockFindSimilarIngredients);
 
-      expect(result).toEqual([]);
-      expect(mockOnExactMatch).not.toHaveBeenCalled();
+      expect(result.exactMatches).toEqual([]);
+      expect(result.needsValidation).toEqual([]);
       expect(mockFindSimilarIngredients).not.toHaveBeenCalled();
     });
 
@@ -324,14 +302,10 @@ describe('RecipeValidationHelpers', () => {
         },
       ];
 
-      const result = processIngredientsForValidation(
-        inputIngredients,
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+      const result = processIngredientsForValidation(inputIngredients, mockFindSimilarIngredients);
 
-      expect(result).toEqual(inputIngredients);
-      expect(mockOnExactMatch).not.toHaveBeenCalled();
+      expect(result.exactMatches).toEqual([]);
+      expect(result.needsValidation).toEqual(inputIngredients);
     });
 
     test('handles multiple exact matches in sequence', () => {
@@ -356,24 +330,21 @@ describe('RecipeValidationHelpers', () => {
         },
       ];
 
-      const result = processIngredientsForValidation(
-        inputIngredients,
-        mockFindSimilarIngredients,
-        mockOnExactMatch
-      );
+      const result = processIngredientsForValidation(inputIngredients, mockFindSimilarIngredients);
 
-      expect(result).toEqual([]);
-      expect(mockOnExactMatch).toHaveBeenCalledTimes(2);
-      expect(mockOnExactMatch).toHaveBeenNthCalledWith(1, {
-        ...dbIngredients[0],
-        quantity: '150',
-        unit: 'ml',
-      });
-      expect(mockOnExactMatch).toHaveBeenNthCalledWith(2, {
-        ...dbIngredients[1],
-        quantity: '75',
-        unit: 'g',
-      });
+      expect(result.exactMatches).toEqual([
+        {
+          ...dbIngredients[0],
+          quantity: '150',
+          unit: 'ml',
+        },
+        {
+          ...dbIngredients[1],
+          quantity: '75',
+          unit: 'g',
+        },
+      ]);
+      expect(result.needsValidation).toEqual([]);
     });
   });
 });

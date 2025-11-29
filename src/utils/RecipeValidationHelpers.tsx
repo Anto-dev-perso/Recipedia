@@ -2,19 +2,21 @@ import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseEl
 
 /**
  * Processes tags for validation by filtering exact database matches
- * Auto-adds exact matches via callback and returns only items that need validation
+ * Returns exact matches and items that need validation separately
  *
  * @param tags - Array of tags to process
  * @param findSimilarTags - Function to find similar tags in database
- * @param onExactMatch - Callback to handle exact matches (auto-add them)
- * @returns Array of tags that need validation (non-exact matches)
+ * @returns Object with exactMatches and needsValidation arrays
  */
 export function processTagsForValidation(
   tags: tagTableElement[],
-  findSimilarTags: (name: string) => tagTableElement[],
-  onExactMatch: (tag: tagTableElement) => void
-): tagTableElement[] {
-  const itemsNeedingValidation: tagTableElement[] = [];
+  findSimilarTags: (name: string) => tagTableElement[]
+): {
+  exactMatches: tagTableElement[];
+  needsValidation: tagTableElement[];
+} {
+  const exactMatches: tagTableElement[] = [];
+  const needsValidation: tagTableElement[] = [];
 
   for (const tag of tags) {
     const similarTags = findSimilarTags(tag.name);
@@ -23,30 +25,32 @@ export function processTagsForValidation(
     );
 
     if (exactMatch) {
-      onExactMatch(exactMatch);
+      exactMatches.push(exactMatch);
     } else {
-      itemsNeedingValidation.push(tag);
+      needsValidation.push(tag);
     }
   }
 
-  return itemsNeedingValidation;
+  return { exactMatches, needsValidation };
 }
 
 /**
  * Processes ingredients for validation by filtering exact database matches
- * Auto-adds exact matches (preserving OCR quantity/unit) via callback and returns only items that need validation
+ * Returns exact matches (preserving OCR quantity/unit) and items that need validation separately
  *
  * @param ingredients - Array of ingredients to process
  * @param findSimilarIngredients - Function to find similar ingredients in database
- * @param onExactMatch - Callback to handle exact matches (auto-add them with merged quantity/unit)
- * @returns Array of ingredients that need validation (non-exact matches)
+ * @returns Object with exactMatches and needsValidation arrays
  */
 export function processIngredientsForValidation(
   ingredients: ingredientTableElement[],
-  findSimilarIngredients: (name: string) => ingredientTableElement[],
-  onExactMatch: (ingredient: ingredientTableElement) => void
-): ingredientTableElement[] {
-  const itemsNeedingValidation: ingredientTableElement[] = [];
+  findSimilarIngredients: (name: string) => ingredientTableElement[]
+): {
+  exactMatches: ingredientTableElement[];
+  needsValidation: ingredientTableElement[];
+} {
+  const exactMatches: ingredientTableElement[] = [];
+  const needsValidation: ingredientTableElement[] = [];
 
   for (const ingredient of ingredients) {
     const similarIngredients = findSimilarIngredients(ingredient.name);
@@ -60,11 +64,11 @@ export function processIngredientsForValidation(
         quantity: ingredient.quantity || exactMatch.quantity,
         unit: ingredient.unit || exactMatch.unit,
       };
-      onExactMatch(mergedIngredient);
+      exactMatches.push(mergedIngredient);
     } else {
-      itemsNeedingValidation.push(ingredient);
+      needsValidation.push(ingredient);
     }
   }
 
-  return itemsNeedingValidation;
+  return { exactMatches, needsValidation };
 }
