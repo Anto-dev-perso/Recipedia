@@ -78,6 +78,7 @@ import CustomTextInput from '@components/atomic/CustomTextInput';
 import {
   ingredientTableElement,
   ingredientType,
+  PartialIngredientElement,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
 import { shoppingCategories } from '@customTypes/RecipeFiltersTypes';
@@ -91,8 +92,8 @@ export type DialogMode = 'add' | 'edit' | 'delete';
 /** Configuration for ingredient dialogs */
 export type ItemIngredientType = {
   type: 'Ingredient';
-  /** Current ingredient data */
-  value: ingredientTableElement;
+  /** Current ingredient data (may have optional type for new/unvalidated ingredients) */
+  value: PartialIngredientElement;
   /** Callback fired when ingredient operation is confirmed */
   onConfirmIngredient: (mode: DialogMode, newItem: ingredientTableElement) => void;
 };
@@ -134,11 +135,8 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
   const [typeMenuVisible, setTypeMenuVisible] = useState(false);
 
   const [itemName, setItemName] = useState(item.value.name);
-
   const [ingType, setIngType] = useState<ingredientType | undefined>(
-    item.type === 'Ingredient' && item.value.type !== ingredientType.undefined
-      ? item.value.type
-      : undefined
+    item.type === 'Ingredient' ? item.value.type : undefined
   );
   const [ingUnit, setIngUnit] = useState(item.type === 'Ingredient' ? item.value.unit : '');
   const [ingSeason, setIngSeason] = useState(item.type === 'Ingredient' ? item.value.season : []);
@@ -147,7 +145,7 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
     if (isVisible) {
       setItemName(item.value.name);
       if (item.type === 'Ingredient') {
-        setIngType(item.value.type !== ingredientType.undefined ? item.value.type : undefined);
+        setIngType(item.value.type);
         setIngUnit(item.value.unit);
         setIngSeason(item.value.season);
       }
@@ -169,7 +167,7 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
         item.onConfirmIngredient(mode, {
           id: item.value.id,
           name: itemName,
-          type: ingType ?? ingredientType.undefined,
+          type: ingType as ingredientType,
           unit: ingUnit,
           season: ingSeason,
         });
@@ -282,9 +280,7 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
                       }
                     >
                       <FlatList
-                        data={shoppingCategories.filter(
-                          category => category !== ingredientType.undefined
-                        )}
+                        data={shoppingCategories}
                         renderItem={({ item }) => (
                           <Menu.Item
                             key={item}

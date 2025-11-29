@@ -17,5 +17,4 @@ export default {
   oilAndFat: 'Oil and Fat',
   nutsAndSeeds: 'Nuts and Seeds',
   sweetener: 'Sweetener',
-  undefined: 'Undefined',
 };

@@ -57,11 +57,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
-import {
-  ingredientTableElement,
-  ingredientType,
-  tagTableElement,
-} from '@customTypes/DatabaseElementTypes';
+import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
 import ItemDialog, { DialogMode } from './ItemDialog';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
@@ -290,9 +286,7 @@ export function SimilarityDialog({ testId, isVisible, onClose, item }: Similarit
               ? {
                   type: item.type,
                   value: {
-                    id: -1,
                     name: item.newItemName,
-                    type: ingredientType.undefined,
                     unit: '',
                     season: [],
                   },

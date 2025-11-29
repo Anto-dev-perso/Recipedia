@@ -170,6 +170,15 @@ export type ingredientTableElement = {
   season: Array<string>;
 };
 
+/**
+ * Temporary ingredient state for UI forms and OCR before type assignment
+ * Use this for new/incomplete ingredients that haven't been validated yet
+ */
+export type PartialIngredientElement = Omit<ingredientTableElement, 'type'> & {
+  /** Optional type for temporary/unvalidated ingredients */
+  type?: ingredientType;
+};
+
 export type coreIngredientElement = Pick<ingredientTableElement, 'name'> & {
   quantityPerPerson: number | undefined;
 };
@@ -355,15 +364,13 @@ export function isRecipeEqual(recipe1: recipeTableElement, recipe2: recipeTableE
 }
 
 export function isIngredientEqual(
-  ingredient1: ingredientTableElement,
-  ingredient2: ingredientTableElement
+  ingredient1: ingredientTableElement | PartialIngredientElement,
+  ingredient2: ingredientTableElement | PartialIngredientElement
 ): boolean {
   return (
     ingredient1.name == ingredient2.name &&
     ingredient1.unit == ingredient2.unit &&
-    (ingredient1.type == ingredientType.undefined ||
-      ingredient2.type == ingredientType.undefined ||
-      ingredient1.type == ingredient2.type)
+    (!ingredient1.type || !ingredient2.type || ingredient1.type == ingredient2.type)
   );
 }
 
@@ -376,6 +383,18 @@ export function isShoppingEqual(
   shop2: shoppingListTableElement
 ): boolean {
   return shop1.type == shop2.type && shop1.name == shop2.name && shop1.unit == shop2.unit;
+}
+
+/**
+ * Asserts ingredient has a valid type before database operations
+ * @throws Error if type is undefined
+ */
+export function assertIngredientType(
+  ingredient: PartialIngredientElement
+): asserts ingredient is ingredientTableElement {
+  if (!ingredient.type) {
+    throw new Error(`Ingredient "${ingredient.name}" must have a type before saving`);
+  }
 }
 
 /**
@@ -419,6 +438,4 @@ export enum ingredientType {
   nutsAndSeeds = 'ingredientTypes.nutsAndSeeds',
   /** Honey, maple syrup, artificial sweeteners */
   sweetener = 'ingredientTypes.sweetener',
-  /** Fallback category for uncategorized ingredients */
-  undefined = 'ingredientTypes.undefined',
 }

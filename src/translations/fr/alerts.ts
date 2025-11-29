@@ -18,6 +18,7 @@ export default {
     titlePersons: 'le nombre de personnes',
     titleTime: 'un temps de préparation',
     ingredientQuantities: 'des quantités pour tous les ingrédients',
+    ingredientInDatabase: 'tous les ingredients doivent être connus par Recipedia',
     ingredientNames: 'des noms pour tous les ingrédients',
     nutrition: 'informations nutritionnelles complètes',
   },

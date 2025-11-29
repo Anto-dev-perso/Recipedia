@@ -69,9 +69,9 @@ import { RecipeScreenProp } from '@customTypes/ScreenTypes';
 import {
   extractTagsName,
   ingredientTableElement,
-  ingredientType,
   isRecipeEqual,
   nutritionTableElement,
+  PartialIngredientElement,
   preparationStepElement,
   recipeColumnsNames,
   recipeTableElement,
@@ -220,9 +220,9 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   const [recipePersons, setRecipePersons] = useState(
     initStateFromProp ? props.recipe.persons : defaultValueNumber
   );
-  const [recipeIngredients, setRecipeIngredients] = useState(
-    initStateFromProp ? props.recipe.ingredients : new Array<ingredientTableElement>()
-  );
+  const [recipeIngredients, setRecipeIngredients] = useState<
+    Array<ingredientTableElement | PartialIngredientElement>
+  >(initStateFromProp ? props.recipe.ingredients : new Array<PartialIngredientElement>());
   const [recipePreparation, setRecipePreparation] = useState(
     initStateFromProp ? props.recipe.preparation : new Array<preparationStepElement>()
   );
@@ -459,10 +459,11 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const [unitAndQuantity, newName] = newIngredient.split(textSeparator);
     const [newQuantity, newUnit] = unitAndQuantity.split(unitySeparator);
 
-    const updateIngredient = (ingredient: ingredientTableElement) => {
-      const ingredientCopy: Array<ingredientTableElement> = recipeIngredients.map(ingredient => ({
-        ...ingredient,
-      }));
+    const updateIngredient = (ingredient: PartialIngredientElement) => {
+      const ingredientCopy: Array<ingredientTableElement | PartialIngredientElement> =
+        recipeIngredients.map(ingredient => ({
+          ...ingredient,
+        }));
       const foundIngredient = ingredientCopy[oldIngredientId];
 
       if (ingredient.id && foundIngredient.id !== ingredient.id) {
@@ -480,10 +481,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       if (ingredient.season.length > 0 && foundIngredient.season !== ingredient.season) {
         foundIngredient.season = ingredient.season;
       }
-      if (
-        ingredient.type !== ingredientType.undefined &&
-        foundIngredient.type !== ingredient.type
-      ) {
+      if (ingredient.type && foundIngredient.type !== ingredient.type) {
         foundIngredient.type = ingredient.type;
       }
 
@@ -566,7 +564,6 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         unit: newUnit,
         quantity: newQuantity,
         season: [],
-        type: ingredientType.undefined,
       });
     }
   }
@@ -578,7 +575,6 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         name: '',
         unit: '',
         quantity: '',
-        type: ingredientType.undefined,
         season: [],
       },
     ]);
@@ -654,7 +650,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       description: recipeDescription,
       tags: recipeTags,
       persons: recipePersons,
-      ingredients: recipeIngredients,
+      ingredients: recipeIngredients as ingredientTableElement[],
       season: initStateFromProp ? props.recipe.season : new Array<string>(),
       preparation: recipePreparation,
       time: recipeTime,
@@ -693,10 +689,16 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         missingElem.push(t(translatedMissingElemPrefix + 'ingredientNames'));
       }
       const allIngredientsHaveQuantities = recipeIngredients.every(
-        ingredient => ingredient.quantity && ingredient.quantity.trim().length > 0
+        ingredient => ingredient.name && ingredient.season && ingredient.type && ingredient.quantity
       );
       if (!allIngredientsHaveQuantities) {
         missingElem.push(t(translatedMissingElemPrefix + 'ingredientQuantities'));
+      }
+      const areKnownInDatabase = recipeIngredients.every(
+        ingredient => ingredient.quantity && ingredient.quantity.trim().length > 0
+      );
+      if (!areKnownInDatabase) {
+        missingElem.push(t(translatedMissingElemPrefix + 'ingredientInDatabase'));
       }
     }
     if (recipePreparation.length == 0) {
