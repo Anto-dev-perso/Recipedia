@@ -287,8 +287,6 @@ export function SimilarityDialog({ testId, isVisible, onClose, item }: Similarit
                   type: item.type,
                   value: {
                     name: item.newItemName,
-                    unit: '',
-                    season: [],
                   },
                   onConfirmIngredient: (mode: DialogMode, newItem: ingredientTableElement) =>
                     handleItemDialogConfirm(mode, newItem),

@@ -68,10 +68,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { RecipeScreenProp } from '@customTypes/ScreenTypes';
 import {
   extractTagsName,
+  FormIngredientElement,
   ingredientTableElement,
   isRecipeEqual,
   nutritionTableElement,
-  PartialIngredientElement,
   preparationStepElement,
   recipeColumnsNames,
   recipeTableElement,
@@ -221,8 +221,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     initStateFromProp ? props.recipe.persons : defaultValueNumber
   );
   const [recipeIngredients, setRecipeIngredients] = useState<
-    Array<ingredientTableElement | PartialIngredientElement>
-  >(initStateFromProp ? props.recipe.ingredients : new Array<PartialIngredientElement>());
+    Array<ingredientTableElement | FormIngredientElement>
+  >(initStateFromProp ? props.recipe.ingredients : new Array<FormIngredientElement>());
   const [recipePreparation, setRecipePreparation] = useState(
     initStateFromProp ? props.recipe.preparation : new Array<preparationStepElement>()
   );
@@ -459,8 +459,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const [unitAndQuantity, newName] = newIngredient.split(textSeparator);
     const [newQuantity, newUnit] = unitAndQuantity.split(unitySeparator);
 
-    const updateIngredient = (ingredient: PartialIngredientElement) => {
-      const ingredientCopy: Array<ingredientTableElement | PartialIngredientElement> =
+    const updateIngredient = (ingredient: FormIngredientElement) => {
+      const ingredientCopy: Array<ingredientTableElement | FormIngredientElement> =
         recipeIngredients.map(ingredient => ({
           ...ingredient,
         }));
@@ -478,7 +478,11 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       if (ingredient.quantity && foundIngredient.quantity !== ingredient.quantity) {
         foundIngredient.quantity = ingredient.quantity;
       }
-      if (ingredient.season.length > 0 && foundIngredient.season !== ingredient.season) {
+      if (
+        ingredient.season &&
+        ingredient.season.length > 0 &&
+        foundIngredient.season !== ingredient.season
+      ) {
         foundIngredient.season = ingredient.season;
       }
       if (ingredient.type && foundIngredient.type !== ingredient.type) {
@@ -503,7 +507,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         const isDuplicate = recipeIngredients.some(
           (existing, idx) =>
             idx !== oldIngredientId &&
-            (existing.name.toLowerCase() === exactMatch.name.toLowerCase() ||
+            (existing.name?.toLowerCase() === exactMatch.name.toLowerCase() ||
               (existing.id && exactMatch.id && existing.id === exactMatch.id))
         );
 
@@ -530,7 +534,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
               existing.id &&
               chosenIngredient.id &&
               existing.id === chosenIngredient.id) ||
-            existing.name.toLowerCase() === chosenIngredient.name.toLowerCase()
+            existing.name?.toLowerCase() === chosenIngredient.name.toLowerCase()
         );
 
         if (!isDuplicate) {
@@ -569,15 +573,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function addNewIngredient() {
-    setRecipeIngredients([
-      ...recipeIngredients,
-      {
-        name: '',
-        unit: '',
-        quantity: '',
-        season: [],
-      },
-    ]);
+    setRecipeIngredients([...recipeIngredients, {}]);
   }
 
   function editPreparationTitle(stepIndex: number, newTitle: string) {
@@ -689,13 +685,13 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         missingElem.push(t(translatedMissingElemPrefix + 'ingredientNames'));
       }
       const allIngredientsHaveQuantities = recipeIngredients.every(
-        ingredient => ingredient.name && ingredient.season && ingredient.type && ingredient.quantity
+        ingredient => ingredient.quantity && ingredient.quantity.trim().length > 0
       );
       if (!allIngredientsHaveQuantities) {
         missingElem.push(t(translatedMissingElemPrefix + 'ingredientQuantities'));
       }
       const areKnownInDatabase = recipeIngredients.every(
-        ingredient => ingredient.quantity && ingredient.quantity.trim().length > 0
+        ingredient => ingredient.type !== undefined && ingredient.season !== undefined
       );
       if (!areKnownInDatabase) {
         missingElem.push(t(translatedMissingElemPrefix + 'ingredientInDatabase'));
@@ -1276,7 +1272,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
     const baseEditProps: IngredientsEditableBaseProps = {
       testID: ingredientTestID,
-      ingredients: recipeIngredients,
+      ingredients: recipeIngredients as ingredientTableElement[],
       prefixText: ingredientPrefixText,
       columnTitles: {
         column1: t('quantity'),
@@ -1291,7 +1287,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       case recipeStateType.readOnly:
         return {
           testID: ingredientTestID,
-          ingredients: recipeIngredients,
+          ingredients: recipeIngredients as ingredientTableElement[],
           mode: 'readOnly',
         };
       case recipeStateType.addOCR:

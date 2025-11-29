@@ -41,7 +41,7 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
 import { DataTable, Text, useTheme } from 'react-native-paper';
-import { ingredientTableElement } from '@customTypes/DatabaseElementTypes';
+import { FormIngredientElement, ingredientTableElement } from '@customTypes/DatabaseElementTypes';
 import { textSeparator, unitySeparator } from '@styles/typography';
 import {
   recipeTableFlex,
@@ -101,9 +101,12 @@ export type EditableProps = EditableBaseProps & {
 /**
  * Props for add mode (OCR)
  * Same as editable mode but with additional OCR button support for empty state
+ * Accepts incomplete ingredients (FormIngredientElement) for new ingredients being added
  */
-export type AddProps = EditableBaseProps & {
+export type AddProps = Omit<EditableBaseProps, 'ingredients'> & {
   mode: 'add';
+  /** Array of ingredients, may include incomplete FormIngredientElement for new ingredients */
+  ingredients: Array<ingredientTableElement | FormIngredientElement>;
   /** Callback fired to open OCR modal (for empty state) */
   openModal: () => void;
 };
@@ -157,6 +160,23 @@ function formatIngredientChange(quantity: number, unit: string, name: string): s
 }
 
 /**
+ * Internal props for EditableIngredients component
+ * Accepts both complete and incomplete ingredients since it's used by both editable and add modes
+ */
+type EditableIngredientsProps = {
+  testID: string;
+  ingredients: Array<ingredientTableElement | FormIngredientElement>;
+  prefixText: string;
+  columnTitles: {
+    column1: string;
+    column2: string;
+    column3: string;
+  };
+  onIngredientChange: (index: number, newValue: string) => void;
+  onAddIngredient: () => void;
+};
+
+/**
  * Read-only ingredients component
  */
 function ReadOnlyIngredients({ testID, ingredients }: ReadOnlyProps) {
@@ -196,9 +216,10 @@ function ReadOnlyIngredients({ testID, ingredients }: ReadOnlyProps) {
 }
 
 /**
- * Editable ingredients component
+ * Editable ingredients component (internal)
+ * Used by both editable and add modes
  */
-function EditableIngredients(props: EditableProps) {
+function EditableIngredients(props: EditableIngredientsProps) {
   const { testID, ingredients, prefixText, columnTitles, onIngredientChange, onAddIngredient } =
     props;
   const { ingredients: dbIngredients } = useRecipeDatabase();
@@ -276,7 +297,7 @@ function EditableIngredients(props: EditableProps) {
                     testID={`${testID}::${index}::QuantityInput`}
                     value={quantity}
                     onChangeValue={newQuantity =>
-                      handleIngredientChange(index, newQuantity, item.unit, item.name)
+                      handleIngredientChange(index, newQuantity, item.unit ?? '', item.name ?? '')
                     }
                     dense
                     mode='flat'
@@ -313,7 +334,7 @@ function EditableIngredients(props: EditableProps) {
                     dense
                     mode='flat'
                     onValidate={newName =>
-                      handleIngredientChange(index, quantity, item.unit, newName)
+                      handleIngredientChange(index, quantity, item.unit ?? '', newName)
                     }
                     style={recipeTableStyles.inputContainer}
                   />
@@ -340,7 +361,15 @@ function EditableIngredients(props: EditableProps) {
  * Add ingredients component (with OCR support)
  */
 function AddIngredients(props: AddProps) {
-  const { testID, ingredients, prefixText, openModal, onAddIngredient } = props;
+  const {
+    testID,
+    ingredients,
+    prefixText,
+    openModal,
+    onAddIngredient,
+    columnTitles,
+    onIngredientChange,
+  } = props;
 
   if (ingredients.length === 0) {
     return (
@@ -365,7 +394,16 @@ function AddIngredients(props: AddProps) {
     );
   }
 
-  return <EditableIngredients {...props} mode='editable' />;
+  return (
+    <EditableIngredients
+      testID={testID}
+      ingredients={ingredients}
+      prefixText={prefixText}
+      columnTitles={columnTitles}
+      onIngredientChange={onIngredientChange}
+      onAddIngredient={onAddIngredient}
+    />
+  );
 }
 
 /**
@@ -381,7 +419,16 @@ export function RecipeIngredients(props: RecipeIngredientsProps) {
     case 'readOnly':
       return <ReadOnlyIngredients {...props} />;
     case 'editable':
-      return <EditableIngredients {...props} />;
+      return (
+        <EditableIngredients
+          testID={props.testID}
+          ingredients={props.ingredients}
+          prefixText={props.prefixText}
+          columnTitles={props.columnTitles}
+          onIngredientChange={props.onIngredientChange}
+          onAddIngredient={props.onAddIngredient}
+        />
+      );
   }
 }
 
