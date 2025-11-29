@@ -1455,47 +1455,7 @@ export class RecipeDatabase {
       }
     }
 
-    // TODO what to do when ingredients doesn't exist ?
-    /*
-                                                                                                                                                                                            if (newIngredients.length > 0) {
-                                                                                                                                                                                                let alertTitle: string;
-                                                                                                                                                                                                let alertMessage = "Do you want to add or edit it before  ?";
-                                                                                                                                                                                                const alertOk = "OK";
-                                                                                                                                                                                                const alertCancel = "Cancel";
-                                                                                                                                                                                                const alertEdit = "Edit before add";
-                                                                                                                                                                                                if (newIngredients.length > 1) {
-                                                                                                                                                                                                    // Plural
-                                                                                                                                                                                                    alertTitle = "INGREDIENTS NOT FOUND";
-                                                                                                                                                                                                    alertMessage = `Following ingredients were not found in database :  \n`;
-                                                                                                                                                                                                    newIngredients.forEach(ing => {
-                                                                                                                                                                                                        alertMessage += "\t- " + ing.ingName + "\n";
-                                                                                                                                                                                                    });
-                                                                                                                                                                                                    alertMessage += `Do you want to add these as is or edit them before adding ?`;
-
-                                                                                                                                                                                                } else {
-                                                                                                                                                                                                    alertTitle = `INGREDIENT NOT FOUND`;
-                                                                                                                                                                                                    alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                                                                                                                                                                                                }
-
-
-                                                                                                                                                                                                switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                                                                                                                                                                                                    case alertUserChoice.neutral:
-                                                                                                                                                                                                        // TODO edit before add
-                                                                                                                                                                                                        break;
-                                                                                                                                                                                                    case alertUserChoice.ok:
-                                                                                                                                                                                                        await this.addMultipleIngredients(newIngredients);
-                                                                                                                                                                                                        result = result.concat(newIngredients);
-                                                                                                                                                                                                        break;
-                                                                                                                                                                                                    case alertUserChoice.cancel:
-                                                                                                                                                                                                    default:
-                                                                                                                                                                                                        databaseLogger.debug("User canceled adding ingredient");
-                                                                                                                                                                                                        break;
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                             */
-    // TODO for now, just add the ingredients so that we can move on
     await this.addMultipleIngredients(newIngredients);
-    result.push(...newIngredients);
     return result;
   }
 

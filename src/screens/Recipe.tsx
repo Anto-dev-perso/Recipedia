@@ -452,15 +452,19 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       return;
     }
 
-    const itemsToValidate = processTagsForValidation(
+    const { exactMatches, needsValidation } = processTagsForValidation(
       [{ name: newTag }],
-      findSimilarTags,
-      addTagIfNotDuplicate
+      findSimilarTags
     );
-    if (itemsToValidate.length > 0) {
+
+    if (exactMatches.length > 0) {
+      exactMatches.forEach(addTagIfNotDuplicate);
+    }
+
+    if (needsValidation.length > 0) {
       setValidationQueue({
         type: 'Tag',
-        items: itemsToValidate,
+        items: needsValidation,
         onValidated: addTagIfNotDuplicate,
       });
     }
@@ -967,15 +971,30 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         newTag =>
           !recipeTags.some(existing => existing.name.toLowerCase() === newTag.name.toLowerCase())
       );
-      const itemsToValidate = processTagsForValidation(
+      const { exactMatches, needsValidation } = processTagsForValidation(
         filteredTags,
-        findSimilarTags,
-        addTagIfNotDuplicate
+        findSimilarTags
       );
-      if (itemsToValidate.length > 0) {
+
+      if (exactMatches.length > 0) {
+        setRecipeTags(prev => {
+          const updated = [...prev];
+          for (const tag of exactMatches) {
+            const isDuplicate = updated.some(
+              existing => existing.name.toLowerCase() === tag.name.toLowerCase()
+            );
+            if (!isDuplicate) {
+              updated.push(tag);
+            }
+          }
+          return updated;
+        });
+      }
+
+      if (needsValidation.length > 0) {
         setValidationQueue({
           type: 'Tag',
-          items: itemsToValidate,
+          items: needsValidation,
           onValidated: addTagIfNotDuplicate,
         });
       }
