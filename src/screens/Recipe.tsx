@@ -64,7 +64,7 @@
  * ```
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RecipeScreenProp } from '@customTypes/ScreenTypes';
 import {
   processIngredientsForValidation,
@@ -394,17 +394,14 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
    *
    * @param tag - Tag to add
    */
-  const addTagIfNotDuplicate = useCallback(
-    (tag: tagTableElement) => {
-      const isDuplicate = recipeTags.some(
-        existing => existing.name.toLowerCase() === tag.name.toLowerCase()
-      );
-      if (!isDuplicate) {
-        setRecipeTags(prev => [...prev, tag]);
-      }
-    },
-    [recipeTags]
-  );
+  const addTagIfNotDuplicate = (tag: tagTableElement) => {
+    const isDuplicate = recipeTags.some(
+      existing => existing.name.toLowerCase() === tag.name.toLowerCase()
+    );
+    if (!isDuplicate) {
+      setRecipeTags(prev => [...prev, tag]);
+    }
+  };
 
   /**
    * Adds or merges an ingredient into the recipe
@@ -414,37 +411,34 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
    *
    * @param ingredient - Ingredient to add or merge
    */
-  const addOrMergeIngredient = useCallback(
-    (ingredient: ingredientTableElement) => {
-      const existingIndex = recipeIngredients.findIndex(
-        existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
-      );
+  const addOrMergeIngredient = (ingredient: ingredientTableElement) => {
+    const existingIndex = recipeIngredients.findIndex(
+      existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
+    );
 
-      if (existingIndex === -1) {
-        setRecipeIngredients(prev => [...prev, ingredient]);
-      } else {
-        setRecipeIngredients(prev => {
-          const updated = [...prev];
-          const existing = updated[existingIndex];
+    if (existingIndex === -1) {
+      setRecipeIngredients(prev => [...prev, ingredient]);
+    } else {
+      setRecipeIngredients(prev => {
+        const updated = [...prev];
+        const existing = updated[existingIndex];
 
-          if (!existing) {
-            return prev;
-          }
+        if (!existing) {
+          return prev;
+        }
 
-          if (existing.unit === ingredient.unit) {
-            updated[existingIndex] = {
-              ...existing,
-              quantity: String(Number(existing.quantity || 0) + Number(ingredient.quantity || 0)),
-            };
-          } else {
-            updated[existingIndex] = ingredient;
-          }
-          return updated;
-        });
-      }
-    },
-    [recipeIngredients]
-  );
+        if (existing.unit === ingredient.unit) {
+          updated[existingIndex] = {
+            ...existing,
+            quantity: String(Number(existing.quantity || 0) + Number(ingredient.quantity || 0)),
+          };
+        } else {
+          updated[existingIndex] = ingredient;
+        }
+        return updated;
+      });
+    }
+  };
 
   async function addTag(newTag: string) {
     if (!newTag || newTag.trim().length === 0) {
