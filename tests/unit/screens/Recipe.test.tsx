@@ -1666,6 +1666,33 @@ describe('Recipe Component tests', () => {
         expect(getByTestId('RecipeValidation::ValidationQueue::Mock')).toBeTruthy();
       });
     });
+
+    test('does not show ValidationQueue for exact match tag (auto-added)', async () => {
+      await dbInstance.addTag({ name: 'mockTag' });
+
+      const { getByTestId, queryByTestId } = await renderRecipe(
+        createMockRoute(mockRouteAddManually)
+      );
+
+      const initialTagsJson = getByTestId('RecipeTags::TagsList').props.children;
+      const initialTags = JSON.parse(initialTagsJson);
+      const initialCount = initialTags.length;
+
+      expect(queryByTestId('RecipeValidation::ValidationQueue::Mock')).toBeNull();
+
+      fireEvent.press(getByTestId('RecipeTags::AddNewTag'));
+
+      await waitFor(
+        () => {
+          expect(queryByTestId('RecipeValidation::ValidationQueue::Mock')).toBeNull();
+
+          const finalTagsJson = getByTestId('RecipeTags::TagsList').props.children;
+          const finalTags = JSON.parse(finalTagsJson);
+          expect(finalTags.length).toBeGreaterThan(initialCount);
+        },
+        { timeout: 2000 }
+      );
+    });
   });
 
   // TODO add delete test
