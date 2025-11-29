@@ -13,7 +13,6 @@ appId: "com.recipedia"
     label: "Take photo (Android)"
     when:
       platform: Android
-
 # TODO iOS
 #- runFlow:
 #    file: "../iOS/takePhoto.yaml"

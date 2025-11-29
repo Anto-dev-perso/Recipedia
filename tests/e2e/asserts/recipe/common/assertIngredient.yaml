@@ -17,7 +17,6 @@ appId: "com.recipedia"
     text: "${INGREDIENT_QUANTITY_AND_UNIT}.*"
     label: "Ingredient quantity is displayed"
 
-
 - scrollUntilVisible:
     element:
       id: "RecipePersons::Text"
