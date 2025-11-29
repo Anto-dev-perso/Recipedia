@@ -159,7 +159,7 @@ appId: "com.recipedia"
     element:
       id: "RecipePreparation::PrefixText"
     direction: DOWN
-    speed: 60
+    speed: 40
     centerElement: true
 
 - assertVisible:

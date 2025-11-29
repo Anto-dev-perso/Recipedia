@@ -70,7 +70,7 @@ appId: "com.recipedia"
     file: "../../common/assertIngredient.yaml"
     env:
       INGREDIENT_NAME: "lait de coco"
-      INGREDIENT_QUANTITY_AND_UNIT: "400 ml"
+      INGREDIENT_QUANTITY_AND_UNIT: "400 g"
     label: "Assert lait de coco ingredient"
 
 - runFlow:
@@ -91,7 +91,7 @@ appId: "com.recipedia"
     file: "../../common/assertIngredient.yaml"
     env:
       INGREDIENT_NAME: "pois chiches conserve  Bio"
-      INGREDIENT_QUANTITY_AND_UNIT: "200 g égoutté"
+      INGREDIENT_QUANTITY_AND_UNIT: "200 g"
     label: "Assert pois chiche ingredient"
 
 - runFlow:
@@ -112,7 +112,7 @@ appId: "com.recipedia"
     file: "../../common/assertIngredient.yaml"
     env:
       INGREDIENT_NAME: "épices Cachemire"
-      INGREDIENT_QUANTITY_AND_UNIT: "2 sachet"
+      INGREDIENT_QUANTITY_AND_UNIT: "2 g"
     label: "Assert épices Cachemire ingredient"
 
 - scrollUntilVisible:
