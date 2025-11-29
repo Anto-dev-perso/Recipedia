@@ -3,8 +3,8 @@ flows:
 
 executionOrder:
   flowsOrder:
-    - "26 - Dark Mode Toggle Flow"
-    - "27 - Language Switch Flow"
-    - "28 - Season Filter Toggle Flow"
-    - "29 - Season Filter Edge Cases Flow"
-    - "30 - Default Persons Setting Flow"
+    - "1 - Dark Mode Toggle Flow"
+    - "2 - Language Switch Flow"
+    - "3 - Season Filter Toggle Flow"
+    - "4 - Season Filter Edge Cases Flow"
+    - "5 - Default Persons Setting Flow"

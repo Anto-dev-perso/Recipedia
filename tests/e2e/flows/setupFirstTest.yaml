@@ -20,7 +20,24 @@ appId: "com.recipedia"
 
 
 - extendedWaitUntil:
+    notVisible:
+      id: "WelcomeScreen::LoadingOverlay"
+    timeout: 30000
+    label: "Wait for data to load"
+
+- extendedWaitUntil:
     visible:
       id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
-    timeout: 30000
+    timeout: 10000
+    optional: true
+    label: "Wait for the home screen to be rendered"
+
+- runFlow:
+    file: "handleAnr.yaml"
+    label: "Handle ANR dialog if it appears during first home rendering"
+
+- extendedWaitUntil:
+    visible:
+      id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
+    timeout: 10000
     label: "Wait for app to be ready"

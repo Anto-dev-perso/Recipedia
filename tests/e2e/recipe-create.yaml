@@ -3,7 +3,7 @@ flows:
 
 executionOrder:
   flowsOrder:
-    - "19 - Manual Recipe Creation Complete Flow"
-    - "20 - Manual Recipe Creation Cancel Flow"
-    - "21 - Manual Recipe Quantity Scaling Flow"
-    - "22 - Recipe Validation All Fields Flow"
+    - "1 - Manual Recipe Creation Complete Flow"
+    - "2 - Manual Recipe Creation Cancel Flow"
+    - "3 - Manual Recipe Quantity Scaling Flow"
+    - "4 - Recipe Validation All Fields Flow"

@@ -1,5 +1,12 @@
 appId: "com.recipedia"
 ---
+
+- extendedWaitUntil:
+    visible:
+      id: "TutorialTooltip"
+    timeout: 10000
+    label: "Wait for tutorial tooltip to be displayed"
+
 - assertVisible:
     id: "TutorialTooltip"
     label: "Verify tutorial tooltip is displayed"

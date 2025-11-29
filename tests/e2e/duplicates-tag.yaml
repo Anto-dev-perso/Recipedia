@@ -1,0 +1,10 @@
+flows:
+  - cases/duplicates-tag/*
+
+executionOrder:
+  flowsOrder:
+    - "1 - Duplicate Tag Unique Detection Flow"
+    - "2 - Duplicate Tag Fuzzy Detection Flow"
+    - "3 - Duplicate Tag Exact Prevention Flow"
+    - "4 - Tag Real-Time Validation Flow"
+    - "5 - Tag Edit Same Name Flow"

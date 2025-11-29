@@ -1,0 +1,103 @@
+name: "4 - Tag Real-Time Validation Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- runFlow:
+    file: "../../flows/parameters/tags/navigateToTagsSettings.yaml"
+    label: "Action - Navigate to Tags Settings"
+
+- scrollUntilVisible:
+    element:
+      id: "TagsSettings::AddButton"
+    direction: DOWN
+    speed: 98
+    label: "Action - Scroll to find add tag button"
+
+- tapOn:
+    id: "TagsSettings::AddButton"
+    label: "Action - Open add tag dialog"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::Name::CustomTextInput"
+    label: "Action - Focus on tag name input"
+
+- inputText:
+    text: "TestTag"
+    label: "Action - Type non-existant text"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- assertNotVisible:
+    id: "TagsSettings::ItemDialog::AddModal::HelperText"
+    label: "Assert - No helper text shown for non-matching input"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::Name::CustomTextInput"
+    label: "Action - Focus on tag name input again"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Dessrt"
+    label: "Action - Type fuzzy matching text"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- extendedWaitUntil:
+    visible:
+      id: "TagsSettings::ItemDialog::AddModal::HelperText"
+    timeout: 1000
+    label: "Wait - Helper text appears after debounce"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::AddModal::HelperText"
+    text: "Similar tags found: Dessert"
+    label: "Assert - Helper text visible for similar match with similar tag name"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::AddModal::ConfirmButton"
+    enabled: true
+    label: "Assert - Confirm button enabled for similar match"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::Name::CustomTextInput"
+    label: "Action - Focus on tag name input"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Dessert"
+    label: "Action - Type exact duplicate"
+
+- extendedWaitUntil:
+    visible:
+      id: "TagsSettings::ItemDialog::AddModal::HelperText"
+    timeout: 1000
+    label: "Wait - Helper text updates after debounce"
+
+- assertVisible:
+    text: "This tag already exists"
+    id: "TagsSettings::ItemDialog::AddModal::HelperText"
+    label: "Assert - Helper text visible for exact duplicate"
+
+- assertVisible:
+    id: "TagsSettings::ItemDialog::AddModal::ConfirmButton"
+    enabled: false
+    label: "Assert - Confirm button disabled for exact duplicate"
+
+- tapOn:
+    id: "TagsSettings::ItemDialog::AddModal::CancelButton"
+    label: "Cleanup - Cancel add tag dialog"
+
+- runFlow:
+    file: "../../flows/parameters/tags/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

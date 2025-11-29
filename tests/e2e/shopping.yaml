@@ -3,6 +3,6 @@ flows:
 
 executionOrder:
   flowsOrder:
-    - "23 - Add Single Recipe To Shopping Flow"
-    - "24 - Add Multiple Recipes To Shopping Flow"
-    - "25 - Delete Recipe From Shopping Flow"
+    - "1 - Add Single Recipe To Shopping Flow"
+    - "2 - Add Multiple Recipes To Shopping Flow"
+    - "3 - Delete Recipe From Shopping Flow"

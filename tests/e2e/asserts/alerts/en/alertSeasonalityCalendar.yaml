@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::1"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::1"
     label: "January month is visible"
 
 - assertVisible:
@@ -9,7 +9,7 @@ appId: "com.recipedia"
     label: "January month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::2"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::2"
     label: "February month is visible"
 
 
@@ -18,7 +18,7 @@ appId: "com.recipedia"
     label: "February month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::3"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::3"
     label: "March month is visible"
 
 - assertVisible:
@@ -26,7 +26,7 @@ appId: "com.recipedia"
     label: "March month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::4"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::4"
     label: "April month is visible"
 
 - assertVisible:
@@ -34,7 +34,7 @@ appId: "com.recipedia"
     label: "April month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::5"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::5"
     label: "May month is visible"
 
 - assertVisible:
@@ -42,7 +42,7 @@ appId: "com.recipedia"
     label: "May month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::6"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::6"
     label: "June month is visible"
 
 - assertVisible:
@@ -50,7 +50,7 @@ appId: "com.recipedia"
     label: "June month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::7"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::7"
     label: "July month is visible"
 
 - assertVisible:
@@ -58,7 +58,7 @@ appId: "com.recipedia"
     label: "July month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::8"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::8"
     label: "August month is visible"
 
 - assertVisible:
@@ -66,7 +66,7 @@ appId: "com.recipedia"
     label: "August month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::9"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::9"
     label: "September month is visible"
 
 - assertVisible:
@@ -74,7 +74,7 @@ appId: "com.recipedia"
     label: "September month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::10"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::10"
     label: "October month is visible"
 
 - assertVisible:
@@ -82,7 +82,7 @@ appId: "com.recipedia"
     label: "October month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::11"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::11"
     label: "November month is visible"
 
 - assertVisible:
@@ -90,7 +90,7 @@ appId: "com.recipedia"
     label: "November month is displayed"
 
 - assertVisible:
-    id: "RecipeIngredientSimilarity::ItemDialog::AddModal::SeasonalityCalendar::12"
+    id: "RecipeValidation::ValidationQueue::Ingredient::ItemDialog::AddModal::SeasonalityCalendar::12"
     label: "December month is visible"
 
 - assertVisible:

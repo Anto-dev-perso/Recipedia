@@ -329,7 +329,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ 'app-init', 'search', 'recipe-view', 'recipe-create', 'shopping', 'settings', 'tags-db', 'ingredients-db', 'duplicates', 'ocr' ]
+        suite: [ 'app-init', 'search', 'recipe-view', 'recipe-create', 'shopping', 'settings', 'tags-db', 'ingredients-db', 'duplicates-tag', 'duplicates-ingredient', 'duplicates-recipe', 'ocr' ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -378,7 +378,6 @@ jobs:
 
             echo "🚀 Running E2E tests on suite: ${{ matrix.suite }} ..."
             npm run install:android
-            cd tests/e2e/ 
             maestro test tests/e2e/ --config=tests/e2e/${{ matrix.suite }}.yaml --debug-output=maestro_logs_${{ matrix.suite }} --format junit -s 1 
 
       - name: Prepare suite logs
