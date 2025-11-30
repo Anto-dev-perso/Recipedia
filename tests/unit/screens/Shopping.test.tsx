@@ -24,10 +24,6 @@ jest.mock('@utils/FileGestion', () =>
 );
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 jest.mock(
-  '@components/molecules/BottomTopButton',
-  () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock
-);
-jest.mock(
   '@components/dialogs/Alert',
   () => require('@mocks/components/dialogs/Alert-mock').alertMock
 );
@@ -73,7 +69,7 @@ async function renderShoppingAndWaitForButtons() {
 
   await waitFor(() => {
     const elementExpectedMounted = hasShoppingItems
-      ? 'ShoppingScreen::ClearShoppingListButton::OnPressFunction'
+      ? 'ShoppingScreen::ClearShoppingListButton::RoundButton'
       : 'ShoppingScreen::TextNoItem';
     expect(result.getByTestId(elementExpectedMounted)).toBeTruthy();
   });
@@ -99,7 +95,7 @@ describe('Shopping Screen', () => {
   test('renders Shopping screen with proper components structure', async () => {
     const { getByTestId, queryByTestId } = await renderShoppingAndWaitForButtons();
 
-    expect(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('ShoppingScreen::ClearShoppingListButton::RoundButton')).toBeTruthy();
     expect(getByTestId('ShoppingScreen::Alert::IsVisible')).toBeTruthy();
 
     const hasEmptyState = queryByTestId('ShoppingScreen::TextNoItem');
@@ -134,7 +130,7 @@ describe('Shopping Screen', () => {
       'shoppingScreen.noItemsInShoppingList'
     );
     expect(queryByTestId('ShoppingScreen::SectionList')).toBeNull();
-    expect(queryByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeNull();
+    expect(queryByTestId('ShoppingScreen::ClearShoppingListButton::RoundButton')).toBeNull();
   });
 
   test('clear shopping list functionality works with confirmation', async () => {
@@ -145,7 +141,7 @@ describe('Shopping Screen', () => {
       false
     );
 
-    fireEvent.press(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ShoppingScreen::ClearShoppingListButton::RoundButton'));
 
     expect(getByTestId('ShoppingScreen::ClearConfirmation::Alert::IsVisible').props.children).toBe(
       true
@@ -222,7 +218,7 @@ describe('Shopping Screen', () => {
       false
     );
 
-    fireEvent.press(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ShoppingScreen::ClearShoppingListButton::RoundButton'));
 
     expect(getByTestId('ShoppingScreen::ClearConfirmation::Alert::IsVisible').props.children).toBe(
       true
@@ -234,7 +230,7 @@ describe('Shopping Screen', () => {
 
     const { getByTestId } = await renderShoppingAndWaitForButtons();
 
-    fireEvent.press(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ShoppingScreen::ClearShoppingListButton::RoundButton'));
     expect(getByTestId('ShoppingScreen::ClearConfirmation::Alert::IsVisible').props.children).toBe(
       true
     );
@@ -251,12 +247,12 @@ describe('Shopping Screen', () => {
   test('clear button is only visible when shopping list has items', async () => {
     expect(database.get_shopping().length).toBeGreaterThan(0);
     const { getByTestId: getWithItems } = await renderShoppingAndWaitForButtons();
-    expect(getWithItems('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeTruthy();
+    expect(getWithItems('ShoppingScreen::ClearShoppingListButton::RoundButton')).toBeTruthy();
 
     await database.resetShoppingList();
     expect(database.get_shopping().length).toBe(0);
     const { queryByTestId: queryEmpty } = await renderShoppingAndWaitForButtons();
-    expect(queryEmpty('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeNull();
+    expect(queryEmpty('ShoppingScreen::ClearShoppingListButton::RoundButton')).toBeNull();
   });
 
   describe('Tutorial Integration', () => {
@@ -291,7 +287,7 @@ describe('Shopping Screen', () => {
       const { getByTestId } = await renderShoppingAndWaitForButtons();
 
       expect(getByTestId('CopilotStep::Shopping')).toBeTruthy();
-      expect(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeTruthy();
+      expect(getByTestId('ShoppingScreen::ClearShoppingListButton::RoundButton')).toBeTruthy();
       expect(getByTestId('ShoppingScreen::Alert::IsVisible')).toBeTruthy();
       expect(getByTestId('ShoppingScreen::Alert::IsVisible').props.children).toBe(false);
     });
@@ -300,7 +296,7 @@ describe('Shopping Screen', () => {
       const { queryByTestId, getByTestId } = await renderShoppingAndWaitForButtons();
 
       expect(queryByTestId('CopilotStep::Shopping')).toBeNull();
-      expect(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeTruthy();
+      expect(getByTestId('ShoppingScreen::ClearShoppingListButton::RoundButton')).toBeTruthy();
       expect(getByTestId('ShoppingScreen::Alert::IsVisible')).toBeTruthy();
       expect(getByTestId('ShoppingScreen::Alert::IsVisible').props.children).toBe(false);
     });
@@ -399,7 +395,7 @@ describe('Shopping Screen', () => {
       const { getByTestId } = await renderShoppingAndWaitForButtons();
 
       expect(getByTestId('CopilotStep::Shopping')).toBeTruthy();
-      expect(getByTestId('ShoppingScreen::ClearShoppingListButton::OnPressFunction')).toBeTruthy();
+      expect(getByTestId('ShoppingScreen::ClearShoppingListButton::RoundButton')).toBeTruthy();
 
       expect(getByTestId('ShoppingScreen::Alert::IsVisible').props.children).toBe(false);
 

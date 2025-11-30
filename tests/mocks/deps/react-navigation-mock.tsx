@@ -25,6 +25,7 @@ export function reactNavigationMock() {
       };
       callback(mockNav);
     }),
+    useIsFocused: () => true,
   };
 }
 

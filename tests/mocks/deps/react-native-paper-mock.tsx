@@ -403,3 +403,72 @@ export const HelperText: React.FC<any> = props => {
     </RNText>
   );
 };
+export const FAB: React.FC<any> & { Group: React.FC<any> } = props => (
+  <TouchableOpacity testID={props.testID} onPress={props.onPress} style={props.style}>
+    <RNText testID={props.testID + '::Icon'}>{props.icon}</RNText>
+    {props.label && <RNText testID={props.testID + '::Label'}>{props.label}</RNText>}
+  </TouchableOpacity>
+);
+
+FAB.Group = props => {
+  const renderActions = () => {
+    if (!props.open || !props.actions) return null;
+    return props.actions.map((action: any, index: number) => (
+      <TouchableOpacity
+        key={action.testID || index}
+        testID={action.testID}
+        onPress={action.onPress}
+      >
+        <RNText testID={action.testID + '::Icon'}>{action.icon}</RNText>
+        {action.label && <RNText testID={action.testID + '::Label'}>{action.label}</RNText>}
+      </TouchableOpacity>
+    ));
+  };
+
+  return (
+    <View testID='FAB.Group' style={props.fabStyle}>
+      {renderActions()}
+      <TouchableOpacity
+        testID={props.testID}
+        onPress={() => props.onStateChange && props.onStateChange({ open: !props.open })}
+      >
+        <RNText testID={props.testID + '::Icon'}>{props.icon}</RNText>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export const Appbar: React.FC<any> & {
+  Header: React.FC<any>;
+  Content: React.FC<any>;
+  Action: React.FC<any>;
+  BackAction: React.FC<any>;
+} = props => (
+  <View testID={props.testID} style={props.style}>
+    {props.children}
+  </View>
+);
+
+Appbar.Header = props => (
+  <View testID={props.testID} style={props.style}>
+    {props.children}
+  </View>
+);
+
+Appbar.Content = props => (
+  <View testID={props.testID} style={props.style}>
+    <RNText testID={props.testID + '::Title'}>{props.title}</RNText>
+  </View>
+);
+
+Appbar.Action = props => (
+  <TouchableOpacity testID={props.testID} onPress={props.onPress}>
+    <RNText testID={props.testID + '::Icon'}>{props.icon}</RNText>
+  </TouchableOpacity>
+);
+
+Appbar.BackAction = props => (
+  <TouchableOpacity testID={props.testID} onPress={props.onPress}>
+    <RNText>Back</RNText>
+  </TouchableOpacity>
+);
