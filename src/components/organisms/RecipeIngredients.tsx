@@ -39,7 +39,7 @@
  */
 
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { View } from 'react-native';
 import { DataTable, Text, useTheme } from 'react-native-paper';
 import { FormIngredientElement, ingredientTableElement } from '@customTypes/DatabaseElementTypes';
 import { textSeparator, unitySeparator } from '@styles/typography';
@@ -183,33 +183,28 @@ function ReadOnlyIngredients({ testID, ingredients }: ReadOnlyProps) {
   return (
     <View style={{ paddingHorizontal: 10 }}>
       <DataTable>
-        <FlatList
-          data={ingredients}
-          keyExtractor={(_, index) => `ingredient-${index}`}
-          renderItem={({ item, index }) => (
-            <DataTable.Row
-              key={index}
-              testID={`${testID}::${index}::Row`}
-              style={{ borderBottomWidth: 0 }}
+        {ingredients.map((item, index) => (
+          <DataTable.Row
+            key={index}
+            testID={`${testID}::${index}::Row`}
+            style={{ borderBottomWidth: 0 }}
+          >
+            <DataTable.Cell
+              testID={`${testID}::${index}::QuantityAndUnit`}
+              style={{ flex: recipeTableReadOnlyFlex.quantityAndUnit }}
             >
-              <DataTable.Cell
-                testID={`${testID}::${index}::QuantityAndUnit`}
-                style={{ flex: recipeTableReadOnlyFlex.quantityAndUnit }}
-              >
-                <Text variant='titleMedium'>
-                  {item.quantity} {item.unit}
-                </Text>
-              </DataTable.Cell>
-              <DataTable.Cell
-                testID={`${testID}::${index}::IngredientName`}
-                style={{ flex: recipeTableReadOnlyFlex.name }}
-              >
-                <Text variant='titleMedium'>{item.name}</Text>
-              </DataTable.Cell>
-            </DataTable.Row>
-          )}
-          scrollEnabled={false}
-        />
+              <Text variant='titleMedium'>
+                {item.quantity} {item.unit}
+              </Text>
+            </DataTable.Cell>
+            <DataTable.Cell
+              testID={`${testID}::${index}::IngredientName`}
+              style={{ flex: recipeTableReadOnlyFlex.name }}
+            >
+              <Text variant='titleMedium'>{item.name}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+        ))}
       </DataTable>
     </View>
   );
@@ -275,75 +270,70 @@ function EditableIngredients(props: EditableIngredientsProps) {
             {columnTitles.column3}
           </DataTable.Title>
         </DataTable.Header>
-        <FlatList
-          data={ingredients}
-          keyExtractor={(_, index) => `ingredient-edit-${index}`}
-          renderItem={({ item, index }) => {
-            const quantity = parseIngredientQuantity(item.quantity);
+        {ingredients.map((item, index) => {
+          const quantity = parseIngredientQuantity(item.quantity);
 
-            return (
-              <DataTable.Row
-                key={index}
-                testID={`${testID}::${index}::Row`}
-                style={{ borderBottomWidth: 0 }}
+          return (
+            <DataTable.Row
+              key={index}
+              testID={`${testID}::${index}::Row`}
+              style={{ borderBottomWidth: 0 }}
+            >
+              <DataTable.Cell
+                style={[
+                  recipeTableStyles.cellBase,
+                  { flex: recipeTableFlex.quantity, borderColor: colors.outline },
+                ]}
               >
-                <DataTable.Cell
-                  style={[
-                    recipeTableStyles.cellBase,
-                    { flex: recipeTableFlex.quantity, borderColor: colors.outline },
-                  ]}
-                >
-                  <NumericTextInput
-                    testID={`${testID}::${index}::QuantityInput`}
-                    value={quantity}
-                    onChangeValue={newQuantity =>
-                      handleIngredientChange(index, newQuantity, item.unit ?? '', item.name ?? '')
-                    }
-                    dense
-                    mode='flat'
-                    style={recipeTableStyles.inputContainer}
-                  />
-                </DataTable.Cell>
-                <DataTable.Cell
-                  style={[
-                    recipeTableStyles.cellBase,
-                    { flex: recipeTableFlex.unit, borderColor: colors.outline },
-                  ]}
-                >
-                  <CustomTextInput
-                    testID={`${testID}::${index}::Unit`}
-                    value={item.unit}
-                    editable={false}
-                    dense
-                    mode='flat'
-                    style={recipeTableStyles.inputContainer}
-                  />
-                </DataTable.Cell>
-                <DataTable.Cell
-                  style={[
-                    recipeTableStyles.cellBase,
-                    { flex: recipeTableFlex.name, borderColor: colors.outline },
-                    recipeTableStyles.rightBorder,
-                  ]}
-                >
-                  <TextInputWithDropDown
-                    testID={`${testID}::${index}::NameInput`}
-                    value={item.name}
-                    absoluteDropDown={false}
-                    referenceTextArray={availableIngredients}
-                    dense
-                    mode='flat'
-                    onValidate={newName =>
-                      handleIngredientChange(index, quantity, item.unit ?? '', newName)
-                    }
-                    style={recipeTableStyles.inputContainer}
-                  />
-                </DataTable.Cell>
-              </DataTable.Row>
-            );
-          }}
-          scrollEnabled={false}
-        />
+                <NumericTextInput
+                  testID={`${testID}::${index}::QuantityInput`}
+                  value={quantity}
+                  onChangeValue={newQuantity =>
+                    handleIngredientChange(index, newQuantity, item.unit ?? '', item.name ?? '')
+                  }
+                  dense
+                  mode='flat'
+                  style={recipeTableStyles.inputContainer}
+                />
+              </DataTable.Cell>
+              <DataTable.Cell
+                style={[
+                  recipeTableStyles.cellBase,
+                  { flex: recipeTableFlex.unit, borderColor: colors.outline },
+                ]}
+              >
+                <CustomTextInput
+                  testID={`${testID}::${index}::Unit`}
+                  value={item.unit}
+                  editable={false}
+                  dense
+                  mode='flat'
+                  style={recipeTableStyles.inputContainer}
+                />
+              </DataTable.Cell>
+              <DataTable.Cell
+                style={[
+                  recipeTableStyles.cellBase,
+                  { flex: recipeTableFlex.name, borderColor: colors.outline },
+                  recipeTableStyles.rightBorder,
+                ]}
+              >
+                <TextInputWithDropDown
+                  testID={`${testID}::${index}::NameInput`}
+                  value={item.name}
+                  absoluteDropDown={false}
+                  referenceTextArray={availableIngredients}
+                  dense
+                  mode='flat'
+                  onValidate={newName =>
+                    handleIngredientChange(index, quantity, item.unit ?? '', newName)
+                  }
+                  style={recipeTableStyles.inputContainer}
+                />
+              </DataTable.Cell>
+            </DataTable.Row>
+          );
+        })}
       </DataTable>
 
       <RoundButton
