@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "RecipeIngredients::0::QuantityInput"
+    label: "Press on ingredient quantity input"
+
+- inputText: "4321"
+
+- pressKey: enter
