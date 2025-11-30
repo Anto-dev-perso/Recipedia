@@ -29,21 +29,23 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import BottomTopButton from '@components/molecules/BottomTopButton';
-import { BottomTopButtonOffset, bottomTopPosition, LargeButtonDiameter } from '@styles/buttons';
 import { View } from 'react-native';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
 import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
 import { useI18n } from '@utils/i18n';
-import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS, TUTORIAL_VERTICAL_OFFSET } from '@utils/Constants';
+import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
 import { pickImage, takePhoto } from '@utils/ImagePicker';
 import { Icons } from '@assets/Icons';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
-import { useNavigation } from '@react-navigation/native';
-import RoundButton from '@components/atomic/RoundButton';
-import { useTheme } from 'react-native-paper';
-import { padding } from '@styles/spacing';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { FAB, Portal, useTheme } from 'react-native-paper';
+import { padding, screenHeight, screenWidth } from '@styles/spacing';
+
+const MAIN_FAB_SIZE = 56;
+const ACTION_BUTTON_SIZE = 40;
+const ACTION_BUTTON_SPACING = 16;
+const ACTION_BUTTON_COUNT = 4;
 
 /**
  * VerticalBottomButtons component for expandable recipe creation menu
@@ -57,13 +59,27 @@ export function VerticalBottomButtons() {
   const { colors } = useTheme();
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
+
+  const tabBarHeight = screenHeight / 9 + insets.bottom;
+  const copilotWidth = screenWidth * 0.62;
+  const copilotHeight =
+    MAIN_FAB_SIZE + (ACTION_BUTTON_SIZE + ACTION_BUTTON_SPACING) * ACTION_BUTTON_COUNT;
+  const copilotBottom = tabBarHeight - (ACTION_BUTTON_SIZE + 2 * ACTION_BUTTON_SPACING);
 
   const copilotData = useSafeCopilot();
   const copilotEvents = copilotData?.copilotEvents;
   const currentStep = copilotData?.currentStep;
 
-  const [multipleLayout, setMultipleLayout] = useState(false);
+  const [open, setOpen] = useState(false);
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isInitialMount = useRef(true);
+
+  const fabVisible = isInitialMount.current || isFocused;
+
+  useEffect(() => {
+    isInitialMount.current = false;
+  }, []);
 
   const stepOrder = TUTORIAL_STEPS.Home.order;
 
@@ -73,9 +89,7 @@ export function VerticalBottomButtons() {
     }
 
     demoIntervalRef.current = setInterval(() => {
-      setMultipleLayout(prev => {
-        return !prev;
-      });
+      setOpen(open => !open);
     }, TUTORIAL_DEMO_INTERVAL);
   }, []);
 
@@ -83,8 +97,8 @@ export function VerticalBottomButtons() {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
       demoIntervalRef.current = null;
+      setOpen(false);
     }
-    setMultipleLayout(false);
   }, []);
 
   const handleStepChange = useCallback(
@@ -103,7 +117,6 @@ export function VerticalBottomButtons() {
       return;
     }
 
-    // Start demo if we're already on our step when component mounts
     if (currentStep?.order === stepOrder) {
       startDemo();
     }
@@ -118,7 +131,6 @@ export function VerticalBottomButtons() {
     };
   }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
 
-  // TODO add a loading because camera can takes a while
   async function takePhotoAndOpenNewRecipe() {
     openRecipeWithUri(await takePhoto(colors));
   }
@@ -143,84 +155,58 @@ export function VerticalBottomButtons() {
               testID={'HomeTutorial'}
               style={{
                 position: 'absolute',
-                bottom: -padding.large + TUTORIAL_VERTICAL_OFFSET + insets.bottom,
+                bottom: copilotBottom,
                 right: padding.small,
-                width: LargeButtonDiameter + padding.small,
-                height: BottomTopButtonOffset * 4,
+                width: copilotWidth,
+                height: copilotHeight,
                 pointerEvents: 'none',
               }}
             />
           </CopilotStep>
         </View>
       )}
-      {multipleLayout ? (
-        <View>
-          <BottomTopButton
-            testID={'ReduceButton'}
-            as={RoundButton}
-            position={bottomTopPosition.bottom_right}
-            size={'medium'}
-            icon={Icons.minusIcon}
-            applyInsets={true}
-            onPressFunction={() => {
-              setMultipleLayout(false);
-            }}
-          />
-
-          <BottomTopButton
-            testID={'EditButton'}
-            as={RoundButton}
-            position={bottomTopPosition.bottom_right}
-            size={'medium'}
-            buttonOffset={BottomTopButtonOffset}
-            icon={Icons.pencilIcon}
-            applyInsets={true}
-            onPressFunction={() => {
-              navigate('Recipe', {
-                mode: 'addManually',
-              });
-            }}
-          />
-
-          <BottomTopButton
-            testID={'GalleryButton'}
-            as={RoundButton}
-            position={bottomTopPosition.bottom_right}
-            size={'medium'}
-            buttonOffset={2 * BottomTopButtonOffset}
-            icon={Icons.galleryIcon}
-            applyInsets={true}
-            onPressFunction={() => {
-              pickImageAndOpenNewRecipe();
-            }}
-          />
-
-          <BottomTopButton
-            testID={'CameraButton'}
-            as={RoundButton}
-            position={bottomTopPosition.bottom_right}
-            size={'medium'}
-            buttonOffset={3 * BottomTopButtonOffset}
-            icon={Icons.cameraIcon}
-            applyInsets={true}
-            onPressFunction={() => {
-              takePhotoAndOpenNewRecipe();
-            }}
-          />
-        </View>
-      ) : (
-        <BottomTopButton
-          testID={'ExpandButton'}
-          as={RoundButton}
-          position={bottomTopPosition.bottom_right}
-          size={'medium'}
-          icon={Icons.plusIcon}
-          applyInsets={true}
-          onPressFunction={() => {
-            setMultipleLayout(true);
+      <Portal>
+        <FAB.Group
+          open={open}
+          visible={fabVisible}
+          icon={open ? Icons.minusIcon : Icons.plusIcon}
+          testID={open ? 'ReduceButton' : 'ExpandButton'}
+          actions={[
+            {
+              icon: Icons.pencilIcon,
+              label: t('fab.addManually'),
+              onPress: () => navigate('Recipe', { mode: 'addManually' }),
+              testID: 'RecipeEdit',
+              style: { borderRadius: 999 },
+              size: 'medium',
+            },
+            {
+              icon: Icons.galleryIcon,
+              label: t('fab.pickFromGallery'),
+              onPress: () => pickImageAndOpenNewRecipe(),
+              testID: 'GalleryButton',
+              style: { borderRadius: 999 },
+              size: 'medium',
+            },
+            {
+              icon: Icons.cameraIcon,
+              label: t('fab.takePhoto'),
+              onPress: () => takePhotoAndOpenNewRecipe(),
+              testID: 'CameraButton',
+              style: { borderRadius: 999 },
+              size: 'medium',
+            },
+          ]}
+          onStateChange={({ open: isOpen }) => setOpen(isOpen)}
+          fabStyle={{
+            marginBottom: tabBarHeight,
+            marginRight: padding.small,
+            backgroundColor: colors.primaryContainer,
+            borderRadius: 999,
           }}
+          color={colors.onPrimaryContainer}
         />
-      )}
+      </Portal>
     </View>
   );
 }

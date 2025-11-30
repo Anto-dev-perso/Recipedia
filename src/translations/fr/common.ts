@@ -53,4 +53,10 @@ export default {
         'Ajoutez des recettes à votre collection pour voir des recommandations personnalisées.',
     },
   },
+
+  fab: {
+    addManually: 'Ajouter manuellement',
+    pickFromGallery: 'Choisir depuis la galerie',
+    takePhoto: 'Prendre une photo',
+  },
 };
