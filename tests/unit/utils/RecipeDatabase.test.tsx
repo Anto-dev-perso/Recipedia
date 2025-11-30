@@ -1775,8 +1775,14 @@ describe('RecipeDatabase', () => {
 
     beforeEach(async () => {
       await db.init();
+      await db.addMultipleIngredients(testIngredients);
+      await db.addMultipleTags(testTags);
       jest.clearAllMocks();
       fileGestionInstance.get_directoryUri.mockReturnValue('file:///documents/Recipedia/');
+    });
+
+    afterEach(async () => {
+      await db.reset();
     });
 
     describe('addRecipe', () => {
@@ -1934,6 +1940,124 @@ describe('RecipeDatabase', () => {
         expect(remainingRecipes[0].title).toBe(recipe2.title);
         expect(remainingRecipes[0].image_Source).not.toBe(recipeToDelete.image_Source);
       });
+    });
+  });
+
+  describe('Recipe verification behavior', () => {
+    const db = RecipeDatabase.getInstance();
+
+    beforeEach(async () => {
+      await db.init();
+    });
+
+    afterEach(async () => {
+      await db.reset();
+    });
+
+    test('throws error when adding recipe with missing ingredients', async () => {
+      await db.addMultipleTags(testTags);
+
+      const recipeWithMissingIngredients = {
+        ...testRecipes[0],
+        id: undefined,
+      };
+
+      await expect(db.addRecipe(recipeWithMissingIngredients)).rejects.toThrow(
+        /Ingredients not found in database:/
+      );
+    });
+
+    test('throws error listing all missing ingredients', async () => {
+      await db.addMultipleTags(testTags);
+
+      const recipeWithMultipleMissingIngredients = {
+        ...testRecipes[0],
+        id: undefined,
+        ingredients: [testIngredients[0], testIngredients[1], testIngredients[2]],
+      };
+
+      await expect(db.addRecipe(recipeWithMultipleMissingIngredients)).rejects.toThrow(
+        /Ingredients not found in database: .* \(3 missing\)/
+      );
+    });
+
+    test('throws error when adding recipe with missing tags', async () => {
+      await db.addMultipleIngredients(testIngredients);
+
+      const recipeWithMissingTags = {
+        ...testRecipes[0],
+        id: undefined,
+      };
+
+      await expect(db.addRecipe(recipeWithMissingTags)).rejects.toThrow(
+        /Tags not found in database:/
+      );
+    });
+
+    test('throws error listing all missing tags', async () => {
+      await db.addMultipleIngredients(testIngredients);
+
+      const recipeWithMultipleMissingTags = {
+        ...testRecipes[0],
+        id: undefined,
+        tags: [testTags[0], testTags[1], testTags[2]],
+      };
+
+      await expect(db.addRecipe(recipeWithMultipleMissingTags)).rejects.toThrow(
+        /Tags not found in database: .* \(3 missing\)/
+      );
+    });
+
+    test('successfully adds recipe when all ingredients and tags exist', async () => {
+      await db.addMultipleIngredients(testIngredients);
+      await db.addMultipleTags(testTags);
+
+      const recipe = {
+        ...testRecipes[0],
+        id: undefined,
+      };
+
+      await expect(db.addRecipe(recipe)).resolves.not.toThrow();
+      expect(db.get_recipes().length).toBe(1);
+    });
+
+    test('addMultipleRecipes throws when ingredients missing', async () => {
+      await db.addMultipleTags(testTags);
+
+      const recipesWithMissingIngredients = [
+        { ...testRecipes[0], id: undefined },
+        { ...testRecipes[1], id: undefined },
+      ];
+
+      await expect(db.addMultipleRecipes(recipesWithMissingIngredients)).rejects.toThrow(
+        /Ingredients not found in database:/
+      );
+    });
+
+    test('addMultipleRecipes throws when tags missing', async () => {
+      await db.addMultipleIngredients(testIngredients);
+
+      const recipesWithMissingTags = [
+        { ...testRecipes[0], id: undefined },
+        { ...testRecipes[1], id: undefined },
+      ];
+
+      await expect(db.addMultipleRecipes(recipesWithMissingTags)).rejects.toThrow(
+        /Tags not found in database:/
+      );
+    });
+
+    test('addMultipleRecipes succeeds when all elements exist', async () => {
+      await db.addMultipleIngredients(testIngredients);
+      await db.addMultipleTags(testTags);
+
+      const validRecipes = [
+        { ...testRecipes[0], id: undefined },
+        { ...testRecipes[1], id: undefined },
+      ];
+
+      await expect(db.addMultipleRecipes(validRecipes)).resolves.not.toThrow();
+      expect(db.get_recipes().length).toBe(2);
     });
   });
 });

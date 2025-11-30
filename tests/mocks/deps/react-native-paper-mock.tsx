@@ -35,6 +35,7 @@ export const Dialog: React.FC<any> & {
   Title: React.FC<any>;
   Content: React.FC<any>;
   Actions: React.FC<any>;
+  Icon: React.FC<any>;
 } = props => {
   // Only render children when visible is true (matches real react-native-paper behavior)
   if (!props.visible) {
@@ -53,6 +54,12 @@ Dialog.Title = props => <RNText testID={props.testID}>{props.children}</RNText>;
 Dialog.Content = props => <View testID={props.testID}>{props.children}</View>;
 
 Dialog.Actions = props => <View testID={props.testID}>{props.children}</View>;
+
+Dialog.Icon = props => (
+  <View testID={props.testID}>
+    <RNText testID={props.testID + '::Icon'}>{props.icon}</RNText>
+  </View>
+);
 
 export const Menu: React.FC<any> & { Item: React.FC<any> } = props => (
   <View testID={props.testID} {...{ visible: props.visible, onDismiss: props.onDismiss }}>

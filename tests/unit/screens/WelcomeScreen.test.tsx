@@ -142,4 +142,174 @@ describe('WelcomeScreen Component', () => {
 
     require('expo-constants').default = originalConstant;
   });
+
+  describe('Dataset error handling', () => {
+    test('does not show dataset error dialog when no error', async () => {
+      const { queryByTestId } = renderWelcomeScreen();
+
+      await waitFor(() => {
+        expect(queryByTestId('WelcomeScreen::Title')).toBeTruthy();
+      });
+
+      expect(queryByTestId('WelcomeScreen::DatasetErrorDialog')).toBeNull();
+    });
+
+    test('shows dataset error dialog when dataset loading fails', async () => {
+      const mockContext = {
+        recipes: [],
+        ingredients: [],
+        tags: [],
+        shopping: [],
+        datasetLoadError: 'Failed to load dataset: Network error',
+        dismissDatasetLoadError: jest.fn(),
+        isDatabaseReady: true,
+        scalingProgress: undefined,
+        addRecipe: jest.fn(),
+        editRecipe: jest.fn(),
+        deleteRecipe: jest.fn(),
+        addIngredient: jest.fn(),
+        editIngredient: jest.fn(),
+        deleteIngredient: jest.fn(),
+        addTag: jest.fn(),
+        editTag: jest.fn(),
+        deleteTag: jest.fn(),
+        addRecipeToShopping: jest.fn(),
+        purchaseIngredientInShoppingList: jest.fn(),
+        clearShoppingList: jest.fn(),
+        findSimilarRecipes: jest.fn(),
+        findSimilarIngredients: jest.fn(),
+        findSimilarTags: jest.fn(),
+        getRandomIngredients: jest.fn(),
+        getRandomTags: jest.fn(),
+        searchRandomlyTags: jest.fn(),
+        scaleAllRecipesForNewDefaultPersons: jest.fn(),
+        isDatabaseEmpty: jest.fn(),
+        addMultipleIngredients: jest.fn(),
+        addMultipleTags: jest.fn(),
+        addMultipleRecipes: jest.fn(),
+      };
+
+      jest
+        .spyOn(require('@context/RecipeDatabaseContext'), 'useRecipeDatabase')
+        .mockReturnValue(mockContext);
+
+      const { getByTestId, rerender } = render(
+        <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
+      );
+
+      await waitFor(() => {
+        expect(getByTestId('WelcomeScreen::DatasetErrorDialog')).toBeTruthy();
+      });
+
+      expect(getByTestId('WelcomeScreen::DatasetErrorDialog::OK')).toBeTruthy();
+
+      jest.restoreAllMocks();
+    });
+
+    test('dataset error dialog shows correct error message', async () => {
+      const errorMessage = 'Failed to load dataset: Network error';
+      const mockContext = {
+        recipes: [],
+        ingredients: [],
+        tags: [],
+        shopping: [],
+        datasetLoadError: errorMessage,
+        dismissDatasetLoadError: jest.fn(),
+        isDatabaseReady: true,
+        scalingProgress: undefined,
+        addRecipe: jest.fn(),
+        editRecipe: jest.fn(),
+        deleteRecipe: jest.fn(),
+        addIngredient: jest.fn(),
+        editIngredient: jest.fn(),
+        deleteIngredient: jest.fn(),
+        addTag: jest.fn(),
+        editTag: jest.fn(),
+        deleteTag: jest.fn(),
+        addRecipeToShopping: jest.fn(),
+        purchaseIngredientInShoppingList: jest.fn(),
+        clearShoppingList: jest.fn(),
+        findSimilarRecipes: jest.fn(),
+        findSimilarIngredients: jest.fn(),
+        findSimilarTags: jest.fn(),
+        getRandomIngredients: jest.fn(),
+        getRandomTags: jest.fn(),
+        searchRandomlyTags: jest.fn(),
+        scaleAllRecipesForNewDefaultPersons: jest.fn(),
+        isDatabaseEmpty: jest.fn(),
+        addMultipleIngredients: jest.fn(),
+        addMultipleTags: jest.fn(),
+        addMultipleRecipes: jest.fn(),
+      };
+
+      jest
+        .spyOn(require('@context/RecipeDatabaseContext'), 'useRecipeDatabase')
+        .mockReturnValue(mockContext);
+
+      const { getByText } = render(
+        <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
+      );
+
+      await waitFor(() => {
+        expect(getByText(new RegExp(errorMessage))).toBeTruthy();
+      });
+
+      jest.restoreAllMocks();
+    });
+
+    test('dismissing dataset error dialog calls dismissDatasetLoadError', async () => {
+      const mockDismiss = jest.fn();
+      const mockContext = {
+        recipes: [],
+        ingredients: [],
+        tags: [],
+        shopping: [],
+        datasetLoadError: 'Test error',
+        dismissDatasetLoadError: mockDismiss,
+        isDatabaseReady: true,
+        scalingProgress: undefined,
+        addRecipe: jest.fn(),
+        editRecipe: jest.fn(),
+        deleteRecipe: jest.fn(),
+        addIngredient: jest.fn(),
+        editIngredient: jest.fn(),
+        deleteIngredient: jest.fn(),
+        addTag: jest.fn(),
+        editTag: jest.fn(),
+        deleteTag: jest.fn(),
+        addRecipeToShopping: jest.fn(),
+        purchaseIngredientInShoppingList: jest.fn(),
+        clearShoppingList: jest.fn(),
+        findSimilarRecipes: jest.fn(),
+        findSimilarIngredients: jest.fn(),
+        findSimilarTags: jest.fn(),
+        getRandomIngredients: jest.fn(),
+        getRandomTags: jest.fn(),
+        searchRandomlyTags: jest.fn(),
+        scaleAllRecipesForNewDefaultPersons: jest.fn(),
+        isDatabaseEmpty: jest.fn(),
+        addMultipleIngredients: jest.fn(),
+        addMultipleTags: jest.fn(),
+        addMultipleRecipes: jest.fn(),
+      };
+
+      jest
+        .spyOn(require('@context/RecipeDatabaseContext'), 'useRecipeDatabase')
+        .mockReturnValue(mockContext);
+
+      const { getByTestId } = render(
+        <WelcomeScreen onStartTutorial={mockOnStartTutorial} onSkip={mockOnSkip} />
+      );
+
+      await waitFor(() => {
+        expect(getByTestId('WelcomeScreen::DatasetErrorDialog::OK')).toBeTruthy();
+      });
+
+      fireEvent.press(getByTestId('WelcomeScreen::DatasetErrorDialog::OK'));
+
+      expect(mockDismiss).toHaveBeenCalledTimes(1);
+
+      jest.restoreAllMocks();
+    });
+  });
 });
