@@ -10,7 +10,7 @@ appId: "com.recipedia"
 # TODO iOS
 
 - tapOn:
-    id: "GalleryButton::RoundButton"
+    id: "GalleryButton"
     label: "Open gallery for OCR"
 
 - runFlow:

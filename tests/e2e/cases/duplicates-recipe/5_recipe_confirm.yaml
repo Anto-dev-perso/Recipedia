@@ -23,10 +23,6 @@ tags:
       SEARCH_TEXT: "Test Recipe"
     label: "Verify - Confirm recipe is searchable before duplicate test"
 
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Action - Close FAB buttons"
-
 - runFlow:
     file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
     label: "Action - Create duplicate recipe"
@@ -42,10 +38,6 @@ tags:
 - tapOn:
     id: "Recipe::Dialog::Confirm"
     label: "Action - Confirm success message"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Close FAB buttons"
 
 - runFlow:
     file: "../../flows/recipe/deleteRecipeBySearch.yaml"

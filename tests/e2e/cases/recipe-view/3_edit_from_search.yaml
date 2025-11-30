@@ -27,7 +27,7 @@ tags:
     label: "Assert - Verify Pesto Pasta recipe is displayed correctly"
 
 - tapOn:
-    id: "RecipeEdit::RoundButton"
+    id: "RecipeEdit"
     waitToSettleTimeoutMs: 0
     retryTapIfNoChange: false
     label: "Action - Tap on the Edit button"
@@ -67,7 +67,11 @@ tags:
     label: "Action - Revert nutrition values"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "RecipeValidate"
+    label: "Action - Save changes and return to read-only mode"
+
+- tapOn:
+    id: "BackButton"
     label: "Action - Back to the Search Screen"
 
 - scrollUntilVisible:

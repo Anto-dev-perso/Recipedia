@@ -46,6 +46,7 @@ appId: "com.recipedia"
       id: "RecipeTime::NumericTextInput"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll until preparation time is visible"
 
 - tapOn:
@@ -73,6 +74,7 @@ appId: "com.recipedia"
       id: "RecipePreparation::EditableStep::0::Content"
     direction: DOWN
     speed: 60
+    centerElement: true
 
 - tapOn:
     id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"

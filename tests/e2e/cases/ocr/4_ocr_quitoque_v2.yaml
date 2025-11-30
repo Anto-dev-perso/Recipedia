@@ -30,7 +30,7 @@ tags:
     label: "Setup - Navigate to Home screen"
 
 - tapOn:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Setup - Expand FAB menu"
 
 - runFlow:
@@ -44,10 +44,6 @@ tags:
     env:
       RECIPE_NAME: "POULET SAUCE SATAY.*"
     label: "Assert - Verify recipe added successfully (French)"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Collapse FAB menu"
 
 - tapOn:
     id: "BottomTabs::Search"
@@ -72,7 +68,7 @@ tags:
     label: "Assert - Verify recipe content in read-only mode (French UI)"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Cleanup - Return to search results"
 
 - tapOn:

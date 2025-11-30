@@ -1,15 +1,15 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Back button is displayed"
 
 - assertVisible:
-    text: "󰌍"
+    text: "󰁍"
     label: "Back button icon is displayed"
 
 - assertVisible:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Add recipe button is displayed"
 
 - assertVisible:

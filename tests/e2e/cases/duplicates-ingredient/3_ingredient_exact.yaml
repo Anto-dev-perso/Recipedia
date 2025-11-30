@@ -8,11 +8,11 @@ tags:
     label: "Setup - Launch app and wait for ready"
 
 - tapOn:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Action - Expand FAB menu"
 
 - tapOn:
-    id: "EditButton::RoundButton"
+    id: "RecipeEdit"
     label: "Action - Open manual recipe creation"
 
 - scrollUntilVisible:
@@ -65,9 +65,5 @@ tags:
     label: "Assert - Verify duplicate ingredient row was not added"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Cleanup - Exit recipe creation without saving"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Close FAB buttons"

@@ -44,13 +44,8 @@ tags:
     label: "Action - Add preparation"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Action - Cancel recipe adding"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Collapse FAB menu"
-
 - tapOn:
     id: "BottomTabs::Search"
     label: "Verification - Navigate to Search screen"

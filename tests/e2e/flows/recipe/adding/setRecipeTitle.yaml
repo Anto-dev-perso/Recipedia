@@ -7,8 +7,8 @@ appId: "com.recipedia"
 - runFlow:
     when:
       visible:
-        id: 'RecipeTitle::CustomTextInput'
-        text: '.*'
+        id: "RecipeTitle::CustomTextInput"
+        text: ".*"
     commands:
       - eraseText:
           label: "Erase the existing title"

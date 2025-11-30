@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "RecipeDelete::RoundButton"
+    id: "RecipeDelete"
     label: "Delete the test recipe for cleanup"
 
 - tapOn:

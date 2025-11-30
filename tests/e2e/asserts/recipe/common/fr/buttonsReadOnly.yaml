@@ -1,20 +1,20 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Back button is displayed"
 
 - assertVisible:
-    text: "󰌍"
+    text: "󰁍"
     label: "Back button icon is displayed"
 
 - assertVisible:
-    id: "RecipeValidate-text"
+    id: "RecipeValidateButton-text"
     text: "Ajouter au menu"
     label: "Add recipe button is displayed"
 
 - assertVisible:
-    id: "RecipeDelete::RoundButton"
+    id: "RecipeDelete"
     label: "Delete button is displayed"
 
 - assertNotVisible:
@@ -26,7 +26,7 @@ appId: "com.recipedia"
     label: "Delete icon is displayed"
 
 - assertVisible:
-    id: "RecipeEdit::RoundButton"
+    id: "RecipeEdit"
     label: "Edit button is rendered"
 
 - assertVisible:

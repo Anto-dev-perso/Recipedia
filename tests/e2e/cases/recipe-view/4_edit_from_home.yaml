@@ -24,7 +24,7 @@ env:
     label: "Assert - Verify Sushi Rolls recipe is displayed correctly"
 
 - tapOn:
-    id: "RecipeEdit::RoundButton"
+    id: "RecipeEdit"
     waitToSettleTimeoutMs: 0
     retryTapIfNoChange: false
     label: "Action - Tap on the Edit button"
@@ -54,7 +54,7 @@ env:
     label: "Cleanup - Remove nutrition table"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Cleanup - Back to the Home Screen"
 
 - runFlow:

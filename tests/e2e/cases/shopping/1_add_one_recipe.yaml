@@ -32,7 +32,7 @@ tags:
     label: "Action - Open Classic Pancakes recipe"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Add Classic Pancakes to menu"
 
 - runFlow:

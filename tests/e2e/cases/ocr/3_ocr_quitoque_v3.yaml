@@ -42,7 +42,7 @@ tags:
     label: "Assert - Verify OCR extracted recipe data"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -50,10 +50,6 @@ tags:
     env:
       RECIPE_NAME: "CURRY DE POIS CHICHES ET POIREAU AUX ÉPICES CACHEMIRE"
     label: "Assert - Verify recipe added successfully"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Collapse FAB menu"
 
 - tapOn:
     id: "BottomTabs::Search"
@@ -78,7 +74,7 @@ tags:
     label: "Assert - Verify recipe content in read-only mode"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Cleanup - Return to search results"
 
 - tapOn:

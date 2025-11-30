@@ -50,7 +50,7 @@ tags:
     label: "Assert - Verify ingredients scaled to 6 persons"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Action - Return to Search screen"
 
 - runFlow:
@@ -80,7 +80,7 @@ tags:
     label: "Verification - Verify ingredients restored to 4 persons"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Action - Return to Search screen"
 
 - scrollUntilVisible:

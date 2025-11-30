@@ -1,11 +1,11 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Expand FAB menu"
 
 - tapOn:
-    id: "EditButton::RoundButton"
+    id: "RecipeEdit"
     label: "Tap manual recipe add button"
 
 - runFlow:
@@ -141,18 +141,14 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeValidate"
+      id: "RecipeValidateButton"
     direction: DOWN
     speed: 60
     label: "Scroll to validate button"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
 
 - tapOn:
     id: "Recipe::Dialog::Confirm"
     label: "Close the validation dialog"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Reduce the FAB button as we no more need it"
