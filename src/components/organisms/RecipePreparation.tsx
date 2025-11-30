@@ -162,7 +162,6 @@ function ReadOnlyPreparation({ steps }: ReadOnlyProps) {
             </Text>
           </View>
         )}
-        scrollEnabled={false}
       />
     </View>
   );
@@ -269,7 +268,6 @@ function EditablePreparation({
             onDescriptionChange={onDescriptionChange}
           />
         )}
-        scrollEnabled={false}
       />
 
       <RoundButton
