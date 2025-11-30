@@ -417,7 +417,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   const addOrMergeIngredient = (ingredient: ingredientTableElement) => {
     setRecipeIngredients(prev => {
       const existingIndex = prev.findIndex(
-        existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
+        existing => existing.name?.toLowerCase() === ingredient.name.toLowerCase()
       );
 
       if (existingIndex === -1) {
@@ -426,7 +426,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         const updated = [...prev];
         const existing = updated[existingIndex];
 
-        if (!existing) {
+        if (!existing || !existing.name) {
           return prev;
         }
 
@@ -573,7 +573,6 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             unit: newUnit,
             quantity: newQuantity,
             season: [],
-            type: ingredientType.undefined,
           },
         ],
         findSimilarIngredients
@@ -601,7 +600,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function addNewIngredient() {
-    setRecipeIngredients([...recipeIngredients, {}]);
+    setRecipeIngredients([...recipeIngredients, { name: '' }]);
   }
 
   function editPreparationTitle(stepIndex: number, newTitle: string) {
@@ -1030,14 +1029,14 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           const updated = [...prev];
           for (const ingredient of exactMatches) {
             const existingIndex = updated.findIndex(
-              existing => existing.name.toLowerCase() === ingredient.name.toLowerCase()
+              existing => existing.name?.toLowerCase() === ingredient.name.toLowerCase()
             );
 
             if (existingIndex === -1) {
               updated.push(ingredient);
             } else {
               const existing = updated[existingIndex];
-              if (existing.unit === ingredient.unit) {
+              if (existing && existing.name && existing.unit === ingredient.unit) {
                 updated[existingIndex] = {
                   ...existing,
                   quantity: String(

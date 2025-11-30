@@ -39,20 +39,25 @@
  */
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
+import {
+  FormIngredientElement,
+  ingredientTableElement,
+  tagTableElement,
+} from '@customTypes/DatabaseElementTypes';
 import SimilarityDialog from './SimilarityDialog';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
-export type ValidationQueuePropsBase<T extends 'Tag' | 'Ingredient', ItemType> = {
+export type ValidationQueuePropsBase<T extends 'Tag' | 'Ingredient', ItemType, ValidatedType> = {
   type: T;
   items: ItemType[];
-  onValidated: (item: ItemType) => void;
+  onValidated: (item: ValidatedType) => void;
   onDismissed?: (item: ItemType) => void;
 };
 
-export type TagValidationProps = ValidationQueuePropsBase<'Tag', tagTableElement>;
+export type TagValidationProps = ValidationQueuePropsBase<'Tag', tagTableElement, tagTableElement>;
 export type IngredientValidationProps = ValidationQueuePropsBase<
   'Ingredient',
+  FormIngredientElement,
   ingredientTableElement
 >;
 
@@ -108,7 +113,7 @@ export function ValidationQueue({
 
   const handleItemValidated = (item: tagTableElement | ingredientTableElement) => {
     if (type === 'Ingredient') {
-      const originalIngredient = currentItem as ingredientTableElement;
+      const originalIngredient = currentItem as FormIngredientElement;
       const validatedIngredient = item as ingredientTableElement;
       const mergedIngredient: ingredientTableElement = {
         ...validatedIngredient,
@@ -124,14 +129,14 @@ export function ValidationQueue({
 
   const handleDismiss = () => {
     if (type === 'Ingredient') {
-      onDismissed?.(currentItem as ingredientTableElement);
+      onDismissed?.(currentItem as FormIngredientElement);
     } else {
       onDismissed?.(currentItem as tagTableElement);
     }
     moveToNext();
   };
 
-  if (remainingItems.length === 0 || !currentItem) {
+  if (remainingItems.length === 0 || !currentItem || !currentItem.name) {
     return null;
   }
 

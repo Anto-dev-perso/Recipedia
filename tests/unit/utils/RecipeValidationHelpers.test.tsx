@@ -125,7 +125,7 @@ describe('RecipeValidationHelpers', () => {
           name: 'Tomato Sauce',
           quantity: '300',
           unit: 'ml',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
       ];
@@ -150,7 +150,7 @@ describe('RecipeValidationHelpers', () => {
           name: 'Parmesan',
           quantity: '100',
           unit: 'g',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
       ];
@@ -178,7 +178,7 @@ describe('RecipeValidationHelpers', () => {
           name: 'Parmesan',
           quantity: '',
           unit: '',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
       ];
@@ -203,7 +203,7 @@ describe('RecipeValidationHelpers', () => {
           name: 'Tomato',
           quantity: '100',
           unit: 'g',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
       ];
@@ -222,7 +222,7 @@ describe('RecipeValidationHelpers', () => {
           name: 'TOMATO SAUCE',
           quantity: '250',
           unit: 'ml',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
       ];
@@ -250,21 +250,21 @@ describe('RecipeValidationHelpers', () => {
           name: 'Tomato Sauce',
           quantity: '150',
           unit: 'ml',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
         {
           name: 'Tomato',
           quantity: '100',
           unit: 'g',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
         {
           name: 'DragonFruit',
           quantity: '200',
           unit: 'g',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
       ];
@@ -297,7 +297,7 @@ describe('RecipeValidationHelpers', () => {
           name: 'NewIngredient',
           quantity: '100',
           unit: 'g',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
       ];
@@ -318,14 +318,14 @@ describe('RecipeValidationHelpers', () => {
           name: 'Tomato Sauce',
           quantity: '150',
           unit: 'ml',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
         {
           name: 'Parmesan',
           quantity: '75',
           unit: 'g',
-          type: ingredientType.undefined,
+          type: ingredientType.vegetable,
           season: [],
         },
       ];

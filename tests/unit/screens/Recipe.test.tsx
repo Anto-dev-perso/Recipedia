@@ -1589,7 +1589,7 @@ describe('Recipe Component tests', () => {
             {
               id: 1,
               name: 'mockIngredient',
-              type: ingredientType.undefined,
+              type: ingredientType.vegetable,
               unit: 'g',
               quantity: '100',
               season: [],
@@ -1618,7 +1618,7 @@ describe('Recipe Component tests', () => {
             {
               id: 1,
               name: 'Tomato',
-              type: ingredientType.undefined,
+              type: ingredientType.vegetable,
               unit: 'kg',
               quantity: '1',
               season: [],

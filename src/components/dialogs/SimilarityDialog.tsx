@@ -58,10 +58,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { databaseLogger } from '@utils/logger';
-import {
-  ingredientTableElement,
-  tagTableElement,
-} from '@customTypes/DatabaseElementTypes';
+import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
 import ItemDialog, { DialogMode } from './ItemDialog';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 

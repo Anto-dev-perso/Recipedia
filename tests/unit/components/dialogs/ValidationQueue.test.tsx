@@ -37,7 +37,7 @@ describe('ValidationQueue', () => {
     {
       id: 1,
       name: 'Tomato',
-      type: ingredientType.undefined,
+      type: ingredientType.vegetable,
       unit: 'g',
       quantity: '100',
       season: [],
@@ -45,7 +45,7 @@ describe('ValidationQueue', () => {
     {
       id: 2,
       name: 'Onion',
-      type: ingredientType.undefined,
+      type: ingredientType.vegetable,
       unit: 'g',
       quantity: '50',
       season: [],
@@ -53,7 +53,7 @@ describe('ValidationQueue', () => {
     {
       id: 3,
       name: 'Garlic',
-      type: ingredientType.undefined,
+      type: ingredientType.vegetable,
       unit: 'clove',
       quantity: '2',
       season: [],

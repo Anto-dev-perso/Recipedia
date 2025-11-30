@@ -20,7 +20,7 @@ export function ValidationQueue(props: ValidationQueueProps) {
             : props.onValidated({
                 id: 1,
                 name: 'mockIngredient',
-                type: ingredientType.undefined,
+                type: ingredientType.vegetable,
                 unit: 'g',
                 quantity: '100',
                 season: [],
@@ -37,7 +37,7 @@ export function ValidationQueue(props: ValidationQueueProps) {
               : props.onDismissed?.({
                   id: 1,
                   name: 'mockIngredient',
-                  type: ingredientType.undefined,
+                  type: ingredientType.vegetable,
                   unit: 'g',
                   quantity: '100',
                   season: [],

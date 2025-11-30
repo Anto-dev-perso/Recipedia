@@ -24,7 +24,7 @@ export function SimilarityDialog({ testId, isVisible, onClose, item }: Similarit
             : item.onConfirm({
                 id: 1,
                 name: item.newItemName,
-                type: ingredientType.undefined,
+                type: ingredientType.vegetable,
                 unit: '',
                 season: [],
               })

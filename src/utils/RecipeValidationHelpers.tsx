@@ -1,4 +1,8 @@
-import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
+import {
+  FormIngredientElement,
+  ingredientTableElement,
+  tagTableElement,
+} from '@customTypes/DatabaseElementTypes';
 
 /**
  * Processes tags for validation by filtering exact database matches
@@ -38,24 +42,29 @@ export function processTagsForValidation(
  * Processes ingredients for validation by filtering exact database matches
  * Returns exact matches (preserving OCR quantity/unit) and items that need validation separately
  *
- * @param ingredients - Array of ingredients to process
+ * @param ingredients - Array of ingredients to process (can be partial for OCR data)
  * @param findSimilarIngredients - Function to find similar ingredients in database
  * @returns Object with exactMatches and needsValidation arrays
  */
 export function processIngredientsForValidation(
-  ingredients: ingredientTableElement[],
+  ingredients: FormIngredientElement[],
   findSimilarIngredients: (name: string) => ingredientTableElement[]
 ): {
   exactMatches: ingredientTableElement[];
-  needsValidation: ingredientTableElement[];
+  needsValidation: FormIngredientElement[];
 } {
   const exactMatches: ingredientTableElement[] = [];
-  const needsValidation: ingredientTableElement[] = [];
+  const needsValidation: FormIngredientElement[] = [];
 
   for (const ingredient of ingredients) {
-    const similarIngredients = findSimilarIngredients(ingredient.name);
+    if (!ingredient.name) {
+      continue;
+    }
+
+    const ingredientName = ingredient.name;
+    const similarIngredients = findSimilarIngredients(ingredientName);
     const exactMatch = similarIngredients.find(
-      dbIng => dbIng.name.toLowerCase() === ingredient.name.toLowerCase()
+      dbIng => dbIng.name.toLowerCase() === ingredientName.toLowerCase()
     );
 
     if (exactMatch) {
