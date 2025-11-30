@@ -71,7 +71,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button, Dialog, Menu, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import CustomTextInput from '@components/atomic/CustomTextInput';
@@ -281,19 +281,19 @@ export function ItemDialog({ onClose, isVisible, testId, mode, item }: ItemDialo
                         </Button>
                       }
                     >
-                      <FlatList
-                        data={shoppingCategories}
-                        renderItem={({ item }) => (
-                          <Menu.Item
-                            key={item}
-                            title={t(item)}
-                            onPress={() => {
-                              setIngType(item);
-                              setTypeMenuVisible(false);
-                            }}
-                          />
-                        )}
-                      />
+                      {/* Using .map() instead of FlatList: FlatList (VirtualizedList) cannot be nested
+                          inside Dialog's ScrollView without breaking windowing. For small fixed arrays
+                          like shoppingCategories, .map() is the correct pattern. */}
+                      {shoppingCategories.map(category => (
+                        <Menu.Item
+                          key={category}
+                          title={t(category)}
+                          onPress={() => {
+                            setIngType(category);
+                            setTypeMenuVisible(false);
+                          }}
+                        />
+                      ))}
                     </Menu>
                   </View>
 
