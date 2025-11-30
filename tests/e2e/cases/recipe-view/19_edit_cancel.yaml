@@ -1,0 +1,103 @@
+name: "19 - Recipe Edit Cancel Flow"
+appId: "com.recipedia"
+tags:
+  - recipe-view
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- scrollUntilVisible:
+    element:
+      text: "Pesto Pasta"
+    direction: DOWN
+    speed: 40
+    label: "Action - Scroll to find Pesto Pasta"
+
+- tapOn:
+    text: "Pesto Pasta"
+    label: "Action - Open Pesto Pasta recipe"
+
+- runFlow:
+    file: "../../asserts/recipe/common/buttonsReadOnly.yaml"
+    label: "Assert - Verify read-only mode buttons"
+
+- tapOn:
+    id: "RecipeEdit"
+    waitToSettleTimeoutMs: 0
+    retryTapIfNoChange: false
+    label: "Action - Enter edit mode"
+
+- runFlow:
+    file: "../../asserts/recipe/common/buttonsEdit.yaml"
+    label: "Assert - Verify edit mode buttons (Cancel and Validate visible)"
+
+- runFlow:
+    file: "../../flows/recipe/editing/editNutrition.yaml"
+    env:
+      NEW_ENERGY_KCAL: "999"
+      NEW_PROTEIN: "99"
+      NEW_FAT: "99"
+    label: "Action - Make changes to nutrition values"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeCancel"
+    direction: UP
+    speed: 80
+    label: "Action - Scroll back to top to find cancel button"
+
+- tapOn:
+    id: "RecipeCancel"
+    label: "Action - Cancel changes and return to read-only mode"
+
+- runFlow:
+    file: "../../asserts/recipe/common/buttonsReadOnly.yaml"
+    label: "Assert - Verify returned to read-only mode"
+
+- scrollUntilVisible:
+    element:
+      id: "Recipe::RecipeNutrition::NutritionTable::Title"
+    direction: DOWN
+    speed: 60
+    label: "Action - Scroll to nutrition section"
+
+- runFlow:
+    file: "../../asserts/recipe/common/nutritionReadOnly.yaml"
+    env:
+      ENERGY_KCAL: "425"
+      ENERGY_KJ: "1780"
+      FAT: "15.8"
+      SATURATED_FAT: "4.2"
+      CARBOHYDRATES: "58"
+      SUGARS: "2.8"
+      FIBER: "3.5"
+      PROTEIN: "16.5"
+      SALT: "0.85"
+    label: "Assert - Verify original nutrition values are preserved (changes were cancelled)"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeImage"
+    direction: UP
+    speed: 95
+    label: "Action - Scroll back to top"
+
+- tapOn:
+    id: "BackButton"
+    label: "Action - Back to the Search Screen"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::SearchBar"
+    direction: UP
+    speed: 95
+    label: "Cleanup - Scroll back to top of Search screen"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Back to the Home Screen"
