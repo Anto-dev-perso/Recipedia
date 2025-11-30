@@ -27,8 +27,10 @@ export default {
   selectType: 'Sélectionner le type',
 
   // Error messages
+  error: 'Erreur',
   errorOccurred: 'Une erreur est survenue',
   tryAgain: 'Veuillez réessayer',
+  failedToAddRecipe: 'Impossible d\'ajouter la recette "{{recipeName}}"',
 
   // Time units
   minutes: 'minutes',

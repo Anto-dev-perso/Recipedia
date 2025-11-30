@@ -48,7 +48,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StatusBar, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, IconButton, Text, useTheme } from 'react-native-paper';
+import { Button, Card, Dialog, IconButton, Portal, Text, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { tutorialLogger } from '@utils/logger';
 import CustomImage from '@components/atomic/CustomImage';
@@ -78,7 +78,7 @@ export type WelcomeScreenProps = {
 export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreenProps) {
   const { colors, fonts } = useTheme();
   const { t } = useI18n();
-  const { recipes } = useRecipeDatabase();
+  const { recipes, datasetLoadError, dismissDatasetLoadError } = useRecipeDatabase();
   const [pendingAction, setPendingAction] = useState<'tutorial' | 'skip' | null>(null);
 
   const isDataLoaded = recipes.length > 0;
@@ -257,6 +257,27 @@ export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreen
         message={t('welcome.loadingData')}
         testID={testId + '::LoadingOverlay'}
       />
+      <Portal>
+        <Dialog
+          visible={datasetLoadError !== undefined}
+          onDismiss={dismissDatasetLoadError}
+          testID={testId + '::DatasetErrorDialog'}
+        >
+          <Dialog.Icon icon={Icons.warningIcon} />
+          <Dialog.Title>{t('welcome.datasetError.title')}</Dialog.Title>
+          <Dialog.Content>
+            <Text variant='bodyMedium'>{t('welcome.datasetError.message')}</Text>
+            <Text variant='bodySmall' style={{ marginTop: padding.small, opacity: 0.7 }}>
+              {t('welcome.datasetError.technicalDetails')}: {datasetLoadError}
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={dismissDatasetLoadError} testID={testId + '::DatasetErrorDialog::OK'}>
+              {t('welcome.datasetError.understood')}
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </SafeAreaView>
   );
 }

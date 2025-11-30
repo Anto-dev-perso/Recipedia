@@ -10,6 +10,13 @@ export default {
     },
     startTour: 'Explore',
     skip: 'Jump In',
+    datasetError: {
+      title: 'Dataset Loading Issue',
+      message:
+        'The app encountered an issue while loading the initial recipe collection. You can still use the app normally by adding your own recipes.',
+      technicalDetails: 'Technical details',
+      understood: 'OK',
+    },
   },
   tutorial: {
     skip: 'Skip',

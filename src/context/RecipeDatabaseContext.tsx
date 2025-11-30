@@ -144,6 +144,10 @@ export interface RecipeDatabaseContextType {
   isDatabaseReady: boolean;
   /** Current progress of recipe scaling operation (0-100), undefined if not scaling */
   scalingProgress: number | undefined;
+  /** Dataset loading error - app is usable but initial recipes won't be loaded */
+  datasetLoadError: string | undefined;
+  /** Dismisses the dataset load error notification */
+  dismissDatasetLoadError: () => void;
 }
 
 const RecipeDatabaseContext = createContext<RecipeDatabaseContextType | undefined>(undefined);
@@ -190,6 +194,7 @@ export const RecipeDatabaseProvider: React.FC<{
   const [isDatabaseReady, setIsDatabaseReady] = useState(false);
 
   const [scalingProgress, setScalingProgress] = useState<number | undefined>(undefined);
+  const [datasetLoadError, setDatasetLoadError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const initializeDatabase = async () => {
@@ -209,47 +214,61 @@ export const RecipeDatabaseProvider: React.FC<{
             setIsDatabaseReady(true);
 
             InteractionManager.runAfterInteractions(async () => {
-              databaseLogger.info('Starting background dataset loading after UI render');
-              await FileGestion.getInstance().copyDatasetImages();
-              const currentLanguage = i18n.language as SupportedLanguage;
-              const dataset = getDataset(currentLanguage);
-              const defaultPersons = await getDefaultPersons();
+              try {
+                databaseLogger.info('Starting background dataset loading after UI render');
+                await FileGestion.getInstance().copyDatasetImages();
+                const currentLanguage = i18n.language as SupportedLanguage;
+                const dataset = getDataset(currentLanguage);
+                const defaultPersons = await getDefaultPersons();
 
-              databaseLogger.info('Loading dataset in background', {
-                ingredientsCount: dataset.ingredients.length,
-                tagsCount: dataset.tags.length,
-                recipesCount: dataset.recipes.length,
-              });
+                databaseLogger.info('Loading dataset in background', {
+                  ingredientsCount: dataset.ingredients.length,
+                  tagsCount: dataset.tags.length,
+                  recipesCount: dataset.recipes.length,
+                });
 
-              await db.addMultipleIngredients(dataset.ingredients);
-              await db.addMultipleTags(dataset.tags);
+                await db.addMultipleIngredients(dataset.ingredients);
+                await db.addMultipleTags(dataset.tags);
 
-              const recipesWithFullImageUris = transformDatasetRecipeImages(
-                dataset.recipes,
-                FileGestion.getInstance().get_directoryUri()
-              );
+                const recipesWithFullImageUris = transformDatasetRecipeImages(
+                  dataset.recipes,
+                  FileGestion.getInstance().get_directoryUri()
+                );
 
-              databaseLogger.info('Pre-scaling recipes to default persons count', {
-                defaultPersons,
-                totalRecipes: recipesWithFullImageUris.length,
-              });
-              const scaledRecipes = recipesWithFullImageUris.map(recipe =>
-                RecipeDatabase.scaleRecipeToPersons(recipe, defaultPersons)
-              );
-              databaseLogger.info('Recipes pre-scaled successfully');
+                databaseLogger.info('Pre-scaling recipes to default persons count', {
+                  defaultPersons,
+                  totalRecipes: recipesWithFullImageUris.length,
+                });
+                const scaledRecipes = recipesWithFullImageUris.map(recipe =>
+                  RecipeDatabase.scaleRecipeToPersons(recipe, defaultPersons)
+                );
+                databaseLogger.info('Recipes pre-scaled successfully');
 
-              await db.addMultipleRecipes(scaledRecipes);
+                await db.addMultipleRecipes(scaledRecipes);
 
-              setRecipes([...db.get_recipes()]);
-              setIngredients([...db.get_ingredients()]);
-              setTags([...db.get_tags()]);
-              setShopping([...db.get_shopping()]);
+                setRecipes([...db.get_recipes()]);
+                setIngredients([...db.get_ingredients()]);
+                setTags([...db.get_tags()]);
+                setShopping([...db.get_shopping()]);
 
-              databaseLogger.info('Dataset loaded successfully in background', {
-                ingredientsCount: dataset.ingredients.length,
-                tagsCount: dataset.tags.length,
-                recipesCount: scaledRecipes.length,
-              });
+                databaseLogger.info('Dataset loaded successfully in background', {
+                  ingredientsCount: dataset.ingredients.length,
+                  tagsCount: dataset.tags.length,
+                  recipesCount: scaledRecipes.length,
+                });
+              } catch (error) {
+                databaseLogger.error(
+                  'Dataset loading failed - app will work without initial data',
+                  {
+                    error,
+                  }
+                );
+                setDatasetLoadError(
+                  error instanceof Error
+                    ? error.message
+                    : 'Unknown error occurred during dataset loading'
+                );
+              }
             });
           } else {
             databaseLogger.warn(
@@ -458,6 +477,10 @@ export const RecipeDatabaseProvider: React.FC<{
     refreshRecipes();
   };
 
+  const dismissDatasetLoadError = () => {
+    setDatasetLoadError(undefined);
+  };
+
   const contextValue: RecipeDatabaseContextType = {
     recipes,
     addRecipe,
@@ -487,8 +510,9 @@ export const RecipeDatabaseProvider: React.FC<{
     addMultipleTags,
     addMultipleRecipes,
     isDatabaseReady,
-
     scalingProgress,
+    datasetLoadError,
+    dismissDatasetLoadError,
   };
 
   return (

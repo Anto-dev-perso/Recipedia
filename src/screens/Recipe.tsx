@@ -915,6 +915,17 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             recipeTitle,
             error,
           });
+          dialogProp.title = t('error');
+          dialogProp.content =
+            t('failedToAddRecipe', { recipeName: recipeToAdd.title }) +
+            '\n\n' +
+            (error instanceof Error ? error.message : String(error));
+          dialogProp.confirmText = t('ok');
+          dialogProp.onConfirm = () => {
+            setIsValidationDialogOpen(false);
+          };
+          setValidationDialogProp(dialogProp);
+          setIsValidationDialogOpen(true);
         }
       };
 

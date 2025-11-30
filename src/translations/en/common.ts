@@ -28,8 +28,10 @@ export default {
   selectType: 'Select type',
 
   // Error messages
+  error: 'Error',
   errorOccurred: 'An error occurred',
   tryAgain: 'Please try again',
+  failedToAddRecipe: 'Failed to add recipe "{{recipeName}}"',
 
   // Time units
   minutes: 'minutes',

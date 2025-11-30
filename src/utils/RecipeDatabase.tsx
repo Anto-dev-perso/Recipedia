@@ -486,9 +486,8 @@ export class RecipeDatabase {
    */
   public async addRecipe(rec: recipeTableElement) {
     const recipe = { ...rec };
-    // TODO can we verify both in the same query ?
-    recipe.tags = await this.verifyTagsExist(rec.tags);
-    recipe.ingredients = await this.verifyIngredientsExist(rec.ingredients);
+    recipe.tags = this.verifyTagsExist(rec.tags);
+    recipe.ingredients = this.verifyIngredientsExist(rec.ingredients);
 
     recipe.image_Source = await this.prepareRecipeImage(recipe.image_Source, recipe.title);
 
@@ -526,8 +525,8 @@ export class RecipeDatabase {
     const processedRecipes = await Promise.all(
       recs.map(async rec => {
         const recipe = { ...rec };
-        recipe.tags = await this.verifyTagsExist(rec.tags);
-        recipe.ingredients = await this.verifyIngredientsExist(rec.ingredients);
+        recipe.tags = this.verifyTagsExist(rec.tags);
+        recipe.ingredients = this.verifyIngredientsExist(rec.ingredients);
         recipe.image_Source = await this.prepareRecipeImage(recipe.image_Source, recipe.title);
         return recipe;
       })
@@ -1397,65 +1396,70 @@ export class RecipeDatabase {
   }
 
   /**
-   * Verifies that all provided tags exist in the database, creating them if necessary
+   * Verifies that all tags exist in the database and returns them with database IDs
    *
-   * Checks each tag against the local cache and database. If a tag doesn't exist,
-   * it automatically adds it to maintain data integrity. Returns the complete
-   * array of tags with database IDs assigned.
+   * Checks each tag against the local cache and returns the database versions.
+   * Throws an error listing all tags that are not found in the database.
    *
    * @private
-   * @param tags - Array of tags to verify and potentially create
-   * @returns Promise resolving to array of verified tags with database IDs
+   * @param tags - Array of tags to verify
+   * @returns Array of tags with database IDs
+   * @throws Error if any tags are not found in the database, listing all missing tags
    */
-  private async verifyTagsExist(tags: Array<tagTableElement>): Promise<Array<tagTableElement>> {
-    // TODO is it really useful to return a new Array ?
-    // isn't it better to simply return eventually the array to push ?
-    const result = new Array<tagTableElement>();
+  private verifyTagsExist(tags: Array<tagTableElement>): tagTableElement[] {
+    const result: tagTableElement[] = [];
+    const missing: string[] = [];
+
     for (const tag of tags) {
       const elemFound = this.find_tag(tag);
-      if (elemFound) {
-        result.push(elemFound);
+      if (!elemFound) {
+        missing.push(tag.name);
       } else {
-        // TODO
-        // result.push(await AsyncAlert(`TAG "${tags[i].tagName.toUpperCase()}" NOT FOUND.`, "Do you want to add it ?", 'OK', 'Cancel', 'Edit before add', tags[i].tagName));
-        // console.error("TODO")
-        await this.addTag(tag);
-        result.push(this.find_tag(tag) as tagTableElement);
+        result.push(elemFound);
       }
     }
+
+    if (missing.length > 0) {
+      throw new Error(
+        `Tags not found in database: ${missing.join(', ')} (${missing.length} missing)`
+      );
+    }
+
     return result;
   }
 
   /**
-   * Verifies that all provided ingredients exist in the database, creating them if necessary
+   * Verifies that all ingredients exist in the database and returns them with database IDs
    *
-   * Checks each ingredient against the local cache and database. For existing ingredients,
-   * preserves the original quantity while using the database ingredient metadata.
-   * For missing ingredients, automatically adds them to maintain data integrity.
+   * Checks each ingredient against the local cache and returns the database versions
+   * with recipe-specific quantities. Throws an error listing all ingredients that are not found.
    *
    * @private
-   * @param ingredients - Array of ingredients to verify and potentially create
-   * @returns Promise resolving to array of verified ingredients with quantities preserved
+   * @param ingredients - Array of ingredients to verify
+   * @returns Array of ingredients with database IDs and recipe-specific quantities
+   * @throws Error if any ingredients are not found in the database, listing all missing ingredients
    */
-  private async verifyIngredientsExist(
+  private verifyIngredientsExist(
     ingredients: Array<ingredientTableElement>
-  ): Promise<Array<ingredientTableElement>> {
-    // TODO is it really useful to return a new Array ?
-    // isn't it better to simply return eventually the array to push ?
-    const result = new Array<ingredientTableElement>();
-    const newIngredients = new Array<ingredientTableElement>();
+  ): ingredientTableElement[] {
+    const result: ingredientTableElement[] = [];
+    const missing: string[] = [];
 
     for (const ing of ingredients) {
       const elemFound = this.find_ingredient(ing);
-      if (elemFound !== undefined) {
-        result.push({ ...elemFound, quantity: ing.quantity });
+      if (elemFound === undefined) {
+        missing.push(ing.name);
       } else {
-        // TODO Check for similar names ?
-        newIngredients.push(ing);
+        result.push({ ...elemFound, quantity: ing.quantity });
       }
     }
 
-    await this.addMultipleIngredients(newIngredients);
+    if (missing.length > 0) {
+      throw new Error(
+        `Ingredients not found in database: ${missing.join(', ')} (${missing.length} missing)`
+      );
+    }
+
     return result;
   }
 
