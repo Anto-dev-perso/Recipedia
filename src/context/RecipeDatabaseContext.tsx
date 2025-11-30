@@ -88,9 +88,7 @@ export interface RecipeDatabaseContextType {
   /** Current ingredients state - reactive, triggers re-renders when changed */
   ingredients: ingredientTableElement[];
   /** Adds ingredient to database and refreshes ingredients state (not recipes) */
-  addIngredient: (
-    ingredient: ingredientTableElement
-  ) => Promise<ingredientTableElement | undefined>;
+  addIngredient: (ingredient: ingredientTableElement) => Promise<ingredientTableElement>;
   /** Edits ingredient in database and refreshes both ingredients AND recipes state */
   editIngredient: (ingredient: ingredientTableElement) => Promise<boolean>;
   /** Deletes ingredient from database and refreshes both ingredients AND recipes state */
@@ -99,7 +97,7 @@ export interface RecipeDatabaseContextType {
   /** Current tags state - reactive, triggers re-renders when changed */
   tags: tagTableElement[];
   /** Adds tag to database and refreshes tags state (not recipes) */
-  addTag: (tag: tagTableElement) => Promise<void>;
+  addTag: (tag: tagTableElement) => Promise<tagTableElement>;
   /** Edits tag in database and refreshes both tags AND recipes state */
   editTag: (tag: tagTableElement) => Promise<boolean>;
   /** Deletes tag from database and refreshes both tags AND recipes state */
@@ -352,9 +350,10 @@ export const RecipeDatabaseProvider: React.FC<{
     return result;
   };
 
-  const addTag = async (tag: tagTableElement): Promise<void> => {
-    await db.addTag(tag);
+  const addTag = async (tag: tagTableElement): Promise<tagTableElement> => {
+    const result = await db.addTag(tag);
     refreshTags();
+    return result;
   };
 
   const editTag = async (tag: tagTableElement) => {

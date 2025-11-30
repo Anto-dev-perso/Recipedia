@@ -57,7 +57,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
-import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
+import { databaseLogger } from '@utils/logger';
+import {
+  ingredientTableElement,
+  tagTableElement,
+} from '@customTypes/DatabaseElementTypes';
 import ItemDialog, { DialogMode } from './ItemDialog';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
@@ -190,12 +194,19 @@ export function SimilarityDialog({ testId, isVisible, onClose, item }: Similarit
     newItem: ingredientTableElement | tagTableElement
   ) => {
     if (mode === 'add') {
-      if (item.type === 'Ingredient') {
-        await addIngredient(newItem as ingredientTableElement);
-        item.onConfirm(newItem as ingredientTableElement);
-      } else {
-        await addTag(newItem as tagTableElement);
-        item.onConfirm(newItem as tagTableElement);
+      try {
+        if (item.type === 'Ingredient') {
+          const createdIngredient = await addIngredient(newItem as ingredientTableElement);
+          item.onConfirm(createdIngredient);
+        } else {
+          const createdTag = await addTag(newItem as tagTableElement);
+          item.onConfirm(createdTag);
+        }
+      } catch (error) {
+        databaseLogger.error('Failed to add item to database', {
+          itemName: newItem.name,
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
     }
     setShowItemDialog(false);

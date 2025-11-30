@@ -265,7 +265,8 @@ export class RecipeDatabase {
    * Adds a new ingredient to the database
    *
    * @param ingredient - The ingredient object to add
-   * @returns Promise resolving to the added ingredient with database ID, or undefined if failed
+   * @returns Promise resolving to the added ingredient with database ID
+   * @throws Error if ingredient insertion or retrieval fails
    *
    * @example
    * ```typescript
@@ -275,23 +276,20 @@ export class RecipeDatabase {
    *   type: ingredientType.grain,
    *   season: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
    * });
+   * console.log(`Ingredient added with ID: ${ingredient.id}`);
    * ```
    */
-  public async addIngredient(
-    ingredient: ingredientTableElement
-  ): Promise<ingredientTableElement | undefined> {
+  public async addIngredient(ingredient: ingredientTableElement): Promise<ingredientTableElement> {
     const ingToAdd = this.encodeIngredientForDb(ingredient);
-    databaseLogger.debug('Adding ingredient to database', {
-      ingredientName: ingredient.name,
-      type: ingredient.type,
-    });
     const dbRes = await this._ingredientsTable.insertElement(ingToAdd, this._dbConnection);
+
     if (dbRes === undefined) {
-      databaseLogger.warn('Failed to add ingredient - database insertion failed', {
+      databaseLogger.error('Failed to add ingredient - database insertion failed', {
         ingredientName: ingredient.name,
       });
-      return undefined;
+      throw new Error(`Failed to add ingredient "${ingredient.name}" to database`);
     }
+
     const dbIngredient = await this._ingredientsTable.searchElementById<encodedIngredientElement>(
       dbRes,
       this._dbConnection
@@ -302,8 +300,9 @@ export class RecipeDatabase {
         ingredientName: ingredient.name,
         dbResult: dbRes,
       });
-      return undefined;
+      throw new Error(`Failed to retrieve ingredient "${ingredient.name}" after insertion`);
     }
+
     const decodedIng = this.decodeIngredient(dbIngredient);
     this.add_ingredient(decodedIng);
     return decodedIng;
@@ -313,38 +312,42 @@ export class RecipeDatabase {
    * Adds a new tag to the database
    *
    * @param newTag - The tag object to add
-   * @returns Promise that resolves when the tag is added
+   * @returns Promise resolving to the added tag with database ID
+   * @throws Error if tag insertion or retrieval fails
    *
    * @example
    * ```typescript
-   * await db.addTag({
-   *   name: "Dessert"
-   * });
+   * const tag = await db.addTag({ name: "Dessert" });
+   * console.log(`Tag added with ID: ${tag.id}`);
    * ```
    */
-  public async addTag(newTag: tagTableElement) {
+  public async addTag(newTag: tagTableElement): Promise<tagTableElement> {
     const tagToAdd = this.encodeTagForDb(newTag);
-    databaseLogger.debug('Adding tag to database', { tagName: newTag.name });
     const dbRes = await this._tagsTable.insertElement(tagToAdd, this._dbConnection);
+
     if (dbRes === undefined) {
       databaseLogger.error('Failed to add tag - database insertion failed', {
         tagName: newTag.name,
       });
-      return;
+      throw new Error(`Failed to add tag "${newTag.name}" to database`);
     }
 
     const dbTag = await this._tagsTable.searchElementById<encodedTagElement>(
       dbRes,
       this._dbConnection
     );
+
     if (dbTag === undefined) {
       databaseLogger.error('Failed to find tag after insertion', {
         tagName: newTag.name,
         dbResult: dbRes,
       });
-    } else {
-      this.add_tags(this.decodeTag(dbTag));
+      throw new Error(`Failed to retrieve tag "${newTag.name}" after insertion`);
     }
+
+    const decodedTag = this.decodeTag(dbTag);
+    this.add_tags(decodedTag);
+    return decodedTag;
   }
 
   /**
@@ -1420,6 +1423,9 @@ export class RecipeDatabase {
     }
 
     if (missing.length > 0) {
+      databaseLogger.error('Tags verification failed', {
+        missingTags: missing,
+      });
       throw new Error(
         `Tags not found in database: ${missing.join(', ')} (${missing.length} missing)`
       );
@@ -1455,6 +1461,9 @@ export class RecipeDatabase {
     }
 
     if (missing.length > 0) {
+      databaseLogger.error('Ingredients verification failed', {
+        missingIngredients: missing,
+      });
       throw new Error(
         `Ingredients not found in database: ${missing.join(', ')} (${missing.length} missing)`
       );

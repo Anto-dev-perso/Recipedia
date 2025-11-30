@@ -72,7 +72,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Dialog,HelperText, Menu, Portal, Text } from 'react-native-paper';
+import { Button, Dialog, HelperText, Menu, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import CustomTextInput from '@components/atomic/CustomTextInput';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
