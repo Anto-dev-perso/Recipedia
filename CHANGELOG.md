@@ -1,3 +1,23 @@
+## [1.3.0](https://github.com/Anto-dev-perso/Recipedia/compare/v1.2.1...v1.3.0) (2025-12-01)
+
+### Features
+
+* add error handling and improved validation for tags/ingredients ([adf15e2](https://github.com/Anto-dev-perso/Recipedia/commit/adf15e2e879225d5f98c55ef668bf72f7e368ca0))
+* **ItemDialog:** check for similarity ([39a6122](https://github.com/Anto-dev-perso/Recipedia/commit/39a6122d3b5f22dbf488b6b63aee4c3b9eac8421))
+* prevents ocr duplicates and add proper dialog to add tags or ingredients ([#128](https://github.com/Anto-dev-perso/Recipedia/issues/128)) ([b166837](https://github.com/Anto-dev-perso/Recipedia/commit/b166837c22c33366c1def6aabf21e85bc1c59111))
+* **Recipe:** handle duplicates on OCR ([8cac93d](https://github.com/Anto-dev-perso/Recipedia/commit/8cac93d755e685455471804eeb8129be7335a019))
+
+### Bug Fixes
+
+* don't set pending action in useEffect ([84c329c](https://github.com/Anto-dev-perso/Recipedia/commit/84c329c31364600025bbb33b7198301f6cc118b0))
+* **OCR:** prevent ingredient loss during ValidationQueue processing ([e56ba5e](https://github.com/Anto-dev-perso/Recipedia/commit/e56ba5e35372ee4399f251342b8a777462f20620))
+* **Recipe:** remove callback hook for now ([9588e5e](https://github.com/Anto-dev-perso/Recipedia/commit/9588e5e5b6b200f6a8890a3ea76f7f441fe7048f))
+* support FormIngredientElement type after rebase ([e184c8b](https://github.com/Anto-dev-perso/Recipedia/commit/e184c8b35587246ab0e464d6ba7014a6f3d2f70e))
+
+### Performance Improvements
+
+* add useCallback for rendering ([9a06a42](https://github.com/Anto-dev-perso/Recipedia/commit/9a06a42c713b2921735c7f364b715ddbb77d5ddd))
+
 ## [1.2.1](https://github.com/Anto-dev-perso/Recipedia/compare/v1.2.0...v1.2.1) (2025-11-28)
 
 ### Bug Fixes
