@@ -1,5 +1,7 @@
 appId: "com.recipedia"
 ---
+# First test setup - handles onboarding then delegates to standard setup
+
 - launchApp:
     label: "Setup - Launch app"
 
@@ -10,6 +12,13 @@ appId: "com.recipedia"
     optional: true
     label: "Check if onboarding appears"
 
+- extendedWaitUntil:
+    visible:
+      id: "NonExistentElement::ForDelay"
+    timeout: 3000
+    optional: true
+    label: "Wait 3s before ANR check"
+
 - runFlow:
     file: "handleAnr.yaml"
     label: "Handle ANR dialog if it appears during initialization"
@@ -18,26 +27,25 @@ appId: "com.recipedia"
     id: "WelcomeScreen::SkipButton"
     label: "Skip onboarding"
 
-
 - extendedWaitUntil:
     notVisible:
       id: "WelcomeScreen::LoadingOverlay"
     timeout: 30000
     label: "Wait for data to load"
 
+# Delay before ANR check to let ANR appear if it's going to
 - extendedWaitUntil:
     visible:
-      id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
-    timeout: 10000
+      id: "NonExistentElement::ForDelay"
+    timeout: 3000
     optional: true
-    label: "Wait for the home screen to be rendered"
+    label: "Wait 3s before ANR check"
 
 - runFlow:
     file: "handleAnr.yaml"
-    label: "Handle ANR dialog if it appears during first home rendering"
+    label: "Handle ANR dialog if it appears after data load"
 
-- extendedWaitUntil:
-    visible:
-      id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
-    timeout: 10000
-    label: "Wait for app to be ready"
+# Now use standard setup (will relaunch app, which is fine)
+- runFlow:
+    file: "setupTest.yaml"
+    label: "Run standard setup after onboarding"

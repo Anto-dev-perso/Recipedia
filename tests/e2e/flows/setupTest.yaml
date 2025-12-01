@@ -10,6 +10,13 @@ appId: "com.recipedia"
     optional: true
     label: "Wait for app to be ready"
 
+- extendedWaitUntil:
+    visible:
+      id: "NonExistentElement::ForDelay"
+    timeout: 3000
+    optional: true
+    label: "Wait 3s before ANR check"
+
 - runFlow:
     file: "handleAnr.yaml"
     label: "Handle ANR dialog if it appears during initialization"
@@ -17,3 +24,25 @@ appId: "com.recipedia"
 - assertVisible:
     id: "Home::RecipeRecommendation::random::Carousel::Card::0::Cover"
     label: "Verify app is ready"
+
+- runFlow:
+    file: "handleAnr.yaml"
+    label: "Handle ANR dialog if it appears after home render"
+
+- extendedWaitUntil:
+    visible:
+      id: "ExpandButton"
+    timeout: 5000
+    label: "Wait for FAB to be visible"
+
+# Wait for background loading to complete
+- extendedWaitUntil:
+    visible:
+      id: "NonExistentElement::ForDelay"
+    timeout: 5000
+    optional: true
+    label: "Wait 5s for background loading to complete"
+
+- runFlow:
+    file: "handleAnr.yaml"
+    label: "Handle ANR dialog if it appears after loading"
