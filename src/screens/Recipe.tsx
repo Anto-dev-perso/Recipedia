@@ -104,7 +104,7 @@ import RecipePreparation, {
 } from '@components/organisms/RecipePreparation';
 import { textSeparator, unitySeparator } from '@styles/typography';
 import RecipeTags, { RecipeTagProps } from '@components/organisms/RecipeTags';
-import FileGestion from '@utils/FileGestion';
+import { clearCache } from '@utils/FileGestion';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import RectangleButton from '@components/atomic/RectangleButton';
 import RoundButton from '@components/atomic/RoundButton';
@@ -802,7 +802,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       // Only update database if the recipe actually changed
       if (!isRecipeEqual(originalRecipe, recipeToEdit)) {
         // @ts-ignore No need to wait for clearCache
-        FileGestion.getInstance().clearCache();
+        clearCache();
 
         await editRecipe(recipeToEdit);
       }
@@ -813,7 +813,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         recipeTitle,
       });
       // @ts-ignore No need to wait for clearCache
-      FileGestion.getInstance().clearCache();
+      clearCache();
     } else {
       recipeLogger.warn('Validation failed, missing elements', {
         missingElements: missingElem,
@@ -877,7 +877,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       const addRecipeToDatabase = async () => {
         try {
           // @ts-ignore No need to wait
-          FileGestion.getInstance().clearCache();
+          clearCache();
 
           // Scale recipe to default persons count before saving to database
           const defaultPersons = await getDefaultPersons();

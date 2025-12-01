@@ -33,7 +33,7 @@ import {
 import TableManipulation from './TableManipulation';
 import { EncodingSeparator, textSeparator } from '@styles/typography';
 import { TListFilter } from '@customTypes/RecipeFiltersTypes';
-import FileGestion from '@utils/FileGestion';
+import { getDirectoryUri, isTemporaryImageUri, saveRecipeImage } from '@utils/FileGestion';
 import { isNumber, subtractNumberInString, sumNumberInString } from '@utils/TypeCheckingFunctions';
 import { cleanIngredientName, FuzzyMatchLevel, fuzzySearch } from '@utils/FuzzySearch';
 import { scaleQuantityForPersons } from '@utils/Quantity';
@@ -1565,9 +1565,9 @@ export class RecipeDatabase {
    * @returns Just the filename (e.g., "pasta.jpg")
    */
   private extractFilenameFromUri(imageUri: string): string {
-    const directoryUri = FileGestion.getInstance().get_directoryUri();
-    if (imageUri.startsWith(directoryUri)) {
-      return imageUri.substring(directoryUri.length);
+    const directoryPath = getDirectoryUri();
+    if (imageUri.startsWith(directoryPath)) {
+      return imageUri.substring(directoryPath.length);
     }
     return imageUri;
   }
@@ -1583,7 +1583,7 @@ export class RecipeDatabase {
    * @returns Full image URI (e.g., "file:///documents/Recipedia/pasta.jpg")
    */
   private constructImageUri(imageFilename: string): string {
-    return FileGestion.getInstance().get_directoryUri() + imageFilename;
+    return getDirectoryUri() + imageFilename;
   }
 
   /**
@@ -1599,12 +1599,12 @@ export class RecipeDatabase {
    * @returns Promise resolving to the permanent image URI
    */
   private async prepareRecipeImage(imageUri: string, recipeTitle: string): Promise<string> {
-    if (FileGestion.getInstance().isTemporaryImageUri(imageUri)) {
+    if (isTemporaryImageUri(imageUri)) {
       databaseLogger.info('Recipe image is temporary, saving to permanent storage', {
         temporaryUri: imageUri,
         recipeTitle,
       });
-      const permanentUri = await FileGestion.getInstance().saveRecipeImage(imageUri, recipeTitle);
+      const permanentUri = await saveRecipeImage(imageUri, recipeTitle);
       databaseLogger.info('Recipe image saved to permanent storage', {
         permanentUri,
       });
