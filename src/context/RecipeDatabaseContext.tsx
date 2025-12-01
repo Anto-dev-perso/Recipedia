@@ -55,7 +55,12 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { RecipeDatabase } from '@utils/RecipeDatabase';
-import FileGestion, { transformDatasetRecipeImages } from '@utils/FileGestion';
+import {
+  copyDatasetImages,
+  getDirectoryUri,
+  init as initFileSystem,
+  transformDatasetRecipeImages,
+} from '@utils/FileGestion';
 import {
   ingredientTableElement,
   ingredientType,
@@ -198,7 +203,7 @@ export const RecipeDatabaseProvider: React.FC<{
     const initializeDatabase = async () => {
       try {
         databaseLogger.debug('Initializing file system');
-        await FileGestion.getInstance().init();
+        await initFileSystem();
         databaseLogger.debug('File system initialized');
 
         databaseLogger.info('Initializing database');
@@ -214,7 +219,7 @@ export const RecipeDatabaseProvider: React.FC<{
             InteractionManager.runAfterInteractions(async () => {
               try {
                 databaseLogger.info('Starting background dataset loading after UI render');
-                await FileGestion.getInstance().copyDatasetImages();
+                await copyDatasetImages();
                 const currentLanguage = i18n.language as SupportedLanguage;
                 const dataset = getDataset(currentLanguage);
                 const defaultPersons = await getDefaultPersons();
@@ -230,7 +235,7 @@ export const RecipeDatabaseProvider: React.FC<{
 
                 const recipesWithFullImageUris = transformDatasetRecipeImages(
                   dataset.recipes,
-                  FileGestion.getInstance().get_directoryUri()
+                  getDirectoryUri()
                 );
 
                 databaseLogger.info('Pre-scaling recipes to default persons count', {
