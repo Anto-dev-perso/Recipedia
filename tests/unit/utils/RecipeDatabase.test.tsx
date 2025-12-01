@@ -1858,15 +1858,14 @@ describe('RecipeDatabase', () => {
 
   describe('Image URI handling', () => {
     let db: RecipeDatabase = RecipeDatabase.getInstance();
-    const FileGestion = require('@utils/FileGestion');
-    const fileGestionInstance = FileGestion.getInstance();
+    const FileGestionMock = require('@utils/FileGestion');
 
     beforeEach(async () => {
       await db.init();
       await db.addMultipleIngredients(testIngredients);
       await db.addMultipleTags(testTags);
       jest.clearAllMocks();
-      fileGestionInstance.get_directoryUri.mockReturnValue('file:///documents/Recipedia/');
+      FileGestionMock.getDirectoryUri.mockReturnValue('file:///documents/Recipedia/');
     });
 
     afterEach(async () => {
@@ -1875,7 +1874,7 @@ describe('RecipeDatabase', () => {
 
     describe('addRecipe', () => {
       it('saves temporary image to permanent storage when adding recipe', async () => {
-        fileGestionInstance.saveRecipeImage.mockResolvedValue(
+        FileGestionMock.saveRecipeImage.mockResolvedValue(
           'file:///documents/Recipedia/test_recipe.jpg'
         );
 
@@ -1887,14 +1886,14 @@ describe('RecipeDatabase', () => {
 
         await db.addRecipe(recipeWithTempImage);
 
-        expect(fileGestionInstance.saveRecipeImage).toHaveBeenCalledWith(
+        expect(FileGestionMock.saveRecipeImage).toHaveBeenCalledWith(
           'file:///cache/ImageManipulator/temp-image.jpg',
           testRecipes[0].title
         );
       });
 
       it('does not save permanent URI image when adding recipe', async () => {
-        const initialCallCount = fileGestionInstance.saveRecipeImage.mock.calls.length;
+        const initialCallCount = FileGestionMock.saveRecipeImage.mock.calls.length;
 
         const recipeWithPermanentImage = {
           ...testRecipes[0],
@@ -1904,7 +1903,7 @@ describe('RecipeDatabase', () => {
 
         await db.addRecipe(recipeWithPermanentImage);
 
-        const finalCallCount = fileGestionInstance.saveRecipeImage.mock.calls.length;
+        const finalCallCount = FileGestionMock.saveRecipeImage.mock.calls.length;
         expect(finalCallCount).toBe(initialCallCount);
       });
     });
@@ -1915,7 +1914,7 @@ describe('RecipeDatabase', () => {
         const addedRecipe = db.get_recipes()[0];
 
         jest.clearAllMocks();
-        fileGestionInstance.saveRecipeImage.mockResolvedValue(
+        FileGestionMock.saveRecipeImage.mockResolvedValue(
           'file:///documents/Recipedia/edited_recipe.jpg'
         );
 
@@ -1926,7 +1925,7 @@ describe('RecipeDatabase', () => {
 
         await db.editRecipe(editedRecipe);
 
-        expect(fileGestionInstance.saveRecipeImage).toHaveBeenCalledWith(
+        expect(FileGestionMock.saveRecipeImage).toHaveBeenCalledWith(
           'file:///cache/ImageManipulator/new-image.jpg',
           editedRecipe.title
         );
@@ -1937,7 +1936,7 @@ describe('RecipeDatabase', () => {
         const addedRecipe = db.get_recipes()[0];
 
         jest.clearAllMocks();
-        const initialCallCount = fileGestionInstance.saveRecipeImage.mock.calls.length;
+        const initialCallCount = FileGestionMock.saveRecipeImage.mock.calls.length;
 
         const editedRecipe = {
           ...addedRecipe,
@@ -1946,7 +1945,7 @@ describe('RecipeDatabase', () => {
 
         await db.editRecipe(editedRecipe);
 
-        const finalCallCount = fileGestionInstance.saveRecipeImage.mock.calls.length;
+        const finalCallCount = FileGestionMock.saveRecipeImage.mock.calls.length;
         expect(finalCallCount).toBe(initialCallCount);
       });
     });
@@ -1954,8 +1953,8 @@ describe('RecipeDatabase', () => {
     describe('Recipe search by image', () => {
       beforeEach(async () => {
         jest.clearAllMocks();
-        fileGestionInstance.saveRecipeImage.mockReset();
-        fileGestionInstance.saveRecipeImage.mockResolvedValue('/mock/directory/saved_image.jpg');
+        FileGestionMock.saveRecipeImage.mockReset();
+        FileGestionMock.saveRecipeImage.mockResolvedValue('/mock/directory/saved_image.jpg');
         await db.addMultipleIngredients(testIngredients);
         await db.addMultipleTags(testTags);
       });
@@ -2004,7 +2003,7 @@ describe('RecipeDatabase', () => {
       });
 
       it('correctly handles image search when recipe has full URI in memory', async () => {
-        fileGestionInstance.saveRecipeImage
+        FileGestionMock.saveRecipeImage
           .mockResolvedValueOnce('file:///documents/Recipedia/recipe1.jpg')
           .mockResolvedValueOnce('file:///documents/Recipedia/recipe2.jpg');
 
