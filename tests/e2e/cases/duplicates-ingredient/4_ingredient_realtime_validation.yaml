@@ -1,0 +1,125 @@
+name: "4 - Ingredient Real-Time Validation Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Action - Navigate to Ingredients Settings"
+
+- scrollUntilVisible:
+    element:
+      id: "IngredientsSettings::AddButton"
+    direction: DOWN
+    speed: 98
+    label: "Action - Scroll to find add tag button"
+
+- tapOn:
+    id: "IngredientsSettings::AddButton"
+    label: "Action - Open add ingredient dialog"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Unit::CustomTextInput"
+    label: "Action - Focus on unit input"
+
+- inputText:
+    text: "g"
+    label: "Action - Enter a unit"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Menu::Button"
+    label: "Action - Open type menu"
+
+- tapOn:
+    text: "Cereal"
+    label: "Action - Select Cereal type"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- inputText:
+    text: "TestIngredient"
+    label: "Action - Type non-existant text"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- assertNotVisible:
+    id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
+    label: "Assert - No helper text shown for non-matching input"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
+    label: "Action - Focus on ingredient name input again"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Butte"
+    label: "Action - Type fuzzy matching text"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- extendedWaitUntil:
+    visible:
+      id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
+    timeout: 1000
+    label: "Wait - Helper text appears after debounce"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
+    text: "Similar ingredients found: Butter"
+    label: "Assert - Helper text visible for similar match"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::AddModal::ConfirmButton"
+    enabled: true
+    label: "Assert - Confirm button disabled (missing type and unit)"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::Name::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- eraseText:
+    label: "Action - Clear input"
+
+- inputText:
+    text: "Butter"
+    label: "Action - Type exact duplicate"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- extendedWaitUntil:
+    visible:
+      id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
+    timeout: 1000
+    label: "Wait - Helper text updates after debounce"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::AddModal::HelperText"
+    text: "This ingredient name already exists"
+    label: "Assert - Helper text visible for exact duplicate"
+
+- assertVisible:
+    id: "IngredientsSettings::ItemDialog::AddModal::ConfirmButton"
+    enabled: false
+    label: "Assert - Confirm button disabled for exact duplicate"
+
+- tapOn:
+    id: "IngredientsSettings::ItemDialog::AddModal::CancelButton"
+    label: "Cleanup - Cancel add ingredient dialog"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

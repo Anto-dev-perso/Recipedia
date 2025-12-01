@@ -3,13 +3,13 @@ flows:
 
 executionOrder:
   flowsOrder:
-    - "4 - Search Bar Open/Close Flow"
-    - "5 - Search Scroll Independence Flow"
-    - "6 - Search Multiple Results Flow"
-    - "7 - Search Direct Click Flow"
-    - "8 - Search Backspace Correction Flow"
-    - "9 - Search Filter Removal Flow"
-    - "10 - Filter Page Toggle Flow"
-    - "11 - Single Filter Application Flow"
-    - "12 - Multiple Filters Application Flow"
-    - "13 - Filters With Text Search Flow"
+    - "1 - Search Bar Open/Close Flow"
+    - "2 - Search Scroll Independence Flow"
+    - "3 - Search Multiple Results Flow"
+    - "4 - Search Direct Click Flow"
+    - "5 - Search Backspace Correction Flow"
+    - "6 - Search Filter Removal Flow"
+    - "7 - Filter Page Toggle Flow"
+    - "8 - Single Filter Application Flow"
+    - "9 - Multiple Filters Application Flow"
+    - "10 - Filters With Text Search Flow"

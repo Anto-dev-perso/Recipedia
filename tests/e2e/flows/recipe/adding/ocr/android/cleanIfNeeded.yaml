@@ -1,14 +1,7 @@
 appId: com.recipedia
 ---
-- pressKey: "home"
-
-- swipe:
-    direction: UP
-    label: "See all the apps available in the device"
-
-- tapOn:
-    text: "Files"
-    label: "Open files on the device"
+- launchApp:
+    appId: com.google.android.documentsui
 
 - tapOn:
     text: "Show roots"
@@ -25,5 +18,5 @@ appId: com.recipedia
       visible: "Pictures"
     label: "Clean up pictures files if any"
 
-- pressKey: "BACK"
-- pressKey: "BACK"
+- stopApp:
+    appId: com.google.android.documentsui

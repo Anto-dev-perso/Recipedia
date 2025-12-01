@@ -1,0 +1,102 @@
+name: "4 - Duplicate Recipe Ingredients Detection Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create base recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert - Verify recipe added to database"
+
+- runFlow:
+    file: "../../flows/recipe/verifyRecipeExistsInSearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Verify - Confirm recipe is searchable before duplicate test"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Action - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
+    label: "Action - Create identical recipe"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::PrefixText"
+    direction: UP
+    speed: 60
+    label: "Action - Scroll up for adding ingredient"
+
+- tapOn:
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
+    label: "Action - Focus on ingredient input"
+
+- hideKeyboard:
+    label: "Action - Hide keyboard"
+
+- runFlow:
+    file: "../../flows/recipe/adding/addIngredientToRecipe.yaml"
+    env:
+      INDEX: "2"
+      NAME: "Olive Oil"
+      QUANTITY: "5"
+    label: "Action - Add Olive Oil ingredient"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Validate recipe with extra ingredient"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeSimilarFound.yaml"
+    label: "Assert - Verify duplicate alert appears (extra ingredient ignored)"
+
+- tapOn:
+    id: "Recipe::Dialog::Cancel"
+    label: "Action - Cancel adding duplicate recipe"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Action - Go back to home"
+
+- runFlow:
+    file: "../../flows/recipe/adding/createRecipeWithDifferentIngredients.yaml"
+    label: "Action - Create recipe with different ingredients"
+
+- runFlow:
+    file: "../../asserts/alerts/en/recipeAddedToDatabase.yaml"
+    env:
+      RECIPE_NAME: ".*"
+    label: "Assert - Verify recipe added successfully (no duplicate)"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/recipe/deleteRecipeBySearch.yaml"
+    env:
+      SEARCH_TEXT: "Test Recipe"
+    label: "Cleanup - Delete Test Recipe"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Return to Home screen"

@@ -37,6 +37,8 @@ export default {
   validateEdit: 'Valider les modifications',
   validateAdd: 'Ajouter cette nouvelle recette',
 
+  extractingRecipeData: 'Extraction des données de la recette...',
+
   editRecipe: 'Modifier la recette',
   deleteRecipe: 'Supprimer la recette',
   recommendation: 'Recommandation',

@@ -1,0 +1,95 @@
+name: "2 - Duplicate Ingredient Fuzzy Detection Flow"
+appId: "com.recipedia"
+tags:
+  - duplicates
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- tapOn:
+    id: "ExpandButton::RoundButton"
+    label: "Action - Expand FAB menu"
+
+- tapOn:
+    id: "EditButton::RoundButton"
+    label: "Action - Open manual recipe creation"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    label: "Action - Scroll to ingredients section"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Action - Add ingredient to recipe"
+
+- tapOn:
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
+    label: "Action - Focus on ingredient name input"
+
+- inputText:
+    text: "Butte"
+    label: "Action - Enter fuzzy ingredient name"
+
+- pressKey: "ENTER"
+
+- runFlow:
+    file: "../../flows/recipe/ingredients/useFuzzyIngredient.yaml"
+    label: "Action - Use existing Butter ingredient"
+
+- assertNotVisible:
+    text: "Butte"
+    label: "Assert - Verify typo ingredient not added"
+
+- assertVisible:
+    id: "RecipeIngredients::0::NameInput::CustomTextInput"
+    text: "Butter"
+    label: "Assert - Verify existing Butter ingredient added"
+
+- tapOn:
+    id: "RecipeIngredients::AddButton::RoundButton"
+    label: "Action - Add another ingredient to recipe"
+
+- tapOn:
+    id: "RecipeIngredients::1::NameInput::CustomTextInput"
+    label: "Action - Focus on second ingredient input"
+
+- inputText:
+    text: "Butte"
+    label: "Action - Enter fuzzy ingredient name again"
+
+- pressKey: "ENTER"
+
+- runFlow:
+    file: "../../flows/recipe/ingredients/confirmAddNewIngredient.yaml"
+    label: "Action - Confirm adding fuzzy ingredient as new"
+
+- assertVisible:
+    text: "Butte"
+    label: "Assert - Verify fuzzy ingredient name appears"
+
+- tapOn:
+    id: "BackButton::RoundButton"
+    label: "Cleanup - Exit recipe creation without saving"
+
+- tapOn:
+    id: "ReduceButton::RoundButton"
+    label: "Cleanup - Close FAB buttons"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
+    label: "Cleanup - Navigate to Ingredients Settings"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/deleteIngredientByName.yaml"
+    env:
+      INGREDIENT_NAME: "Butte"
+      INGREDIENT_INDEX: "2"
+    label: "Cleanup - Delete Butte ingredient"
+
+- runFlow:
+    file: "../../flows/parameters/ingredients/returnToHome.yaml"
+    label: "Cleanup - Return to Home screen"

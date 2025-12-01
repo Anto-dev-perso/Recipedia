@@ -10,6 +10,13 @@ export default {
     },
     startTour: 'Explorer',
     skip: 'Commencer',
+    datasetError: {
+      title: 'Problème de Chargement',
+      message:
+        "L'application a rencontré un problème lors du chargement de la collection initiale de recettes. Vous pouvez toujours utiliser l'application normalement en ajoutant vos propres recettes.",
+      technicalDetails: 'Détails techniques',
+      understood: 'OK',
+    },
   },
   tutorial: {
     skip: 'Passer',

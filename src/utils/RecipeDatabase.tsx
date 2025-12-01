@@ -35,7 +35,7 @@ import { EncodingSeparator, textSeparator } from '@styles/typography';
 import { TListFilter } from '@customTypes/RecipeFiltersTypes';
 import FileGestion from '@utils/FileGestion';
 import { isNumber, subtractNumberInString, sumNumberInString } from '@utils/TypeCheckingFunctions';
-import Fuse, { FuseResult } from 'fuse.js';
+import { cleanIngredientName, FuzzyMatchLevel, fuzzySearch } from '@utils/FuzzySearch';
 import { scaleQuantityForPersons } from '@utils/Quantity';
 import { databaseLogger } from '@utils/logger';
 import { fisherYatesShuffle } from './FilterFunctions';
@@ -49,7 +49,7 @@ import { fisherYatesShuffle } from './FilterFunctions';
  *
  * Key Features:
  * - Recipe CRUD operations with ingredient and tag relationships
- * - Fuzzy search capabilities using Fuse.js
+ * - Fuzzy search capabilities using FuzzySearch utility
  * - Shopping list generation from recipes
  * - Quantity scaling for different serving sizes
  * - Similar recipe detection
@@ -265,7 +265,8 @@ export class RecipeDatabase {
    * Adds a new ingredient to the database
    *
    * @param ingredient - The ingredient object to add
-   * @returns Promise resolving to the added ingredient with database ID, or undefined if failed
+   * @returns Promise resolving to the added ingredient with database ID
+   * @throws Error if ingredient insertion or retrieval fails
    *
    * @example
    * ```typescript
@@ -275,23 +276,20 @@ export class RecipeDatabase {
    *   type: ingredientType.grain,
    *   season: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
    * });
+   * console.log(`Ingredient added with ID: ${ingredient.id}`);
    * ```
    */
-  public async addIngredient(
-    ingredient: ingredientTableElement
-  ): Promise<ingredientTableElement | undefined> {
+  public async addIngredient(ingredient: ingredientTableElement): Promise<ingredientTableElement> {
     const ingToAdd = this.encodeIngredientForDb(ingredient);
-    databaseLogger.debug('Adding ingredient to database', {
-      ingredientName: ingredient.name,
-      type: ingredient.type,
-    });
     const dbRes = await this._ingredientsTable.insertElement(ingToAdd, this._dbConnection);
+
     if (dbRes === undefined) {
-      databaseLogger.warn('Failed to add ingredient - database insertion failed', {
+      databaseLogger.error('Failed to add ingredient - database insertion failed', {
         ingredientName: ingredient.name,
       });
-      return undefined;
+      throw new Error(`Failed to add ingredient "${ingredient.name}" to database`);
     }
+
     const dbIngredient = await this._ingredientsTable.searchElementById<encodedIngredientElement>(
       dbRes,
       this._dbConnection
@@ -302,8 +300,9 @@ export class RecipeDatabase {
         ingredientName: ingredient.name,
         dbResult: dbRes,
       });
-      return undefined;
+      throw new Error(`Failed to retrieve ingredient "${ingredient.name}" after insertion`);
     }
+
     const decodedIng = this.decodeIngredient(dbIngredient);
     this.add_ingredient(decodedIng);
     return decodedIng;
@@ -313,38 +312,42 @@ export class RecipeDatabase {
    * Adds a new tag to the database
    *
    * @param newTag - The tag object to add
-   * @returns Promise that resolves when the tag is added
+   * @returns Promise resolving to the added tag with database ID
+   * @throws Error if tag insertion or retrieval fails
    *
    * @example
    * ```typescript
-   * await db.addTag({
-   *   name: "Dessert"
-   * });
+   * const tag = await db.addTag({ name: "Dessert" });
+   * console.log(`Tag added with ID: ${tag.id}`);
    * ```
    */
-  public async addTag(newTag: tagTableElement) {
+  public async addTag(newTag: tagTableElement): Promise<tagTableElement> {
     const tagToAdd = this.encodeTagForDb(newTag);
-    databaseLogger.debug('Adding tag to database', { tagName: newTag.name });
     const dbRes = await this._tagsTable.insertElement(tagToAdd, this._dbConnection);
+
     if (dbRes === undefined) {
       databaseLogger.error('Failed to add tag - database insertion failed', {
         tagName: newTag.name,
       });
-      return;
+      throw new Error(`Failed to add tag "${newTag.name}" to database`);
     }
 
     const dbTag = await this._tagsTable.searchElementById<encodedTagElement>(
       dbRes,
       this._dbConnection
     );
+
     if (dbTag === undefined) {
       databaseLogger.error('Failed to find tag after insertion', {
         tagName: newTag.name,
         dbResult: dbRes,
       });
-    } else {
-      this.add_tags(this.decodeTag(dbTag));
+      throw new Error(`Failed to retrieve tag "${newTag.name}" after insertion`);
     }
+
+    const decodedTag = this.decodeTag(dbTag);
+    this.add_tags(decodedTag);
+    return decodedTag;
   }
 
   /**
@@ -486,9 +489,8 @@ export class RecipeDatabase {
    */
   public async addRecipe(rec: recipeTableElement) {
     const recipe = { ...rec };
-    // TODO can we verify both in the same query ?
-    recipe.tags = await this.verifyTagsExist(rec.tags);
-    recipe.ingredients = await this.verifyIngredientsExist(rec.ingredients);
+    recipe.tags = this.verifyTagsExist(rec.tags);
+    recipe.ingredients = this.verifyIngredientsExist(rec.ingredients);
 
     recipe.image_Source = await this.prepareRecipeImage(recipe.image_Source, recipe.title);
 
@@ -526,8 +528,8 @@ export class RecipeDatabase {
     const processedRecipes = await Promise.all(
       recs.map(async rec => {
         const recipe = { ...rec };
-        recipe.tags = await this.verifyTagsExist(rec.tags);
-        recipe.ingredients = await this.verifyIngredientsExist(rec.ingredients);
+        recipe.tags = this.verifyTagsExist(rec.tags);
+        recipe.ingredients = this.verifyIngredientsExist(rec.ingredients);
         recipe.image_Source = await this.prepareRecipeImage(recipe.image_Source, recipe.title);
         return recipe;
       })
@@ -1222,13 +1224,14 @@ export class RecipeDatabase {
       return [];
     }
 
-    const fuse = new Fuse(recipesWithSimilarIngredients, {
-      keys: ['title'],
-      threshold: 0.6,
-    });
-    return fuse
-      .search(recipeToCompare.title)
-      .map((fuseResult: FuseResult<recipeTableElement>) => fuseResult.item);
+    const result = fuzzySearch<recipeTableElement>(
+      recipesWithSimilarIngredients,
+      recipeToCompare.title,
+      recipe => recipe.title,
+      FuzzyMatchLevel.PERMISSIVE
+    );
+
+    return result.exact ? [result.exact] : result.similar;
   }
 
   /**
@@ -1243,28 +1246,18 @@ export class RecipeDatabase {
    * ```
    */
   public findSimilarTags(tagName: string): tagTableElement[] {
-    if (!tagName || tagName.trim().length === 0) {
+    const trimmedName = tagName.trim();
+    if (!trimmedName) {
       return [];
     }
 
-    const exactMatch = this._tags.find(tag => tag.name.toLowerCase() === tagName.toLowerCase());
-    if (exactMatch) {
-      return [exactMatch];
-    }
-
-    const fuse = new Fuse(this._tags, {
-      keys: ['name'],
-      threshold: 0.4,
-      includeScore: true,
-    });
-
-    return fuse
-      .search(tagName)
-      .sort(
-        (a: FuseResult<tagTableElement>, b: FuseResult<tagTableElement>) =>
-          (a.score || 0) - (b.score || 0)
-      )
-      .map((result: FuseResult<tagTableElement>) => result.item);
+    const result = fuzzySearch<tagTableElement>(
+      this._tags,
+      trimmedName,
+      t => t.name,
+      FuzzyMatchLevel.MODERATE
+    );
+    return result.exact ? [result.exact] : result.similar;
   }
 
   /**
@@ -1282,37 +1275,20 @@ export class RecipeDatabase {
    * ```
    */
   public findSimilarIngredients(ingredientName: string): ingredientTableElement[] {
-    if (!ingredientName || ingredientName.trim().length === 0) {
+    const trimmedName = ingredientName.trim();
+    if (!trimmedName) {
       return [];
     }
 
-    const exactMatch = this._ingredients.find(
-      ingredient => ingredient.name.toLowerCase() === ingredientName.toLowerCase()
+    const cleanedSearchName = cleanIngredientName(trimmedName);
+    const result = fuzzySearch<ingredientTableElement>(
+      this._ingredients,
+      cleanedSearchName,
+      ingredient => cleanIngredientName(ingredient.name),
+      FuzzyMatchLevel.PERMISSIVE
     );
-    if (exactMatch) {
-      return [exactMatch];
-    }
 
-    const cleanedName = this.cleanIngredientName(ingredientName);
-
-    const fuse = new Fuse(this._ingredients, {
-      keys: [
-        {
-          name: 'name',
-          getFn: (ingredient: ingredientTableElement) => this.cleanIngredientName(ingredient.name),
-        },
-      ],
-      threshold: 0.6,
-      includeScore: true,
-    });
-
-    return fuse
-      .search(cleanedName)
-      .sort(
-        (a: FuseResult<ingredientTableElement>, b: FuseResult<ingredientTableElement>) =>
-          (a.score || 0) - (b.score || 0)
-      )
-      .map((result: FuseResult<ingredientTableElement>) => result.item);
+    return result.exact ? [result.exact] : result.similar;
   }
 
   /**
@@ -1423,105 +1399,76 @@ export class RecipeDatabase {
   }
 
   /**
-   * Verifies that all provided tags exist in the database, creating them if necessary
+   * Verifies that all tags exist in the database and returns them with database IDs
    *
-   * Checks each tag against the local cache and database. If a tag doesn't exist,
-   * it automatically adds it to maintain data integrity. Returns the complete
-   * array of tags with database IDs assigned.
+   * Checks each tag against the local cache and returns the database versions.
+   * Throws an error listing all tags that are not found in the database.
    *
    * @private
-   * @param tags - Array of tags to verify and potentially create
-   * @returns Promise resolving to array of verified tags with database IDs
+   * @param tags - Array of tags to verify
+   * @returns Array of tags with database IDs
+   * @throws Error if any tags are not found in the database, listing all missing tags
    */
-  private async verifyTagsExist(tags: Array<tagTableElement>): Promise<Array<tagTableElement>> {
-    // TODO is it really useful to return a new Array ?
-    // isn't it better to simply return eventually the array to push ?
-    const result = new Array<tagTableElement>();
+  private verifyTagsExist(tags: Array<tagTableElement>): tagTableElement[] {
+    const result: tagTableElement[] = [];
+    const missing: string[] = [];
+
     for (const tag of tags) {
       const elemFound = this.find_tag(tag);
-      if (elemFound) {
-        result.push(elemFound);
+      if (!elemFound) {
+        missing.push(tag.name);
       } else {
-        // TODO
-        // result.push(await AsyncAlert(`TAG "${tags[i].tagName.toUpperCase()}" NOT FOUND.`, "Do you want to add it ?", 'OK', 'Cancel', 'Edit before add', tags[i].tagName));
-        // console.error("TODO")
-        await this.addTag(tag);
-        result.push(this.find_tag(tag) as tagTableElement);
+        result.push(elemFound);
       }
     }
+
+    if (missing.length > 0) {
+      databaseLogger.error('Tags verification failed', {
+        missingTags: missing,
+      });
+      throw new Error(
+        `Tags not found in database: ${missing.join(', ')} (${missing.length} missing)`
+      );
+    }
+
     return result;
   }
 
   /**
-   * Verifies that all provided ingredients exist in the database, creating them if necessary
+   * Verifies that all ingredients exist in the database and returns them with database IDs
    *
-   * Checks each ingredient against the local cache and database. For existing ingredients,
-   * preserves the original quantity while using the database ingredient metadata.
-   * For missing ingredients, automatically adds them to maintain data integrity.
+   * Checks each ingredient against the local cache and returns the database versions
+   * with recipe-specific quantities. Throws an error listing all ingredients that are not found.
    *
    * @private
-   * @param ingredients - Array of ingredients to verify and potentially create
-   * @returns Promise resolving to array of verified ingredients with quantities preserved
+   * @param ingredients - Array of ingredients to verify
+   * @returns Array of ingredients with database IDs and recipe-specific quantities
+   * @throws Error if any ingredients are not found in the database, listing all missing ingredients
    */
-  private async verifyIngredientsExist(
+  private verifyIngredientsExist(
     ingredients: Array<ingredientTableElement>
-  ): Promise<Array<ingredientTableElement>> {
-    // TODO is it really useful to return a new Array ?
-    // isn't it better to simply return eventually the array to push ?
-    const result = new Array<ingredientTableElement>();
-    const newIngredients = new Array<ingredientTableElement>();
+  ): ingredientTableElement[] {
+    const result: ingredientTableElement[] = [];
+    const missing: string[] = [];
 
     for (const ing of ingredients) {
       const elemFound = this.find_ingredient(ing);
-      if (elemFound !== undefined) {
-        result.push({ ...elemFound, quantity: ing.quantity });
+      if (elemFound === undefined) {
+        missing.push(ing.name);
       } else {
-        // TODO Check for similar names ?
-        newIngredients.push(ing);
+        result.push({ ...elemFound, quantity: ing.quantity });
       }
     }
 
-    // TODO what to do when ingredients doesn't exist ?
-    /*
-                                                                                                                                    if (newIngredients.length > 0) {
-                                                                                                                                        let alertTitle: string;
-                                                                                                                                        let alertMessage = "Do you want to add or edit it before  ?";
-                                                                                                                                        const alertOk = "OK";
-                                                                                                                                        const alertCancel = "Cancel";
-                                                                                                                                        const alertEdit = "Edit before add";
-                                                                                                                                        if (newIngredients.length > 1) {
-                                                                                                                                            // Plural
-                                                                                                                                            alertTitle = "INGREDIENTS NOT FOUND";
-                                                                                                                                            alertMessage = `Following ingredients were not found in database :  \n`;
-                                                                                                                                            newIngredients.forEach(ing => {
-                                                                                                                                                alertMessage += "\t- " + ing.ingName + "\n";
-                                                                                                                                            });
-                                                                                                                                            alertMessage += `Do you want to add these as is or edit them before adding ?`;
+    if (missing.length > 0) {
+      databaseLogger.error('Ingredients verification failed', {
+        missingIngredients: missing,
+      });
+      throw new Error(
+        `Ingredients not found in database: ${missing.join(', ')} (${missing.length} missing)`
+      );
+    }
 
-                                                                                                                                        } else {
-                                                                                                                                            alertTitle = `INGREDIENT NOT FOUND`;
-                                                                                                                                            alertMessage = `Do you want to add this as is or edit it before adding ?`;
-                                                                                                                                        }
-
-
-                                                                                                                                        switch (await AsyncAlert(alertTitle, alertMessage, alertOk, alertCancel, alertEdit)) {
-                                                                                                                                            case alertUserChoice.neutral:
-                                                                                                                                                // TODO edit before add
-                                                                                                                                                break;
-                                                                                                                                            case alertUserChoice.ok:
-                                                                                                                                                await this.addMultipleIngredients(newIngredients);
-                                                                                                                                                result = result.concat(newIngredients);
-                                                                                                                                                break;
-                                                                                                                                            case alertUserChoice.cancel:
-                                                                                                                                            default:
-                                                                                                                                                databaseLogger.debug("User canceled adding ingredient");
-                                                                                                                                                break;
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                     */
-    // TODO for now, just add the ingredients so that we can move on
-    await this.addMultipleIngredients(newIngredients);
-    result.push(...newIngredients);
     return result;
   }
 
@@ -2397,34 +2344,6 @@ export class RecipeDatabase {
     }
 
     this._shopping = await this.getAllShopping();
-  }
-
-  /**
-   * Cleans ingredient names for fuzzy matching
-   *
-   * Removes parenthetical content and extra whitespace from ingredient names
-   * to improve fuzzy search accuracy by focusing on the core ingredient name.
-   *
-   * @private
-   * @param name - The ingredient name to clean
-   * @returns Cleaned ingredient name suitable for fuzzy matching
-   *
-   * @example
-   * Input: "Tomatoes (canned, diced)   extra spaces"
-   * Output: "Tomatoes extra spaces"
-   */
-  private cleanIngredientName(name: string): string {
-    if (!name) {
-      return '';
-    }
-
-    // Remove content in parentheses
-    let cleaned = name.replace(/\([^)]*\)/g, '').trim();
-
-    // Remove extra whitespace
-    cleaned = cleaned.replace(/\s+/g, ' ').trim();
-
-    return cleaned;
   }
 
   /**

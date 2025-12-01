@@ -46,7 +46,7 @@
  */
 
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
 import { recipeTableStyles, recipeTextRenderStyles } from '@styles/recipeComponents';
@@ -141,29 +141,24 @@ function ReadOnlyPreparation({ steps }: ReadOnlyProps) {
   const testId = testID + `::ReadOnlyStep`;
   return (
     <View style={recipeTextRenderStyles.containerSection}>
-      <FlatList
-        data={steps}
-        keyExtractor={(_, index) => `step-readonly-${index}`}
-        renderItem={({ item, index }) => (
-          <View key={index} style={recipeTextRenderStyles.containerSection}>
-            <Text
-              testID={testId + `::${index}::SectionTitle`}
-              variant='titleLarge'
-              style={recipeTextRenderStyles.headlineElement}
-            >
-              {index + 1}) {item.title}
-            </Text>
-            <Text
-              testID={testId + `::${index}::SectionParagraph`}
-              variant='titleMedium'
-              style={recipeTextRenderStyles.containerElement}
-            >
-              {item.description}
-            </Text>
-          </View>
-        )}
-        scrollEnabled={false}
-      />
+      {steps.map((item, index) => (
+        <View key={index} style={recipeTextRenderStyles.containerSection}>
+          <Text
+            testID={testId + `::${index}::SectionTitle`}
+            variant='titleLarge'
+            style={recipeTextRenderStyles.headlineElement}
+          >
+            {index + 1}) {item.title}
+          </Text>
+          <Text
+            testID={testId + `::${index}::SectionParagraph`}
+            variant='titleMedium'
+            style={recipeTextRenderStyles.containerElement}
+          >
+            {item.description}
+          </Text>
+        </View>
+      ))}
     </View>
   );
 }
@@ -256,21 +251,16 @@ function EditablePreparation({
 }: EditableProps) {
   return (
     <PrefixTextWrapper testID={testID} prefixText={prefixText}>
-      <FlatList
-        data={steps}
-        keyExtractor={(_, index) => `step-edit-${index}`}
-        renderItem={({ item, index }) => (
-          <EditableStep
-            key={index}
-            testID={testID}
-            index={index}
-            item={item}
-            onTitleChange={onTitleChange}
-            onDescriptionChange={onDescriptionChange}
-          />
-        )}
-        scrollEnabled={false}
-      />
+      {steps.map((item, index) => (
+        <EditableStep
+          key={index}
+          testID={testID}
+          index={index}
+          item={item}
+          onTitleChange={onTitleChange}
+          onDescriptionChange={onDescriptionChange}
+        />
+      ))}
 
       <RoundButton
         testID={`${testID}::AddButton`}

@@ -5,5 +5,5 @@ appId: "com.recipedia"
     label: "Check that similarity alert appears"
 
 - tapOn:
-    id: "RecipeTagSimilarity::SimilarityDialog::CancelButton"
+    id: "RecipeValidation::ValidationQueue::Tag::SimilarityDialog::CancelButton"
     label: "Dismiss similarity alert"

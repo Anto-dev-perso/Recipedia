@@ -1,0 +1,44 @@
+name: "2 - Search Scroll Independence Flow"
+appId: "com.recipedia"
+tags:
+  - search
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::SearchBar"
+    label: "Action - Focus on search bar to open dropdown"
+
+- hideKeyboard:
+    label: "Action - Dismiss keyboard"
+
+- scrollUntilVisible:
+    element:
+      text: "Sushi Rolls"
+    direction: DOWN
+    speed: 40
+    label: "Action - Scroll down in dropdown to bottom recipes"
+
+- assertVisible:
+    text: "Sushi Rolls"
+    label: "Assert - Verify Sushi Rolls is visible in dropdown"
+
+- pressKey: "BACK"
+
+- assertVisible:
+    id: "SearchScreen::RecipeCards::0::Spaghetti Bolognese"
+    label: "Assert - Verify first recipe card is visible (scroll independence verified)"
+
+- assertVisible:
+    id: "SearchScreen::RecipeCards::1::Chicken Tacos"
+    label: "Assert - Verify second recipe card is visible"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Navigate back to Home screen"

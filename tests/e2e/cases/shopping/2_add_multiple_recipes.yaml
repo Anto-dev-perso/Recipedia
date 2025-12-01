@@ -1,0 +1,118 @@
+name: "2 - Add Multiple Recipes To Shopping Flow"
+appId: "com.recipedia"
+tags:
+  - shopping
+---
+- runFlow:
+    file: "../../flows/setupTest.yaml"
+    label: "Setup - Launch app and wait for ready"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::0::.*"
+    label: "Action - Open Spaghetti Bolognese recipe"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Add Spaghetti Bolognese to menu"
+
+- runFlow:
+    file: "../../asserts/alerts/en/addingRecipe.yaml"
+    env:
+      RECIPE_NAME: "Spaghetti Bolognese"
+    label: "Assert - Verify recipe added alert"
+
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Verification - Navigate to Shopping screen"
+
+- runFlow:
+    file: "../../asserts/shopping/en/shoppingSpaghetti.yaml"
+    label: "Assert - Verify Spaghetti ingredients in shopping list"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::RecipeCards::3::Content"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Action - Scroll to Caesar Salad recipe"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::3::.*"
+    label: "Action - Open Caesar Salad recipe"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Add Caesar Salad to menu"
+
+- runFlow:
+    file: "../../asserts/alerts/en/addingRecipe.yaml"
+    env:
+      RECIPE_NAME: "Caesar Salad"
+    label: "Assert - Verify recipe added alert"
+
+- runFlow:
+    file: "../../flows/search/scrollBackToTop.yaml"
+    label: "Cleanup - Scroll back to top of Search screen"
+
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Verification - Navigate to Shopping screen"
+
+- runFlow:
+    file: "../../asserts/shopping/en/shoppingSpaghettiAndCaesar.yaml"
+    label: "Assert - Verify Spaghetti and Caesar ingredients in shopping list"
+
+- tapOn:
+    id: "BottomTabs::Search"
+    label: "Action - Navigate to Search screen"
+
+- scrollUntilVisible:
+    element:
+      id: "SearchScreen::RecipeCards::4::Content"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Action - Scroll to Margherita Pizza recipe"
+
+- tapOn:
+    id: "SearchScreen::RecipeCards::4::.*"
+    label: "Action - Open Margherita Pizza recipe"
+
+- tapOn:
+    id: "RecipeValidate"
+    label: "Action - Add Margherita Pizza to menu"
+
+- runFlow:
+    file: "../../asserts/alerts/en/addingRecipe.yaml"
+    env:
+      RECIPE_NAME: "Margherita Pizza"
+    label: "Assert - Verify recipe added alert"
+
+- runFlow:
+    file: "../../flows/search/scrollBackToTop.yaml"
+    label: "Cleanup - Scroll back to top of Search screen"
+
+- tapOn:
+    id: "BottomTabs::Shopping"
+    label: "Verification - Navigate to Shopping screen"
+
+- runFlow:
+    file: "../../asserts/shopping/en/shoppingSpaghettiCaesarAndPizza.yaml"
+    label: "Assert - Verify all three recipes' ingredients in shopping list"
+
+- runFlow:
+    file: "../../flows/shopping/en/clearShoppingList.yaml"
+    label: "Cleanup - Clear shopping list"
+
+- tapOn:
+    id: "BottomTabs::Home"
+    label: "Cleanup - Navigate to Home screen"

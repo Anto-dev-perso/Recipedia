@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import ItemDialog, { ItemDialogProps } from '@components/dialogs/ItemDialog';
 import {
   FormIngredientElement,
@@ -19,6 +19,16 @@ jest.mock(
   '@components/molecules/SeasonalityCalendar',
   () => require('@mocks/components/molecules/SeasonalityCalendar-mock').seasonalityCalendarMock
 );
+
+const mockTags: any[] = [];
+const mockIngredients: any[] = [];
+
+jest.mock('@context/RecipeDatabaseContext', () => ({
+  useRecipeDatabase: () => ({
+    tags: mockTags,
+    ingredients: mockIngredients,
+  }),
+}));
 
 describe('ItemDialog Component', () => {
   // Test data
@@ -41,6 +51,14 @@ describe('ItemDialog Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
+    // Clear mock arrays
+    mockTags.length = 0;
+    mockIngredients.length = 0;
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   test('does not render when isVisible is false', () => {
@@ -683,6 +701,216 @@ describe('ItemDialog Component', () => {
 
       const menu = getByTestId('IngredientDialog::AddModal::Menu');
       expect(menu).toBeTruthy();
+    });
+  });
+
+  describe('duplicate detection for tags', () => {
+    beforeEach(() => {
+      mockTags.length = 0;
+    });
+
+    test('shows error when tag name matches existing database tag', async () => {
+      const existingTag: tagTableElement = {
+        id: 99,
+        name: 'Existing Tag',
+      };
+      mockTags.push(existingTag);
+
+      const props: ItemDialogProps = {
+        testId: 'TagDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Tag',
+          value: { name: 'Existing Tag' },
+          onConfirmTag: mockOnConfirmTag,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(300);
+      });
+
+      expect(getByTestId('TagDialog::AddModal::HelperText')).toBeTruthy();
+      expect(
+        getByTestId('TagDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(true);
+    });
+
+    test('allows editing existing tag to keep same name', async () => {
+      const existingTag: tagTableElement = {
+        id: 5,
+        name: 'My Tag',
+      };
+      mockTags.push(existingTag);
+
+      const props: ItemDialogProps = {
+        testId: 'TagDialog',
+        mode: 'edit',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Tag',
+          value: existingTag,
+          onConfirmTag: mockOnConfirmTag,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(300);
+      });
+
+      expect(
+        getByTestId('TagDialog::EditModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(false);
+    });
+
+    test('no error when tag name is unique', async () => {
+      // mockTags is already empty from beforeEach
+
+      const props: ItemDialogProps = {
+        testId: 'TagDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Tag',
+          value: { name: 'Unique Tag' },
+          onConfirmTag: mockOnConfirmTag,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(300);
+      });
+
+      expect(
+        getByTestId('TagDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(false);
+    });
+  });
+
+  describe('duplicate detection for ingredients', () => {
+    beforeEach(() => {
+      mockIngredients.length = 0;
+    });
+
+    test('shows error when ingredient name exactly matches existing database ingredient', async () => {
+      const existingIngredient: ingredientTableElement = {
+        id: 99,
+        name: 'Flour',
+        type: ingredientType.cereal,
+        unit: 'cups',
+        season: [],
+      };
+      mockIngredients.push(existingIngredient);
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: {
+            name: 'Flour',
+            type: ingredientType.cereal,
+            unit: 'grams',
+            season: [],
+          },
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(300);
+      });
+
+      expect(getByTestId('IngredientDialog::AddModal::HelperText')).toBeTruthy();
+      expect(
+        getByTestId('IngredientDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(true);
+    });
+
+    test('shows info when ingredient name is similar but not exact', async () => {
+      const similarIngredient: ingredientTableElement = {
+        id: 99,
+        name: 'Tomatoes',
+        type: ingredientType.vegetable,
+        unit: 'pieces',
+        season: [],
+      };
+      mockIngredients.push(similarIngredient);
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'add',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: {
+            name: 'Tomato',
+            type: ingredientType.vegetable,
+            unit: 'kg',
+            season: [],
+          },
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(300);
+      });
+
+      expect(getByTestId('IngredientDialog::AddModal::HelperText')).toBeTruthy();
+      expect(
+        getByTestId('IngredientDialog::AddModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(false);
+    });
+
+    test('allows editing existing ingredient to keep same name', async () => {
+      const existingIngredient: ingredientTableElement = {
+        id: 5,
+        name: 'Flour',
+        type: ingredientType.cereal,
+        unit: 'cups',
+        season: [],
+      };
+      mockIngredients.push(existingIngredient);
+
+      const props: ItemDialogProps = {
+        testId: 'IngredientDialog',
+        mode: 'edit',
+        isVisible: true,
+        onClose: mockOnClose,
+        item: {
+          type: 'Ingredient',
+          value: existingIngredient,
+          onConfirmIngredient: mockOnConfirmIngredient,
+        },
+      };
+
+      const { getByTestId } = render(<ItemDialog {...props} />);
+
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(300);
+      });
+
+      expect(
+        getByTestId('IngredientDialog::EditModal::ConfirmButton').props.accessibilityState.disabled
+      ).toBe(false);
     });
   });
 });
