@@ -43,7 +43,7 @@ import React, { useEffect, useState } from 'react';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
 import { NutritionTable } from '@components/molecules/NutritionTable';
 import { NutritionEmptyState } from '@components/molecules/NutritionEmptyState';
-import { recipeStateType } from '@screens/Recipe';
+import { recipeStateType } from '@customTypes/ScreenTypes';
 import { recipeLogger } from '@utils/logger';
 import { defaultValueNumber } from '@utils/Constants';
 

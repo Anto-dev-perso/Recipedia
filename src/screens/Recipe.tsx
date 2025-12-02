@@ -65,7 +65,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { RecipeScreenProp } from '@customTypes/ScreenTypes';
+import { RecipeScreenProp, recipeStateType } from '@customTypes/ScreenTypes';
 import {
   processIngredientsForValidation,
   processTagsForValidation,
@@ -124,13 +124,6 @@ import {
 const BUTTON_HEIGHT = 48;
 const BUTTON_CONTAINER_HEIGHT = BUTTON_HEIGHT + padding.small * 2;
 
-/** Enum defining the four possible recipe interaction modes */
-export enum recipeStateType {
-  readOnly,
-  edit,
-  addManual,
-  addOCR,
-}
 
 // Export enum values for external use - keeping for API compatibility
 export const recipeStates = {
