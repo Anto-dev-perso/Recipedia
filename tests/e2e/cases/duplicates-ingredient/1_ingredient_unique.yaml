@@ -105,7 +105,7 @@ tags:
     label: "Assert - Verify ingredient name appears in recipe"
 
 - assertVisible:
-    id: "RecipeIngredients::0::Unit::CustomTextInput"
+    id: "RecipeIngredients::0::Unit"
     text: "MyUnit"
     label: "Assert - Verify ingredient unit appears in recipe"
 

@@ -211,7 +211,7 @@ appId: "com.recipedia"
     centerElement: true
 
 - assertVisible:
-    id: "RecipeIngredients::2::Unit::CustomTextInput"
+    id: "RecipeIngredients::2::Unit"
     text: "g"
     label: "Ingredient #3 unit text is displayed"
 
@@ -239,7 +239,7 @@ appId: "com.recipedia"
     label: "Ingredient #1 name text is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::1::Unit::CustomTextInput"
+    id: "RecipeIngredients::1::Unit"
     text: "g"
     label: "Ingredient #1 unit text is displayed"
 
@@ -267,7 +267,7 @@ appId: "com.recipedia"
     label: "Ingredient #0 name text is displayed"
 
 - assertVisible:
-    id: "RecipeIngredients::0::Unit::CustomTextInput"
+    id: "RecipeIngredients::0::Unit"
     text: "g"
     label: "Ingredient #0 unit text is displayed"
 

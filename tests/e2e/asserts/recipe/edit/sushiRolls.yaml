@@ -121,7 +121,7 @@ appId: "com.recipedia"
     text: "250"
     label: "Quantity of first ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::0::Unit::CustomTextInput"
+    id: "RecipeIngredients::0::Unit"
     text: "g"
     label: "First occurrence of the g unit is rendered"
 - assertVisible:
@@ -140,7 +140,7 @@ appId: "com.recipedia"
     text: "5"
     label: "Quantity of second ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::1::Unit::CustomTextInput"
+    id: "RecipeIngredients::1::Unit"
     text: "pieces"
     label: "Pieces unit is rendered"
 - assertVisible:
@@ -152,7 +152,7 @@ appId: "com.recipedia"
     text: "200"
     label: "Quantity of third ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::2::Unit::CustomTextInput"
+    id: "RecipeIngredients::2::Unit"
     text: "g"
     label: "Second occurrence of the g unit is rendered"
 - assertVisible:
@@ -171,7 +171,7 @@ appId: "com.recipedia"
     text: "100"
     label: "Quantity of fourth ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::3::Unit::CustomTextInput"
+    id: "RecipeIngredients::3::Unit"
     text: "g"
     label: "Third occurrence of the g unit is rendered"
 - assertVisible:
@@ -192,7 +192,7 @@ appId: "com.recipedia"
     text: "50"
     label: "Quantity of fifth ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::4::Unit::CustomTextInput"
+    id: "RecipeIngredients::4::Unit"
     text: "ml"
     label: "ml unit is rendered"
 - assertVisible:
