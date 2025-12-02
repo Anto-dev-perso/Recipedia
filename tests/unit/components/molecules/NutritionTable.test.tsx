@@ -10,10 +10,9 @@ jest.mock('@components/molecules/NutritionRow', () =>
 jest.mock('@components/molecules/NutritionEditForm', () =>
   require('@mocks/components/molecules/NutritionEditForm-mock')
 );
-jest.mock(
-  '@components/dialogs/Alert',
-  () => require('@mocks/components/dialogs/Alert-mock').alertMock
-);
+jest.mock('@components/dialogs/Alert', () => ({
+  Alert: require('@mocks/components/dialogs/Alert-mock').alertMock,
+}));
 
 const mockNutrition: nutritionTableElement = {
   id: 1,

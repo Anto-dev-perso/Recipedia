@@ -4,10 +4,9 @@ import React from 'react';
 import { recipeColumnsNames } from '@customTypes/DatabaseElementTypes';
 import { IconName } from '@assets/Icons';
 
-jest.mock(
-  '@components/atomic/RoundButton',
-  () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
-);
+jest.mock('@components/atomic/RoundButton', () => ({
+  RoundButton: require('@mocks/components/atomic/RoundButton-mock').roundButtonMock,
+}));
 
 describe('RecipeImage Component', () => {
   const mockOpenModal = jest.fn();

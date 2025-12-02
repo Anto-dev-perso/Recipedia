@@ -3,14 +3,12 @@ import { RecipeNumber, RecipeNumberProps } from '@components/organisms/RecipeNum
 import React from 'react';
 import { defaultValueNumber } from '@utils/Constants';
 
-jest.mock(
-  '@components/atomic/RoundButton',
-  () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
-);
-jest.mock(
-  '@components/atomic/NumericTextInput',
-  () => require('@mocks/components/atomic/NumericTextInput-mock').numericTextInputMock
-);
+jest.mock('@components/atomic/RoundButton', () => ({
+  RoundButton: require('@mocks/components/atomic/RoundButton-mock').roundButtonMock,
+}));
+jest.mock('@components/atomic/NumericTextInput', () => ({
+  NumericTextInput: require('@mocks/components/atomic/NumericTextInput-mock').numericTextInputMock,
+}));
 
 describe('RecipeNumber Component', () => {
   const mockOpenModal = jest.fn();

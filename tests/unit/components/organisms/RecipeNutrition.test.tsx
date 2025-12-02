@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { RecipeNutrition } from '@components/organisms/RecipeNutrition';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
-import { recipeStateType } from '@screens/Recipe';
+import { recipeStateType } from '@customTypes/ScreenTypes';
 import { defaultValueNumber } from '@utils/Constants';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());

@@ -6,13 +6,12 @@ import React from 'react';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { testRecipes } from '@test-data/recipesDataset';
 
-jest.mock(
-  '@components/molecules/RecipeCard',
-  () => require('@mocks/components/molecules/RecipeCard-mock').recipeCardMock
-);
+jest.mock('@components/molecules/RecipeCard', () => ({
+  RecipeCard: require('@mocks/components/molecules/RecipeCard-mock').recipeCardMock,
+}));
 
 describe('RecipeRecommendation Component', () => {
-  const mockRecipes: Array<recipeTableElement> = testRecipes.slice(0, 2);
+  const mockRecipes: recipeTableElement[] = testRecipes.slice(0, 2);
 
   const defaultProps: RecipeRecommendationProps = {
     testId: 'test-recommendation',

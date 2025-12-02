@@ -4,14 +4,12 @@ import React from 'react';
 import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
 
 jest.mock('@expo/vector-icons', () => require('@mocks/deps/expo-vector-icons-mock'));
-jest.mock(
-  '@components/atomic/RoundButton',
-  () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
-);
-jest.mock(
-  '@components/atomic/CustomTextInput',
-  () => require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock
-);
+jest.mock('@components/atomic/RoundButton', () => ({
+  RoundButton: require('@mocks/components/atomic/RoundButton-mock').roundButtonMock,
+}));
+jest.mock('@components/atomic/CustomTextInput', () => ({
+  CustomTextInput: require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock,
+}));
 
 describe('RecipePreparation Component', () => {
   const sampleSteps: preparationStepElement[] = [

@@ -9,10 +9,10 @@ import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseEl
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
 // Mock SettingsItemCard component
-jest.mock(
-  '@components/molecules/SettingsItemCard',
-  () => require('@mocks/components/molecules/SettingsItemCard-mock').settingsItemCardMock
-);
+jest.mock('@components/molecules/SettingsItemCard', () => ({
+  SettingsItemCard: require('@mocks/components/molecules/SettingsItemCard-mock')
+    .settingsItemCardMock,
+}));
 
 describe('SettingsItemList Component', () => {
   const mockTags = [testTags[7], testTags[0], testTags[8]];

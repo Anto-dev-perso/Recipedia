@@ -13,23 +13,19 @@ jest.mock('@utils/FileGestion', () =>
   require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
 );
 
-jest.mock(
-  '@components/atomic/RoundButton',
-  () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
-);
-jest.mock(
-  '@components/atomic/NumericTextInput',
-  () => require('@mocks/components/atomic/NumericTextInput-mock').numericTextInputMock
-);
-jest.mock(
-  '@components/atomic/CustomTextInput',
-  () => require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock
-);
-jest.mock(
-  '@components/molecules/TextInputWithDropDown',
-  () =>
-    require('@mocks/components/molecules/TextInputWithDropDown-mock.tsx').textInputWithDropdownMock
-);
+jest.mock('@components/atomic/RoundButton', () => ({
+  RoundButton: require('@mocks/components/atomic/RoundButton-mock').roundButtonMock,
+}));
+jest.mock('@components/atomic/NumericTextInput', () => ({
+  NumericTextInput: require('@mocks/components/atomic/NumericTextInput-mock').numericTextInputMock,
+}));
+jest.mock('@components/atomic/CustomTextInput', () => ({
+  CustomTextInput: require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock,
+}));
+jest.mock('@components/molecules/TextInputWithDropDown', () => ({
+  TextInputWithDropDown: require('@mocks/components/molecules/TextInputWithDropDown-mock.tsx')
+    .textInputWithDropdownMock,
+}));
 jest.mock('@expo/vector-icons', () => require('@mocks/deps/expo-vector-icons-mock'));
 
 describe('RecipeIngredients Component', () => {
