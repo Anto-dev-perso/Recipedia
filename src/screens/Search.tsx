@@ -46,37 +46,30 @@
  * ```
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {BackHandler, FlatList, Keyboard, ListRenderItemInfo, ScrollView, View,} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {recipeTableElement} from '@customTypes/DatabaseElementTypes';
+import {listFilter, TListFilter} from '@customTypes/RecipeFiltersTypes';
 import {
-  BackHandler,
-  FlatList,
-  Keyboard,
-  ListRenderItemInfo,
-  ScrollView,
-  View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
-import { listFilter, TListFilter } from '@customTypes/RecipeFiltersTypes';
-import {
-  addValueToMultimap,
-  editTitleInMultimap,
-  extractFilteredRecipeDatas,
-  filterFromRecipe,
-  removeTitleInMultimap,
-  removeValueToMultimap,
-  retrieveAllFilters,
+    addValueToMultimap,
+    editTitleInMultimap,
+    extractFilteredRecipeDatas,
+    filterFromRecipe,
+    removeTitleInMultimap,
+    removeValueToMultimap,
+    retrieveAllFilters,
 } from '@utils/FilterFunctions';
-import { useI18n } from '@utils/i18n';
-import { Divider, Text, useTheme } from 'react-native-paper';
+import {useI18n} from '@utils/i18n';
+import {Divider, Text, useTheme} from 'react-native-paper';
 import SearchBar from '@components/organisms/SearchBar';
 import SearchBarResults from '@components/organisms/SearchBarResults';
 import FiltersSelection from '@components/organisms/FiltersSelection';
-import { padding } from '@styles/spacing';
+import {padding} from '@styles/spacing';
 import RecipeCard from '@components/molecules/RecipeCard';
 import FilterAccordion from '@components/organisms/FilterAccordion';
-import { useSeasonFilter } from '@context/SeasonFilterContext';
-import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
+import {useSeasonFilter} from '@context/SeasonFilterContext';
+import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
 
 /**
  * Search screen component - Advanced recipe search with filtering
@@ -84,190 +77,187 @@ import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
  * @returns JSX element representing the comprehensive search interface
  */
 export function Search() {
-  const { t } = useI18n();
-  const { colors } = useTheme();
+    const {t} = useI18n();
+    const {colors} = useTheme();
 
-  const { seasonFilter } = useSeasonFilter();
-  const { recipes } = useRecipeDatabase();
+    const {seasonFilter} = useSeasonFilter();
+    const {recipes} = useRecipeDatabase();
 
-  // Refs
-  const scrollViewRef = useRef<ScrollView>(null);
+    // Refs
+    const scrollViewRef = useRef<ScrollView>(null);
 
-  // Core state
-  const [filtersState, setFiltersState] = useState(new Map<TListFilter, Array<string>>());
-  const [searchPhrase, setSearchPhrase] = useState('');
-  const [searchBarClicked, setSearchBarClicked] = useState(false);
-  const [addingFilterMode, setAddingFilterMode] = useState(false);
+    // Core state
+    const [filtersState, setFiltersState] = useState(new Map<TListFilter, Array<string>>());
+    const [searchPhrase, setSearchPhrase] = useState('');
+    const [searchBarClicked, setSearchBarClicked] = useState(false);
+    const [addingFilterMode, setAddingFilterMode] = useState(false);
 
-  // Derived state - calculated from core state, not stored
-  const filteredRecipes = filterFromRecipe(recipes, filtersState, t);
-  const [filteredTitles, filteredIngredients, filteredTags] =
-    extractFilteredRecipeDatas(filteredRecipes);
+    // Derived state - calculated from core state, not stored
+    const filteredRecipes = filterFromRecipe(recipes, filtersState, t);
+    const [filteredTitles, filteredIngredients, filteredTags] =
+        extractFilteredRecipeDatas(filteredRecipes);
 
-  // Handle season filter synchronization with global context
-  useEffect(() => {
-    const seasonFilterKey = listFilter.inSeason;
-    const seasonFilterValue = listFilter.inSeason;
+    // Handle season filter synchronization with global context
+    useEffect(() => {
+        const seasonFilterKey = listFilter.inSeason;
+        const seasonFilterValue = listFilter.inSeason;
 
-    setFiltersState(prevState => {
-      const newState = new Map(prevState);
+        setFiltersState(prevState => {
+            const newState = new Map(prevState);
 
-      // Add season filter if enabled and no filters exist
-      if (seasonFilter && prevState.size === 0) {
-        addValueToMultimap(newState, seasonFilterKey, seasonFilterValue);
-        return newState;
-      }
+            // Add season filter if enabled and no filters exist
+            if (seasonFilter && prevState.size === 0) {
+                addValueToMultimap(newState, seasonFilterKey, seasonFilterValue);
+                return newState;
+            }
 
-      // Remove season filter if disabled and it's the only filter
-      if (!seasonFilter && prevState.size === 1 && prevState.has(seasonFilterKey)) {
-        removeValueToMultimap(newState, seasonFilterKey, seasonFilterValue);
-        return newState;
-      }
+            // Remove season filter if disabled and it's the only filter
+            if (!seasonFilter && prevState.size === 1 && prevState.has(seasonFilterKey)) {
+                removeValueToMultimap(newState, seasonFilterKey, seasonFilterValue);
+                return newState;
+            }
 
-      return prevState;
-    });
-  }, [seasonFilter]);
+            return prevState;
+        });
+    }, [seasonFilter]);
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (searchBarClicked) {
-        Keyboard.dismiss();
-        setSearchBarClicked(false);
-        scrollViewRef.current?.scrollTo({ y: 0, animated: false });
-        return true;
-      }
-      return false;
-    });
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (searchBarClicked) {
+                Keyboard.dismiss();
+                setSearchBarClicked(false);
+                scrollViewRef.current?.scrollTo({y: 0, animated: false});
+                return true;
+            }
+            return false;
+        });
 
-    return () => backHandler.remove();
-  }, [searchBarClicked]);
+        return () => backHandler.remove();
+    }, [searchBarClicked]);
 
-  // Update search string and filter state
-  const updateSearchString = useCallback((newSearchString: string) => {
-    setSearchPhrase(newSearchString);
+    // Update search string and filter state
+    const updateSearchString = (newSearchString: string) => {
+        setSearchPhrase(newSearchString);
 
-    setFiltersState(prevState => {
-      const newState = new Map(prevState);
+        setFiltersState(prevState => {
+            const newState = new Map(prevState);
 
-      if (newSearchString === '') {
-        removeTitleInMultimap(newState);
-      } else {
-        editTitleInMultimap(newState, newSearchString);
-      }
+            if (newSearchString === '') {
+                removeTitleInMultimap(newState);
+            } else {
+                editTitleInMultimap(newState, newSearchString);
+            }
 
-      return newState;
-    });
-  }, []);
+            return newState;
+        });
+    };
 
-  // Add filter to state
-  const addAFilterToTheState = useCallback((filterTitle: TListFilter, value: string) => {
-    setFiltersState(prevState => {
-      const newState = new Map(prevState);
-      addValueToMultimap(newState, filterTitle, value);
-      return newState;
-    });
-  }, []);
+    // Add filter to state
+    const addAFilterToTheState = (filterTitle: TListFilter, value: string) => {
+        setFiltersState(prevState => {
+            const newState = new Map(prevState);
+            addValueToMultimap(newState, filterTitle, value);
+            return newState;
+        });
+    };
 
-  // Remove filter from state
-  const removeAFilterToTheState = useCallback((filterTitle: TListFilter, value: string) => {
-    setFiltersState(prevState => {
-      const newState = new Map(prevState);
-      removeValueToMultimap(newState, filterTitle, value);
-      return newState;
-    });
+    // Remove filter from state
+    const removeAFilterToTheState = (filterTitle: TListFilter, value: string) => {
+        setFiltersState(prevState => {
+            const newState = new Map(prevState);
+            removeValueToMultimap(newState, filterTitle, value);
+            return newState;
+        });
 
-    // Clear search phrase if removing title filter
-    if (filterTitle === listFilter.recipeTitleInclude) {
-      setSearchPhrase('');
-    }
-  }, []);
-
-  // Find and remove filter by value
-  const findFilterStringAndRemove = useCallback(
-    (item: string) => {
-      for (const [key, value] of filtersState) {
-        if (value.includes(item)) {
-          removeAFilterToTheState(key, item);
-          break;
+        // Clear search phrase if removing title filter
+        if (filterTitle === listFilter.recipeTitleInclude) {
+            setSearchPhrase('');
         }
-      }
-    },
-    [filtersState, removeAFilterToTheState]
-  );
+    };
 
-  const screenId = 'SearchScreen';
-  const recipeCardsId = screenId + '::RecipeCards';
+    // Find and remove filter by value
+    const findFilterStringAndRemove = (item: string) => {
+        for (const [key, value] of filtersState) {
+            if (value.includes(item)) {
+                removeAFilterToTheState(key, item);
+                break;
+            }
+        }
+    };
 
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} testID={screenId}>
-      {/* When there are no recipes, put flex on scrollView to child view to take the whole screen*/}
-      <ScrollView
-        ref={scrollViewRef}
-        contentContainerStyle={filteredRecipes.length === 0 ? { flex: 1 } : {}}
-        showsVerticalScrollIndicator={true}
-      >
-        <SearchBar
-          testId={screenId + '::SearchBar'}
-          searchPhrase={searchPhrase}
-          setSearchBarClicked={setSearchBarClicked}
-          updateSearchString={updateSearchString}
-        />
+    const screenId = 'SearchScreen';
+    const recipeCardsId = screenId + '::RecipeCards';
 
-        {searchBarClicked ? (
-          <SearchBarResults
-            testId={screenId + '::SearchBarResults'}
-            filteredTitles={filteredTitles}
-            setSearchBarClicked={setSearchBarClicked}
-            updateSearchString={updateSearchString}
-          />
-        ) : (
-          <View>
-            <FiltersSelection
-              testId={screenId}
-              filters={retrieveAllFilters(filtersState)}
-              addingFilterMode={addingFilterMode}
-              setAddingAFilter={setAddingFilterMode}
-              onRemoveFilter={findFilterStringAndRemove}
-            />
+    return (
+        <SafeAreaView style={{flex: 1, backgroundColor: colors.background}} testID={screenId}>
+            {/* When there are no recipes, put flex on scrollView to child view to take the whole screen*/}
+            <ScrollView
+                ref={scrollViewRef}
+                contentContainerStyle={filteredRecipes.length === 0 ? {flex: 1} : {}}
+                showsVerticalScrollIndicator={true}
+            >
+                <SearchBar
+                    testId={screenId + '::SearchBar'}
+                    searchPhrase={searchPhrase}
+                    setSearchBarClicked={setSearchBarClicked}
+                    updateSearchString={updateSearchString}
+                />
 
-            <Divider testID={screenId + '::Divider'} />
+                {searchBarClicked ? (
+                    <SearchBarResults
+                        testId={screenId + '::SearchBarResults'}
+                        filteredTitles={filteredTitles}
+                        setSearchBarClicked={setSearchBarClicked}
+                        updateSearchString={updateSearchString}
+                    />
+                ) : (
+                    <View>
+                        <FiltersSelection
+                            testId={screenId}
+                            filters={retrieveAllFilters(filtersState)}
+                            addingFilterMode={addingFilterMode}
+                            setAddingAFilter={setAddingFilterMode}
+                            onRemoveFilter={findFilterStringAndRemove}
+                        />
 
-            {addingFilterMode && (
-              <FilterAccordion
-                testId={screenId}
-                tagsList={filteredTags}
-                ingredientsList={filteredIngredients}
-                filtersState={filtersState}
-                addFilter={addAFilterToTheState}
-                removeFilter={removeAFilterToTheState}
-              />
-            )}
-          </View>
-        )}
+                        <Divider testID={screenId + '::Divider'}/>
 
-        {!addingFilterMode &&
-          !searchBarClicked &&
-          (filteredRecipes.length > 0 ? (
-            <FlatList
-              data={filteredRecipes}
-              keyExtractor={item => item.id?.toString() || item.title}
-              numColumns={2}
-              scrollEnabled={false}
-              contentContainerStyle={{ padding: padding.small }}
-              renderItem={({ item, index }: ListRenderItemInfo<recipeTableElement>) => (
-                <RecipeCard testId={recipeCardsId + `::${index}`} size={'medium'} recipe={item} />
-              )}
-            />
-          ) : (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text testID={screenId + '::TextWhenEmpty'} variant={'titleMedium'}>
-                {t('noRecipesFound')}
-              </Text>
-            </View>
-          ))}
-      </ScrollView>
-    </SafeAreaView>
-  );
+                        {addingFilterMode && (
+                            <FilterAccordion
+                                testId={screenId}
+                                tagsList={filteredTags}
+                                ingredientsList={filteredIngredients}
+                                filtersState={filtersState}
+                                addFilter={addAFilterToTheState}
+                                removeFilter={removeAFilterToTheState}
+                            />
+                        )}
+                    </View>
+                )}
+
+                {!addingFilterMode &&
+                    !searchBarClicked &&
+                    (filteredRecipes.length > 0 ? (
+                        <FlatList
+                            data={filteredRecipes}
+                            keyExtractor={item => item.id?.toString() || item.title}
+                            numColumns={2}
+                            scrollEnabled={false}
+                            contentContainerStyle={{padding: padding.small}}
+                            renderItem={({item, index}: ListRenderItemInfo<recipeTableElement>) => (
+                                <RecipeCard testId={recipeCardsId + `::${index}`} size={'medium'} recipe={item}/>
+                            )}
+                        />
+                    ) : (
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text testID={screenId + '::TextWhenEmpty'} variant={'titleMedium'}>
+                                {t('noRecipesFound')}
+                            </Text>
+                        </View>
+                    ))}
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
 export default Search;

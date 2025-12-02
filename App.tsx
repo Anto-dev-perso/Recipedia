@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -73,7 +73,7 @@ function AppContent() {
 
     const shouldHideSplash = isAppInitialized && (isFirstLaunchFlag === true || isDatabaseReady);
 
-    const onLayoutRootView = useCallback(async () => {
+    const onLayoutRootView = async () => {
         if (shouldHideSplash) {
             if (isFirstLaunchFlag) {
                 appLogger.debug('Hiding splash screen - first launch, WelcomeScreen ready');
@@ -82,7 +82,7 @@ function AppContent() {
             }
             await SplashScreen.hideAsync();
         }
-    }, [shouldHideSplash, isFirstLaunchFlag]);
+    };
 
     if (!shouldHideSplash) {
         appLogger.debug('Showing splash screen', {

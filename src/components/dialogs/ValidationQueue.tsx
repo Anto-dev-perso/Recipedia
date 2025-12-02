@@ -38,140 +38,136 @@
  * ```
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  FormIngredientElement,
-  ingredientTableElement,
-  tagTableElement,
-} from '@customTypes/DatabaseElementTypes';
+import React, {useEffect, useState} from 'react';
+import {FormIngredientElement, ingredientTableElement, tagTableElement,} from '@customTypes/DatabaseElementTypes';
 import SimilarityDialog from './SimilarityDialog';
-import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
+import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
 
 export type ValidationQueuePropsBase<T extends 'Tag' | 'Ingredient', ItemType, ValidatedType> = {
-  type: T;
-  items: ItemType[];
-  onValidated: (item: ValidatedType) => void;
-  onDismissed?: (item: ItemType) => void;
+    type: T;
+    items: ItemType[];
+    onValidated: (item: ValidatedType) => void;
+    onDismissed?: (item: ItemType) => void;
 };
 
 export type TagValidationProps = ValidationQueuePropsBase<'Tag', tagTableElement, tagTableElement>;
 export type IngredientValidationProps = ValidationQueuePropsBase<
-  'Ingredient',
-  FormIngredientElement,
-  ingredientTableElement
+    'Ingredient',
+    FormIngredientElement,
+    ingredientTableElement
 >;
 
 export type ValidationQueueProps = { testId: string; onComplete: () => void } & (
-  | TagValidationProps
-  | IngredientValidationProps
-);
+    | TagValidationProps
+    | IngredientValidationProps
+    );
 
 export function ValidationQueue({
-  type,
-  items,
-  onValidated,
-  onDismissed,
-  onComplete,
-  testId,
-}: ValidationQueueProps) {
-  const { findSimilarTags, findSimilarIngredients } = useRecipeDatabase();
+                                    type,
+                                    items,
+                                    onValidated,
+                                    onDismissed,
+                                    onComplete,
+                                    testId,
+                                }: ValidationQueueProps) {
+    const {findSimilarTags, findSimilarIngredients} = useRecipeDatabase();
 
-  const [remainingItems, setRemainingItems] = useState(items);
-  const [showDialog, setShowDialog] = useState(false);
+    const [remainingItems, setRemainingItems] = useState(items);
+    const [showDialog, setShowDialog] = useState(false);
 
-  const currentItem = remainingItems[0];
-  const testIdQueue = testId + '::ValidationQueue';
+    const currentItem = remainingItems[0];
+    const testIdQueue = testId + '::ValidationQueue';
 
-  useEffect(() => {
-    setRemainingItems(items);
-  }, [items]);
+    useEffect(() => {
+        setRemainingItems(items);
+    }, [items]);
 
-  const processCurrentItem = useCallback(() => {
+    const processCurrentItem = () => {
+        const itemName = currentItem.name;
+        if (!itemName || itemName.trim().length === 0) {
+            setShowDialog(false);
+            setRemainingItems(prev => prev.slice(1));
+            return;
+        }
+
+        setShowDialog(true);
+    };
+
+    useEffect(() => {
+        if (remainingItems.length === 0) {
+            onComplete();
+            return;
+        }
+
+        processCurrentItem();
+    }, [remainingItems, onComplete, processCurrentItem]);
+
+    const moveToNext = () => {
+        setShowDialog(false);
+        setRemainingItems(prev => prev.slice(1));
+    };
+
+    const handleItemValidated = (item: tagTableElement | ingredientTableElement) => {
+        if (type === 'Ingredient') {
+            const originalIngredient = currentItem as FormIngredientElement;
+            const validatedIngredient = item as ingredientTableElement;
+            const mergedIngredient: ingredientTableElement = {
+                ...validatedIngredient,
+                quantity: originalIngredient?.quantity || validatedIngredient.quantity,
+                unit: originalIngredient?.unit || validatedIngredient.unit,
+            };
+            onValidated(mergedIngredient);
+        } else {
+            onValidated(item);
+        }
+        moveToNext();
+    };
+
+    const handleDismiss = () => {
+        if (type === 'Ingredient') {
+            onDismissed?.(currentItem as FormIngredientElement);
+        } else {
+            onDismissed?.(currentItem as tagTableElement);
+        }
+        moveToNext();
+    };
+
+    if (remainingItems.length === 0 || !currentItem || !currentItem.name) {
+        return null;
+    }
+
     const itemName = currentItem.name;
-    if (!itemName || itemName.trim().length === 0) {
-      setShowDialog(false);
-      setRemainingItems(prev => prev.slice(1));
-      return;
-    }
+    const similarItems =
+        type === 'Tag' ? findSimilarTags(itemName) : findSimilarIngredients(itemName);
+    const exactMatch = similarItems.find(item => item.name.toLowerCase() === itemName.toLowerCase());
+    const similarItem = exactMatch || similarItems[0];
 
-    setShowDialog(true);
-  }, [currentItem]);
-
-  useEffect(() => {
-    if (remainingItems.length === 0) {
-      onComplete();
-      return;
-    }
-
-    processCurrentItem();
-  }, [remainingItems, onComplete, processCurrentItem]);
-
-  const moveToNext = () => {
-    setShowDialog(false);
-    setRemainingItems(prev => prev.slice(1));
-  };
-
-  const handleItemValidated = (item: tagTableElement | ingredientTableElement) => {
-    if (type === 'Ingredient') {
-      const originalIngredient = currentItem as FormIngredientElement;
-      const validatedIngredient = item as ingredientTableElement;
-      const mergedIngredient: ingredientTableElement = {
-        ...validatedIngredient,
-        quantity: originalIngredient?.quantity || validatedIngredient.quantity,
-        unit: originalIngredient?.unit || validatedIngredient.unit,
-      };
-      onValidated(mergedIngredient);
-    } else {
-      onValidated(item);
-    }
-    moveToNext();
-  };
-
-  const handleDismiss = () => {
-    if (type === 'Ingredient') {
-      onDismissed?.(currentItem as FormIngredientElement);
-    } else {
-      onDismissed?.(currentItem as tagTableElement);
-    }
-    moveToNext();
-  };
-
-  if (remainingItems.length === 0 || !currentItem || !currentItem.name) {
-    return null;
-  }
-
-  const itemName = currentItem.name;
-  const similarItems =
-    type === 'Tag' ? findSimilarTags(itemName) : findSimilarIngredients(itemName);
-  const exactMatch = similarItems.find(item => item.name.toLowerCase() === itemName.toLowerCase());
-  const similarItem = exactMatch || similarItems[0];
-
-  return (
-    <SimilarityDialog
-      testId={testIdQueue + `::${type}`}
-      isVisible={showDialog}
-      onClose={moveToNext}
-      item={
-        type === 'Tag'
-          ? {
-              type: 'Tag',
-              newItemName: itemName,
-              similarItem: similarItem as tagTableElement,
-              onConfirm: handleItemValidated,
-              onUseExisting: handleItemValidated,
-              onDismiss: handleDismiss,
+    return (
+        <SimilarityDialog
+            testId={testIdQueue + `::${type}`}
+            isVisible={showDialog}
+            onClose={moveToNext}
+            item={
+                type === 'Tag'
+                    ? {
+                        type: 'Tag',
+                        newItemName: itemName,
+                        similarItem: similarItem as tagTableElement,
+                        onConfirm: handleItemValidated,
+                        onUseExisting: handleItemValidated,
+                        onDismiss: handleDismiss,
+                    }
+                    : {
+                        type: 'Ingredient',
+                        newItemName: itemName,
+                        similarItem: similarItem as ingredientTableElement,
+                        onConfirm: handleItemValidated,
+                        onUseExisting: handleItemValidated,
+                        onDismiss: handleDismiss,
+                    }
             }
-          : {
-              type: 'Ingredient',
-              newItemName: itemName,
-              similarItem: similarItem as ingredientTableElement,
-              onConfirm: handleItemValidated,
-              onUseExisting: handleItemValidated,
-              onDismiss: handleDismiss,
-            }
-      }
-    />
-  );
+        />
+    );
 }
 
 export default ValidationQueue;

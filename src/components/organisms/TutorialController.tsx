@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect } from 'react';
-import { CopilotProvider, useCopilot } from 'react-native-copilot';
-import { useNavigation } from '@react-navigation/native';
-import { tutorialLogger } from '@utils/logger';
-import { TabScreenNavigation } from '@customTypes/ScreenTypes';
-import { CopilotStepData } from '@customTypes/TutorialTypes';
-import { TutorialTooltip } from '@components/molecules/TutorialTooltip';
-import { TUTORIAL_VERTICAL_OFFSET } from '@utils/Constants';
+import React, {useEffect} from 'react';
+import {CopilotProvider, useCopilot} from 'react-native-copilot';
+import {useNavigation} from '@react-navigation/native';
+import {tutorialLogger} from '@utils/logger';
+import {TabScreenNavigation} from '@customTypes/ScreenTypes';
+import {CopilotStepData} from '@customTypes/TutorialTypes';
+import {TutorialTooltip} from '@components/molecules/TutorialTooltip';
+import {TUTORIAL_VERTICAL_OFFSET} from '@utils/Constants';
 
 export type TutorialProviderProps = {
-  children: React.ReactNode;
-  onComplete: () => void;
+    children: React.ReactNode;
+    onComplete: () => void;
 };
 
 /**
@@ -21,80 +21,80 @@ export type TutorialProviderProps = {
  * @param props - Component props
  * @param props.onComplete - Callback fired when tutorial completes
  */
-function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete'>) {
-  const navigation = useNavigation<TabScreenNavigation>();
-  const { start, copilotEvents, visible } = useCopilot();
+function TutorialManager({onComplete}: Pick<TutorialProviderProps, 'onComplete'>) {
+    const navigation = useNavigation<TabScreenNavigation>();
+    const {start, copilotEvents, visible} = useCopilot();
 
-  /**
-   * Handles tutorial start event
-   *
-   * Logs tutorial initiation for analytics and debugging purposes.
-   */
-  const handleStart = () => {
-    tutorialLogger.info('Tutorial started');
-  };
-
-  /**
-   * Handles tutorial stop/completion event
-   *
-   * Fires completion callback, logs tutorial end, and navigates back to Home screen.
-   * Uses setTimeout to ensure navigation occurs after copilot cleanup completes.
-   */
-  const handleStop = useCallback(() => {
-    tutorialLogger.info('Tutorial stopped');
-    onComplete();
-    // Navigate to Home after copilot cleanup completes
-    setTimeout(() => {
-      navigation.navigate('Home');
-    }, 0);
-  }, [navigation, onComplete]);
-
-  /**
-   * Handles tutorial step change events
-   *
-   * Logs step transitions for debugging and analytics. Only logs when
-   * step data is available to avoid undefined reference errors.
-   *
-   * @param step - Tutorial step data or undefined if no step
-   */
-  const handleStepChange = (step: CopilotStepData | undefined) => {
-    if (step) {
-      tutorialLogger.debug('Copilot step change', {
-        name: step.name,
-        order: step.order,
-        text: step.text,
-      });
-    }
-  };
-
-  // Auto-start tutorial when copilot is ready
-  useEffect(() => {
-    if (copilotEvents && !visible) {
-      tutorialLogger.info('Starting tutorial on next tick');
-      setTimeout(() => {
-        start();
-      }, 0);
-    }
-  }, [copilotEvents, visible, start]);
-
-  // Setup event listeners
-  useEffect(() => {
-    if (!copilotEvents) {
-      return;
-    }
-
-    copilotEvents.on('stepChange', handleStepChange);
-    copilotEvents.on('stop', handleStop);
-    copilotEvents.on('start', handleStart);
-
-    return () => {
-      copilotEvents.off('stepChange', handleStepChange);
-      copilotEvents.off('stop', handleStop);
-      copilotEvents.off('start', handleStart);
+    /**
+     * Handles tutorial start event
+     *
+     * Logs tutorial initiation for analytics and debugging purposes.
+     */
+    const handleStart = () => {
+        tutorialLogger.info('Tutorial started');
     };
-  }, [copilotEvents, navigation, onComplete, handleStop]);
 
-  return null;
+    /**
+     * Handles tutorial stop/completion event
+     *
+     * Fires completion callback, logs tutorial end, and navigates back to Home screen.
+     * Uses setTimeout to ensure navigation occurs after copilot cleanup completes.
+     */
+    const handleStop = () => {
+        tutorialLogger.info('Tutorial stopped');
+        onComplete();
+        // Navigate to Home after copilot cleanup completes
+        setTimeout(() => {
+            navigation.navigate('Home');
+        }, 0);
+    };
+
+    /**
+     * Handles tutorial step change events
+     *
+     * Logs step transitions for debugging and analytics. Only logs when
+     * step data is available to avoid undefined reference errors.
+     *
+     * @param step - Tutorial step data or undefined if no step
+     */
+    const handleStepChange = (step: CopilotStepData | undefined) => {
+        if (step) {
+            tutorialLogger.debug('Copilot step change', {
+                name: step.name,
+                order: step.order,
+                text: step.text,
+            });
+        }
+    };
+
+    // Auto-start tutorial when copilot is ready
+    useEffect(() => {
+        if (copilotEvents && !visible) {
+            tutorialLogger.info('Starting tutorial on next tick');
+            setTimeout(() => {
+                start();
+            }, 0);
+        }
+    }, [copilotEvents, visible, start]);
+
+    // Setup event listeners
+    useEffect(() => {
+        if (!copilotEvents) {
+            return;
+        }
+
+        copilotEvents.on('stepChange', handleStepChange);
+        copilotEvents.on('stop', handleStop);
+        copilotEvents.on('start', handleStart);
+
+        return () => {
+            copilotEvents.off('stepChange', handleStepChange);
+            copilotEvents.off('stop', handleStop);
+            copilotEvents.off('start', handleStart);
+        };
+    }, [copilotEvents, navigation, onComplete, handleStop]);
+
+    return null;
 }
 
 /**
@@ -115,22 +115,22 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
  * @param props.onComplete - Callback fired when tutorial is completed or stopped
  * @returns JSX element with tutorial provider wrapper
  */
-export function TutorialProvider({ children, onComplete }: TutorialProviderProps) {
-  const tooltipStyle = {
-    margin: 0,
-    padding: 0,
-  };
+export function TutorialProvider({children, onComplete}: TutorialProviderProps) {
+    const tooltipStyle = {
+        margin: 0,
+        padding: 0,
+    };
 
-  return (
-    <CopilotProvider
-      overlay='view'
-      animated={true}
-      tooltipComponent={TutorialTooltip}
-      tooltipStyle={tooltipStyle}
-      verticalOffset={TUTORIAL_VERTICAL_OFFSET}
-    >
-      {children}
-      <TutorialManager onComplete={onComplete} />
-    </CopilotProvider>
-  );
+    return (
+        <CopilotProvider
+            overlay='view'
+            animated={true}
+            tooltipComponent={TutorialTooltip}
+            tooltipStyle={tooltipStyle}
+            verticalOffset={TUTORIAL_VERTICAL_OFFSET}
+        >
+            {children}
+            <TutorialManager onComplete={onComplete}/>
+        </CopilotProvider>
+    );
 }
