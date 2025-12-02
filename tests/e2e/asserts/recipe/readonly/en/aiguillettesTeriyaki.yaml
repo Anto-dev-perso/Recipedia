@@ -132,15 +132,23 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
+      id: "RecipeTime::Text"
     direction: DOWN
     centerElement: true
-    speed: 60
+    speed: 40
+    label: "Scroll to time section"
 
 - assertVisible:
     id: "RecipeTime::Text"
     text: "Preparation (30 min)"
     label: "Preparation section and time are displayed"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
 
 - assertVisible:
     id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"

@@ -46,10 +46,10 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: "RecipeCancel"
+      id: "RecipeImage::Image"
     direction: UP
-    speed: 80
-    label: "Action - Scroll back to top to find cancel button"
+    speed: 95
+    label: "Action - Scroll back to top to find image"
 
 - tapOn:
     id: "RecipeCancel"

@@ -29,10 +29,6 @@ tags:
     id: "BottomTabs::Home"
     label: "Setup - Navigate to Home screen"
 
-- tapOn:
-    id: "ExpandButton"
-    label: "Setup - Expand FAB menu"
-
 - runFlow:
     file: "../../flows/recipe/adding/ocr/gallery/addRecipeFromGallery.yaml"
     env:

@@ -12,6 +12,14 @@ appId: "com.recipedia"
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Add ingredient"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::${INDEX}::QuantityInput"
+    direction: UP
+    speed: 40
+    centerElement: true
+    label: "Scroll to up in case button was too down"
+
 - tapOn:
     id: "RecipeIngredients::${INDEX}::QuantityInput"
     label: "Focus on ingredient quantity"

@@ -17,10 +17,6 @@ tags:
 - evalScript: ${output.isTime = true}
 - evalScript: ${output.isNutritionToOCR = false}
 
-- tapOn:
-    id: "ExpandButton"
-    label: "Setup - Expand FAB menu"
-
 - runFlow:
     file: "../../flows/recipe/adding/ocr/gallery/addRecipeFromGallery.yaml"
     env:

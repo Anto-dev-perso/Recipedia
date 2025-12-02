@@ -55,7 +55,7 @@ env:
 
 - tapOn:
     id: "BackButton"
-    label: "Cleanup - Back to the Home Screen"
+    label: "Cleanup - Back to the read only mode"
 
 - runFlow:
     file: "../../flows/home/swipeBackToFirstCard.yaml"
