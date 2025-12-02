@@ -46,17 +46,17 @@
  * ```
  */
 
-import {View} from 'react-native';
-import React, {useState} from 'react';
-import RoundButton from '@components/atomic/RoundButton';
-import {Icons} from '@assets/Icons';
-import HorizontalList from '@components/molecules/HorizontalList';
-import TextInputWithDropDown from '@components/molecules/TextInputWithDropDown';
-import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
-import {FlashList} from '@shopify/flash-list';
-import {recipeTagsStyles} from '@styles/recipeComponents';
-import {Text, useTheme} from 'react-native-paper';
-import {useI18n} from '@utils/i18n';
+import { View } from 'react-native';
+import React, { useState } from 'react';
+import { RoundButton } from '@components/atomic/RoundButton';
+import { Icons } from '@assets/Icons';
+import { HorizontalList } from '@components/molecules/HorizontalList';
+import { TextInputWithDropDown } from '@components/molecules/TextInputWithDropDown';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
+import { FlashList } from '@shopify/flash-list';
+import { recipeTagsStyles } from '@styles/recipeComponents';
+import { Text, useTheme } from 'react-native-paper';
+import { useI18n } from '@utils/i18n';
 
 /** Props for edit mode without OCR */
 export type RecipeTagsEditProps = { editType: 'edit' };
@@ -66,13 +66,13 @@ export type RecipeTagsAddProps = { editType: 'add'; openModal: () => void };
 
 /** Props for add/edit modes with discriminated union */
 export type RecipeTagsAddOrEditProps = {
-    type: 'addOrEdit';
-    /** Random tag suggestions to display to user */
-    randomTags: string;
-    /** Callback fired when a new tag is added */
-    addNewTag: (newTag: string) => void;
-    /** Callback fired when a tag is removed */
-    removeTag: (tag: string) => void;
+  type: 'addOrEdit';
+  /** Random tag suggestions to display to user */
+  randomTags: string;
+  /** Callback fired when a new tag is added */
+  addNewTag: (newTag: string) => void;
+  /** Callback fired when a tag is removed */
+  removeTag: (tag: string) => void;
 } & (RecipeTagsEditProps | RecipeTagsAddProps);
 
 /** Props for read-only mode */
@@ -82,8 +82,8 @@ export type RecipeTagsReadOnlyProps = { type: 'readOnly' };
  * Props for the RecipeTags component
  */
 export type RecipeTagProps = {
-    /** Array of current tags */
-    tagsList: Array<string>;
+  /** Array of current tags */
+  tagsList: string[];
 } & (RecipeTagsReadOnlyProps | RecipeTagsAddOrEditProps);
 
 /**
@@ -93,102 +93,102 @@ export type RecipeTagProps = {
  * @returns JSX element representing a tag management interface
  */
 export function RecipeTags(tagsProps: RecipeTagProps) {
-    const {tags} = useRecipeDatabase();
-    const [newTags, setNewTags] = useState(new Array<number>());
-    const [tagsAddedCounter, setTagsAddedCounter] = useState(0);
+  const { tags } = useRecipeDatabase();
+  const [newTags, setNewTags] = useState<number[]>([]);
+  const [tagsAddedCounter, setTagsAddedCounter] = useState(0);
 
-    const allTagsNamesSorted = tags
-        .map(tag => tag.name)
-        .filter(dbTag => !tagsProps.tagsList.includes(dbTag))
-        .sort();
+  const allTagsNamesSorted = tags
+    .map(tag => tag.name)
+    .filter(dbTag => !tagsProps.tagsList.includes(dbTag))
+    .sort();
 
-    const {t} = useI18n();
-    const {colors} = useTheme();
-    const tagsTestID = 'RecipeTags';
+  const { t } = useI18n();
+  const { colors } = useTheme();
+  const tagsTestID = 'RecipeTags';
 
-    return (
-        <View style={recipeTagsStyles.containerSection}>
-            {tagsProps.type === 'readOnly' ? (
-                <HorizontalList testID={tagsTestID} propType={'Tag'} item={tagsProps.tagsList}/>
-            ) : (
-                <View>
-                    <Text
-                        testID={tagsTestID + '::HeaderText'}
-                        variant={'headlineSmall'}
-                        style={recipeTagsStyles.containerElement}
-                    >
-                        {t('tags')}:
-                    </Text>
-                    <Text
-                        testID={tagsTestID + '::ElementText'}
-                        variant={'labelMedium'}
-                        style={[recipeTagsStyles.containerElement, {color: colors.outline}]}
-                    >
-                        {t('tagExplanation')}
-                        {tagsProps.randomTags}
-                    </Text>
+  return (
+    <View style={recipeTagsStyles.containerSection}>
+      {tagsProps.type === 'readOnly' ? (
+        <HorizontalList testID={tagsTestID} propType={'Tag'} item={tagsProps.tagsList} />
+      ) : (
+        <View>
+          <Text
+            testID={tagsTestID + '::HeaderText'}
+            variant={'headlineSmall'}
+            style={recipeTagsStyles.containerElement}
+          >
+            {t('tags')}:
+          </Text>
+          <Text
+            testID={tagsTestID + '::ElementText'}
+            variant={'labelMedium'}
+            style={[recipeTagsStyles.containerElement, { color: colors.outline }]}
+          >
+            {t('tagExplanation')}
+            {tagsProps.randomTags}
+          </Text>
 
-                    <View style={recipeTagsStyles.tagsContainer}>
-                        <View style={recipeTagsStyles.tab}>
-                            <HorizontalList
-                                testID={'RecipeTags'}
-                                propType={'Tag'}
-                                item={tagsProps.tagsList}
-                                icon={Icons.crossIcon}
-                                onPress={tagsProps.removeTag}
-                            />
-                        </View>
-                        {newTags.length > 0 ? (
-                            <FlashList
-                                data={newTags}
-                                estimatedItemSize={100}
-                                nestedScrollEnabled={true}
-                                keyboardShouldPersistTaps={'handled'}
-                                renderItem={({item}) => (
-                                    <View key={item}>
-                                        <TextInputWithDropDown
-                                            style={recipeTagsStyles.containerSection}
-                                            testID={tagsTestID + '::List::' + item}
-                                            absoluteDropDown={false}
-                                            referenceTextArray={allTagsNamesSorted}
-                                            onValidate={(newText: string) => {
-                                                tagsProps.addNewTag(newText);
-                                                setNewTags(newTags.filter(itemToFilter => itemToFilter !== item));
-                                            }}
-                                        />
-                                    </View>
-                                )}
-                            />
-                        ) : null}
+          <View style={recipeTagsStyles.tagsContainer}>
+            <View style={recipeTagsStyles.tab}>
+              <HorizontalList
+                testID={'RecipeTags'}
+                propType={'Tag'}
+                item={tagsProps.tagsList}
+                icon={Icons.crossIcon}
+                onPress={tagsProps.removeTag}
+              />
+            </View>
+            {newTags.length > 0 ? (
+              <FlashList
+                data={newTags}
+                estimatedItemSize={100}
+                nestedScrollEnabled={true}
+                keyboardShouldPersistTaps={'handled'}
+                renderItem={({ item }) => (
+                  <View key={item}>
+                    <TextInputWithDropDown
+                      style={recipeTagsStyles.containerSection}
+                      testID={tagsTestID + '::List::' + item}
+                      absoluteDropDown={false}
+                      referenceTextArray={allTagsNamesSorted}
+                      onValidate={(newText: string) => {
+                        tagsProps.addNewTag(newText);
+                        setNewTags(newTags.filter(itemToFilter => itemToFilter !== item));
+                      }}
+                    />
+                  </View>
+                )}
+              />
+            ) : null}
 
-                        <View style={recipeTagsStyles.roundButtonsContainer}>
-                            {tagsProps.editType === 'add' ? (
-                                <View style={recipeTagsStyles.roundButton}>
-                                    <RoundButton
-                                        testID={tagsTestID + '::OpenModal'}
-                                        size={'medium'}
-                                        icon={Icons.scanImageIcon}
-                                        onPressFunction={tagsProps.openModal}
-                                    />
-                                </View>
-                            ) : null}
-                            <View style={recipeTagsStyles.roundButton}>
-                                <RoundButton
-                                    testID={tagsTestID}
-                                    size={'medium'}
-                                    icon={Icons.plusIcon}
-                                    onPressFunction={() => {
-                                        setNewTags([...newTags, tagsAddedCounter]);
-                                        setTagsAddedCounter(tagsAddedCounter + 1);
-                                    }}
-                                />
-                            </View>
-                        </View>
-                    </View>
+            <View style={recipeTagsStyles.roundButtonsContainer}>
+              {tagsProps.editType === 'add' ? (
+                <View style={recipeTagsStyles.roundButton}>
+                  <RoundButton
+                    testID={tagsTestID + '::OpenModal'}
+                    size={'medium'}
+                    icon={Icons.scanImageIcon}
+                    onPressFunction={tagsProps.openModal}
+                  />
                 </View>
-            )}
+              ) : null}
+              <View style={recipeTagsStyles.roundButton}>
+                <RoundButton
+                  testID={tagsTestID}
+                  size={'medium'}
+                  icon={Icons.plusIcon}
+                  onPressFunction={() => {
+                    setNewTags([...newTags, tagsAddedCounter]);
+                    setTagsAddedCounter(tagsAddedCounter + 1);
+                  }}
+                />
+              </View>
+            </View>
+          </View>
         </View>
-    );
+      )}
+    </View>
+  );
 }
 
 export default RecipeTags;

@@ -74,7 +74,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Dialog, HelperText, Menu, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
-import CustomTextInput from '@components/atomic/CustomTextInput';
+import { CustomTextInput } from '@components/atomic/CustomTextInput';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import { cleanIngredientName, FuzzyMatchLevel, fuzzySearch } from '@utils/FuzzySearch';
 import {
@@ -85,7 +85,7 @@ import {
 } from '@customTypes/DatabaseElementTypes';
 import { shoppingCategories } from '@customTypes/RecipeFiltersTypes';
 import { padding } from '@styles/spacing';
-import SeasonalityCalendar from '@components/molecules/SeasonalityCalendar';
+import { SeasonalityCalendar } from '@components/molecules/SeasonalityCalendar';
 import { uiLogger } from '@utils/logger';
 
 /** Available dialog operation modes */

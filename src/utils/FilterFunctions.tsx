@@ -45,9 +45,9 @@ import { homeLogger, searchLogger } from '@utils/logger';
  * ```
  */
 export function selectFilterCategoriesValuesToDisplay(
-  tagsList: Array<string>,
-  ingredientsList: Array<ingredientTableElement>
-): Array<FiltersAppliedToDatabase> {
+  tagsList: string[],
+  ingredientsList: ingredientTableElement[]
+): FiltersAppliedToDatabase[] {
   return filtersCategories.map(category => {
     const filterApplyToDatabase: FiltersAppliedToDatabase = {
       title: category as TListFilter,
@@ -55,7 +55,7 @@ export function selectFilterCategoriesValuesToDisplay(
     };
     switch (category) {
       case listFilter.inSeason:
-        filterApplyToDatabase.data = new Array<string>(listFilter.inSeason);
+        filterApplyToDatabase.data = [listFilter.inSeason];
         break;
       case listFilter.tags:
         filterApplyToDatabase.data = tagsList;
@@ -87,7 +87,7 @@ export function selectFilterCategoriesValuesToDisplay(
         break;
       default:
         searchLogger.warn('selectFilterValuesToDisplay:: default shall not be reach');
-        filterApplyToDatabase.data = new Array<string>();
+        filterApplyToDatabase.data = [];
     }
 
     return filterApplyToDatabase;
@@ -110,10 +110,10 @@ export function selectFilterCategoriesValuesToDisplay(
  * ```
  */
 export function extractFilteredRecipeDatas(
-  recipeArray: Array<recipeTableElement>
-): [Array<string>, Array<ingredientTableElement>, Array<string>] {
+  recipeArray: recipeTableElement[]
+): [string[], ingredientTableElement[], string[]] {
   // TODO is set really faster in this case ? To profile
-  const ingredientsUniqueCollection = new Array<ingredientTableElement>();
+  const ingredientsUniqueCollection: ingredientTableElement[] = [];
   const tagsUniqueCollection = new Set<string>();
 
   for (const element of recipeArray) {
@@ -159,71 +159,69 @@ export function extractFilteredRecipeDatas(
  * ```
  */
 export function filterFromRecipe(
-  recipeArray: Array<recipeTableElement>,
-  filter: Map<TListFilter, Array<string>>,
+  recipeArray: recipeTableElement[],
+  filter: Map<TListFilter, string[]>,
   t: TFunction<'translation', undefined>
-): Array<recipeTableElement> {
-  if (filter.size == 0) {
+): recipeTableElement[] {
+  if (filter.size === 0) {
     return recipeArray;
   }
-  return new Array<recipeTableElement>(
-    ...recipeArray.filter(recipe => {
-      let elementToKeep = true;
-      for (const [key, value] of filter) {
-        switch (key) {
-          case listFilter.prepTime:
-            elementToKeep = elementToKeep && applyToRecipeFilterPrepTime(recipe, value, t);
-            break;
-          case listFilter.recipeTitleInclude:
-            elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.title, value);
-            break;
-          case listFilter.inSeason:
-            elementToKeep = elementToKeep && isRecipeInCurrentSeason(recipe);
-            break;
-          case listFilter.tags:
-            elementToKeep =
-              elementToKeep &&
-              isTheElementContainsTheFilter(
-                recipe.tags.map(tag => tag.name),
-                value
-              );
-            break;
-          case listFilter.purchased:
-            // Nothing to do so break
-            break;
-          case listFilter.cereal:
-          case listFilter.legumes:
-          case listFilter.vegetable:
-          case listFilter.plantProtein:
-          case listFilter.condiment:
-          case listFilter.sauce:
-          case listFilter.meat:
-          case listFilter.poultry:
-          case listFilter.fish:
-          case listFilter.seafood:
-          case listFilter.dairy:
-          case listFilter.cheese:
-          case listFilter.sugar:
-          case listFilter.spice:
-          case listFilter.fruit:
-          case listFilter.oilAndFat:
-          case listFilter.nutsAndSeeds:
-          case listFilter.sweetener:
-            elementToKeep =
-              elementToKeep &&
-              isTheElementContainsTheFilter(
-                recipe.ingredients.map(ing => ing.name),
-                value
-              );
-            break;
-          default:
-            searchLogger.error('filterFromRecipe:: Impossible to reach');
-            break;
-        }
+  return recipeArray.filter(recipe => {
+    let elementToKeep = true;
+    for (const [key, value] of filter) {
+      switch (key) {
+        case listFilter.prepTime:
+          elementToKeep = elementToKeep && applyToRecipeFilterPrepTime(recipe, value, t);
+          break;
+        case listFilter.recipeTitleInclude:
+          elementToKeep = elementToKeep && isTheElementContainsTheFilter(recipe.title, value);
+          break;
+        case listFilter.inSeason:
+          elementToKeep = elementToKeep && isRecipeInCurrentSeason(recipe);
+          break;
+        case listFilter.tags:
+          elementToKeep =
+            elementToKeep &&
+            isTheElementContainsTheFilter(
+              recipe.tags.map(tag => tag.name),
+              value
+            );
+          break;
+        case listFilter.purchased:
+          // Nothing to do so break
+          break;
+        case listFilter.cereal:
+        case listFilter.legumes:
+        case listFilter.vegetable:
+        case listFilter.plantProtein:
+        case listFilter.condiment:
+        case listFilter.sauce:
+        case listFilter.meat:
+        case listFilter.poultry:
+        case listFilter.fish:
+        case listFilter.seafood:
+        case listFilter.dairy:
+        case listFilter.cheese:
+        case listFilter.sugar:
+        case listFilter.spice:
+        case listFilter.fruit:
+        case listFilter.oilAndFat:
+        case listFilter.nutsAndSeeds:
+        case listFilter.sweetener:
+          elementToKeep =
+            elementToKeep &&
+            isTheElementContainsTheFilter(
+              recipe.ingredients.map(ing => ing.name),
+              value
+            );
+          break;
+        default:
+          searchLogger.error('filterFromRecipe:: Impossible to reach');
+          break;
       }
-      return elementToKeep;
-    })
-  );
+    }
+    return elementToKeep;
+  });
 }
 
 /**
@@ -244,13 +242,13 @@ export function filterFromRecipe(
  * ```
  */
 export function addValueToMultimap<TKey, TValue>(
-  multimap: Map<TKey, Array<TValue>>,
+  multimap: Map<TKey, TValue[]>,
   key: TKey,
   value: TValue
 ) {
   const values = multimap.get(key);
   if (values === undefined) {
-    multimap.set(key, new Array<TValue>(value));
+    multimap.set(key, [value]);
   } else {
     if (!values.includes(value)) {
       values.push(value);
@@ -274,16 +272,16 @@ export function addValueToMultimap<TKey, TValue>(
  * ```
  */
 export function removeValueToMultimap<TKey, TValue>(
-  multimap: Map<TKey, Array<TValue>>,
+  multimap: Map<TKey, TValue[]>,
   key: TKey,
   value: TValue
 ) {
   const values = multimap.get(key);
   if (values !== undefined) {
     const valueIndex = values.indexOf(value);
-    if (valueIndex != -1) {
+    if (valueIndex !== -1) {
       values.splice(valueIndex, 1);
-      if (values.length == 0) {
+      if (values.length === 0) {
         multimap.delete(key);
       }
     } else {
@@ -312,14 +310,11 @@ export function removeValueToMultimap<TKey, TValue>(
  * editTitleInMultimap(filters, "chocolate cake");
  * ```
  */
-export function editTitleInMultimap(
-  multimap: Map<TListFilter, Array<string>>,
-  newSearchString: string
-) {
+export function editTitleInMultimap(multimap: Map<TListFilter, string[]>, newSearchString: string) {
   // TODO to refactor to a direct modification of the Multimap
   const value = multimap.get(listFilter.recipeTitleInclude);
-  if (multimap.size == 0 || value === undefined) {
-    multimap.set(listFilter.recipeTitleInclude, new Array<string>(newSearchString));
+  if (multimap.size === 0 || value === undefined) {
+    multimap.set(listFilter.recipeTitleInclude, [newSearchString]);
   } else {
     if (value.length > 1) {
       searchLogger.warn('updateSearchString:: Not possible');
@@ -339,13 +334,13 @@ export function editTitleInMultimap(
  * removeTitleInMultimap(filters); // Clear search text
  * ```
  */
-export function removeTitleInMultimap(multimap: Map<TListFilter, Array<string>>) {
+export function removeTitleInMultimap(multimap: Map<TListFilter, string[]>) {
   multimap.delete(listFilter.recipeTitleInclude);
 }
 
 // TODO in case of creating a multimap
 /*
-        const tmp = new Map<string, Array<string>>();
+        const tmp = new Map<string, string[]>();
         for (const filter of filterMultimap) {
             switch (filter.title) {
                 case listFilter.prepTime:
@@ -403,8 +398,8 @@ export function removeTitleInMultimap(multimap: Map<TListFilter, Array<string>>)
  * console.log(`Total active filters: ${allValues.length}`);
  * ```
  */
-export function retrieveAllFilters(filters: Map<TListFilter, Array<string>>): Array<string> {
-  const allFilters = new Array<string>();
+export function retrieveAllFilters(filters: Map<TListFilter, string[]>): string[] {
+  const allFilters: string[] = [];
   for (const value of filters.values()) {
     allFilters.push(...value);
   }
@@ -423,12 +418,12 @@ export function retrieveAllFilters(filters: Map<TListFilter, Array<string>>): Ar
  * @returns True if any filter value is found in the element
  */
 export function isTheElementContainsTheFilter(
-  elementToTest: string | Array<string>,
-  filters: Array<string> | string
+  elementToTest: string | string[],
+  filters: string[] | string
 ): boolean {
   if (filters instanceof Array) {
     for (const filterValue of filters) {
-      if (filterValue == '*') {
+      if (filterValue === '*') {
         return true;
       }
       // Careful here because includes does not lean the same for array and string
@@ -458,13 +453,13 @@ export function isTheElementContainsTheFilter(
  */
 function applyToRecipeFilterPrepTime(
   recipe: recipeTableElement,
-  filterTimeIntervals: Array<string>,
+  filterTimeIntervals: string[],
   t: TFunction<'translation', undefined>
 ): boolean {
   for (const curFilter of filterTimeIntervals) {
     const translatedTimeFilter = t(curFilter);
     const minutesTranslated = t('timeSuffixEdit');
-    if (curFilter == prepTimeValues[prepTimeValues.length - 1]) {
+    if (curFilter === prepTimeValues[prepTimeValues.length - 1]) {
       if (
         Number(translatedTimeFilter.replace(minutesTranslated, '').replace('+', '')) <= recipe.time
       ) {
@@ -495,9 +490,7 @@ function applyToRecipeFilterPrepTime(
  * console.log(`Found ${seasonalRecipes.length} seasonal recipes`);
  * ```
  */
-export function filterRecipesByCurrentSeason(
-  recipes: Array<recipeTableElement>
-): Array<recipeTableElement> {
+export function filterRecipesByCurrentSeason(recipes: recipeTableElement[]): recipeTableElement[] {
   return recipes.filter(recipe => isRecipeInCurrentSeason(recipe));
 }
 
@@ -531,10 +524,7 @@ export function isRecipeInCurrentSeason(recipe: recipeTableElement): boolean {
  * const shuffled = fisherYatesShuffle(recipes, 3); // Returns 3 random recipes
  * ```
  */
-export function fisherYatesShuffle<T>(
-  arrayToShuffle: Array<T>,
-  numberOfElementsWanted?: number
-): Array<T> {
+export function fisherYatesShuffle<T>(arrayToShuffle: T[], numberOfElementsWanted?: number): T[] {
   if (numberOfElementsWanted === 0) {
     return [];
   }
@@ -565,9 +555,9 @@ export function fisherYatesShuffle<T>(
  * ```
  */
 export function getRandomRecipes(
-  recipes: Array<recipeTableElement>,
+  recipes: recipeTableElement[],
   numOfElements: number
-): Array<recipeTableElement> {
+): recipeTableElement[] {
   if (recipes.length === 0) {
     return [];
   }
@@ -606,8 +596,8 @@ export function generateHomeRecommendations(
   tags: tagTableElement[],
   seasonFilterEnabled: boolean,
   recipesPerRecommendation: number
-): Array<RecommendationType> {
-  const recommendations = new Array<RecommendationType>();
+): RecommendationType[] {
+  const recommendations: RecommendationType[] = [];
 
   if (recipes.length === 0) {
     return recommendations;

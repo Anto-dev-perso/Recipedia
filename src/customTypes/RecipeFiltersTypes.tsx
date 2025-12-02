@@ -62,7 +62,7 @@ export const currentMonth = new Date().getMonth() + 1;
  */
 export type filtersAccessAndModifiers = {
   /** Current filter state mapping filter types to selected values */
-  filtersState: Map<TListFilter, Array<string>>;
+  filtersState: Map<TListFilter, string[]>;
   /** Function to add a value to a specific filter */
   addFilter: (filter: TListFilter, value: string) => void;
   /** Function to remove a value from a specific filter */
@@ -93,7 +93,7 @@ export const listFilter = { ...nonIngredientFilters, ...ingredientType } as cons
 export type TListFilter = (typeof listFilter)[keyof typeof listFilter];
 
 /** Array of all available filter categories for UI components */
-export const filtersCategories: Array<TListFilter> = Object.values(listFilter);
+export const filtersCategories: TListFilter[] = Object.values(listFilter);
 
 /**
  * Shopping list data structure organized by category
@@ -103,7 +103,7 @@ export type ShoppingAppliedToDatabase = {
   /** Category title (filter type) */
   title: TListFilter;
   /** Array of shopping list items in this category */
-  data: Array<shoppingListTableElement>;
+  data: shoppingListTableElement[];
 };
 
 /**
@@ -114,7 +114,7 @@ export type FiltersAppliedToDatabase = {
   /** Filter category title */
   title: TListFilter;
   /** Array of available filter values */
-  data: Array<string>;
+  data: string[];
 };
 
 /**
@@ -123,7 +123,7 @@ export type FiltersAppliedToDatabase = {
  */
 export type propsForShopping = {
   /** Array of shopping list items */
-  ingList: Array<shoppingListTableElement>;
+  ingList: shoppingListTableElement[];
   /** Function to update ingredient purchase status */
   updateIngredientFromShopping: (ingredientName: string) => void;
 };
@@ -132,7 +132,7 @@ export type propsForShopping = {
 export type TIngredientCategories = (typeof ingredientType)[keyof typeof ingredientType];
 
 /** Array of all ingredient categories for shopping organization */
-export const shoppingCategories: Array<TIngredientCategories> = Object.values(ingredientType);
+export const shoppingCategories: TIngredientCategories[] = Object.values(ingredientType);
 
 /**
  * Predefined preparation time ranges for recipe filtering
@@ -163,7 +163,7 @@ export type RecommendationType = {
   /** Optional parameters for title translation interpolation */
   titleParams?: { ingredientName?: string; tagName?: string };
   /** Array of recipes in this recommendation */
-  recipes: Array<recipeTableElement>;
+  recipes: recipeTableElement[];
   /** Category type of the recommendation */
   type: 'random' | 'seasonal' | 'ingredient' | 'tag';
 };

@@ -38,14 +38,14 @@ import React from 'react';
 import { FlatList, ListRenderItemInfo, View } from 'react-native';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 import { padding } from '@styles/spacing';
-import RecipeCard from '@components/molecules/RecipeCard';
+import { RecipeCard } from '@components/molecules/RecipeCard';
 
 /**
  * Props for the Carousel component
  */
 export type CarouselItemProps = {
   /** Array of recipe data to display as cards */
-  items: Array<recipeTableElement>;
+  items: recipeTableElement[];
   /** Unique identifier for testing and accessibility */
   testID: string;
 };

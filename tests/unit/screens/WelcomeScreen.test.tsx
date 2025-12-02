@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
-import WelcomeScreen from '@screens/WelcomeScreen';
+import { WelcomeScreen } from '@screens/WelcomeScreen';
 import { RecipeDatabaseProvider } from '@context/RecipeDatabaseContext';
 import RecipeDatabase from '@utils/RecipeDatabase';
 import { testRecipes } from '@test-data/recipesDataset';

@@ -40,7 +40,7 @@
 import React from 'react';
 import { List, useTheme } from 'react-native-paper';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
-import Carousel from '@components/molecules/Carousel';
+import { Carousel } from '@components/molecules/Carousel';
 
 /**
  * Props for the RecipeRecommendation component
@@ -51,7 +51,7 @@ export type RecipeRecommendationProps = {
   /** Title text for the recommendation section */
   titleRecommendation: string;
   /** Array of recipe data to display in the carousel */
-  carouselProps: Array<recipeTableElement>;
+  carouselProps: recipeTableElement[];
 };
 
 /**

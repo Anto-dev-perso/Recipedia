@@ -30,13 +30,13 @@
  * ```
  */
 
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {tagTableElement} from '@customTypes/DatabaseElementTypes';
-import SettingsItemList from '@components/organisms/SettingsItemList';
-import ItemDialog, {DialogMode} from '@components/dialogs/ItemDialog';
-import {tagsSettingsLogger} from '@utils/logger';
-import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { tagTableElement } from '@customTypes/DatabaseElementTypes';
+import { SettingsItemList } from '@components/organisms/SettingsItemList';
+import { DialogMode, ItemDialog } from '@components/dialogs/ItemDialog';
+import { tagsSettingsLogger } from '@utils/logger';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /**
  * TagsSettings screen component - Recipe tag management
@@ -44,100 +44,100 @@ import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
  * @returns JSX element representing the tag management interface
  */
 export function TagsSettings() {
-    const {tags, addTag, editTag, deleteTag} = useRecipeDatabase();
+  const { tags, addTag, editTag, deleteTag } = useRecipeDatabase();
 
-    const tagsSortedAlphabetically = [...tags].sort((a, b) => a.name.localeCompare(b.name));
+  const tagsSortedAlphabetically = [...tags].sort((a, b) => a.name.localeCompare(b.name));
 
-    const [dialogVisible, setDialogVisible] = useState(false);
-    const [dialogMode, setDialogMode] = useState<DialogMode>('add');
-    const [currentTag, setCurrentTag] = useState<tagTableElement>({name: ''});
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogMode, setDialogMode] = useState<DialogMode>('add');
+  const [currentTag, setCurrentTag] = useState<tagTableElement>({ name: '' });
 
-    const testId = 'TagsSettings';
+  const testId = 'TagsSettings';
 
-    const handleEditTag = async (newTag: tagTableElement) => {
-        const success = await editTag(newTag);
-        if (!success) {
-            tagsSettingsLogger.warn('Failed to update tag in database', {
-                tagName: newTag.name,
-                tagId: newTag.id,
-            });
-        }
-    };
+  const handleEditTag = async (newTag: tagTableElement) => {
+    const success = await editTag(newTag);
+    if (!success) {
+      tagsSettingsLogger.warn('Failed to update tag in database', {
+        tagName: newTag.name,
+        tagId: newTag.id,
+      });
+    }
+  };
 
-    const handleDeleteTag = async (tag: tagTableElement) => {
-        await deleteTag(tag);
-    };
+  const handleDeleteTag = async (tag: tagTableElement) => {
+    await deleteTag(tag);
+  };
 
-    const handleAddtag = async (newTag: tagTableElement) => {
-        await addTag(newTag);
-    };
+  const handleAddtag = async (newTag: tagTableElement) => {
+    await addTag(newTag);
+  };
 
-    // Open dialog handlers
-    const openAddDialog = () => {
-        setCurrentTag({name: ''});
-        setDialogMode('add');
-        setDialogVisible(true);
-    };
+  // Open dialog handlers
+  const openAddDialog = () => {
+    setCurrentTag({ name: '' });
+    setDialogMode('add');
+    setDialogVisible(true);
+  };
 
-    const openEditDialog = (tag: tagTableElement) => {
-        setCurrentTag(tag);
-        setDialogMode('edit');
-        setDialogVisible(true);
-    };
+  const openEditDialog = (tag: tagTableElement) => {
+    setCurrentTag(tag);
+    setDialogMode('edit');
+    setDialogVisible(true);
+  };
 
-    const openDeleteDialog = (tag: tagTableElement) => {
-        setCurrentTag(tag);
-        setDialogMode('delete');
-        setDialogVisible(true);
-    };
+  const openDeleteDialog = (tag: tagTableElement) => {
+    setCurrentTag(tag);
+    setDialogMode('delete');
+    setDialogVisible(true);
+  };
 
-    // Close dialog handler
-    const closeDialog = () => {
-        setDialogVisible(false);
-    };
+  // Close dialog handler
+  const closeDialog = () => {
+    setDialogVisible(false);
+  };
 
-    // Dialog action handlers
-    const handleDialogConfirm = async (mode: DialogMode, newTag: tagTableElement) => {
-        switch (mode) {
-            case 'add':
-                await handleAddtag(newTag);
-                break;
-            case 'edit':
-                await handleEditTag(newTag);
-                break;
-            case 'delete':
-                await handleDeleteTag(newTag);
-                break;
-        }
-        closeDialog();
-    };
+  // Dialog action handlers
+  const handleDialogConfirm = async (mode: DialogMode, newTag: tagTableElement) => {
+    switch (mode) {
+      case 'add':
+        await handleAddtag(newTag);
+        break;
+      case 'edit':
+        await handleEditTag(newTag);
+        break;
+      case 'delete':
+        await handleDeleteTag(newTag);
+        break;
+    }
+    closeDialog();
+  };
 
-    // TODO add a counter of how many recipes use this element before deleting it
-    return (
-        <SafeAreaView style={{flex: 1}}>
-            <SettingsItemList
-                items={tagsSortedAlphabetically}
-                testIdPrefix={testId}
-                onAddPress={openAddDialog}
-                onEdit={openEditDialog}
-                onDelete={openDeleteDialog}
-                type='tag'
-            />
+  // TODO add a counter of how many recipes use this element before deleting it
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <SettingsItemList
+        items={tagsSortedAlphabetically}
+        testIdPrefix={testId}
+        onAddPress={openAddDialog}
+        onEdit={openEditDialog}
+        onDelete={openDeleteDialog}
+        type='tag'
+      />
 
-            {/* ItemDialog for add/edit/delete operations */}
-            <ItemDialog
-                testId={testId + '::ItemDialog'}
-                isVisible={dialogVisible}
-                mode={dialogMode}
-                onClose={closeDialog}
-                item={{
-                    type: 'Tag',
-                    value: currentTag,
-                    onConfirmTag: handleDialogConfirm,
-                }}
-            />
-        </SafeAreaView>
-    );
+      {/* ItemDialog for add/edit/delete operations */}
+      <ItemDialog
+        testId={testId + '::ItemDialog'}
+        isVisible={dialogVisible}
+        mode={dialogMode}
+        onClose={closeDialog}
+        item={{
+          type: 'Tag',
+          value: currentTag,
+          onConfirmTag: handleDialogConfirm,
+        }}
+      />
+    </SafeAreaView>
+  );
 }
 
 export default TagsSettings;

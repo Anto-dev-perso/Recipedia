@@ -28,7 +28,7 @@
  *
  * @example
  * ```typescript
- * import ModalImageSelect from '@screens/ModalImageSelect';
+ * import { ModalImageSelect } from '@screens/ModalImageSelect';
  *
  * const [isModalVisible, setIsModalVisible] = useState(false);
  * const [availableImages, setAvailableImages] = useState([]);
@@ -59,8 +59,8 @@
 import { pickImage, takePhoto } from '@utils/ImagePicker';
 import React from 'react';
 import { View } from 'react-native';
-import HorizontalList from '@components/molecules/HorizontalList';
-import RoundButton from '@components/atomic/RoundButton';
+import { HorizontalList } from '@components/molecules/HorizontalList';
+import { RoundButton } from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
 import { Modal, Portal, Text, useTheme } from 'react-native-paper';
 import { padding, viewsSplitScreen } from '@styles/spacing';
@@ -73,7 +73,7 @@ import { useI18n } from '@utils/i18n';
  */
 export type ModalImageSelectProps = {
   /** Array of available image URIs to display in the selection gallery */
-  arrImg: Array<string>;
+  arrImg: string[];
   /** Callback function called when user selects an existing image */
   onSelectFunction: (img: string) => void;
   /** Callback function called when user dismisses the modal */

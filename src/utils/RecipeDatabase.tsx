@@ -30,7 +30,7 @@ import {
   tagTableElement,
   tagTableName,
 } from '@customTypes/DatabaseElementTypes';
-import TableManipulation from './TableManipulation';
+import { TableManipulation } from './TableManipulation';
 import { EncodingSeparator, textSeparator } from '@styles/typography';
 import { TListFilter } from '@customTypes/RecipeFiltersTypes';
 import { getDirectoryUri, isTemporaryImageUri, saveRecipeImage } from '@utils/FileGestion';
@@ -79,12 +79,12 @@ export class RecipeDatabase {
 
   protected _shoppingListTable: TableManipulation;
 
-  protected _recipes: Array<recipeTableElement>;
-  protected _ingredients: Array<ingredientTableElement>;
-  protected _tags: Array<tagTableElement>;
+  protected _recipes: recipeTableElement[];
+  protected _ingredients: ingredientTableElement[];
+  protected _tags: tagTableElement[];
   // protected _nutrition: Array<>;
 
-  protected _shopping: Array<shoppingListTableElement>;
+  protected _shopping: shoppingListTableElement[];
 
   /*    PRIVATE METHODS     */
   private constructor() {
@@ -99,10 +99,10 @@ export class RecipeDatabase {
       shoppingListColumnsEncoding
     );
 
-    this._recipes = new Array<recipeTableElement>();
-    this._ingredients = new Array<ingredientTableElement>();
-    this._tags = new Array<tagTableElement>();
-    this._shopping = new Array<shoppingListTableElement>();
+    this._recipes = [];
+    this._ingredients = [];
+    this._tags = [];
+    this._shopping = [];
   }
 
   /* PUBLIC METHODS */
@@ -189,10 +189,10 @@ export class RecipeDatabase {
     await this._tagsTable.deleteTable(this._dbConnection);
     await this._shoppingListTable.deleteTable(this._dbConnection);
 
-    this._recipes = new Array<recipeTableElement>();
-    this._ingredients = new Array<ingredientTableElement>();
-    this._tags = new Array<tagTableElement>();
-    this._shopping = new Array<shoppingListTableElement>();
+    this._recipes = [];
+    this._ingredients = [];
+    this._tags = [];
+    this._shopping = [];
 
     databaseLogger.info('Database reset completed');
   }
@@ -376,7 +376,7 @@ export class RecipeDatabase {
    * ]);
    * ```
    */
-  public async addMultipleIngredients(ingredients: Array<ingredientTableElement>) {
+  public async addMultipleIngredients(ingredients: ingredientTableElement[]) {
     if (ingredients.length === 0) return;
 
     const encodedIngredients = ingredients.map(ing => this.encodeIngredientForDb(ing));
@@ -394,7 +394,7 @@ export class RecipeDatabase {
     }
 
     const names = ingredients.map(ing => ing.name);
-    const searchCriteria = new Map<string, Array<string>>([['INGREDIENT', names]]);
+    const searchCriteria = new Map<string, string[]>([['INGREDIENT', names]]);
     const insertedIngredients =
       await this._ingredientsTable.searchElement<encodedIngredientElement>(
         this._dbConnection,
@@ -429,7 +429,7 @@ export class RecipeDatabase {
    * ]);
    * ```
    */
-  public async addMultipleTags(tags: Array<tagTableElement>) {
+  public async addMultipleTags(tags: tagTableElement[]) {
     if (tags.length === 0) {
       return;
     }
@@ -446,7 +446,7 @@ export class RecipeDatabase {
     }
 
     const names = tags.map(tag => tag.name);
-    const searchCriteria = new Map<string, Array<string>>([['NAME', names]]);
+    const searchCriteria = new Map<string, string[]>([['NAME', names]]);
     const insertedTags = await this._tagsTable.searchElement<encodedTagElement>(
       this._dbConnection,
       searchCriteria
@@ -522,7 +522,7 @@ export class RecipeDatabase {
     }
   }
 
-  public async addMultipleRecipes(recs: Array<recipeTableElement>) {
+  public async addMultipleRecipes(recs: recipeTableElement[]) {
     if (recs.length === 0) return;
 
     const processedRecipes = await Promise.all(
@@ -551,7 +551,7 @@ export class RecipeDatabase {
     }
 
     const titles = processedRecipes.map(r => r.title);
-    const searchCriteria = new Map<string, Array<string>>([['TITLE', titles]]);
+    const searchCriteria = new Map<string, string[]>([['TITLE', titles]]);
     const insertedRecipes = await this._recipesTable.searchElement<encodedRecipeElement>(
       this._dbConnection,
       searchCriteria
@@ -653,7 +653,7 @@ export class RecipeDatabase {
         name: ing.name,
         quantity: ing.quantity ? ing.quantity : '0',
         unit: ing.unit,
-        recipesTitle: Array<string>(recipe.title),
+        recipesTitle: [recipe.title],
         purchased: false,
       } as shoppingListTableElement;
     });
@@ -735,17 +735,17 @@ export class RecipeDatabase {
     return false;
   }
 
-  public async addMultipleShopping(recipes: Array<recipeTableElement>) {
+  public async addMultipleShopping(recipes: recipeTableElement[]) {
     for (const recEl of recipes) {
       //TODO single query
       await this.addRecipeToShopping(recEl);
     }
   }
 
-  public searchRandomlyTags(numOfElements: number): Array<tagTableElement> {
-    if (this._tags.length == 0) {
+  public searchRandomlyTags(numOfElements: number): tagTableElement[] {
+    if (this._tags.length === 0) {
       databaseLogger.error('Cannot get random tags - tag table is empty');
-      return new Array<tagTableElement>();
+      return [];
     } else {
       if (this._tags.length <= numOfElements) {
         databaseLogger.debug('Returning all tags - requested count equals available tags', {
@@ -756,7 +756,7 @@ export class RecipeDatabase {
       } else {
         // TODO can find a better random function
         // TODO this can be abstract in a function so that it is also used for other searchRandom
-        const res = new Array<tagTableElement>();
+        const res = [];
         while (res.length < numOfElements) {
           let skipElem = false;
           const randomId = Math.floor(Math.random() * this._recipes.length);
@@ -782,10 +782,7 @@ export class RecipeDatabase {
    * @param count - Number of random ingredients to return
    * @returns Array of random ingredients of the specified type
    */
-  public getRandomIngredientsByType(
-    type: ingredientType,
-    count: number
-  ): Array<ingredientTableElement> {
+  public getRandomIngredientsByType(type: ingredientType, count: number): ingredientTableElement[] {
     if (this._ingredients.length === 0) {
       return [];
     }
@@ -806,7 +803,7 @@ export class RecipeDatabase {
    * @param count - Number of random tags to return
    * @returns Array of random tags
    */
-  public getRandomTags(count: number): Array<tagTableElement> {
+  public getRandomTags(count: number): tagTableElement[] {
     if (this._tags.length === 0) {
       return [];
     }
@@ -899,7 +896,7 @@ export class RecipeDatabase {
    *
    * @returns Array of all recipes
    */
-  public get_recipes(): Array<recipeTableElement> {
+  public get_recipes(): recipeTableElement[] {
     return this._recipes;
   }
 
@@ -927,7 +924,7 @@ export class RecipeDatabase {
    *
    * @returns Array of all tags
    */
-  public get_tags(): Array<tagTableElement> {
+  public get_tags(): tagTableElement[] {
     return this._tags;
   }
 
@@ -936,7 +933,7 @@ export class RecipeDatabase {
    *
    * @returns Array of all shopping list items
    */
-  public get_shopping(): Array<shoppingListTableElement> {
+  public get_shopping(): shoppingListTableElement[] {
     return this._shopping;
   }
 
@@ -1005,7 +1002,7 @@ export class RecipeDatabase {
     }
   }
 
-  public update_multiple_recipes(updatedRecipes: Array<recipeTableElement>) {
+  public update_multiple_recipes(updatedRecipes: recipeTableElement[]) {
     const recipeMap = new Map(this._recipes.map((recipe, index) => [recipe.id, index]));
 
     for (const updatedRecipe of updatedRecipes) {
@@ -1096,7 +1093,7 @@ export class RecipeDatabase {
       this._shopping[shop.id - 1] = shop;
       return;
     }
-    const foundShopping = this._shopping.findIndex(element => element.name == shop.name);
+    const foundShopping = this._shopping.findIndex(element => element.name === shop.name);
     if (foundShopping !== -1) {
       this._shopping[foundShopping] = shop;
       return;
@@ -1409,7 +1406,7 @@ export class RecipeDatabase {
    * @returns Array of tags with database IDs
    * @throws Error if any tags are not found in the database, listing all missing tags
    */
-  private verifyTagsExist(tags: Array<tagTableElement>): tagTableElement[] {
+  private verifyTagsExist(tags: tagTableElement[]): tagTableElement[] {
     const result: tagTableElement[] = [];
     const missing: string[] = [];
 
@@ -1445,9 +1442,7 @@ export class RecipeDatabase {
    * @returns Array of ingredients with database IDs and recipe-specific quantities
    * @throws Error if any ingredients are not found in the database, listing all missing ingredients
    */
-  private verifyIngredientsExist(
-    ingredients: Array<ingredientTableElement>
-  ): ingredientTableElement[] {
+  private verifyIngredientsExist(ingredients: ingredientTableElement[]): ingredientTableElement[] {
     const result: ingredientTableElement[] = [];
     const missing: string[] = [];
 
@@ -1658,8 +1653,8 @@ export class RecipeDatabase {
    * @returns Promise resolving to array of fully decoded recipe objects
    */
   private async decodeArrayOfRecipe(
-    queryResult: Array<encodedRecipeElement>
-  ): Promise<Array<recipeTableElement>> {
+    queryResult: encodedRecipeElement[]
+  ): Promise<recipeTableElement[]> {
     if (queryResult.length === 0) {
       return [];
     }
@@ -1683,7 +1678,7 @@ export class RecipeDatabase {
     let idForEncoding: number;
     if (ingredientToEncode.id === undefined) {
       const foundIngredient = this.find_ingredient(ingredientToEncode);
-      if (foundIngredient == undefined || foundIngredient.id == undefined) {
+      if (foundIngredient === undefined || foundIngredient.id === undefined) {
         databaseLogger.warn('Cannot encode ingredient - not found in database', {
           ingredientName: ingredientToEncode.name,
         });
@@ -1714,28 +1709,15 @@ export class RecipeDatabase {
    */
   private async decodeIngredientFromRecipe(
     encodedIngredient: string
-  ): Promise<[Array<ingredientTableElement>, Array<string>]> {
-    const arrDecoded = new Array<ingredientTableElement>();
-    let recipeSeason = new Array<string>(
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11',
-      '12'
-    );
+  ): Promise<[ingredientTableElement[], string[]]> {
+    const arrDecoded = [];
+    let recipeSeason: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
     let firstSeasonFound = true;
 
     // Ex : 1--250__2--100__3--0.5__4--200__5--1__6--250
     const ingSplit = encodedIngredient.includes(EncodingSeparator)
       ? encodedIngredient.split(EncodingSeparator)
-      : new Array<string>(encodedIngredient);
+      : [encodedIngredient];
 
     for (const ingredient of ingSplit) {
       const id = Number(ingredient.split(textSeparator)[0]);
@@ -1853,10 +1835,10 @@ export class RecipeDatabase {
    * @returns Array of decoded ingredient objects in application format
    */
   private decodeArrayOfIngredients(
-    queryResult: Array<encodedIngredientElement>
-  ): Array<ingredientTableElement> {
-    if (!queryResult || !Array.isArray(queryResult) || queryResult.length == 0) {
-      return new Array<ingredientTableElement>();
+    queryResult: encodedIngredientElement[]
+  ): ingredientTableElement[] {
+    if (!queryResult || !Array.isArray(queryResult) || queryResult.length === 0) {
+      return [];
     }
     return queryResult.map(ingredient => this.decodeIngredient(ingredient));
   }
@@ -1876,10 +1858,7 @@ export class RecipeDatabase {
    * Input: ["5","6","7","8"], ["6","7","8","9"]
    * Output: ["6","7","8"]
    */
-  private decodeSeason(
-    previousSeason: Array<string>,
-    ingredientSeason: Array<string>
-  ): Array<string> {
+  private decodeSeason(previousSeason: string[], ingredientSeason: string[]): string[] {
     return previousSeason.filter(month => ingredientSeason.includes(month));
   }
 
@@ -1920,13 +1899,13 @@ export class RecipeDatabase {
    * Input: "1__2__5__3__4"
    * Output: [{id: 1, name: "Italian"}, {id: 2, name: "Dinner"}, ...]
    */
-  private async decodeTagFromRecipe(encodedTag: string): Promise<Array<tagTableElement>> {
-    const arrDecoded = new Array<tagTableElement>();
+  private async decodeTagFromRecipe(encodedTag: string): Promise<tagTableElement[]> {
+    const arrDecoded = [];
 
     // Ex : "1__2__5__3__4"
     const tagSplit = encodedTag.includes(EncodingSeparator)
       ? encodedTag.split(EncodingSeparator)
-      : new Array<string>(encodedTag);
+      : [encodedTag];
 
     for (const tag of tagSplit) {
       const tableTag = await this._tagsTable.searchElementById<encodedTagElement>(
@@ -1972,9 +1951,9 @@ export class RecipeDatabase {
    * @param queryResult - Array of encoded tag elements from database
    * @returns Array of decoded tag objects in application format
    */
-  private decodeArrayOfTags(queryResult: Array<encodedTagElement>): Array<tagTableElement> {
-    if (!queryResult || !Array.isArray(queryResult) || queryResult.length == 0) {
-      return new Array<tagTableElement>();
+  private decodeArrayOfTags(queryResult: encodedTagElement[]): tagTableElement[] {
+    if (!queryResult || !Array.isArray(queryResult) || queryResult.length === 0) {
+      return [];
     }
     return queryResult.map(tagFound => this.decodeTag(tagFound));
   }
@@ -2059,7 +2038,7 @@ export class RecipeDatabase {
    * Input: "Cook pasta--Boil water and add pasta__Mix sauce--Combine ingredients"
    * Output: [{title: "Cook pasta", description: "Boil water and add pasta"}, {title: "Mix sauce", description: "Combine ingredients"}]
    */
-  private decodePreparation(encodedPreparation: string): Array<preparationStepElement> {
+  private decodePreparation(encodedPreparation: string): preparationStepElement[] {
     if (!encodedPreparation) {
       return [];
     }
@@ -2121,8 +2100,8 @@ export class RecipeDatabase {
       unit: encodedShop.UNIT,
       recipesTitle: encodedShop.TITLES.includes(EncodingSeparator)
         ? encodedShop.TITLES.split(EncodingSeparator)
-        : new Array<string>(encodedShop.TITLES),
-      purchased: encodedShop.PURCHASED == 0 ? false : true,
+        : [encodedShop.TITLES],
+      purchased: Number(encodedShop.PURCHASED) !== 0,
     };
   }
 
@@ -2138,10 +2117,10 @@ export class RecipeDatabase {
    * @returns Array of decoded shopping list items in application format
    */
   private decodeArrayOfShopping(
-    queryResult: Array<encodedShoppingListElement>
-  ): Array<shoppingListTableElement> {
-    if (!queryResult || !Array.isArray(queryResult) || queryResult.length == 0) {
-      return new Array<shoppingListTableElement>();
+    queryResult: encodedShoppingListElement[]
+  ): shoppingListTableElement[] {
+    if (!queryResult || !Array.isArray(queryResult) || queryResult.length === 0) {
+      return [];
     }
     return queryResult.map(shoppingElement => this.decodeShopping(shoppingElement));
   }
@@ -2155,9 +2134,9 @@ export class RecipeDatabase {
    * @private
    * @returns Promise resolving to array of all recipes in application format
    */
-  private async getAllRecipes(): Promise<Array<recipeTableElement>> {
+  private async getAllRecipes(): Promise<recipeTableElement[]> {
     return await this.decodeArrayOfRecipe(
-      (await this._recipesTable.searchElement(this._dbConnection)) as Array<encodedRecipeElement>
+      (await this._recipesTable.searchElement(this._dbConnection)) as encodedRecipeElement[]
     );
   }
 
@@ -2170,9 +2149,9 @@ export class RecipeDatabase {
    * @private
    * @returns Promise resolving to array of all tags in application format
    */
-  private async getAllTags(): Promise<Array<tagTableElement>> {
+  private async getAllTags(): Promise<tagTableElement[]> {
     return this.decodeArrayOfTags(
-      (await this._tagsTable.searchElement(this._dbConnection)) as Array<encodedTagElement>
+      (await this._tagsTable.searchElement(this._dbConnection)) as encodedTagElement[]
     );
   }
 
@@ -2185,11 +2164,9 @@ export class RecipeDatabase {
    * @private
    * @returns Promise resolving to array of all ingredients in application format
    */
-  private async getAllIngredients(): Promise<Array<ingredientTableElement>> {
+  private async getAllIngredients(): Promise<ingredientTableElement[]> {
     return this.decodeArrayOfIngredients(
-      (await this._ingredientsTable.searchElement(
-        this._dbConnection
-      )) as Array<encodedIngredientElement>
+      (await this._ingredientsTable.searchElement(this._dbConnection)) as encodedIngredientElement[]
     );
   }
 
@@ -2202,11 +2179,11 @@ export class RecipeDatabase {
    * @private
    * @returns Promise resolving to array of all shopping list items in application format
    */
-  private async getAllShopping(): Promise<Array<shoppingListTableElement>> {
+  private async getAllShopping(): Promise<shoppingListTableElement[]> {
     return this.decodeArrayOfShopping(
       (await this._shoppingListTable.searchElement(
         this._dbConnection
-      )) as Array<encodedShoppingListElement>
+      )) as encodedShoppingListElement[]
     );
   }
 

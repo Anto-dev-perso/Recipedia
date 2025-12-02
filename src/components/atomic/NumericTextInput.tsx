@@ -72,18 +72,22 @@ export function NumericTextInput({
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       if (isFocused) {
-        handleBlur();
+        const normalizedText = rawText.replace(',', '.');
+        const parsed = parseFloat(normalizedText);
+        const finalValue = isNaN(parsed) ? defaultValueNumber : parsed;
+
+        setRawText(getTextFromValue(finalValue));
+        if (finalValue !== value) {
+          onChangeValue?.(finalValue);
+        }
+        setIsFocused(false);
       }
     });
 
     return () => {
       keyboardDidHideListener.remove();
     };
-  }, [isFocused, rawText, value]);
-
-  function handleChangeText(text: string) {
-    setRawText(text);
-  }
+  }, [isFocused, rawText, value, onChangeValue]);
 
   function handleBlur() {
     const normalizedText = rawText.replace(',', '.');
@@ -95,6 +99,10 @@ export function NumericTextInput({
       onChangeValue?.(finalValue);
     }
     setIsFocused(false);
+  }
+
+  function handleChangeText(text: string) {
+    setRawText(text);
   }
 
   function handleFocus() {

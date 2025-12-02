@@ -44,20 +44,20 @@
  * ```
  */
 
-import RecipeRecommendation from '@components/organisms/RecipeRecommendation';
+import { RecipeRecommendation } from '@components/organisms/RecipeRecommendation';
 
-import React, {useEffect, useState} from 'react';
-import {FlatList, RefreshControl, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Text, useTheme} from 'react-native-paper';
-import {generateHomeRecommendations} from '@utils/FilterFunctions';
-import {RecommendationType} from '@customTypes/RecipeFiltersTypes';
-import VerticalBottomButtons from '@components/organisms/VerticalBottomButtons';
-import {useI18n} from '@utils/i18n';
-import {padding, screenWidth} from '@styles/spacing';
-import {homeLogger} from '@utils/logger';
-import {useSeasonFilter} from '@context/SeasonFilterContext';
-import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
+import React, { useEffect, useState } from 'react';
+import { FlatList, RefreshControl, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, useTheme } from 'react-native-paper';
+import { generateHomeRecommendations } from '@utils/FilterFunctions';
+import { RecommendationType } from '@customTypes/RecipeFiltersTypes';
+import { VerticalBottomButtons } from '@components/organisms/VerticalBottomButtons';
+import { useI18n } from '@utils/i18n';
+import { padding, screenWidth } from '@styles/spacing';
+import { homeLogger } from '@utils/logger';
+import { useSeasonFilter } from '@context/SeasonFilterContext';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 const homeId = 'Home';
 const recommandationId = homeId + '::RecipeRecommendation';
@@ -75,88 +75,86 @@ export const howManyItemInCarousel = 20;
  */
 
 export function Home() {
-    const {t} = useI18n();
-    const {colors} = useTheme();
-    const {seasonFilter} = useSeasonFilter();
-    const {recipes, ingredients, tags} = useRecipeDatabase();
+  const { t } = useI18n();
+  const { colors } = useTheme();
+  const { seasonFilter } = useSeasonFilter();
+  const { recipes, ingredients, tags } = useRecipeDatabase();
 
-    const [refreshing, setRefreshing] = useState<boolean>(false);
-    const [recommendations, setRecommendations] = useState<Array<RecommendationType>>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [recommendations, setRecommendations] = useState<RecommendationType[]>([]);
 
-    const loadRecommendations = () => {
-        homeLogger.debug('Loading smart recipe recommendations', {
-            carouselSize: howManyItemInCarousel,
-            seasonFilterEnabled: seasonFilter,
-        });
+  useEffect(() => {
+    homeLogger.debug('Loading smart recipe recommendations', {
+      carouselSize: howManyItemInCarousel,
+      seasonFilterEnabled: seasonFilter,
+    });
 
-        setRecommendations(
-            generateHomeRecommendations(recipes, ingredients, tags, seasonFilter, howManyItemInCarousel)
-        );
-        homeLogger.debug('Smart recipe recommendations loaded successfully');
-    };
-
-    const onRefresh = () => {
-        homeLogger.info('User refreshing home screen recommendations');
-        setRefreshing(true);
-        loadRecommendations();
-        setRefreshing(false);
-    };
-
-    useEffect(() => {
-        loadRecommendations();
-    }, [loadRecommendations]);
-
-    const renderEmptyState = () => {
-        const emptyStateTestId = homeId + '::EmptyState';
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingHorizontal: padding.medium,
-                }}
-            >
-                <Text
-                    testID={emptyStateTestId + '::Title'}
-                    variant='headlineSmall'
-                    style={{textAlign: 'center', marginBottom: padding.veryLarge}}
-                >
-                    {t('emptyState.noRecommendations.title')}
-                </Text>
-                <Text
-                    testID={emptyStateTestId + '::Description'}
-                    variant='bodyMedium'
-                    style={{textAlign: 'center', color: colors.onSurfaceVariant}}
-                >
-                    {t('emptyState.noRecommendations.description')}
-                </Text>
-            </View>
-        );
-    };
-
-    return (
-        <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
-            <FlatList
-                data={recommendations}
-                renderItem={({item}) => (
-                    <RecipeRecommendation
-                        testId={`${recommandationId}::${item.id}`}
-                        carouselProps={item.recipes}
-                        titleRecommendation={t(item.titleKey, item.titleParams)}
-                    />
-                )}
-                keyExtractor={item => item.id}
-                ListEmptyComponent={renderEmptyState}
-                refreshControl={
-                    <RefreshControl colors={[colors.primary]} refreshing={refreshing} onRefresh={onRefresh}/>
-                }
-                contentContainerStyle={{paddingBottom: screenWidth / 6, flexGrow: 1}}
-                showsVerticalScrollIndicator={false}
-            />
-            <VerticalBottomButtons/>
-        </SafeAreaView>
+    setRecommendations(
+      generateHomeRecommendations(recipes, ingredients, tags, seasonFilter, howManyItemInCarousel)
     );
+    homeLogger.debug('Smart recipe recommendations loaded successfully');
+  }, [recipes, ingredients, tags, seasonFilter]);
+
+  const onRefresh = () => {
+    homeLogger.info('User refreshing home screen recommendations');
+    setRefreshing(true);
+    setRecommendations(
+      generateHomeRecommendations(recipes, ingredients, tags, seasonFilter, howManyItemInCarousel)
+    );
+    setRefreshing(false);
+  };
+
+  const renderEmptyState = () => {
+    const emptyStateTestId = homeId + '::EmptyState';
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: padding.medium,
+        }}
+      >
+        <Text
+          testID={emptyStateTestId + '::Title'}
+          variant='headlineSmall'
+          style={{ textAlign: 'center', marginBottom: padding.veryLarge }}
+        >
+          {t('emptyState.noRecommendations.title')}
+        </Text>
+        <Text
+          testID={emptyStateTestId + '::Description'}
+          variant='bodyMedium'
+          style={{ textAlign: 'center', color: colors.onSurfaceVariant }}
+        >
+          {t('emptyState.noRecommendations.description')}
+        </Text>
+      </View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <FlatList
+        data={recommendations}
+        renderItem={({ item }) => (
+          <RecipeRecommendation
+            testId={`${recommandationId}::${item.id}`}
+            carouselProps={item.recipes}
+            titleRecommendation={t(item.titleKey, item.titleParams)}
+          />
+        )}
+        keyExtractor={item => item.id}
+        ListEmptyComponent={renderEmptyState}
+        refreshControl={
+          <RefreshControl colors={[colors.primary]} refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        contentContainerStyle={{ paddingBottom: screenWidth / 6, flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      />
+      <VerticalBottomButtons />
+    </SafeAreaView>
+  );
 }
 
 export default Home;

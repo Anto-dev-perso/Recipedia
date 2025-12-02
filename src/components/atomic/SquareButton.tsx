@@ -39,7 +39,7 @@ import { Pressable, View } from 'react-native';
 import { squareButtonStyles, viewInsideButtonCentered } from '@styles/buttons';
 
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
-import CustomImage from '@components/atomic/CustomImage';
+import { CustomImage } from '@components/atomic/CustomImage';
 
 /** Props for recipe type button */
 export type propIsRecipe = { type: 'recipe'; recipe: recipeTableElement };
@@ -88,4 +88,5 @@ export function SquareButton(buttonProps: SquareButtonProps) {
     </Pressable>
   );
 }
+
 export default SquareButton;

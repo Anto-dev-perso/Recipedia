@@ -25,13 +25,13 @@
  * ```
  */
 
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {FormIngredientElement, ingredientTableElement} from '@customTypes/DatabaseElementTypes';
-import SettingsItemList from '@components/organisms/SettingsItemList';
-import ItemDialog, {DialogMode} from '@components/dialogs/ItemDialog';
-import {ingredientsSettingsLogger} from '@utils/logger';
-import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { FormIngredientElement, ingredientTableElement } from '@customTypes/DatabaseElementTypes';
+import { SettingsItemList } from '@components/organisms/SettingsItemList';
+import { DialogMode, ItemDialog } from '@components/dialogs/ItemDialog';
+import { ingredientsSettingsLogger } from '@utils/logger';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /**
  * IngredientsSettings screen component - Ingredient database management
@@ -39,122 +39,122 @@ import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
  * @returns JSX element representing the ingredient management interface
  */
 export function IngredientsSettings() {
-    const {ingredients, addIngredient, editIngredient, deleteIngredient} = useRecipeDatabase();
+  const { ingredients, addIngredient, editIngredient, deleteIngredient } = useRecipeDatabase();
 
-    const ingredientsSortedAlphabetically = [...ingredients].sort((a, b) =>
-        a.name.localeCompare(b.name)
-    );
+  const ingredientsSortedAlphabetically = [...ingredients].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
-    // Dialog states
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [dialogMode, setDialogMode] = useState<'add' | 'edit' | 'delete'>('add');
-    const [selectedIngredient, setSelectedIngredient] = useState<ingredientTableElement>();
+  // Dialog states
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<'add' | 'edit' | 'delete'>('add');
+  const [selectedIngredient, setSelectedIngredient] = useState<ingredientTableElement>();
 
-    const testId = 'IngredientsSettings';
+  const testId = 'IngredientsSettings';
 
-    const handleAddIngredient = async (newIngredient: ingredientTableElement) => {
-        const insertedIngredient = await addIngredient(newIngredient);
-        if (!insertedIngredient) {
-            ingredientsSettingsLogger.warn('Failed to add ingredient to database', {
-                ingredientName: newIngredient.name,
-            });
+  const handleAddIngredient = async (newIngredient: ingredientTableElement) => {
+    const insertedIngredient = await addIngredient(newIngredient);
+    if (!insertedIngredient) {
+      ingredientsSettingsLogger.warn('Failed to add ingredient to database', {
+        ingredientName: newIngredient.name,
+      });
+    }
+  };
+
+  const handleEditIngredient = async (newIngredient: ingredientTableElement) => {
+    const success = await editIngredient(newIngredient);
+    if (!success) {
+      ingredientsSettingsLogger.warn('Failed to update ingredient in database', {
+        ingredientName: newIngredient.name,
+        ingredientId: newIngredient.id,
+      });
+    }
+  };
+
+  const handleDeleteIngredient = async (ingredient: ingredientTableElement) => {
+    const success = await deleteIngredient(ingredient);
+    if (!success) {
+      ingredientsSettingsLogger.warn('Ingredient not found for deletion', { ingredient });
+    }
+  };
+
+  // Open dialog handlers
+  const openAddDialog = () => {
+    setDialogMode('add');
+    setIsDialogOpen(true);
+  };
+
+  const openEditDialog = (ingredient: ingredientTableElement) => {
+    setSelectedIngredient(ingredient);
+    setDialogMode('edit');
+    setIsDialogOpen(true);
+  };
+
+  const openDeleteDialog = (ingredient: ingredientTableElement) => {
+    setSelectedIngredient(ingredient);
+    setDialogMode('delete');
+    setIsDialogOpen(true);
+  };
+
+  // Close dialog handler
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  // Dialog action handlers
+  const handleDialogConfirm = async (mode: DialogMode, newIngredient: ingredientTableElement) => {
+    switch (mode) {
+      case 'add':
+        await handleAddIngredient(newIngredient);
+        break;
+      case 'edit':
+        if (selectedIngredient) {
+          await handleEditIngredient(newIngredient);
         }
-    };
-
-    const handleEditIngredient = async (newIngredient: ingredientTableElement) => {
-        const success = await editIngredient(newIngredient);
-        if (!success) {
-            ingredientsSettingsLogger.warn('Failed to update ingredient in database', {
-                ingredientName: newIngredient.name,
-                ingredientId: newIngredient.id,
-            });
+        break;
+      case 'delete':
+        if (selectedIngredient) {
+          await handleDeleteIngredient(newIngredient);
         }
-    };
+        break;
+    }
+    setIsDialogOpen(false);
+  };
 
-    const handleDeleteIngredient = async (ingredient: ingredientTableElement) => {
-        const success = await deleteIngredient(ingredient);
-        if (!success) {
-            ingredientsSettingsLogger.warn('Ingredient not found for deletion', {ingredient});
-        }
-    };
+  const getDialogIngredientValue = () => {
+    const emptyIngredientTemplate: FormIngredientElement = {};
+    if (dialogMode === 'add') {
+      return emptyIngredientTemplate;
+    }
+    return selectedIngredient ?? emptyIngredientTemplate;
+  };
 
-    // Open dialog handlers
-    const openAddDialog = () => {
-        setDialogMode('add');
-        setIsDialogOpen(true);
-    };
+  // TODO add a counter of how many recipes use this element before deleting it
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <SettingsItemList
+        items={ingredientsSortedAlphabetically}
+        testIdPrefix={testId}
+        onAddPress={openAddDialog}
+        onEdit={openEditDialog}
+        onDelete={openDeleteDialog}
+        type='ingredient'
+      />
 
-    const openEditDialog = (ingredient: ingredientTableElement) => {
-        setSelectedIngredient(ingredient);
-        setDialogMode('edit');
-        setIsDialogOpen(true);
-    };
-
-    const openDeleteDialog = (ingredient: ingredientTableElement) => {
-        setSelectedIngredient(ingredient);
-        setDialogMode('delete');
-        setIsDialogOpen(true);
-    };
-
-    // Close dialog handler
-    const closeDialog = () => {
-        setIsDialogOpen(false);
-    };
-
-    // Dialog action handlers
-    const handleDialogConfirm = async (mode: DialogMode, newIngredient: ingredientTableElement) => {
-        switch (mode) {
-            case 'add':
-                await handleAddIngredient(newIngredient);
-                break;
-            case 'edit':
-                if (selectedIngredient) {
-                    await handleEditIngredient(newIngredient);
-                }
-                break;
-            case 'delete':
-                if (selectedIngredient) {
-                    await handleDeleteIngredient(newIngredient);
-                }
-                break;
-        }
-        setIsDialogOpen(false);
-    };
-
-    const getDialogIngredientValue = () => {
-        const emptyIngredientTemplate: FormIngredientElement = {};
-        if (dialogMode === 'add') {
-            return emptyIngredientTemplate;
-        }
-        return selectedIngredient ?? emptyIngredientTemplate;
-    };
-
-    // TODO add a counter of how many recipes use this element before deleting it
-    return (
-        <SafeAreaView style={{flex: 1}}>
-            <SettingsItemList
-                items={ingredientsSortedAlphabetically}
-                testIdPrefix={testId}
-                onAddPress={openAddDialog}
-                onEdit={openEditDialog}
-                onDelete={openDeleteDialog}
-                type='ingredient'
-            />
-
-            {/* Dialog for add/edit/delete operations */}
-            <ItemDialog
-                isVisible={isDialogOpen}
-                onClose={closeDialog}
-                testId={testId + '::ItemDialog'}
-                mode={dialogMode}
-                item={{
-                    type: 'Ingredient',
-                    value: getDialogIngredientValue(),
-                    onConfirmIngredient: handleDialogConfirm,
-                }}
-            />
-        </SafeAreaView>
-    );
+      {/* Dialog for add/edit/delete operations */}
+      <ItemDialog
+        isVisible={isDialogOpen}
+        onClose={closeDialog}
+        testId={testId + '::ItemDialog'}
+        mode={dialogMode}
+        item={{
+          type: 'Ingredient',
+          value: getDialogIngredientValue(),
+          onConfirmIngredient: handleDialogConfirm,
+        }}
+      />
+    </SafeAreaView>
+  );
 }
 
 export default IngredientsSettings;

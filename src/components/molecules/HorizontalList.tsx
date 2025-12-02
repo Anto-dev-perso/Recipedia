@@ -44,17 +44,17 @@
  */
 
 import { IconName } from '@assets/Icons';
-import SquareButton from '@components/atomic/SquareButton';
+import { SquareButton } from '@components/atomic/SquareButton';
 import { smallCardWidth, viewButtonStyles } from '@styles/buttons';
 import React from 'react';
 import { View } from 'react-native';
-import TagButton from '@components/atomic/TagButton';
+import { TagButton } from '@components/atomic/TagButton';
 
 /** Props for Tag mode */
 export type TagProp = {
   propType: 'Tag';
   /** Array of tag strings to display */
-  item: Array<string>;
+  item: string[];
   /** Optional icon to display on tag buttons */
   icon?: IconName;
 };
@@ -63,7 +63,7 @@ export type TagProp = {
 export type ImageProp = {
   propType: 'Image';
   /** Array of image paths/URIs to display */
-  item: Array<string>;
+  item: string[];
 };
 
 /**
@@ -95,7 +95,7 @@ export function HorizontalList(props: HorizontalListProps) {
   function renderItem(item: string, index: number) {
     return (
       <View key={index} style={viewButtonStyles.viewContainingButton}>
-        {props.propType == 'Tag' ? (
+        {props.propType === 'Tag' ? (
           <TagButton
             testID={props.testID + `::${index}`}
             text={item as string}

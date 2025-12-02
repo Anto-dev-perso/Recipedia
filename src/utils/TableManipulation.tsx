@@ -30,7 +30,7 @@ import { databaseLogger } from '@utils/logger';
 
 export class TableManipulation {
   protected m_tableName: string;
-  protected m_columnsTable: Array<databaseColumnType>; // define all columns (except ID). All are not null
+  protected m_columnsTable: databaseColumnType[]; // define all columns (except ID). All are not null
   protected m_idColumn = 'ID';
 
   /**
@@ -48,7 +48,7 @@ export class TableManipulation {
    * ]);
    * ```
    */
-  constructor(tabName: string, colNames: Array<databaseColumnType>) {
+  constructor(tabName: string, colNames: databaseColumnType[]) {
     if (tabName.length <= 0) {
       databaseLogger.error('ERROR: Table name cannot be empty');
       this.m_tableName = '';
@@ -57,7 +57,7 @@ export class TableManipulation {
     }
     if (colNames.length <= 0) {
       databaseLogger.error('ERROR: No column names specified');
-      this.m_columnsTable = new Array<databaseColumnType>();
+      this.m_columnsTable = [];
     } else {
       this.m_columnsTable = colNames;
     }
@@ -148,7 +148,7 @@ export class TableManipulation {
                              WHERE ${this.m_idColumn} = ?;`;
     try {
       const runRes = await db.runAsync(deleteQuery, [id]);
-      if (runRes.changes == 0) {
+      if (runRes.changes === 0) {
         databaseLogger.error("deleteElementById: Can't delete element with id ", id);
         return false;
       } else {
@@ -167,7 +167,7 @@ export class TableManipulation {
 
   public async deleteElement(
     db: SQLiteDatabase,
-    elementToSearch?: Map<string, number | string | Array<string | number>>
+    elementToSearch?: Map<string, number | string | (string | number)[]>
   ): Promise<boolean> {
     let deleteQuery = `DELETE
                            FROM "${this.m_tableName}"`;
@@ -182,7 +182,7 @@ export class TableManipulation {
 
     try {
       const runRes = await db.runAsync(deleteQuery, params);
-      if (runRes.changes == 0) {
+      if (runRes.changes === 0) {
         databaseLogger.error("deleteElement: Can't delete element with search: ", elementToSearch);
         return false;
       } else {
@@ -215,11 +215,11 @@ export class TableManipulation {
     db: SQLiteDatabase
   ): Promise<number | undefined> {
     const [insertQuery, params] = this.prepareInsertQuery(element);
-    if (insertQuery.length == 0) {
+    if (insertQuery.length === 0) {
       databaseLogger.error('Invalid insert query');
       return undefined;
     }
-    if (params.length == 0) {
+    if (params.length === 0) {
       databaseLogger.error('Empty values');
       return undefined;
     }
@@ -234,11 +234,11 @@ export class TableManipulation {
   }
 
   public async insertArrayOfElement<TElement>(
-    arrayElements: Array<TElement>,
+    arrayElements: TElement[],
     db: SQLiteDatabase
   ): Promise<boolean> {
     const [insertQuery, params] = this.prepareInsertQuery(arrayElements);
-    if (insertQuery.length == 0) {
+    if (insertQuery.length === 0) {
       databaseLogger.error(
         'insertArrayOfElement<',
         typeof arrayElements[0],
@@ -308,10 +308,10 @@ export class TableManipulation {
    * ```
    */
   public async batchUpdateElementsById(
-    updates: Array<{
+    updates: {
       id: number;
       elementToUpdate: Map<string, number | string>;
-    }>,
+    }[],
     db: SQLiteDatabase
   ): Promise<boolean> {
     if (updates.length === 0) {
@@ -398,8 +398,8 @@ export class TableManipulation {
   public async searchRandomlyElement<T>(
     numOfElements: number,
     db: SQLiteDatabase,
-    columns?: Array<string>
-  ): Promise<Array<T> | undefined> {
+    columns?: string[]
+  ): Promise<T[] | undefined> {
     if (numOfElements <= 0) {
       return undefined;
     }
@@ -446,8 +446,8 @@ export class TableManipulation {
    */
   public async searchElement<T>(
     db: SQLiteDatabase,
-    elementToSearch?: Map<string, number | string | Array<string | number>>
-  ): Promise<T | Array<T> | undefined> {
+    elementToSearch?: Map<string, number | string | (string | number)[]>
+  ): Promise<T | T[] | undefined> {
     let searchQuery = `SELECT *
                            FROM "${this.m_tableName}"`;
 
@@ -493,7 +493,7 @@ export class TableManipulation {
    * ```
    */
   protected prepareQueryFromMap(
-    map: Map<string, number | string | Array<string | number>>,
+    map: Map<string, number | string | (string | number)[]>,
     separator?: string
   ): [string, SQLiteBindValue[]] {
     let result = '';
@@ -535,7 +535,7 @@ export class TableManipulation {
     return [result, params];
   }
 
-  protected verifyLengthOfElement<TElement extends string>(element: Array<TElement>) {
+  protected verifyLengthOfElement<TElement extends string>(element: TElement[]) {
     let isCheck: boolean = true;
     if (element.length > this.m_columnsTable.length + 1) {
       databaseLogger.warn(
@@ -552,22 +552,22 @@ export class TableManipulation {
   }
 
   protected prepareInsertQuery<TElement>(
-    elementToInsert: TElement | Array<TElement>
-  ): [string, Array<string>] {
+    elementToInsert: TElement | TElement[]
+  ): [string, string[]] {
     type TElementKey = keyof TElement;
 
     let insertQuery =
       `INSERT INTO "${this.m_tableName}" ("` +
       this.m_columnsTable.map(col => col.colName).join('","') +
       '") VALUES ';
-    const returnValues = new Array<string>();
+    const returnValues = [];
 
     if (!(elementToInsert instanceof Array)) {
-      for (const key of Object.keys(elementToInsert as Object).filter(key => key !== 'ID')) {
+      for (const key of Object.keys(elementToInsert as object).filter(key => key !== 'ID')) {
         const valueToPush = (elementToInsert[key as TElementKey] as string).toString();
         if (valueToPush.toString() === 'false') {
           returnValues.push('0');
-        } else if (valueToPush == 'true') {
+        } else if (valueToPush === 'true') {
           returnValues.push('1');
         } else {
           returnValues.push(valueToPush);
@@ -579,16 +579,16 @@ export class TableManipulation {
         insertQuery = '';
       }
     } else {
-      const placeHolders = new Array<string>();
+      const placeHolders = [];
 
       for (const element of elementToInsert) {
-        const elementValues = new Array<string>();
+        const elementValues = [];
 
-        for (const key of Object.keys(element as Object).filter(key => key !== 'ID')) {
+        for (const key of Object.keys(element as object).filter(key => key !== 'ID')) {
           const valueToPush = (element[key as TElementKey] as TElementKey).toString();
-          if (valueToPush == 'false') {
+          if (valueToPush === 'false') {
             elementValues.push('0');
-          } else if (valueToPush == 'true') {
+          } else if (valueToPush === 'true') {
             elementValues.push('1');
           } else {
             elementValues.push(valueToPush);

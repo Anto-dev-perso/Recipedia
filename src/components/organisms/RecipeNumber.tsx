@@ -53,12 +53,12 @@
 
 import { View } from 'react-native';
 import React from 'react';
-import RoundButton from '@components/atomic/RoundButton';
+import { RoundButton } from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
 import { recipeNumberStyles, recipeTextStyles } from '@styles/recipeComponents';
 import { Text } from 'react-native-paper';
 import { VariantProp } from 'react-native-paper/lib/typescript/components/Typography/types';
-import NumericTextInput from '@components/atomic/NumericTextInput';
+import { NumericTextInput } from '@components/atomic/NumericTextInput';
 import { defaultValueNumber } from '@utils/Constants';
 
 /** Props for add mode with OCR and manual options */

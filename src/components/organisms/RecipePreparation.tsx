@@ -50,9 +50,9 @@ import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { preparationStepElement } from '@customTypes/DatabaseElementTypes';
 import { recipeTableStyles, recipeTextRenderStyles } from '@styles/recipeComponents';
-import RoundButton from '@components/atomic/RoundButton';
+import { RoundButton } from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
-import CustomTextInput from '@components/atomic/CustomTextInput';
+import { CustomTextInput } from '@components/atomic/CustomTextInput';
 import { useI18n } from '@utils/i18n';
 
 /**

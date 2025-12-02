@@ -59,7 +59,7 @@ import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { databaseLogger } from '@utils/logger';
 import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
-import ItemDialog, { DialogMode } from './ItemDialog';
+import { DialogMode, ItemDialog } from './ItemDialog';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /** Configuration for tag similarity resolution */

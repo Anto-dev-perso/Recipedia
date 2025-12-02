@@ -85,7 +85,7 @@ export type ingredientQuantityPerPersons = {
 export type ingredientObject = {
   name: string;
   unit: string;
-  quantityPerPersons: Array<ingredientQuantityPerPersons>;
+  quantityPerPersons: ingredientQuantityPerPersons[];
 };
 export const keysIngredientObject = Object.keys({
   name: '',
@@ -160,7 +160,7 @@ export async function recognizeText(imageUri: string, fieldName: recipeColumnsNa
  * @param ocrBloc - Array of text blocks from ML Kit OCR result
  * @returns Flat array containing all text lines from the blocks
  */
-function convertBlockOnArrayOfString(ocrBloc: Array<TextBlock>): Array<string> {
+function convertBlockOnArrayOfString(ocrBloc: TextBlock[]): string[] {
   return ocrBloc.map(block => block.lines.map(line => line.text)).flat();
 }
 
@@ -184,7 +184,7 @@ function tranformOCRInOneString(ocr: TextRecognitionResult): string {
  * @param ocr - Text recognition result from ML Kit
  * @returns Array of tag table elements
  */
-function tranformOCRInTags(ocr: TextRecognitionResult): Array<tagTableElement> {
+function tranformOCRInTags(ocr: TextRecognitionResult): tagTableElement[] {
   return ocr.blocks
     .map(block => block.lines.map(line => line.text).join(' '))
     .join(' ')
@@ -203,7 +203,7 @@ function tranformOCRInTags(ocr: TextRecognitionResult): Array<tagTableElement> {
  * @param str - Array of strings to parse
  * @returns Array of numbers extracted from the strings
  */
-function retrieveNumbersFromArrayOfStrings(str: Array<string>): Array<number> {
+function retrieveNumbersFromArrayOfStrings(str: string[]): number[] {
   return str.map(element => retrieveNumberFromString(element));
 }
 
@@ -226,7 +226,7 @@ function retrieveNumberFromString(str: string): number {
  * @param ocr - Array of strings to extract numbers from
  * @returns Single number if only one found, otherwise array of numbers
  */
-function extractingNumberOrArray(ocr: Array<string>) {
+function extractingNumberOrArray(ocr: string[]) {
   const result = retrieveNumbersFromArrayOfStrings(ocr);
   return result.length > 1 ? result : result[0];
 }
@@ -242,7 +242,7 @@ function extractingNumberOrArray(ocr: Array<string>) {
  */
 function tranformOCRInOneNumber(
   ocr: TextRecognitionResult
-): number | Array<number> | Array<personAndTimeObject> {
+): number | number[] | personAndTimeObject[] {
   const elementsToConvert = convertBlockOnArrayOfString(ocr.blocks);
 
   const personsChar = 'p';
@@ -255,7 +255,7 @@ function tranformOCRInOneNumber(
       if (personsArray.length !== timeArray.length) {
         return extractingNumberOrArray(personsArray);
       }
-      const personsAndTime = new Array<personAndTimeObject>();
+      const personsAndTime = [];
       for (let i = 0; i < personsArray.length; i++) {
         personsAndTime.push({
           person: retrieveNumberFromString(personsArray[i]),
@@ -285,8 +285,8 @@ function tranformOCRInOneNumber(
  * @param ocr - Text recognition result from ML Kit
  * @returns Array of preparation step elements sorted by step order
  */
-function tranformOCRInPreparation(ocr: TextRecognitionResult): Array<preparationStepElement> {
-  const steps: Array<{ step: preparationStepElement; order: number }> = [];
+function tranformOCRInPreparation(ocr: TextRecognitionResult): preparationStepElement[] {
+  const steps: { step: preparationStepElement; order: number }[] = [];
   let currentStep: preparationStepElement | null = null;
   let currentOrder = 0;
   let waitingForTitle = false;
@@ -449,7 +449,7 @@ function isNumberOnlyBlock(text: string): boolean {
   return numberAtFirstIndex.test(text) && !letterRegExp.test(text);
 }
 
-type groupType = { person: string; quantity: Array<string> };
+type groupType = { person: string; quantity: string[] };
 
 /**
  * Transforms OCR results into structured ingredient objects
@@ -481,7 +481,7 @@ type groupType = { person: string; quantity: Array<string> };
  * // ]
  * ```
  */
-function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientObject> {
+function tranformOCRInIngredients(ocr: TextRecognitionResult): ingredientObject[] {
   const lines: string[] = [];
   const ocrLines = ocr.blocks.flatMap(block => block.lines);
   if (ocrLines[0]?.text.toLowerCase().includes('box')) ocrLines.shift();
@@ -509,7 +509,7 @@ function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientO
   const groups = getIngredientsGroups(dataTokens, ingredientsOCR.length);
 
   function areIngredientsMergeable(indexFirstSuspicious: number): boolean {
-    if (indexFirstSuspicious == firstGroup.quantity.length) {
+    if (indexFirstSuspicious === firstGroup.quantity.length) {
       return false;
     }
     for (
@@ -594,7 +594,7 @@ function tranformOCRInIngredients(ocr: TextRecognitionResult): Array<ingredientO
  * @param namesAndUnits - Array of header strings containing names and units
  * @returns Array of ingredient objects with parsed names and units
  */
-function parseIngredientsNamesAndUnits(namesAndUnits: Array<string>): Array<ingredientObject> {
+function parseIngredientsNamesAndUnits(namesAndUnits: string[]): ingredientObject[] {
   return namesAndUnits.map(nameAndUnit => {
     const unitMatch = nameAndUnit.match(/\((.*?)\)/);
     return {
@@ -616,9 +616,9 @@ function parseIngredientsNamesAndUnits(namesAndUnits: Array<string>): Array<ingr
  * @param nIngredients - Expected number of ingredients per group
  * @returns Array of grouped ingredient data
  */
-function getIngredientsGroups(tokens: Array<string>, nIngredients: number): Array<groupType> {
-  const groups = new Array<groupType>();
-  let group: groupType = { person: '', quantity: new Array<string>() };
+function getIngredientsGroups(tokens: string[], nIngredients: number): groupType[] {
+  const groups = [];
+  let group: groupType = { person: '', quantity: [] };
   for (const token of tokens) {
     if (token.match(/\d+\s*p\s*$/i)) {
       if (group.person.length > 0) {
@@ -626,7 +626,7 @@ function getIngredientsGroups(tokens: Array<string>, nIngredients: number): Arra
           group.quantity.push('');
         }
         groups.push(group);
-        group = { person: '', quantity: new Array<string>() };
+        group = { person: '', quantity: [] };
       }
       group.person = token;
     } else {
@@ -672,7 +672,7 @@ function isIngredientSuspicious(quantity: string, unit: string): boolean {
  * @param ingredients - Array of ingredient objects with units
  * @returns Index of first suspicious ingredient, or -1 if none found
  */
-function isSuspiciousGroup(group: groupType, ingredients: Array<ingredientObject>): number {
+function isSuspiciousGroup(group: groupType, ingredients: ingredientObject[]): number {
   for (let i = 0; i < ingredients.length; i++) {
     const quantityStr = group.quantity[i] || '';
     if (isIngredientSuspicious(quantityStr, ingredients[i].unit)) {
@@ -707,7 +707,7 @@ function convertToLowerCaseExceptFirstLetter(str: string) {
  */
 function retrieveNumberInStr(str: string) {
   const firstLetterIndex = str.search(letterRegExp);
-  const workingStr = firstLetterIndex != -1 ? str.slice(0, firstLetterIndex) : str;
+  const workingStr = firstLetterIndex !== -1 ? str.slice(0, firstLetterIndex) : str;
 
   const allNum = workingStr.match(findAllNumbers);
   if (allNum) {
@@ -765,7 +765,7 @@ export async function extractFieldFromImage(
     recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTags: tagTableElement[];
-    recipeIngredients: Array<FormIngredientElement>;
+    recipeIngredients: FormIngredientElement[];
   },
   onWarn: WarningHandler = msg => ocrLogger.warn('OCR extraction warning', { message: msg })
 ): Promise<
@@ -773,11 +773,11 @@ export async function extractFieldFromImage(
     recipeImage: string;
     recipeTitle: string;
     recipeDescription: string;
-    recipeTags: Array<tagTableElement>;
+    recipeTags: tagTableElement[];
     recipePreparation: preparationStepElement[];
     recipePersons: number;
     recipeTime: number;
-    recipeIngredients: Array<FormIngredientElement>;
+    recipeIngredients: FormIngredientElement[];
     recipeNutrition: nutritionObject;
   }>
 > {
@@ -877,7 +877,7 @@ export async function extractFieldFromImage(
         return {
           recipeIngredients: [
             ...currentState.recipeIngredients,
-            ...(ocrResult as Array<ingredientObject>).map(ingredient => {
+            ...(ocrResult as ingredientObject[]).map(ingredient => {
               return {
                 name: ingredient.name,
                 unit: ingredient.unit,
@@ -940,7 +940,7 @@ export async function extractFieldFromImage(
  * // ]
  * ```
  */
-export function parseIngredientsNoHeader(lines: Array<string>): Array<ingredientObject> {
+export function parseIngredientsNoHeader(lines: string[]): ingredientObject[] {
   if (!lines.length) {
     return [];
   }
@@ -953,10 +953,12 @@ export function parseIngredientsNoHeader(lines: Array<string>): Array<ingredient
 
   for (let i = 0; i < Math.min(nameLines.length, quantityLines.length); i++) {
     const [quantity, unit] = quantityLines[i].split(' ');
-    const quantityPerPersons = new Array<ingredientQuantityPerPersons>({
-      persons: -1,
-      quantity: quantity,
-    });
+    const quantityPerPersons: ingredientQuantityPerPersons[] = [
+      {
+        persons: -1,
+        quantity: quantity,
+      },
+    ];
 
     result.push({
       name: nameLines[i],

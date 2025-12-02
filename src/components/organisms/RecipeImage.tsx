@@ -42,8 +42,8 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { recipeColumnsNames } from '@customTypes/DatabaseElementTypes';
 import { IconName } from '@assets/Icons';
-import CustomImage from '@components/atomic/CustomImage';
-import RoundButton from '@components/atomic/RoundButton';
+import { CustomImage } from '@components/atomic/CustomImage';
+import { RoundButton } from '@components/atomic/RoundButton';
 import { padding, screenHeight } from '@styles/spacing';
 
 /**
