@@ -1519,7 +1519,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function handleCancel() {
-    if (props.mode === 'edit') {
+    if (stackMode === recipeStateType.edit && props.mode === 'edit') {
       setRecipeImage(props.recipe.image_Source);
       setRecipeTitle(props.recipe.title);
       setRecipeDescription(props.recipe.description);

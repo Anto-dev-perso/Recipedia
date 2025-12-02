@@ -249,9 +249,9 @@ export const RecipeDatabaseProvider: React.FC<{
 
                 await db.addMultipleRecipes(scaledRecipes);
 
-                setRecipes([...db.get_recipes()]);
-                setIngredients([...db.get_ingredients()]);
                 setTags([...db.get_tags()]);
+                setIngredients([...db.get_ingredients()]);
+                setRecipes([...db.get_recipes()]);
                 setShopping([...db.get_shopping()]);
 
                 databaseLogger.info('Dataset loaded successfully in background', {
@@ -273,6 +273,7 @@ export const RecipeDatabaseProvider: React.FC<{
                 );
               }
             });
+            return;
           } else {
             databaseLogger.warn(
               'First launch flag is set but database already contains data - skipping dataset load',
@@ -287,9 +288,9 @@ export const RecipeDatabaseProvider: React.FC<{
           databaseLogger.debug('Not first launch - loading existing data from database');
         }
 
-        setRecipes([...db.get_recipes()]);
-        setIngredients([...db.get_ingredients()]);
         setTags([...db.get_tags()]);
+        setIngredients([...db.get_ingredients()]);
+        setRecipes([...db.get_recipes()]);
         setShopping([...db.get_shopping()]);
         setIsDatabaseReady(true);
         databaseLogger.info('Database initialization phase completed');
