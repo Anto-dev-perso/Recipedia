@@ -83,7 +83,7 @@ import {
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { padding } from '@styles/spacing';
-import RecipeImage, { RecipeImageProps } from '@components/organisms/RecipeImage';
+import { RecipeImage, RecipeImageProps } from '@components/organisms/RecipeImage';
 import { Icons } from '@assets/Icons';
 import { RecipeText, RecipeTextProps, TextProp } from '@components/organisms/RecipeText';
 import {
@@ -104,8 +104,8 @@ import { extractFieldFromImage } from '@utils/OCR';
 import { RecipeNumber, RecipeNumberProps } from '@components/organisms/RecipeNumber';
 import { defaultValueNumber } from '@utils/Constants';
 import { Button, useTheme } from 'react-native-paper';
-import RecipeAppBar from '@components/organisms/RecipeAppBar';
-import ModalImageSelect from '@screens/ModalImageSelect';
+import { RecipeAppBar } from '@components/organisms/RecipeAppBar';
+import { ModalImageSelect } from '@screens/ModalImageSelect';
 import { cropImage } from '@utils/ImagePicker';
 import { useI18n } from '@utils/i18n';
 import { Alert, AlertProps } from '@components/dialogs/Alert';
@@ -123,7 +123,6 @@ import {
 
 const BUTTON_HEIGHT = 48;
 const BUTTON_CONTAINER_HEIGHT = BUTTON_HEIGHT + padding.small * 2;
-
 
 // Export enum values for external use - keeping for API compatibility
 export const recipeStates = {
@@ -1520,7 +1519,10 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function handleCancel() {
-    if (stackMode === recipeStateType.edit && props.mode === 'edit') {
+    if (
+      stackMode === recipeStateType.edit &&
+      (props.mode === 'readOnly' || props.mode === 'edit')
+    ) {
       setRecipeImage(props.recipe.image_Source);
       setRecipeTitle(props.recipe.title);
       setRecipeDescription(props.recipe.description);

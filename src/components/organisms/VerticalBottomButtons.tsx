@@ -27,7 +27,7 @@
  * ```
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
@@ -74,46 +74,41 @@ function VerticalBottomButtons() {
   const [fabVisible, setFabVisible] = useState(true);
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useFocusEffect(
-    useCallback(() => {
-      setFabVisible(true);
-      return () => {
-        setFabVisible(false);
-        setOpen(false);
-      };
-    }, [])
-  );
+  useFocusEffect(() => {
+    setFabVisible(true);
+    return () => {
+      setFabVisible(false);
+      setOpen(false);
+    };
+  });
 
   const stepOrder = TUTORIAL_STEPS.Home.order;
 
-  const startDemo = useCallback(() => {
+  function startDemo() {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
     }
 
     demoIntervalRef.current = setInterval(() => {
-      setOpen(open => !open);
+      setOpen(prev => !prev);
     }, TUTORIAL_DEMO_INTERVAL);
-  }, []);
+  }
 
-  const stopDemo = useCallback(() => {
+  function stopDemo() {
     if (demoIntervalRef.current) {
       clearInterval(demoIntervalRef.current);
       demoIntervalRef.current = null;
       setOpen(false);
     }
-  }, []);
+  }
 
-  const handleStepChange = useCallback(
-    (step: CopilotStepData | undefined) => {
-      if (step?.order === stepOrder) {
-        startDemo();
-      } else {
-        stopDemo();
-      }
-    },
-    [stepOrder, startDemo, stopDemo]
-  );
+  function handleStepChange(step: CopilotStepData | undefined) {
+    if (step?.order === stepOrder) {
+      startDemo();
+    } else {
+      stopDemo();
+    }
+  }
 
   useEffect(() => {
     if (!copilotData || !copilotEvents) {
@@ -132,7 +127,7 @@ function VerticalBottomButtons() {
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
+  });
 
   async function takePhotoAndOpenNewRecipe() {
     openRecipeWithUri(await takePhoto(colors));
@@ -214,4 +209,4 @@ function VerticalBottomButtons() {
   );
 }
 
-export default React.memo(VerticalBottomButtons);
+export default VerticalBottomButtons;

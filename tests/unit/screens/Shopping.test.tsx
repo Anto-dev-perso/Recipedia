@@ -23,10 +23,9 @@ jest.mock('@utils/FileGestion', () =>
   require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
 );
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
-jest.mock(
-  '@components/dialogs/Alert',
-  () => require('@mocks/components/dialogs/Alert-mock').alertMock
-);
+jest.mock('@components/dialogs/Alert', () => ({
+  Alert: require('@mocks/components/dialogs/Alert-mock').alertMock,
+}));
 
 // Mock useSafeCopilot to return null by default (tutorial inactive) but allow override
 jest.mock('@hooks/useSafeCopilot', () =>

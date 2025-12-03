@@ -47,24 +47,27 @@
  * ```
  */
 
-import {shoppingListTableElement} from '@customTypes/DatabaseElementTypes';
-import React, {useEffect, useRef, useState} from 'react';
-import {SectionList, StyleProp, TextStyle, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {CopilotStep, walkthroughable} from 'react-native-copilot';
-import {useSafeCopilot} from '@hooks/useSafeCopilot';
-import {CopilotStepData} from '@customTypes/TutorialTypes';
-import {Checkbox, Divider, List, Text, useTheme} from 'react-native-paper';
-import {useI18n} from '@utils/i18n';
-import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
-import {ShoppingAppliedToDatabase, shoppingCategories, TListFilter,} from '@customTypes/RecipeFiltersTypes';
-import BottomTopButton from '@components/molecules/BottomTopButton';
-import RoundButton from '@components/atomic/RoundButton';
-import {Icons} from '@assets/Icons';
-import Alert from '@components/dialogs/Alert';
-import {shoppingLogger} from '@utils/logger';
-import {TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS} from '@utils/Constants';
-import {padding} from '@styles/spacing';
+import { shoppingListTableElement } from '@customTypes/DatabaseElementTypes';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { SectionList, StyleProp, TextStyle, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CopilotStep, walkthroughable } from 'react-native-copilot';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
+import { CopilotStepData } from '@customTypes/TutorialTypes';
+import { Checkbox, Divider, List, Text, useTheme } from 'react-native-paper';
+import { useI18n } from '@utils/i18n';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
+import {
+  ShoppingAppliedToDatabase,
+  shoppingCategories,
+  TListFilter,
+} from '@customTypes/RecipeFiltersTypes';
+import { Icons } from '@assets/Icons';
+import { Alert } from '@components/dialogs/Alert';
+import { RoundButton } from '@components/atomic/RoundButton';
+import { shoppingLogger } from '@utils/logger';
+import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
+import { padding } from '@styles/spacing';
 
 /** Type for dialog data containing ingredient and recipe information */
 type ingredientDataForDialog = Pick<shoppingListTableElement, 'name' | 'recipesTitle'>;
@@ -80,6 +83,7 @@ const CopilotView = walkthroughable(View);
 export function Shopping() {
   const { t } = useI18n();
   const { colors, fonts } = useTheme();
+  const insets = useSafeAreaInsets();
   const {
     shopping: shoppingList,
     purchaseIngredientInShoppingList,
@@ -102,52 +106,56 @@ export function Shopping() {
 
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
 
-  useEffect(() => {
-    if (!copilotData || !copilotEvents) {
-      return;
-    }
-
-    const closingDialogInDemoEffect = () => {
+  const toggleDemoDialog = useCallback(() => {
+    if (isDialogOpenRef.current) {
       setIsDialogOpen(false);
       setIngredientDataForDialog({ name: '', recipesTitle: [] });
       isDialogOpenRef.current = false;
-    };
+    } else {
+      setIngredientDataForDialog(shoppingList[2]);
+      setIsDialogOpen(true);
+      isDialogOpenRef.current = true;
+    }
+  }, [shoppingList]);
 
-    const toggleDemoDialogEffect = () => {
-      if (isDialogOpenRef.current) {
-        setIsDialogOpen(false);
-        setIngredientDataForDialog({ name: '', recipesTitle: [] });
-        isDialogOpenRef.current = false;
-      } else {
-        setIngredientDataForDialog(shoppingList[2]);
-        setIsDialogOpen(true);
-        isDialogOpenRef.current = true;
-      }
-    };
+  const closingDialogInDemo = () => {
+    setIsDialogOpen(false);
+    setIngredientDataForDialog({ name: '', recipesTitle: [] });
+    isDialogOpenRef.current = false;
+  };
 
-    const stopDemo = () => {
-      if (demoIntervalRef.current) {
-        clearInterval(demoIntervalRef.current);
-        demoIntervalRef.current = null;
-      }
-      closingDialogInDemoEffect();
-    };
+  const stopDemo = useCallback(() => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+      demoIntervalRef.current = null;
+    }
+    closingDialogInDemo();
+  }, []);
 
-    const startDemo = () => {
-      if (demoIntervalRef.current) {
-        clearInterval(demoIntervalRef.current);
-        demoIntervalRef.current = null;
-      }
-      demoIntervalRef.current = setInterval(toggleDemoDialogEffect, TUTORIAL_DEMO_INTERVAL);
-    };
+  const startDemo = useCallback(() => {
+    if (demoIntervalRef.current) {
+      clearInterval(demoIntervalRef.current);
+      demoIntervalRef.current = null;
+    }
 
-    const handleStepChange = (step: CopilotStepData | undefined) => {
+    demoIntervalRef.current = setInterval(toggleDemoDialog, TUTORIAL_DEMO_INTERVAL);
+  }, [toggleDemoDialog]);
+
+  const handleStepChange = useCallback(
+    (step: CopilotStepData | undefined) => {
       if (step?.order === stepOrder) {
         startDemo();
       } else {
         stopDemo();
       }
-    };
+    },
+    [stepOrder, startDemo, stopDemo]
+  );
+
+  useEffect(() => {
+    if (!copilotData || !copilotEvents) {
+      return;
+    }
 
     // Start demo if we're already on our step when component mounts
     if (currentStep?.order === stepOrder) {
@@ -162,7 +170,7 @@ export function Shopping() {
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  }, [currentStep, copilotData, copilotEvents, stepOrder, shoppingList]);
+  }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
 
   const sections = shoppingCategories
     .map(category => {
@@ -334,7 +342,6 @@ export function Shopping() {
         />
       )}
 
-      {/* Positioned overlay for tutorial highlighting - appears in center where dialog shows */}
       {copilotData && (
         <CopilotStep text={t('tutorial.shopping.description')} order={stepOrder} name={'Shopping'}>
           <CopilotView
@@ -350,28 +357,28 @@ export function Shopping() {
         </CopilotStep>
       )}
 
-            <Alert
-                isVisible={isDialogOpen}
-                confirmText={t('shoppingScreen.recipeUsingValidation')}
-                content={createDialogContent()}
-                testId={screenId}
-                title={createDialogTitle()}
-                onClose={() => {
-                    setIsDialogOpen(false);
-                    setIngredientDataForDialog({name: '', recipesTitle: []});
-                }}
-            />
-            <Alert
-                isVisible={isConfirmationDialogOpen}
-                title={t('shoppingScreen.clearShoppingList')}
-                content={t('shoppingScreen.confirmClearShoppingList')}
-                confirmText={t('confirm')}
-                cancelText={t('cancel')}
-                testId={screenId + '::ClearConfirmation'}
-                onConfirm={clearShoppingList}
-                onClose={closeClearConfirmation}
-            />
-            { shoppingList.length > 0 && (
+      <Alert
+        isVisible={isDialogOpen}
+        confirmText={t('shoppingScreen.recipeUsingValidation')}
+        content={createDialogContent()}
+        testId={screenId}
+        title={createDialogTitle()}
+        onClose={() => {
+          setIsDialogOpen(false);
+          setIngredientDataForDialog({ name: '', recipesTitle: [] });
+        }}
+      />
+      <Alert
+        isVisible={isConfirmationDialogOpen}
+        title={t('shoppingScreen.clearShoppingList')}
+        content={t('shoppingScreen.confirmClearShoppingList')}
+        confirmText={t('confirm')}
+        cancelText={t('cancel')}
+        testId={screenId + '::ClearConfirmation'}
+        onConfirm={clearShoppingList}
+        onClose={closeClearConfirmation}
+      />
+      {shoppingList.length > 0 && (
         <RoundButton
           icon={Icons.trashIcon}
           size='medium'
@@ -385,8 +392,8 @@ export function Shopping() {
           }}
         />
       )}
-        </SafeAreaView>
-    );
+    </SafeAreaView>
+  );
 }
 
 export default Shopping;

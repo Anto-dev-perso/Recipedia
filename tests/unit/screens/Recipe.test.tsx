@@ -28,43 +28,44 @@ jest.mock('@utils/FileGestion', () =>
 jest.mock('@utils/ImagePicker', () => require('@mocks/utils/ImagePicker-mock').imagePickerMock());
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
-jest.mock(
-  '@components/organisms/RecipeTags',
-  () => require('@mocks/components/organisms/RecipeTags-mock').recipeTagsMock
-);
-jest.mock(
-  '@components/organisms/RecipeImage',
-  () => require('@mocks/components/organisms/RecipeImage-mock').recipeImageMock
-);
-jest.mock(
-  '@components/organisms/RecipeText',
-  () => require('@mocks/components/organisms/RecipeText-mock').recipeTextMock
-);
-jest.mock(
-  '@components/organisms/RecipeNumber',
-  () => require('@mocks/components/organisms/RecipeNumber-mock').recipeNumberMock
-);
-jest.mock(
-  '@components/organisms/RecipeIngredients',
-  () => require('@mocks/components/organisms/RecipeIngredients-mock').recipeIngredientsMock
-);
-jest.mock(
-  '@components/organisms/RecipePreparation',
-  () => require('@mocks/components/organisms/RecipePreparation-mock').recipePreparationMock
-);
+jest.mock('@components/organisms/RecipeTags', () => ({
+  RecipeTags: require('@mocks/components/organisms/RecipeTags-mock').recipeTagsMock,
+}));
+jest.mock('@components/organisms/RecipeImage', () => ({
+  RecipeImage: require('@mocks/components/organisms/RecipeImage-mock').recipeImageMock,
+}));
+jest.mock('@components/organisms/RecipeText', () => ({
+  RecipeText: require('@mocks/components/organisms/RecipeText-mock').recipeTextMock,
+}));
+jest.mock('@components/organisms/RecipeNumber', () => ({
+  RecipeNumber: require('@mocks/components/organisms/RecipeNumber-mock').recipeNumberMock,
+}));
+jest.mock('@components/organisms/RecipeIngredients', () => ({
+  RecipeIngredients: require('@mocks/components/organisms/RecipeIngredients-mock')
+    .recipeIngredientsMock,
+}));
+jest.mock('@components/organisms/RecipePreparation', () => ({
+  RecipePreparation: require('@mocks/components/organisms/RecipePreparation-mock')
+    .recipePreparationMock,
+}));
 jest.mock('@components/molecules/NutritionTable', () =>
   require('@mocks/components/molecules/NutritionTable-mock')
 );
 jest.mock('@components/molecules/NutritionEmptyState', () =>
   require('@mocks/components/molecules/NutritionEmptyState-mock')
 );
-jest.mock(
-  '@components/dialogs/Alert',
-  () => require('@mocks/components/dialogs/Alert-mock').alertMock
-);
+jest.mock('@components/dialogs/Alert', () => ({
+  Alert: require('@mocks/components/dialogs/Alert-mock').alertMock,
+}));
 jest.mock('@components/dialogs/ValidationQueue', () =>
   require('@mocks/components/dialogs/ValidationQueue-mock')
 );
+jest.mock('@components/organisms/RecipeAppBar', () => ({
+  RecipeAppBar: require('@mocks/components/organisms/RecipeAppBar-mock').recipeAppBarMock,
+}));
+jest.mock('@screens/ModalImageSelect', () => ({
+  ModalImageSelect: require('@mocks/screens/ModalImageSelect-mock').modalImageSelectMock,
+}));
 
 const defaultUri = '';
 
@@ -214,7 +215,7 @@ function checkTags(
   prop: RecipePropType,
   getByTestId: GetByIdType,
   queryByTestId: QueryByIdType,
-  newValueExpected?: Array<tagTableElement>
+  newValueExpected?: tagTableElement[]
 ) {
   switch (prop.mode) {
     case 'readOnly':
@@ -994,7 +995,7 @@ describe('Recipe Component tests', () => {
       expect(RecipeDatabase.getInstance().get_shopping()).toHaveLength(4);
     });
     expect(RecipeDatabase.getInstance().get_shopping()).toEqual(
-      new Array<Array<shoppingListTableElement>>(
+      new Array<shoppingListTableElement[]>(
         {
           //@ts-ignore id is always set at this point
           id: 1,

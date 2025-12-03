@@ -52,7 +52,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, useTheme } from 'react-native-paper';
 import { generateHomeRecommendations } from '@utils/FilterFunctions';
 import { RecommendationType } from '@customTypes/RecipeFiltersTypes';
-import { VerticalBottomButtons } from '@components/organisms/VerticalBottomButtons';
+import VerticalBottomButtons from '@components/organisms/VerticalBottomButtons';
 import { useI18n } from '@utils/i18n';
 import { padding, screenWidth } from '@styles/spacing';
 import { homeLogger } from '@utils/logger';
