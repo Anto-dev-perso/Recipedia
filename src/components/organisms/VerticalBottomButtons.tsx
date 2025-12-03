@@ -38,7 +38,7 @@ import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
 import { pickImage, takePhoto } from '@utils/ImagePicker';
 import { Icons } from '@assets/Icons';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FAB, Portal, useTheme } from 'react-native-paper';
 import { padding, screenHeight, screenWidth } from '@styles/spacing';
 
@@ -54,12 +54,11 @@ const ACTION_BUTTON_COUNT = 4;
  */
 const CopilotView = walkthroughable(View);
 
-export function VerticalBottomButtons() {
+function VerticalBottomButtons() {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
-  const isFocused = useIsFocused();
 
   const tabBarHeight = screenHeight / 9 + insets.bottom;
   const copilotWidth = screenWidth * 0.62;
@@ -72,14 +71,18 @@ export function VerticalBottomButtons() {
   const currentStep = copilotData?.currentStep;
 
   const [open, setOpen] = useState(false);
+  const [fabVisible, setFabVisible] = useState(true);
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const isInitialMount = useRef(true);
 
-  const fabVisible = isInitialMount.current || isFocused;
-
-  useEffect(() => {
-    isInitialMount.current = false;
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setFabVisible(true);
+      return () => {
+        setFabVisible(false);
+        setOpen(false);
+      };
+    }, [])
+  );
 
   const stepOrder = TUTORIAL_STEPS.Home.order;
 
@@ -211,4 +214,4 @@ export function VerticalBottomButtons() {
   );
 }
 
-export default VerticalBottomButtons;
+export default React.memo(VerticalBottomButtons);

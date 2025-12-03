@@ -14,16 +14,9 @@ export function reactNavigationMock() {
       navigate: mockNavigate,
       addListener: mockAddListener,
     }),
-    useFocusEffect: jest.fn(callback => {
-      const mockNav = {
-        addListener: jest.fn((event, handler) => {
-          if (event === 'focus') {
-            setTimeout(() => handler(), 10);
-          }
-          return jest.fn();
-        }),
-      };
-      callback(mockNav);
+    useFocusEffect: jest.fn(() => {
+      // Don't call the callback - this simulates a screen that's already focused
+      // and won't receive focus/blur events during the test
     }),
     useIsFocused: () => true,
   };
