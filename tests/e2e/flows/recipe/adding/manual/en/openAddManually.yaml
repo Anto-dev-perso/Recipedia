@@ -1,9 +1,9 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Expand FAB menu"
 
 - tapOn:
-    id: "EditButton::RoundButton"
+    id: "RecipeEdit"
     label: "Open manual recipe adding"

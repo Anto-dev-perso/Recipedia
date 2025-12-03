@@ -133,9 +133,9 @@ describe('RecipeIngredients Component', () => {
         expect(getByTestId(`EditableIngredients::${index}::QuantityInput`).props.value).toEqual(
           ingredient.quantity
         );
-        expect(
-          getByTestId(`EditableIngredients::${index}::Unit::CustomTextInput`).props.value
-        ).toEqual(ingredient.unit);
+        expect(getByTestId(`EditableIngredients::${index}::Unit`).props.children).toEqual(
+          ingredient.unit
+        );
         expect(
           getByTestId(`EditableIngredients::${index}::NameInput::TextInputWithDropdown::Value`)
             .props.children

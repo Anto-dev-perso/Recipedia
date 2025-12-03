@@ -1,18 +1,18 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Expand button is visible"
 
 - assertNotVisible:
-    id: "ReduceButton::RoundButton"
+    id: "ReduceButton"
     label: "Reduce button is not visible"
 - assertNotVisible:
-    id: "EditButton::RoundButton"
+    id: "RecipeEdit"
     label: "Edit button is not visible"
 - assertNotVisible:
-    id: "GalleryButton::RoundButton"
+    id: "GalleryButton"
     label: "Gallery button is not visible"
 - assertNotVisible:
-    id: "CameraButton::RoundButton"
+    id: "CameraButton"
     label: "Camera button is not visible"

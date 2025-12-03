@@ -17,10 +17,6 @@ tags:
 - evalScript: ${output.isTime = true}
 - evalScript: ${output.isNutritionToOCR = false}
 
-- tapOn:
-    id: "ExpandButton::RoundButton"
-    label: "Setup - Expand FAB menu"
-
 - runFlow:
     file: "../../flows/recipe/adding/ocr/gallery/addRecipeFromGallery.yaml"
     env:
@@ -32,10 +28,6 @@ tags:
     env:
       RECIPE_NAME: "TAJINE DE MERGUEZ AU CUMIN"
     label: "Assert - Verify recipe added successfully"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Collapse FAB menu"
 
 - tapOn:
     id: "BottomTabs::Search"
@@ -60,7 +52,7 @@ tags:
     label: "Assert - Verify recipe content in read-only mode"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Cleanup - Return to search results"
 
 - tapOn:

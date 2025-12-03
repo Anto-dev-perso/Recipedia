@@ -20,7 +20,7 @@ env:
     label: "Assert - Verify Vegetable Soup recipe is displayed correctly"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Action - Back to the Home Screen"
 
 - runFlow:

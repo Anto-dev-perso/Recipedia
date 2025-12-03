@@ -11,5 +11,5 @@ appId: "com.recipedia"
     label: "Empty shopping list message is displayed"
 
 - assertNotVisible:
-    id: "ShoppingScreen::ClearShoppingListButton"
+    id: "ShoppingScreen::ClearShoppingListButton::RoundButton"
     label: "Delete button is not visible when list is empty"

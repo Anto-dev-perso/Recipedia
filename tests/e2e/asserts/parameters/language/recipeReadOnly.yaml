@@ -13,7 +13,6 @@ appId: "com.recipedia"
     text: "Ingrédients (4 personnes)"
     label: "Persons text is displayed in French"
 
-
 - scrollUntilVisible:
     element:
       id: "RecipeTime::Text"
@@ -24,7 +23,7 @@ appId: "com.recipedia"
     text: "Préparation (20 min)"
     label: "Preparation header with time is displayed in French"
 - assertVisible:
-    id: "RecipeValidate-text"
+    id: "RecipeValidateButton-text"
     text: "Ajouter au menu"
     label: "Read only validate button is displayed in French"
 - scrollUntilVisible:

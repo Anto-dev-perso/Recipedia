@@ -1,11 +1,11 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Expand FAB menu"
 
 - tapOn:
-    id: "EditButton::RoundButton"
+    id: "RecipeEdit"
     label: "Tap manual recipe add button"
 
 - runFlow:
@@ -28,6 +28,7 @@ appId: "com.recipedia"
       id: "RecipeIngredients::AddButton::RoundButton"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll to ingredients section"
 
 - tapOn:
@@ -41,6 +42,9 @@ appId: "com.recipedia"
 - inputText:
     text: "100"
     label: "Enter ingredient quantity"
+
+- hideKeyboard:
+    label: "Hide the keyboard"
 
 - tapOn:
     id: "RecipeIngredients::0::NameInput::CustomTextInput"
@@ -65,6 +69,14 @@ appId: "com.recipedia"
     id: "TextInputWithDropDown::List::RecipeIngredient"
     label: "Select the new ingredient"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipeTime::NumericTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to recipe time secrion"
+
 - tapOn:
     id: "RecipeTime::NumericTextInput"
     label: "Focus on time input"
@@ -81,6 +93,7 @@ appId: "com.recipedia"
       id: "RecipePreparation::AddButton::RoundButton"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Scroll to preparation section"
 
 - tapOn:
@@ -107,18 +120,14 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeValidate"
+      id: "RecipeValidateButton"
     direction: DOWN
     speed: 60
     label: "Scroll to validate button"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
 
 - tapOn:
     id: "Recipe::Dialog::Confirm"
     label: "Close the validation dialog"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Reduce the FAB button as we no more need it"

@@ -18,10 +18,6 @@ tags:
     label: "Assert - Verify recipe added confirmation"
 
 - tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Close the FAB buttons"
-
-- tapOn:
     id: "BottomTabs::Search"
     label: "Action - Navigate to Search screen"
 
@@ -40,7 +36,7 @@ tags:
     label: "Action - Open Test Recipe"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Add Test Recipe to shopping"
 
 - runFlow:
@@ -78,3 +74,4 @@ tags:
 - tapOn:
     id: "BottomTabs::Home"
     label: "Cleanup - Navigate to Home screen"
+

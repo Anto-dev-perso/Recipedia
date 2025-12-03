@@ -81,16 +81,9 @@ import {
   recipeTableElement,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
-import BottomTopButton from '@components/molecules/BottomTopButton';
 import { ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  BottomTopButtonOffset,
-  bottomTopPosition,
-  LargeButtonDiameter,
-  rectangleButtonHeight,
-} from '@styles/buttons';
-import { scrollView } from '@styles/spacing';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { padding } from '@styles/spacing';
 import RecipeImage, { RecipeImageProps } from '@components/organisms/RecipeImage';
 import { Icons } from '@assets/Icons';
 import RecipeText, { RecipeTextProps, TextProp } from '@components/organisms/RecipeText';
@@ -106,12 +99,11 @@ import { textSeparator, unitySeparator } from '@styles/typography';
 import RecipeTags, { RecipeTagProps } from '@components/organisms/RecipeTags';
 import { clearCache } from '@utils/FileGestion';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
-import RectangleButton from '@components/atomic/RectangleButton';
-import RoundButton from '@components/atomic/RoundButton';
 import { extractFieldFromImage } from '@utils/OCR';
 import RecipeNumber, { RecipeNumberProps } from '@components/organisms/RecipeNumber';
 import { defaultValueNumber } from '@utils/Constants';
-import { useTheme } from 'react-native-paper';
+import { Button, useTheme } from 'react-native-paper';
+import RecipeAppBar from '@components/organisms/RecipeAppBar';
 import ModalImageSelect from '@screens/ModalImageSelect';
 import { cropImage } from '@utils/ImagePicker';
 import { useI18n } from '@utils/i18n';
@@ -126,6 +118,9 @@ import ValidationQueue, {
   IngredientValidationProps,
   TagValidationProps,
 } from '@components/dialogs/ValidationQueue';
+
+const BUTTON_HEIGHT = 48;
+const BUTTON_CONTAINER_HEIGHT = BUTTON_HEIGHT + padding.small * 2;
 
 /** Enum defining the four possible recipe interaction modes */
 export enum recipeStateType {
@@ -198,6 +193,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   const { t } = useI18n();
 
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const {
     addRecipe,
@@ -1522,48 +1518,77 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     }
   }
 
+  function handleCancel() {
+    if (stackMode === recipeStateType.edit && props.mode === 'edit') {
+      setRecipeImage(props.recipe.image_Source);
+      setRecipeTitle(props.recipe.title);
+      setRecipeDescription(props.recipe.description);
+      setRecipeTags(props.recipe.tags);
+      setRecipePersons(props.recipe.persons);
+      setRecipeIngredients(props.recipe.ingredients);
+      setRecipePreparation(props.recipe.preparation);
+      setRecipeTime(props.recipe.time);
+      setRecipeNutrition(props.recipe.nutrition);
+    }
+    setStackMode(recipeStateType.readOnly);
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <RecipeAppBar
+        isEditing={stackMode === recipeStateType.edit}
+        onGoBack={() => navigation.goBack()}
+        onCancel={handleCancel}
+        onValidate={validationFunction}
+        onDelete={stackMode === recipeStateType.readOnly ? onDelete : undefined}
+        onEdit={
+          stackMode === recipeStateType.readOnly
+            ? () => setStackMode(recipeStateType.edit)
+            : undefined
+        }
+      />
+
       <ScrollView
         horizontal={false}
         showsVerticalScrollIndicator={false}
-        style={scrollView(rectangleButtonHeight).view}
+        style={{ flex: 1, backgroundColor: colors.background }}
+        contentContainerStyle={{ paddingBottom: BUTTON_CONTAINER_HEIGHT + insets.bottom }}
         keyboardShouldPersistTaps={'handled'}
         nestedScrollEnabled={true}
       >
-        {/*Image*/}
         <RecipeImage {...recipeImageProp()} />
-
-        {/*Title*/}
         <RecipeText {...recipeTitleProp()} />
-
-        {/*Description*/}
         <RecipeText {...recipeDescriptionProp()} />
-
-        {/*Tags*/}
         <RecipeTags {...recipeTagsProp()} />
-
-        {/*Persons*/}
         <RecipeNumber {...recipePersonsProp()} />
-
-        {/*Ingredients*/}
         <RecipeIngredients {...recipeIngredientsProp()} />
-
-        {/* TODO let the possibility to add another time in picture */}
-        {/*Time*/}
         <RecipeNumber {...recipeTimeProp()} />
-
-        {/*Preparation*/}
         <RecipePreparation {...recipePreparationProp()} />
-
-        {/*Nutrition*/}
         <RecipeNutrition {...recipeNutritionProp()} />
-
-        {/* Add some space to avoid missing clicking */}
-        <View style={{ paddingVertical: LargeButtonDiameter / 2 }} />
-
-        {/* TODO add nutrition */}
       </ScrollView>
+
+      {stackMode !== recipeStateType.edit && (
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: padding.small,
+            paddingBottom: insets.bottom + padding.small,
+            backgroundColor: colors.background,
+          }}
+        >
+          <Button
+            testID='RecipeValidateButton'
+            mode='contained'
+            onPress={async () => await validationFunction()}
+          >
+            {validationButtonText}
+          </Button>
+        </View>
+      )}
+
       <Alert
         {...validationDialogProp}
         isVisible={isValidationDialogOpen}
@@ -1573,50 +1598,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           setValidationDialogProp(defaultValidationDialogProp);
         }}
       />
-      {/*TODO add a generic component to tell which bottom button we want*/}
-      <BottomTopButton
-        testID={'BackButton'}
-        as={RoundButton}
-        position={bottomTopPosition.top_left}
-        buttonOffset={0}
-        size={'medium'}
-        onPressFunction={() => navigation.goBack()}
-        icon={Icons.backIcon}
-      />
 
-      {stackMode == recipeStateType.readOnly ? (
-        <>
-          <BottomTopButton
-            testID={'RecipeDelete'}
-            as={RoundButton}
-            position={bottomTopPosition.top_right}
-            buttonOffset={0}
-            onPressFunction={() => onDelete()}
-            size={'medium'}
-            icon={Icons.trashIcon}
-          />
-          <BottomTopButton
-            testID={'RecipeEdit'}
-            as={RoundButton}
-            position={bottomTopPosition.bottom_right}
-            buttonOffset={BottomTopButtonOffset}
-            onPressFunction={() => setStackMode(recipeStateType.edit)}
-            size={'medium'}
-            icon={Icons.pencilIcon}
-          />
-        </>
-      ) : null}
-
-      {/* TODO to refactor for react-native-paper  */}
-      <BottomTopButton
-        testID={'RecipeValidate'}
-        as={RectangleButton}
-        position={bottomTopPosition.bottom_full}
-        text={validationButtonText}
-        centered={true}
-        border={false}
-        onPressFunction={async () => await validationFunction()}
-      />
       {modalField ? (
         <ModalImageSelect
           arrImg={imgForOCR}
@@ -1632,7 +1614,6 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         />
       ) : null}
 
-      {/* SimilarityDialog for both tags and ingredients */}
       {similarityDialog.item && (
         <SimilarityDialog
           testId={`Recipe${similarityDialog.item.type}Similarity`}

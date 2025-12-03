@@ -1,10 +1,13 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "EditButton::RoundButton"
+    id: "ExpandButton"
+    label: "Expand the FAB buttons"
+- tapOn:
+    id: "RecipeEdit"
     label: "Go to adding manually a recipe screen"
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Try to validate the adding when empty"
 - runFlow:
     file: "../../../asserts/alerts/fr/recipeValidationError.yaml"
@@ -15,7 +18,7 @@ appId: "com.recipedia"
     file: "./fillRecipe.yaml"
     label: "Fill the mandatory fields of the recipe adding screen"
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Validate the recipe adding"
 - runFlow:
     file: "../../../asserts/alerts/fr/recipeAddedToDatabase.yaml"

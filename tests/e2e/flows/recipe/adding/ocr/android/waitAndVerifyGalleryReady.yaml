@@ -46,10 +46,13 @@ appId: "com.recipedia"
       - runFlow:
           when:
             visible:
-              id: "GalleryButton::RoundButton"
+              id: "ExpandButton"
           commands:
             - tapOn:
-                id: "GalleryButton::RoundButton"
+                id: "ExpandButton"
+                label: "Expand FAB menu"
+            - tapOn:
+                id: "GalleryButton"
                 label: "Reopen gallery"
 
       - runFlow:

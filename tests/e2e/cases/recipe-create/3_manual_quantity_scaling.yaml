@@ -23,7 +23,7 @@ tags:
     label: "Assert - Verify recipe before validation (2 persons, 200g, 100g)"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -31,10 +31,6 @@ tags:
     env:
       RECIPE_NAME: "Test Recipe"
     label: "Assert - Verify recipe added successfully"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Collapse FAB menu"
 
 - tapOn:
     id: "BottomTabs::Search"
@@ -59,7 +55,7 @@ tags:
     label: "Assert - Verify recipe scaled to 4 persons (400g, 200g)"
 
 - tapOn:
-    id: "RecipeDelete::RoundButton"
+    id: "RecipeDelete"
     label: "Cleanup - Delete the recipe"
 
 - tapOn:

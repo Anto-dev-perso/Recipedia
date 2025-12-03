@@ -5,7 +5,7 @@ appId: "com.recipedia"
     label: "Check bottom navigation tabs"
 
 - assertVisible:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Expand button is displayed"
 
 - assertVisible:

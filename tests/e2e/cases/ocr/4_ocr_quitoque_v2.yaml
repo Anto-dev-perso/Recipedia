@@ -29,10 +29,6 @@ tags:
     id: "BottomTabs::Home"
     label: "Setup - Navigate to Home screen"
 
-- tapOn:
-    id: "ExpandButton::RoundButton"
-    label: "Setup - Expand FAB menu"
-
 - runFlow:
     file: "../../flows/recipe/adding/ocr/gallery/addRecipeFromGallery.yaml"
     env:
@@ -44,10 +40,6 @@ tags:
     env:
       RECIPE_NAME: "POULET SAUCE SATAY.*"
     label: "Assert - Verify recipe added successfully (French)"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Collapse FAB menu"
 
 - tapOn:
     id: "BottomTabs::Search"
@@ -72,7 +64,7 @@ tags:
     label: "Assert - Verify recipe content in read-only mode (French UI)"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Cleanup - Return to search results"
 
 - tapOn:

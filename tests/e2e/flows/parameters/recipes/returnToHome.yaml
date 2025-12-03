@@ -1,9 +1,9 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Navigate back to Parameters"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Navigate back to Home"

@@ -50,7 +50,7 @@
 import { shoppingListTableElement } from '@customTypes/DatabaseElementTypes';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SectionList, StyleProp, TextStyle, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CopilotStep, walkthroughable } from 'react-native-copilot';
 import { useSafeCopilot } from '@hooks/useSafeCopilot';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
@@ -62,11 +62,9 @@ import {
   shoppingCategories,
   TListFilter,
 } from '@customTypes/RecipeFiltersTypes';
-import BottomTopButton from '@components/molecules/BottomTopButton';
-import RoundButton from '@components/atomic/RoundButton';
-import { bottomTopPosition } from '@styles/buttons';
 import { Icons } from '@assets/Icons';
 import Alert from '@components/dialogs/Alert';
+import RoundButton from '@components/atomic/RoundButton';
 import { shoppingLogger } from '@utils/logger';
 import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
 import { padding } from '@styles/spacing';
@@ -85,6 +83,7 @@ const CopilotView = walkthroughable(View);
 export function Shopping() {
   const { t } = useI18n();
   const { colors, fonts } = useTheme();
+  const insets = useSafeAreaInsets();
   const {
     shopping: shoppingList,
     purchaseIngredientInShoppingList,
@@ -343,7 +342,6 @@ export function Shopping() {
         />
       )}
 
-      {/* Positioned overlay for tutorial highlighting - appears in center where dialog shows */}
       {copilotData && (
         <CopilotStep text={t('tutorial.shopping.description')} order={stepOrder} name={'Shopping'}>
           <CopilotView
@@ -381,14 +379,17 @@ export function Shopping() {
         onClose={closeClearConfirmation}
       />
       {shoppingList.length > 0 && (
-        <BottomTopButton
-          testID={screenId + '::ClearShoppingListButton'}
-          as={RoundButton}
-          position={bottomTopPosition.top_right}
-          size={'medium'}
+        <RoundButton
           icon={Icons.trashIcon}
-          applyInsets={true}
+          size='medium'
           onPressFunction={showClearConfirmation}
+          testID={screenId + '::ClearShoppingListButton'}
+          style={{
+            position: 'absolute',
+            top: insets.top + padding.medium,
+            right: padding.medium,
+            zIndex: 1,
+          }}
         />
       )}
     </SafeAreaView>

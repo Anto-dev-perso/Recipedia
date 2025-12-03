@@ -71,7 +71,7 @@ tags:
     label: "Action - Hide keyboard"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate recipe with far quantities"
 
 - runFlow:
@@ -79,10 +79,6 @@ tags:
     env:
       RECIPE_NAME: ".*"
     label: "Assert - Verify recipe added successfully (no duplicate)"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Close FAB buttons"
 
 - runFlow:
     file: "../../flows/recipe/deleteRecipeBySearch.yaml"

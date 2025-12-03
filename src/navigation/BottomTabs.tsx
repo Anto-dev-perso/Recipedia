@@ -57,6 +57,7 @@ import { useI18n } from '@utils/i18n';
 import Search from '@screens/Search';
 import { Tab } from '@customTypes/ScreenTypes';
 import { DarkModeContext } from '@context/DarkModeContext';
+import { useSafeCopilot } from '@hooks/useSafeCopilot';
 
 const testId = 'BottomTabs';
 
@@ -115,10 +116,11 @@ export function BottomTabs() {
     }
   }
 
-  // Disable lazy loading to ensure all tutorial steps are registered before copilot starts.
-  // The tutorial is a one-time first-launch experience, so the performance impact is acceptable.
-  // Performance optimizations in Search/Home screens prevent ANR on slower devices.
-  const shouldRenderLazy = false;
+  // Only disable lazy loading during tutorial mode (when copilot is active)
+  // to ensure all tutorial steps are registered before copilot starts.
+  // In normal operation, enable lazy loading for better performance.
+  const copilotData = useSafeCopilot();
+  const shouldRenderLazy = !copilotData;
 
   return (
     <>

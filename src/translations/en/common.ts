@@ -53,4 +53,10 @@ export default {
       description: 'Add some recipes to your collection to see personalized recommendations.',
     },
   },
+
+  fab: {
+    addManually: 'Add manually',
+    pickFromGallery: 'Pick from gallery',
+    takePhoto: 'Take a photo',
+  },
 };

@@ -23,10 +23,6 @@ tags:
       SEARCH_TEXT: "Test Recipe"
     label: "Verify - Confirm recipe is searchable before duplicate test"
 
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Action - Close FAB buttons"
-
 - runFlow:
     file: "../../flows/recipe/adding/createBaseRecipeForDuplicateTests.yaml"
     label: "Action - Create identical recipe"
@@ -62,7 +58,7 @@ tags:
     label: "Action - Add Olive Oil ingredient"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate recipe with extra ingredient"
 
 - runFlow:
@@ -74,7 +70,7 @@ tags:
     label: "Action - Cancel adding duplicate recipe"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Action - Go back to home"
 
 - runFlow:
@@ -86,10 +82,6 @@ tags:
     env:
       RECIPE_NAME: ".*"
     label: "Assert - Verify recipe added successfully (no duplicate)"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Close FAB buttons"
 
 - runFlow:
     file: "../../flows/recipe/deleteRecipeBySearch.yaml"

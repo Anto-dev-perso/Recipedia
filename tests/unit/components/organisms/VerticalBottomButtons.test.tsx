@@ -19,11 +19,6 @@ jest.mock('@react-navigation/native', () =>
   require('@mocks/deps/react-navigation-mock').reactNavigationMock()
 );
 
-jest.mock(
-  '@components/molecules/BottomTopButton',
-  () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock
-);
-
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
 describe('VerticalBottomButtons Component', () => {
@@ -32,69 +27,53 @@ describe('VerticalBottomButtons Component', () => {
   });
 
   test('renders expand button in collapsed state', () => {
-    //@ts-ignore navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(<VerticalBottomButtons />);
 
-    // Should show expand button
-    expect(getByTestId('ExpandButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('ExpandButton')).toBeTruthy();
 
-    // Should not show any expanded buttons
-    expect(queryByTestId('ReduceButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('EditButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('GalleryButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('CameraButton::OnPressFunction')).toBeNull();
+    expect(queryByTestId('ReduceButton')).toBeNull();
+    expect(queryByTestId('RecipeEdit')).toBeNull();
+    expect(queryByTestId('GalleryButton')).toBeNull();
+    expect(queryByTestId('CameraButton')).toBeNull();
   });
   test('renders all action buttons in expanded state', () => {
-    //@ts-ignore navigation are not useful for UT
     const { queryByTestId, getByTestId } = render(<VerticalBottomButtons />);
 
-    fireEvent.press(getByTestId('ExpandButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ExpandButton'));
 
-    // Should show all action buttons
-    expect(getByTestId('ReduceButton::OnPressFunction')).toBeTruthy();
-    expect(getByTestId('EditButton::OnPressFunction')).toBeTruthy();
-    expect(getByTestId('GalleryButton::OnPressFunction')).toBeTruthy();
-    expect(getByTestId('CameraButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('ReduceButton')).toBeTruthy();
+    expect(getByTestId('RecipeEdit')).toBeTruthy();
+    expect(getByTestId('GalleryButton')).toBeTruthy();
+    expect(getByTestId('CameraButton')).toBeTruthy();
 
-    // Should hide expand button
-    expect(queryByTestId('ExpandButton::OnPressFunction')).toBeNull();
+    expect(queryByTestId('ExpandButton')).toBeNull();
   });
 
   test('collapses menu when reduce button is pressed', () => {
-    //@ts-ignore navigation are not useful for UT
     const { queryByTestId, getByTestId } = render(<VerticalBottomButtons />);
 
-    // Expand the menu first
-    fireEvent.press(getByTestId('ExpandButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ExpandButton'));
 
-    // Verify expanded state
-    expect(getByTestId('ReduceButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('ReduceButton')).toBeTruthy();
 
-    // Collapse the menu
-    fireEvent.press(getByTestId('ReduceButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ReduceButton'));
 
-    // Should show expand button again
-    expect(getByTestId('ExpandButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('ExpandButton')).toBeTruthy();
 
-    // Should hide all action buttons
-    expect(queryByTestId('ReduceButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('EditButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('GalleryButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('CameraButton::OnPressFunction')).toBeNull();
+    expect(queryByTestId('ReduceButton')).toBeNull();
+    expect(queryByTestId('RecipeEdit')).toBeNull();
+    expect(queryByTestId('GalleryButton')).toBeNull();
+    expect(queryByTestId('CameraButton')).toBeNull();
   });
 
   test('navigates to manual recipe creation when edit button is pressed', async () => {
-    //@ts-ignore navigation are not useful for UT
     const { getByTestId } = render(<VerticalBottomButtons />);
 
-    // Expand menu first
-    fireEvent.press(getByTestId('ExpandButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ExpandButton'));
 
-    // Verify edit button exists
-    expect(getByTestId('EditButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('RecipeEdit')).toBeTruthy();
 
-    // Press edit button
-    fireEvent.press(getByTestId('EditButton::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeEdit'));
 
     await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
 
@@ -104,17 +83,13 @@ describe('VerticalBottomButtons Component', () => {
   });
 
   test('picks image and navigates to recipe creation when gallery button is pressed', async () => {
-    //@ts-ignore navigation are not useful for UT
     const { getByTestId } = render(<VerticalBottomButtons />);
 
-    // Expand menu first
-    fireEvent.press(getByTestId('ExpandButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ExpandButton'));
 
-    // Verify gallery button exists
-    expect(getByTestId('GalleryButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('GalleryButton')).toBeTruthy();
 
-    // Press gallery button
-    fireEvent.press(getByTestId('GalleryButton::OnPressFunction'));
+    fireEvent.press(getByTestId('GalleryButton'));
 
     await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
 
@@ -125,17 +100,13 @@ describe('VerticalBottomButtons Component', () => {
   });
 
   test('takes photo and navigates to recipe creation when camera button is pressed', async () => {
-    //@ts-ignore navigation are not useful for UT
     const { getByTestId } = render(<VerticalBottomButtons />);
 
-    // Expand menu first
-    fireEvent.press(getByTestId('ExpandButton::OnPressFunction'));
+    fireEvent.press(getByTestId('ExpandButton'));
 
-    // Verify camera button exists
-    expect(getByTestId('CameraButton::OnPressFunction')).toBeTruthy();
+    expect(getByTestId('CameraButton')).toBeTruthy();
 
-    // Press camera button
-    fireEvent.press(getByTestId('CameraButton::OnPressFunction'));
+    fireEvent.press(getByTestId('CameraButton'));
 
     await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
 
@@ -146,28 +117,24 @@ describe('VerticalBottomButtons Component', () => {
   });
 
   test('handles state transitions correctly', () => {
-    //@ts-ignore navigation are not useful for UT
     const { getByTestId, queryByTestId } = render(<VerticalBottomButtons />);
 
-    // Initial state: collapsed
-    expect(getByTestId('ExpandButton::OnPressFunction')).toBeTruthy();
-    expect(queryByTestId('ReduceButton::OnPressFunction')).toBeNull();
+    expect(getByTestId('ExpandButton')).toBeTruthy();
+    expect(queryByTestId('ReduceButton')).toBeNull();
 
-    // Expand
-    fireEvent.press(getByTestId('ExpandButton::OnPressFunction'));
-    expect(queryByTestId('ExpandButton::OnPressFunction')).toBeNull();
-    expect(getByTestId('ReduceButton::OnPressFunction')).toBeTruthy();
-    expect(getByTestId('EditButton::OnPressFunction')).toBeTruthy();
-    expect(getByTestId('GalleryButton::OnPressFunction')).toBeTruthy();
-    expect(getByTestId('CameraButton::OnPressFunction')).toBeTruthy();
+    fireEvent.press(getByTestId('ExpandButton'));
+    expect(queryByTestId('ExpandButton')).toBeNull();
+    expect(getByTestId('ReduceButton')).toBeTruthy();
+    expect(getByTestId('RecipeEdit')).toBeTruthy();
+    expect(getByTestId('GalleryButton')).toBeTruthy();
+    expect(getByTestId('CameraButton')).toBeTruthy();
 
-    // Collapse
-    fireEvent.press(getByTestId('ReduceButton::OnPressFunction'));
-    expect(getByTestId('ExpandButton::OnPressFunction')).toBeTruthy();
-    expect(queryByTestId('ReduceButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('EditButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('GalleryButton::OnPressFunction')).toBeNull();
-    expect(queryByTestId('CameraButton::OnPressFunction')).toBeNull();
+    fireEvent.press(getByTestId('ReduceButton'));
+    expect(getByTestId('ExpandButton')).toBeTruthy();
+    expect(queryByTestId('ReduceButton')).toBeNull();
+    expect(queryByTestId('RecipeEdit')).toBeNull();
+    expect(queryByTestId('GalleryButton')).toBeNull();
+    expect(queryByTestId('CameraButton')).toBeNull();
   });
 
   describe('In Tutorial Mode', () => {
@@ -192,7 +159,7 @@ describe('VerticalBottomButtons Component', () => {
 
       expect(getByTestId('CopilotStep::Home')).toBeTruthy();
       expect(getByTestId('HomeTutorial')).toBeTruthy();
-      expect(getByTestId('ExpandButton::OnPressFunction')).toBeTruthy();
+      expect(getByTestId('ExpandButton')).toBeTruthy();
     });
 
     test('renders without tutorial wrapper when copilot is not available', () => {
@@ -202,7 +169,7 @@ describe('VerticalBottomButtons Component', () => {
 
       expect(queryByTestId('CopilotStep::Home')).toBeNull();
       expect(queryByTestId('HomeTutorial')).toBeNull();
-      expect(getByTestId('ExpandButton::OnPressFunction')).toBeTruthy();
+      expect(getByTestId('ExpandButton')).toBeTruthy();
     });
 
     test('handles tutorial demo when on Home step', async () => {
@@ -219,8 +186,8 @@ describe('VerticalBottomButtons Component', () => {
         expect(mockEvents.on).toHaveBeenCalledWith('stop', expect.any(Function));
       });
 
-      expect(getByTestId('ExpandButton::OnPressFunction')).toBeTruthy();
-      expect(queryByTestId('ReduceButton::OnPressFunction')).toBeNull();
+      expect(getByTestId('ExpandButton')).toBeTruthy();
+      expect(queryByTestId('ReduceButton')).toBeNull();
 
       expect(mockEvents.on).toHaveBeenCalledWith('stepChange', expect.any(Function));
       expect(mockEvents.on).toHaveBeenCalledWith('stop', expect.any(Function));

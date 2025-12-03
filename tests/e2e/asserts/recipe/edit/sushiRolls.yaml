@@ -121,7 +121,7 @@ appId: "com.recipedia"
     text: "250"
     label: "Quantity of first ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::0::Unit::CustomTextInput"
+    id: "RecipeIngredients::0::Unit"
     text: "g"
     label: "First occurrence of the g unit is rendered"
 - assertVisible:
@@ -140,7 +140,7 @@ appId: "com.recipedia"
     text: "5"
     label: "Quantity of second ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::1::Unit::CustomTextInput"
+    id: "RecipeIngredients::1::Unit"
     text: "pieces"
     label: "Pieces unit is rendered"
 - assertVisible:
@@ -152,7 +152,7 @@ appId: "com.recipedia"
     text: "200"
     label: "Quantity of third ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::2::Unit::CustomTextInput"
+    id: "RecipeIngredients::2::Unit"
     text: "g"
     label: "Second occurrence of the g unit is rendered"
 - assertVisible:
@@ -171,7 +171,7 @@ appId: "com.recipedia"
     text: "100"
     label: "Quantity of fourth ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::3::Unit::CustomTextInput"
+    id: "RecipeIngredients::3::Unit"
     text: "g"
     label: "Third occurrence of the g unit is rendered"
 - assertVisible:
@@ -181,9 +181,9 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeIngredients::AddButton::RoundButton"
+      id: "RecipeIngredients::4::NameInput::CustomTextInput"
     direction: DOWN
-    speed: 60
+    speed: 40
     centerElement: true
     label: "Scroll down to the end of ingredients section"
 
@@ -192,7 +192,7 @@ appId: "com.recipedia"
     text: "50"
     label: "Quantity of fifth ingredient is rendered"
 - assertVisible:
-    id: "RecipeIngredients::4::Unit::CustomTextInput"
+    id: "RecipeIngredients::4::Unit"
     text: "ml"
     label: "ml unit is rendered"
 - assertVisible:
@@ -210,6 +210,14 @@ appId: "com.recipedia"
     speed: 60
     centerElement: true
     label: "Scroll down to the time to prepare"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::AddButton::RoundButton"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll down to the end of ingredients section"
 
 - assertVisible:
     text: "󰐕"
@@ -233,16 +241,35 @@ appId: "com.recipedia"
       id: "RecipePreparation::EditableStep::0::Title"
     direction: DOWN
     speed: 60
+    centerElement: true
+    label: "Scroll down to the preparation steps"
 
 - assertVisible:
     id: "RecipePreparation::PrefixText"
     text: "Preparation :"
     label: "Preparation prefix text is rendered"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::EditableStep::0::Step"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll down to the first preparation step"
+
 - assertVisible:
     id: "RecipePreparation::EditableStep::0::Step"
     text: "Step 1"
     label: "Preparation section for first step is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::EditableStep::0::TextInputTitle::CustomTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll down to the title of first step"
+
 - assertVisible:
     id: "RecipePreparation::EditableStep::0::Title"
     text: "Title of step 1 : "

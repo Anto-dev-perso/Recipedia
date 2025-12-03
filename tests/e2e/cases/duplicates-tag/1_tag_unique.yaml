@@ -8,11 +8,11 @@ tags:
     label: "Setup - Launch app and wait for ready"
 
 - tapOn:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Action - Expand FAB menu"
 
 - tapOn:
-    id: "EditButton::RoundButton"
+    id: "RecipeEdit"
     label: "Action - Open manual recipe creation"
 
 - runFlow:
@@ -52,12 +52,9 @@ tags:
     label: "Assert - Verify edited tag name appears"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Cleanup - Exit recipe creation without saving"
 
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Close FAB buttons"
 
 - runFlow:
     file: "../../flows/parameters/tags/navigateToTagsSettings.yaml"

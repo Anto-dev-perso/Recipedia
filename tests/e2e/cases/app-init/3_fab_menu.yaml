@@ -12,7 +12,7 @@ tags:
     label: "Assert - Verify FAB menu is collapsed initially"
 
 - tapOn:
-    id: "ExpandButton::RoundButton"
+    id: "ExpandButton"
     label: "Action - Tap on expand button to open FAB menu"
 
 - runFlow:
@@ -20,7 +20,7 @@ tags:
     label: "Assert - Verify FAB menu is expanded with all buttons visible"
 
 - tapOn:
-    id: "ReduceButton::RoundButton"
+    id: "ReduceButton"
     label: "Action - Tap on reduce button to collapse FAB menu"
 
 - runFlow:

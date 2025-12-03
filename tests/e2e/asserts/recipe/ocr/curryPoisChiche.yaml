@@ -119,7 +119,7 @@ appId: "com.recipedia"
     label: "Expected to have the right number of ingredients quantities"
 
 - assertVisible:
-    id: "RecipeIngredients::10::Unit::CustomTextInput"
+    id: "RecipeIngredients::10::Unit"
     label: "Expected to have the right number of ingredients units"
 
 - assertVisible:

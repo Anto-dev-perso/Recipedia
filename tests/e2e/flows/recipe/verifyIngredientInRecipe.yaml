@@ -27,5 +27,5 @@ appId: "com.recipedia"
     label: "Verify that unit is correctly displayed"
 
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Close the recipe"

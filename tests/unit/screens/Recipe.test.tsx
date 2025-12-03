@@ -59,10 +59,6 @@ jest.mock('@components/molecules/NutritionEmptyState', () =>
   require('@mocks/components/molecules/NutritionEmptyState-mock')
 );
 jest.mock(
-  '@components/molecules/BottomTopButton',
-  () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock
-);
-jest.mock(
   '@components/dialogs/Alert',
   () => require('@mocks/components/dialogs/Alert-mock').alertMock
 );
@@ -75,23 +71,34 @@ const defaultUri = '';
 type GetByIdType = GetByQuery<TextMatch, CommonQueryOptions & TextMatchOptions>;
 type QueryByIdType = QueryByQuery<TextMatch, CommonQueryOptions & TextMatchOptions>;
 
-function checkBottomTopButtons(
+function checkAppbarButtons(
   prop: RecipePropType,
   getByTestId: GetByIdType,
   queryByTestId: QueryByIdType
 ) {
+  expect(getByTestId('RecipeAppbar')).toBeTruthy();
   switch (prop.mode) {
     case 'readOnly':
-      expect(getByTestId('BackButton::OnPressFunction')).toBeTruthy();
-      expect(getByTestId('RecipeDelete::OnPressFunction')).toBeTruthy();
-      expect(getByTestId('RecipeEdit::OnPressFunction')).toBeTruthy();
+      expect(getByTestId('BackButton')).toBeTruthy();
+      expect(getByTestId('RecipeDelete')).toBeTruthy();
+      expect(getByTestId('RecipeEdit')).toBeTruthy();
+      expect(queryByTestId('RecipeCancel')).toBeNull();
+      expect(queryByTestId('RecipeValidate')).toBeNull();
       break;
     case 'edit':
+      expect(getByTestId('RecipeCancel')).toBeTruthy();
+      expect(getByTestId('RecipeValidate')).toBeTruthy();
+      expect(queryByTestId('BackButton')).toBeNull();
+      expect(queryByTestId('RecipeDelete')).toBeNull();
+      expect(queryByTestId('RecipeEdit')).toBeNull();
+      break;
     case 'addManually':
     case 'addFromPic':
-      expect(getByTestId('BackButton::OnPressFunction')).toBeTruthy();
-      expect(queryByTestId('RecipeDelete::OnPressFunction')).toBeNull();
-      expect(queryByTestId('RecipeEdit::OnPressFunction')).toBeNull();
+      expect(getByTestId('BackButton')).toBeTruthy();
+      expect(queryByTestId('RecipeDelete')).toBeNull();
+      expect(queryByTestId('RecipeEdit')).toBeNull();
+      expect(queryByTestId('RecipeCancel')).toBeNull();
+      expect(queryByTestId('RecipeValidate')).toBeNull();
       break;
   }
 }
@@ -637,7 +644,11 @@ describe('Recipe Component tests', () => {
     );
 
     await waitFor(() => {
-      expect(result.getByTestId('BackButton::OnPressFunction')).toBeTruthy();
+      if (route.params.mode === 'edit') {
+        expect(result.getByTestId('RecipeCancel')).toBeTruthy();
+      } else {
+        expect(result.getByTestId('BackButton')).toBeTruthy();
+      }
       if (route.params.mode === 'addManually') {
         const personsValue = result.queryByTestId('RecipePersons::TextEditable')?.props.children;
         if (personsValue !== undefined) {
@@ -669,7 +680,7 @@ describe('Recipe Component tests', () => {
   test('Initial state is correctly set in readOnly mode', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteReadOnly));
 
-    checkBottomTopButtons(mockRouteReadOnly, getByTestId, queryByTestId);
+    checkAppbarButtons(mockRouteReadOnly, getByTestId, queryByTestId);
 
     checkImage(mockRouteReadOnly, getByTestId);
     checkTitle(mockRouteReadOnly, getByTestId, queryByTestId);
@@ -685,7 +696,7 @@ describe('Recipe Component tests', () => {
   test('Initial state is correctly set in edit mode', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteEdit));
 
-    checkBottomTopButtons(mockRouteEdit, getByTestId, queryByTestId);
+    checkAppbarButtons(mockRouteEdit, getByTestId, queryByTestId);
 
     checkImage(mockRouteEdit, getByTestId);
     checkTitle(mockRouteEdit, getByTestId, queryByTestId);
@@ -703,7 +714,7 @@ describe('Recipe Component tests', () => {
       createMockRoute(mockRouteAddManually)
     );
 
-    checkBottomTopButtons(mockRouteAddManually, getByTestId, queryByTestId);
+    checkAppbarButtons(mockRouteAddManually, getByTestId, queryByTestId);
 
     checkImage(mockRouteAddManually, getByTestId, '');
     checkTitle(mockRouteAddManually, getByTestId, queryByTestId, '');
@@ -719,7 +730,7 @@ describe('Recipe Component tests', () => {
   test('Initial state is correctly set in add ocr mode', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteAddOCR));
 
-    checkBottomTopButtons(mockRouteAddOCR, getByTestId, queryByTestId);
+    checkAppbarButtons(mockRouteAddOCR, getByTestId, queryByTestId);
 
     checkImage(mockRouteAddOCR, getByTestId);
     checkTitle(mockRouteAddOCR, getByTestId, queryByTestId);
@@ -976,7 +987,7 @@ describe('Recipe Component tests', () => {
 
     expect(RecipeDatabase.getInstance().get_shopping()).toEqual([]);
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidateButton'));
 
     // Wait for shopping list to be populated (validation dialog is shown but navigation doesn't happen immediately)
     await waitFor(() => {
@@ -1077,7 +1088,7 @@ describe('Recipe Component tests', () => {
       checkPreparation(newPropEdit, getByTestId, queryByTestId);
     });
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidate'));
 
     const newPropReadOnly: RecipePropType = {
       mode: 'readOnly',
@@ -1113,7 +1124,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newTime.toString());
     // TODO missing ingredients, preparation and tags
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidateButton'));
 
     checkImage(mockRouteAddManually, getByTestId, '');
     checkTitle(mockRouteAddManually, getByTestId, queryByTestId, newTitle);
@@ -1133,7 +1144,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
     fireEvent.press(getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction'));
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidateButton'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1144,7 +1155,7 @@ describe('Recipe Component tests', () => {
     );
   });
 
-  test('shows validation error when nutrition has zero values in add mode', async () => {
+  test('shows validation error when nutrition has zero values in edit mode', async () => {
     const mockRecipeWithNutrition = {
       mode: 'edit' as const,
       recipe: {
@@ -1166,7 +1177,7 @@ describe('Recipe Component tests', () => {
 
     const { getByTestId } = await renderRecipe(createMockRoute(mockRecipeWithNutrition));
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidate'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1185,7 +1196,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
     fireEvent.press(getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction'));
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidateButton'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1207,7 +1218,7 @@ describe('Recipe Component tests', () => {
 
     const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEditWithoutImage));
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidate'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1240,7 +1251,7 @@ describe('Recipe Component tests', () => {
 
     const { getByTestId } = await renderRecipe(createMockRoute(mockRecipeWithZeroNutrition));
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidate'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1255,7 +1266,7 @@ describe('Recipe Component tests', () => {
     const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
 
     // Don't add anything - everything should be missing
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidateButton'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1277,7 +1288,7 @@ describe('Recipe Component tests', () => {
 
     const { getByTestId } = await renderRecipe(createMockRoute(mockCompleteRecipe as any));
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidate'));
 
     // Edit mode should switch to read-only mode when validation passes
     // No validation dialog should be shown for successful edit
@@ -1300,7 +1311,7 @@ describe('Recipe Component tests', () => {
     const newPersons = '8';
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPersons);
 
-    fireEvent.press(getByTestId('RecipeValidate::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeValidate'));
 
     await waitFor(() => {
       expect(editRecipeSpy).toHaveBeenCalled();
@@ -1320,9 +1331,9 @@ describe('Recipe Component tests', () => {
   test('toggles stackMode between readOnly and edit', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteReadOnly));
     const paramEdit: editRecipeManually = { ...mockRouteReadOnly, mode: 'edit' };
-    fireEvent.press(getByTestId('RecipeEdit::OnPressFunction'));
+    fireEvent.press(getByTestId('RecipeEdit'));
 
-    checkBottomTopButtons(paramEdit, getByTestId, queryByTestId);
+    checkAppbarButtons(paramEdit, getByTestId, queryByTestId);
 
     checkImage(paramEdit, getByTestId);
     checkTitle(paramEdit, getByTestId, queryByTestId);

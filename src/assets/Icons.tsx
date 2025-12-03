@@ -22,6 +22,7 @@ export const Icons: Record<string, dictionaryIcons> = {
   filterPlusIcon: 'filter-plus-outline',
   filterMinusIcon: 'filter-remove-outline',
   crossIcon: 'close',
+  checkIcon: 'check',
   trashIcon: 'delete',
   homeUnselectedIcon: 'home',
   homeSelectedIcon: 'home-outline',

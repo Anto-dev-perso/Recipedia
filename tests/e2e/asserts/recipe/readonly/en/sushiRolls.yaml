@@ -1,11 +1,11 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "BackButton::RoundButton"
+    id: "BackButton"
     label: "Back button is displayed"
 
 - assertVisible:
-    text: "󰌍"
+    text: "󰁍"
     label: "Back button icon is displayed"
 
 - assertVisible:
@@ -92,15 +92,23 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
-
+    label: "Scroll down to the first preparation steps"
 - assertVisible:
     id: "RecipePreparation::ReadOnlyStep::0::SectionTitle"
     text: "1) Prepare rice"
     label: "First section of the preparation is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+    label: "Scroll down to the second preparation steps"
 - assertVisible:
     id: "RecipePreparation::ReadOnlyStep::1::SectionTitle"
     text: "2) Spread rice"
@@ -108,15 +116,23 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::ReadOnlyStep::3::SectionTitle"
+      id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     direction: DOWN
     centerElement: true
     speed: 60
-
+    label: "Scroll down to the third preparation steps"
 - assertVisible:
     id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
     text: "3) Add fillings and roll"
     label: "Third section of the preparation is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::ReadOnlyStep::2::SectionTitle"
+    direction: DOWN
+    centerElement: true
+    speed: 60
+    label: "Scroll down to the fourth preparation steps"
 - assertVisible:
     id: "RecipePreparation::ReadOnlyStep::3::SectionTitle"
     text: "4) Serve"
@@ -137,7 +153,7 @@ appId: "com.recipedia"
     label: "Verify nutrition information is displayed"
 
 - assertVisible:
-    id: "RecipeEdit::RoundButton"
+    id: "RecipeEdit"
     label: "Edit button is rendered"
 
 - assertVisible:
@@ -145,7 +161,7 @@ appId: "com.recipedia"
     label: "Edit button has the correct icon"
 
 - assertVisible:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Add recipe button is displayed"
 
 - assertVisible:

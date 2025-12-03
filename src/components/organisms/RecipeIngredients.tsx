@@ -52,7 +52,6 @@ import RoundButton from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import NumericTextInput from '@components/atomic/NumericTextInput';
-import CustomTextInput from '@components/atomic/CustomTextInput';
 import TextInputWithDropDown from '@components/molecules/TextInputWithDropDown';
 import { defaultValueNumber } from '@utils/Constants';
 
@@ -299,17 +298,27 @@ function EditableIngredients(props: EditableIngredientsProps) {
               <DataTable.Cell
                 style={[
                   recipeTableStyles.cellBase,
-                  { flex: recipeTableFlex.unit, borderColor: colors.outline },
+                  {
+                    flex: recipeTableFlex.unit,
+                    borderColor: colors.outline,
+                    alignItems: 'stretch',
+                  },
                 ]}
               >
-                <CustomTextInput
+                <Text
                   testID={`${testID}::${index}::Unit`}
-                  value={item.unit}
-                  editable={false}
-                  dense
-                  mode='flat'
-                  style={recipeTableStyles.inputContainer}
-                />
+                  variant='bodyLarge'
+                  style={[
+                    recipeTableStyles.inputContainer,
+                    {
+                      backgroundColor: colors.backdrop,
+                      textAlign: 'center',
+                      textAlignVertical: 'center',
+                    },
+                  ]}
+                >
+                  {item.unit}
+                </Text>
               </DataTable.Cell>
               <DataTable.Cell
                 style={[

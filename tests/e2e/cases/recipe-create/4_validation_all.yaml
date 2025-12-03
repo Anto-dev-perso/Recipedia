@@ -102,7 +102,7 @@ tags:
     label: "Action - Add only image"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -116,7 +116,7 @@ tags:
     label: "Action - Add only image and title"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -130,7 +130,7 @@ tags:
     label: "Action - Add description"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -144,7 +144,7 @@ tags:
     label: "Action - Add tag"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -158,7 +158,7 @@ tags:
     label: "Action - Add persons"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -172,7 +172,7 @@ tags:
     label: "Action - Add ingredient"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -186,7 +186,7 @@ tags:
     label: "Action - Validate the ingredient name"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -200,7 +200,7 @@ tags:
     label: "Action - Validate the ingredient name"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -214,7 +214,7 @@ tags:
     label: "Action - Add time"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -228,7 +228,7 @@ tags:
     label: "Action - Complete the recipe"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -236,7 +236,3 @@ tags:
     env:
       RECIPE_NAME: "Title"
     label: "Assert - Verify recipe added successfully"
-
-- tapOn:
-    id: "ReduceButton::RoundButton"
-    label: "Cleanup - Collapse FAB menu"

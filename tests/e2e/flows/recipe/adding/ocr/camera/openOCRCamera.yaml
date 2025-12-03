@@ -1,11 +1,15 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "ExpandButton::RoundButton"
+    id: "BottomTabs::Home"
+    label: "Tap on home tab"
+
+- tapOn:
+    id: "ExpandButton"
     label: "Expand FAB menu"
 
 - tapOn:
-    id: "CameraButton::RoundButton"
+    id: "CameraButton"
     label: "Open camera for OCR"
 
 - runFlow:

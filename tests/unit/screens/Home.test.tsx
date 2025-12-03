@@ -24,10 +24,6 @@ jest.mock(
   '@components/organisms/RecipeRecommendation',
   () => require('@mocks/components/organisms/RecipeRecommendation-mock').recipeRecommendationMock
 );
-jest.mock(
-  '@components/molecules/BottomTopButton',
-  () => require('@mocks/components/molecules/BottomTopButton-mock').bottomTopButtonMock
-);
 
 jest.mock('expo-font', () => ({
   loadAsync: jest.fn(() => Promise.resolve()), // Mock as a resolved Promise

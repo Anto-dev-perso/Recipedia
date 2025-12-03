@@ -1,7 +1,11 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "EditButton::RoundButton"
+    id: "ExpandButton"
+    label: "Expand FAB menu"
+
+- tapOn:
+    id: "RecipeEdit"
     label: "Open manual recipe adding"
 
 - runFlow:
@@ -51,5 +55,5 @@ appId: "com.recipedia"
     label: "Add preparation step"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "RecipeValidateButton"
     label: "Validate the recipe"

@@ -89,11 +89,10 @@ appId: "com.recipedia"
     id: "RecipePreparation::EditableStep::0::Content"
     text: "Contenu de l'étape 1 : "
     label: "Intro text for recipe content of the first step is displayed in French"
-- assertVisible:
-    id: "RecipeValidate-text"
-    text: "Valider les modifications"
-    label: "Edit validate button is displayed in French"
+
 - tapOn:
-    id: "BackButton::RoundButton"
+    id: "RecipeCancel"
+    label: "Exit the edit mode"
+- tapOn:
+    id: "BackButton"
     label: "Quit the recipe screen"
-- pressKey: "BACK"
