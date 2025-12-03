@@ -1,3 +1,12 @@
+## [1.3.1](https://github.com/Anto-dev-perso/Recipedia/compare/v1.3.0...v1.3.1) (2025-12-03)
+
+### Bug Fixes
+
+* **BottomTabs:** update lazy loading logic for tutorial mode ([4c4c552](https://github.com/Anto-dev-perso/Recipedia/commit/4c4c552af9b3cafdaa091ab0ed2fdbe60eca0be6))
+* **RecipeDatabaseContext:** correct update order ([68ec279](https://github.com/Anto-dev-perso/Recipedia/commit/68ec279dae4fe90482d1f4b0591ffd88055548ca))
+* **RecipeIngredients:** resolve scroll blocking in ingredients table ([ef4539a](https://github.com/Anto-dev-perso/Recipedia/commit/ef4539acd1803a9f041c73548020f77266a0e368))
+* **VerticalBottomButtons:** update FAB visibility with `useFocusEffect` ([e95d005](https://github.com/Anto-dev-perso/Recipedia/commit/e95d0054329ac2f1ba366f358e428dff289fe56c))
+
 ## [1.3.0](https://github.com/Anto-dev-perso/Recipedia/compare/v1.2.1...v1.3.0) (2025-12-01)
 
 ### Features
