@@ -16,6 +16,7 @@ import { padding } from '@styles/spacing';
  *
  * Features:
  * - Step-by-step navigation with screen transitions
+ * - Automatic navigation state handling
  * - Customizable tooltip styling with Material Design
  * - Integration with copilot tutorial system
  *
@@ -31,7 +32,7 @@ export function TutorialTooltip() {
     return null;
   }
 
-  const { isFirstStep, isLastStep, goToNext, goToPrev, stop, currentStep } = copilotData;
+  const { isLastStep, goToNext, goToPrev, stop, currentStep } = copilotData;
 
   /**
    * Helper function to find tutorial step configuration by order number
@@ -76,13 +77,17 @@ export function TutorialTooltip() {
     return null;
   }
 
+  // Calculate isFirstStep from order, not library's broken calculation
+  const isFirstStep = currentStep.order === 1;
+
   /**
    * Handles advancing to the next tutorial step
    *
-   * Advances copilot step state before navigating to ensure the new screen
-   * renders with the correct step information (e.g., Previous button visible).
+   * Navigates to the next screen in the tutorial sequence and sets up
+   * step advancement to occur after navigation completes. Uses deferred
+   * execution to ensure proper timing with navigation state changes.
    */
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!currentStep) {
       return;
     }
@@ -100,10 +105,11 @@ export function TutorialTooltip() {
   /**
    * Handles going back to the previous tutorial step
    *
-   * Regresses copilot step state before navigating to ensure the new screen
-   * renders with the correct step information.
+   * Navigates to the previous screen in the tutorial sequence and sets up
+   * step regression to occur after navigation completes. Uses deferred
+   * execution to ensure proper timing with navigation state changes.
    */
-  const handlePrevious = () => {
+  const handlePrevious = async () => {
     if (!currentStep) {
       return;
     }

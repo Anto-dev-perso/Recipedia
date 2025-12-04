@@ -6,7 +6,7 @@ appId: "com.recipedia"
 
 - assertVisible:
     id: "TutorialTooltip::Text"
-    text: "Search by recipe name or use \"Add filter\" to find recipes by ingredients, tags, cooking time, and more."
+    text: 'Search by recipe name or use "Add filter" to find recipes by ingredients, tags, cooking time, and more.'
     label: "Verify Step 2 (Search) description"
 
 - extendedWaitUntil:
