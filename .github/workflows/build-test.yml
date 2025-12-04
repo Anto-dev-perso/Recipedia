@@ -18,7 +18,7 @@ jobs:
     name: Install Dependencies and run Expo doctor
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '24'
@@ -38,7 +38,7 @@ jobs:
     needs: install-and-doctor
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Restore node modules
         uses: actions/cache/restore@v4
@@ -95,7 +95,7 @@ jobs:
     needs: install-and-doctor
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -332,7 +332,7 @@ jobs:
         suite: [ 'app-init', 'search', 'recipe-view', 'recipe-create', 'shopping', 'settings', 'tags-db', 'ingredients-db', 'duplicates-tag', 'duplicates-ingredient', 'duplicates-recipe', 'ocr' ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: actions/setup-node@v6
         with:
@@ -413,7 +413,7 @@ jobs:
     needs: e2e-tests
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Restore node modules
         uses: actions/cache/restore@v4
