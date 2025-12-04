@@ -94,5 +94,5 @@ appId: "com.recipedia"
     id: "Recipe::AppBar::Cancel"
     label: "Exit the edit mode"
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Quit the recipe screen"

@@ -64,7 +64,7 @@ appId: "com.recipedia"
     label: "Assert recipe content in read-only mode"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Return to search results"
 
 - tapOn:

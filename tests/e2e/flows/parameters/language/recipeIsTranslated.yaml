@@ -25,7 +25,7 @@ appId: "com.recipedia"
     file: "../../../asserts/parameters/language/recipeOcr.yaml"
     label: "Check that the fixed text of a add by image recipe screen are displayed in French"
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Quit the recipe screen"
 - runFlow:
     file: "./recipeAlerts.yaml"

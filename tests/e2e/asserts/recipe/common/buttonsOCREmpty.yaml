@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Back button is displayed"
 
 - assertVisible:

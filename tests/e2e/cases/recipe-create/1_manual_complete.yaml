@@ -52,7 +52,7 @@ tags:
     label: "Assert - Verify recipe content in read-only mode"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Cleanup - Return to search results"
 
 - tapOn:
