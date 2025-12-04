@@ -1,12 +1,5 @@
 appId: "com.recipedia"
 ---
-- scrollUntilVisible:
-    element:
-      id: "TagsSettings::BottomActionButton"
-    direction: DOWN
-    speed: 95
-    label: "Scroll down to find Add button"
-
 - tapOn:
     id: "TagsSettings::BottomActionButton"
     label: "Open Add tag dialog"

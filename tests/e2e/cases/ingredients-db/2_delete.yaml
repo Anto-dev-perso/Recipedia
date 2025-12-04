@@ -14,13 +14,6 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: "IngredientsSettings::BottomActionButton"
-    direction: DOWN
-    speed: 95
-    label: "Action - Scroll to bottom of screen"
-
-- scrollUntilVisible:
-    element:
       id: "IngredientsSettings::34::DeleteButton"
     direction: UP
     speed: 60

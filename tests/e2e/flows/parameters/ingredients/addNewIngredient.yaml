@@ -1,12 +1,5 @@
 appId: "com.recipedia"
 ---
-- scrollUntilVisible:
-    element:
-      id: "IngredientsSettings::BottomActionButton"
-    direction: DOWN
-    speed: 95
-    label: "Scroll to the bottom of the screen"
-
 - tapOn:
     id: "IngredientsSettings::BottomActionButton"
     label: "Tap Add button to create a new ingredient"

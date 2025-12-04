@@ -1,6 +1,8 @@
 appId: "com.recipedia"
 ---
-- pressKey: BACK
+- tapOn:
+    id: "TagsSettings::AppBar::BackButton"
+    label: "Navigate back to Parameters"
 
 - scrollUntilVisible:
     element:

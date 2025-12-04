@@ -36,7 +36,7 @@ appId: "com.recipedia"
     label: "Verify old ingredient name no longer appears"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Close the recipe"
 
 - tapOn:

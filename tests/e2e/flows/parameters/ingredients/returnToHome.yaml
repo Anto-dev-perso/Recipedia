@@ -1,6 +1,8 @@
 appId: "com.recipedia"
 ---
-- pressKey: BACK
+- tapOn:
+    id: "IngredientsSettings::AppBar::BackButton"
+    label: "Navigate back to Parameters"
 
 - scrollUntilVisible:
     element:
