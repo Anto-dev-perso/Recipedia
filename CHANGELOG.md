@@ -1,3 +1,9 @@
+## [1.3.2](https://github.com/Anto-dev-perso/Recipedia/compare/v1.3.1...v1.3.2) (2025-12-04)
+
+### Bug Fixes
+
+* resolve ESLint warnings and TypeScript errors for React Compiler ([153e906](https://github.com/Anto-dev-perso/Recipedia/commit/153e906bf5101c6aa753293bd9049279ac40c048))
+
 ## [1.3.1](https://github.com/Anto-dev-perso/Recipedia/compare/v1.3.0...v1.3.1) (2025-12-03)
 
 ### Bug Fixes
