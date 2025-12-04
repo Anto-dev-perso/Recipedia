@@ -42,7 +42,11 @@ export function AppBar({
           color={colors.onPrimaryContainer}
         />
       )}
-      <Appbar.Content title={title ?? ''} titleStyle={{ color: colors.onPrimaryContainer }} />
+      <Appbar.Content
+        title={title ?? ''}
+        titleStyle={{ color: colors.onPrimaryContainer }}
+        testID={testId + '::Title'}
+      />
       {onDelete && (
         <Appbar.Action
           icon={Icons.trashIcon}

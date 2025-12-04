@@ -40,16 +40,13 @@
 
 import React from 'react';
 import { FlatList, View } from 'react-native';
-import { Button, Text, useTheme } from 'react-native-paper';
-import { Icons } from '@assets/Icons';
+import { useTheme } from 'react-native-paper';
 import { padding } from '@styles/spacing';
-import { BottomScreenTitle } from '@styles/typography';
 import {
   SettingsItem,
   SettingsItemCard,
   SettingsItemCardProps,
 } from '../molecules/SettingsItemCard';
-import { useI18n } from '@utils/i18n';
 
 /**
  * Props for the SettingsItemList component
@@ -61,8 +58,6 @@ export type SettingsItemListProps<T extends SettingsItem> = Omit<
 > & {
   /** Array of items to display in the list */
   items: T[];
-  /** Callback fired when the add button is pressed */
-  onAddPress: () => void;
 };
 
 /**
@@ -77,25 +72,11 @@ export function SettingsItemList<T extends SettingsItem>({
   onDelete,
   type,
   items,
-  onAddPress,
 }: SettingsItemListProps<T>) {
-  const { t } = useI18n();
   const { colors } = useTheme();
-
-  const title = type === 'ingredient' ? t('ingredients') : t('tags');
-
-  const addButtonLabel = type === 'ingredient' ? t('add_ingredient') : t('add_tag');
 
   return (
     <View style={{ height: '100%', backgroundColor: colors.background }}>
-      <Text
-        testID={testIdPrefix + '::Title'}
-        variant={BottomScreenTitle}
-        style={{ padding: padding.small }}
-      >
-        {title}
-      </Text>
-
       <FlatList
         data={items}
         contentContainerStyle={{ padding: padding.small }}
@@ -110,17 +91,6 @@ export function SettingsItemList<T extends SettingsItem>({
             onDelete={onDelete}
           />
         )}
-        ListFooterComponent={
-          <Button
-            testID={testIdPrefix + '::AddButton'}
-            mode='contained'
-            style={{ marginTop: padding.medium }}
-            icon={Icons.plusIcon}
-            onPress={onAddPress}
-          >
-            {addButtonLabel}
-          </Button>
-        }
       />
     </View>
   );
