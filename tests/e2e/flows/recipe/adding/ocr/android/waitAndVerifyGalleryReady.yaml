@@ -48,8 +48,8 @@ appId: "com.recipedia"
             visible:
               id: "ExpandButton"
           commands:
-            - tapOn:
-                id: "ExpandButton"
+            - runFlow:
+                file: "../../../../fab/expand.yaml"
                 label: "Expand FAB menu"
             - tapOn:
                 id: "GalleryButton"

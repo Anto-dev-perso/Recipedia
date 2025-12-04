@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
-- tapOn:
-    id: "ExpandButton"
+- runFlow:
+    file: "../../../../fab/expand.yaml"
     label: "Expand FAB menu"
 
 - tapOn:

@@ -9,8 +9,8 @@ appId: "com.recipedia"
       platform: Android
 # TODO iOS
 
-- tapOn:
-    id: "ExpandButton"
+- runFlow:
+    file: "../../../../fab/expand.yaml"
     label: "Setup - Expand FAB menu"
 
 - tapOn:

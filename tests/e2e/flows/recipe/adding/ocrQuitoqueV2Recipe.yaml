@@ -18,8 +18,8 @@ appId: "com.recipedia"
     id: "BottomTabs::Home"
     label: "Navigate to Home screen"
 
-- tapOn:
-    id: "ExpandButton"
+- runFlow:
+    file: "../../fab/expand.yaml"
     label: "Expand FAB menu"
 
 - runFlow:

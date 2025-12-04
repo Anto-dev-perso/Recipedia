@@ -11,17 +11,17 @@ tags:
     file: "../../asserts/home/assertCollapsedButtons.yaml"
     label: "Assert - Verify FAB menu is collapsed initially"
 
-- tapOn:
-    id: "ExpandButton"
-    label: "Action - Tap on expand button to open FAB menu"
+- runFlow:
+    file: "../../flows/fab/expand.yaml"
+    label: "Action - Expand FAB menu"
 
 - runFlow:
     file: "../../asserts/home/assertExpandedButtons.yaml"
     label: "Assert - Verify FAB menu is expanded with all buttons visible"
 
-- tapOn:
-    id: "ReduceButton"
-    label: "Action - Tap on reduce button to collapse FAB menu"
+- runFlow:
+    file: "../../flows/fab/collapse.yaml"
+    label: "Action - Collapse FAB menu"
 
 - runFlow:
     file: "../../asserts/home/assertCollapsedButtons.yaml"

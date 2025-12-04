@@ -1,0 +1,9 @@
+appId: "com.recipedia"
+---
+- tapOn:
+    id: "ReduceButton"
+    label: "Collapse FAB menu"
+
+- waitForAnimationToEnd:
+    timeout: 3000
+    label: "Wait for FAB collapse animation"
