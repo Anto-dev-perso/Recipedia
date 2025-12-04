@@ -55,5 +55,5 @@ appId: "com.recipedia"
     label: "Add preparation step"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Validate the recipe"

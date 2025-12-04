@@ -45,5 +45,5 @@ appId: "com.recipedia"
           label: "OCR nutrition"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Validate the recipe"

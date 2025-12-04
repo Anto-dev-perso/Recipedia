@@ -372,7 +372,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton-content"
+      id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton"
     direction: DOWN
     speed: 40
     label: "Scroll to see the nutrition add button"

@@ -20,7 +20,7 @@ tags:
     label: "Assert - Verify Chicken Tacos recipe is displayed correctly"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Action - Back to the Search Screen"
 
 - runFlow:

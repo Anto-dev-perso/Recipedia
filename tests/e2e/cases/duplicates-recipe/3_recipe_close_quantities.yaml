@@ -57,7 +57,7 @@ tags:
     label: "Action - Hide keyboard"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Validate recipe with far quantities"
 
 - runFlow:

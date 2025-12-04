@@ -23,7 +23,7 @@ appId: "com.recipedia"
     text: "Préparation (20 min)"
     label: "Preparation header with time is displayed in French"
 - assertVisible:
-    id: "RecipeValidateButton-text"
+    id: "Recipe::BottomActionButton-text"
     text: "Ajouter au menu"
     label: "Read only validate button is displayed in French"
 - scrollUntilVisible:

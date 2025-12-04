@@ -42,7 +42,7 @@ tags:
     label: "Action - Change title to fuzzy match"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Validate recipe"
 
 - runFlow:
@@ -60,7 +60,7 @@ tags:
     label: "Action - Change to completely different title"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Validate recipe with different title"
 
 - runFlow:

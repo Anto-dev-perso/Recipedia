@@ -32,7 +32,7 @@ appId: "com.recipedia"
     label: "Assert OCR extracted recipe data"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Validate the recipe"
 
 - runFlow:

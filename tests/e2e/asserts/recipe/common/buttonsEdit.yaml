@@ -1,23 +1,23 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "RecipeCancel"
+    id: "Recipe::AppBar::Cancel"
     label: "Cancel button is displayed"
 
 - assertVisible:
-    id: "RecipeValidate"
+    id: "Recipe::AppBar::Validate"
     label: "Validate button is displayed in AppBar"
 
 - assertNotVisible:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Back button is not displayed in edit mode"
 
 - assertNotVisible:
-    id: "RecipeDelete"
+    id: "Recipe::AppBar::Delete"
     label: "Delete button is not displayed in edit mode"
 
 - assertNotVisible:
-    id: "RecipeEdit"
+    id: "Recipe::AppBar::Edit"
     label: "Edit button is not displayed in edit mode"
 
 - assertVisible:
@@ -25,7 +25,7 @@ appId: "com.recipedia"
     label: "Edit image button is displayed"
 
 - assertVisible:
-    id: "RecipeValidate"
+    id: "Recipe::AppBar::Validate"
     label: "Validate recipe button is displayed"
 
 - assertVisible:

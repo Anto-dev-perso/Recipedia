@@ -17,7 +17,7 @@ tags:
     label: "Assert - Verify Tags Settings screen displays correctly"
 
 - tapOn:
-    id: "TagsSettings::AddButton"
+    id: "TagsSettings::BottomActionButton"
     label: "Action - Open add tag dialog"
 
 - runFlow:

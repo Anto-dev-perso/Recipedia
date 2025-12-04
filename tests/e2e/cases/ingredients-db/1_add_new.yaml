@@ -17,7 +17,7 @@ tags:
     label: "Assert - Verify Ingredients Settings screen displays correctly"
 
 - tapOn:
-    id: "IngredientsSettings::AddButton"
+    id: "IngredientsSettings::BottomActionButton"
     label: "Action - Open add ingredient dialog"
 
 - runFlow:

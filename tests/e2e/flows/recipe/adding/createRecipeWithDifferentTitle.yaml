@@ -1,5 +1,9 @@
 appId: "com.recipedia"
 ---
+- runFlow:
+    file: "../../fab/expand.yaml"
+    label: "Expand FAB menu"
+
 - tapOn:
     id: "RecipeEdit"
     label: "Open manual recipe adding"
@@ -50,5 +54,5 @@ appId: "com.recipedia"
     label: "Add preparation step"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Validate the recipe"

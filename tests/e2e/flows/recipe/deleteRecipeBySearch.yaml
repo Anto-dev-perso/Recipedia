@@ -19,7 +19,7 @@ appId: "com.recipedia"
     label: "Open recipe from results"
 
 - tapOn:
-    id: "RecipeDelete"
+    id: "Recipe::AppBar::Delete"
     label: "Delete the recipe"
 
 - tapOn:

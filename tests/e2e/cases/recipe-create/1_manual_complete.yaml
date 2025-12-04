@@ -20,7 +20,7 @@ tags:
     label: "Assert - Verify recipe is filled correctly"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Validate the recipe"
 
 - runFlow:

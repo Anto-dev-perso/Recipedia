@@ -12,7 +12,7 @@ appId: "com.recipedia"
     label: "Check that the fixed text of a read only recipe screen are displayed in French"
 
 - tapOn:
-    id: "RecipeEdit"
+    id: "Recipe::AppBar::Edit"
     label: "Enter edit mode for the recipe"
 - runFlow:
     file: "../../../asserts/parameters/language/recipeEdit.yaml"

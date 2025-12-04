@@ -9,7 +9,7 @@ appId: "com.recipedia"
     label: "Back button icon is displayed"
 
 - assertVisible:
-    id: "RecipeValidateButton-text"
+    id: "Recipe::BottomActionButton-text"
     text: "Add this new recipe"
     label: "Add recipe button is displayed"
 

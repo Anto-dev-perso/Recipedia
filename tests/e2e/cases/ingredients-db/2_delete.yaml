@@ -14,7 +14,7 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: "IngredientsSettings::AddButton"
+      id: "IngredientsSettings::BottomActionButton"
     direction: DOWN
     speed: 95
     label: "Action - Scroll to bottom of screen"

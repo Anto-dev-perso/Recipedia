@@ -30,7 +30,7 @@ tags:
     label: "Assert - Verify initial state: 4 persons, scaled quantities"
 
 - tapOn:
-    id: "RecipeEdit"
+    id: "Recipe::AppBar::Edit"
     label: "Action - Enter edit mode"
 
 - scrollUntilVisible:
@@ -60,7 +60,7 @@ tags:
     label: "Assert - Verify UI scaling: 2 persons, UI shows scaled quantities (66,67g, 16,67g, 50g, 33,34g)"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "Recipe::AppBar::Validate"
     label: "Action - Validate the edit"
 
 - scrollUntilVisible:
@@ -75,7 +75,7 @@ tags:
     label: "Assert - Verify read-only after edit: still showing 2 persons"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Action - Return to Search screen"
 
 - tapOn:
@@ -106,7 +106,7 @@ tags:
     label: "Assert - Verify that recipe came back to default number of persons and is strictly identical as what it were before"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Action - Return to Search screen"
 
 - tapOn:

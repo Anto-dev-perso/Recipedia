@@ -9,7 +9,7 @@ appId: "com.recipedia"
     label: "Open a recipe"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Add the recipe to the shopping list"
 
 - runFlow:

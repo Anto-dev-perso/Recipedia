@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "DefaultPersonSettings::Title"
+    id: "DefaultPersonSettings::AppBar::Title-title-text"
     text: "Default Number of Persons"
     label: "Default persons settings title is displayed"
 

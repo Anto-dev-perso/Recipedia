@@ -52,7 +52,7 @@ tags:
     label: "Assert - Verify edited tag name appears"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Cleanup - Exit recipe creation without saving"
 
 

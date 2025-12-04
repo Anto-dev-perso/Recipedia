@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "LanguageSettings::Title"
+    id: "LanguageSettings::AppBar::Title-title-text"
     text: "Langue"
     label: "Language settings screen title is visible in French"
 - runFlow:

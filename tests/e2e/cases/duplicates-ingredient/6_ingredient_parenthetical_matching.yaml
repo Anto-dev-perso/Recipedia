@@ -13,13 +13,13 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: "IngredientsSettings::AddButton"
+      id: "IngredientsSettings::BottomActionButton"
     direction: DOWN
     speed: 98
     label: "Action - Scroll to find add tag button"
 
 - tapOn:
-    id: "IngredientsSettings::AddButton"
+    id: "IngredientsSettings::BottomActionButton"
     label: "Action - Open add ingredient dialog"
 
 - tapOn:
