@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Button, Card, Text, useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -16,7 +16,6 @@ import { padding } from '@styles/spacing';
  *
  * Features:
  * - Step-by-step navigation with screen transitions
- * - Automatic navigation state handling
  * - Customizable tooltip styling with Material Design
  * - Integration with copilot tutorial system
  *
@@ -27,19 +26,6 @@ export function TutorialTooltip() {
   const { t } = useI18n();
   const navigation = useNavigation<TabScreenNavigation>();
   const copilotData = useSafeCopilot();
-  const pendingStepAdvance = useRef<(() => void) | null>(null);
-
-  // Set up navigation listener for step advancement
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('state', () => {
-      if (pendingStepAdvance.current) {
-        pendingStepAdvance.current();
-        pendingStepAdvance.current = null;
-      }
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   if (!copilotData) {
     return null;
@@ -93,11 +79,10 @@ export function TutorialTooltip() {
   /**
    * Handles advancing to the next tutorial step
    *
-   * Navigates to the next screen in the tutorial sequence and sets up
-   * step advancement to occur after navigation completes. Uses deferred
-   * execution to ensure proper timing with navigation state changes.
+   * Advances copilot step state before navigating to ensure the new screen
+   * renders with the correct step information (e.g., Previous button visible).
    */
-  const handleNext = async () => {
+  const handleNext = () => {
     if (!currentStep) {
       return;
     }
@@ -107,21 +92,18 @@ export function TutorialTooltip() {
       return;
     }
 
-    // Set up step advancement to happen after navigation completes
-    pendingStepAdvance.current = goToNext;
-
-    // Navigate to next screen
-    navigation.navigate(nextScreen);
+    goToNext().then(() => {
+      navigation.navigate(nextScreen);
+    });
   };
 
   /**
    * Handles going back to the previous tutorial step
    *
-   * Navigates to the previous screen in the tutorial sequence and sets up
-   * step regression to occur after navigation completes. Uses deferred
-   * execution to ensure proper timing with navigation state changes.
+   * Regresses copilot step state before navigating to ensure the new screen
+   * renders with the correct step information.
    */
-  const handlePrevious = async () => {
+  const handlePrevious = () => {
     if (!currentStep) {
       return;
     }
@@ -131,10 +113,9 @@ export function TutorialTooltip() {
       return;
     }
 
-    // Set up step going back to happen after navigation completes
-    pendingStepAdvance.current = goToPrev;
-
-    navigation.navigate(previousScreen);
+    goToPrev().then(() => {
+      navigation.navigate(previousScreen);
+    });
   };
 
   // From copilot source files, see that they add 15 padding to tooltip
