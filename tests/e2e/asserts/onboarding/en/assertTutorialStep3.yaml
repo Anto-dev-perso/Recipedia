@@ -9,6 +9,12 @@ appId: "com.recipedia"
     text: "See what ingredients you need based on selected recipes. Long press ingredients to see which recipes use them."
     label: "Verify Step 3 (Shopping) description"
 
+- extendedWaitUntil:
+    visible:
+      id: "TutorialTooltip::Previous-text"
+    timeout: 3000
+    label: "Wait for Previous button to appear"
+
 - assertVisible:
     id: "TutorialTooltip::Previous-text"
     text: "Previous"
