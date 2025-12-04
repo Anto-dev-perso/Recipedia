@@ -64,56 +64,63 @@
  * ```
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import {RecipeScreenProp, recipeStateType} from '@customTypes/ScreenTypes';
-import {processIngredientsForValidation, processTagsForValidation,} from '@utils/RecipeValidationHelpers';
+import React, { useEffect, useRef, useState } from 'react';
+import { RecipeScreenProp, recipeStateType } from '@customTypes/ScreenTypes';
 import {
-    extractTagsName,
-    FormIngredientElement,
-    ingredientTableElement,
-    isRecipeEqual,
-    nutritionTableElement,
-    recipeColumnsNames,
-    recipeTableElement,
-    tagTableElement,
+  processIngredientsForValidation,
+  processTagsForValidation,
+} from '@utils/RecipeValidationHelpers';
+import {
+  extractTagsName,
+  FormIngredientElement,
+  ingredientTableElement,
+  isRecipeEqual,
+  nutritionTableElement,
+  recipeColumnsNames,
+  recipeTableElement,
+  tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
-import {ScrollView} from 'react-native';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {padding} from '@styles/spacing';
-import {RecipeImage, RecipeImageProps} from '@components/organisms/RecipeImage';
-import {Icons} from '@assets/Icons';
-import {RecipeText, RecipeTextProps, TextProp} from '@components/organisms/RecipeText';
+import { ScrollView } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { padding } from '@styles/spacing';
+import { RecipeImage, RecipeImageProps } from '@components/organisms/RecipeImage';
+import { Icons } from '@assets/Icons';
+import { RecipeText, RecipeTextProps, TextProp } from '@components/organisms/RecipeText';
 import {
-    EditableBaseProps as IngredientsEditableBaseProps,
-    RecipeIngredients,
-    RecipeIngredientsProps,
+  EditableBaseProps as IngredientsEditableBaseProps,
+  RecipeIngredients,
+  RecipeIngredientsProps,
 } from '@components/organisms/RecipeIngredients';
 import {
-    EditableBaseProps as PreparationEditableBaseProps,
-    RecipePreparation,
-    RecipePreparationProps,
+  EditableBaseProps as PreparationEditableBaseProps,
+  RecipePreparation,
+  RecipePreparationProps,
 } from '@components/organisms/RecipePreparation';
-import {textSeparator, unitySeparator} from '@styles/typography';
-import {RecipeTagProps, RecipeTags} from '@components/organisms/RecipeTags';
-import {clearCache} from '@utils/FileGestion';
-import {useRecipeDatabase} from '@context/RecipeDatabaseContext';
-import {extractFieldFromImage} from '@utils/OCR';
-import {RecipeNumber, RecipeNumberProps} from '@components/organisms/RecipeNumber';
-import {defaultValueNumber} from '@utils/Constants';
-import {useTheme} from 'react-native-paper';
-import {AppBar} from '@components/organisms/AppBar';
-import {BottomActionButton} from '@components/atomic/BottomActionButton';
-import {ModalImageSelect} from '@screens/ModalImageSelect';
-import {cropImage} from '@utils/ImagePicker';
-import {useI18n} from '@utils/i18n';
-import {Alert, AlertProps} from '@components/dialogs/Alert';
-import {getDefaultPersons} from '@utils/settings';
-import {scaleQuantityForPersons} from '@utils/Quantity';
-import {SimilarityDialog, SimilarityDialogProps} from '@components/dialogs/SimilarityDialog';
-import {RecipeNutrition, RecipeNutritionProps} from '@components/organisms/RecipeNutrition';
-import {ocrLogger, recipeLogger, validationLogger} from '@utils/logger';
-import {LoadingOverlay} from '@components/dialogs/LoadingOverlay';
-import {IngredientValidationProps, TagValidationProps, ValidationQueue,} from '@components/dialogs/ValidationQueue';
+import { textSeparator, unitySeparator } from '@styles/typography';
+import { RecipeTagProps, RecipeTags } from '@components/organisms/RecipeTags';
+import { clearCache } from '@utils/FileGestion';
+import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
+import { extractFieldFromImage } from '@utils/OCR';
+import { RecipeNumber, RecipeNumberProps } from '@components/organisms/RecipeNumber';
+import { defaultValueNumber } from '@utils/Constants';
+import { useTheme } from 'react-native-paper';
+import { AppBar } from '@components/organisms/AppBar';
+import { ModalImageSelect } from '@screens/ModalImageSelect';
+import { cropImage } from '@utils/ImagePicker';
+import { useI18n } from '@utils/i18n';
+import { Alert, AlertProps } from '@components/dialogs/Alert';
+import { getDefaultPersons } from '@utils/settings';
+import { scaleQuantityForPersons } from '@utils/Quantity';
+import { SimilarityDialog, SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
+import { RecipeNutrition, RecipeNutritionProps } from '@components/organisms/RecipeNutrition';
+import { ocrLogger, recipeLogger, validationLogger } from '@utils/logger';
+import { LoadingOverlay } from '@components/dialogs/LoadingOverlay';
+import {
+  IngredientValidationProps,
+  TagValidationProps,
+  ValidationQueue,
+} from '@components/dialogs/ValidationQueue';
+import BottomActionButton from '@components/atomic/BottomActionButton';
 
 const BUTTON_HEIGHT = 48;
 const BUTTON_CONTAINER_HEIGHT = BUTTON_HEIGHT + padding.small * 2;
@@ -1530,21 +1537,21 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     setStackMode(recipeStateType.readOnly);
   }
 
-    return (
-        <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
-            <AppBar
-                testID='Recipe'
-                isEditing={stackMode === recipeStateType.edit}
-                onGoBack={() => navigation.goBack()}
-                onCancel={handleCancel}
-                onValidate={validationFunction}
-                onDelete={stackMode === recipeStateType.readOnly ? onDelete : undefined}
-                onEdit={
-                    stackMode === recipeStateType.readOnly
-                        ? () => setStackMode(recipeStateType.edit)
-                        : undefined
-                }
-            />
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <AppBar
+        testID={recipeTestId}
+        isEditing={stackMode === recipeStateType.edit}
+        onGoBack={() => navigation.goBack()}
+        onCancel={handleCancel}
+        onValidate={validationFunction}
+        onDelete={stackMode === recipeStateType.readOnly ? onDelete : undefined}
+        onEdit={
+          stackMode === recipeStateType.readOnly
+            ? () => setStackMode(recipeStateType.edit)
+            : undefined
+        }
+      />
 
       <ScrollView
         horizontal={false}
@@ -1566,31 +1573,17 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       </ScrollView>
 
       {stackMode !== recipeStateType.edit && (
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: padding.small,
-            paddingBottom: insets.bottom + padding.small,
-            backgroundColor: colors.background,
-          }}
-        >
-          <Button
-            testID='RecipeValidateButton'
-            mode='contained'
-            onPress={async () => await validationFunction()}
-          >
-            {validationButtonText}
-          </Button>
-        </View>
+        <BottomActionButton
+          testID={recipeTestId}
+          onPress={async () => await validationFunction()}
+          label={validationButtonText}
+        />
       )}
 
       <Alert
         {...validationDialogProp}
         isVisible={isValidationDialogOpen}
-        testId={'Recipe'}
+        testId={recipeTestId}
         onClose={() => {
           setIsValidationDialogOpen(false);
           setValidationDialogProp(defaultValidationDialogProp);
