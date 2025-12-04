@@ -26,6 +26,9 @@ jest.mock('@utils/FileGestion', () =>
   require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
 );
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
+jest.mock('@react-navigation/native', () =>
+  require('@mocks/deps/react-navigation-mock').reactNavigationMock()
+);
 jest.mock('@components/organisms/SettingsItemList', () => ({
   SettingsItemList: require('@mocks/components/organisms/SettingsItemList-mock')
     .settingsItemListMock,
@@ -118,7 +121,7 @@ describe('IngredientsSettings Screen', () => {
     expect(getByTestId('IngredientsSettings::SettingsItemList::Items').props.children).toEqual(
       JSON.stringify(sortedDataset)
     );
-    expect(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress')).toBeTruthy();
+    expect(getByTestId('IngredientsSettings::BottomActionButton')).toBeTruthy();
     expect(getByTestId('IngredientsSettings::SettingsItemList::OnEdit')).toBeTruthy();
     expect(getByTestId('IngredientsSettings::SettingsItemList::OnDelete')).toBeTruthy();
 
@@ -127,7 +130,7 @@ describe('IngredientsSettings Screen', () => {
 
   test('opens add dialog with empty template when add button is pressed', async () => {
     const { getByTestId } = await renderIngredientsSettings();
-    fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress'));
+    fireEvent.press(getByTestId('IngredientsSettings::BottomActionButton'));
 
     await waitFor(() => {
       expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();
@@ -140,7 +143,7 @@ describe('IngredientsSettings Screen', () => {
 
   test('opens add dialog when add button is pressed and save value', async () => {
     const { getByTestId } = await renderIngredientsSettings();
-    fireEvent.press(getByTestId('IngredientsSettings::SettingsItemList::OnAddPress'));
+    fireEvent.press(getByTestId('IngredientsSettings::BottomActionButton'));
 
     await waitFor(() => {
       expect(getByTestId('IngredientsSettings::ItemDialog::Item')).toBeTruthy();

@@ -64,7 +64,8 @@ describe('DefaultPersonsSettings Screen', () => {
   test('renders correctly with default values', async () => {
     const { getByTestId } = await renderDefaultPersonsSettings();
 
-    expect(getByTestId('DefaultPersonSettings::Title').props.children).toEqual('default_persons');
+    expect(getByTestId('DefaultPersonSettings::AppBar')).toBeTruthy();
+    expect(getByTestId('DefaultPersonSettings::AppBar::BackButton')).toBeTruthy();
     expect(getByTestId('DefaultPersonSettings::PersonsValue').props.children).toEqual([
       4,
       ' ',

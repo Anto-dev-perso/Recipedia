@@ -7,12 +7,15 @@ export const mockAddListener = jest.fn((event, handler) => {
   return jest.fn(); // Return unsubscribe function
 });
 
+export const mockGoBack = jest.fn();
+
 export function reactNavigationMock() {
   return {
     ...jest.requireActual('@react-navigation/native'),
     useNavigation: () => ({
       navigate: mockNavigate,
       addListener: mockAddListener,
+      goBack: mockGoBack,
     }),
     useFocusEffect: jest.fn(() => {
       // Don't call the callback - this simulates a screen that's already focused
