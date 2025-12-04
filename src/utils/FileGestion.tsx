@@ -270,7 +270,6 @@ export async function init(): Promise<void> {
  * ```
  */
 export async function copyDatasetImages(): Promise<void> {
-  console.log('🔍 DEBUG: copyDatasetImages called');
   fileSystemLogger.info('Starting dataset image copy operation', {
     directoryUri: DIRECTORY_URI,
   });

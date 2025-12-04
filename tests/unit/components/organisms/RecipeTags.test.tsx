@@ -12,19 +12,16 @@ jest.mock('@utils/FileGestion', () =>
   require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
 );
 
-jest.mock(
-  '@components/atomic/RoundButton',
-  () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
-);
-jest.mock(
-  '@components/molecules/TextInputWithDropDown',
-  () =>
-    require('@mocks/components/molecules/TextInputWithDropDown-mock.tsx').textInputWithDropdownMock
-);
-jest.mock(
-  '@components/molecules/HorizontalList',
-  () => require('@mocks/components/molecules/HorizontalList-mock').horizontalListMock
-);
+jest.mock('@components/atomic/RoundButton', () => ({
+  RoundButton: require('@mocks/components/atomic/RoundButton-mock').roundButtonMock,
+}));
+jest.mock('@components/molecules/TextInputWithDropDown', () => ({
+  TextInputWithDropDown: require('@mocks/components/molecules/TextInputWithDropDown-mock.tsx')
+    .textInputWithDropdownMock,
+}));
+jest.mock('@components/molecules/HorizontalList', () => ({
+  HorizontalList: require('@mocks/components/molecules/HorizontalList-mock').horizontalListMock,
+}));
 jest.mock('@expo/vector-icons', () => require('@mocks/deps/expo-vector-icons-mock'));
 
 jest.mock('@shopify/flash-list', () => require('@mocks/deps/flashlist-mock').flashListMock());

@@ -40,8 +40,8 @@
  * ```
  */
 
-import React, { useCallback, useEffect, useRef } from 'react';
-import TagButton from '@components/atomic/TagButton';
+import React, { useEffect, useRef } from 'react';
+import { TagButton } from '@components/atomic/TagButton';
 import { Icons } from '@assets/Icons';
 import { useI18n } from '@utils/i18n';
 import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
@@ -60,7 +60,7 @@ export type FiltersSelectionProps = {
   /** Unique identifier for testing and accessibility */
   testId: string;
   /** Array of currently active filter strings */
-  filters: Array<string>;
+  filters: string[];
   /** Whether the component is in filter-adding mode */
   addingFilterMode: boolean;
   /** State setter for toggling filter adding mode */
@@ -94,46 +94,16 @@ export function FiltersSelection({
   const stepOrder = TUTORIAL_STEPS.Search.order;
   const selectionTestID = testId + '::FiltersSelection';
 
-  const getDisplayText = useCallback(
-    (filterValue: string): string => {
-      if (prepTimeValues.includes(filterValue) || filterValue === listFilter.inSeason) {
-        return t(filterValue);
-      }
-      return filterValue;
-    },
-    [t]
-  );
+  const getDisplayText = (filterValue: string): string => {
+    if (prepTimeValues.includes(filterValue) || filterValue === listFilter.inSeason) {
+      return t(filterValue);
+    }
+    return filterValue;
+  };
 
-  const triggerToggle = useCallback(() => {
+  const triggerToggle = () => {
     setAddingAFilter(prev => !prev);
-  }, [setAddingAFilter]);
-
-  const startDemo = useCallback(() => {
-    if (demoIntervalRef.current) {
-      clearInterval(demoIntervalRef.current);
-    }
-
-    demoIntervalRef.current = setInterval(triggerToggle, TUTORIAL_DEMO_INTERVAL);
-  }, [triggerToggle]);
-
-  const stopDemo = useCallback(() => {
-    if (demoIntervalRef.current) {
-      clearInterval(demoIntervalRef.current);
-      demoIntervalRef.current = null;
-    }
-    setAddingAFilter(false);
-  }, [setAddingAFilter]);
-
-  const handleStepChange = useCallback(
-    (step: CopilotStepData | undefined) => {
-      if (step?.order === stepOrder) {
-        startDemo();
-      } else {
-        stopDemo();
-      }
-    },
-    [stepOrder, startDemo, stopDemo]
-  );
+  };
 
   /**
    * Filter Toggle Button - Internal component for filter mode switching
@@ -162,6 +132,31 @@ export function FiltersSelection({
       return;
     }
 
+    const startDemo = () => {
+      if (demoIntervalRef.current) {
+        clearInterval(demoIntervalRef.current);
+      }
+      demoIntervalRef.current = setInterval(() => {
+        setAddingAFilter(prev => !prev);
+      }, TUTORIAL_DEMO_INTERVAL);
+    };
+
+    const stopDemo = () => {
+      if (demoIntervalRef.current) {
+        clearInterval(demoIntervalRef.current);
+        demoIntervalRef.current = null;
+      }
+      setAddingAFilter(false);
+    };
+
+    const handleStepChange = (step: CopilotStepData | undefined) => {
+      if (step?.order === stepOrder) {
+        startDemo();
+      } else {
+        stopDemo();
+      }
+    };
+
     // Start demo if we're already on our step when component mounts
     if (currentStep?.order === stepOrder) {
       startDemo();
@@ -175,7 +170,7 @@ export function FiltersSelection({
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  }, [currentStep, copilotData, copilotEvents, handleStepChange, startDemo, stepOrder, stopDemo]);
+  }, [currentStep, copilotData, copilotEvents, stepOrder, setAddingAFilter]);
 
   return (
     <>

@@ -20,10 +20,10 @@ jest.mock(
   '@components/organisms/VerticalBottomButtons',
   () => require('@mocks/components/organisms/VerticalBottomButtons-mock').verticalBottomButtonsMock
 );
-jest.mock(
-  '@components/organisms/RecipeRecommendation',
-  () => require('@mocks/components/organisms/RecipeRecommendation-mock').recipeRecommendationMock
-);
+jest.mock('@components/organisms/RecipeRecommendation', () => ({
+  RecipeRecommendation: require('@mocks/components/organisms/RecipeRecommendation-mock')
+    .recipeRecommendationMock,
+}));
 
 jest.mock('expo-font', () => ({
   loadAsync: jest.fn(() => Promise.resolve()), // Mock as a resolved Promise
@@ -89,7 +89,7 @@ describe('Home Screen', () => {
       getByTestId('recommendations.randomSelection::Title::TitleRecommendation').props.children
     ).toEqual('recommendations.randomSelection');
 
-    const reco1: Array<recipeTableElement> = JSON.parse(
+    const reco1: recipeTableElement[] = JSON.parse(
       getByTestId('recommendations.randomSelection::CarouselProps').props.children
     );
 

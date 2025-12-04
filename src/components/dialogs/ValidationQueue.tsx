@@ -38,13 +38,13 @@
  * ```
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FormIngredientElement,
   ingredientTableElement,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
-import SimilarityDialog from './SimilarityDialog';
+import { SimilarityDialog } from './SimilarityDialog';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 export type ValidationQueuePropsBase<T extends 'Tag' | 'Ingredient', ItemType, ValidatedType> = {
@@ -86,8 +86,13 @@ export function ValidationQueue({
     setRemainingItems(items);
   }, [items]);
 
-  const processCurrentItem = useCallback(() => {
-    const itemName = currentItem.name;
+  useEffect(() => {
+    if (remainingItems.length === 0) {
+      onComplete();
+      return;
+    }
+
+    const itemName = currentItem?.name;
     if (!itemName || itemName.trim().length === 0) {
       setShowDialog(false);
       setRemainingItems(prev => prev.slice(1));
@@ -95,16 +100,7 @@ export function ValidationQueue({
     }
 
     setShowDialog(true);
-  }, [currentItem]);
-
-  useEffect(() => {
-    if (remainingItems.length === 0) {
-      onComplete();
-      return;
-    }
-
-    processCurrentItem();
-  }, [remainingItems, onComplete, processCurrentItem]);
+  }, [remainingItems, onComplete, currentItem]);
 
   const moveToNext = () => {
     setShowDialog(false);

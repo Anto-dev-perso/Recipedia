@@ -64,9 +64,9 @@ import {
   ViewStyle,
 } from 'react-native';
 import { List, TextInput } from 'react-native-paper';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { palette } from '@styles/colors';
-import CustomTextInput from '@components/atomic/CustomTextInput';
+import { CustomTextInput } from '@components/atomic/CustomTextInput';
 
 /**
  * Props for the TextInputWithDropDown component
@@ -75,7 +75,7 @@ export type TextInputWithDropDownType = {
   /** Whether dropdown should use absolute positioning (for overlays) */
   absoluteDropDown: boolean;
   /** Array of reference strings to filter and display as suggestions */
-  referenceTextArray: Array<string>;
+  referenceTextArray: string[];
   /** Current value of the text input */
   value?: string;
   /** Label text displayed above the input */
@@ -112,16 +112,13 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
    * It's the foundation of the dropdown suggestion system.
    *
    * @param filterText - The text input to filter against
-   * @returns Array<string> - Filtered array of matching suggestions
+   * @returns string[] - Filtered array of matching suggestions
    */
-  const filterArray = useCallback(
-    (filterText: string): Array<string> => {
-      return props.referenceTextArray.filter(element =>
-        element.toLowerCase().includes(filterText.toLowerCase())
-      );
-    },
-    [props.referenceTextArray]
-  );
+  const filterArray = (filterText: string): string[] => {
+    return props.referenceTextArray.filter(element =>
+      element.toLowerCase().includes(filterText.toLowerCase())
+    );
+  };
 
   const [textInput, setTextInput] = useState(props.value ?? '');
   const [filteredTextArray, setFilteredTextArray] = useState(
@@ -143,31 +140,25 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
   /**
    * Sync internal state with external props.value changes
    *
-   * CRITICAL: This effect must ONLY depend on [props.value], NOT on textInput or other values.
-   *
-   * Why: This component is "semi-controlled" - it maintains internal textInput state for
-   * immediate UI updates while typing, but also accepts external props.value for parent control.
-   *
-   * The Problem (if textInput is in dependencies):
-   * 1. User types "H" → handleSearch updates textInput to "H"
-   * 2. textInput change triggers this effect
-   * 3. Effect sees props.value ("") !== textInput ("H")
-   * 4. Effect resets textInput back to props.value (""), erasing the keystroke
-   * 5. Result: User cannot type because each keystroke gets immediately erased
-   *
-   * The Solution:
-   * Only sync when props.value changes externally (e.g., parent switches to different ingredient).
-   * Ignore our own internal textInput changes to allow free typing.
-   *
-   * DO NOT add textInput, filterArray, or other values to the dependency array.
+   * Uses a ref to track the previous value to detect external changes.
+   * This allows the component to be "semi-controlled" - maintaining internal state
+   * for typing while accepting external value changes from parent.
    */
+  const prevValueRef = useRef(props.value);
   useEffect(() => {
-    if (props.value !== undefined && props.value !== textInput) {
-      setTextInput(props.value);
-      setFilteredTextArray(props.value ? filterArray(props.value) : props.referenceTextArray);
+    if (props.value !== prevValueRef.current) {
+      prevValueRef.current = props.value;
+      if (props.value !== undefined) {
+        setTextInput(props.value);
+        const filtered = props.referenceTextArray.filter(element =>
+          element.toLowerCase().includes(props.value!.toLowerCase())
+        );
+        setFilteredTextArray(filtered);
+      } else {
+        setFilteredTextArray(props.referenceTextArray);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.value]);
+  }, [props.value, props.referenceTextArray]);
 
   /**
    * Handles the submission of text input when editing is complete
@@ -177,22 +168,23 @@ export function TextInputWithDropDown(props: TextInputWithDropDownType) {
    * - Hides dropdown and triggers validation callback
    * - Encourages selection from suggestions when multiple matches exist
    */
-  const handleSubmitEditing = useCallback(() => {
+  const handleSubmitEditing = () => {
     setShowDropdown(false);
     onValidate?.(textInput);
-  }, [onValidate, textInput]);
+  };
 
   useEffect(() => {
     const keyboardListener = Keyboard.addListener('keyboardDidHide', () => {
       if (inputRef.current && inputRef.current.isFocused()) {
-        handleSubmitEditing();
+        setShowDropdown(false);
+        onValidate?.(textInput);
       }
     });
 
     return () => {
       keyboardListener.remove();
     };
-  }, [handleSubmitEditing]);
+  }, [textInput, onValidate]);
 
   function handleSelect(text: string) {
     setTextInput(text);

@@ -62,7 +62,7 @@ export function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
   const { navigate } = useNavigation<StackScreenNavigation>();
   const { colors } = useTheme();
   const { t } = useI18n();
-  const cardWidth = screenWidth * (size == 'small' ? 0.35 : 0.45);
+  const cardWidth = screenWidth * (size === 'small' ? 0.35 : 0.45);
   const radius = cardWidth / 12;
 
   return (
@@ -95,9 +95,9 @@ export function RecipeCard({ testId, size, recipe }: RecipeCardProps) {
         testID={testId + '::Title'}
         title={recipe.title}
         titleNumberOfLines={2}
-        titleVariant={size == 'small' ? 'labelLarge' : 'titleMedium'}
+        titleVariant={size === 'small' ? 'labelLarge' : 'titleMedium'}
       />
-      {size == 'medium' && (
+      {size === 'medium' && (
         <View>
           <Card.Content style={{ padding: padding.medium }}>
             <Text style={{ color: colors.primary }} numberOfLines={1} testID={testId + '::Content'}>

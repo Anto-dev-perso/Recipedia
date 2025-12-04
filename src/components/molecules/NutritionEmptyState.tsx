@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { recipeTextStyles } from '@styles/recipeComponents';
 import { Icons } from '@assets/Icons';
-import RoundButton from '@components/atomic/RoundButton';
+import { RoundButton } from '@components/atomic/RoundButton';
 
 export type NutritionEmptyStateProps = {
   onButtonPressed: () => void;

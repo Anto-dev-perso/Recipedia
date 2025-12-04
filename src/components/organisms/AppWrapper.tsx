@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import RootNavigator from '@navigation/RootNavigator';
-import WelcomeScreen from '@screens/WelcomeScreen';
+import React, { useEffect, useState } from 'react';
+import { RootNavigator } from '@navigation/RootNavigator';
+import { WelcomeScreen } from '@screens/WelcomeScreen';
 import { TutorialProvider } from './TutorialController';
 import { isFirstLaunch, markAsLaunched } from '@utils/firstLaunch';
 import { appLogger, tutorialLogger } from '@utils/logger';
@@ -56,12 +56,12 @@ export default function AppWrapper() {
    * Resets shopping list, marks app as launched, and transitions to ready mode.
    * This function is called both for normal app launch and after tutorial completion.
    */
-  const handleAppLaunch = useCallback(async () => {
+  const handleAppLaunch = async () => {
     await clearShoppingList();
     tutorialLogger.info('App launch - resetting shopping list');
     setMode(AppMode.Ready);
     markAsLaunched();
-  }, [clearShoppingList]);
+  };
 
   /**
    * Handles tutorial mode initialization
@@ -70,12 +70,12 @@ export default function AppWrapper() {
    * and transitioning to tutorial mode. This ensures the tutorial has meaningful
    * data to demonstrate app features.
    */
-  const handleStartTutorial = useCallback(async () => {
+  const handleStartTutorial = async () => {
     const recipeForTutorial = recipes[0];
     await addRecipeToShopping(recipeForTutorial);
     tutorialLogger.info('Added recipe to shopping list for tutorial', recipeForTutorial);
     setMode(AppMode.Tutorial);
-  }, [recipes, addRecipeToShopping]);
+  };
 
   /**
    * Handles welcome screen skip action
@@ -83,10 +83,10 @@ export default function AppWrapper() {
    * Bypasses the tutorial and proceeds directly to normal app operation.
    * Calls handleAppLaunch to perform standard initialization.
    */
-  const handleSkipWelcome = useCallback(() => {
+  const handleSkipWelcome = () => {
     handleAppLaunch();
     appLogger.info('Welcome skipped - proceeding to main app');
-  }, [handleAppLaunch]);
+  };
 
   /**
    * Handles tutorial completion

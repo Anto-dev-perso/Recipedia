@@ -4,9 +4,9 @@ import { Card, Divider, SegmentedButtons, Text, useTheme } from 'react-native-pa
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
 import { useI18n } from '@utils/i18n';
 import { calculateNutritionPerPortion } from '@utils/Quantity';
-import NutritionRow from './NutritionRow';
-import NutritionEditForm from './NutritionEditForm';
-import Alert from '@components/dialogs/Alert';
+import { NutritionRow } from './NutritionRow';
+import { NutritionEditForm } from './NutritionEditForm';
+import { Alert } from '@components/dialogs/Alert';
 import { padding } from '@styles/spacing';
 import { recipeTextStyles } from '@styles/recipeComponents';
 

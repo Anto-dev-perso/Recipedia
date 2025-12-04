@@ -7,14 +7,12 @@ import {
 } from '@components/organisms/RecipeText';
 import React from 'react';
 
-jest.mock(
-  '@components/atomic/CustomTextInput',
-  () => require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock
-);
-jest.mock(
-  '@components/atomic/RoundButton',
-  () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
-);
+jest.mock('@components/atomic/CustomTextInput', () => ({
+  CustomTextInput: require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock,
+}));
+jest.mock('@components/atomic/RoundButton', () => ({
+  RoundButton: require('@mocks/components/atomic/RoundButton-mock').roundButtonMock,
+}));
 
 describe('RecipeText Component', () => {
   const mockSetTextToEdit = jest.fn();

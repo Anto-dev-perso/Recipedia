@@ -11,15 +11,13 @@ jest.mock('@utils/ImagePicker', () => ({
   takePhoto: jest.fn(),
 }));
 
-jest.mock(
-  '@components/molecules/HorizontalList',
-  () => require('@mocks/components/molecules/HorizontalList-mock').horizontalListMock
-);
+jest.mock('@components/molecules/HorizontalList', () => ({
+  HorizontalList: require('@mocks/components/molecules/HorizontalList-mock').horizontalListMock,
+}));
 
-jest.mock(
-  '@components/atomic/RoundButton',
-  () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
-);
+jest.mock('@components/atomic/RoundButton', () => ({
+  RoundButton: require('@mocks/components/atomic/RoundButton-mock').roundButtonMock,
+}));
 
 describe('ModalImageSelect Screen', () => {
   const mockPickImage = ImagePicker.pickImage as jest.Mock;

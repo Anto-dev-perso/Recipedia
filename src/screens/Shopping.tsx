@@ -63,8 +63,8 @@ import {
   TListFilter,
 } from '@customTypes/RecipeFiltersTypes';
 import { Icons } from '@assets/Icons';
-import Alert from '@components/dialogs/Alert';
-import RoundButton from '@components/atomic/RoundButton';
+import { Alert } from '@components/dialogs/Alert';
+import { RoundButton } from '@components/atomic/RoundButton';
 import { shoppingLogger } from '@utils/logger';
 import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
 import { padding } from '@styles/spacing';

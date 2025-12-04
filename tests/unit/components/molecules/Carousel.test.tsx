@@ -4,15 +4,14 @@ import React from 'react';
 import { testRecipes } from '@test-data/recipesDataset';
 import { recipeTableElement } from '@customTypes/DatabaseElementTypes';
 
-jest.mock(
-  '@components/molecules/RecipeCard',
-  () => require('@mocks/components/molecules/RecipeCard-mock').recipeCardMock
-);
+jest.mock('@components/molecules/RecipeCard', () => ({
+  RecipeCard: require('@mocks/components/molecules/RecipeCard-mock').recipeCardMock,
+}));
 
 describe('Carousel Component', () => {
-  const sampleRecipes: Array<recipeTableElement> = testRecipes.slice(0, 3);
-  const emptyRecipes: Array<recipeTableElement> = [];
-  const singleRecipe: Array<recipeTableElement> = [testRecipes[0]];
+  const sampleRecipes: recipeTableElement[] = testRecipes.slice(0, 3);
+  const emptyRecipes: recipeTableElement[] = [];
+  const singleRecipe: recipeTableElement[] = [testRecipes[0]];
 
   const renderCarousel = (overrideProps = {}) => {
     const defaultProps: CarouselItemProps = {
@@ -26,7 +25,7 @@ describe('Carousel Component', () => {
   const assertRecipeCardRendering = (
     getByTestId: any,
     expectedCount: number,
-    recipes: Array<recipeTableElement>
+    recipes: recipeTableElement[]
   ) => {
     for (let i = 0; i < expectedCount; i++) {
       const cardTestId = `test-carousel::Card::${i}`;
@@ -132,7 +131,7 @@ describe('Carousel Component', () => {
 
   test('handles edge cases with minimal recipe data', () => {
     // Create minimal recipe objects
-    const minimalRecipes: Array<recipeTableElement> = [
+    const minimalRecipes: recipeTableElement[] = [
       {
         id: 999,
         title: 'Minimal Recipe',

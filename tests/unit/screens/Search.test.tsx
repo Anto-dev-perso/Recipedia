@@ -16,26 +16,23 @@ jest.mock('@utils/FileGestion', () =>
   require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
 );
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
-jest.mock(
-  '@components/organisms/FiltersSelection',
-  () => require('@mocks/components/organisms/FiltersSelection-mock').filtersSelectionMock
-);
-jest.mock(
-  '@components/organisms/SearchBar',
-  () => require('@mocks/components/organisms/SearchBar-mock').searchBarMock
-);
-jest.mock(
-  '@components/organisms/SearchBarResults',
-  () => require('@mocks/components/organisms/SearchBarResults-mock').searchBarResultsMock
-);
-jest.mock(
-  '@components/organisms/FilterAccordion',
-  () => require('@mocks/components/organisms/FilterAccordion-mock').filterAccordionMock
-);
-jest.mock(
-  '@components/molecules/RecipeCard',
-  () => require('@mocks/components/molecules/RecipeCard-mock').recipeCardMock
-);
+jest.mock('@components/organisms/FiltersSelection', () => ({
+  FiltersSelection: require('@mocks/components/organisms/FiltersSelection-mock')
+    .filtersSelectionMock,
+}));
+jest.mock('@components/organisms/SearchBar', () => ({
+  SearchBar: require('@mocks/components/organisms/SearchBar-mock').searchBarMock,
+}));
+jest.mock('@components/organisms/SearchBarResults', () => ({
+  SearchBarResults: require('@mocks/components/organisms/SearchBarResults-mock')
+    .searchBarResultsMock,
+}));
+jest.mock('@components/organisms/FilterAccordion', () => ({
+  FilterAccordion: require('@mocks/components/organisms/FilterAccordion-mock').filterAccordionMock,
+}));
+jest.mock('@components/molecules/RecipeCard', () => ({
+  RecipeCard: require('@mocks/components/molecules/RecipeCard-mock').recipeCardMock,
+}));
 
 const Stack = createStackNavigator();
 

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { nutritionTableElement } from '@customTypes/DatabaseElementTypes';
 import { padding } from '@styles/spacing';
-import NumericTextInput from '@components/atomic/NumericTextInput';
+import { NumericTextInput } from '@components/atomic/NumericTextInput';
 
 export type NutritionRowProps = {
   label: string;

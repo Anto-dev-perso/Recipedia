@@ -65,7 +65,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { RecipeScreenProp } from '@customTypes/ScreenTypes';
+import { RecipeScreenProp, recipeStateType } from '@customTypes/ScreenTypes';
 import {
   processIngredientsForValidation,
   processTagsForValidation,
@@ -76,7 +76,6 @@ import {
   ingredientTableElement,
   isRecipeEqual,
   nutritionTableElement,
-  preparationStepElement,
   recipeColumnsNames,
   recipeTableElement,
   tagTableElement,
@@ -84,51 +83,46 @@ import {
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { padding } from '@styles/spacing';
-import RecipeImage, { RecipeImageProps } from '@components/organisms/RecipeImage';
+import { RecipeImage, RecipeImageProps } from '@components/organisms/RecipeImage';
 import { Icons } from '@assets/Icons';
-import RecipeText, { RecipeTextProps, TextProp } from '@components/organisms/RecipeText';
-import RecipeIngredients, {
+import { RecipeText, RecipeTextProps, TextProp } from '@components/organisms/RecipeText';
+import {
   EditableBaseProps as IngredientsEditableBaseProps,
+  RecipeIngredients,
   RecipeIngredientsProps,
 } from '@components/organisms/RecipeIngredients';
-import RecipePreparation, {
+import {
   EditableBaseProps as PreparationEditableBaseProps,
+  RecipePreparation,
   RecipePreparationProps,
 } from '@components/organisms/RecipePreparation';
 import { textSeparator, unitySeparator } from '@styles/typography';
-import RecipeTags, { RecipeTagProps } from '@components/organisms/RecipeTags';
+import { RecipeTagProps, RecipeTags } from '@components/organisms/RecipeTags';
 import { clearCache } from '@utils/FileGestion';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import { extractFieldFromImage } from '@utils/OCR';
-import RecipeNumber, { RecipeNumberProps } from '@components/organisms/RecipeNumber';
+import { RecipeNumber, RecipeNumberProps } from '@components/organisms/RecipeNumber';
 import { defaultValueNumber } from '@utils/Constants';
 import { Button, useTheme } from 'react-native-paper';
-import RecipeAppBar from '@components/organisms/RecipeAppBar';
-import ModalImageSelect from '@screens/ModalImageSelect';
+import { RecipeAppBar } from '@components/organisms/RecipeAppBar';
+import { ModalImageSelect } from '@screens/ModalImageSelect';
 import { cropImage } from '@utils/ImagePicker';
 import { useI18n } from '@utils/i18n';
-import Alert, { AlertProps } from '@components/dialogs/Alert';
+import { Alert, AlertProps } from '@components/dialogs/Alert';
 import { getDefaultPersons } from '@utils/settings';
 import { scaleQuantityForPersons } from '@utils/Quantity';
-import SimilarityDialog, { SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
-import RecipeNutrition, { RecipeNutritionProps } from '@components/organisms/RecipeNutrition';
+import { SimilarityDialog, SimilarityDialogProps } from '@components/dialogs/SimilarityDialog';
+import { RecipeNutrition, RecipeNutritionProps } from '@components/organisms/RecipeNutrition';
 import { ocrLogger, recipeLogger, validationLogger } from '@utils/logger';
-import LoadingOverlay from '@components/dialogs/LoadingOverlay';
-import ValidationQueue, {
+import { LoadingOverlay } from '@components/dialogs/LoadingOverlay';
+import {
   IngredientValidationProps,
   TagValidationProps,
+  ValidationQueue,
 } from '@components/dialogs/ValidationQueue';
 
 const BUTTON_HEIGHT = 48;
 const BUTTON_CONTAINER_HEIGHT = BUTTON_HEIGHT + padding.small * 2;
-
-/** Enum defining the four possible recipe interaction modes */
-export enum recipeStateType {
-  readOnly,
-  edit,
-  addManual,
-  addOCR,
-}
 
 // Export enum values for external use - keeping for API compatibility
 export const recipeStates = {
@@ -219,17 +213,15 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   const [recipeDescription, setRecipeDescription] = useState(
     initStateFromProp ? props.recipe.description : ''
   );
-  const [recipeTags, setRecipeTags] = useState(
-    initStateFromProp ? props.recipe.tags : new Array<tagTableElement>()
-  );
+  const [recipeTags, setRecipeTags] = useState(initStateFromProp ? props.recipe.tags : []);
   const [recipePersons, setRecipePersons] = useState(
     initStateFromProp ? props.recipe.persons : defaultValueNumber
   );
   const [recipeIngredients, setRecipeIngredients] = useState<
-    Array<ingredientTableElement | FormIngredientElement>
-  >(initStateFromProp ? props.recipe.ingredients : new Array<FormIngredientElement>());
+    (ingredientTableElement | FormIngredientElement)[]
+  >(initStateFromProp ? props.recipe.ingredients : []);
   const [recipePreparation, setRecipePreparation] = useState(
-    initStateFromProp ? props.recipe.preparation : new Array<preparationStepElement>()
+    initStateFromProp ? props.recipe.preparation : []
   );
   const [recipeTime, setRecipeTime] = useState(
     initStateFromProp ? props.recipe.time : defaultValueNumber
@@ -237,9 +229,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   const [recipeNutrition, setRecipeNutrition] = useState(
     initStateFromProp ? props.recipe.nutrition : undefined
   );
-  const [imgForOCR, setImgForOCR] = useState(
-    props.mode === 'addFromPic' ? new Array<string>(props.imgUri) : new Array<string>()
-  );
+  const [imgForOCR, setImgForOCR] = useState(props.mode === 'addFromPic' ? [props.imgUri] : []);
   const [randomTags] = useState(searchRandomlyTags(3).map(element => element.name));
 
   const [validationButtonText, validationFunction] = recipeValidationButtonProps();
@@ -517,7 +507,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const [newQuantity, newUnit] = unitAndQuantity.split(unitySeparator);
 
     const updateIngredient = (ingredient: FormIngredientElement) => {
-      const ingredientCopy: Array<ingredientTableElement | FormIngredientElement> =
+      const ingredientCopy: (ingredientTableElement | FormIngredientElement)[] =
         recipeIngredients.map(ingredient => ({
           ...ingredient,
         }));
@@ -670,7 +660,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       tags: recipeTags,
       persons: recipePersons,
       ingredients: recipeIngredients as ingredientTableElement[],
-      season: initStateFromProp ? props.recipe.season : new Array<string>(),
+      season: initStateFromProp ? props.recipe.season : [],
       preparation: recipePreparation,
       time: recipeTime,
       nutrition: recipeNutrition,
@@ -689,7 +679,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function validateRecipeData(): string[] {
-    const missingElem = new Array<string>();
+    const missingElem = [];
     const translatedMissingElemPrefix = 'alerts.missingElements.';
 
     if (!recipeImage || recipeImage.trim().length === 0) {
@@ -698,7 +688,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     if (!recipeTitle || recipeTitle.trim().length === 0) {
       missingElem.push(t(translatedMissingElemPrefix + 'titleRecipe'));
     }
-    if (recipeIngredients.length == 0) {
+    if (recipeIngredients.length === 0) {
       missingElem.push(t(translatedMissingElemPrefix + 'titleIngredients'));
     } else {
       const allIngredientsHaveNames = recipeIngredients.every(
@@ -720,7 +710,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         missingElem.push(t(translatedMissingElemPrefix + 'ingredientInDatabase'));
       }
     }
-    if (recipePreparation.length == 0) {
+    if (recipePreparation.length === 0) {
       validationLogger.debug('Recipe preparation is empty', { recipeTitle });
       missingElem.push(t(translatedMissingElemPrefix + 'titlePreparation'));
     }
@@ -741,42 +731,47 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function showValidationErrorDialog(missingElem: string[]) {
-    const dialogProp = { ...defaultValidationDialogProp };
     const translatedMissingElemPrefix = 'alerts.missingElements.';
+    let title: string;
+    let content: string;
 
-    dialogProp.confirmText = t('understood');
-    if (missingElem.length == 1) {
+    if (missingElem.length === 1) {
       validationLogger.debug('Single validation element missing', {
         missingElement: missingElem[0],
       });
 
-      dialogProp.title = t(translatedMissingElemPrefix + 'titleSingular');
+      title = t(translatedMissingElemPrefix + 'titleSingular');
 
       // Special case for nutrition to handle proper grammar
       const nutritionTranslation = t(translatedMissingElemPrefix + 'nutrition');
       if (missingElem[0] === nutritionTranslation) {
-        dialogProp.content = t(translatedMissingElemPrefix + 'messageSingularNutrition');
+        content = t(translatedMissingElemPrefix + 'messageSingularNutrition');
       } else {
-        dialogProp.content =
+        content =
           t(translatedMissingElemPrefix + 'messageSingularBeginning') +
           missingElem[0] +
           t(translatedMissingElemPrefix + 'messageSingularEnding');
       }
     } else {
-      dialogProp.title = t(translatedMissingElemPrefix + 'titlePlural');
-      dialogProp.content = t(translatedMissingElemPrefix + 'messagePlural');
-      for (const elem of missingElem) {
-        dialogProp.content += `\n\t- ${elem}`;
-      }
+      title = t(translatedMissingElemPrefix + 'titlePlural');
+      content =
+        t(translatedMissingElemPrefix + 'messagePlural') +
+        missingElem.map(elem => `\n\t- ${elem}`).join('');
     }
-    setValidationDialogProp(dialogProp);
+
+    setValidationDialogProp({
+      ...defaultValidationDialogProp,
+      title,
+      content,
+      confirmText: t('understood'),
+    });
     setIsValidationDialogOpen(true);
   }
 
   async function editValidation() {
     const missingElem = validateRecipeData();
 
-    if (missingElem.length == 0) {
+    if (missingElem.length === 0) {
       recipeLogger.info('Saving edited recipe to database', {
         recipeTitle,
       });
@@ -865,8 +860,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
     const missingElem = validateRecipeData();
 
     // No mandatory elements missing
-    if (missingElem.length == 0) {
-      const dialogProp = { ...defaultValidationDialogProp };
+    if (missingElem.length === 0) {
       const recipeToAdd = createRecipeFromStates();
       const similarRecipes = findSimilarRecipes(recipeToAdd);
 
@@ -897,29 +891,33 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
             recipeTitle,
           });
 
-          dialogProp.title = t('addAnyway');
-          dialogProp.content = t('addedToDatabase', { recipeName: recipeToAdd.title });
-          dialogProp.confirmText = t('understood');
-          dialogProp.onConfirm = () => {
-            navigation.goBack();
-          };
-          setValidationDialogProp(dialogProp);
+          setValidationDialogProp({
+            ...defaultValidationDialogProp,
+            title: t('addAnyway'),
+            content: t('addedToDatabase', { recipeName: recipeToAdd.title }),
+            confirmText: t('understood'),
+            onConfirm: () => {
+              navigation.goBack();
+            },
+          });
           setIsValidationDialogOpen(true);
         } catch (error) {
           validationLogger.error('Failed to validate and add recipe to database', {
             recipeTitle,
             error,
           });
-          dialogProp.title = t('error');
-          dialogProp.content =
-            t('failedToAddRecipe', { recipeName: recipeToAdd.title }) +
-            '\n\n' +
-            (error instanceof Error ? error.message : String(error));
-          dialogProp.confirmText = t('ok');
-          dialogProp.onConfirm = () => {
-            setIsValidationDialogOpen(false);
-          };
-          setValidationDialogProp(dialogProp);
+          setValidationDialogProp({
+            ...defaultValidationDialogProp,
+            title: t('error'),
+            content:
+              t('failedToAddRecipe', { recipeName: recipeToAdd.title }) +
+              '\n\n' +
+              (error instanceof Error ? error.message : String(error)),
+            confirmText: t('ok'),
+            onConfirm: () => {
+              setIsValidationDialogOpen(false);
+            },
+          });
           setIsValidationDialogOpen(true);
         }
       };
@@ -928,17 +926,19 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
         await addRecipeToDatabase();
       } else {
         const separator = '\n\t- ';
-        dialogProp.title = t('similarRecipeFound');
-        dialogProp.content =
-          t('similarRecipeFoundContent') +
-          separator +
-          similarRecipes.map((r: recipeTableElement) => r.title).join(separator);
-        dialogProp.confirmText = t('addAnyway');
-        dialogProp.cancelText = t('cancel');
-        dialogProp.onConfirm = async () => {
-          await addRecipeToDatabase();
-        };
-        setValidationDialogProp(dialogProp);
+        setValidationDialogProp({
+          ...defaultValidationDialogProp,
+          title: t('similarRecipeFound'),
+          content:
+            t('similarRecipeFoundContent') +
+            separator +
+            similarRecipes.map((r: recipeTableElement) => r.title).join(separator),
+          confirmText: t('addAnyway'),
+          cancelText: t('cancel'),
+          onConfirm: async () => {
+            await addRecipeToDatabase();
+          },
+        });
         setIsValidationDialogOpen(true);
       }
     } else {
@@ -1132,8 +1132,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   function recipeTitleProp(): RecipeTextProps {
     const titleTestID = 'RecipeTitle';
     const titleRootText: TextProp = {
-      style: stackMode == recipeStateType.readOnly ? 'headline' : 'title',
-      value: stackMode == recipeStateType.readOnly ? recipeTitle : t('title') + ':',
+      style: stackMode === recipeStateType.readOnly ? 'headline' : 'title',
+      value: stackMode === recipeStateType.readOnly ? recipeTitle : t('title') + ':',
     };
     switch (stackMode) {
       case recipeStateType.readOnly:
@@ -1176,8 +1176,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   function recipeDescriptionProp(): RecipeTextProps {
     const descriptionTestID = 'RecipeDescription';
     const descriptionRootText: TextProp = {
-      style: stackMode == recipeStateType.readOnly ? 'paragraph' : 'title',
-      value: stackMode == recipeStateType.readOnly ? recipeDescription : t('description') + ':',
+      style: stackMode === recipeStateType.readOnly ? 'paragraph' : 'title',
+      value: stackMode === recipeStateType.readOnly ? recipeDescription : t('description') + ':',
     };
     switch (stackMode) {
       case recipeStateType.readOnly:
@@ -1435,7 +1435,7 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
           mode: 'readOnly',
         };
       case recipeStateType.addOCR:
-        if (recipePreparation.length == 0) {
+        if (recipePreparation.length === 0) {
           return {
             ...editableProps,
             mode: 'add',
@@ -1519,7 +1519,10 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
   }
 
   function handleCancel() {
-    if (stackMode === recipeStateType.edit && props.mode === 'edit') {
+    if (
+      stackMode === recipeStateType.edit &&
+      (props.mode === 'readOnly' || props.mode === 'edit')
+    ) {
       setRecipeImage(props.recipe.image_Source);
       setRecipeTitle(props.recipe.title);
       setRecipeDescription(props.recipe.description);

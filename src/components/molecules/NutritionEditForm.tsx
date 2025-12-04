@@ -4,8 +4,8 @@ import { Divider, Text, TextInput, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { recipeTextStyles } from '@styles/recipeComponents';
 import { padding } from '@styles/spacing';
-import WrappableButton from '@components/atomic/WrappableButton';
-import NumericTextInput from '@components/atomic/NumericTextInput';
+import { WrappableButton } from '@components/atomic/WrappableButton';
+import { NumericTextInput } from '@components/atomic/NumericTextInput';
 
 export type NutritionEditFormProps = {
   portionWeight: number;

@@ -178,7 +178,7 @@ export type bulletListDataType = {
   /** Whether to display multiple data items */
   multiplesData: boolean;
   /** Array of text items for bullet list display */
-  bulletListData: Array<string>;
+  bulletListData: string[];
   /** Single text item for simple display */
   shortData: string;
 };

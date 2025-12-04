@@ -46,8 +46,23 @@
 import { NavigationProp } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { RecipePropType } from '@screens/Recipe';
 import { BottomTabScreenProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import type { RecipePropType } from '@screens/Recipe';
+
+/**
+ * Recipe screen mode types
+ * Defines the different operational states for the Recipe screen
+ */
+export enum recipeStateType {
+  /** View-only mode for existing recipes */
+  readOnly,
+  /** Edit mode for modifying existing recipes */
+  edit,
+  /** Manual entry mode for creating new recipes */
+  addManual,
+  /** OCR-based mode for creating recipes from images */
+  addOCR,
+}
 
 /**
  * Stack navigator parameter list defining all modal-style screens

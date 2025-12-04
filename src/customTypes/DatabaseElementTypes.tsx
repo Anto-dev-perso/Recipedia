@@ -111,15 +111,15 @@ export type recipeTableElement = {
   /** Recipe description */
   description: string;
   /** Array of associated tags */
-  tags: Array<tagTableElement>;
+  tags: tagTableElement[];
   /** Number of servings */
   persons: number;
   /** Array of recipe ingredients with quantities */
-  ingredients: Array<ingredientTableElement>;
+  ingredients: ingredientTableElement[];
   /** Seasonal availability data */
-  season: Array<string>;
+  season: string[];
   /** Step-by-step preparation instructions with structured data */
-  preparation: Array<preparationStepElement>;
+  preparation: preparationStepElement[];
   /** Total preparation time in minutes */
   time: number;
   /** Optional nutrition facts (undefined when not available) */
@@ -139,7 +139,7 @@ export type encodedRecipeElement = {
   NUTRITION: string;
 };
 
-export const recipeColumnsEncoding: Array<databaseColumnType> = [
+export const recipeColumnsEncoding: databaseColumnType[] = [
   { colName: recipeColumnsNames.image, type: encodedType.TEXT },
   { colName: recipeColumnsNames.title, type: encodedType.TEXT },
   { colName: recipeColumnsNames.description, type: encodedType.TEXT },
@@ -167,7 +167,7 @@ export type ingredientTableElement = {
   /** Categorization type for organization and shopping */
   type: ingredientType;
   /** Array of month numbers when ingredient is in season */
-  season: Array<string>;
+  season: string[];
 };
 
 /**
@@ -196,7 +196,7 @@ export enum ingredientsColumnsNames {
   season = 'SEASON',
 }
 
-export const ingredientColumnsEncoding: Array<databaseColumnType> = [
+export const ingredientColumnsEncoding: databaseColumnType[] = [
   { colName: ingredientsColumnsNames.ingredient, type: encodedType.TEXT },
   { colName: ingredientsColumnsNames.unit, type: encodedType.TEXT },
   { colName: ingredientsColumnsNames.type, type: encodedType.TEXT },
@@ -252,7 +252,7 @@ export enum tagsColumnsNames {
   name = 'NAME',
 }
 
-export const tagColumnsEncoding: Array<databaseColumnType> = [
+export const tagColumnsEncoding: databaseColumnType[] = [
   { colName: tagsColumnsNames.name, type: encodedType.TEXT },
 ];
 
@@ -276,7 +276,7 @@ export type shoppingListTableElement = {
   /** Unit of measurement */
   unit: string;
   /** Array of recipe titles that use this ingredient */
-  recipesTitle: Array<string>;
+  recipesTitle: string[];
   /** Whether the item has been purchased */
   purchased: boolean;
 };
@@ -300,7 +300,7 @@ export enum shoppingListColumnsNames {
   purchased = 'PURCHASED',
 }
 
-export const shoppingListColumnsEncoding: Array<databaseColumnType> = [
+export const shoppingListColumnsEncoding: databaseColumnType[] = [
   { colName: shoppingListColumnsNames.type, type: encodedType.TEXT },
   { colName: shoppingListColumnsNames.ingredient, type: encodedType.TEXT },
   { colName: shoppingListColumnsNames.quantity, type: encodedType.FLOAT },
@@ -310,24 +310,24 @@ export const shoppingListColumnsEncoding: Array<databaseColumnType> = [
 ];
 
 export function arrayOfType(
-  ingredients: Array<ingredientTableElement>,
+  ingredients: ingredientTableElement[],
   filter: string
-): Array<ingredientTableElement> {
-  return ingredients.filter(ingredient => ingredient.type == filter);
+): ingredientTableElement[] {
+  return ingredients.filter(ingredient => ingredient.type === filter);
 }
 
 // TODO use more this function
 export function extractIngredientsNameWithQuantity(
-  ingredients: Array<ingredientTableElement>
-): Array<string> {
+  ingredients: ingredientTableElement[]
+): string[] {
   return ingredients.map(
     ingredient =>
       ingredient.quantity + unitySeparator + ingredient.unit + textSeparator + ingredient.name
   );
 }
 
-export function extractTagsName(tags: Array<tagTableElement>): Array<string> {
-  const result = new Array<string>();
+export function extractTagsName(tags: tagTableElement[]): string[] {
+  const result: string[] = [];
   tags.forEach(element => {
     result.push(element.name);
   });
@@ -340,24 +340,24 @@ export function isRecipePartiallyEqual(
   recipe2: recipeTableElement
 ): boolean {
   return (
-    recipe1.image_Source == recipe2.image_Source &&
-    recipe1.title == recipe2.title &&
-    recipe1.description == recipe2.description
+    recipe1.image_Source === recipe2.image_Source &&
+    recipe1.title === recipe2.title &&
+    recipe1.description === recipe2.description
   );
 }
 
 export function isRecipeEqual(recipe1: recipeTableElement, recipe2: recipeTableElement): boolean {
   return (
-    recipe1.image_Source == recipe2.image_Source &&
-    recipe1.image_Source == recipe2.image_Source &&
-    recipe1.title == recipe2.title &&
-    recipe1.description == recipe2.description &&
-    JSON.stringify(recipe1.tags) == JSON.stringify(recipe2.tags) &&
-    recipe1.persons == recipe2.persons &&
-    JSON.stringify(recipe1.ingredients) == JSON.stringify(recipe2.ingredients) &&
-    JSON.stringify(recipe1.season) == JSON.stringify(recipe2.season) &&
-    JSON.stringify(recipe1.preparation) == JSON.stringify(recipe2.preparation) &&
-    recipe1.time == recipe2.time
+    recipe1.image_Source === recipe2.image_Source &&
+    recipe1.image_Source === recipe2.image_Source &&
+    recipe1.title === recipe2.title &&
+    recipe1.description === recipe2.description &&
+    JSON.stringify(recipe1.tags) === JSON.stringify(recipe2.tags) &&
+    recipe1.persons === recipe2.persons &&
+    JSON.stringify(recipe1.ingredients) === JSON.stringify(recipe2.ingredients) &&
+    JSON.stringify(recipe1.season) === JSON.stringify(recipe2.season) &&
+    JSON.stringify(recipe1.preparation) === JSON.stringify(recipe2.preparation) &&
+    recipe1.time === recipe2.time
   );
 }
 
@@ -366,21 +366,21 @@ export function isIngredientEqual(
   ingredient2: ingredientTableElement | FormIngredientElement
 ): boolean {
   return (
-    ingredient1.name == ingredient2.name &&
-    ingredient1.unit == ingredient2.unit &&
-    (!ingredient1.type || !ingredient2.type || ingredient1.type == ingredient2.type)
+    ingredient1.name === ingredient2.name &&
+    ingredient1.unit === ingredient2.unit &&
+    (!ingredient1.type || !ingredient2.type || ingredient1.type === ingredient2.type)
   );
 }
 
 export function isTagEqual(tag1: tagTableElement, tag2: tagTableElement): boolean {
-  return tag1.name == tag2.name;
+  return tag1.name === tag2.name;
 }
 
 export function isShoppingEqual(
   shop1: shoppingListTableElement,
   shop2: shoppingListTableElement
 ): boolean {
-  return shop1.type == shop2.type && shop1.name == shop2.name && shop1.unit == shop2.unit;
+  return shop1.type === shop2.type && shop1.name === shop2.name && shop1.unit === shop2.unit;
 }
 
 /**

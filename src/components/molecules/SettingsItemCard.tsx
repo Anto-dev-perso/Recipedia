@@ -44,7 +44,7 @@ import { Button, Card, Text } from 'react-native-paper';
 import { padding } from '@styles/spacing';
 import { useI18n } from '@utils/i18n';
 import { ingredientTableElement, tagTableElement } from '@customTypes/DatabaseElementTypes';
-import SeasonalityCalendar from '@components/molecules/SeasonalityCalendar';
+import { SeasonalityCalendar } from '@components/molecules/SeasonalityCalendar';
 
 /** Type constraint for items that can be used in SettingsItemCard */
 export type SettingsItem = ingredientTableElement | tagTableElement;

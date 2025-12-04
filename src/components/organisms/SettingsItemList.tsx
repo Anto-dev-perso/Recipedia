@@ -44,8 +44,9 @@ import { Button, Text, useTheme } from 'react-native-paper';
 import { Icons } from '@assets/Icons';
 import { padding } from '@styles/spacing';
 import { BottomScreenTitle } from '@styles/typography';
-import SettingsItemCard, {
+import {
   SettingsItem,
+  SettingsItemCard,
   SettingsItemCardProps,
 } from '../molecules/SettingsItemCard';
 import { useI18n } from '@utils/i18n';
@@ -59,7 +60,7 @@ export type SettingsItemListProps<T extends SettingsItem> = Omit<
   'index' | 'item'
 > & {
   /** Array of items to display in the list */
-  items: Array<T>;
+  items: T[];
   /** Callback fired when the add button is pressed */
   onAddPress: () => void;
 };

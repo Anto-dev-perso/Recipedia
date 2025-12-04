@@ -48,11 +48,11 @@ import {
   recipeTableReadOnlyFlex,
   recipeTableStyles,
 } from '@styles/recipeComponents';
-import RoundButton from '@components/atomic/RoundButton';
+import { RoundButton } from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
-import NumericTextInput from '@components/atomic/NumericTextInput';
-import TextInputWithDropDown from '@components/molecules/TextInputWithDropDown';
+import { NumericTextInput } from '@components/atomic/NumericTextInput';
+import { TextInputWithDropDown } from '@components/molecules/TextInputWithDropDown';
 import { defaultValueNumber } from '@utils/Constants';
 
 /**
@@ -105,7 +105,7 @@ export type EditableProps = EditableBaseProps & {
 export type AddProps = Omit<EditableBaseProps, 'ingredients'> & {
   mode: 'add';
   /** Array of ingredients, may include incomplete FormIngredientElement for new ingredients */
-  ingredients: Array<ingredientTableElement | FormIngredientElement>;
+  ingredients: (ingredientTableElement | FormIngredientElement)[];
   /** Callback fired to open OCR modal (for empty state) */
   openModal: () => void;
 };
@@ -164,7 +164,7 @@ function formatIngredientChange(quantity: number, unit: string, name: string): s
  */
 type EditableIngredientsProps = {
   testID: string;
-  ingredients: Array<ingredientTableElement | FormIngredientElement>;
+  ingredients: (ingredientTableElement | FormIngredientElement)[];
   prefixText: string;
   columnTitles: {
     column1: string;

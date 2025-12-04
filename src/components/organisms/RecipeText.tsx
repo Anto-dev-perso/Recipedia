@@ -47,12 +47,12 @@
 
 import { View } from 'react-native';
 import React from 'react';
-import RoundButton from '@components/atomic/RoundButton';
+import { RoundButton } from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
 import { Text } from 'react-native-paper';
 import { recipeTextStyles } from '@styles/recipeComponents';
 import { VariantProp } from 'react-native-paper/lib/typescript/components/Typography/types';
-import CustomTextInput from '@components/atomic/CustomTextInput';
+import { CustomTextInput } from '@components/atomic/CustomTextInput';
 
 /** Text configuration with style and content */
 export type TextProp = {

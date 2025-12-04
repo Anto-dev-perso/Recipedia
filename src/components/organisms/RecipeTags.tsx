@@ -47,11 +47,11 @@
  */
 
 import { View } from 'react-native';
-import React, { useMemo, useState } from 'react';
-import RoundButton from '@components/atomic/RoundButton';
+import React, { useState } from 'react';
+import { RoundButton } from '@components/atomic/RoundButton';
 import { Icons } from '@assets/Icons';
-import HorizontalList from '@components/molecules/HorizontalList';
-import TextInputWithDropDown from '@components/molecules/TextInputWithDropDown';
+import { HorizontalList } from '@components/molecules/HorizontalList';
+import { TextInputWithDropDown } from '@components/molecules/TextInputWithDropDown';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import { FlashList } from '@shopify/flash-list';
 import { recipeTagsStyles } from '@styles/recipeComponents';
@@ -83,7 +83,7 @@ export type RecipeTagsReadOnlyProps = { type: 'readOnly' };
  */
 export type RecipeTagProps = {
   /** Array of current tags */
-  tagsList: Array<string>;
+  tagsList: string[];
 } & (RecipeTagsReadOnlyProps | RecipeTagsAddOrEditProps);
 
 /**
@@ -94,17 +94,13 @@ export type RecipeTagProps = {
  */
 export function RecipeTags(tagsProps: RecipeTagProps) {
   const { tags } = useRecipeDatabase();
-  const [newTags, setNewTags] = useState(new Array<number>());
+  const [newTags, setNewTags] = useState<number[]>([]);
   const [tagsAddedCounter, setTagsAddedCounter] = useState(0);
 
-  const allTagsNamesSorted = useMemo(
-    () =>
-      tags
-        .map(tag => tag.name)
-        .filter(dbTag => !tagsProps.tagsList.includes(dbTag))
-        .sort(),
-    [tags, tagsProps.tagsList]
-  );
+  const allTagsNamesSorted = tags
+    .map(tag => tag.name)
+    .filter(dbTag => !tagsProps.tagsList.includes(dbTag))
+    .sort();
 
   const { t } = useI18n();
   const { colors } = useTheme();

@@ -10,7 +10,7 @@ import { BottomScreenTitle } from '@styles/typography';
 import { defaultPersonsSettingsLogger } from '@utils/logger';
 import { useDefaultPersons } from '@context/DefaultPersonsContext';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
-import LoadingOverlay from '@components/dialogs/LoadingOverlay';
+import { LoadingOverlay } from '@components/dialogs/LoadingOverlay';
 
 // TODO missing a back button on screen
 export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsProp) {

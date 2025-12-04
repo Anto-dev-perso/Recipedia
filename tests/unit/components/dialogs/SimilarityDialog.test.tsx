@@ -13,10 +13,9 @@ jest.mock('expo-sqlite', () => require('@mocks/deps/expo-sqlite-mock').expoSqlit
 jest.mock('@utils/FileGestion', () =>
   require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
 );
-jest.mock(
-  '@components/dialogs/ItemDialog',
-  () => require('@mocks/components/dialogs/ItemDialog-mock').itemDialogMock
-);
+jest.mock('@components/dialogs/ItemDialog', () => ({
+  ItemDialog: require('@mocks/components/dialogs/ItemDialog-mock').itemDialogMock,
+}));
 
 describe('SimilarityDialog', () => {
   const database = RecipeDatabase.getInstance();

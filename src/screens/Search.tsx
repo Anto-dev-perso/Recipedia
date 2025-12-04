@@ -46,7 +46,7 @@
  * ```
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   BackHandler,
   FlatList,
@@ -69,12 +69,12 @@ import {
 } from '@utils/FilterFunctions';
 import { useI18n } from '@utils/i18n';
 import { Divider, Text, useTheme } from 'react-native-paper';
-import SearchBar from '@components/organisms/SearchBar';
-import SearchBarResults from '@components/organisms/SearchBarResults';
-import FiltersSelection from '@components/organisms/FiltersSelection';
+import { SearchBar } from '@components/organisms/SearchBar';
+import { SearchBarResults } from '@components/organisms/SearchBarResults';
+import { FiltersSelection } from '@components/organisms/FiltersSelection';
 import { padding } from '@styles/spacing';
-import RecipeCard from '@components/molecules/RecipeCard';
-import FilterAccordion from '@components/organisms/FilterAccordion';
+import { RecipeCard } from '@components/molecules/RecipeCard';
+import { FilterAccordion } from '@components/organisms/FilterAccordion';
 import { useSeasonFilter } from '@context/SeasonFilterContext';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
@@ -94,7 +94,7 @@ export function Search() {
   const scrollViewRef = useRef<ScrollView>(null);
 
   // Core state
-  const [filtersState, setFiltersState] = useState(new Map<TListFilter, Array<string>>());
+  const [filtersState, setFiltersState] = useState(new Map<TListFilter, string[]>());
   const [searchPhrase, setSearchPhrase] = useState('');
   const [searchBarClicked, setSearchBarClicked] = useState(false);
   const [addingFilterMode, setAddingFilterMode] = useState(false);
@@ -143,7 +143,7 @@ export function Search() {
   }, [searchBarClicked]);
 
   // Update search string and filter state
-  const updateSearchString = useCallback((newSearchString: string) => {
+  const updateSearchString = (newSearchString: string) => {
     setSearchPhrase(newSearchString);
 
     setFiltersState(prevState => {
@@ -157,19 +157,19 @@ export function Search() {
 
       return newState;
     });
-  }, []);
+  };
 
   // Add filter to state
-  const addAFilterToTheState = useCallback((filterTitle: TListFilter, value: string) => {
+  const addAFilterToTheState = (filterTitle: TListFilter, value: string) => {
     setFiltersState(prevState => {
       const newState = new Map(prevState);
       addValueToMultimap(newState, filterTitle, value);
       return newState;
     });
-  }, []);
+  };
 
   // Remove filter from state
-  const removeAFilterToTheState = useCallback((filterTitle: TListFilter, value: string) => {
+  const removeAFilterToTheState = (filterTitle: TListFilter, value: string) => {
     setFiltersState(prevState => {
       const newState = new Map(prevState);
       removeValueToMultimap(newState, filterTitle, value);
@@ -180,20 +180,17 @@ export function Search() {
     if (filterTitle === listFilter.recipeTitleInclude) {
       setSearchPhrase('');
     }
-  }, []);
+  };
 
   // Find and remove filter by value
-  const findFilterStringAndRemove = useCallback(
-    (item: string) => {
-      for (const [key, value] of filtersState) {
-        if (value.includes(item)) {
-          removeAFilterToTheState(key, item);
-          break;
-        }
+  const findFilterStringAndRemove = (item: string) => {
+    for (const [key, value] of filtersState) {
+      if (value.includes(item)) {
+        removeAFilterToTheState(key, item);
+        break;
       }
-    },
-    [filtersState, removeAFilterToTheState]
-  );
+    }
+  };
 
   const screenId = 'SearchScreen';
   const recipeCardsId = screenId + '::RecipeCards';

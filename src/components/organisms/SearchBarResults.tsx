@@ -55,7 +55,7 @@ export type SearchBarResultsProps = {
   /** Unique identifier for testing and accessibility */
   testId: string;
   /** Array of filtered result titles to display */
-  filteredTitles: Array<string>;
+  filteredTitles: string[];
   /** State setter for managing search bar focus/active state */
   setSearchBarClicked: React.Dispatch<React.SetStateAction<boolean>>;
   /** Callback fired when a search result is selected */

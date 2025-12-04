@@ -51,12 +51,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, Dialog, IconButton, Portal, Text, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { tutorialLogger } from '@utils/logger';
-import CustomImage from '@components/atomic/CustomImage';
+import { CustomImage } from '@components/atomic/CustomImage';
 import { Asset } from 'expo-asset';
 import { padding, screenWidth } from '@styles/spacing';
 import { IconName, Icons } from '@assets/Icons';
 import Constants from 'expo-constants';
-import LoadingOverlay from '@components/dialogs/LoadingOverlay';
+import { LoadingOverlay } from '@components/dialogs/LoadingOverlay';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
 /**
@@ -75,7 +75,7 @@ export type WelcomeScreenProps = {
  * @param props - The component props with tutorial navigation callbacks
  * @returns JSX element representing the welcome and onboarding interface
  */
-export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreenProps) {
+export function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreenProps) {
   const { colors, fonts } = useTheme();
   const { t } = useI18n();
   const { recipes, datasetLoadError, dismissDatasetLoadError } = useRecipeDatabase();
@@ -95,8 +95,7 @@ export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreen
         setPendingAction(null);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDataLoaded, pendingAction]);
+  }, [isDataLoaded, pendingAction, onStartTutorial, onSkip]);
 
   const handleStartTutorial = () => {
     if (isDataLoaded) {
@@ -119,7 +118,7 @@ export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreen
   };
 
   type Feature = { icon: IconName; text: string };
-  const featuresList = new Array<Feature>(
+  const featuresList: Feature[] = [
     { icon: Icons.searchIcon, text: t('welcome.features.find') },
     {
       icon: Icons.plusIcon,
@@ -128,8 +127,8 @@ export default function WelcomeScreen({ onStartTutorial, onSkip }: WelcomeScreen
     {
       icon: Icons.shoppingUnselectedIcon,
       text: t('welcome.features.shopping'),
-    }
-  );
+    },
+  ];
   const startTourFont = fonts.titleMedium;
   const iconSize = screenWidth / 4;
 

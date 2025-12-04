@@ -56,13 +56,13 @@
  */
 
 import React from 'react';
-import Recipe from '@screens/Recipe';
-import LanguageSettings from '@screens/LanguageSettings';
-import DefaultPersonsSettings from '@screens/DefaultPersonsSettings';
-import IngredientsSettings from '@screens/IngredientsSettings';
-import TagsSettings from '@screens/TagsSettings';
+import { Recipe } from '@screens/Recipe';
+import { LanguageSettings } from '@screens/LanguageSettings';
+import { DefaultPersonsSettings } from '@screens/DefaultPersonsSettings';
+import { IngredientsSettings } from '@screens/IngredientsSettings';
+import { TagsSettings } from '@screens/TagsSettings';
 import { Stack } from '@customTypes/ScreenTypes';
-import BottomTabs from '@navigation/BottomTabs';
+import { BottomTabs } from '@navigation/BottomTabs';
 import { navigationLogger } from '@utils/logger';
 
 /**
@@ -95,4 +95,5 @@ export function RootNavigator() {
     </Stack.Navigator>
   );
 }
+
 export default RootNavigator;

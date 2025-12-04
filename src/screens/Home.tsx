@@ -44,9 +44,9 @@
  * ```
  */
 
-import RecipeRecommendation from '@components/organisms/RecipeRecommendation';
+import { RecipeRecommendation } from '@components/organisms/RecipeRecommendation';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, useTheme } from 'react-native-paper';
@@ -81,9 +81,9 @@ export function Home() {
   const { recipes, ingredients, tags } = useRecipeDatabase();
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [recommendations, setRecommendations] = useState<Array<RecommendationType>>([]);
+  const [recommendations, setRecommendations] = useState<RecommendationType[]>([]);
 
-  const loadRecommendations = useCallback(() => {
+  useEffect(() => {
     homeLogger.debug('Loading smart recipe recommendations', {
       carouselSize: howManyItemInCarousel,
       seasonFilterEnabled: seasonFilter,
@@ -95,16 +95,14 @@ export function Home() {
     homeLogger.debug('Smart recipe recommendations loaded successfully');
   }, [recipes, ingredients, tags, seasonFilter]);
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = () => {
     homeLogger.info('User refreshing home screen recommendations');
     setRefreshing(true);
-    loadRecommendations();
+    setRecommendations(
+      generateHomeRecommendations(recipes, ingredients, tags, seasonFilter, howManyItemInCarousel)
+    );
     setRefreshing(false);
-  }, [loadRecommendations]);
-
-  useEffect(() => {
-    loadRecommendations();
-  }, [loadRecommendations]);
+  };
 
   const renderEmptyState = () => {
     const emptyStateTestId = homeId + '::EmptyState';

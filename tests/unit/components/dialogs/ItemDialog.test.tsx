@@ -1,6 +1,6 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
-import ItemDialog, { ItemDialogProps } from '@components/dialogs/ItemDialog';
+import { ItemDialog, ItemDialogProps } from '@components/dialogs/ItemDialog';
 import {
   FormIngredientElement,
   ingredientTableElement,
@@ -10,15 +10,14 @@ import {
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
-jest.mock(
-  '@components/atomic/CustomTextInput',
-  () => require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock
-);
+jest.mock('@components/atomic/CustomTextInput', () => ({
+  CustomTextInput: require('@mocks/components/atomic/CustomTextInput-mock').customTextInputMock,
+}));
 
-jest.mock(
-  '@components/molecules/SeasonalityCalendar',
-  () => require('@mocks/components/molecules/SeasonalityCalendar-mock').seasonalityCalendarMock
-);
+jest.mock('@components/molecules/SeasonalityCalendar', () => ({
+  SeasonalityCalendar: require('@mocks/components/molecules/SeasonalityCalendar-mock')
+    .seasonalityCalendarMock,
+}));
 
 const mockTags: any[] = [];
 const mockIngredients: any[] = [];

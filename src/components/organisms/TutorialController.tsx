@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { CopilotProvider, useCopilot } from 'react-native-copilot';
 import { useNavigation } from '@react-navigation/native';
 import { tutorialLogger } from '@utils/logger';
@@ -35,21 +35,6 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
   };
 
   /**
-   * Handles tutorial stop/completion event
-   *
-   * Fires completion callback, logs tutorial end, and navigates back to Home screen.
-   * Uses setTimeout to ensure navigation occurs after copilot cleanup completes.
-   */
-  const handleStop = useCallback(() => {
-    tutorialLogger.info('Tutorial stopped');
-    onComplete();
-    // Navigate to Home after copilot cleanup completes
-    setTimeout(() => {
-      navigation.navigate('Home');
-    }, 0);
-  }, [navigation, onComplete]);
-
-  /**
    * Handles tutorial step change events
    *
    * Logs step transitions for debugging and analytics. Only logs when
@@ -83,6 +68,14 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
       return;
     }
 
+    const handleStop = () => {
+      tutorialLogger.info('Tutorial stopped');
+      onComplete();
+      setTimeout(() => {
+        navigation.navigate('Home');
+      }, 0);
+    };
+
     copilotEvents.on('stepChange', handleStepChange);
     copilotEvents.on('stop', handleStop);
     copilotEvents.on('start', handleStart);
@@ -92,7 +85,7 @@ function TutorialManager({ onComplete }: Pick<TutorialProviderProps, 'onComplete
       copilotEvents.off('stop', handleStop);
       copilotEvents.off('start', handleStart);
     };
-  }, [copilotEvents, navigation, onComplete, handleStop]);
+  }, [copilotEvents, navigation, onComplete]);
 
   return null;
 }

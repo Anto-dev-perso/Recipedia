@@ -7,10 +7,10 @@ import { testTags } from '@test-data/tagsDataset';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
 
-jest.mock(
-  '@components/molecules/SeasonalityCalendar',
-  () => require('@mocks/components/molecules/SeasonalityCalendar-mock').seasonalityCalendarMock
-);
+jest.mock('@components/molecules/SeasonalityCalendar', () => ({
+  SeasonalityCalendar: require('@mocks/components/molecules/SeasonalityCalendar-mock')
+    .seasonalityCalendarMock,
+}));
 
 describe('SettingsItemCard Component', () => {
   const mockOnDelete = jest.fn();

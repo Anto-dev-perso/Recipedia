@@ -3,10 +3,9 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { NutritionEmptyState } from '@components/molecules/NutritionEmptyState';
 
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
-jest.mock(
-  '@components/atomic/RoundButton',
-  () => require('@mocks/components/atomic/RoundButton-mock').roundButtonMock
-);
+jest.mock('@components/atomic/RoundButton', () => ({
+  RoundButton: require('@mocks/components/atomic/RoundButton-mock').roundButtonMock,
+}));
 
 const defaultTestId = 'test';
 const expectationTestId = defaultTestId + '::NutritionEmptyState::';

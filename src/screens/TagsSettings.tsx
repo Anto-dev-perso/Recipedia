@@ -30,11 +30,11 @@
  * ```
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { tagTableElement } from '@customTypes/DatabaseElementTypes';
-import SettingsItemList from '@components/organisms/SettingsItemList';
-import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
+import { SettingsItemList } from '@components/organisms/SettingsItemList';
+import { DialogMode, ItemDialog } from '@components/dialogs/ItemDialog';
 import { tagsSettingsLogger } from '@utils/logger';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
@@ -46,10 +46,7 @@ import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 export function TagsSettings() {
   const { tags, addTag, editTag, deleteTag } = useRecipeDatabase();
 
-  const tagsSortedAlphabetically = useMemo(
-    () => [...tags].sort((a, b) => a.name.localeCompare(b.name)),
-    [tags]
-  );
+  const tagsSortedAlphabetically = [...tags].sort((a, b) => a.name.localeCompare(b.name));
 
   const [dialogVisible, setDialogVisible] = useState(false);
   const [dialogMode, setDialogMode] = useState<DialogMode>('add');

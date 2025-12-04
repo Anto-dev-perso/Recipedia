@@ -98,5 +98,8 @@ export default ({config}: ConfigContext): ExpoConfig => {
         updates: isProduction ? {} : {
             enabled: false
         },
+        experiments: {
+            reactCompiler: true,
+        },
     };
 };

@@ -25,11 +25,11 @@
  * ```
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FormIngredientElement, ingredientTableElement } from '@customTypes/DatabaseElementTypes';
-import SettingsItemList from '@components/organisms/SettingsItemList';
-import ItemDialog, { DialogMode } from '@components/dialogs/ItemDialog';
+import { SettingsItemList } from '@components/organisms/SettingsItemList';
+import { DialogMode, ItemDialog } from '@components/dialogs/ItemDialog';
 import { ingredientsSettingsLogger } from '@utils/logger';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 
@@ -41,9 +41,8 @@ import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 export function IngredientsSettings() {
   const { ingredients, addIngredient, editIngredient, deleteIngredient } = useRecipeDatabase();
 
-  const ingredientsSortedAlphabetically = useMemo(
-    () => [...ingredients].sort((a, b) => a.name.localeCompare(b.name)),
-    [ingredients]
+  const ingredientsSortedAlphabetically = [...ingredients].sort((a, b) =>
+    a.name.localeCompare(b.name)
   );
 
   // Dialog states
