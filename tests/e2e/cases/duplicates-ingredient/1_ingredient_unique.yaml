@@ -20,11 +20,20 @@ tags:
       id: "RecipeIngredients::AddButton::RoundButton"
     direction: DOWN
     speed: 60
+    centerElement: true
     label: "Action - Scroll to ingredients section"
 
 - tapOn:
     id: "RecipeIngredients::AddButton::RoundButton"
     label: "Action - Add ingredient to recipe"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipeIngredients::0::NameInput::CustomTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Action - Scroll to first ingredient"
 
 - tapOn:
     id: "RecipeIngredients::0::NameInput::CustomTextInput"

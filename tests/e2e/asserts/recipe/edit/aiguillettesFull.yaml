@@ -9,16 +9,23 @@ appId: "com.recipedia"
     label: "Add tag button icons is displayed"
 
 - assertVisible:
-    id: "RecipePreparation::EditableStep::2::Content"
-    text: "Content of step 3 : "
-    label: "Preparation #3 content text is displayed"
-
-- assertVisible:
     id: "RecipePreparation::EditableStep::2::TextInputContent::CustomTextInput"
     text: "Coupez les filets de poulet en lanieres.emincez l'oignon.Pressez\
       \ ou hachez l'ail.Dans une poele, faites chauffer un filet d'huile de cuisson\
       \ a feu moyen a vif."
     label: "Preparation #3 paragraph input text id is displayed with the correct text"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::EditableStep::2::Content"
+    direction: UP
+    speed: 40
+    label: "Scroll to third preparation content"
+
+- assertVisible:
+    id: "RecipePreparation::EditableStep::2::Content"
+    text: "Content of step 3 : "
+    label: "Preparation #3 content text is displayed"
 
 - scrollUntilVisible:
     element:

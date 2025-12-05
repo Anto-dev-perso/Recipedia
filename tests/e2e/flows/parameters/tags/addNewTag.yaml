@@ -22,7 +22,7 @@ appId: "com.recipedia"
 - scrollUntilVisible:
     element:
       text: "RecipeTag"
-    direction: UP
+    direction: DOWN
     speed: 60
     label: "Scroll to find the newly added tag"
 
