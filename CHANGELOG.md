@@ -1,3 +1,11 @@
+## [1.3.3](https://github.com/Anto-dev-perso/Recipedia/compare/v1.3.2...v1.3.3) (2025-12-05)
+
+### Bug Fixes
+
+* avoid state update on initial mount to fix CI E2E tests ([#141](https://github.com/Anto-dev-perso/Recipedia/issues/141)) ([bb1ef0d](https://github.com/Anto-dev-perso/Recipedia/commit/bb1ef0d4ef274230399a608e5b011c5dadc501f8))
+* **ci:** use Node.js 22 LTS in release workflow ([0ca7b79](https://github.com/Anto-dev-perso/Recipedia/commit/0ca7b79332091e72d8d94d95909d8c716053381b))
+* replace `useFocusEffect` with `useIsFocused` for focus handling ([386eaa0](https://github.com/Anto-dev-perso/Recipedia/commit/386eaa0d6f74228fa28cb29461b19788c6bebb72))
+
 ## [1.3.2](https://github.com/Anto-dev-perso/Recipedia/compare/v1.3.1...v1.3.2) (2025-12-04)
 
 ### Bug Fixes
