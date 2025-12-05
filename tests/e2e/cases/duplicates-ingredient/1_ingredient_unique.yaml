@@ -7,8 +7,8 @@ tags:
     file: "../../flows/setupFirstTest.yaml"
     label: "Setup - Launch app and wait for ready"
 
-- tapOn:
-    id: "ExpandButton"
+- runFlow:
+    file: "../../flows/fab/expand.yaml"
     label: "Action - Expand FAB menu"
 
 - tapOn:

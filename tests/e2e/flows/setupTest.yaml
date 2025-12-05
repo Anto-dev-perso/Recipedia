@@ -35,13 +35,9 @@ appId: "com.recipedia"
     timeout: 5000
     label: "Wait for FAB to be visible"
 
-# Wait for background loading to complete
-- extendedWaitUntil:
-    visible:
-      id: "NonExistentElement::ForDelay"
-    timeout: 5000
-    optional: true
-    label: "Wait 5s for background loading to complete"
+- waitForAnimationToEnd:
+    timeout: 3000
+    label: "Wait for FAB mount animation to complete"
 
 - runFlow:
     file: "handleAnr.yaml"

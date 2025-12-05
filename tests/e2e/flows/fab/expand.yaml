@@ -1,0 +1,20 @@
+appId: "com.recipedia"
+---
+- repeat:
+    times: 5
+    while:
+      notVisible:
+        id: "ReduceButton"
+    commands:
+      - tapOn:
+          id: "ExpandButton"
+          label: "Tap FAB expand button"
+      - extendedWaitUntil:
+          visible:
+            id: "ReduceButton"
+          timeout: 1000
+          optional: true
+
+- runFlow:
+    file: "../../asserts/home/assertExpandedButtons.yaml"
+    label: "Assert FAB menu is expanded"

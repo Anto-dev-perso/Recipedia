@@ -9,6 +9,12 @@ appId: "com.recipedia"
     text: "Adjust settings like language, default portions, and manage ingredients and tags. Update details like ingredient seasons to match your preferences."
     label: "Verify Step 4 (Parameters) description"
 
+- extendedWaitUntil:
+    visible:
+      id: "TutorialTooltip::Previous-text"
+    timeout: 3000
+    label: "Wait for Previous button to appear"
+
 - assertVisible:
     id: "TutorialTooltip::Previous-text"
     text: "Previous"

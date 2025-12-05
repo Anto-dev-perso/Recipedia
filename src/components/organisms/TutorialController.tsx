@@ -5,6 +5,7 @@ import { tutorialLogger } from '@utils/logger';
 import { TabScreenNavigation } from '@customTypes/ScreenTypes';
 import { CopilotStepData } from '@customTypes/TutorialTypes';
 import { TutorialTooltip } from '@components/molecules/TutorialTooltip';
+import { TutorialStepNumber } from '@components/molecules/TutorialStepNumber';
 import { TUTORIAL_VERTICAL_OFFSET } from '@utils/Constants';
 
 export type TutorialProviderProps = {
@@ -119,6 +120,7 @@ export function TutorialProvider({ children, onComplete }: TutorialProviderProps
       overlay='view'
       animated={true}
       tooltipComponent={TutorialTooltip}
+      stepNumberComponent={TutorialStepNumber}
       tooltipStyle={tooltipStyle}
       verticalOffset={TUTORIAL_VERTICAL_OFFSET}
     >

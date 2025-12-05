@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Button, Card, Text, useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -27,25 +27,12 @@ export function TutorialTooltip() {
   const { t } = useI18n();
   const navigation = useNavigation<TabScreenNavigation>();
   const copilotData = useSafeCopilot();
-  const pendingStepAdvance = useRef<(() => void) | null>(null);
-
-  // Set up navigation listener for step advancement
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('state', () => {
-      if (pendingStepAdvance.current) {
-        pendingStepAdvance.current();
-        pendingStepAdvance.current = null;
-      }
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   if (!copilotData) {
     return null;
   }
 
-  const { isFirstStep, isLastStep, goToNext, goToPrev, stop, currentStep } = copilotData;
+  const { isLastStep, goToNext, goToPrev, stop, currentStep } = copilotData;
 
   /**
    * Helper function to find tutorial step configuration by order number
@@ -90,6 +77,9 @@ export function TutorialTooltip() {
     return null;
   }
 
+  // Calculate isFirstStep from order, not library's broken calculation
+  const isFirstStep = currentStep.order === 1;
+
   /**
    * Handles advancing to the next tutorial step
    *
@@ -107,11 +97,9 @@ export function TutorialTooltip() {
       return;
     }
 
-    // Set up step advancement to happen after navigation completes
-    pendingStepAdvance.current = goToNext;
-
-    // Navigate to next screen
-    navigation.navigate(nextScreen);
+    goToNext().then(() => {
+      navigation.navigate(nextScreen);
+    });
   };
 
   /**
@@ -131,10 +119,9 @@ export function TutorialTooltip() {
       return;
     }
 
-    // Set up step going back to happen after navigation completes
-    pendingStepAdvance.current = goToPrev;
-
-    navigation.navigate(previousScreen);
+    goToPrev().then(() => {
+      navigation.navigate(previousScreen);
+    });
   };
 
   // From copilot source files, see that they add 15 padding to tooltip

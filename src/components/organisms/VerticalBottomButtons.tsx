@@ -38,7 +38,7 @@ import { TUTORIAL_DEMO_INTERVAL, TUTORIAL_STEPS } from '@utils/Constants';
 import { pickImage, takePhoto } from '@utils/ImagePicker';
 import { Icons } from '@assets/Icons';
 import { StackScreenNavigation } from '@customTypes/ScreenTypes';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { FAB, Portal, useTheme } from 'react-native-paper';
 import { padding, screenHeight, screenWidth } from '@styles/spacing';
 
@@ -71,48 +71,39 @@ function VerticalBottomButtons() {
   const currentStep = copilotData?.currentStep;
 
   const [open, setOpen] = useState(false);
-  const [fabVisible, setFabVisible] = useState(true);
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useFocusEffect(() => {
-    setFabVisible(true);
-    return () => {
-      setFabVisible(false);
-      setOpen(false);
-    };
-  });
+  const isFocused = useIsFocused();
 
   const stepOrder = TUTORIAL_STEPS.Home.order;
 
-  function startDemo() {
-    if (demoIntervalRef.current) {
-      clearInterval(demoIntervalRef.current);
-    }
-
-    demoIntervalRef.current = setInterval(() => {
-      setOpen(prev => !prev);
-    }, TUTORIAL_DEMO_INTERVAL);
-  }
-
-  function stopDemo() {
-    if (demoIntervalRef.current) {
-      clearInterval(demoIntervalRef.current);
-      demoIntervalRef.current = null;
-      setOpen(false);
-    }
-  }
-
-  function handleStepChange(step: CopilotStepData | undefined) {
-    if (step?.order === stepOrder) {
-      startDemo();
-    } else {
-      stopDemo();
-    }
-  }
-
   useEffect(() => {
-    if (!copilotData || !copilotEvents) {
+    if (!isFocused || !copilotData || !copilotEvents) {
       return;
+    }
+
+    function startDemo() {
+      if (demoIntervalRef.current) {
+        clearInterval(demoIntervalRef.current);
+      }
+      demoIntervalRef.current = setInterval(() => {
+        setOpen(prev => !prev);
+      }, TUTORIAL_DEMO_INTERVAL);
+    }
+
+    function stopDemo() {
+      if (demoIntervalRef.current) {
+        clearInterval(demoIntervalRef.current);
+        demoIntervalRef.current = null;
+        setOpen(false);
+      }
+    }
+
+    function handleStepChange(step: CopilotStepData | undefined) {
+      if (step?.order === stepOrder) {
+        startDemo();
+      } else {
+        stopDemo();
+      }
     }
 
     if (currentStep?.order === stepOrder) {
@@ -127,7 +118,11 @@ function VerticalBottomButtons() {
       copilotEvents.off('stop', stopDemo);
       stopDemo();
     };
-  });
+  }, [isFocused, copilotData, copilotEvents, currentStep, stepOrder]);
+
+  if (!isFocused) {
+    return null;
+  }
 
   async function takePhotoAndOpenNewRecipe() {
     openRecipeWithUri(await takePhoto(colors));
@@ -166,7 +161,7 @@ function VerticalBottomButtons() {
       <Portal>
         <FAB.Group
           open={open}
-          visible={fabVisible}
+          visible
           icon={open ? Icons.minusIcon : Icons.plusIcon}
           testID={open ? 'ReduceButton' : 'ExpandButton'}
           actions={[

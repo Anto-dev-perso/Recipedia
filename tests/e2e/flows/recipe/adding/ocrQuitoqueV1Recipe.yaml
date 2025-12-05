@@ -6,8 +6,8 @@ appId: "com.recipedia"
 - evalScript: ${output.isTime = true}
 - evalScript: ${output.isNutritionToOCR = false}
 
-- tapOn:
-    id: "ExpandButton"
+- runFlow:
+    file: "../../fab/expand.yaml"
     label: "Expand FAB menu"
 
 - runFlow:

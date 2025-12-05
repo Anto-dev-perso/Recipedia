@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { TutorialTooltip } from '@components/molecules/TutorialTooltip';
-import { mockAddListener, mockNavigate } from '@mocks/deps/react-navigation-mock';
+import { mockNavigate } from '@mocks/deps/react-navigation-mock';
 
 jest.mock('@react-navigation/native', () =>
   require('@mocks/deps/react-navigation-mock').reactNavigationMock()
@@ -19,8 +19,8 @@ describe('TutorialTooltip Component', () => {
     currentStep: mockHomeStep,
     isFirstStep: true,
     isLastStep: false,
-    goToNext: jest.fn(),
-    goToPrev: jest.fn(),
+    goToNext: jest.fn().mockResolvedValue(undefined),
+    goToPrev: jest.fn().mockResolvedValue(undefined),
     stop: jest.fn(),
   };
 
@@ -28,8 +28,8 @@ describe('TutorialTooltip Component', () => {
     currentStep: mockHomeStep,
     isFirstStep: false,
     isLastStep: false,
-    goToNext: jest.fn(),
-    goToPrev: jest.fn(),
+    goToNext: jest.fn().mockResolvedValue(undefined),
+    goToPrev: jest.fn().mockResolvedValue(undefined),
     stop: jest.fn(),
   };
 
@@ -142,37 +142,33 @@ describe('TutorialTooltip Component', () => {
     expect(mockStop).toHaveBeenCalled();
   });
 
-  test('navigates to next screen when next is pressed', () => {
+  test('navigates to next screen when next is pressed', async () => {
     useCopilot.mockReturnValue(defaultMockData);
 
     const { getByTestId } = render(<TutorialTooltip />);
 
     fireEvent.press(getByTestId('TutorialTooltip::Next'));
+    await Promise.resolve();
     expect(mockNavigate).toHaveBeenCalledWith('Search');
   });
 
-  test('navigates to previous screen when previous is pressed', () => {
+  test('navigates to previous screen when previous is pressed', async () => {
     useCopilot.mockReturnValue({ ...defaultMockData, currentStep: mockSearchStep });
 
     const { getByTestId } = render(<TutorialTooltip />);
 
     fireEvent.press(getByTestId('TutorialTooltip::Previous'));
+    await Promise.resolve();
     expect(mockNavigate).toHaveBeenCalledWith('Home');
   });
 
-  test('handles navigation state changes for step advancement', () => {
-    const mockGoToNext = jest.fn();
+  test('calls goToNext when next is pressed', async () => {
+    const mockGoToNext = jest.fn().mockResolvedValue(undefined);
     useCopilot.mockReturnValue({ ...defaultMockData, goToNext: mockGoToNext });
 
     const { getByTestId } = render(<TutorialTooltip />);
 
     fireEvent.press(getByTestId('TutorialTooltip::Next'));
-
-    // Simulate navigation state change
-    const stateListener = mockAddListener.mock.calls.find(call => call[0] === 'state')?.[1];
-    if (stateListener) {
-      stateListener();
-    }
 
     expect(mockGoToNext).toHaveBeenCalled();
   });
@@ -182,8 +178,8 @@ describe('TutorialTooltip Component', () => {
       currentStep: { ...mockShoppingStep, text: 'Last valid step' },
       isFirstStep: false,
       isLastStep: true,
-      goToNext: jest.fn(),
-      goToPrev: jest.fn(),
+      goToNext: jest.fn().mockResolvedValue(undefined),
+      goToPrev: jest.fn().mockResolvedValue(undefined),
       stop: jest.fn(),
     });
 
