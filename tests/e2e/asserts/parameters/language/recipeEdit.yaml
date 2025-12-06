@@ -91,8 +91,8 @@ appId: "com.recipedia"
     label: "Intro text for recipe content of the first step is displayed in French"
 
 - tapOn:
-    id: "RecipeCancel"
+    id: "Recipe::AppBar::Cancel"
     label: "Exit the edit mode"
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Quit the recipe screen"

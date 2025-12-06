@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "RecipeEdit"
+    id: "Recipe::AppBar::Edit"
     label: "Enter the edit mode again"
 
 - scrollUntilVisible:
@@ -200,5 +200,5 @@ appId: "com.recipedia"
     label: "Hide keyboard"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "Recipe::AppBar::Validate"
     label: "Save the recipe"

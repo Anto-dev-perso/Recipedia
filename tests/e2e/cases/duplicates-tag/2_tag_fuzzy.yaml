@@ -67,7 +67,7 @@ tags:
     label: "Assert - Verify fuzzy tag name appears"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Cleanup - Exit recipe creation without saving"
 
 

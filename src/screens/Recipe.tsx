@@ -80,7 +80,7 @@ import {
   recipeTableElement,
   tagTableElement,
 } from '@customTypes/DatabaseElementTypes';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { padding } from '@styles/spacing';
 import { RecipeImage, RecipeImageProps } from '@components/organisms/RecipeImage';
@@ -103,8 +103,8 @@ import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import { extractFieldFromImage } from '@utils/OCR';
 import { RecipeNumber, RecipeNumberProps } from '@components/organisms/RecipeNumber';
 import { defaultValueNumber } from '@utils/Constants';
-import { Button, useTheme } from 'react-native-paper';
-import { RecipeAppBar } from '@components/organisms/RecipeAppBar';
+import { useTheme } from 'react-native-paper';
+import { AppBar } from '@components/organisms/AppBar';
 import { ModalImageSelect } from '@screens/ModalImageSelect';
 import { cropImage } from '@utils/ImagePicker';
 import { useI18n } from '@utils/i18n';
@@ -120,6 +120,7 @@ import {
   TagValidationProps,
   ValidationQueue,
 } from '@components/dialogs/ValidationQueue';
+import BottomActionButton from '@components/atomic/BottomActionButton';
 
 const BUTTON_HEIGHT = 48;
 const BUTTON_CONTAINER_HEIGHT = BUTTON_HEIGHT + padding.small * 2;
@@ -1538,7 +1539,8 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-      <RecipeAppBar
+      <AppBar
+        testID={recipeTestId}
         isEditing={stackMode === recipeStateType.edit}
         onGoBack={() => navigation.goBack()}
         onCancel={handleCancel}
@@ -1571,31 +1573,17 @@ export function Recipe({ route, navigation }: RecipeScreenProp) {
       </ScrollView>
 
       {stackMode !== recipeStateType.edit && (
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: padding.small,
-            paddingBottom: insets.bottom + padding.small,
-            backgroundColor: colors.background,
-          }}
-        >
-          <Button
-            testID='RecipeValidateButton'
-            mode='contained'
-            onPress={async () => await validationFunction()}
-          >
-            {validationButtonText}
-          </Button>
-        </View>
+        <BottomActionButton
+          testID={recipeTestId}
+          onPress={async () => await validationFunction()}
+          label={validationButtonText}
+        />
       )}
 
       <Alert
         {...validationDialogProp}
         isVisible={isValidationDialogOpen}
-        testId={'Recipe'}
+        testId={recipeTestId}
         onClose={() => {
           setIsValidationDialogOpen(false);
           setValidationDialogProp(defaultValidationDialogProp);

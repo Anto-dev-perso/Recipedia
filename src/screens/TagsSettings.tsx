@@ -31,20 +31,34 @@
  */
 
 import React, { useState } from 'react';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import { tagTableElement } from '@customTypes/DatabaseElementTypes';
 import { SettingsItemList } from '@components/organisms/SettingsItemList';
+import { AppBar } from '@components/organisms/AppBar';
+import { BottomActionButton } from '@components/atomic/BottomActionButton';
 import { DialogMode, ItemDialog } from '@components/dialogs/ItemDialog';
 import { tagsSettingsLogger } from '@utils/logger';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
+import { useI18n } from '@utils/i18n';
+import { Icons } from '@assets/Icons';
+import { padding } from '@styles/spacing';
 
 /**
  * TagsSettings screen component - Recipe tag management
  *
  * @returns JSX element representing the tag management interface
  */
+const BUTTON_HEIGHT = 48;
+const BUTTON_CONTAINER_HEIGHT = BUTTON_HEIGHT + padding.small * 2;
+
 export function TagsSettings() {
   const { tags, addTag, editTag, deleteTag } = useRecipeDatabase();
+  const navigation = useNavigation();
+  const { t } = useI18n();
+  const { colors } = useTheme();
 
   const tagsSortedAlphabetically = [...tags].sort((a, b) => a.name.localeCompare(b.name));
 
@@ -114,14 +128,23 @@ export function TagsSettings() {
 
   // TODO add a counter of how many recipes use this element before deleting it
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <SettingsItemList
-        items={tagsSortedAlphabetically}
-        testIdPrefix={testId}
-        onAddPress={openAddDialog}
-        onEdit={openEditDialog}
-        onDelete={openDeleteDialog}
-        type='tag'
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['bottom']}>
+      <AppBar title={t('tags')} onGoBack={() => navigation.goBack()} testID={testId} />
+      <View style={{ flex: 1, paddingBottom: BUTTON_CONTAINER_HEIGHT }}>
+        <SettingsItemList
+          items={tagsSortedAlphabetically}
+          testIdPrefix={testId}
+          onEdit={openEditDialog}
+          onDelete={openDeleteDialog}
+          type='tag'
+        />
+      </View>
+
+      <BottomActionButton
+        testID={testId}
+        icon={Icons.plusIcon}
+        onPress={openAddDialog}
+        label={t('add_tag')}
       />
 
       {/* ItemDialog for add/edit/delete operations */}

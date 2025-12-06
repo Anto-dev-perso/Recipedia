@@ -120,13 +120,13 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipeValidateButton"
+      id: "Recipe::BottomActionButton"
     direction: DOWN
     speed: 60
     label: "Scroll to validate button"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
 
 - tapOn:
     id: "Recipe::Dialog::Confirm"

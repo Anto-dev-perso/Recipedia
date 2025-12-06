@@ -2,16 +2,24 @@ appId: "com.recipedia"
 ---
 - scrollUntilVisible:
     element:
-      id: "IngredientsSettings::AddButton-container"
+      id: "IngredientsSettings::BottomActionButton-container"
     direction: DOWN
     speed: 95
     label: "Scroll to bottom of the screen"
 
 - scrollUntilVisible:
     element:
+      id: "IngredientsSettings::36::IngredientName"
+    direction: DOWN
+    speed: 95
+    label: "Scroll to end of the screen"
+
+- scrollUntilVisible:
+    element:
       id: "IngredientsSettings::26::DeleteButton"
     direction: UP
-    speed: 80
+    speed: 60
+    timeout: 30000
     label: "Scroll to find RecipeIngredient"
 
 - tapOn:

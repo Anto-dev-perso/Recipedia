@@ -21,6 +21,9 @@ jest.mock('@utils/FileGestion', () =>
   require('@mocks/utils/FileGestion-mock.tsx').fileGestionMock()
 );
 jest.mock('@utils/i18n', () => require('@mocks/utils/i18n-mock').i18nMock());
+jest.mock('@react-navigation/native', () =>
+  require('@mocks/deps/react-navigation-mock').reactNavigationMock()
+);
 jest.mock('@components/organisms/SettingsItemList', () => ({
   SettingsItemList: require('@mocks/components/organisms/SettingsItemList-mock')
     .settingsItemListMock,
@@ -105,7 +108,7 @@ describe('TagsSettings Screen', () => {
     expect(getByTestId('TagsSettings::SettingsItemList::Items').props.children).toEqual(
       JSON.stringify(sortedDataset)
     );
-    expect(getByTestId('TagsSettings::SettingsItemList::OnAddPress')).toBeTruthy();
+    expect(getByTestId('TagsSettings::BottomActionButton')).toBeTruthy();
     expect(getByTestId('TagsSettings::SettingsItemList::OnEdit')).toBeTruthy();
     expect(getByTestId('TagsSettings::SettingsItemList::OnDelete')).toBeTruthy();
 
@@ -114,7 +117,7 @@ describe('TagsSettings Screen', () => {
 
   test('opens add dialog when add button is pressed and save value', async () => {
     const { getByTestId } = await renderTagsSettings();
-    fireEvent.press(getByTestId('TagsSettings::SettingsItemList::OnAddPress'));
+    fireEvent.press(getByTestId('TagsSettings::BottomActionButton'));
 
     await waitFor(() => {
       expect(getByTestId('TagsSettings::ItemDialog::Item')).toBeTruthy();

@@ -1,7 +1,7 @@
 appId: "com.recipedia"
 ---
 - assertVisible:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Back button is displayed"
 
 - assertVisible:
@@ -153,7 +153,7 @@ appId: "com.recipedia"
     label: "Verify nutrition information is displayed"
 
 - assertVisible:
-    id: "RecipeEdit"
+    id: "Recipe::AppBar::Edit"
     label: "Edit button is rendered"
 
 - assertVisible:
@@ -161,7 +161,7 @@ appId: "com.recipedia"
     label: "Edit button has the correct icon"
 
 - assertVisible:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Add recipe button is displayed"
 
 - assertVisible:

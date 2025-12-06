@@ -72,5 +72,5 @@ tags:
     label: "Assert - Verify original Dessert tag still present"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Cleanup - Exit recipe creation without saving"

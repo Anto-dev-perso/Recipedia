@@ -33,12 +33,11 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Divider, List, RadioButton, Text, useTheme } from 'react-native-paper';
+import { Divider, List, RadioButton, useTheme } from 'react-native-paper';
 import { useI18n } from '@utils/i18n';
 import { getLanguage, setLanguage } from '@utils/settings';
-import { BottomScreenTitle } from '@styles/typography';
 import { LanguageSettingsProp } from '@customTypes/ScreenTypes';
-import { padding } from '@styles/spacing';
+import { AppBar } from '@components/organisms/AppBar';
 
 /**
  * LanguageSettings screen component - Language selection interface
@@ -71,14 +70,8 @@ export function LanguageSettings({ navigation }: LanguageSettingsProp) {
 
   const languageTestId = 'LanguageSettings';
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-      <Text
-        testID={languageTestId + '::Title'}
-        variant={BottomScreenTitle}
-        style={{ padding: padding.small }}
-      >
-        {t('language')}
-      </Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['bottom']}>
+      <AppBar title={t('language')} onGoBack={() => navigation.goBack()} testID={languageTestId} />
 
       <RadioButton.Group onValueChange={handleLanguageChange} value={currentLocale}>
         <List.Section>

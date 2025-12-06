@@ -60,8 +60,8 @@ jest.mock('@components/dialogs/Alert', () => ({
 jest.mock('@components/dialogs/ValidationQueue', () =>
   require('@mocks/components/dialogs/ValidationQueue-mock')
 );
-jest.mock('@components/organisms/RecipeAppBar', () => ({
-  RecipeAppBar: require('@mocks/components/organisms/RecipeAppBar-mock').recipeAppBarMock,
+jest.mock('@components/organisms/AppBar', () => ({
+  AppBar: require('@mocks/components/organisms/AppBar-mock').appBarMock,
 }));
 jest.mock('@screens/ModalImageSelect', () => ({
   ModalImageSelect: require('@mocks/screens/ModalImageSelect-mock').modalImageSelectMock,
@@ -77,29 +77,29 @@ function checkAppbarButtons(
   getByTestId: GetByIdType,
   queryByTestId: QueryByIdType
 ) {
-  expect(getByTestId('RecipeAppbar')).toBeTruthy();
+  expect(getByTestId('Recipe::AppBar')).toBeTruthy();
   switch (prop.mode) {
     case 'readOnly':
-      expect(getByTestId('BackButton')).toBeTruthy();
-      expect(getByTestId('RecipeDelete')).toBeTruthy();
-      expect(getByTestId('RecipeEdit')).toBeTruthy();
-      expect(queryByTestId('RecipeCancel')).toBeNull();
-      expect(queryByTestId('RecipeValidate')).toBeNull();
+      expect(getByTestId('Recipe::AppBar::BackButton')).toBeTruthy();
+      expect(getByTestId('Recipe::AppBar::Delete')).toBeTruthy();
+      expect(getByTestId('Recipe::AppBar::Edit')).toBeTruthy();
+      expect(queryByTestId('Recipe::AppBar::Cancel')).toBeNull();
+      expect(queryByTestId('Recipe::AppBar::Validate')).toBeNull();
       break;
     case 'edit':
-      expect(getByTestId('RecipeCancel')).toBeTruthy();
-      expect(getByTestId('RecipeValidate')).toBeTruthy();
-      expect(queryByTestId('BackButton')).toBeNull();
-      expect(queryByTestId('RecipeDelete')).toBeNull();
-      expect(queryByTestId('RecipeEdit')).toBeNull();
+      expect(getByTestId('Recipe::AppBar::Cancel')).toBeTruthy();
+      expect(getByTestId('Recipe::AppBar::Validate')).toBeTruthy();
+      expect(queryByTestId('Recipe::AppBar::BackButton')).toBeNull();
+      expect(queryByTestId('Recipe::AppBar::Delete')).toBeNull();
+      expect(queryByTestId('Recipe::AppBar::Edit')).toBeNull();
       break;
     case 'addManually':
     case 'addFromPic':
-      expect(getByTestId('BackButton')).toBeTruthy();
-      expect(queryByTestId('RecipeDelete')).toBeNull();
-      expect(queryByTestId('RecipeEdit')).toBeNull();
-      expect(queryByTestId('RecipeCancel')).toBeNull();
-      expect(queryByTestId('RecipeValidate')).toBeNull();
+      expect(getByTestId('Recipe::AppBar::BackButton')).toBeTruthy();
+      expect(queryByTestId('Recipe::AppBar::Delete')).toBeNull();
+      expect(queryByTestId('Recipe::AppBar::Edit')).toBeNull();
+      expect(queryByTestId('Recipe::AppBar::Cancel')).toBeNull();
+      expect(queryByTestId('Recipe::AppBar::Validate')).toBeNull();
       break;
   }
 }
@@ -646,9 +646,9 @@ describe('Recipe Component tests', () => {
 
     await waitFor(() => {
       if (route.params.mode === 'edit') {
-        expect(result.getByTestId('RecipeCancel')).toBeTruthy();
+        expect(result.getByTestId('Recipe::AppBar::Cancel')).toBeTruthy();
       } else {
-        expect(result.getByTestId('BackButton')).toBeTruthy();
+        expect(result.getByTestId('Recipe::AppBar::BackButton')).toBeTruthy();
       }
       if (route.params.mode === 'addManually') {
         const personsValue = result.queryByTestId('RecipePersons::TextEditable')?.props.children;
@@ -988,7 +988,7 @@ describe('Recipe Component tests', () => {
 
     expect(RecipeDatabase.getInstance().get_shopping()).toEqual([]);
 
-    fireEvent.press(getByTestId('RecipeValidateButton'));
+    fireEvent.press(getByTestId('Recipe::BottomActionButton'));
 
     // Wait for shopping list to be populated (validation dialog is shown but navigation doesn't happen immediately)
     await waitFor(() => {
@@ -1089,7 +1089,7 @@ describe('Recipe Component tests', () => {
       checkPreparation(newPropEdit, getByTestId, queryByTestId);
     });
 
-    fireEvent.press(getByTestId('RecipeValidate'));
+    fireEvent.press(getByTestId('Recipe::AppBar::Validate'));
 
     const newPropReadOnly: RecipePropType = {
       mode: 'readOnly',
@@ -1125,7 +1125,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipeTime::SetTextToEdit'), newTime.toString());
     // TODO missing ingredients, preparation and tags
 
-    fireEvent.press(getByTestId('RecipeValidateButton'));
+    fireEvent.press(getByTestId('Recipe::BottomActionButton'));
 
     checkImage(mockRouteAddManually, getByTestId, '');
     checkTitle(mockRouteAddManually, getByTestId, queryByTestId, newTitle);
@@ -1145,7 +1145,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
     fireEvent.press(getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction'));
 
-    fireEvent.press(getByTestId('RecipeValidateButton'));
+    fireEvent.press(getByTestId('Recipe::BottomActionButton'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1178,7 +1178,7 @@ describe('Recipe Component tests', () => {
 
     const { getByTestId } = await renderRecipe(createMockRoute(mockRecipeWithNutrition));
 
-    fireEvent.press(getByTestId('RecipeValidate'));
+    fireEvent.press(getByTestId('Recipe::AppBar::Validate'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1197,7 +1197,7 @@ describe('Recipe Component tests', () => {
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), '4');
     fireEvent.press(getByTestId('RecipePreparation::AddButton::RoundButton::OnPressFunction'));
 
-    fireEvent.press(getByTestId('RecipeValidateButton'));
+    fireEvent.press(getByTestId('Recipe::BottomActionButton'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1219,7 +1219,7 @@ describe('Recipe Component tests', () => {
 
     const { getByTestId } = await renderRecipe(createMockRoute(mockRouteEditWithoutImage));
 
-    fireEvent.press(getByTestId('RecipeValidate'));
+    fireEvent.press(getByTestId('Recipe::AppBar::Validate'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1252,7 +1252,7 @@ describe('Recipe Component tests', () => {
 
     const { getByTestId } = await renderRecipe(createMockRoute(mockRecipeWithZeroNutrition));
 
-    fireEvent.press(getByTestId('RecipeValidate'));
+    fireEvent.press(getByTestId('Recipe::AppBar::Validate'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1267,7 +1267,7 @@ describe('Recipe Component tests', () => {
     const { getByTestId } = await renderRecipe(createMockRoute(mockRouteAddManually));
 
     // Don't add anything - everything should be missing
-    fireEvent.press(getByTestId('RecipeValidateButton'));
+    fireEvent.press(getByTestId('Recipe::BottomActionButton'));
 
     expect(getByTestId('Recipe::Alert::IsVisible').props.children).toBe(true);
     expect(getByTestId('Recipe::Alert::Title').props.children).toBe(
@@ -1289,7 +1289,7 @@ describe('Recipe Component tests', () => {
 
     const { getByTestId } = await renderRecipe(createMockRoute(mockCompleteRecipe as any));
 
-    fireEvent.press(getByTestId('RecipeValidate'));
+    fireEvent.press(getByTestId('Recipe::AppBar::Validate'));
 
     // Edit mode should switch to read-only mode when validation passes
     // No validation dialog should be shown for successful edit
@@ -1312,7 +1312,7 @@ describe('Recipe Component tests', () => {
     const newPersons = '8';
     fireEvent.press(getByTestId('RecipePersons::SetTextToEdit'), newPersons);
 
-    fireEvent.press(getByTestId('RecipeValidate'));
+    fireEvent.press(getByTestId('Recipe::AppBar::Validate'));
 
     await waitFor(() => {
       expect(editRecipeSpy).toHaveBeenCalled();
@@ -1332,7 +1332,7 @@ describe('Recipe Component tests', () => {
   test('toggles stackMode between readOnly and edit', async () => {
     const { getByTestId, queryByTestId } = await renderRecipe(createMockRoute(mockRouteReadOnly));
     const paramEdit: editRecipeManually = { ...mockRouteReadOnly, mode: 'edit' };
-    fireEvent.press(getByTestId('RecipeEdit'));
+    fireEvent.press(getByTestId('Recipe::AppBar::Edit'));
 
     checkAppbarButtons(paramEdit, getByTestId, queryByTestId);
 

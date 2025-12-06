@@ -24,7 +24,7 @@ env:
     label: "Assert - Verify Sushi Rolls recipe is displayed correctly"
 
 - tapOn:
-    id: "RecipeEdit"
+    id: "Recipe::AppBar::Edit"
     waitToSettleTimeoutMs: 0
     retryTapIfNoChange: false
     label: "Action - Tap on the Edit button"
@@ -42,7 +42,7 @@ env:
     label: "Assert - Verify nutrition section is now empty with add button"
 
 - tapOn:
-    id: "RecipeValidate"
+    id: "Recipe::AppBar::Validate"
     label: "Action - Validate the modifications"
 
 - runFlow:
@@ -54,7 +54,7 @@ env:
     label: "Cleanup - Remove nutrition table"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Cleanup - Back to the read only mode"
 
 - runFlow:

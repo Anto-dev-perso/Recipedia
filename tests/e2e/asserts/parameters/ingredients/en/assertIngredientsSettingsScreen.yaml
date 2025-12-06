@@ -3,7 +3,7 @@ env:
   INGREDIENT_INDEX: 0
 ---
 - assertVisible:
-    id: "IngredientsSettings::Title"
+    id: "IngredientsSettings::AppBar::Title-title-text"
     text: "Ingredients"
     label: "Ingredients Settings title is visible with correct text"
 
@@ -274,12 +274,12 @@ env:
 
 - scrollUntilVisible:
     element:
-      id: "IngredientsSettings::AddButton"
+      id: "IngredientsSettings::BottomActionButton"
     direction: DOWN
     speed: 60
     label: "Scroll down to find Add button"
 
 - assertVisible:
-    id: "IngredientsSettings::AddButton"
+    id: "IngredientsSettings::BottomActionButton"
     text: "Add ingredient"
     label: "Add ingredient button is visible with correct text"

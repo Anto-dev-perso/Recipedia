@@ -11,15 +11,8 @@ tags:
     file: "../../flows/parameters/ingredients/navigateToIngredientsSettings.yaml"
     label: "Action - Navigate to Ingredients Settings"
 
-- scrollUntilVisible:
-    element:
-      id: "IngredientsSettings::AddButton"
-    direction: DOWN
-    speed: 98
-    label: "Action - Scroll to find add tag button"
-
 - tapOn:
-    id: "IngredientsSettings::AddButton"
+    id: "IngredientsSettings::BottomActionButton"
     label: "Action - Open add ingredient dialog"
 
 - tapOn:

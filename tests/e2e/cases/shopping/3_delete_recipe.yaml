@@ -36,7 +36,7 @@ tags:
     label: "Action - Open Test Recipe"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Add Test Recipe to shopping"
 
 - runFlow:

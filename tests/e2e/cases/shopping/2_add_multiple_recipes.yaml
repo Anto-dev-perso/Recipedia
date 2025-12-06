@@ -16,7 +16,7 @@ tags:
     label: "Action - Open Spaghetti Bolognese recipe"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Add Spaghetti Bolognese to menu"
 
 - runFlow:
@@ -50,7 +50,7 @@ tags:
     label: "Action - Open Caesar Salad recipe"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Add Caesar Salad to menu"
 
 - runFlow:
@@ -88,7 +88,7 @@ tags:
     label: "Action - Open Margherita Pizza recipe"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Add Margherita Pizza to menu"
 
 - runFlow:

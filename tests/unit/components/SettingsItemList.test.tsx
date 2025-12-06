@@ -21,7 +21,6 @@ describe('SettingsItemList Component', () => {
 
   const mockOnEdit = jest.fn();
   const mockOnDelete = jest.fn();
-  const mockOnAddPress = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -34,15 +33,10 @@ describe('SettingsItemList Component', () => {
       items: mockIngredients,
       onEdit: mockOnEdit,
       onDelete: mockOnDelete,
-      onAddPress: mockOnAddPress,
     };
 
     test('renders', () => {
       const { getByTestId } = render(<SettingsItemList {...defaultProps} />);
-
-      expect(getByTestId(`${defaultProps.testIdPrefix}::Title`).props.children).toEqual(
-        'ingredients'
-      );
 
       let index = 0;
       for (const ingredient of defaultProps.items) {
@@ -62,16 +56,6 @@ describe('SettingsItemList Component', () => {
         ).toBeTruthy();
         ++index;
       }
-
-      expect(getByTestId(`${defaultProps.testIdPrefix}::AddButton`)).toBeTruthy();
-    });
-
-    test('calls onAddPress when add button is pressed', () => {
-      const { getByTestId } = render(<SettingsItemList {...defaultProps} />);
-
-      fireEvent.press(getByTestId(`${defaultProps.testIdPrefix}::AddButton`));
-
-      expect(mockOnAddPress).toHaveBeenCalled();
     });
 
     test('calls onEditPress when edit button is pressed', () => {
@@ -98,15 +82,10 @@ describe('SettingsItemList Component', () => {
       items: mockTags,
       onEdit: mockOnEdit,
       onDelete: mockOnDelete,
-      onAddPress: mockOnAddPress,
     };
 
     test('renders', () => {
       const { getByTestId } = render(<SettingsItemList {...defaultProps} />);
-
-      expect(getByTestId(`${defaultProps.testIdPrefix}::Title`).props.children).toEqual(
-        'filters.tags'
-      );
 
       let index = 0;
       for (const tag of defaultProps.items) {
@@ -126,16 +105,6 @@ describe('SettingsItemList Component', () => {
         ).toBeTruthy();
         ++index;
       }
-
-      expect(getByTestId(`${defaultProps.testIdPrefix}::AddButton`)).toBeTruthy();
-    });
-
-    test('calls onAddPress when add button is pressed', () => {
-      const { getByTestId } = render(<SettingsItemList {...defaultProps} />);
-
-      fireEvent.press(getByTestId(`${defaultProps.testIdPrefix}::AddButton`));
-
-      expect(mockOnAddPress).toHaveBeenCalled();
     });
 
     test('calls onEditPress when edit button is pressed', () => {

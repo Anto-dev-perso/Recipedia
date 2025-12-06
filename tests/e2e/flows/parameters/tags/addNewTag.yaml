@@ -1,14 +1,7 @@
 appId: "com.recipedia"
 ---
-- scrollUntilVisible:
-    element:
-      id: "TagsSettings::AddButton"
-    direction: DOWN
-    speed: 95
-    label: "Scroll down to find Add button"
-
 - tapOn:
-    id: "TagsSettings::AddButton"
+    id: "TagsSettings::BottomActionButton"
     label: "Tap Add button to create a new tag"
 
 - tapOn:
@@ -29,7 +22,7 @@ appId: "com.recipedia"
 - scrollUntilVisible:
     element:
       text: "RecipeTag"
-    direction: UP
+    direction: DOWN
     speed: 60
     label: "Scroll to find the newly added tag"
 

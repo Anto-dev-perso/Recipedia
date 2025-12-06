@@ -1,14 +1,7 @@
 appId: "com.recipedia"
 ---
-- scrollUntilVisible:
-    element:
-      id: "IngredientsSettings::AddButton"
-    direction: DOWN
-    speed: 80
-    label: "Scroll down to find Add button"
-
 - tapOn:
-    id: "IngredientsSettings::AddButton"
+    id: "IngredientsSettings::BottomActionButton"
     label: "Open Add ingredient dialog again"
 
 - tapOn:

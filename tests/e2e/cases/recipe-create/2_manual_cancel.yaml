@@ -44,7 +44,7 @@ tags:
     label: "Action - Add preparation"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Action - Cancel recipe adding"
 - tapOn:
     id: "BottomTabs::Search"

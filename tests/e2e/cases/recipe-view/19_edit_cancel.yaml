@@ -27,7 +27,7 @@ tags:
     label: "Assert - Verify read-only mode buttons"
 
 - tapOn:
-    id: "RecipeEdit"
+    id: "Recipe::AppBar::Edit"
     waitToSettleTimeoutMs: 0
     retryTapIfNoChange: false
     label: "Action - Enter edit mode"
@@ -52,7 +52,7 @@ tags:
     label: "Action - Scroll back to top to find image"
 
 - tapOn:
-    id: "RecipeCancel"
+    id: "Recipe::AppBar::Cancel"
     label: "Action - Cancel changes and return to read-only mode"
 
 - runFlow:
@@ -88,7 +88,7 @@ tags:
     label: "Action - Scroll back to top"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Action - Back to the Search Screen"
 
 - scrollUntilVisible:

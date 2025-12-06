@@ -6,13 +6,12 @@ import Slider from '@react-native-community/slider';
 import { useI18n } from '@utils/i18n';
 import { padding, screenWidth } from '@styles/spacing';
 import { DefaultPersonsSettingsProp } from '@customTypes/ScreenTypes';
-import { BottomScreenTitle } from '@styles/typography';
 import { defaultPersonsSettingsLogger } from '@utils/logger';
 import { useDefaultPersons } from '@context/DefaultPersonsContext';
 import { useRecipeDatabase } from '@context/RecipeDatabaseContext';
 import { LoadingOverlay } from '@components/dialogs/LoadingOverlay';
+import { AppBar } from '@components/organisms/AppBar';
 
-// TODO missing a back button on screen
 export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsProp) {
   const { t } = useI18n();
   const { colors } = useTheme();
@@ -51,14 +50,12 @@ export function DefaultPersonsSettings({ navigation }: DefaultPersonsSettingsPro
 
   const screenTestId = 'DefaultPersonSettings';
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background, height: '100%' }}>
-      <Text
-        testID={screenTestId + '::Title'}
-        variant={BottomScreenTitle}
-        style={{ padding: padding.small }}
-      >
-        {t('default_persons')}
-      </Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['bottom']}>
+      <AppBar
+        title={t('default_persons')}
+        onGoBack={() => navigation.goBack()}
+        testID={screenTestId}
+      />
 
       <View style={styles.sliderContainer}>
         <Text

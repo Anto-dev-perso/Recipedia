@@ -1,5 +1,5 @@
 appId: "com.recipedia"
 ---
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Try to validate empty recipe"

@@ -58,7 +58,7 @@ tags:
     label: "Action - Add Olive Oil ingredient"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Validate recipe with extra ingredient"
 
 - runFlow:
@@ -70,7 +70,7 @@ tags:
     label: "Action - Cancel adding duplicate recipe"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Action - Go back to home"
 
 - runFlow:

@@ -61,6 +61,6 @@ appId: "com.recipedia"
     label: "Check that modal is translated in French"
 - pressKey: "BACK"
 - assertVisible:
-    id: "RecipeValidateButton-text"
+    id: "Recipe::BottomActionButton-text"
     text: "Ajouter cette nouvelle recette"
     label: "Add validate button is displayed in French"

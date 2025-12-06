@@ -23,7 +23,7 @@ tags:
     label: "Assert - Verify recipe before validation (2 persons, 200g, 100g)"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Action - Validate the recipe"
 
 - runFlow:
@@ -55,7 +55,7 @@ tags:
     label: "Assert - Verify recipe scaled to 4 persons (400g, 200g)"
 
 - tapOn:
-    id: "RecipeDelete"
+    id: "Recipe::AppBar::Delete"
     label: "Cleanup - Delete the recipe"
 
 - tapOn:

@@ -9,14 +9,12 @@ export function settingsItemListMock<T extends SettingsItem>({
   onDelete,
   type,
   items,
-  onAddPress,
 }: SettingsItemListProps<T>) {
   const dialogTestID = testIdPrefix + `::SettingsItemList`;
   return (
     <View>
       <Text testID={dialogTestID + '::Type'}>{type}</Text>
       <Text testID={dialogTestID + '::Items'}>{JSON.stringify(items)}</Text>
-      <Button testID={dialogTestID + '::OnAddPress'} onPress={() => onAddPress()} title='Add' />
       <Button testID={dialogTestID + '::OnEdit'} onPress={() => onEdit(items[0])} title='Edit' />
       <Button
         testID={dialogTestID + '::OnDelete'}

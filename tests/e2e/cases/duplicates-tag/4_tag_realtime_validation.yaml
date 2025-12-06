@@ -11,15 +11,8 @@ tags:
     file: "../../flows/parameters/tags/navigateToTagsSettings.yaml"
     label: "Action - Navigate to Tags Settings"
 
-- scrollUntilVisible:
-    element:
-      id: "TagsSettings::AddButton"
-    direction: DOWN
-    speed: 98
-    label: "Action - Scroll to find add tag button"
-
 - tapOn:
-    id: "TagsSettings::AddButton"
+    id: "TagsSettings::BottomActionButton"
     label: "Action - Open add tag dialog"
 
 - tapOn:

@@ -64,7 +64,7 @@ appId: "com.recipedia"
     label: "Old tag name 'Italian' is not visible in recipe"
 
 - tapOn:
-    id: "BackButton"
+    id: "Recipe::AppBar::BackButton"
     label: "Return to Search screen"
 
 - tapOn:

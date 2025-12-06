@@ -359,6 +359,14 @@ appId: "com.recipedia"
 - hideKeyboard:
     label: "Close the keyboard"
 
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::EditableStep::2::TextInputContent::CustomTextInput"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll to third preparation paragraph input"
+
 - tapOn:
     id: "RecipePreparation::EditableStep::2::TextInputContent::CustomTextInput"
     label: "Press the TextInput of third preparation paragraph"
@@ -372,7 +380,7 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton-content"
+      id: "Recipe::RecipeNutrition::NutritionEmptyState::AddButton::RoundButton"
     direction: DOWN
     speed: 40
     label: "Scroll to see the nutrition add button"

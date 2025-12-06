@@ -5,5 +5,5 @@ appId: "com.recipedia"
     label: "Fill Test Recipe (2 persons, Pasta 200g, Tomatoes 100g)"
 
 - tapOn:
-    id: "RecipeValidateButton"
+    id: "Recipe::BottomActionButton"
     label: "Validate the recipe"

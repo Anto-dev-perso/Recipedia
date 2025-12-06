@@ -238,16 +238,24 @@ appId: "com.recipedia"
 
 - scrollUntilVisible:
     element:
-      id: "RecipePreparation::EditableStep::0::Title"
+      id: "RecipePreparation::PrefixText"
     direction: DOWN
     speed: 60
     centerElement: true
-    label: "Scroll down to the preparation steps"
+    label: "Scroll down to the preparation prefix"
 
 - assertVisible:
     id: "RecipePreparation::PrefixText"
     text: "Preparation :"
     label: "Preparation prefix text is rendered"
+
+- scrollUntilVisible:
+    element:
+      id: "RecipePreparation::EditableStep::0::Step"
+    direction: DOWN
+    speed: 60
+    centerElement: true
+    label: "Scroll down to the preparation step"
 
 - scrollUntilVisible:
     element:
