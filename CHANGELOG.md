@@ -1,3 +1,13 @@
+## [1.4.0](https://github.com/Anto-dev-perso/Recipedia/compare/v1.3.3...v1.4.0) (2025-12-06)
+
+### Features
+
+* app bar in parameters ([#144](https://github.com/Anto-dev-perso/Recipedia/issues/144)) ([7f1207a](https://github.com/Anto-dev-perso/Recipedia/commit/7f1207ad5eb143df7b297d3a7f771285267fb72b))
+
+### Bug Fixes
+
+* **test:** adjust reporters for unit test coverage command ([5128469](https://github.com/Anto-dev-perso/Recipedia/commit/512846910b0ebac83837fbdfe3b5987e8844895c))
+
 ## [1.3.3](https://github.com/Anto-dev-perso/Recipedia/compare/v1.3.2...v1.3.3) (2025-12-05)
 
 ### Bug Fixes
